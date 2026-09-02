@@ -6,15 +6,27 @@ found by the system rather than by the reader.
 
 | # | Job | Sunday, PHT | Cron (UTC) | Routine ID |
 |---|-----|-------------|------------|------------|
-| 1 | Macro & correlated-sentiment relevance | 09:12 | `12 1 * * 0` | `trig_01UxqDnGKQh8QML6z2fziamx` |
-| 2 | Source scrub & fact-check | 10:23 | `23 2 * * 0` | `trig_01QdvbeW9nq3kDzeUa93R2Ww` |
-| 3 | Math, code & sanity audit | 11:37 | `37 3 * * 0` | `trig_01WrfrLEAfdpzEpJjM8enrgN` |
+| 1 | Macro & correlated-sentiment relevance | 06:03 | `3 22 * * 6` | `trig_01UxqDnGKQh8QML6z2fziamx` |
+| 2 | Source scrub & fact-check | 11:07 | `7 3 * * 0` | `trig_01QdvbeW9nq3kDzeUa93R2Ww` |
+| 3 | Math, code & sanity audit | 16:11 | `11 8 * * 0` | `trig_01WrfrLEAfdpzEpJjM8enrgN` |
+
+**Job 1's cron day is Saturday, not Sunday, and that is correct.** Cron is
+evaluated in UTC. Sunday 06:00 PHT is Saturday 22:00 UTC, so `* * 6`. Jobs 2
+and 3 are morning/afternoon PHT and stay on Sunday UTC. If you ever edit these,
+check `next_run_at` afterwards — it is the only reliable proof the day is right.
+
+The ~5 hour spacing is deliberate. The account's rate limit is a five-hour
+rolling window; three research-heavy Opus sessions inside one window will
+exhaust it, which is exactly what killed the 2026-09-02 smoke test. Keep the
+jobs at least five hours apart and never fire them concurrently.
 
 All three run on **`claude-opus-5`** (set 2026-09-02). Routines created without
 an explicit model inherit the environment default, which was Sonnet 5; the model
 only applies to fires that create a new session, which all three do.
 
-All three verified scheduled: `next_run_at` = 2026-09-06 (Sunday). If a routine
+All three verified scheduled, next firing Sunday 2026-09-06 (job 1 at
+`2026-09-05T22:03Z`, job 2 at `2026-09-06T03:07Z`, job 3 at `2026-09-06T08:11Z`).
+If a routine
 ever shows `next_run_at` of `0001-01-01T00:00:00Z` it has **no schedule** and
 will never fire — the schedule field is `cron_expression`, not `cron`, and an
 unrecognised field is dropped silently. Re-check this after any trigger edit.
