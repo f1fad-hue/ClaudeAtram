@@ -3,6 +3,45 @@
 Newest first. Each Sunday job appends here. Every error found gets recorded
 before it gets fixed.
 
+## 2026-09-02 — Smoke test of all three routines: ABORTED on rate limit
+
+All three routines were fired manually at 12:18 UTC to prove the monitoring
+system works end to end. **All three failed**, none of them for a reason to do
+with the jobs themselves.
+
+| Job | Session | Ran for | Outcome |
+|---|---|---|---|
+| 1 macro relevance | `cse_01XLyRLZHRT6HW7cubaZumzp` | ~4m25s | failed — session limit |
+| 2 source scrub | `cse_01Le4o3RQUuuZHeGSvhrRdtZ` | ~3m56s | failed — session limit |
+| 3 math & code audit | `cse_01RW4B5qisvro9583iCvCPeZ` | ~3m31s | failed — session limit |
+
+Every one reported `You've hit your session limit · resets 5:10pm (UTC)` with
+`rate_limit_info.status = rejected` on the five-hour window. Firing three
+research-heavy sessions concurrently, on top of this session's own work,
+exhausted the shared five-hour budget within about four minutes.
+
+**Nothing was committed and nothing was republished.** `origin/claude/android-
+portfolio-macro-dashboard-awmpce` stayed at `6e9c697`, no `Smoke test` sections
+were written to this file, and the artifact was untouched. The concurrency
+mitigations (rebase-before-push, job 1 owning the republish, separate changelog
+headings) were therefore never exercised — the run died before any job reached
+the write stage.
+
+### What this does and does not prove
+
+- **Proved:** the routines fire, mint sessions, and start work. All three
+  reached RUNNING and began their briefs.
+- **Not proved:** that any job completes, commits, republishes, or that the
+  conflict handling works. That still needs a clean run.
+
+### Actions taken
+
+1. Model for all three routines changed from the inherited `claude-sonnet-5`
+   to **`claude-opus-5`** at the user's request. Schedules unchanged.
+2. Do **not** fire all three at once again. On the real Sunday schedule they are
+   70 minutes apart, which is well clear of the limit. If they must be tested
+   manually, fire one, let it finish, then fire the next.
+
 ## 2026-09-02 — Checklist audit (run 2)
 
 Full re-validation of every requirement against the live page and the engine.

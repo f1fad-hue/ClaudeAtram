@@ -10,6 +10,10 @@ found by the system rather than by the reader.
 | 2 | Source scrub & fact-check | 10:23 | `23 2 * * 0` | `trig_01QdvbeW9nq3kDzeUa93R2Ww` |
 | 3 | Math, code & sanity audit | 11:37 | `37 3 * * 0` | `trig_01WrfrLEAfdpzEpJjM8enrgN` |
 
+All three run on **`claude-opus-5`** (set 2026-09-02). Routines created without
+an explicit model inherit the environment default, which was Sonnet 5; the model
+only applies to fires that create a new session, which all three do.
+
 All three verified scheduled: `next_run_at` = 2026-09-06 (Sunday). If a routine
 ever shows `next_run_at` of `0001-01-01T00:00:00Z` it has **no schedule** and
 will never fire — the schedule field is `cron_expression`, not `cron`, and an
