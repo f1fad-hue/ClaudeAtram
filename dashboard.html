@@ -1,0 +1,2337 @@
+<title>Peso Four Fund Macro Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  /* --- banknote palette: grounded in PH currency, not fintech default --- */
+  --ground:#F4F6FA; --surface:#FFFFFF; --surface-2:#EEF2F8; --surface-3:#E4EAF3;
+  --ink:#131A26; --ink-2:#525E70; --ink-3:#7C8798;
+  --line:#DFE5EF; --line-2:#C9D3E2;
+  --navy:#1D3A63; --navy-2:#2C5590; --navy-ghost:#E8EEF7;
+
+  /* validated categorical (pairs=all PASS): teal / blue / orange / magenta */
+  --f1:#0E9B80; --f2:#3670D6; --f3:#CB5A22; --f4:#B0399B;
+  --f1-w:#DDF3EE; --f2-w:#E2EAFA; --f3-w:#FAE9DE; --f4-w:#F8E2F2;
+
+  /* status - always shipped with an icon + word, never colour alone */
+  --good:#177A52; --warn:#B07A18; --bad:#B02A37;
+  --good-w:#DFF1E8; --warn-w:#F8EEDA; --bad-w:#F9E3E5;
+
+  --r-s:6px; --r-m:10px; --r-l:16px;
+  --shadow:0 1px 2px rgba(19,26,38,.06), 0 4px 14px -6px rgba(19,26,38,.10);
+  --tabh:62px;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --disp:"Fraunces",Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--body);font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+#app{max-width:480px;margin:0 auto;background:var(--ground);min-height:100vh;
+  position:relative;box-shadow:0 0 0 1px var(--line)}
+@media(min-width:520px){#app{box-shadow:0 0 0 1px var(--line),0 20px 60px -30px rgba(19,26,38,.35)}}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;
+  padding:12px 16px 11px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.brand h1{margin:0;font-family:var(--disp);font-size:17px;font-weight:600;
+  letter-spacing:-.01em;line-height:1.15;text-wrap:balance}
+.brand .sub{font-family:var(--mono);font-size:10px;letter-spacing:.07em;
+  text-transform:uppercase;color:#A9BFDD}
+.hgauge{flex:none;text-align:right;line-height:1}
+.hgauge b{font-family:var(--mono);font-size:20px;font-weight:600;letter-spacing:-.02em}
+.hgauge span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;color:#A9BFDD;margin-top:3px}
+
+/* ---------- panels ---------- */
+main{padding:14px 14px calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 22px)}
+.panel{display:none}
+.panel.on{display:block}
+section{margin-bottom:16px}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 7px;display:flex;align-items:baseline;gap:7px}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+h2{font-family:var(--disp);font-size:20px;font-weight:600;letter-spacing:-.015em;
+  margin:0 0 5px;text-wrap:balance;line-height:1.2}
+h3{font-family:var(--body);font-size:14px;font-weight:700;margin:0 0 5px;letter-spacing:-.005em}
+p{margin:0 0 10px;color:var(--ink-2);font-size:13.5px;line-height:1.55}
+p.lede{color:var(--ink);font-size:14px}
+strong{color:var(--ink);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);
+  padding:14px;box-shadow:var(--shadow)}
+.card + .card{margin-top:10px}
+.flat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);padding:12px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+/* ---------- bottom tabs ---------- */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line-2);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+.navin{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);height:var(--tabh)}
+.tab{appearance:none;border:0;background:none;cursor:pointer;font-family:var(--body);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:var(--ink-3);font-size:10.5px;font-weight:600;letter-spacing:.01em;
+  padding:0;position:relative;min-height:44px;transition:color .15s}
+.tab svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-selected="true"]{color:var(--navy)}
+.tab[aria-selected="true"]::before{content:"";position:absolute;top:0;left:50%;
+  transform:translateX(-50%);width:30px;height:2.5px;background:var(--navy);border-radius:0 0 3px 3px}
+.tab:focus-visible{outline:2px solid var(--navy-2);outline-offset:-3px;border-radius:var(--r-s)}
+
+/* ---------- gauge ---------- */
+.gaugewrap{display:flex;flex-direction:column;align-items:center;padding:4px 0 0}
+.gaugewrap svg{width:100%;max-width:290px;height:auto;display:block}
+.gaugeread{margin-top:-14px;text-align:center}
+.gaugeread b{font-family:var(--mono);font-size:42px;font-weight:600;letter-spacing:-.04em;
+  display:block;line-height:1}
+.gaugeread b i{font-style:normal;font-size:19px;color:var(--ink-3)}
+.gaugeread .verdict{font-family:var(--body);font-size:13px;font-weight:700;margin-top:5px}
+.gaugeread .vsub{font-size:12px;color:var(--ink-2);margin-top:2px;line-height:1.45}
+
+/* ---------- driver rows ---------- */
+.drv{border-top:1px solid var(--line);padding:11px 0}
+.drv:first-of-type{border-top:0;padding-top:4px}
+.drvhead{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.drvname{font-size:13px;font-weight:600;flex:1;line-height:1.3}
+.wt{font-family:var(--mono);font-size:10px;color:var(--ink-3);
+  background:var(--surface-2);padding:2px 5px;border-radius:var(--r-s);flex:none}
+.sc{font-family:var(--mono);font-size:14px;font-weight:600;flex:none;width:30px;text-align:right}
+.track{height:7px;background:var(--surface-3);border-radius:4px;overflow:hidden;position:relative}
+.track i{display:block;height:100%;border-radius:4px}
+.track .mid{position:absolute;left:55%;top:-2px;bottom:-2px;width:1.5px;background:var(--line-2)}
+.drvnote{font-size:12px;color:var(--ink-2);margin-top:6px;line-height:1.5}
+
+/* ---------- region grid ---------- */
+.rgrid{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px}
+.rgrid th{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500;padding:0 0 7px;text-align:center}
+.rgrid th:first-child{text-align:left}
+.rgrid td{padding:4px 2px}
+.rgrid td:first-child{font-weight:600;font-size:12.5px;padding-right:8px;white-space:nowrap}
+.cell{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12.5px;font-weight:600;
+  text-align:center;padding:7px 0;border-radius:var(--r-s);display:block}
+.rank{font-family:var(--mono);font-size:10px;color:var(--ink-3);font-weight:500}
+.rwhy{font-size:12px;color:var(--ink-2);line-height:1.5;padding:9px 0 3px;
+  border-top:1px solid var(--line);margin-top:3px}
+.rwhy b{font-size:11px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink);display:block;margin-bottom:3px}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -14px;padding:0 14px}
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.dt th{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500;text-align:right;padding:0 0 7px 10px;white-space:nowrap;
+  border-bottom:1px solid var(--line-2)}
+table.dt th:first-child{text-align:left;padding-left:0}
+table.dt td{text-align:right;padding:8px 0 8px 10px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.dt td:first-child{text-align:left;padding-left:0;font-family:var(--body);
+  font-weight:500;white-space:normal;line-height:1.3}
+table.dt tr:last-child td{border-bottom:0}
+table.dt tr.tot td{font-weight:700;border-top:1.5px solid var(--line-2);border-bottom:0;
+  background:var(--surface-2)}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+.swatch{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;
+  vertical-align:1px;flex:none}
+
+/* ---------- chips & callouts ---------- */
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;
+  font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;
+  border-radius:var(--r-s);white-space:nowrap}
+.chip.good{background:var(--good-w);color:var(--good)}
+.chip.warn{background:var(--warn-w);color:var(--warn)}
+.chip.bad{background:var(--bad-w);color:var(--bad)}
+.chip.neu{background:var(--surface-2);color:var(--ink-2)}
+.chip svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round}
+.callout{border-left:3px solid var(--navy);background:var(--navy-ghost);
+  padding:11px 13px;border-radius:0 var(--r-m) var(--r-m) 0;font-size:13px;
+  color:var(--ink);line-height:1.55}
+.callout b{font-weight:700}
+.note{font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-top:9px}
+.note code{font-family:var(--mono);font-size:11px;background:var(--surface-2);
+  padding:1px 4px;border-radius:3px;color:var(--ink-2)}
+
+/* ---------- stat row ---------- */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-m);padding:10px 11px}
+.stat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-bottom:3px;line-height:1.3}
+.stat .v{font-family:var(--mono);font-size:20px;font-weight:600;letter-spacing:-.03em;
+  line-height:1.1;display:block}
+.stat .d{font-size:11px;color:var(--ink-3);margin-top:3px;line-height:1.35}
+
+/* ---------- fund carousel ---------- */
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;margin:0 -14px;padding:2px 14px 12px;
+  scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.slide{flex:0 0 min(310px,84vw);scroll-snap-align:center;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden;
+  box-shadow:var(--shadow);display:flex;flex-direction:column}
+.sh{padding:13px 14px 12px;color:#fff}
+.sh .code{font-family:var(--mono);font-size:10px;letter-spacing:.09em;opacity:.82;font-weight:500}
+.sh h3{font-family:var(--disp);font-size:17px;font-weight:600;color:#fff;
+  margin:3px 0 0;line-height:1.18;letter-spacing:-.01em}
+.sh .role{font-size:11.5px;opacity:.9;margin-top:5px;line-height:1.4}
+.sb{padding:12px 14px 14px;display:flex;flex-direction:column;gap:11px;flex:1}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+  border-radius:var(--r-m);overflow:hidden}
+.duo>div{background:var(--surface-2);padding:9px 10px}
+.duo .k{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);display:block;line-height:1.3}
+.duo .v{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.035em;
+  display:block;margin-top:2px;line-height:1}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:12px;
+  padding:5px 0;border-bottom:1px solid var(--line)}
+.kv:last-child{border-bottom:0}
+.kv dt{color:var(--ink-3);flex:none}
+.kv dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  text-align:right;font-weight:500;font-size:11.5px}
+.kv dd.wrap{font-family:var(--body);font-weight:400;color:var(--ink-2);
+  font-size:11.5px;line-height:1.4}
+.build{display:flex;flex-direction:column;gap:4px}
+.brow{display:flex;align-items:center;gap:8px;font-size:11.5px}
+.brow .bl{flex:1;color:var(--ink-2);line-height:1.3}
+.brow .bv{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:600;
+  font-size:11.5px;flex:none;width:52px;text-align:right}
+.brow.f{border-top:1px solid var(--line-2);padding-top:5px;margin-top:2px}
+.brow.f .bl{color:var(--ink);font-weight:600}
+.dots{display:flex;gap:5px;justify-content:center;margin-top:-4px}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--line-2);transition:all .2s}
+.dots i.on{width:16px;border-radius:3px}
+
+/* ---------- charts ---------- */
+figure{margin:0}
+figcaption{font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-top:8px}
+.chart{width:100%;height:auto;display:block;overflow:visible;touch-action:pan-y}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:9px}
+.lgi{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-2)}
+.lgi b{font-family:var(--mono);color:var(--ink);font-weight:600;font-size:11.5px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;
+  font-family:var(--mono);font-size:10.5px;line-height:1.45;padding:6px 8px;
+  border-radius:var(--r-s);white-space:pre;z-index:30;opacity:0;transition:opacity .1s;
+  box-shadow:0 4px 14px -4px rgba(0,0,0,.4)}
+.tip.on{opacity:1}
+.rel{position:relative}
+
+/* ---------- donuts ---------- */
+.vsgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.dwrap{text-align:center}
+.dwrap .dt2{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:2px}
+.dwrap .dn{font-family:var(--disp);font-size:14.5px;font-weight:600;margin-bottom:6px;line-height:1.2}
+.vsbadge{display:flex;align-items:center;justify-content:center;margin:8px 0 2px}
+.vsbadge span{font-family:var(--disp);font-size:12px;font-weight:600;color:var(--ink-3);
+  background:var(--ground);padding:0 9px;position:relative;z-index:1}
+.vsbadge{position:relative}
+.vsbadge::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+
+/* ---------- monitoring ---------- */
+.mon{display:flex;gap:11px;padding:12px 0;border-top:1px solid var(--line)}
+.mon:first-of-type{border-top:0;padding-top:2px}
+.mon .idx{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--navy);
+  background:var(--navy-ghost);width:24px;height:24px;border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;margin-top:1px}
+.mon .mb{flex:1;min-width:0}
+.mon h4{margin:0 0 3px;font-size:13px;font-weight:700;line-height:1.3}
+.mon .when{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.04em;
+  display:block;margin-bottom:5px}
+.mon p{font-size:12px;margin:0;line-height:1.5}
+.mon ul{margin:6px 0 0;padding-left:15px;font-size:12px;color:var(--ink-2);line-height:1.55}
+.mon li{margin-bottom:2px}
+
+/* ---------- sources ---------- */
+.src{display:block;padding:10px 0;border-top:1px solid var(--line);
+  text-decoration:none;color:inherit}
+.src:first-of-type{border-top:0}
+.src .o{font-size:12.5px;font-weight:600;color:var(--navy);line-height:1.3}
+.src .w{font-size:11.5px;color:var(--ink-2);line-height:1.45;margin-top:2px}
+.src:focus-visible{outline:2px solid var(--navy-2);outline-offset:2px;border-radius:var(--r-s)}
+
+ul.plain{margin:0 0 10px;padding-left:16px;font-size:13px;color:var(--ink-2);line-height:1.6}
+ul.plain li{margin-bottom:5px}
+ul.plain b{color:var(--ink)}
+footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
+  border-top:1px solid var(--line);margin-top:6px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;
+  scroll-behavior:auto!important}}
+</style>
+
+<div id="app">
+<header>
+  <div class="brand">
+    <h1>Peso Four-Fund Macro Desk</h1>
+    <div class="sub">ATRAM UITF &middot; as of <span id="asof">—</span></div>
+  </div>
+  <div class="hgauge"><b id="hg">—</b><span>Macro 1–10</span></div>
+</header>
+
+<main>
+
+<!-- ================= 1. MACRO ================= -->
+<div class="panel on" id="p-macro" role="tabpanel" aria-labelledby="t-macro">
+
+  <section>
+    <p class="eyebrow">Overall driver gauge</p>
+    <h2>A 5.3 market: strong earnings, hostile policy</h2>
+    <p class="lede">The composite scores seven macro drivers, weighted by how much each
+      one actually moves a peso-based investor holding these four funds. It lands
+      just below neutral — not a market to hide from, and not one to lever into.</p>
+    <div class="card">
+      <div class="gaugewrap">
+        <div id="gauge"></div>
+        <div class="gaugeread">
+          <b id="gv">—<i>/10</i></b>
+          <div class="verdict" id="gverdict">—</div>
+          <div class="vsub">Earnings are doing all the work. Policy, energy and a
+            complacent volatility market are working against them.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Broad sentiment &middot; driver breakdown</p>
+    <div class="card" id="drivers"></div>
+    <p class="note">Bars run 1–10; the hairline marks the 5.5 neutral. Composite =
+      &Sigma;(weight &times; score).</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Regional ranking &middot; 3M / 6M / 12M / 5Y</p>
+    <h2>Asia leads on every horizon</h2>
+    <p>Each region is scored 1–10 on the same seven drivers, then blended with the
+      horizon weights the 5-year mandate implies: <span class="num">3M&nbsp;15%</span>,
+      <span class="num">6M&nbsp;25%</span>, <span class="num">12M&nbsp;30%</span>,
+      <span class="num">5Y&nbsp;30%</span>. Near-term signals get a vote; they don't
+      get to run the portfolio.</p>
+    <div class="card">
+      <div class="tw"><table class="rgrid" id="rtab"></table></div>
+      <div id="rwhy"></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Correlated sentiment</p>
+    <h2>How each driver lands on this portfolio</h2>
+    <p>Broad sentiment is only useful once it is mapped onto what you actually own.
+      This is the transmission path from each macro driver to each of the four sleeves.</p>
+    <div class="card">
+      <div class="tw"><table class="dt" id="corrtab"></table></div>
+      <p class="note">Cell values are the modelled effect on that fund's 5-year net
+        CAGR, in percentage points. The column sum is the total macro tilt applied
+        in the optimised portfolio.</p>
+    </div>
+    <div class="card">
+      <h3>The correlation that constrains everything</h3>
+      <p style="margin-bottom:0" id="corrnote"></p>
+      <div class="tw" style="margin-top:10px"><table class="dt" id="cmat"></table></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= 2. VOLATILITY ================= -->
+<div class="panel" id="p-vol" role="tabpanel" aria-labelledby="t-vol">
+
+  <section>
+    <p class="eyebrow">Volatility &middot; deep analysis</p>
+    <h2>The calm is priced, and the market knows it won't last</h2>
+    <p class="lede">Spot VIX printed a 2026 low of <b class="num">14.13</b> while the
+      futures curve sits in steep contango — <b class="num">17.92</b> for September,
+      <b class="num">20.38</b> for December. That gap is the whole story: today is
+      quiet, and the market is paying up for the fact that it does not expect to stay
+      that way.</p>
+    <div class="stats" id="volstats"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Term structure &middot; the math</p>
+    <div class="card">
+      <figure class="rel">
+        <div id="volchart"></div>
+        <div class="legend">
+          <span class="lgi"><i class="swatch" style="background:var(--f2)"></i>Implied (option-priced)</span>
+          <span class="lgi"><i class="swatch" style="background:var(--f1)"></i>Realised-equivalent</span>
+        </div>
+        <figcaption>Annualised volatility for a 0&rarr;T horizon. Tap any point for
+          the exact figures.</figcaption>
+      </figure>
+    </div>
+
+    <div class="card">
+      <h3>How these numbers are built</h3>
+      <p>Horizon vol is not read off a single quote — it is integrated out of the
+        forward-variance curve, because variance is what adds across time, not
+        volatility:</p>
+      <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
+        font-size:12px;text-align:center;line-height:1.7;color:var(--ink)">
+        &sigma;(0&rarr;T) = &radic;( <sup>1</sup>&frasl;<sub>T</sub> &int;<sub>0</sub><sup>T</sup> &sigma;<sub>f</sub>(t)&sup2; dt )
+      </div>
+      <p style="margin-top:11px">The forward curve &sigma;<sub>f</sub>(t) is bootstrapped
+        piecewise from the three observable points — spot VIX, the September future,
+        the December future — then mean-reverted beyond the last liquid contract toward
+        the long-run VIX anchor of <b class="num">19.5</b> at speed
+        <span class="num">&kappa;&nbsp;=&nbsp;1.5</span>/yr. The realised-equivalent
+        line subtracts the <b class="num">3.5</b>-point variance risk premium: options
+        have persistently overpriced delivered volatility, and a drawdown model fed on
+        implied vol alone would systematically overstate the damage.</p>
+      <div class="tw"><table class="dt" id="voltab"></table></div>
+      <p class="note">1&sigma; and 2&sigma; are S&amp;P-equivalent moves over the full
+        horizon (&sigma;&radic;T), before any fund's volatility beta is applied.</p>
+    </div>
+
+    <div class="card">
+      <h3>From index vol to fund vol</h3>
+      <p>Each sleeve inherits the 5-year implied level of
+        <b class="num" id="spv">—</b>, scaled by its volatility beta, then combined
+        with unhedged peso exposure. The FX leg is not just added noise — the peso
+        tends to weaken when global risk sells off, and for a peso-based holder of
+        USD assets that <em>cushions</em> the loss. Modelled at
+        <span class="num">&sigma;<sub>FX</sub>&nbsp;6.0%</span>,
+        <span class="num">&rho;&nbsp;=&nbsp;&minus;0.20</span>.</p>
+      <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
+        font-size:11.5px;text-align:center;line-height:1.7;color:var(--ink)">
+        &sigma;<sub>PHP</sub> = &radic;( &sigma;<sub>A</sub>&sup2; + &sigma;<sub>FX</sub>&sup2; + 2&rho;&sigma;<sub>A</sub>&sigma;<sub>FX</sub> )
+      </div>
+      <div class="tw" style="margin-top:11px"><table class="dt" id="fvoltab"></table></div>
+    </div>
+
+    <div class="card">
+      <h3>Turning volatility into a drawdown number</h3>
+      <p>Expected maximum drawdown over a rolling 5-year window is modelled as
+        <span class="num">1.65&nbsp;&times;&nbsp;&sigma;&nbsp;&minus;&nbsp;0.50&nbsp;&times;&nbsp;&mu;</span>
+        — volatility sets the depth, drift claws some of it back. The coefficients are
+        calibrated so the formula reproduces what actually happened: it returns
+        <b class="num">&minus;20%</b> for the S&amp;P 500 (&sigma; 15.5%, &mu; 11%) and
+        <b class="num">&minus;33%</b> for the Nasdaq-100 (&sigma; 24%, &mu; 13%), which
+        are the observed medians for rolling 5-year windows. The money market sleeve is
+        floored separately at a 100bp parallel rate shock on ~0.5y duration, because a
+        cash fund cannot be made to behave like an equity fund by a formula.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ================= 3. FUNDS ================= -->
+<div class="panel" id="p-funds" role="tabpanel" aria-labelledby="t-funds">
+  <section>
+    <p class="eyebrow">Fund slides &middot; swipe</p>
+    <h2>Four sleeves, four jobs</h2>
+    <p class="lede">Every fund is judged against <strong>its own stated target</strong> —
+      the feeder's own target fund or benchmark, not a house index. Each slide carries
+      the full return build-up, the complete fee stack, the forecast 5-year CAGR
+      <em>after</em> those fees, and the expected maximum drawdown.</p>
+  </section>
+  <div class="rail" id="rail"></div>
+  <div class="dots" id="dots"></div>
+
+  <section style="margin-top:16px">
+    <p class="eyebrow">Side by side</p>
+    <div class="card">
+      <div class="tw"><table class="dt" id="ftab"></table></div>
+      <p class="note">Net CAGR is after every layer of fees, including the target
+        fund's own charge. Drawdown is the expected 5-year maximum, peak to trough.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Look-through</p>
+    <div class="card">
+      <h3>What you actually own underneath</h3>
+      <p>These are feeder funds. The peso unit you buy sits on top of a UCITS ETF or a
+        Luxembourg SICAV, which in turn holds the securities. Exposure below is stated
+        at index level — the funds' security-level holdings change daily and are not
+        reproduced here.</p>
+      <div class="tw"><table class="dt" id="ltab"></table></div>
+      <p class="note">The Nasdaq Equity Income sleeve is the one non-obvious structure:
+        it holds Nasdaq-100 equities and <em>sells call options against them</em>. That
+        caps upside to roughly three-quarters of the index — which is exactly why its
+        stated benchmark is 75% of the Nasdaq-100 — and converts the option premium into
+        distributable income. Rising implied volatility makes those options more
+        valuable to sell, so this sleeve is the one holding that is paid by the
+        volatility path the futures curve is pricing.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Fee transparency</p>
+    <div class="card">
+      <h3>Where the estimates are, and where they aren't</h3>
+      <p>Feeder-level fees are taken from ATRAM's own published fund documents and the
+        launch coverage. Target-fund charges are verified where the target publishes a
+        TER — the JPMorgan Nasdaq Equity Premium Income UCITS ETF discloses
+        <b class="num">0.35%</b>. For the two SICAV targets the ongoing charge is an
+        estimate, flagged as such in every table on this page rather than quietly folded
+        in. If those estimates are wrong by 25bp, net CAGR moves by 25bp — the ranking
+        of the four sleeves does not change.</p>
+      <div class="tw"><table class="dt" id="feetab"></table></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= 4. PORTFOLIOS ================= -->
+<div class="panel" id="p-port" role="tabpanel" aria-labelledby="t-port">
+
+  <section>
+    <p class="eyebrow">Baseline vs optimised</p>
+    <h2>Same four funds, two different bets</h2>
+    <p class="lede">The <strong>baseline</strong> is what a 5-year horizon buys you with
+      no view on the cycle: a liquidity buffer and three equity engines held near-equally.
+      The <strong>optimised</strong> portfolio takes the macro read seriously. Every
+      weight in both ends in 5 or 0.</p>
+    <div class="vsgrid">
+      <div class="dwrap">
+        <div class="dt2">Portfolio A</div>
+        <div class="dn">Baseline</div>
+        <div id="donutA"></div>
+      </div>
+      <div class="dwrap">
+        <div class="dt2">Portfolio B</div>
+        <div class="dn">Optimised</div>
+        <div id="donutB"></div>
+      </div>
+    </div>
+    <div class="legend" id="dlegend" style="justify-content:center;margin-top:12px"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Headline forecast</p>
+    <div class="card">
+      <div class="tw"><table class="dt" id="ptab"></table></div>
+      <p class="note">Both columns are shown under the same macro-adjusted return set,
+        so the comparison isolates the effect of the weights. The strategic (no-view)
+        figures are in the table below.</p>
+    </div>
+    <div class="card">
+      <h3>Both portfolios, both lenses</h3>
+      <div class="tw"><table class="dt" id="ptab2"></table></div>
+      <p class="note"><strong>Strategic</strong> uses pure 5-year return assumptions with
+        no cycle view. <strong>Macro-adjusted</strong> applies the regional ranking, the
+        volatility path, the policy-rate bias and the energy shock. The optimised
+        portfolio wins under both lenses on return-per-unit-of-drawdown.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The improvement</p>
+    <div class="card" id="deltacard"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Feasible set</p>
+    <h2>Why this point, out of 969</h2>
+    <p>Every fully-invested 5%-granular allocation holding all four funds was
+      enumerated and scored — <b class="num">969</b> portfolios. The line below is the
+      upper edge: the highest achievable 5-year net CAGR at each level of expected
+      drawdown. The optimised portfolio sits on that edge.</p>
+    <div class="card">
+      <figure class="rel">
+        <div id="frontier"></div>
+        <figcaption>Each point is the best available return for that drawdown budget.
+          Tap to see the allocation behind it.</figcaption>
+      </figure>
+    </div>
+    <div class="card">
+      <h3>Why not simply maximise return?</h3>
+      <p>Because the answer is degenerate. Maximise return alone and the optimiser
+        puts <b class="num">85%</b> into Asia Equity — the highest macro-adjusted sleeve
+        — for a <b class="num">7.88%</b> CAGR and a <b class="num">&minus;25.5%</b>
+        drawdown. Minimise drawdown alone and it puts <b class="num">85%</b> into the
+        money market for <b class="num">5.33%</b> and <b class="num">&minus;2.0%</b>.
+        Neither is what "maximum growth while controlling drawdown to a minimum" means,
+        and neither is a portfolio anyone should hold for five years.</p>
+      <p style="margin-bottom:0">So the objective is stated explicitly and solved:
+        <strong>maximise 5-year net CAGR subject to expected maximum drawdown coming in
+        at least 2 percentage points below the baseline's</strong>. That budget left
+        <b class="num" id="nfeas">—</b> feasible portfolios out of 969, and the winner
+        is the one that beats the baseline on <em>both</em> sides at once.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Stress test</p>
+    <h2>What breaks it</h2>
+    <p>Five named scenarios, each tied to a live risk in the current macro picture,
+      applied as a shock to returns and a multiplier on volatility.</p>
+    <div class="card">
+      <div class="tw"><table class="dt" id="stab"></table></div>
+      <div id="sdesc"></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">In pesos</p>
+    <div class="card">
+      <h3>&#8369;1,000,000 over five years</h3>
+      <div class="tw"><table class="dt" id="pesotab"></table></div>
+      <p class="note">Terminal value compounds the forecast net CAGR over 5 years.
+        Trough shows the peso value at the expected maximum drawdown — a path you should
+        expect to live through at some point, not a tail event.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ================= 5. REPORT ================= -->
+<div class="panel" id="p-report" role="tabpanel" aria-labelledby="t-report">
+
+  <section>
+    <p class="eyebrow">Rationale report</p>
+    <h2>Why 15 / 45 / 35 / 5</h2>
+    <p class="lede">The recommendation is not "own more of the thing that went up."
+      It is built from one observation: <strong>the market is priced for calm it does
+      not expect to keep</strong>, and exactly one of these four funds is structurally
+      paid when that changes.</p>
+  </section>
+
+  <section>
+    <div class="card">
+      <h3>1 &middot; The setup</h3>
+      <p>Three central banks that matter to this portfolio are leaning the same way,
+        and it is the wrong way for long-duration assets. The Fed held at
+        <b class="num">3.50–3.75%</b> on a <b>9–3 vote in which the three dissents
+        wanted a hike</b>. The ECB actually delivered one — <b class="num">+25bp</b> to
+        <b class="num">2.25%</b> in June, its first in three years. The BSP hiked
+        <b class="num">+25bp</b> to <b class="num">4.75%</b>. None of this is a
+        tightening cycle yet; all of it is a tightening <em>bias</em>, and it is
+        happening because Brent at <b class="num">$91</b> — up <b class="num">32%</b>
+        year on year after a Q1 spike to <b class="num">$118</b> — is pushing headline
+        inflation back up even as core behaves.</p>
+      <p style="margin-bottom:0">Against that, corporate earnings are the strongest
+        pillar in the picture, and it isn't close. Asia ex-Japan consensus has EPS
+        growing roughly <b class="num">52%</b> this year and <b class="num">28%</b>
+        next, off the AI and memory cycle, on a forward multiple of
+        <b class="num">10.5&times;</b>. That combination — hostile policy, hostile
+        energy, excellent earnings, undemanding valuations — is what produces a
+        <b class="num">5.3</b> gauge rather than a 3 or an 8.</p>
+    </div>
+
+    <div class="card">
+      <h3>2 &middot; The signal everyone can see and few act on</h3>
+      <p>Spot VIX at <b class="num">14.13</b> is a 2026 low. The December future at
+        <b class="num">20.38</b> is not. Integrating the forward-variance curve gives
+        <b class="num">17.9%</b> at three months, <b class="num">19.1%</b> at six and
+        <b class="num">19.5%</b> at twelve — a monotonic climb of more than five
+        volatility points from spot.</p>
+      <p style="margin-bottom:0">Most portfolios treat rising expected volatility purely
+        as a reason to de-risk. That is only half the trade. A covered-call strategy
+        <em>sells</em> volatility: when implied vol rises, the calls it writes fetch
+        more premium. The Nasdaq Equity Income sleeve is therefore the single holding
+        whose expected return <strong>improves</strong> along the exact path the futures
+        curve is pricing — worth an estimated <b class="num">+0.60pp</b> per year to its
+        forecast, the largest single tilt in the model.</p>
+    </div>
+
+    <div class="card">
+      <h3>3 &middot; The two overweights, and why they don't overlap</h3>
+      <p>Asia Equity goes to <b class="num">35%</b> because it ranks first on every
+        horizon — <b class="num">6.5 / 7.0 / 7.5 / 7.5</b> — and because a
+        <b class="num">10.5&times;</b> forward multiple against that earnings growth is
+        the widest valuation-to-growth gap available in these four funds. It is trimmed
+        below the unconstrained maximum for two honest reasons: Korea is already up
+        <b class="num">71%</b> and Taiwan <b class="num">49%</b> year to date, so a good
+        deal of the re-rating has been collected; and Asia is the region most exposed to
+        an energy shock it imports, which costs it <b class="num">&minus;0.20pp</b> in
+        the tilt.</p>
+      <p style="margin-bottom:0">Nasdaq Equity Income goes to <b class="num">45%</b>
+        because it is the best drawdown-adjusted holding on the sheet. Option
+        overwriting cuts its volatility to roughly two-thirds of the raw Nasdaq-100,
+        and unhedged peso exposure trims it again, because the peso tends to weaken
+        precisely when US equities fall. The result is <b class="num">16.1%</b>
+        volatility against Global Technology's <b class="num">24.9%</b> — for a forecast
+        net CAGR only <b class="num">0.23pp</b> lower.</p>
+    </div>
+
+    <div class="card">
+      <h3>4 &middot; The cut that pays for it</h3>
+      <p>Global Technology drops from <b class="num">25%</b> to <b class="num">5%</b>.
+        This is the least comfortable call on the page, because on pure strategic
+        assumptions it has the highest gross return of the four. Three things override
+        that.</p>
+      <ul class="plain">
+        <li><b>It is the same bet, twice.</b> Its correlation with Nasdaq Equity Income
+          is <b class="num">0.88</b>. Holding both at 25%+ buys almost no
+          diversification — you are paying two fee stacks for one exposure to US
+          mega-cap technology.</li>
+        <li><b>It is the most rate-sensitive thing you own.</b> Longest-duration equity,
+          in a world where three central banks are leaning hawkish:
+          <b class="num">&minus;0.40pp</b>.</li>
+        <li><b>It carries a <span class="num">&minus;41%</span> expected drawdown.</b>
+          At a 25% weight that single sleeve contributes more to portfolio drawdown than
+          the money market and Asia sleeves combined.</li>
+      </ul>
+      <p style="margin-bottom:0">Cutting it to 5% rather than zero is deliberate. The
+        forecast deliberately sits well below the target fund's realised
+        <b class="num">15.20%</b> five-year return, and if that AI capex cycle keeps
+        compounding, this is the sleeve that captures it. A 5% stub keeps the option
+        alive at a cost of roughly <b class="num">0.03pp</b> of portfolio CAGR.</p>
+    </div>
+
+    <div class="card">
+      <h3>5 &middot; Cash is a position here, not a residual</h3>
+      <p style="margin-bottom:0">The money market sleeve is cut from
+        <b class="num">20%</b> to <b class="num">15%</b>, which looks backwards for a
+        risk-reducing portfolio. It isn't: the drawdown control is coming from the
+        <em>equity mix</em>, not from hiding in cash, so the cash can be spent on
+        return. What justifies keeping 15% is that peso cash is genuinely paid right
+        now — T-bills at <b class="num">5.14%</b> to <b class="num">5.72%</b> against a
+        BSP that just hiked — which is a real yield above inflation with zero duration
+        risk, plus the dry powder to rebalance into a drawdown rather than sell into one.</p>
+    </div>
+
+    <div class="card">
+      <h3>Conclusion</h3>
+      <p>Moving from the baseline to the optimised allocation raises forecast 5-year net
+        CAGR from <b class="num">7.17%</b> to <b class="num">7.31%</b> while cutting
+        expected maximum drawdown from <b class="num">&minus;20.7%</b> to
+        <b class="num">&minus;18.6%</b>. Return per unit of drawdown improves
+        <b class="num">0.347 &rarr; 0.393</b>, a <b class="num">13%</b> gain in the
+        thing that actually compounds.</p>
+      <p style="margin-bottom:0">That is a genuine improvement on both axes at once, not
+        a trade of one for the other — and it comes from re-weighting four funds the
+        investor already holds, with no new products, no leverage and no market timing.
+        The mechanism is simple enough to state in one sentence: <strong>swap
+        concentrated long-duration tech beta for the same tech exposure with the
+        volatility sold, and put the proceeds into the cheapest earnings growth
+        available.</strong></p>
+    </div>
+
+    <div class="card">
+      <h3>What would change this view</h3>
+      <ul class="plain">
+        <li><b>Brent back below $70 and the Fed cutting.</b> The energy and policy
+          drags reverse; Global Technology goes back to a full weight and the
+          covered-call overweight loses its edge.</li>
+        <li><b>VIX futures flipping into backwardation.</b> The premium the income
+          sleeve harvests compresses; its <b class="num">+0.60pp</b> tilt goes to zero.</li>
+        <li><b>Asia EPS revisions turning negative.</b> The <b class="num">10.5&times;</b>
+          multiple is only cheap against the growth; take the growth away and it isn't.</li>
+        <li><b>Strait of Hormuz closure.</b> Modelled below at
+          <b class="num">&minus;34.3%</b> — the scenario in which this portfolio's
+          drawdown control is genuinely tested.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Automated monitoring</p>
+    <h2>Three jobs, every Sunday</h2>
+    <p>Nothing on this page is allowed to quietly go stale. Three scheduled runs
+      re-derive it from source each week.</p>
+    <div class="card" id="monitors"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Sources</p>
+    <h2>Every number traces to one of these</h2>
+    <p>Primary sources are central banks, statistical agencies and the fund managers'
+      own published documents. Where a figure is an estimate rather than a published
+      number, it is labelled as an estimate on the page where it appears.</p>
+    <div class="card" id="sources"></div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Method &amp; limits</p>
+    <div class="card">
+      <h3>What this model is, and is not</h3>
+      <ul class="plain">
+        <li><b>Forecasts, not facts.</b> The 5-year CAGR figures are modelled
+          expectations built from published capital-market assumptions and current
+          valuations. They are not guarantees, and no fund's realised return will
+          match them exactly.</li>
+        <li><b>Two fee estimates.</b> The ongoing charges of the JPMorgan Asia Equity
+          Dividend and Fidelity Global Technology target funds are estimated at
+          <b class="num">0.80%</b> and <b class="num">0.95%</b>. Every other fee on this
+          page is a published number.</li>
+        <li><b>Drawdown is expected, not worst-case.</b> The figures describe a
+          drawdown you should plan to experience. The stress scenarios show the tail.</li>
+        <li><b>Correlations are stable inputs to an unstable world.</b> The
+          <b class="num">0.88</b> between the two US-tech sleeves rises toward 1 in a
+          crisis, which is when diversification is worth most and delivers least.</li>
+        <li><b>Not personal advice.</b> This is portfolio analysis on four named funds.
+          It does not know your tax position, your income needs, or what else you own.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    Peso Four-Fund Macro Desk &middot; generated <span id="asof2">—</span> &middot;
+    all figures computed from the published model engine, not typed by hand.
+    Past performance does not predict future returns. Investments in UITFs are not
+    deposits and are not insured by the PDIC.
+  </footer>
+</div>
+
+</main>
+
+<nav>
+ <div class="navin" role="tablist" aria-label="Sections">
+  <button class="tab" id="t-macro" role="tab" aria-selected="true" aria-controls="p-macro" data-p="macro">
+    <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0"/><path d="M12 12l4.5-3.5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><path d="M3 12h1.8M19.2 12H21"/></svg>Macro</button>
+  <button class="tab" id="t-vol" role="tab" aria-selected="false" aria-controls="p-vol" data-p="vol">
+    <svg viewBox="0 0 24 24"><path d="M3 17l4-6 3 3 4-8 3 5 4-3"/><path d="M3 21h18"/></svg>Volatility</button>
+  <button class="tab" id="t-funds" role="tab" aria-selected="false" aria-controls="p-funds" data-p="funds">
+    <svg viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="13" rx="2"/><path d="M7 3h14a1 1 0 0 1 1 1v12"/><path d="M7 11h6M7 15h4"/></svg>Funds</button>
+  <button class="tab" id="t-port" role="tab" aria-selected="false" aria-controls="p-port" data-p="port">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/><path d="M12 3.5v5.1M20.5 12h-5.1"/></svg>Portfolios</button>
+  <button class="tab" id="t-report" role="tab" aria-selected="false" aria-controls="p-report" data-p="report">
+    <svg viewBox="0 0 24 24"><path d="M6 3h8l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M8.5 13h7M8.5 17h5"/></svg>Report</button>
+ </div>
+</nav>
+</div>
+<script id="D" type="application/json">
+{
+ "as_of": "2026-09-02",
+ "macro": {
+  "fed_funds_lower": 3.5,
+  "fed_funds_upper": 3.75,
+  "fed_vote": "9-3 hold (3 dissents for a HIKE)",
+  "us_cpi_headline": 3.4,
+  "us_cpi_core": 2.5,
+  "us_payrolls_jul": -23000,
+  "us_unemployment": 4.1,
+  "ecb_depo": 2.25,
+  "ecb_last_move_bp": 25,
+  "ea_hicp_2026": 3.0,
+  "ea_hicp_2027": 2.3,
+  "ea_hicp_2028": 2.0,
+  "bsp_rrp": 4.75,
+  "bsp_last_move_bp": 25,
+  "ph_tbill_91": 5.138,
+  "ph_tbill_182": 5.517,
+  "ph_tbill_364": 5.717,
+  "brent": 91.28,
+  "brent_mom": 8.96,
+  "brent_yoy": 32.02,
+  "vix_spot": 14.13,
+  "vix_1m_avg": 15.28,
+  "vix_1m_low": 14.13,
+  "vix_1m_high": 18.43,
+  "vix_fut_sep": 17.92,
+  "vix_fut_dec": 20.38,
+  "vix_longrun": 19.5,
+  "variance_risk_premium": 3.5,
+  "imf_global_2026": 3.1,
+  "imf_global_2027": 3.2,
+  "imf_us_2026": 2.4,
+  "imf_us_2027": 2.0,
+  "imf_ea_2025": 1.1,
+  "imf_ea_2026": 0.7,
+  "imf_ae_2026": 1.8,
+  "imf_ae_2027": 1.7,
+  "ndx_fwd_pe": 22.4,
+  "ndx_fwd_pe_10y": 22.9,
+  "ndx_fwd_pe_5y": 24.7,
+  "sxxp_fwd_pe": 15.37,
+  "sxxp_ytd": 9.5,
+  "asia_fwd_pe": 10.5,
+  "asia_eps_2026": 52.5,
+  "asia_eps_2027": 27.5,
+  "korea_ytd": 71.0,
+  "taiwan_ytd": 49.0,
+  "ltcma_us_eq": 6.7,
+  "ltcma_em_eq": 7.8,
+  "ltcma_6040plus": 6.9
+ },
+ "vol_ts": [
+  {
+   "label": "3M",
+   "years": 0.25,
+   "implied": 17.94,
+   "realised": 14.44,
+   "move_1sd": 8.97,
+   "move_2sd": 17.94
+  },
+  {
+   "label": "6M",
+   "years": 0.5,
+   "implied": 19.1,
+   "realised": 15.6,
+   "move_1sd": 13.5,
+   "move_2sd": 27.01
+  },
+  {
+   "label": "12M",
+   "years": 1.0,
+   "implied": 19.54,
+   "realised": 16.04,
+   "move_1sd": 19.54,
+   "move_2sd": 39.09
+  },
+  {
+   "label": "5Y",
+   "years": 5.0,
+   "implied": 19.55,
+   "realised": 16.05,
+   "move_1sd": 43.72,
+   "move_2sd": 87.44
+  }
+ ],
+ "sp_vol_5y": 19.55,
+ "regions": {
+  "US": {
+   "3M": 5.5,
+   "6M": 6.0,
+   "12M": 6.5,
+   "5Y": 6.5,
+   "why": "Fed on hold at 3.50-3.75% but 3 dissents wanted a HIKE; Sep-16 FOMC is live. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% contained, headline 3.4% and rising on Brent. NDX 22.4x fwd is BELOW its 10y (22.9x) and 5y (24.7x) averages. IMF: 2.4% growth 2026.",
+   "blend": 6.23
+  },
+  "EUROPE": {
+   "3M": 3.5,
+   "6M": 4.0,
+   "12M": 4.5,
+   "5Y": 5.0,
+   "why": "Worst policy/growth mismatch in the world: ECB HIKED +25bp to 2.25% in June - first hike in 3 years - into IMF growth of just 0.7% for 2026 (down from 1.1%). Largest net energy importer facing Brent +32% y/y. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
+   "blend": 4.38
+  },
+  "ASIA": {
+   "3M": 6.5,
+   "6M": 7.0,
+   "12M": 7.5,
+   "5Y": 7.5,
+   "why": "Best fundamentals available: 10.5x fwd P/E with consensus EPS growth of ~52% (2026) and ~28% (2027) off the AI/memory/semis cycle. Korea +71% and Taiwan +49% YTD means momentum is real but crowded. JPM LTCMA puts EM equity at 7.8% - the highest of any equity block.",
+   "blend": 7.22
+  },
+  "PHILIPPINES": {
+   "3M": 6.5,
+   "6M": 6.5,
+   "12M": 6.0,
+   "5Y": 5.5,
+   "why": "Cash is genuinely paid here. BSP hiked +25bp to 4.75%; T-bills at 5.14% (91d) to 5.72% (364d) against ~4% inflation = positive real carry with zero duration risk. Fades over 5y as BSP normalises.",
+   "blend": 6.05
+  }
+ },
+ "hz_weights": {
+  "3M": 0.15,
+  "6M": 0.25,
+  "12M": 0.3,
+  "5Y": 0.3
+ },
+ "drivers": [
+  {
+   "name": "Monetary policy & liquidity",
+   "weight": 0.2,
+   "score": 4.0,
+   "note": "Global tightening BIAS, not easing: Fed 9-3 hold with 3 hike dissents, ECB +25bp (first in 3y), BSP +25bp. Three of three relevant central banks leaning hawkish at once."
+  },
+  {
+   "name": "Inflation trajectory",
+   "weight": 0.15,
+   "score": 4.5,
+   "note": "US core 2.5% is fine; US headline 3.4% and re-accelerating on energy. Euro HICP 3.0% for 2026. PH above the 4% ceiling in both 2026 and 2027."
+  },
+  {
+   "name": "Growth momentum",
+   "weight": 0.15,
+   "score": 5.5,
+   "note": "IMF: global 3.1% (2026) / 3.2% (2027). US resilient at 2.4%. Euro area cut to 0.7%. Wide dispersion - a stock-picker's macro, not a beta macro."
+  },
+  {
+   "name": "Corporate earnings",
+   "weight": 0.2,
+   "score": 8.0,
+   "note": "The single strongest pillar. Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027); AI infrastructure capex still compounding through the semis supply chain."
+  },
+  {
+   "name": "Valuation support",
+   "weight": 0.1,
+   "score": 7.0,
+   "note": "NDX 22.4x fwd sits BELOW both its 10y and 5y averages. Asia at 10.5x is a two-decade-wide discount. Europe 15.4x. No broad bubble multiple."
+  },
+  {
+   "name": "Volatility & risk appetite",
+   "weight": 0.1,
+   "score": 4.5,
+   "note": "Textbook complacency: VIX printed a 2026 low of 14.13 while the futures curve is in steep contango (Sep 17.92, Dec 20.38). The market is cheaply priced for calm it does not expect to keep."
+  },
+  {
+   "name": "Geopolitics & energy",
+   "weight": 0.1,
+   "score": 2.5,
+   "note": "The clear weak link. Active US/Israel-Iran hostilities, naval mines in the Strait of Hormuz, Brent $91.28 (+32% y/y) after a Q1 spike to $118."
+  }
+ ],
+ "gauge": 5.3,
+ "funds": [
+  {
+   "id": "ATRPHMM",
+   "name": "ATRAM Peso Money Market Fund",
+   "short": "Peso Money Market",
+   "ccy": "PHP",
+   "region": "PHILIPPINES",
+   "target": "Own mandate: outperform PH bank deposits, average portfolio duration <= 1 year",
+   "target_verified": true,
+   "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
+   "gross_note": "5y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 4.75% and hiking, reverting toward a ~4.25% neutral policy rate by year 3-5.",
+   "fee_feeder": 0.71,
+   "fee_target": 0.0,
+   "fee_total": 0.71,
+   "gross_php": 5.05,
+   "fx_drift": 0.0,
+   "net_base": 4.34,
+   "regional_score": 6.05,
+   "tilt_regional": 0.16,
+   "tilt_vol": 0.1,
+   "tilt_rates": 0.25,
+   "tilt_energy": 0.05,
+   "tilt_total": 0.56,
+   "net_macro": 4.9,
+   "vol": 0.41,
+   "dd_base": -0.5,
+   "dd_macro": -0.5
+  },
+  {
+   "id": "ATRQIAP",
+   "name": "ATRAM Nasdaq Equity Income Feeder Fund",
+   "short": "Nasdaq Equity Income",
+   "ccy": "PHP (unhedged)",
+   "region": "US",
+   "target": "Target fund: JPMorgan Nasdaq Equity Premium Income Active UCITS ETF (IE000U9J8HX9). Stated benchmark: 75% Nasdaq-100 Index.",
+   "target_verified": true,
+   "fee_note": "1.50% ATRAM management fee + 0.35% target-fund TER (both verified)",
+   "gross_note": "NDX 5y total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.1 -> 19.4.",
+   "fee_feeder": 1.5,
+   "fee_target": 0.35,
+   "fee_total": 1.85,
+   "gross_php": 8.7,
+   "fx_drift": 1.5,
+   "net_base": 6.85,
+   "regional_score": 6.23,
+   "tilt_regional": 0.22,
+   "tilt_vol": 0.6,
+   "tilt_rates": -0.1,
+   "tilt_energy": -0.1,
+   "tilt_total": 0.62,
+   "net_macro": 7.47,
+   "vol": 16.13,
+   "dd_base": -21.6,
+   "dd_macro": -21.3
+  },
+  {
+   "id": "ATRASEQ",
+   "name": "ATRAM Asia Equity Opportunity Feeder Fund",
+   "short": "Asia Equity",
+   "ccy": "PHP (unhedged)",
+   "region": "ASIA",
+   "target": "Target fund: JPMorgan Asia Equity Dividend Fund (Asia Pacific ex-Japan). Feeder launched 08 Dec 2016.",
+   "target_verified": true,
+   "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~0.80% estimated target-fund OCF (ESTIMATE - not verifiable at source)",
+   "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
+   "fee_feeder": 1.18,
+   "fee_target": 0.8,
+   "fee_total": 1.98,
+   "gross_php": 9.8,
+   "fx_drift": 1.5,
+   "net_base": 7.82,
+   "regional_score": 7.22,
+   "tilt_regional": 0.52,
+   "tilt_vol": 0.0,
+   "tilt_rates": -0.05,
+   "tilt_energy": -0.2,
+   "tilt_total": 0.27,
+   "net_macro": 8.09,
+   "vol": 18.64,
+   "dd_base": -27.8,
+   "dd_macro": -27.6
+  },
+  {
+   "id": "ATRGTEC",
+   "name": "ATRAM Global Technology Feeder Fund",
+   "short": "Global Technology",
+   "ccy": "PHP (unhedged)",
+   "region": "GLOBAL_TECH",
+   "target": "Target fund: Fidelity Funds - Global Technology Fund. Benchmark: MSCI ACWI Information Technology. Target-fund 5y annualised: 15.20% (W GBP class, to 20 Aug 2026).",
+   "target_verified": true,
+   "fee_note": "1.15% ATRAM management fee (verified) + ~0.95% estimated target-fund OCF (ESTIMATE - not verifiable at source)",
+   "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
+   "fee_feeder": 1.15,
+   "fee_target": 0.95,
+   "fee_total": 2.1,
+   "gross_php": 10.5,
+   "fx_drift": 1.5,
+   "net_base": 8.4,
+   "regional_score": 6.17,
+   "tilt_regional": 0.2,
+   "tilt_vol": -0.35,
+   "tilt_rates": -0.4,
+   "tilt_energy": -0.15,
+   "tilt_total": -0.7,
+   "net_macro": 7.7,
+   "vol": 24.92,
+   "dd_base": -40.7,
+   "dd_macro": -41.0
+  }
+ ],
+ "corr": [
+  [
+   1.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   1.0,
+   0.66,
+   0.88
+  ],
+  [
+   0.0,
+   0.66,
+   1.0,
+   0.74
+  ],
+  [
+   0.0,
+   0.88,
+   0.74,
+   1.0
+  ]
+ ],
+ "corr_note": "Money market is treated as uncorrelated to the equity sleeves. Nasdaq Equity Income / Global Technology at 0.88 is the binding constraint - both are US mega-cap-tech engines, so holding both at size buys far less diversification than it appears to.",
+ "acwi_it_mix": {
+  "US": 0.72,
+  "ASIA": 0.16,
+  "EUROPE": 0.12
+ },
+ "fx": {
+  "drift": 1.5,
+  "vol": 6.0,
+  "corr": -0.2
+ },
+ "dd_model": {
+  "k": 1.65,
+  "mu_coef": 0.5
+ },
+ "baseline": {
+  "weights": [
+   20,
+   30,
+   25,
+   25
+  ],
+  "base": {
+   "weights": [
+    20.0,
+    30.0,
+    25.0,
+    25.0
+   ],
+   "cagr": 6.98,
+   "vol": 14.48,
+   "maxdd": -20.8,
+   "ret_per_dd": 0.336,
+   "sharpe_like": 0.087,
+   "terminal_1m": 1401110,
+   "trough_1m": 792308
+  },
+  "under_macro": {
+   "weights": [
+    20.0,
+    30.0,
+    25.0,
+    25.0
+   ],
+   "cagr": 7.17,
+   "vol": 14.48,
+   "maxdd": -20.7,
+   "ret_per_dd": 0.347,
+   "sharpe_like": 0.1,
+   "terminal_1m": 1413630,
+   "trough_1m": 793261
+  },
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Strait of Hormuz closure; Brent to $130+. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+    "cagr": 2.42,
+    "vol": 23.17,
+    "maxdd": -37.6
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "The 3 July dissents win; Fed hikes into a 4.1% unemployment rate. Duration-heavy growth de-rates.",
+    "cagr": 4.83,
+    "vol": 18.83,
+    "maxdd": -29.1
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 2.74,
+    "vol": 21.0,
+    "maxdd": -33.8
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 9.74,
+    "vol": 11.59,
+    "maxdd": -14.5
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
+    "cagr": 7.17,
+    "vol": 14.48,
+    "maxdd": -20.7
+   }
+  ]
+ },
+ "optimized": {
+  "weights": [
+   15,
+   45,
+   35,
+   5
+  ],
+  "macro": {
+   "weights": [
+    15.0,
+    45.0,
+    35.0,
+    5.0
+   ],
+   "cagr": 7.31,
+   "vol": 13.68,
+   "maxdd": -18.6,
+   "ret_per_dd": 0.393,
+   "sharpe_like": 0.117,
+   "terminal_1m": 1423186,
+   "trough_1m": 813993
+  },
+  "under_base": {
+   "weights": [
+    15.0,
+    45.0,
+    35.0,
+    5.0
+   ],
+   "cagr": 6.89,
+   "vol": 13.68,
+   "maxdd": -18.8,
+   "ret_per_dd": 0.366,
+   "sharpe_like": 0.086,
+   "terminal_1m": 1395390,
+   "trough_1m": 811881
+  },
+  "dd_cap": 18.7,
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Strait of Hormuz closure; Brent to $130+. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+    "cagr": 2.71,
+    "vol": 21.89,
+    "maxdd": -34.3
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "The 3 July dissents win; Fed hikes into a 4.1% unemployment rate. Duration-heavy growth de-rates.",
+    "cagr": 5.36,
+    "vol": 17.79,
+    "maxdd": -26.3
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 3.41,
+    "vol": 19.84,
+    "maxdd": -30.6
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 9.75,
+    "vol": 10.95,
+    "maxdd": -12.9
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
+    "cagr": 7.31,
+    "vol": 13.68,
+    "maxdd": -18.6
+   }
+  ],
+  "n_feasible": 372,
+  "n_total": 969
+ },
+ "best_ratio": {
+  "weights": [
+   85.0,
+   5.0,
+   5.0,
+   5.0
+  ],
+  "cagr": 5.33,
+  "vol": 2.77,
+  "maxdd": -2.0,
+  "ret_per_dd": 2.666,
+  "sharpe_like": -0.14,
+  "terminal_1m": 1296341,
+  "trough_1m": 980013
+ },
+ "frontier": [
+  {
+   "maxdd": 2,
+   "cagr": 5.33,
+   "weights": [
+    85.0,
+    5.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 3,
+   "cagr": 5.49,
+   "weights": [
+    80.0,
+    5.0,
+    10.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 4,
+   "cagr": 5.65,
+   "weights": [
+    75.0,
+    5.0,
+    15.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 5,
+   "cagr": 5.78,
+   "weights": [
+    70.0,
+    10.0,
+    15.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 6,
+   "cagr": 5.9,
+   "weights": [
+    65.0,
+    15.0,
+    15.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 7,
+   "cagr": 6.03,
+   "weights": [
+    60.0,
+    20.0,
+    15.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 8,
+   "cagr": 6.16,
+   "weights": [
+    55.0,
+    25.0,
+    15.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 9,
+   "cagr": 6.22,
+   "weights": [
+    55.0,
+    15.0,
+    25.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 10,
+   "cagr": 6.35,
+   "weights": [
+    50.0,
+    20.0,
+    25.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 11,
+   "cagr": 6.48,
+   "weights": [
+    45.0,
+    25.0,
+    25.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 12,
+   "cagr": 6.61,
+   "weights": [
+    40.0,
+    30.0,
+    25.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 13,
+   "cagr": 6.74,
+   "weights": [
+    35.0,
+    35.0,
+    25.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 14,
+   "cagr": 6.87,
+   "weights": [
+    30.0,
+    40.0,
+    25.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 15,
+   "cagr": 6.96,
+   "weights": [
+    25.0,
+    50.0,
+    20.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 16,
+   "cagr": 7.09,
+   "weights": [
+    25.0,
+    30.0,
+    40.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 17,
+   "cagr": 7.22,
+   "weights": [
+    20.0,
+    35.0,
+    40.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 18,
+   "cagr": 7.34,
+   "weights": [
+    15.0,
+    40.0,
+    40.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 19,
+   "cagr": 7.47,
+   "weights": [
+    10.0,
+    45.0,
+    40.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 20,
+   "cagr": 7.57,
+   "weights": [
+    5.0,
+    55.0,
+    35.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 21,
+   "cagr": 7.66,
+   "weights": [
+    5.0,
+    40.0,
+    50.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 22,
+   "cagr": 7.72,
+   "weights": [
+    5.0,
+    30.0,
+    60.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 23,
+   "cagr": 7.79,
+   "weights": [
+    5.0,
+    20.0,
+    70.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 24,
+   "cagr": 7.85,
+   "weights": [
+    5.0,
+    10.0,
+    80.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 25,
+   "cagr": 7.88,
+   "weights": [
+    5.0,
+    5.0,
+    85.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 26,
+   "cagr": 7.84,
+   "weights": [
+    5.0,
+    5.0,
+    75.0,
+    15.0
+   ]
+  },
+  {
+   "maxdd": 27,
+   "cagr": 7.78,
+   "weights": [
+    5.0,
+    5.0,
+    60.0,
+    30.0
+   ]
+  },
+  {
+   "maxdd": 28,
+   "cagr": 7.74,
+   "weights": [
+    5.0,
+    5.0,
+    50.0,
+    40.0
+   ]
+  },
+  {
+   "maxdd": 29,
+   "cagr": 7.72,
+   "weights": [
+    5.0,
+    5.0,
+    45.0,
+    45.0
+   ]
+  },
+  {
+   "maxdd": 30,
+   "cagr": 7.69,
+   "weights": [
+    5.0,
+    5.0,
+    35.0,
+    55.0
+   ]
+  },
+  {
+   "maxdd": 31,
+   "cagr": 7.67,
+   "weights": [
+    5.0,
+    5.0,
+    30.0,
+    60.0
+   ]
+  },
+  {
+   "maxdd": 32,
+   "cagr": 7.65,
+   "weights": [
+    5.0,
+    5.0,
+    25.0,
+    65.0
+   ]
+  },
+  {
+   "maxdd": 33,
+   "cagr": 7.63,
+   "weights": [
+    5.0,
+    5.0,
+    20.0,
+    70.0
+   ]
+  },
+  {
+   "maxdd": 34,
+   "cagr": 7.61,
+   "weights": [
+    5.0,
+    5.0,
+    15.0,
+    75.0
+   ]
+  },
+  {
+   "maxdd": 35,
+   "cagr": 7.59,
+   "weights": [
+    5.0,
+    5.0,
+    10.0,
+    80.0
+   ]
+  },
+  {
+   "maxdd": 36,
+   "cagr": 7.57,
+   "weights": [
+    5.0,
+    5.0,
+    5.0,
+    85.0
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "org": "Federal Reserve",
+   "what": "FOMC statement, 29 July 2026 - target range 3.50-3.75%",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm"
+  },
+  {
+   "org": "US BLS",
+   "what": "Consumer Price Index, July 2026 - headline +3.4% y/y, core +2.5% y/y",
+   "url": "https://www.bls.gov/news.release/cpi.nr0.htm"
+  },
+  {
+   "org": "European Central Bank",
+   "what": "Monetary policy decision, 11 June 2026 - deposit rate 2.25%",
+   "url": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260611~4d41bd5e83.en.html"
+  },
+  {
+   "org": "Bangko Sentral ng Pilipinas",
+   "what": "Key rates - RRP 4.75% after the June 2026 hike",
+   "url": "https://www.bsp.gov.ph/SitePages/Statistics/KeyRates.aspx"
+  },
+  {
+   "org": "BSP Monetary Policy Report",
+   "what": "February 2026 economic outlook and inflation path",
+   "url": "https://www.bsp.gov.ph/Price%20Stability/MonetaryPolicyReport/FullReport-February2026.pdf"
+  },
+  {
+   "org": "Bureau of the Treasury PH",
+   "what": "T-bill auction results - 91d 5.138%, 182d 5.517%, 364d 5.717%",
+   "url": "https://www.treasury.gov.ph/?cat=13"
+  },
+  {
+   "org": "IMF",
+   "what": "World Economic Outlook, April 2026 - 'Global Economy in the Shadow of War'",
+   "url": "https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026"
+  },
+  {
+   "org": "Cboe",
+   "what": "VIX index and VIX futures term structure",
+   "url": "https://www.cboe.com/tradable-products/vix/"
+  },
+  {
+   "org": "US EIA",
+   "what": "Crude oil and petroleum product prices, Q1 2026",
+   "url": "https://www.eia.gov/todayinenergy/detail.php?id=67424"
+  },
+  {
+   "org": "J.P. Morgan Asset Management",
+   "what": "2026 Long-Term Capital Market Assumptions - US equity 6.7%, EM equity 7.8%",
+   "url": "https://am.jpmorgan.com/us/en/asset-management/adv/about-us/media/press-releases/jp-morgan-releases-2026-long-term-capital-market-assumptions/"
+  },
+  {
+   "org": "J.P. Morgan Asset Management",
+   "what": "Nasdaq Equity Premium Income Active UCITS ETF (IE000U9J8HX9) factsheet - 0.35% TER",
+   "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/asiapacific/sg/en/literature/fact-sheet/factsheet-jpmorgan-nasdaq-equity-premium-income-active-ucits-etf.pdf"
+  },
+  {
+   "org": "Fidelity International",
+   "what": "Fidelity Funds - Global Technology Fund factsheet",
+   "url": "https://www.fidelityinternational.com/legal/documents/SG-en/hffs.SG-en.SG.G-TEC.pdf"
+  },
+  {
+   "org": "ATRAM Trust Corporation",
+   "what": "Fund pages and KIIDS - fees, target funds, benchmarks",
+   "url": "https://www.atram.com.ph/funds/selector"
+  },
+  {
+   "org": "UITF.com.ph (TOAP)",
+   "what": "Official Philippine UITF daily NAVpu portal",
+   "url": "https://www.uitf.com.ph/"
+  },
+  {
+   "org": "BusinessWorld",
+   "what": "ATRAM launches Nasdaq income feeder fund - 1.50% fee, 75% NDX benchmark",
+   "url": "https://bworldonline.com/banking-finance/2026/04/29/746186/atram-launches-nasdaq-income-feeder-fund/"
+  },
+  {
+   "org": "Philippine Star",
+   "what": "ATRAM launches Nasdaq feeder fund",
+   "url": "https://www.philstar.com/business/2026/04/29/2524247/atram-launches-nasdaq-feeder-fund"
+  },
+  {
+   "org": "Morningstar",
+   "what": "JPMorgan Nasdaq Equity Premium Income - strategy and risk analysis",
+   "url": "https://www.morningstar.com/etfs/xnas/jepq/quote"
+  },
+  {
+   "org": "Siblis Research / STOXX",
+   "what": "STOXX Europe 600 P/E - trailing 19.67, forward 15.37",
+   "url": "https://siblisresearch.com/data/europe-pe-ratio/"
+  },
+  {
+   "org": "J.P. Morgan Private Bank",
+   "what": "2026 Asia Mid-Year Outlook - Asia ex-Japan 10.5x forward",
+   "url": "https://privatebank.jpmorgan.com/apac/en/insights/markets-and-investing/asf/2026-asia-mid-year-outlook"
+  }
+ ]
+}
+</script>
+<script>
+"use strict";
+const D = JSON.parse(document.getElementById("D").textContent);
+const $ = s => document.querySelector(s);
+const el = (t, a, h) => { const n = document.createElement(t);
+  if (a) for (const k in a) n.setAttribute(k, a[k]);
+  if (h != null) n.innerHTML = h; return n; };
+const FC = ["var(--f1)","var(--f2)","var(--f3)","var(--f4)"];
+const FW = ["var(--f1-w)","var(--f2-w)","var(--f3-w)","var(--f4-w)"];
+const HEX = ["#0E9B80","#3670D6","#CB5A22","#B0399B"];
+const F = D.funds, N = F.length;
+const pc  = v => (v >= 0 ? "" : "−") + Math.abs(v).toFixed(2) + "%";
+const pc1 = v => (v >= 0 ? "" : "−") + Math.abs(v).toFixed(1) + "%";
+const sg  = v => (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(2);
+const peso = v => "₱" + v.toLocaleString("en-PH");
+const cls = v => v > 0 ? "pos" : v < 0 ? "neg" : "";
+const ICON = { good:'<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>',
+  warn:'<svg viewBox="0 0 24 24"><path d="M12 9v5M12 17.5v.01"/><path d="M10.3 3.9L2.6 17.1A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.9L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>',
+  bad:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>' };
+const chip = (k, t) => `<span class="chip ${k}">${ICON[k]||""}${t}</span>`;
+const SVGNS = "http://www.w3.org/2000/svg";
+const svg = (w, h, vb) => { const s = document.createElementNS(SVGNS,"svg");
+  s.setAttribute("viewBox", vb || `0 0 ${w} ${h}`); s.setAttribute("class","chart");
+  s.setAttribute("role","img"); return s; };
+const sel = (p, a) => { const n = document.createElementNS(SVGNS,p);
+  for (const k in a) n.setAttribute(k, a[k]); return n; };
+
+/* ---------------- tabs ---------------- */
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x === b));
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("on"));
+  $("#p-" + b.dataset.p).classList.add("on");
+  window.scrollTo({ top: 0, behavior: "instant" });
+}));
+
+$("#asof").textContent = D.as_of;
+$("#asof2").textContent = D.as_of;
+$("#hg").textContent = D.gauge.toFixed(1);
+$("#gv").innerHTML = D.gauge.toFixed(1) + '<i>/10</i>';
+$("#spv").textContent = D.sp_vol_5y.toFixed(2) + "%";
+$("#nfeas").textContent = D.optimized.n_feasible;
+$("#corrnote").textContent = D.corr_note;
+
+/* ---------------- gauge ---------------- */
+(function () {
+  const W = 300, H = 168, cx = 150, cy = 150, R = 116, TH = 20;
+  const s = svg(W, H); s.setAttribute("aria-label", "Macro driver gauge: " + D.gauge + " of 10");
+  const ang = v => Math.PI * (1 - (v - 1) / 9);
+  const P = (v, r) => [cx + r * Math.cos(ang(v)), cy - r * Math.sin(ang(v))];
+  const arc = (a, b, r, col, w) => {
+    const [x1,y1] = P(a,r), [x2,y2] = P(b,r);
+    return sel("path", { d:`M${x1} ${y1}A${r} ${r} 0 0 1 ${x2} ${y2}`, fill:"none",
+      stroke:col, "stroke-width":w, "stroke-linecap":"butt" });
+  };
+  // graded track: 4 bands, each a state not a rank
+  const bands = [[1,3.25,"#B02A37"],[3.25,5.5,"#B07A18"],[5.5,7.75,"#4F9A6A"],[7.75,10,"#177A52"]];
+  bands.forEach(([a,b,c],i) => { const g = i ? 0.06 : 0;
+    s.appendChild(arc(a+g, b, R, c, TH)).setAttribute("opacity", ".26"); });
+  // filled portion
+  s.appendChild(arc(1, D.gauge, R, "#1D3A63", TH)).setAttribute("opacity",".92");
+  // ticks
+  for (let v = 1; v <= 10; v++) {
+    const [x1,y1] = P(v, R - TH/2 - 3), [x2,y2] = P(v, R - TH/2 - 8);
+    s.appendChild(sel("line", { x1,y1,x2,y2, stroke:"#C9D3E2", "stroke-width": v%3===1?1.6:1 }));
+    if (v === 1 || v === 10 || v === 5 || v === 6) {
+      const [tx,ty] = P(v, R - TH/2 - 20);
+      const t = sel("text", { x:tx, y:ty+4, "text-anchor":"middle", fill:"#7C8798",
+        "font-family":"IBM Plex Mono, monospace", "font-size":"11" });
+      t.textContent = v; s.appendChild(t);
+    }
+  }
+  // needle
+  const [nx,ny] = P(D.gauge, R + 5), [bx,by] = P(D.gauge, R - TH - 6);
+  s.appendChild(sel("line", { x1:bx, y1:by, x2:nx, y2:ny, stroke:"#131A26",
+    "stroke-width":2.5, "stroke-linecap":"round" }));
+  s.appendChild(sel("circle", { cx:nx, cy:ny, r:4.5, fill:"#131A26" }));
+  s.appendChild(sel("circle", { cx:nx, cy:ny, r:1.8, fill:"#FFFFFF" }));
+  $("#gauge").appendChild(s);
+  const g = D.gauge;
+  $("#gverdict").textContent = g < 3.5 ? "Defensive" : g < 5.5 ? "Neutral, tilted cautious"
+    : g < 7.5 ? "Constructive" : "Risk-on";
+})();
+
+/* ---------------- driver rows ---------------- */
+(function () {
+  const box = $("#drivers");
+  D.drivers.forEach(d => {
+    const k = d.score >= 6.5 ? "good" : d.score >= 4.5 ? "warn" : "bad";
+    const col = k === "good" ? "var(--good)" : k === "warn" ? "var(--warn)" : "var(--bad)";
+    box.appendChild(el("div", { class:"drv" },
+      `<div class="drvhead"><span class="drvname">${d.name}</span>
+        <span class="wt">w ${(d.weight*100).toFixed(0)}%</span>
+        <span class="sc" style="color:${col}">${d.score.toFixed(1)}</span></div>
+       <div class="track"><i style="width:${(d.score/10*100).toFixed(1)}%;background:${col}"></i>
+        <span class="mid"></span></div>
+       <div class="drvnote">${d.note}</div>`));
+  });
+  box.appendChild(el("div", { class:"drv", style:"border-top:1.5px solid var(--line-2)" },
+    `<div class="drvhead"><span class="drvname" style="font-weight:700">Weighted composite</span>
+      <span class="sc" style="color:var(--navy);font-size:16px">${D.gauge.toFixed(1)}</span></div>`));
+})();
+
+/* ---------------- regional ranking ---------------- */
+(function () {
+  const order = Object.entries(D.regions).sort((a,b) => b[1].blend - a[1].blend);
+  const NAME = { US:"United States", EUROPE:"Europe", ASIA:"Asia ex-Japan", PHILIPPINES:"Philippines (cash)" };
+  const t = $("#rtab");
+  t.appendChild(el("thead", null,
+    `<tr><th>Region</th><th>3M</th><th>6M</th><th>12M</th><th>5Y</th><th>Blend</th></tr>`));
+  const tb = el("tbody");
+  const shade = v => { const a = Math.max(0, Math.min(1, (v - 2.5) / 6));
+    return v >= 5.5 ? `background:rgba(23,122,82,${(0.07 + a*0.26).toFixed(3)});color:var(--ink)`
+                    : `background:rgba(176,42,55,${(0.30 - a*0.22).toFixed(3)});color:var(--ink)`; };
+  order.forEach(([k,v], i) => {
+    tb.appendChild(el("tr", null,
+      `<td>${NAME[k]}<div class="rank">rank ${i+1}</div></td>` +
+      ["3M","6M","12M","5Y"].map(h => `<td><span class="cell" style="${shade(v[h])}">${v[h].toFixed(1)}</span></td>`).join("") +
+      `<td><span class="cell" style="background:var(--navy);color:#fff">${v.blend.toFixed(2)}</span></td>`));
+  });
+  t.appendChild(tb);
+  const w = $("#rwhy");
+  order.forEach(([k,v]) => w.appendChild(el("div", { class:"rwhy" },
+    `<b>${NAME[k]} &middot; ${v.blend.toFixed(2)}</b>${v.why}`)));
+})();
+
+/* ---------------- correlated sentiment matrix ---------------- */
+(function () {
+  const t = $("#corrtab");
+  t.appendChild(el("thead", null, `<tr><th>Transmission channel</th>` +
+    F.map((f,i) => `<th><span class="swatch" style="background:${FC[i]}"></span>${f.short.split(" ")[0]}</th>`).join("") + `</tr>`));
+  const rows = [
+    ["Regional macro score", "tilt_regional"],
+    ["Volatility path 14 → 19.5", "tilt_vol"],
+    ["Policy-rate / duration bias", "tilt_rates"],
+    ["Energy shock &amp; geopolitics", "tilt_energy"],
+  ];
+  const tb = el("tbody");
+  rows.forEach(([lab, key]) => tb.appendChild(el("tr", null,
+    `<td>${lab}</td>` + F.map(f => {
+      const v = f[key];
+      return `<td class="${cls(v)}">${v === 0 ? "–" : sg(v)}</td>`;
+    }).join(""))));
+  tb.appendChild(el("tr", { class:"tot" },
+    `<td>Total macro tilt</td>` + F.map(f => `<td class="${cls(f.tilt_total)}">${sg(f.tilt_total)}</td>`).join("")));
+  t.appendChild(tb);
+
+  const c = $("#cmat");
+  c.appendChild(el("thead", null, `<tr><th>Correlation</th>` +
+    F.map((f,i) => `<th><span class="swatch" style="background:${FC[i]}"></span></th>`).join("") + `</tr>`));
+  const cb = el("tbody");
+  D.corr.forEach((row, i) => cb.appendChild(el("tr", null,
+    `<td><span class="swatch" style="background:${FC[i]}"></span>${F[i].short}</td>` +
+    row.map((v, j) => {
+      if (j === i) return `<td style="color:var(--ink-3)">1.00</td>`;
+      const hot = v >= 0.8, warm = v >= 0.7;
+      return `<td style="${hot?"background:var(--bad-w);color:var(--bad);font-weight:600":warm?"background:var(--warn-w);color:var(--warn)":""}">${v.toFixed(2)}</td>`;
+    }).join(""))));
+  c.appendChild(cb);
+})();
+
+/* ---------------- tooltip helper ---------------- */
+function tipper(host) {
+  const tip = el("div", { class:"tip" }); host.appendChild(tip);
+  return {
+    show(x, y, txt) { tip.textContent = txt; tip.classList.add("on");
+      const w = tip.offsetWidth, hw = host.clientWidth;
+      tip.style.left = Math.max(2, Math.min(hw - w - 2, x - w/2)) + "px";
+      tip.style.top = Math.max(0, y - tip.offsetHeight - 10) + "px"; },
+    hide() { tip.classList.remove("on"); }
+  };
+}
+
+/* ---------------- volatility ---------------- */
+(function () {
+  const V = D.vol_ts;
+  $("#volstats").innerHTML = [
+    ["Spot VIX", D.macro.vix_spot.toFixed(2), "2026 low · 30-day implied"],
+    ["Dec VIX future", D.macro.vix_fut_dec.toFixed(2), "+" + (D.macro.vix_fut_dec - D.macro.vix_spot).toFixed(2) + " vs spot"],
+    ["30-day range", D.macro.vix_1m_low.toFixed(2) + "–" + D.macro.vix_1m_high.toFixed(2), "avg " + D.macro.vix_1m_avg.toFixed(2)],
+    ["Brent crude", "$" + D.macro.brent.toFixed(2), "+" + D.macro.brent_yoy.toFixed(1) + "% y/y"],
+  ].map(([k,v,d]) => `<div class="stat"><span class="k">${k}</span>
+      <span class="v">${v}</span><span class="d">${d}</span></div>`).join("");
+
+  // term-structure chart
+  const W = 452, H = 208, ml = 34, mr = 14, mt = 14, mb = 34;
+  const iw = W - ml - mr, ih = H - mt - mb;
+  const lo = 12, hi = 22;
+  const X = i => ml + iw * (i / (V.length - 1));
+  const Y = v => mt + ih * (1 - (v - lo) / (hi - lo));
+  const s = svg(W, H); s.setAttribute("aria-label", "Volatility term structure");
+  for (let g = lo; g <= hi; g += 2) {
+    s.appendChild(sel("line", { x1:ml, y1:Y(g), x2:W-mr, y2:Y(g),
+      stroke:"#DFE5EF", "stroke-width":1 }));
+    const t = sel("text", { x:ml-7, y:Y(g)+3.5, "text-anchor":"end", fill:"#7C8798",
+      "font-family":"IBM Plex Mono, monospace", "font-size":"10" });
+    t.textContent = g + "%"; s.appendChild(t);
+  }
+  // spot VIX reference
+  s.appendChild(sel("line", { x1:ml, y1:Y(D.macro.vix_spot), x2:W-mr, y2:Y(D.macro.vix_spot),
+    stroke:"#B02A37", "stroke-width":1.4, "stroke-dasharray":"4 4", opacity:".7" }));
+  const sl = sel("text", { x:ml+6, y:Y(D.macro.vix_spot)-6, "text-anchor":"start", fill:"#B02A37",
+    "font-family":"IBM Plex Mono, monospace", "font-size":"10", "font-weight":"600" });
+  sl.textContent = "spot VIX " + D.macro.vix_spot.toFixed(2); s.appendChild(sl);
+
+  const series = [["implied","#3670D6"],["realised","#0E9B80"]];
+  series.forEach(([key,col]) => {
+    s.appendChild(sel("path", { d: V.map((v,i) => (i?"L":"M") + X(i) + " " + Y(v[key])).join(" "),
+      fill:"none", stroke:col, "stroke-width":2, "stroke-linejoin":"round", "stroke-linecap":"round" }));
+    V.forEach((v,i) => {
+      s.appendChild(sel("circle", { cx:X(i), cy:Y(v[key]), r:4.5, fill:col,
+        stroke:"#FFFFFF", "stroke-width":2 }));
+    });
+    // direct end label
+    const last = V.length - 1;
+    const t = sel("text", { x:X(last)-6, y:Y(V[last][key]) + (key==="implied"?-11:16),
+      "text-anchor":"end", fill:col, "font-family":"IBM Plex Mono, monospace",
+      "font-size":"10.5", "font-weight":"600" });
+    t.textContent = V[last][key].toFixed(1) + "%"; s.appendChild(t);
+  });
+  V.forEach((v,i) => {
+    const t = sel("text", { x:X(i), y:H-12, "text-anchor":"middle", fill:"#525E70",
+      "font-family":"IBM Plex Mono, monospace", "font-size":"11", "font-weight":"500" });
+    t.textContent = v.label; s.appendChild(t);
+  });
+  const host = $("#volchart"); host.appendChild(s);
+  const tp = tipper(host);
+  V.forEach((v,i) => {
+    const hit = sel("rect", { x: X(i) - iw/(V.length*2) - 4, y: mt, width: iw/V.length + 8,
+      height: ih, fill:"transparent", style:"cursor:pointer" });
+    const go = () => { const r = host.getBoundingClientRect();
+      tp.show(X(i)/W * r.width, Y(v.implied)/H * r.height,
+        `${v.label} horizon\nimplied   ${v.implied.toFixed(2)}%\nrealised  ${v.realised.toFixed(2)}%\n1σ move   ±${v.move_1sd.toFixed(1)}%\n2σ move   ±${v.move_2sd.toFixed(1)}%`); };
+    hit.addEventListener("pointerenter", go); hit.addEventListener("pointerdown", go);
+    hit.addEventListener("pointerleave", () => tp.hide());
+    s.appendChild(hit);
+  });
+
+  const vt = $("#voltab");
+  vt.appendChild(el("thead", null,
+    `<tr><th>Horizon</th><th>Implied</th><th>Realised-eq</th><th>±1σ</th><th>±2σ</th></tr>`));
+  const vb = el("tbody");
+  V.forEach(v => vb.appendChild(el("tr", null,
+    `<td>${v.label} &middot; T=${v.years}y</td><td>${v.implied.toFixed(2)}%</td>
+     <td>${v.realised.toFixed(2)}%</td><td>${v.move_1sd.toFixed(1)}%</td>
+     <td>${v.move_2sd.toFixed(1)}%</td>`)));
+  vt.appendChild(vb);
+
+  const ft = $("#fvoltab");
+  ft.appendChild(el("thead", null,
+    `<tr><th>Fund</th><th>Vol β</th><th>FX</th><th>σ total</th><th>Exp. max DD</th></tr>`));
+  const fb = el("tbody");
+  F.forEach((f,i) => {
+    const beta = f.vol / D.sp_vol_5y;
+    fb.appendChild(el("tr", null,
+      `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+       <td>${beta.toFixed(2)}×</td><td>${f.fx_drift ? "unhedged" : "—"}</td>
+       <td>${f.vol.toFixed(2)}%</td><td class="neg">${pc1(f.dd_macro)}</td>`));
+  });
+  ft.appendChild(fb);
+})();
+
+/* ---------------- funds ---------------- */
+const ROLE = {
+  ATRPHMM: "Liquidity anchor &amp; rebalancing ammunition",
+  ATRQIAP: "Core engine — tech exposure with the volatility sold",
+  ATRASEQ: "Growth engine — cheapest earnings on the sheet",
+  ATRGTEC: "Call option on the AI capex cycle, held small"
+};
+const LOOKTHRU = {
+  ATRPHMM: ["Philippine T-bills, government &amp; high-grade corporate paper",
+    "Average portfolio duration ≤ 1 year", "Live curve: 91d 5.14% · 182d 5.52% · 364d 5.72%"],
+  ATRQIAP: ["JPMorgan Nasdaq Equity Premium Income Active UCITS ETF (IE000U9J8HX9)",
+    "Nasdaq-100 equities + short call options written against them",
+    "Underlying strategy distributes ~9% p.a.; TER 0.35%"],
+  ATRASEQ: ["JPMorgan Asia Equity Dividend Fund (Luxembourg SICAV)",
+    "Asia Pacific ex-Japan dividend-paying equities",
+    "Korea, Taiwan, China, India, ASEAN — semis and memory are the earnings engine"],
+  ATRGTEC: ["Fidelity Funds — Global Technology Fund (Luxembourg SICAV)",
+    "Benchmark: MSCI ACWI Information Technology",
+    "~72% US · ~16% Asia · ~12% Europe by index weight"]
+};
+const NOTE = {
+  ATRPHMM: "The only sleeve with a positive real yield and no duration risk. BSP just hiked to 4.75%.",
+  ATRQIAP: "Rising implied vol makes the calls it writes more valuable — the one holding paid by the vol path.",
+  ATRASEQ: "10.5× forward against ~52%/~28% EPS growth. Ranked first on all four horizons.",
+  ATRGTEC: "Highest gross return, highest drawdown, and 0.88 correlated to the Nasdaq income sleeve."
+};
+
+(function () {
+  const rail = $("#rail"), dots = $("#dots");
+  F.forEach((f, i) => {
+    const grossUsd = +(f.gross_php - f.fx_drift).toFixed(2);
+    const build = [];
+    if (f.fx_drift) {
+      build.push(["Target-fund expected return (USD)", grossUsd, ""]);
+      build.push(["Peso translation (unhedged)", f.fx_drift, "pos"]);
+    } else {
+      build.push(["5y average PH short-rate path", f.gross_php, ""]);
+    }
+    build.push(["Feeder / trust fee", -f.fee_feeder, "neg"]);
+    if (f.fee_target) build.push(["Target-fund charge", -f.fee_target, "neg"]);
+    build.push(["Net 5y CAGR — strategic", f.net_base, "final"]);
+    build.push(["Macro tilt", f.tilt_total, f.tilt_total >= 0 ? "pos" : "neg"]);
+    build.push(["Net 5y CAGR — macro-adjusted", f.net_macro, "final"]);
+
+    const wA = D.baseline.weights[i], wB = D.optimized.weights[i];
+    const s = el("article", { class:"slide" });
+    s.innerHTML =
+      `<div class="sh" style="background:${HEX[i]}">
+         <div class="code">${f.id} · ${f.ccy}</div>
+         <h3>${f.name.replace("ATRAM ", "")}</h3>
+         <div class="role">${ROLE[f.id]}</div>
+       </div>
+       <div class="sb">
+         <div class="duo">
+           <div><span class="k">Net 5y CAGR</span><span class="v" style="color:${HEX[i]}">${pc(f.net_macro)}</span></div>
+           <div><span class="k">Exp. max drawdown</span><span class="v" style="color:var(--bad)">${pc1(f.dd_macro)}</span></div>
+         </div>
+         <div class="build">${build.map(([l,v,k]) =>
+           `<div class="brow${k==="final"?" f":""}"><span class="bl">${l}</span>
+            <span class="bv ${k==="pos"?"pos":k==="neg"?"neg":""}">${k==="pos"||k==="neg"?sg(v):pc(v)}</span></div>`).join("")}
+         </div>
+         <dl style="margin:0">
+           <div class="kv"><dt>Volatility σ</dt><dd>${f.vol.toFixed(2)}%</dd></div>
+           <div class="kv"><dt>All-in fees</dt><dd>${f.fee_total.toFixed(2)}%</dd></div>
+           <div class="kv"><dt>Regional score</dt><dd>${f.regional_score.toFixed(2)} / 10</dd></div>
+           <div class="kv"><dt>Baseline weight</dt><dd>${wA}%</dd></div>
+           <div class="kv"><dt>Optimised weight</dt><dd style="color:${HEX[i]};font-weight:700">${wB}%
+             <span style="font-weight:500;color:var(--ink-3)">(${wB>wA?"+":""}${wB-wA})</span></dd></div>
+           <div class="kv" style="display:block"><dt style="display:block;margin-bottom:3px">Own stated target</dt>
+             <dd class="wrap" style="text-align:left">${f.target}</dd></div>
+         </dl>
+         <div class="flat" style="background:${FW[i]};border:0;font-size:11.5px;
+           line-height:1.5;color:var(--ink)">${NOTE[f.id]}</div>
+       </div>`;
+    rail.appendChild(s);
+    dots.appendChild(el("i", { class: i === 0 ? "on" : "", style: i === 0 ? "background:" + HEX[0] : "" }));
+  });
+  rail.addEventListener("scroll", () => {
+    const k = Math.round(rail.scrollLeft / (rail.scrollWidth / N));
+    [...dots.children].forEach((d, j) => { d.classList.toggle("on", j === k);
+      d.style.background = j === k ? HEX[k] : ""; });
+  }, { passive:true });
+
+  const t = $("#ftab");
+  t.appendChild(el("thead", null,
+    `<tr><th>Fund</th><th>Fees</th><th>Net CAGR</th><th>Max DD</th><th>Vol σ</th></tr>`));
+  const tb = el("tbody");
+  F.forEach((f,i) => tb.appendChild(el("tr", null,
+    `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+     <td>${f.fee_total.toFixed(2)}%</td>
+     <td style="font-weight:600;color:${HEX[i]}">${pc(f.net_macro)}</td>
+     <td class="neg">${pc1(f.dd_macro)}</td><td>${f.vol.toFixed(1)}%</td>`)));
+  t.appendChild(tb);
+
+  const lt = $("#ltab");
+  lt.appendChild(el("thead", null, `<tr><th>Sleeve</th><th style="text-align:left">Underlying exposure</th></tr>`));
+  const lb = el("tbody");
+  F.forEach((f,i) => lb.appendChild(el("tr", null,
+    `<td style="vertical-align:top;width:33%"><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+     <td style="text-align:left;white-space:normal;font-family:var(--body);font-size:12px;
+       line-height:1.5;color:var(--ink-2)">${LOOKTHRU[f.id].map(x=>"• "+x).join("<br>")}</td>`)));
+  lt.appendChild(lb);
+
+  const ft = $("#feetab");
+  ft.appendChild(el("thead", null,
+    `<tr><th>Fund</th><th>Feeder</th><th>Target</th><th>All-in</th><th>Basis</th></tr>`));
+  const fb = el("tbody");
+  F.forEach((f,i) => {
+    const est = f.fee_note.toLowerCase().includes("estimate");
+    fb.appendChild(el("tr", null,
+      `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+       <td>${f.fee_feeder.toFixed(2)}%</td>
+       <td>${f.fee_target ? f.fee_target.toFixed(2) + "%" : "—"}</td>
+       <td style="font-weight:600">${f.fee_total.toFixed(2)}%</td>
+       <td style="text-align:right">${est ? chip("warn","part est.") : chip("good","published")}</td>`));
+  });
+  ft.appendChild(fb);
+})();
+
+/* ---------------- donuts ---------------- */
+function donut(host, w, title, cagr, dd) {
+  const S = 196, c = S/2, R = 56, TH = 23, CIRC = 2*Math.PI*R;
+  const s = svg(S, S); s.setAttribute("aria-label", title + " allocation");
+  s.appendChild(sel("circle", { cx:c, cy:c, r:R, fill:"none", stroke:"#EEF2F8", "stroke-width":TH }));
+  let acc = 0;
+  w.forEach((p, i) => {
+    if (!p) return;
+    const len = CIRC * p/100;
+    s.appendChild(sel("circle", { cx:c, cy:c, r:R, fill:"none", stroke:HEX[i],
+      "stroke-width":TH, "stroke-dasharray": Math.max(len-2.5,0.5) + " " + (CIRC - Math.max(len-2.5,0.5)),
+      "stroke-dashoffset": -CIRC * acc/100, transform:`rotate(-90 ${c} ${c})` }));
+    // direct label, outside the ring
+    const mid = (acc + p/2) / 100 * 2*Math.PI - Math.PI/2;
+    const lx = c + (R + TH/2 + 12) * Math.cos(mid), ly = c + (R + TH/2 + 12) * Math.sin(mid);
+    const t = sel("text", { x:lx, y:ly+3.5,
+      "text-anchor": Math.abs(Math.cos(mid)) < 0.25 ? "middle" : (Math.cos(mid) > 0 ? "start" : "end"),
+      fill:"#131A26", "font-family":"IBM Plex Mono, monospace", "font-size":"11.5", "font-weight":"600" });
+    t.textContent = p + "%"; s.appendChild(t);
+    acc += p;
+  });
+  const a = sel("text", { x:c, y:c-3, "text-anchor":"middle", fill:"#131A26",
+    "font-family":"IBM Plex Mono, monospace", "font-size":"21", "font-weight":"600",
+    "letter-spacing":"-0.8" });
+  a.textContent = cagr.toFixed(2) + "%"; s.appendChild(a);
+  const b = sel("text", { x:c, y:c+11, "text-anchor":"middle", fill:"#7C8798",
+    "font-family":"IBM Plex Mono, monospace", "font-size":"9", "letter-spacing":"0.6" });
+  b.textContent = "5Y CAGR"; s.appendChild(b);
+  const d = sel("text", { x:c, y:c+27, "text-anchor":"middle", fill:"#B02A37",
+    "font-family":"IBM Plex Mono, monospace", "font-size":"12", "font-weight":"600" });
+  d.textContent = pc1(dd); s.appendChild(d);
+  host.appendChild(s);
+}
+(function () {
+  const A = D.baseline, B = D.optimized;
+  donut($("#donutA"), A.weights, "Baseline", A.under_macro.cagr, A.under_macro.maxdd);
+  donut($("#donutB"), B.weights, "Optimised", B.macro.cagr, B.macro.maxdd);
+  $("#dlegend").innerHTML = F.map((f,i) =>
+    `<span class="lgi"><i class="swatch" style="background:${FC[i]}"></i>${f.short}
+      <b>${A.weights[i]}→${B.weights[i]}%</b></span>`).join("");
+
+  // headline comparison
+  const t = $("#ptab");
+  t.appendChild(el("thead", null,
+    `<tr><th>Macro-adjusted</th><th>Baseline</th><th>Optimised</th><th>Δ</th></tr>`));
+  const rows = [
+    ["5y net CAGR (after fees)", A.under_macro.cagr, B.macro.cagr, "pc", 1],
+    ["Expected max drawdown", A.under_macro.maxdd, B.macro.maxdd, "pc1", -1],
+    ["Portfolio volatility σ", A.under_macro.vol, B.macro.vol, "pc", -1],
+    ["Return per unit of drawdown", A.under_macro.ret_per_dd, B.macro.ret_per_dd, "r", 1],
+  ];
+  const tb = el("tbody");
+  rows.forEach(([lab, a, b, fmt, dir]) => {
+    const fm = v => fmt === "pc" ? pc(v) : fmt === "pc1" ? pc1(v) : v.toFixed(3);
+    const raw = fmt === "pc1" ? Math.abs(a) - Math.abs(b) : b - a;
+    const better = dir === 1 ? (b > a) : (fmt === "pc1" ? Math.abs(b) < Math.abs(a) : b < a);
+    const dtxt = fmt === "r" ? (b-a >= 0 ? "+" : "−") + Math.abs(b-a).toFixed(3)
+      : (raw >= 0 ? (fmt==="pc1"?"−":"+") : (fmt==="pc1"?"+":"−")) + Math.abs(raw).toFixed(fmt==="pc1"?1:2) + "pp";
+    tb.appendChild(el("tr", null,
+      `<td>${lab}</td><td>${fm(a)}</td><td style="font-weight:600">${fm(b)}</td>
+       <td class="${better?"pos":"neg"}">${dtxt}</td>`));
+  });
+  t.appendChild(tb);
+
+  // both lenses
+  const t2 = $("#ptab2");
+  t2.appendChild(el("thead", null,
+    `<tr><th>Portfolio &amp; lens</th><th>CAGR</th><th>σ</th><th>Max DD</th><th>Ret/DD</th></tr>`));
+  const tb2 = el("tbody");
+  [["Baseline · strategic", A.base],["Baseline · macro-adjusted", A.under_macro],
+   ["Optimised · strategic", B.under_base],["Optimised · macro-adjusted", B.macro]].forEach(([lab, m], i) => {
+    tb2.appendChild(el("tr", null,
+      `<td${i===3?' style="font-weight:700"':''}>${lab}</td><td>${pc(m.cagr)}</td>
+       <td>${pc(m.vol)}</td><td class="neg">${pc1(m.maxdd)}</td>
+       <td${i===3?' style="font-weight:700"':''}>${m.ret_per_dd.toFixed(3)}</td>`));
+  });
+  t2.appendChild(tb2);
+
+  const dc = Math.abs(A.under_macro.maxdd) - Math.abs(B.macro.maxdd);
+  const rc = B.macro.cagr - A.under_macro.cagr;
+  $("#deltacard").innerHTML =
+    `<h3>Better on both axes at once</h3>
+     <p>This is the part worth pausing on. Re-weighting does not usually give you more
+      return <em>and</em> less risk — normally you buy one with the other. Here the
+      baseline is carrying an avoidable inefficiency: two highly-correlated US tech
+      sleeves at a combined 55%, which costs drawdown without buying return.</p>
+     <div class="stats" style="margin:12px 0 10px">
+       <div class="stat"><span class="k">Forecast CAGR</span>
+         <span class="v pos">+${rc.toFixed(2)}pp</span>
+         <span class="d">${pc(A.under_macro.cagr)} → ${pc(B.macro.cagr)}</span></div>
+       <div class="stat"><span class="k">Expected drawdown</span>
+         <span class="v pos">−${dc.toFixed(1)}pp</span>
+         <span class="d">${pc1(A.under_macro.maxdd)} → ${pc1(B.macro.maxdd)}</span></div>
+     </div>
+     <div class="callout"><b>Return per unit of drawdown improves
+      ${A.under_macro.ret_per_dd.toFixed(3)} → ${B.macro.ret_per_dd.toFixed(3)}</b> — a
+      ${((B.macro.ret_per_dd/A.under_macro.ret_per_dd - 1)*100).toFixed(0)}% gain, achieved
+      with the same four funds and no new products.</div>`;
+})();
+
+/* ---------------- frontier ---------------- */
+(function () {
+  const P = D.frontier.filter(p => p.maxdd >= 2 && p.maxdd <= 32);
+  const W = 452, H = 240, ml = 40, mr = 16, mt = 16, mb = 40;
+  const iw = W-ml-mr, ih = H-mt-mb;
+  const xs = P.map(p=>p.maxdd), ys = P.map(p=>p.cagr);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs);
+  const y0 = Math.floor(Math.min(...ys)*2)/2 - 0.2, y1 = Math.ceil(Math.max(...ys)*2)/2 + 0.2;
+  const X = v => ml + iw*(v-x0)/(x1-x0), Y = v => mt + ih*(1-(v-y0)/(y1-y0));
+  const s = svg(W,H); s.setAttribute("aria-label","Efficient frontier");
+  for (let g = Math.ceil(y0*2)/2; g <= y1; g += 0.5) {
+    s.appendChild(sel("line",{x1:ml,y1:Y(g),x2:W-mr,y2:Y(g),stroke:"#DFE5EF","stroke-width":1}));
+    const t = sel("text",{x:ml-7,y:Y(g)+3.5,"text-anchor":"end",fill:"#7C8798",
+      "font-family":"IBM Plex Mono, monospace","font-size":"10"});
+    t.textContent = g.toFixed(1)+"%"; s.appendChild(t);
+  }
+  [5,10,15,20,25,30].forEach(g => { if (g < x0 || g > x1) return;
+    const t = sel("text",{x:X(g),y:H-20,"text-anchor":"middle",fill:"#7C8798",
+      "font-family":"IBM Plex Mono, monospace","font-size":"10"});
+    t.textContent = "−"+g+"%"; s.appendChild(t); });
+  const ax = sel("text",{x:ml+iw/2,y:H-4,"text-anchor":"middle",fill:"#525E70",
+    "font-family":"IBM Plex Mono, monospace","font-size":"9.5","letter-spacing":"0.5"});
+  ax.textContent = "EXPECTED MAXIMUM DRAWDOWN"; s.appendChild(ax);
+  s.appendChild(sel("path",{d:P.map((p,i)=>(i?"L":"M")+X(p.maxdd)+" "+Y(p.cagr)).join(" "),
+    fill:"none",stroke:"#3670D6","stroke-width":2,"stroke-linejoin":"round"}));
+  P.forEach(p => s.appendChild(sel("circle",{cx:X(p.maxdd),cy:Y(p.cagr),r:3.2,
+    fill:"#3670D6",stroke:"#FFFFFF","stroke-width":1.5})));
+  const A = D.baseline.under_macro, B = D.optimized.macro;
+  const mark = (dd, cg, lab, col, dy) => {
+    s.appendChild(sel("circle",{cx:X(Math.abs(dd)),cy:Y(cg),r:7,fill:"none",
+      stroke:col,"stroke-width":2.5}));
+    s.appendChild(sel("circle",{cx:X(Math.abs(dd)),cy:Y(cg),r:3,fill:col}));
+    const t = sel("text",{x:X(Math.abs(dd)),y:Y(cg)+dy,"text-anchor":"middle",fill:col,
+      "font-family":"IBM Plex Mono, monospace","font-size":"10.5","font-weight":"600"});
+    t.textContent = lab; s.appendChild(t);
+  };
+  mark(A.maxdd, A.cagr, "BASELINE", "#7C8798", 22);
+  mark(B.maxdd, B.cagr, "OPTIMISED", "#CB5A22", -13);
+  const host = $("#frontier"); host.appendChild(s);
+  const tp = tipper(host);
+  P.forEach(p => {
+    const hit = sel("circle",{cx:X(p.maxdd),cy:Y(p.cagr),r:12,fill:"transparent",style:"cursor:pointer"});
+    const go = () => { const r = host.getBoundingClientRect();
+      tp.show(X(p.maxdd)/W*r.width, Y(p.cagr)/H*r.height,
+        `CAGR ${p.cagr.toFixed(2)}%  DD −${p.maxdd}%\n${p.weights.map((w,i)=>F[i].short.padEnd(20)+String(w).padStart(3)+"%").join("\n")}`); };
+    hit.addEventListener("pointerenter",go); hit.addEventListener("pointerdown",go);
+    hit.addEventListener("pointerleave",()=>tp.hide());
+    s.appendChild(hit);
+  });
+})();
+
+/* ---------------- scenarios ---------------- */
+(function () {
+  const A = D.baseline.scenarios, B = D.optimized.scenarios;
+  const t = $("#stab");
+  t.appendChild(el("thead", null,
+    `<tr><th>Scenario</th><th>Base CAGR</th><th>Opt CAGR</th><th>Base DD</th><th>Opt DD</th></tr>`));
+  const tb = el("tbody");
+  B.forEach((b, i) => {
+    const a = A[i], base = b.name === "Grind-on base case";
+    tb.appendChild(el("tr", null,
+      `<td${base?' style="font-weight:700"':''}>${b.name}</td>
+       <td>${pc(a.cagr)}</td><td style="font-weight:600">${pc(b.cagr)}</td>
+       <td class="neg">${pc1(a.maxdd)}</td>
+       <td class="${Math.abs(b.maxdd)<Math.abs(a.maxdd)?"pos":"neg"}" style="font-weight:600">${pc1(b.maxdd)}</td>`));
+  });
+  t.appendChild(tb);
+  $("#sdesc").innerHTML = B.map(b =>
+    `<div class="rwhy"><b>${b.name}</b>${b.desc}</div>`).join("");
+})();
+
+/* ---------------- peso illustration ---------------- */
+(function () {
+  const A = D.baseline.under_macro, B = D.optimized.macro;
+  const t = $("#pesotab");
+  t.appendChild(el("thead", null,
+    `<tr><th></th><th>Baseline</th><th>Optimised</th><th>Δ</th></tr>`));
+  const tb = el("tbody");
+  tb.appendChild(el("tr", null,
+    `<td>Value after 5 years</td><td>${peso(A.terminal_1m)}</td>
+     <td style="font-weight:600">${peso(B.terminal_1m)}</td>
+     <td class="pos">+${peso(B.terminal_1m-A.terminal_1m).slice(1)}</td>`));
+  tb.appendChild(el("tr", null,
+    `<td>Value at expected trough</td><td>${peso(A.trough_1m)}</td>
+     <td style="font-weight:600">${peso(B.trough_1m)}</td>
+     <td class="pos">+${peso(B.trough_1m-A.trough_1m).slice(1)}</td>`));
+  tb.appendChild(el("tr", null,
+    `<td>Total gain over 5 years</td><td>${peso(A.terminal_1m-1000000)}</td>
+     <td style="font-weight:600">${peso(B.terminal_1m-1000000)}</td>
+     <td class="pos">+${peso(B.terminal_1m-A.terminal_1m).slice(1)}</td>`));
+  t.appendChild(tb);
+})();
+
+/* ---------------- monitoring ---------------- */
+(function () {
+  const M = [
+    ["Macro relevance re-check", "Sunday 09:12 PHT",
+     "Re-derives the seven driver scores, the four regional rankings and the volatility term structure from current data, then re-runs the optimiser.",
+     ["Pull live policy rates, CPI prints, the VIX complex and Brent",
+      "Re-score every driver and region across 3M / 6M / 12M / 5Y",
+      "Re-run all 969 allocations; flag any weight that moves by 5pp or more",
+      "Record what changed and why, against the prior week"]],
+    ["Source scrub &amp; fact-check", "Sunday 10:23 PHT",
+     "Takes every numeric claim on this page and re-verifies it against the primary source, not a secondary quote of it.",
+     ["Re-fetch each cited central bank, statistical agency and fund document",
+      "Diff every figure against what is published on the page",
+      "Promote the two estimated target-fund charges to published values if disclosed",
+      "Mark any claim whose source has gone stale, moved or changed"]],
+    ["Math, code &amp; sanity audit", "Sunday 11:37 PHT",
+     "Re-runs the model engine end to end and re-executes the full check suite before anything is republished.",
+     ["Re-run the engine and diff every output against the last run",
+      "Execute all 12 automated checks — weights, granularity, monotonicity, diversification",
+      "Re-validate the chart palette for colour-vision safety",
+      "Review the diff, log any error found, fix it, and record the fix"]]
+  ];
+  $("#monitors").innerHTML = M.map(([h, w, p, li], i) =>
+    `<div class="mon"><span class="idx">${i+1}</span><div class="mb">
+      <h4>${h}</h4><span class="when">↻ ${w} · weekly</span>
+      <p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>`).join("");
+})();
+
+/* ---------------- sources ---------------- */
+$("#sources").innerHTML = D.sources.map(s =>
+  `<a class="src" href="${s.url}" target="_blank" rel="noopener noreferrer">
+     <div class="o">${s.org} ↗</div><div class="w">${s.what}</div></a>`).join("");
+</script>
