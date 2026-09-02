@@ -358,6 +358,74 @@ def summarise(w, key):
     }
 
 # ----------------------------------------------------------------------------
+# 5b. STOCK-LEVEL LOOK-THROUGH
+#     Published holdings of the target funds. Only what a manager actually
+#     discloses goes here; where a target fund does not publish current
+#     holdings, that is recorded as a gap rather than filled with a guess.
+# ----------------------------------------------------------------------------
+
+LOOKTHROUGH = {
+    "ATRPHMM": {
+        "dp": 3,
+        "kind": "instruments",
+        "as_of": "2026-08",
+        "note": "A money market fund holds paper, not shares. The live PH curve "
+                "is the honest look-through.",
+        "rows": [["91-day T-bill", 5.138], ["182-day T-bill", 5.517],
+                 ["364-day T-bill", 5.717]],
+        "unit": "% yield",
+        "source": "Bureau of the Treasury PH auction results",
+    },
+    "ATRQIAP": {
+        "dp": 1,
+        "kind": "stocks",
+        "as_of": "2026-06-30",
+        "note": "Top 10 equity positions of the JPMorgan Nasdaq Equity Premium "
+                "Income strategy. Figures are from the US-listed JEPQ factsheet; "
+                "ATRAM's feeder holds the UCITS sister fund (IE000U9J8HX9), which "
+                "runs the same strategy on the same universe.",
+        "rows": [["NVIDIA", 6.7], ["Apple", 5.8], ["Micron Technology", 5.6],
+                 ["Alphabet Class C", 5.0], ["Microsoft", 3.9],
+                 ["Advanced Micro Devices", 3.9], ["Amazon", 3.7],
+                 ["Lam Research", 2.9], ["Tesla", 2.4], ["Meta Platforms", 2.4]],
+        "unit": "% of fund",
+        "sectors": [["Information Technology", 50.9],
+                    ["Communication Services", 10.2],
+                    ["Consumer Discretionary", 9.2]],
+        "source": "J.P. Morgan Asset Management JEPQ factsheet, 30 June 2026",
+    },
+    "ATRASEQ": {
+        "dp": 1,
+        "kind": "gap",
+        "as_of": None,
+        "note": "The JPMorgan Asia Equity Dividend Fund's current holdings could "
+                "not be verified from a primary source. The most recent published "
+                "holdings reachable were from 2023 and are too stale to show. What "
+                "is verified is the mandate: at least 70% in dividend-paying Asia "
+                "Pacific ex-Japan equities.",
+        "rows": [],
+        "unit": None,
+        "source": "gap recorded rather than filled - Sunday job 2 retries weekly",
+    },
+    "ATRGTEC": {
+        "dp": 2,
+        "kind": "sectors",
+        "as_of": "2026",
+        "note": "Fidelity publishes this fund's sector composition but not a "
+                "current top-10 list at a source reachable from here. Sector "
+                "weights use the Industry Classification Benchmark and sum to "
+                "100.2% on the manager's own rounding.",
+        "rows": [["Technology", 65.30], ["Consumer Discretionary", 11.73],
+                 ["Industrials", 10.74], ["Telecommunications", 7.33],
+                 ["Real Estate", 2.73], ["Energy", 1.43], ["Managed funds", 0.94]],
+        "unit": "% of fund",
+        "sub": [["Technology hardware & equipment", 33.28],
+                ["Software & computer services", 32.02]],
+        "source": "Fidelity Funds - Global Technology Fund factsheet (LU1033663649)",
+    },
+}
+
+# ----------------------------------------------------------------------------
 # 6. PORTFOLIOS
 # ----------------------------------------------------------------------------
 
@@ -486,6 +554,12 @@ SOURCES = [
      "https://bworldonline.com/banking-finance/2026/04/29/746186/atram-launches-nasdaq-income-feeder-fund/"),
     ("Philippine Star", "ATRAM launches Nasdaq feeder fund",
      "https://www.philstar.com/business/2026/04/29/2524247/atram-launches-nasdaq-feeder-fund"),
+    ("J.P. Morgan Asset Management", "JEPQ factsheet, 30 June 2026 - top-10 holdings "
+     "and sector weights used for the stock-level look-through",
+     "https://am.jpmorgan.com/content/dam/jpm-am-aem/americas/us/en/literature/fact-sheet/etfs/FS-JEPQ.PDF"),
+    ("Fidelity International", "Global Technology Fund W-Acc-GBP (LU1033663649) "
+     "portfolio - sector composition",
+     "https://www.fidelity.co.uk/factsheet-data/factsheet/LU1033663649-fid-funds-global-tech-fd-w-acc-gbp/portfolio"),
     ("Morningstar", "JPMorgan Nasdaq Equity Premium Income - strategy and risk analysis",
      "https://www.morningstar.com/etfs/xnas/jepq/quote"),
     ("Siblis Research / STOXX", "STOXX Europe 600 P/E - trailing 19.67, forward 15.37",
@@ -507,6 +581,7 @@ def payload():
         "drivers": [{"name": n, "weight": w, "score": s, "note": t} for n, w, s, t in DRIVERS],
         "gauge": GAUGE,
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
+        "lookthrough": LOOKTHROUGH,
         "acwi_it_mix": ACWI_IT_MIX,
         "fx": {"drift": FX_DRIFT, "vol": FX_VOL, "corr": FX_CORR},
         "dd_model": {"k": DD_K, "mu_coef": DD_MU},
@@ -589,6 +664,12 @@ def report():
                    o["macro"]["ret_per_dd"] > b["under_macro"]["ret_per_dd"]))
     checks.append(("optimized drawdown is smaller than baseline",
                    abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])))
+    lt = p["lookthrough"]
+    checks.append(("look-through recorded for all four funds", len(lt) == 4))
+    checks.append(("look-through gaps are declared, not fabricated",
+                   all(v["kind"] == "gap" or v["rows"] for v in lt.values())))
+    checks.append(("JEPQ top-10 weights are plausible (sum 30-60%)",
+                   30 <= sum(r[1] for r in lt["ATRQIAP"]["rows"]) <= 60))
     checks.append(("portfolio vol < weighted-average vol (diversification works)",
                    o["macro"]["vol"] < sum(w/100*f["vol"] for w, f in zip(o["weights"], p["funds"]))))
     for name, ok in checks:
