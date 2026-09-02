@@ -20,7 +20,8 @@ rolling window; three research-heavy Opus sessions inside one window will
 exhaust it, which is exactly what killed the 2026-09-02 smoke test. Keep the
 jobs at least five hours apart and never fire them concurrently.
 
-All three run on **`claude-opus-5`** (set 2026-09-02). Routines created without
+Jobs 1 and 2 run on **`claude-sonnet-5`**; job 3, the audit gate, runs on
+**`claude-opus-5`** (set 2026-09-02). Routines created without
 an explicit model inherit the environment default, which was Sonnet 5; the model
 only applies to fires that create a new session, which all three do.
 
@@ -46,6 +47,11 @@ so the link the user holds never changes.
 2. Every allocation weight ends in **5 or 0** and each portfolio sums to **100**.
 3. Every figure on the page comes from `model/engine.py`. If a number is typed
    into `dashboard.html` by hand, it is a bug — move it into the engine.
+3b. **Push BEFORE you republish, always.** The repo is the source of truth; the
+   artifact is a rendering of it. Republishing without pushing leaves the engine
+   unable to reproduce the live page, which happened on 2026-09-02 and had to be
+   reverse-engineered out of the published payload. A republish with no matching
+   pushed commit is a failed run, however good the research was.
 4. `python3 model/engine.py` exits 0 with all sanity checks passing *before*
    anything is republished.
 5. Only primary sources. The issuing institution's own publication, never an

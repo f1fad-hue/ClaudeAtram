@@ -21,29 +21,62 @@ AS_OF = "2026-09-02"
 # ----------------------------------------------------------------------------
 
 MACRO = {
-    "fed_funds_lower": 3.50, "fed_funds_upper": 3.75,          # src: federalreserve.gov 2026-07-29
-    "fed_vote": "9-3 hold (3 dissents for a HIKE)",
-    "us_cpi_headline": 3.4, "us_cpi_core": 2.5,                 # src: BLS CPI, July 2026
-    "us_payrolls_jul": -23_000, "us_unemployment": 4.1,         # src: BLS
-    "ecb_depo": 2.25, "ecb_last_move_bp": +25,                  # src: ECB 2026-06-11
-    "ea_hicp_2026": 3.0, "ea_hicp_2027": 2.3, "ea_hicp_2028": 2.0,
-    "bsp_rrp": 4.75, "bsp_last_move_bp": +25,                   # src: BSP / PNA, June 2026
-    "ph_tbill_91": 5.138, "ph_tbill_182": 5.517, "ph_tbill_364": 5.717,
-    "brent": 91.28, "brent_mom": 8.96, "brent_yoy": 32.02,      # src: TradingEconomics 2026-09-01
-    "vix_spot": 14.13, "vix_1m_avg": 15.28,
-    "vix_1m_low": 14.13, "vix_1m_high": 18.43,
-    "vix_fut_sep": 17.92, "vix_fut_dec": 20.38,
-    "vix_longrun": 19.5,        # VIX long-run mean, 1990-2025
-    "variance_risk_premium": 3.5,   # implied minus realised, vol points
-    "imf_global_2026": 3.1, "imf_global_2027": 3.2,
-    "imf_us_2026": 2.4, "imf_us_2027": 2.0,
-    "imf_ea_2025": 1.1, "imf_ea_2026": 0.7,
-    "imf_ae_2026": 1.8, "imf_ae_2027": 1.7,
-    "ndx_fwd_pe": 22.4, "ndx_fwd_pe_10y": 22.9, "ndx_fwd_pe_5y": 24.7,
-    "sxxp_fwd_pe": 15.37, "sxxp_ytd": 9.5,
-    "asia_fwd_pe": 10.5, "asia_eps_2026": 52.5, "asia_eps_2027": 27.5,
-    "korea_ytd": 71.0, "taiwan_ytd": 49.0,
-    "ltcma_us_eq": 6.7, "ltcma_em_eq": 7.8, "ltcma_6040plus": 6.9,
+    "fed_funds_lower": 3.5,
+    "fed_funds_upper": 3.75,
+    "fed_vote": '9-3 hold (3 dissents for a HIKE)',
+    "us_cpi_headline": 3.4,
+    "us_cpi_core": 2.5,
+    "us_payrolls_jul": -23000,
+    "us_unemployment": 4.1,
+    "ecb_depo": 2.25,
+    "ecb_last_move_bp": 25,
+    "ea_hicp_2026": 3.0,
+    "ea_hicp_2027": 2.3,
+    "ea_hicp_2028": 2.0,
+    "bsp_rrp": 5.0,
+    "bsp_last_move_bp": 25,
+    "bsp_hikes_since_apr": 3,
+    "bsp_cum_bp": 75,
+    "ph_cpi_jul": 6.2,
+    "ph_cpi_jun": 6.4,
+    "bsp_infl_2026": 6.1,
+    "bsp_infl_2027": 5.4,
+    "usdphp": 62.565,
+    "ph_tbill_91": 5.138,
+    "ph_tbill_182": 5.517,
+    "ph_tbill_364": 5.717,
+    "brent": 94.86,
+    "brent_mom": 13.24,
+    "brent_yoy": 40.33,
+    "vix_spot": 16.44,
+    "vix_1m_avg": 15.28,
+    "vix_1m_low": 14.13,
+    "vix_1m_high": 18.43,
+    "vix_fut_sep": 17.92,
+    "vix_fut_dec": 20.38,
+    "vix_longrun": 19.5,
+    "variance_risk_premium": 3.5,
+    "imf_global_2026": 3.1,
+    "imf_global_2027": 3.2,
+    "imf_us_2026": 2.4,
+    "imf_us_2027": 2.0,
+    "imf_ea_2025": 1.1,
+    "imf_ea_2026": 0.7,
+    "imf_ae_2026": 1.8,
+    "imf_ae_2027": 1.7,
+    "ndx_fwd_pe": 22.4,
+    "ndx_fwd_pe_10y": 22.9,
+    "ndx_fwd_pe_5y": 24.7,
+    "sxxp_fwd_pe": 15.37,
+    "sxxp_ytd": 9.5,
+    "asia_fwd_pe": 10.5,
+    "asia_eps_2026": 52.5,
+    "asia_eps_2027": 27.5,
+    "korea_ytd": 71.0,
+    "taiwan_ytd": 49.0,
+    "ltcma_us_eq": 6.7,
+    "ltcma_em_eq": 7.8,
+    "ltcma_6040plus": 6.9,
 }
 
 # ----------------------------------------------------------------------------
@@ -102,31 +135,20 @@ HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, "5Y": 0.30}
 
 REGIONS = {
     "US": {
-        "3M": 5.5, "6M": 6.0, "12M": 6.5, "5Y": 6.5,
-        "why": "Fed on hold at 3.50-3.75% but 3 dissents wanted a HIKE; Sep-16 FOMC "
-               "is live. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% contained, "
-               "headline 3.4% and rising on Brent. NDX 22.4x fwd is BELOW its 10y "
-               "(22.9x) and 5y (24.7x) averages. IMF: 2.4% growth 2026.",
+        "3M": 5.0, "6M": 5.5, "12M": 6.0, "5Y": 6.5,
+        "why": "Cut across the near horizons on the September bond rout: the 10-year yield is at a near-3-year high and the market now prices TWO hikes (Sep-16 and Dec), not a hold. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% still contained - the one clean anchor - but headline 3.4% faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
     },
     "EUROPE": {
-        "3M": 3.5, "6M": 4.0, "12M": 4.5, "5Y": 5.0,
-        "why": "Worst policy/growth mismatch in the world: ECB HIKED +25bp to 2.25% "
-               "in June - first hike in 3 years - into IMF growth of just 0.7% for "
-               "2026 (down from 1.1%). Largest net energy importer facing Brent +32% "
-               "y/y. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
+        "3M": 3.0, "6M": 3.5, "12M": 4.0, "5Y": 4.5,
+        "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is now close to fully priced, all into IMF growth of just 0.7% for 2026 (from 1.1%). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
     },
     "ASIA": {
-        "3M": 6.5, "6M": 7.0, "12M": 7.5, "5Y": 7.5,
-        "why": "Best fundamentals available: 10.5x fwd P/E with consensus EPS growth "
-               "of ~52% (2026) and ~28% (2027) off the AI/memory/semis cycle. Korea "
-               "+71% and Taiwan +49% YTD means momentum is real but crowded. JPM "
-               "LTCMA puts EM equity at 7.8% - the highest of any equity block.",
+        "3M": 5.5, "6M": 6.5, "12M": 7.0, "5Y": 7.5,
+        "why": "Still the best fundamentals available, but the near horizons take the energy shock hardest: Korea, Taiwan and Japan are all large net oil importers, and on 2 Sep the KOSPI fell ~4%, the Nikkei 2.9% and MSCI Asia-Pac ex-Japan 2%. That is a macro de-rating, not an earnings event - 10.5x fwd against consensus EPS growth of ~52% (2026) and ~28% (2027) off the AI/memory/semis cycle is intact and now cheaper. The 5-year anchor stays at 7.5; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block.",
     },
     "PHILIPPINES": {
-        "3M": 6.5, "6M": 6.5, "12M": 6.0, "5Y": 5.5,
-        "why": "Cash is genuinely paid here. BSP hiked +25bp to 4.75%; T-bills at "
-               "5.14% (91d) to 5.72% (364d) against ~4% inflation = positive real "
-               "carry with zero duration risk. Fades over 5y as BSP normalises.",
+        "3M": 5.5, "6M": 5.5, "12M": 5.5, "5Y": 5.5,
+        "why": "MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.565, its fourth record low running. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
     },
 }
 for r in REGIONS.values():
@@ -137,29 +159,20 @@ for r in REGIONS.values():
 # ----------------------------------------------------------------------------
 
 DRIVERS = [
-    ("Monetary policy & liquidity", 0.20, 4.0,
-     "Global tightening BIAS, not easing: Fed 9-3 hold with 3 hike dissents, "
-     "ECB +25bp (first in 3y), BSP +25bp. Three of three relevant central banks "
-     "leaning hawkish at once."),
-    ("Inflation trajectory", 0.15, 4.5,
-     "US core 2.5% is fine; US headline 3.4% and re-accelerating on energy. "
-     "Euro HICP 3.0% for 2026. PH above the 4% ceiling in both 2026 and 2027."),
-    ("Growth momentum", 0.15, 5.5,
-     "IMF: global 3.1% (2026) / 3.2% (2027). US resilient at 2.4%. Euro area "
-     "cut to 0.7%. Wide dispersion - a stock-picker's macro, not a beta macro."),
-    ("Corporate earnings", 0.20, 8.0,
-     "The single strongest pillar. Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027); "
-     "AI infrastructure capex still compounding through the semis supply chain."),
-    ("Valuation support", 0.10, 7.0,
-     "NDX 22.4x fwd sits BELOW both its 10y and 5y averages. Asia at 10.5x is "
-     "a two-decade-wide discount. Europe 15.4x. No broad bubble multiple."),
-    ("Volatility & risk appetite", 0.10, 4.5,
-     "Textbook complacency: VIX printed a 2026 low of 14.13 while the futures "
-     "curve is in steep contango (Sep 17.92, Dec 20.38). The market is cheaply "
-     "priced for calm it does not expect to keep."),
-    ("Geopolitics & energy", 0.10, 2.5,
-     "The clear weak link. Active US/Israel-Iran hostilities, naval mines in the "
-     "Strait of Hormuz, Brent $91.28 (+32% y/y) after a Q1 spike to $118."),
+    ("Monetary policy & liquidity", 0.2, 3.5,
+     "Tightening is no longer a bias, it is happening. BSP hiked to 5.00% on 27 Aug (third consecutive, +75bp cumulative), an ECB hike to 2.50% on 10 Sep is close to fully priced, and the market now prices TWO Fed hikes rather than the hold the July 9-3 vote delivered. The US 10-year is at a near-3-year high and global bond markets sold off hard on 2 Sep."),
+    ("Inflation trajectory", 0.15, 3.5,
+     "Downgraded on energy and on a Philippine print far worse than this model previously assumed. US core 2.5% remains the one clean anchor; US headline 3.4% now faces Brent +40% y/y. Euro HICP 3.0% for 2026. PH printed 6.2% in July and BSP RAISED its 2027 forecast to 5.4% from 4.5% on El Nino and wage pass-through."),
+    ("Growth momentum", 0.15, 5.0,
+     "IMF April WEO unchanged and still current: global 3.1% (2026) / 3.2% (2027), US resilient at 2.4%, euro area cut to 0.7%. Trimmed because a Brent move to $95 is a straight tax on every net-importing economy in Europe and Asia. Wide dispersion - a stock-picker's macro, not a beta macro."),
+    ("Corporate earnings", 0.2, 7.5,
+     "Still the strongest pillar, and the 2 Sep selloff was macro de-rating rather than an earnings event: Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027) is intact and AI infrastructure capex is still compounding through the semis supply chain. Trimmed a half point for energy input costs and the risk that a sustained $95+ Brent forces the 52% estimate down."),
+    ("Valuation support", 0.1, 7.5,
+     "The one driver that IMPROVED. The selloff made everything cheaper without changing the earnings: NDX 22.4x fwd still sits BELOW both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount and just fell another 2-4%, Europe 15.4x. No broad bubble multiple anywhere."),
+    ("Volatility & risk appetite", 0.1, 4.0,
+     "The complacency trade has started to break, exactly as the curve said it would. VIX printed a 2026 low of 14.13 on 28 Aug and closed 2 Sep at 16.44, +10.2% on the day, against a futures curve already in contango (Sep 17.92, Dec 20.38). Still below the 19.5 long-run anchor, so there is more room to unwind than to fall - the risk the curve priced is now arriving rather than merely implied."),
+    ("Geopolitics & energy", 0.1, 1.5,
+     "Sharply worse and the weakest link by a wide margin. Two Saudi supertankers were struck in the Strait of Hormuz on 31 Aug; the US hit roughly 100 Iranian targets on 1 Sep and then struck Iranian tankers for the first time on 2 Sep under a new 'tanker for tanker' policy. Brent $94.86, +13.2% in a month and +40.3% y/y, after a Q1 spike to $118. This is the Hormuz scenario beginning to run, not a hypothetical."),
 ]
 GAUGE = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -167,7 +180,7 @@ GAUGE = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 # 5. FUNDS - verified structure, fees, and the return build-up
 # ----------------------------------------------------------------------------
 
-FX_DRIFT = 1.5          # PPP-implied PHP depreciation vs USD, %/yr (PH ~3.9% infl vs US ~2.4%)
+FX_DRIFT = 2.0          # PPP-implied PHP depreciation vs USD, %/yr (PH ~3.9% infl vs US ~2.4%)
 FX_VOL   = 6.0          # USD/PHP annualised vol, %
 FX_CORR  = -0.20        # peso weakens in risk-off -> cushions PHP-denominated USD assets
 
@@ -179,10 +192,8 @@ FUNDS = [
         "target_verified": True,
         "fee_feeder": 0.71, "fee_target": 0.00, "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
         "gross_usd": None,                 # PHP asset - no FX translation
-        "gross_local": 5.05,
-        "gross_note": "5y average PH short-rate path. Anchored on the live curve "
-                      "(91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 4.75% and hiking, "
-                      "reverting toward a ~4.25% neutral policy rate by year 3-5.",
+        "gross_local": 5.25,
+        "gross_note": "5y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5 - a higher neutral than assumed in August because the inflation regime itself has shifted up (BSP 2027 forecast 5.4%).",
         "vol_beta": 0.021, "fx_exposed": False,
         "macro_tilt": {"regional": None, "vol_path": +0.10, "rates": +0.25, "energy": +0.05},
         "dd_k_adj": 0.0, "cash_like": True,
@@ -195,11 +206,8 @@ FUNDS = [
         "target_verified": True,
         "fee_feeder": 1.50, "fee_target": 0.35,
         "fee_note": "1.50% ATRAM management fee + 0.35% target-fund TER (both verified)",
-        "gross_usd": 7.20,
-        "gross_note": "NDX 5y total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% "
-                      "NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), "
-                      "times ~78% covered-call upside capture, plus ~0.5%/yr of option "
-                      "premium earned back as implied vol rises 14.1 -> 19.4.",
+        "gross_usd": 7.2,
+        "gross_note": "NDX 5y total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.1 -> 19.4.",
         "vol_beta": 1.22 * 0.68, "fx_exposed": True,
         "macro_tilt": {"regional": "US", "vol_path": +0.60, "rates": -0.10, "energy": -0.10},
         "dd_k_adj": -0.10, "cash_like": False,
@@ -213,10 +221,8 @@ FUNDS = [
         "fee_feeder": 1.18, "fee_target": 0.80,
         "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~0.80% estimated "
                     "target-fund OCF (ESTIMATE - not verifiable at source)",
-        "gross_usd": 8.30,
-        "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward "
-                      "multiple against ~52%/~28% EPS growth, less ~0.5% for the "
-                      "dividend tilt's lower growth capture.",
+        "gross_usd": 8.3,
+        "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
         "vol_beta": 1.05 * 0.92, "fx_exposed": True,
         "macro_tilt": {"regional": "ASIA", "vol_path": 0.00, "rates": -0.05, "energy": -0.20},
         "dd_k_adj": +0.05, "cash_like": False,
@@ -231,11 +237,8 @@ FUNDS = [
         "fee_feeder": 1.15, "fee_target": 0.95,
         "fee_note": "1.15% ATRAM management fee (verified) + ~0.95% estimated "
                     "target-fund OCF (ESTIMATE - not verifiable at source)",
-        "gross_usd": 9.00,
-        "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium "
-                      "- 1.2% multiple de-rating drag. Deliberately well BELOW the "
-                      "target fund's realised 15.20% 5y, which was earned inside an "
-                      "AI capex boom and is not a forecast.",
+        "gross_usd": 9.0,
+        "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
         "vol_beta": 1.30, "fx_exposed": True,
         "macro_tilt": {"regional": "GLOBAL_TECH", "vol_path": -0.35, "rates": -0.40, "energy": -0.15},
         "dd_k_adj": +0.15, "cash_like": False,
@@ -488,11 +491,14 @@ FRONTIER = [{"maxdd": k, "cagr": v[1]["cagr"], "weights": v[1]["weights"]}
 # Each scenario is an additive shock (pp, annualised over 5y) per fund and a
 # vol multiplier, keyed to a live, named risk in the current macro picture.
 SCENARIOS = [
-    ("Hormuz escalation", "Strait of Hormuz closure; Brent to $130+. Global CPI "
-     "re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+    ("Hormuz escalation", "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, "
+     "~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row "
+     "models the tail from here: full Strait closure and Brent to $130+ from $95. Global "
+     "CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
      {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5}, 1.60),
-    ("Hawkish repricing", "The 3 July dissents win; Fed hikes into a 4.1% "
-     "unemployment rate. Duration-heavy growth de-rates.",
+    ("Hawkish repricing", "The 3 July dissents win and the market is already there - "
+     "two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. "
+     "Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
      {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
@@ -526,8 +532,12 @@ SOURCES = [
      "https://www.bls.gov/news.release/cpi.nr0.htm"),
     ("European Central Bank", "Monetary policy decision, 11 June 2026 - deposit rate 2.25%",
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260611~4d41bd5e83.en.html"),
-    ("Bangko Sentral ng Pilipinas", "Key rates - RRP 4.75% after the June 2026 hike",
+    ("Bangko Sentral ng Pilipinas", "Key rates - RRP 5.00% after the 27 August 2026 hike, a third consecutive move and +75bp cumulative since April",
      "https://www.bsp.gov.ph/SitePages/Statistics/KeyRates.aspx"),
+    ("Philippine Statistics Authority", "Consumer Price Index - headline inflation 6.2% y/y in July 2026, eased from 6.4% in June",
+     "https://psa.gov.ph/price-indices/cpi-ir"),
+    ("European Central Bank", "Monetary policy decision, 23 July 2026 - deposit rate HELD at 2.25% after the June hike",
+     "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260723~29f24d99bc.en.html"),
     ("BSP Monetary Policy Report", "February 2026 economic outlook and inflation path",
      "https://www.bsp.gov.ph/Price%20Stability/MonetaryPolicyReport/FullReport-February2026.pdf"),
     ("Bureau of the Treasury PH", "T-bill auction results - 91d 5.138%, 182d 5.517%, 364d 5.717%",
@@ -538,11 +548,15 @@ SOURCES = [
      "https://www.cboe.com/tradable-products/vix/"),
     ("US EIA", "Crude oil and petroleum product prices, Q1 2026",
      "https://www.eia.gov/todayinenergy/detail.php?id=67424"),
-    ("J.P. Morgan Asset Management", "2026 Long-Term Capital Market Assumptions - "
-     "US equity 6.7%, EM equity 7.8%",
+    ("Military Times", "US launches new barrage of strikes on Iran around the Strait of Hormuz, 1 September 2026 - roughly 100 targets",
+     "https://www.militarytimes.com/news/your-military/2026/09/01/us-launches-new-barrage-of-strikes-on-iran-around-strait-of-hormuz/"),
+    ("Axios", "US strikes Iranian oil tankers for the first time, 2 September 2026 - new 'tanker for tanker' retaliation policy",
+     "https://www.axios.com/2026/09/02/iran-tankers-hormuz-attacks-oil"),
+    ("BusinessWorld", "Philippine peso falls to a new all-time low of P62.565 per dollar, 2 September 2026 - a fourth consecutive record low",
+     "https://bworldonline.com/editors-picks/2026/09/03/774273/philippine-peso-falls-to-new-all-time-low-p62-565-vs-dollar/"),
+    ("J.P. Morgan Asset Management", "2026 Long-Term Capital Market Assumptions - US equity 6.7%, EM equity 7.8%",
      "https://am.jpmorgan.com/us/en/asset-management/adv/about-us/media/press-releases/jp-morgan-releases-2026-long-term-capital-market-assumptions/"),
-    ("J.P. Morgan Asset Management", "Nasdaq Equity Premium Income Active UCITS ETF "
-     "(IE000U9J8HX9) factsheet - 0.35% TER",
+    ("J.P. Morgan Asset Management", "Nasdaq Equity Premium Income Active UCITS ETF (IE000U9J8HX9) factsheet - 0.35% TER",
      "https://am.jpmorgan.com/content/dam/jpm-am-aem/asiapacific/sg/en/literature/fact-sheet/factsheet-jpmorgan-nasdaq-equity-premium-income-active-ucits-etf.pdf"),
     ("Fidelity International", "Fidelity Funds - Global Technology Fund factsheet",
      "https://www.fidelityinternational.com/legal/documents/SG-en/hffs.SG-en.SG.G-TEC.pdf"),
@@ -554,11 +568,9 @@ SOURCES = [
      "https://bworldonline.com/banking-finance/2026/04/29/746186/atram-launches-nasdaq-income-feeder-fund/"),
     ("Philippine Star", "ATRAM launches Nasdaq feeder fund",
      "https://www.philstar.com/business/2026/04/29/2524247/atram-launches-nasdaq-feeder-fund"),
-    ("J.P. Morgan Asset Management", "JEPQ factsheet, 30 June 2026 - top-10 holdings "
-     "and sector weights used for the stock-level look-through",
+    ("J.P. Morgan Asset Management", "JEPQ factsheet, 30 June 2026 - top-10 holdings and sector weights used for the stock-level look-through",
      "https://am.jpmorgan.com/content/dam/jpm-am-aem/americas/us/en/literature/fact-sheet/etfs/FS-JEPQ.PDF"),
-    ("Fidelity International", "Global Technology Fund W-Acc-GBP (LU1033663649) "
-     "portfolio - sector composition",
+    ("Fidelity International", "Global Technology Fund W-Acc-GBP (LU1033663649) portfolio - sector composition",
      "https://www.fidelity.co.uk/factsheet-data/factsheet/LU1033663649-fid-funds-global-tech-fd-w-acc-gbp/portfolio"),
     ("Morningstar", "JPMorgan Nasdaq Equity Premium Income - strategy and risk analysis",
      "https://www.morningstar.com/etfs/xnas/jepq/quote"),
@@ -655,8 +667,17 @@ def report():
     checks.append(("all optimized weights end in 5 or 0", all(x % 5 == 0 for x in o["weights"])))
     checks.append(("all four funds used in baseline", all(x > 0 for x in b["weights"])))
     checks.append(("all four funds used in optimized", all(x > 0 for x in o["weights"])))
-    checks.append(("vol term structure is monotone rising", 
-                   all(p["vol_ts"][i]["implied"] <= p["vol_ts"][i+1]["implied"] for i in range(3))))
+    # NOTE: horizon vol is NOT necessarily monotone in T. It converges toward the
+    # long-run anchor, and when the last liquid future sits ABOVE that anchor the
+    # 12M window can average above the 5Y window. The correct invariant is
+    # convergence, not monotonicity. (Bug found 2026-09-02: the old monotone
+    # assertion failed the moment spot VIX rose to 16.44, on data that was right.)
+    anchor = MACRO["vix_longrun"]
+    checks.append(("horizon vol converges toward the long-run anchor",
+                   abs(p["vol_ts"][-1]["implied"] - anchor)
+                   <= abs(p["vol_ts"][0]["implied"] - anchor) + 1e-9))
+    checks.append(("every horizon vol is in a sane 10-40% band",
+                   all(10 <= v["implied"] <= 40 for v in p["vol_ts"])))
     checks.append(("gauge within 1-10", 1 <= p["gauge"] <= 10))
     checks.append(("every fund net CAGR is below its gross", 
                    all(f["net_base"] < f["gross_php"] for f in p["funds"])))

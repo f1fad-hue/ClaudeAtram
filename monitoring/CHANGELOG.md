@@ -3,6 +3,65 @@
 Newest first. Each Sunday job appends here. Every error found gets recorded
 before it gets fixed.
 
+## 2026-09-02 — Job 1 run on Opus: good work, but it never pushed
+
+Job 1 was fired alone at 18:26 UTC on `claude-opus-5` (session
+`cse_013jknbydkPpk617yZm6eHi9`). It ran ~15 minutes, completed, and republished
+the artifact at 18:37:59Z. **It pushed nothing to the branch.** The live page
+moved to a new macro vintage while the repo stayed at `c650455`, so the engine
+in git no longer reproduced the published page — a direct violation of the
+invariant that every figure on the page comes from `model/engine.py`.
+
+Its research was good and is now recovered into the repo. What it found:
+
+| Input | Was | Now |
+|---|---|---|
+| BSP policy rate | 4.75% | **5.00%** (3 hikes since April, +75bp) |
+| PH CPI | — | **6.2% Jul**, 6.4% Jun — well above target |
+| BSP inflation forecast | — | 6.1% (2026), 5.4% (2027) |
+| USD/PHP | — | **62.565**, an all-time low |
+| Brent | $91.28 | **$94.86** (+40.3% y/y) |
+| VIX spot | 14.13 | **16.44** |
+| ECB | hiked June | **held at 2.25%** on 23 July |
+| Gauge | 5.3 | **4.78** |
+| Sources | 21 | **26** |
+
+Every regional score was cut (US 6.23→5.88, Europe 4.38→3.88, Asia 7.22→6.80,
+PH 6.05→5.50), geopolitics went 2.5→1.5 on the Iran tanker strikes, and the FX
+drift assumption rose 1.5%→2.0% on the peso's new low. **Both allocations held:
+baseline 20/30/25/25 and optimised 15/45/35/5.** Forecasts rose to 7.48% /
+−20.5% and 7.64% / −18.5%.
+
+### Recovery
+
+`model/engine.py` was reconstructed from the published payload and now
+reproduces the live artifact's data block **exactly** (verified by deep
+equality). `dashboard.html` was recovered from the live page so job 1's
+narrative edits survive. No republish was needed — the live page was already
+correct; it was the repo that was behind.
+
+### Real bug found, in our own code
+
+Reconstruction failed the sanity check `vol term structure is monotone rising`
+on data that was correct. **The check encoded a false invariant.** Horizon
+volatility is not monotone in T: it converges toward the long-run anchor, so
+when the last liquid future sits above that anchor (Dec 20.38 vs anchor 19.5)
+the 12M window can average above the 5Y window — which is exactly what happened
+once spot VIX rose to 16.44 (12M 19.62 vs 5Y 19.57). The original build only
+passed because spot was low enough to make the curve incidentally monotone.
+
+Replaced with two correct invariants: horizon vol must **converge toward the
+anchor** (`|σ5Y − anchor| ≤ |σ3M − anchor|`), and every horizon must sit in a
+sane 10–40% band. Now 16/16 checks pass.
+
+### Process fix
+
+Job 1 republished a page whose engine failed a sanity check, and skipped its
+push. Both routine briefs have been rewritten so that **commit and push happen
+BEFORE the republish**, and the job must state the pushed commit SHA in its
+report. A republish without a matching pushed commit is now defined as a failed
+run.
+
 ## 2026-09-02 — Smoke test of all three routines: ABORTED on rate limit
 
 All three routines were fired manually at 12:18 UTC to prove the monitoring
