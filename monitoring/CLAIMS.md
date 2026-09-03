@@ -85,7 +85,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 ## Modelled assumptions (not published figures)
 
 These are the model's own judgements. They are not claims about the world and
-cannot be "verified" — but job 1 must re-examine each one weekly and job 3 must
+cannot be "verified" — but job 1 must re-examine each one weekly and job 2 must
 confirm the arithmetic that uses them.
 
 | Assumption | Value | Rationale |

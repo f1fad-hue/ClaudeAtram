@@ -744,9 +744,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 
   <section>
     <p class="eyebrow">Automated monitoring</p>
-    <h2>Three jobs, every Sunday</h2>
-    <p>Nothing on this page is allowed to quietly go stale. Three scheduled runs
-      re-derive it from source each week.</p>
+    <h2>Two jobs, every Sunday</h2>
+    <p>Nothing on this page is allowed to quietly go stale. One run gathers and
+      updates in the morning; a second audits its work that afternoon.</p>
     <div class="card" id="monitors"></div>
   </section>
 
@@ -2548,22 +2548,19 @@ function donut(host, w, title, cagr, dd) {
 /* ---------------- monitoring ---------------- */
 (function () {
   const M = [
-    ["Macro relevance re-check", "Sunday 06:03 PHT",
-     "Re-derives the seven driver scores, the four regional rankings and the volatility term structure from current data, then re-runs the optimiser.",
+    ["Macro relevance + source fact-check", "Sunday 06:03 PHT",
+     "Re-derives the driver scores, the regional rankings and the volatility term structure from current data, re-runs the optimiser, then re-verifies every numeric claim on this page against its primary source.",
      ["Pull live policy rates, CPI prints, the VIX complex and Brent",
       "Re-score every driver and region across 3M / 6M / 12M / 5Y",
       "Re-run all 969 allocations; flag any weight that moves by 5pp or more",
+      "Re-verify each claim at the issuing institution, never an aggregator",
+      "Promote the two estimated target-fund charges if they are ever published",
       "Record what changed and why, against the prior week"]],
-    ["Source scrub &amp; fact-check", "Sunday 11:07 PHT",
-     "Takes every numeric claim on this page and re-verifies it against the primary source, not a secondary quote of it.",
-     ["Re-fetch each cited central bank, statistical agency and fund document",
-      "Diff every figure against what is published on the page",
-      "Promote the two estimated target-fund charges to published values if disclosed",
-      "Mark any claim whose source has gone stale, moved or changed"]],
-    ["Math, code &amp; sanity audit", "Sunday 16:11 PHT",
-     "Re-runs the model engine end to end and re-executes the full check suite before anything is republished.",
-     ["Re-run the engine and diff every output against the last run",
-      "Execute all 17 automated checks — weights, granularity, vol-curve shape, diversification",
+    ["Math, code and sanity audit", "Sunday 16:11 PHT",
+     "Audits the morning run. Re-executes the model end to end, re-derives the mathematics by hand, and checks that this page and the repository still agree.",
+     ["Confirm the published page still matches the engine, figure for figure",
+      "Re-derive the volatility integration and drawdown calibration independently",
+      "Execute the full automated check suite — weights, granularity, curve shape, diversification",
       "Re-validate the chart palette for colour-vision safety",
       "Review the diff, log any error found, fix it, and record the fix"]]
   ];
