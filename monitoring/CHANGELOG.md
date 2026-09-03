@@ -3,6 +3,76 @@
 Newest first. Each Sunday job appends here. Every error found gets recorded
 before it gets fixed.
 
+## 2026-09-03 — Audit: three real bugs found and fixed
+
+Full adversarial audit run by hand rather than by firing the routine. Every
+figure was re-derived from first principles by a script that reads only
+`model/data.json` — it never imports the engine's own functions, so the engine
+cannot mark its own homework. 120+ independent assertions.
+
+### Bug 1 — peso figures did not reconcile with the page's own CAGR
+
+`summarise()` compounded the RAW return while the page displayed the ROUNDED
+one, so a reader multiplying out the printed CAGR could not reproduce the printed
+peso value. The optimised portfolio showed 7.64% and P1,445,237, but
+1,000,000 x 1.0764^5 = P1,445,002 — a **P235 gap with no visible explanation**,
+and P462 on the trough row. On a page whose footer promises "all figures
+computed from the published model engine", a figure the reader cannot check is
+a defect. Terminal and trough are now compounded from the displayed values, so
+the arithmetic ties out exactly.
+
+### Bug 2 — the optimiser admitted portfolios over its own drawdown budget
+
+Feasibility tested `round(d, 1) <= DD_CAP`, so a portfolio with a true drawdown
+of −18.5099% displayed as −18.5% and was admitted against an 18.5% cap. Four
+portfolios were inside the feasible set that should not have been, exceeding the
+budget by up to 0.017pp. **The winner was unaffected** — 15/45/35/5 is still the
+max-CAGR point under either test, verified independently — but a constraint that
+says "<=" must actually mean it. Now tested on the true value.
+
+### Bug 3 — dead code
+
+`IDX`, a fund-id-to-index map, was built on every run and never read. Removed.
+
+### Regression checks added (16 -> 19)
+
+- peso figures reconcile with the displayed CAGR and drawdown
+- no chosen portfolio exceeds the drawdown budget
+- the optimum really is the max-CAGR point inside the budget
+
+### What was checked and found correct
+
+- **Volatility integration.** All four horizons re-derived with a 200,000-step
+  Riemann sum against the engine's 4,000 — agreement to <0.02pp. Realised-equivalent,
+  1-sigma and 2-sigma moves all consistent.
+- **Drawdown calibration.** Still reproduces −20.2% for the S&P 500 and −33.1%
+  for the Nasdaq-100 on their historical sigma/mu.
+- **Correlation matrix.** Symmetric, unit diagonal, all |rho| <= 1, and positive
+  semi-definite by Cholesky.
+- **Portfolio variance.** Quadratic form re-derived for both portfolios; matches.
+- **Optimiser.** 969 portfolios enumerated independently — count matches exactly,
+  and the chosen point is confirmed optimal inside the budget.
+- **Frontier.** Drawdowns strictly increasing, every point 5%-granular and summing
+  to 100, optimised portfolio sits on the edge.
+- **Gauge and regions.** Composite, all four horizon blends, the ACWI-IT mix
+  weighting and every regional tilt re-derived from scratch; all match.
+- **Fees.** gross − fees = net, and the four tilt components sum to the total,
+  for all four funds.
+- **39 hard-coded prose figures** cross-checked against the payload. **Zero stale.**
+- **Plausibility.** Money market drawdown cash-like at −0.5%, no fund CAGR above
+  15% or below 0, portfolio CAGR does not exceed its best component, portfolio
+  drawdown shallower than its worst.
+- **Page.** JS parses, no runtime errors, no SVG label outside its viewBox, no
+  horizontal scroll at 412px, light theme holds, 26 https sources.
+- **Palette.** Still passes colour-vision validation under `--pairs all`.
+
+### Standing risk, not a bug
+
+53 numeric literals live in the page's authored prose rather than coming from the
+engine. All 39 checkable ones are currently correct, but this is structurally how
+the "17 automated checks" error got in last time. The prose-vs-payload cross-check
+above is now part of the audit and should be re-run every week.
+
 ## 2026-09-03 — Consolidated to two jobs; house cleanup
 
 The three-job schedule is now two. The old "source scrub & fact-check" job

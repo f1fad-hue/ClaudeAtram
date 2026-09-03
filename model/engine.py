@@ -311,7 +311,6 @@ def build_fund(f):
     }
 
 F = [build_fund(f) for f in FUNDS]
-IDX = {f["id"]: i for i, f in enumerate(F)}
 
 # ---- Correlation matrix -----------------------------------------------------
 # Order: ATRPHMM, ATRQIAP, ATRASEQ, ATRGTEC
@@ -351,13 +350,18 @@ def port_dd(w, key):
 
 def summarise(w, key):
     r, v, d = port_ret(w, key), port_vol(w), port_dd(w, key)
+    # The peso illustration is computed from the ROUNDED figures the page shows,
+    # not the raw ones, so a reader who multiplies out the displayed CAGR gets
+    # exactly the peso number printed beside it. Using the raw values instead
+    # left a ~P235 gap that nobody could reconcile. (Audit 2026-09-03.)
+    r_d, d_d = round(r, 2), round(d, 1)
     return {
         "weights": [round(x * 100, 1) for x in w],
-        "cagr": round(r, 2), "vol": round(v, 2), "maxdd": round(d, 1),
+        "cagr": r_d, "vol": round(v, 2), "maxdd": d_d,
         "ret_per_dd": round(r / abs(d), 3) if d else None,
         "sharpe_like": round((r - MACRO["ph_tbill_364"]) / v, 3),
-        "terminal_1m": round(1_000_000 * (1 + r / 100) ** 5),
-        "trough_1m": round(1_000_000 * (1 + d / 100)),
+        "terminal_1m": round(1_000_000 * (1 + r_d / 100) ** 5),
+        "trough_1m": round(1_000_000 * (1 + d_d / 100)),
     }
 
 # ----------------------------------------------------------------------------
@@ -468,7 +472,13 @@ DD_BUDGET_IMPROVEMENT = 2.0
 DD_CAP = abs(BASE_UNDER_MACRO["maxdd"]) - DD_BUDGET_IMPROVEMENT
 
 ALL = enumerate_portfolios("net_macro")
-FEASIBLE = [(w, s) for w, s in ALL if abs(s["maxdd"]) <= DD_CAP]
+# Test the TRUE drawdown, not the rounded one the page displays. Filtering on
+# round(d, 1) admitted portfolios up to 0.05pp over the stated budget - four of
+# them, at the last audit - because -18.5099 displays as -18.5. The winner was
+# unaffected, but a constraint that says "<= cap" must actually mean it.
+# (Audit 2026-09-03.)
+FEASIBLE = [(w, s) for w, s in ALL
+            if abs(port_dd(w, "net_macro")) <= DD_CAP + 1e-9]
 FEASIBLE.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
 OPT_W, OPT = FEASIBLE[0]
 OPT_UNDER_BASE = summarise(OPT_W, "net_base")
@@ -691,6 +701,19 @@ def report():
                    all(v["kind"] == "gap" or v["rows"] for v in lt.values())))
     checks.append(("JEPQ top-10 weights are plausible (sum 30-60%)",
                    30 <= sum(r[1] for r in lt["ATRQIAP"]["rows"]) <= 60))
+    # regression: peso figures must be reproducible from the displayed numbers
+    def _ties(m):
+        return (abs(1_000_000 * (1 + m["cagr"] / 100) ** 5 - m["terminal_1m"]) < 1.0
+                and abs(1_000_000 * (1 + m["maxdd"] / 100) - m["trough_1m"]) < 1.0)
+    checks.append(("peso figures reconcile with the displayed CAGR and drawdown",
+                   _ties(p["baseline"]["under_macro"]) and _ties(p["optimized"]["macro"])))
+    # regression: no feasible portfolio may exceed the stated drawdown budget
+    cap = p["optimized"]["dd_cap"]
+    checks.append(("no chosen portfolio exceeds the drawdown budget",
+                   abs(port_dd(OPT_W, "net_macro")) <= cap + 1e-9))
+    checks.append(("optimum is the max-CAGR point inside the budget",
+                   all(s2["cagr"] <= p["optimized"]["macro"]["cagr"] + 1e-9
+                       for w2, s2 in FEASIBLE)))
     checks.append(("portfolio vol < weighted-average vol (diversification works)",
                    o["macro"]["vol"] < sum(w/100*f["vol"] for w, f in zip(o["weights"], p["funds"]))))
     for name, ok in checks:
