@@ -3,6 +3,54 @@
 Newest first. Each Sunday job appends here. Every error found gets recorded
 before it gets fixed.
 
+## 2026-09-03 — Jobs 2 and 3 smoke test: both lost their work
+
+Fired together at 23:27 UTC on 2026-09-02, after the rate-limit window reset.
+
+| Job | Model | Outcome | Pushed | Republished |
+|---|---|---|---|---|
+| 2 source scrub | Sonnet 5 | stalled 23:39, resumed ~06:10, **completed** 06:17 | **no** | no |
+| 3 math & code audit | Opus 5 | **failed** 23:40 on the five-hour limit | no | no |
+
+Job 3 died 13 minutes in. Job 2 sat frozen on the limit for ~6.5 hours, resumed
+when the window reset, and finished — its usage moved from $5.93/72,343 output
+tokens to $7.39/77,459, so it did real work after resuming. It then pushed
+nothing. Its container is gone and, unlike job 1, there is no published artifact
+to recover it from: that research is simply lost.
+
+**No damage, though.** The repo/page drift check passes (payloads deep-equal),
+16/16 engine checks pass, the branch is clean at `3096b53`, and the artifact is
+untouched. That is the push-before-republish ordering working as intended — a
+run that dies now leaves nothing behind, instead of job 1's failure mode where
+the page moved ahead of the repo.
+
+### The finding that matters
+
+**Job 2 ran with the hardened brief and still did not push.** That brief already
+said, in capitals, that a republish without a matching commit is a failed run and
+that the report must state the pushed SHA. Instruction-only enforcement is not
+enough when the commit is the LAST step of a long run: the run may never reach
+its last step.
+
+Root cause is structural, not motivational. So all three briefs are rewritten
+again around **commit early, commit often**:
+
+- first push must land within 15 minutes, before the work is finished;
+- push after every phase, or every few claims, not once at the end;
+- explicit statement that there may be no end of run, because the five-hour
+  limit stalls or kills a session without warning.
+
+A run that dies half-way should now leave half its work safely on the branch.
+
+### Tally for the day
+
+Six job runs attempted, one produced usable output (job 1's Opus run), and even
+that needed hand recovery. Every failure traces to the same five-hour rate-limit
+window rather than to the jobs themselves. Three research jobs do not fit in one
+window on any model. The Sunday schedule spaces them five hours apart, which is
+the configuration that has never actually been tried — every manual test has
+crammed them together.
+
 ## 2026-09-02 — Job 1 run on Opus: good work, but it never pushed
 
 Job 1 was fired alone at 18:26 UTC on `claude-opus-5` (session

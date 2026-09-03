@@ -47,6 +47,13 @@ so the link the user holds never changes.
 2. Every allocation weight ends in **5 or 0** and each portfolio sums to **100**.
 3. Every figure on the page comes from `model/engine.py`. If a number is typed
    into `dashboard.html` by hand, it is a bug — move it into the engine.
+3a. **Commit early, commit often.** The first push must land within 15 minutes
+   and work must be pushed after each phase, never batched into one final commit.
+   The five-hour rate limit stalls or kills a run without warning, so a job may
+   never reach its last step. On 2026-09-02 two jobs completed their research and
+   lost all of it this way — one of them while running a brief that already
+   demanded a push in capitals. Instruction alone does not fix a last-step
+   failure; frequent pushes do.
 3b. **Push BEFORE you republish, always.** The repo is the source of truth; the
    artifact is a rendering of it. Republishing without pushing leaves the engine
    unable to reproduce the live page, which happened on 2026-09-02 and had to be
