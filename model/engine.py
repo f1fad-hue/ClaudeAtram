@@ -14,7 +14,7 @@ Run:  python3 engine.py            -> human-readable audit report
 import json, math, sys
 from itertools import product
 
-AS_OF = "2026-09-02"
+AS_OF = "2026-09-03"
 
 # ----------------------------------------------------------------------------
 # 1. VERIFIED INPUTS  (source-cited; see SOURCES dict at bottom)
@@ -26,10 +26,13 @@ MACRO = {
     "fed_vote": '9-3 hold (3 dissents for a HIKE)',
     "us_cpi_headline": 3.4,
     "us_cpi_core": 2.5,
+    "us_pce_12m": 3.7, "us_pce_6m": 4.1, "ust_10y": 4.76,
+    "fed_hike_odds_sep": 66.2, "ecb_sep_expected": 2.50,
     "us_payrolls_jul": -23000,
     "us_unemployment": 4.1,
     "ecb_depo": 2.25,
     "ecb_last_move_bp": 25,
+    "ea_hicp_aug": 3.3, "ea_hicp_jul": 2.9, "ea_energy_aug": 14.3,
     "ea_hicp_2026": 3.0,
     "ea_hicp_2027": 2.3,
     "ea_hicp_2028": 2.0,
@@ -37,7 +40,7 @@ MACRO = {
     "bsp_last_move_bp": 25,
     "bsp_hikes_since_apr": 3,
     "bsp_cum_bp": 75,
-    "ph_cpi_jul": 6.2,
+    "ph_cpi_jul": 6.2, "ph_core_jul": 4.2,
     "ph_cpi_jun": 6.4,
     "bsp_infl_2026": 6.1,
     "bsp_infl_2027": 5.4,
@@ -47,7 +50,7 @@ MACRO = {
     "ph_tbill_364": 5.717,
     "brent": 94.86,
     "brent_mom": 13.24,
-    "brent_yoy": 40.33,
+    "brent_yoy": 40.33, "hormuz_transits": 5, "hormuz_avg_10d": 14,
     "vix_spot": 16.44,
     "vix_1m_avg": 15.28,
     "vix_1m_low": 14.13,
@@ -136,11 +139,11 @@ HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, "5Y": 0.30}
 REGIONS = {
     "US": {
         "3M": 5.0, "6M": 5.5, "12M": 6.0, "5Y": 6.5,
-        "why": "Cut across the near horizons on the September bond rout: the 10-year yield is at a near-3-year high and the market now prices TWO hikes (Sep-16 and Dec), not a hold. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% still contained - the one clean anchor - but headline 3.4% faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
+        "why": "Cut across the near horizons on the September bond rout: the 10-year sits at 4.76%, near a 3-year high, and CME FedWatch prices a Sep-16 hike at ~66% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
     },
     "EUROPE": {
         "3M": 3.0, "6M": 3.5, "12M": 4.0, "5Y": 4.5,
-        "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is now close to fully priced, all into IMF growth of just 0.7% for 2026 (from 1.1%). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
+        "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
     },
     "ASIA": {
         "3M": 5.5, "6M": 6.5, "12M": 7.0, "5Y": 7.5,
@@ -148,7 +151,7 @@ REGIONS = {
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, "5Y": 5.5,
-        "why": "MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.565, its fourth record low running. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
+        "why": "MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.565, its fourth record low running. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
     },
 }
 for r in REGIONS.values():
@@ -160,9 +163,9 @@ for r in REGIONS.values():
 
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 3.5,
-     "Tightening is no longer a bias, it is happening. BSP hiked to 5.00% on 27 Aug (third consecutive, +75bp cumulative), an ECB hike to 2.50% on 10 Sep is close to fully priced, and the market now prices TWO Fed hikes rather than the hold the July 9-3 vote delivered. The US 10-year is at a near-3-year high and global bond markets sold off hard on 2 Sep."),
-    ("Inflation trajectory", 0.15, 3.5,
-     "Downgraded on energy and on a Philippine print far worse than this model previously assumed. US core 2.5% remains the one clean anchor; US headline 3.4% now faces Brent +40% y/y. Euro HICP 3.0% for 2026. PH printed 6.2% in July and BSP RAISED its 2027 forecast to 5.4% from 4.5% on El Nino and wage pass-through."),
+     "Tightening is happening, though less of it is priced than this model previously claimed. CME FedWatch puts a 25bp Sep-16 hike at ~66%, up from ~56% before Chair Warsh's hawkish Jackson Hole remarks - but a SECOND hike, fully priced for December a week ago, has slipped to January 2027. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep, which a Reuters poll of economists calls the second and final move of its shortest hiking campaign in 15 years. BSP is at 5.00% after three consecutive hikes. US 10-year 4.76%."),
+    ("Inflation trajectory", 0.15, 3.0,
+     "Cut again: the clean anchor this model leaned on has gone. US core CPI at 2.5% looked contained, but PCE - the measure the Fed actually targets - is running 3.7% over 12 months and 4.1% annualised over 6, which is what Warsh cited at Jackson Hole. Euro HICP jumped to 3.3% in August from 2.9%, on energy at +14.3% y/y (Eurostat flash, 1 Sep). PH headline 6.2% in July with core easing to 4.2%, and BSP's own 2027 forecast raised to 5.4%. Three of three blocs are re-accelerating on the same energy shock."),
     ("Growth momentum", 0.15, 5.0,
      "IMF April WEO unchanged and still current: global 3.1% (2026) / 3.2% (2027), US resilient at 2.4%, euro area cut to 0.7%. Trimmed because a Brent move to $95 is a straight tax on every net-importing economy in Europe and Asia. Wide dispersion - a stock-picker's macro, not a beta macro."),
     ("Corporate earnings", 0.2, 7.5,
@@ -172,7 +175,7 @@ DRIVERS = [
     ("Volatility & risk appetite", 0.1, 4.0,
      "The complacency trade has started to break, exactly as the curve said it would. VIX printed a 2026 low of 14.13 on 28 Aug and closed 2 Sep at 16.44, +10.2% on the day, against a futures curve already in contango (Sep 17.92, Dec 20.38). Still below the 19.5 long-run anchor, so there is more room to unwind than to fall - the risk the curve priced is now arriving rather than merely implied."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "Sharply worse and the weakest link by a wide margin. Two Saudi supertankers were struck in the Strait of Hormuz on 31 Aug; the US hit roughly 100 Iranian targets on 1 Sep and then struck Iranian tankers for the first time on 2 Sep under a new 'tanker for tanker' policy. Brent $94.86, +13.2% in a month and +40.3% y/y, after a Q1 spike to $118. This is the Hormuz scenario beginning to run, not a hypothetical."),
+     "Still the weakest link by a wide margin, and now measurable in the shipping data rather than only the headlines: commodity transits through the Strait held at roughly 5 vessels against a 10-day average of 14 - a two-thirds collapse in throughput. Two Saudi supertankers were struck on 31 Aug, the US hit ~100 Iranian targets on 1 Sep and struck Iranian tankers on 2 Sep under a 'tanker for tanker' policy. Brent $94.86, +40.3% y/y. Held at 1.5 rather than cut further only because Qatari and Omani mediation is live and Tehran has signalled it would return to the June interim terms."),
 ]
 GAUGE = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -544,6 +547,21 @@ SOURCES = [
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260611~4d41bd5e83.en.html"),
     ("Bangko Sentral ng Pilipinas", "Key rates - RRP 5.00% after the 27 August 2026 hike, a third consecutive move and +75bp cumulative since April",
      "https://www.bsp.gov.ph/SitePages/Statistics/KeyRates.aspx"),
+    ("Eurostat", "Flash estimate, 1 September 2026 - euro area annual inflation 3.3% in "
+     "August, up from 2.9% in July, energy +14.3% y/y",
+     "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-01092026-ap"),
+    ("CME Group / FedWatch", "Fed funds futures - ~66% implied probability of a 25bp hike "
+     "at the 16 September 2026 FOMC; the second hike has slipped to January 2027",
+     "https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html"),
+    ("CNBC", "Jackson Hole roundup - Chair Warsh cites PCE at 3.7% over 12 months and 4.1% "
+     "annualised over 6, lifting September hike odds",
+     "https://www.cnbc.com/2026/08/31/jackson-hole-fed-chair-kevin-warsh-hawkish-rate-hikes-analysts.html"),
+    ("Reuters (via Investing.com)", "Economist poll - ECB to raise a second time in September "
+     "to 2.50%, then done; shortest hiking campaign in 15 years",
+     "https://www.investing.com/news/economy-news/ecb-to-raise-rates-a-second-time-in-september-but-then-done-say-economists-reuters-poll-4887563"),
+    ("Bloomberg", "Oil market news, 3 September 2026 - Hormuz commodity transits ~5 vessels "
+     "against a 10-day average of 14",
+     "https://www.bloomberg.com/news/articles/2026-09-02/latest-oil-market-news-and-analysis-for-sept-3"),
     ("Philippine Statistics Authority", "Consumer Price Index - headline inflation 6.2% y/y in July 2026, eased from 6.4% in June",
      "https://psa.gov.ph/price-indices/cpi-ir"),
     ("European Central Bank", "Monetary policy decision, 23 July 2026 - deposit rate HELD at 2.25% after the June hike",

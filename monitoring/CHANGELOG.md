@@ -2,6 +2,80 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-03 — Manual review: two factual errors corrected
+
+Full review run by hand: macro refresh, source fact-check, independent maths
+audit, code review and cleanup. As-of moved 2026-09-02 -> 2026-09-03.
+
+### Error 1 — the page overstated how much Fed tightening was priced
+
+Both the US regional rationale and the monetary-policy driver note claimed **"the
+market now prices TWO hikes (Sep-16 and Dec), not a hold"**, and the report
+repeated it as "two more Fed hikes rather than a hold". That was wrong.
+
+CME FedWatch puts the 16 September hike at roughly **66%** — one move. A December
+hike *was* fully priced about a week ago but has since **slipped to January 2027**.
+Two hikes is a house view (Barclays), not market pricing. The claim made the
+hawkish read look more certain than the market actually is, in a portfolio whose
+biggest single call is cutting long-duration tech because of that hawkishness.
+Corrected in the engine and in the report prose.
+
+### Error 2 — "core CPI 2.5% is the one clean anchor" no longer held
+
+The model leaned on contained US core CPI as the offsetting good news in an
+otherwise hostile inflation picture. But **PCE — the measure the Fed actually
+targets — is running 3.7% over twelve months and 4.1% annualised over six**,
+which is precisely what Chair Warsh cited at Jackson Hole to justify a hawkish
+turn. Leaning on core CPI while ignoring PCE was cherry-picking the friendlier
+gauge. The inflation driver is cut **3.5 -> 3.0** and the rationale now leads
+with PCE.
+
+### New verified data
+
+| Input | Value | Source |
+|---|---|---|
+| Euro area HICP, Aug flash | **3.3%**, up from 2.9% | Eurostat, 1 Sep |
+| Euro area energy inflation | **+14.3%** y/y, from 10.3% | Eurostat |
+| ECB 10 Sep expectation | +25bp to 2.50%, then done | Reuters poll |
+| US PCE | 3.7% / 4.1% ann. | via CNBC Jackson Hole |
+| US 10-year | 4.76% | market data |
+| PH core inflation, Jul | 4.2%, from 4.4% | PSA |
+| Hormuz transits | ~5 vessels vs 14 10-day avg | Bloomberg |
+
+Sources 26 -> 31, all https, no duplicates.
+
+### Effect on the portfolio: none
+
+Gauge **4.78 -> 4.70**. Both allocations unchanged at **20/30/25/25** and
+**15/45/35/5**; forecasts unchanged at 7.48% / -20.5% and 7.64% / -18.5%.
+
+Worth being explicit about why: the seven drivers feed the **gauge only**. Fund
+tilts come from the regional scores and the volatility, rate and energy channels,
+none of which moved materially in one day. A driver rescore is a change to the
+summary judgement, not to the allocation mechanism. That separation is by design
+— but it does mean the gauge can drift without the weights responding, which a
+reader should understand.
+
+### Audit — clean
+
+Independent re-derivation (reads only `model/data.json`, never imports the
+engine): **0 failures, 0 warnings.** Volatility integration re-derived at 200,000
+steps; drawdown calibration still -20.2% S&P / -33.1% NDX; correlation matrix
+positive semi-definite; 969 portfolios enumerated independently with matching
+count and confirmed optimum; gauge, blends and every regional tilt re-derived;
+fee arithmetic exact. Engine **19/19**.
+
+**31 prose figures cross-checked against the payload — zero stale**, including
+confirmation that no "two hikes" claim survives anywhere.
+
+Page renders clean at 412px: no JS errors, no SVG label outside its viewBox, no
+horizontal scroll, light theme holds, 31 sources linked. Palette still passes
+colour-vision validation under `--pairs all`.
+
+### House cleanup
+
+`model/__pycache__` removed; working tree clean; 8 tracked files.
+
 ## 2026-09-03 — Automation deleted; review is now manual
 
 At the owner's request, both Sunday routines were deleted:
