@@ -49,8 +49,16 @@ Every figure on the page is computed by the engine. Change an input in the
 
 ## Weekly monitoring
 
-Three Claude Code routines run every Sunday — macro relevance, source
-fact-check, and a math/code/sanity audit. See `monitoring/README.md`.
+Two Claude Code routines run every Sunday:
+
+| Sunday PHT | Job | Model |
+|---|---|---|
+| 06:03 | Macro relevance + source fact-check | Sonnet 5 |
+| 16:11 | Math, code and sanity audit | Opus 5 |
+
+Job 1 gathers and updates; job 2 audits what job 1 did. They are ~10 hours apart
+because the account rate limit is a five-hour rolling window and concurrent runs
+exhaust it. See `monitoring/README.md`.
 
 ## Disclaimer
 

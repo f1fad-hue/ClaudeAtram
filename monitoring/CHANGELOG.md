@@ -3,6 +3,52 @@
 Newest first. Each Sunday job appends here. Every error found gets recorded
 before it gets fixed.
 
+## 2026-09-03 — Consolidated to two jobs; house cleanup
+
+The three-job schedule is now two. The old "source scrub & fact-check" job
+(11am, `trig_01QdvbeW9nq3kDzeUa93R2Ww`) is **deleted**; its work is folded into
+the 6am job as Phase C.
+
+| # | Job | Sunday PHT | Cron (UTC) | Model |
+|---|---|---|---|---|
+| 1 | Macro relevance + source fact-check | 06:03 | `3 22 * * 6` | Sonnet 5 |
+| 2 | Math, code and sanity audit | 16:11 | `11 8 * * 0` | Opus 5 |
+
+### Why
+
+Two reasons, both evidenced by this week's failures.
+
+**Rate limit.** The account limit is a five-hour rolling window and three
+research-heavy sessions do not fit in one. Six runs were attempted on 2026-09-02
+and exactly one produced usable output; every failure was the limit, not the
+jobs. Two jobs ~10 hours apart give each its own window with room to spare.
+
+**Duplicated research.** The macro refresh and the fact-check were both
+re-reading the same central-bank and fund-manager sources. Merging them removes
+a whole pass over the same material.
+
+Job 1 now runs in four phases — macro refresh, re-score and re-optimise, source
+fact-check, then validate/publish — pushing after each. Job 2 audits job 1's
+output and has an explicit new step: confirm job 1 actually pushed rather than
+only republishing.
+
+### House cleanup
+
+- Deleted the redundant 11am routine.
+- Removed `model/__pycache__/` (untracked build residue).
+- Rewrote `monitoring/README.md` and the root `README.md` for the two-job
+  system; removed the stale three-job schedule tables.
+- Fixed a routine name that had been stored HTML-escaped (`&amp;`).
+- Repo is now 8 tracked files: the engine, its generated payload, the page, and
+  four docs. Nothing else.
+
+### Left alone deliberately
+
+Three unrelated routines on this account belong to a different project
+(`ClaudeBinance`) and were not touched. They fire Sundays at 06:02, 11:06 and
+16:05 UTC. Job 2 fires at 08:11 UTC, which sits between two of them — if
+rate-limit failures recur on Sundays, that interleaving is the first suspect.
+
 ## 2026-09-03 — Jobs 2 and 3 smoke test: both lost their work
 
 Fired together at 23:27 UTC on 2026-09-02, after the rate-limit window reset.
