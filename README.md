@@ -47,18 +47,11 @@ python3 model/engine.py --json    # regenerate model/data.json
 Every figure on the page is computed by the engine. Change an input in the
 `VERIFIED INPUTS` block and everything downstream recomputes.
 
-## Weekly monitoring
+## Keeping it current
 
-Two Claude Code routines run every Sunday:
-
-| Sunday PHT | Job | Model |
-|---|---|---|
-| 06:03 | Macro relevance + source fact-check | Sonnet 5 |
-| 16:11 | Math, code and sanity audit | Opus 5 |
-
-Job 1 gathers and updates; job 2 audits what job 1 did. They are ~10 hours apart
-because the account rate limit is a five-hour rolling window and concurrent runs
-exhaust it. See `monitoring/README.md`.
+There is no automation — the review is manual. `monitoring/README.md` is the
+runbook, `monitoring/CLAIMS.md` the checklist of every figure and its source, and
+`monitoring/CHANGELOG.md` the history including every bug found and fixed.
 
 ## Disclaimer
 

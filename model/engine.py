@@ -412,7 +412,7 @@ LOOKTHROUGH = {
                 "Pacific ex-Japan equities.",
         "rows": [],
         "unit": None,
-        "source": "gap recorded rather than filled - Sunday job 2 retries weekly",
+        "source": "gap recorded rather than filled - retry at each manual review",
     },
     "ATRGTEC": {
         "dp": 2,

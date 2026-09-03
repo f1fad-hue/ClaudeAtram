@@ -409,7 +409,7 @@
    "note": "The JPMorgan Asia Equity Dividend Fund's current holdings could not be verified from a primary source. The most recent published holdings reachable were from 2023 and are too stale to show. What is verified is the mandate: at least 70% in dividend-paying Asia Pacific ex-Japan equities.",
    "rows": [],
    "unit": null,
-   "source": "gap recorded rather than filled - Sunday job 2 retries weekly"
+   "source": "gap recorded rather than filled - retry at each manual review"
   },
   "ATRGTEC": {
    "dp": 2,

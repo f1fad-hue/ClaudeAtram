@@ -743,10 +743,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   </section>
 
   <section>
-    <p class="eyebrow">Automated monitoring</p>
-    <h2>Two jobs, every Sunday</h2>
-    <p>Nothing on this page is allowed to quietly go stale. One run gathers and
-      updates in the morning; a second audits its work that afternoon.</p>
+    <p class="eyebrow">Keeping this current</p>
+    <h2>Reviewed by hand</h2>
+    <p>There is no automated refresh. Everything below is the review this page
+      needs to stay honest, written out so it can be worked through deliberately.
+      The figures carry the as-of date in the header — treat anything older than
+      a week as a forecast built on stale inputs.</p>
     <div class="card" id="monitors"></div>
   </section>
 
@@ -1220,7 +1222,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "note": "The JPMorgan Asia Equity Dividend Fund's current holdings could not be verified from a primary source. The most recent published holdings reachable were from 2023 and are too stale to show. What is verified is the mandate: at least 70% in dividend-paying Asia Pacific ex-Japan equities.",
    "rows": [],
    "unit": null,
-   "source": "gap recorded rather than filled - Sunday job 2 retries weekly"
+   "source": "gap recorded rather than filled - retry at each manual review"
   },
   "ATRGTEC": {
    "dp": 2,
@@ -2548,25 +2550,36 @@ function donut(host, w, title, cagr, dd) {
 /* ---------------- monitoring ---------------- */
 (function () {
   const M = [
-    ["Macro relevance + source fact-check", "Sunday 06:03 PHT",
-     "Re-derives the driver scores, the regional rankings and the volatility term structure from current data, re-runs the optimiser, then re-verifies every numeric claim on this page against its primary source.",
-     ["Pull live policy rates, CPI prints, the VIX complex and Brent",
-      "Re-score every driver and region across 3M / 6M / 12M / 5Y",
-      "Re-run all 969 allocations; flag any weight that moves by 5pp or more",
-      "Re-verify each claim at the issuing institution, never an aggregator",
-      "Promote the two estimated target-fund charges if they are ever published",
-      "Record what changed and why, against the prior week"]],
-    ["Math, code and sanity audit", "Sunday 16:11 PHT",
-     "Audits the morning run. Re-executes the model end to end, re-derives the mathematics by hand, and checks that this page and the repository still agree.",
-     ["Confirm the published page still matches the engine, figure for figure",
+    ["Refresh the macro inputs", "Start here",
+     "Every downstream number is a function of these. Refresh them first, from the issuing institution rather than an aggregator, then let the engine recompute.",
+     ["Policy rates: Federal Reserve, ECB, BSP",
+      "Prices: US CPI (BLS), PH CPI (PSA), Brent",
+      "The VIX complex: spot plus the two nearest futures",
+      "PH T-bill curve and the USD/PHP rate",
+      "Leave a value untouched and mark it stale rather than guess at it"]],
+    ["Re-score and re-optimise", "After the inputs move",
+     "Scores are judgements, so they need re-arguing, not just recomputing. Change a score only alongside the reason for it.",
+     ["Re-score the seven drivers and the four regions across 3M / 6M / 12M / 5Y",
+      "Rewrite each region's rationale to cite the new evidence",
+      "Re-run the optimiser; weights stay multiples of 5 and hold all four funds",
+      "Any allocation move of 5pp or more deserves an explicit justification"]],
+    ["Re-verify the claims", "Weekly if you can",
+     "The claim register lists every figure on this page with its source and the date it was last checked. Work down it.",
+     ["Confirm each figure at its primary source, never a secondary quote",
+      "The two estimated target-fund charges are still estimates — check for a published OCF",
+      "The Asia Equity holdings are still a declared gap — fill it only from a primary source",
+      "Do not upgrade a claim's provenance unless you actually opened the document"]],
+    ["Audit the maths and the page", "Before republishing",
+     "The engine checks itself, but a check can encode a false assumption. Interrogate the checks, not just their output.",
+     ["Run the engine — every check must pass, and never loosen one to get green",
+      "Confirm the published page and the engine still agree, figure for figure",
       "Re-derive the volatility integration and drawdown calibration independently",
-      "Execute the full automated check suite — weights, granularity, curve shape, diversification",
-      "Re-validate the chart palette for colour-vision safety",
-      "Review the diff, log any error found, fix it, and record the fix"]]
+      "Cross-check the figures written into the page's prose against the payload",
+      "Render at phone width: no overflow, no clipped labels, no console errors"]]
   ];
   $("#monitors").innerHTML = M.map(([h, w, p, li], i) =>
     `<div class="mon"><span class="idx">${i+1}</span><div class="mb">
-      <h4>${h}</h4><span class="when">↻ ${w} · weekly</span>
+      <h4>${h}</h4><span class="when">${w}</span>
       <p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>`).join("");
 })();
 

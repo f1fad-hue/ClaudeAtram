@@ -1,7 +1,46 @@
 # Changelog
 
-Newest first. Each Sunday job appends here. Every error found gets recorded
-before it gets fixed.
+Newest first. Every error found gets recorded before it gets fixed.
+
+## 2026-09-03 — Automation deleted; review is now manual
+
+At the owner's request, both Sunday routines were deleted:
+
+- `trig_01UxqDnGKQh8QML6z2fziamx` — Sun 6am, macro relevance + source fact-check
+- `trig_01WrfrLEAfdpzEpJjM8enrgN` — Sun 4pm, math, code and sanity audit
+
+Verified afterwards: **zero ATRAM routines remain active.** Eight spent one-shot
+check-ins survive with `enabled=false` and `ended_reason=run_once_fired`; they
+cannot fire and the default routines view hides fired one-shots, so they are
+invisible clutter rather than live automation.
+
+Three routines belonging to a **different project** (`ClaudeBinance`, Sundays at
+06:00 and 16:00 UTC) were deliberately **not** touched — they are outside this
+repo's scope and deleting them on an ambiguous instruction would have been
+destructive.
+
+### The page was claiming automation it no longer had
+
+Deleting the routines made the dashboard's own Report tab false: it still said
+"Two jobs, every Sunday" and described runs that would never happen. This is the
+same class of error as the stale "three jobs" section found earlier today — the
+page describing a maintenance regime that had changed underneath it.
+
+Rewritten as **"Reviewed by hand"**: a four-step runbook in the order the review
+should actually be done — refresh inputs, re-score and re-optimise, re-verify
+claims, audit before publishing — with an explicit statement that there is no
+automated refresh and that figures older than a week should be read as forecasts
+on stale inputs. The renderer's "↻ … · weekly" suffix was removed with it.
+
+One more stale promise, at source: the Asia Equity look-through gap note read
+"Sunday job 2 retries weekly". Now "retry at each manual review".
+
+A grep for `Sunday`, `auto run`, `weekly` and `↻` across the page and engine
+returns nothing. `monitoring/README.md` is now a manual runbook rather than an
+automation spec, and the root README matches.
+
+Verified after the change: engine 19/19, page renders clean at 412px with no JS
+errors, no SVG overflow and no horizontal scroll, 26 sources intact.
 
 ## 2026-09-03 — Audit: three real bugs found and fixed
 
