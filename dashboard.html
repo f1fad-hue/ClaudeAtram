@@ -406,6 +406,25 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     </div>
 
     <div class="card">
+      <h3>How this curve moves the allocation</h3>
+      <p>The term structure is not just description — it is one of the four inputs the
+        optimised portfolio is built from. The signal is the <strong>ramp</strong>: how far
+        the horizon-blended implied vol sits above spot, using the same
+        <span class="num">3M&nbsp;15% / 6M&nbsp;25% / 12M&nbsp;30% / 5Y&nbsp;30%</span>
+        weights as the regional blend. That is how much repricing the option market is
+        still pointing at.</p>
+      <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
+        font-size:12px;text-align:center;line-height:1.7;color:var(--ink)" id="rampline"></div>
+      <p style="margin-top:11px">Each sleeve then earns or pays that ramp according to a
+        structural sensitivity — a property of how the fund is built, not a view on the
+        market. Only the covered-call sleeve is <em>paid</em> by a rising ramp.</p>
+      <div class="tw"><table class="dt" id="voltilt"></table></div>
+      <p class="note">Until 5 September these tilts were hand-set constants: the curve was
+        computed and shown, but never actually fed the allocation. They are now derived, so
+        the optimised weights move when the volatility curve moves.</p>
+    </div>
+
+    <div class="card">
       <h3>Turning volatility into a drawdown number</h3>
       <p>Expected maximum drawdown over a rolling 5-year window is modelled as
         <span class="num">1.65&nbsp;&times;&nbsp;&sigma;&nbsp;&minus;&nbsp;0.50&nbsp;&times;&nbsp;&mu;</span>
@@ -494,8 +513,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <h2>Same four funds, two different bets</h2>
     <p class="lede">The <strong>baseline</strong> is what a 5-year horizon buys you with
       no view on the cycle: a liquidity buffer and three equity engines held near-equally.
-      The <strong>optimised</strong> portfolio takes the macro read seriously. Every
-      weight in both ends in 5 or 0.</p>
+      The <strong>optimised</strong> portfolio is built from four inputs, each blended
+      across 3, 6 and 12 months against the 5-year anchor: the <strong>broad macro
+      gauge</strong>, the <strong>correlated sentiment</strong> that maps each driver onto
+      each sleeve, the <strong>volatility term structure</strong>, and the
+      <strong>regional rankings</strong>. Every weight in both ends in 5 or 0.</p>
     <div class="vsgrid">
       <div class="dwrap">
         <div class="dt2">Portfolio A</div>
@@ -646,8 +668,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         <em>sells</em> volatility: when implied vol rises, the calls it writes fetch
         more premium. The Nasdaq Equity Income sleeve is therefore the single holding
         whose expected return <strong>improves</strong> along the exact path the futures
-        curve is pricing — worth an estimated <b class="num">+0.60pp</b> per year to its
-        forecast, the largest single tilt in the model.</p>
+        curve is pricing. That is not a hand-wave: the ramp is
+        <b class="num">+2.87</b> vol points, the sleeve's structural sensitivity is
+        <b class="num">+0.210pp</b> per point, and the product — <b class="num">+0.60pp</b>
+        per year — is the largest single tilt in the model. Move the curve and that number
+        moves with it.</p>
     </div>
 
     <div class="card">
@@ -968,6 +993,17 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "6M": 0.25,
   "12M": 0.3,
   "5Y": 0.3
+ },
+ "vol_channel": {
+  "blend": 19.31,
+  "spot": 16.44,
+  "ramp": 2.87,
+  "sens": {
+   "ATRPHMM": 0.035,
+   "ATRQIAP": 0.21,
+   "ATRASEQ": 0.0,
+   "ATRGTEC": -0.122
+  }
  },
  "drivers": [
   {
@@ -2147,7 +2183,7 @@ $("#corrnote").textContent = D.corr_note;
     F.map((f,i) => `<th><span class="swatch" style="background:${FC[i]}"></span>${f.short.split(" ")[0]}</th>`).join("") + `</tr>`));
   const rows = [
     ["Regional macro score", "tilt_regional"],
-    ["Volatility path 16.4 → 19.6", "tilt_vol"],
+    [`Volatility ramp ${D.vol_channel.spot.toFixed(1)} → ${D.vol_channel.blend.toFixed(1)}`, "tilt_vol"],
     ["Policy-rate / duration bias", "tilt_rates"],
     ["Energy shock &amp; geopolitics", "tilt_energy"],
   ];
@@ -2261,6 +2297,21 @@ function tipper(host) {
      <td>${v.realised.toFixed(2)}%</td><td>${v.move_1sd.toFixed(1)}%</td>
      <td>${v.move_2sd.toFixed(1)}%</td>`)));
   vt.appendChild(vb);
+
+  const VC = D.vol_channel;
+  $("#rampline").innerHTML =
+    `blended ${VC.blend.toFixed(2)}%  &minus;  spot ${VC.spot.toFixed(2)}  =  ` +
+    `<b style="color:var(--f2)">ramp ${VC.ramp >= 0 ? "+" : "−"}${Math.abs(VC.ramp).toFixed(2)} vol pts</b>`;
+  const vtt = $("#voltilt");
+  vtt.appendChild(el("thead", null,
+    `<tr><th>Sleeve</th><th>Sensitivity</th><th>× ramp</th><th>Tilt to 5y CAGR</th></tr>`));
+  const vtb = el("tbody");
+  F.forEach((f, i) => vtb.appendChild(el("tr", null,
+    `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+     <td>${VC.sens[f.id] >= 0 ? "+" : "−"}${Math.abs(VC.sens[f.id]).toFixed(3)}/pt</td>
+     <td>${VC.ramp.toFixed(2)}</td>
+     <td class="${cls(f.tilt_vol)}" style="font-weight:600">${f.tilt_vol === 0 ? "–" : sg(f.tilt_vol) + "pp"}</td>`)));
+  vtt.appendChild(vtb);
 
   const ft = $("#fvoltab");
   ft.appendChild(el("thead", null,

@@ -2,6 +2,63 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-05 — Volatility analysis now actually drives the optimiser
+
+The optimised portfolio was described as being built on macro sentiment,
+correlated sentiment and regional rankings. Volatility was analysed in depth on
+its own tab — a forward-variance integration across 3M / 6M / 12M / 5Y — but
+**it never fed the allocation.** Each fund's volatility tilt was a hard-coded
+constant (`vol_path: +0.60`, `-0.35`, and so on) sitting in the fund definitions.
+The regional tilt was properly derived as `(score − 5.5) × 0.30`; the volatility
+tilt was simply typed in.
+
+That is now fixed. The channel is:
+
+**ramp = horizon-blended implied vol − spot VIX**, using the same
+`3M 15% / 6M 25% / 12M 30% / 5Y 30%` weights as the regional blend. Today:
+`19.31% − 16.44 = +2.87 vol points` — how much repricing the option market is
+still pointing at.
+
+Each sleeve then earns or pays that ramp through a structural sensitivity, in pp
+of 5-year CAGR per vol point:
+
+| Sleeve | Sensitivity | Why |
+|---|---|---|
+| Nasdaq Equity Income | **+0.210** | writes calls on ~78% of a Nasdaq-100 book at ~1.22× market vol; premium scales with implied vol |
+| Global Technology | **−0.122** | highest vol beta (1.30) and longest-duration equity; a higher vol regime lifts the discount rate on distant cash flows |
+| Asia Equity | **0.000** | effects cancel — higher discount rate against an already-compressed 10.5× multiple and a duration-shortening dividend tilt |
+| Peso Money Market | **+0.035** | cash gains marginally as risk-off keeps the front end bid |
+
+These are properties of how each fund is built, not views on the market, and the
+sensitivities should change only if a fund's structure changes.
+
+**The output is unchanged.** The derived tilts reproduce the previous hand-set
+values exactly (+0.10 / +0.60 / 0.00 / −0.35), so allocations stay at
+**20/30/25/25** and **15/45/35/5** and forecasts stay at **7.50% / −20.5%** and
+**7.66% / −18.4%**. That was deliberate: the mechanism becomes genuine without an
+unexplained jump in the answer. What changes is that **the weights will now move
+when the volatility curve moves** — previously they could not.
+
+### Surfaced on the page
+
+- The Portfolios tab now names all four inputs the optimised portfolio is built
+  from, rather than the vague "takes the macro read seriously".
+- A new card in the Volatility tab shows the ramp arithmetic and the per-sleeve
+  sensitivity table, so a reader can see the curve turn into an allocation.
+- The correlated-sentiment transmission row is now labelled from live data
+  (`Volatility ramp 16.4 → 19.3`) instead of a typed string that would go stale.
+- The rationale no longer calls the +0.60pp tilt "an estimate" — it shows the
+  ramp, the sensitivity and their product.
+
+### Three new sanity checks (19 -> 22)
+
+- the ramp equals blended implied vol minus spot
+- every volatility tilt is derived from the ramp, not hand-set
+- the covered-call sleeve is the only one paid by a rising ramp
+
+Validation: engine **22/22**, independent re-derivation **0 failures**, all
+sixteen original requirements **16/16 PASS** plus four build-health checks.
+
 ## 2026-09-05 — Review: two releases landed, three defects fixed
 
 Full manual review: macro refresh, fact-check, independent maths audit, code

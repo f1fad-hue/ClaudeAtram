@@ -150,6 +150,17 @@
   "12M": 0.3,
   "5Y": 0.3
  },
+ "vol_channel": {
+  "blend": 19.31,
+  "spot": 16.44,
+  "ramp": 2.87,
+  "sens": {
+   "ATRPHMM": 0.035,
+   "ATRQIAP": 0.21,
+   "ATRASEQ": 0.0,
+   "ATRGTEC": -0.122
+  }
+ },
  "drivers": [
   {
    "name": "Monetary policy & liquidity",

@@ -22,7 +22,14 @@ T-bill curve and USD/PHP. Primary sources only. If one is unreachable, leave the
 prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
-3M / 6M / 12M / 5Y, then the 1–10 gauge. Never change a score without rewriting
+3M / 6M / 12M / 5Y, then the 1–10 gauge. The optimised portfolio is built from four
+inputs — the broad gauge, the correlated per-sleeve transmission, the **volatility
+ramp** (horizon-blended implied vol minus spot, same horizon weights as the regional
+blend) and the regional rankings. Two of those are derived rather than judged: the
+regional tilt is `(score − 5.5) × 0.30`, and each fund's volatility tilt is
+`ramp × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
+of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
+not because you have a view on the market. Never change a score without rewriting
 its rationale to cite the new evidence. Re-run the optimiser; weights stay
 multiples of 5, sum to 100, and hold all four funds.
 

@@ -139,6 +139,31 @@ SP_VOL_5Y = next(v["implied"] for v in VOL_TS if v["label"] == "5Y")
 
 HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, "5Y": 0.30}
 
+# ----------------------------------------------------------------------------
+# 3b. VOLATILITY RAMP - the optimiser's volatility channel
+#     Until 2026-09-05 each fund's volatility tilt was a hand-set constant: the
+#     term structure was computed and displayed, but never actually fed the
+#     allocation. It does now. The ramp is how far the horizon-blended implied
+#     vol sits ABOVE spot - i.e. how much repricing the option market is still
+#     pointing at - using the same horizon weights as the regional blend.
+# ----------------------------------------------------------------------------
+VOL_BLEND = sum(v["implied"] * HZ_W[v["label"]] for v in VOL_TS)
+VOL_RAMP  = VOL_BLEND - MACRO["vix_spot"]
+
+# Per-fund sensitivity, in pp of 5y CAGR per point of vol ramp. These are
+# structural properties of each sleeve, not judgements about the current market:
+#   ATRQIAP  +0.210  writes calls on ~78% of a Nasdaq-100 book whose own vol is
+#                    ~1.22x the market; premium scales with implied vol, so a
+#                    rising ramp is harvested income. The only sleeve paid by it.
+#   ATRGTEC  -0.122  highest vol beta (1.30) and the longest-duration equity
+#                    here; a higher vol regime lifts the discount rate on distant
+#                    cash flows and compresses the multiple.
+#   ATRASEQ   0.000  the two effects cancel - a higher discount rate hurts, but
+#                    at 10.5x forward the multiple is already compressed and the
+#                    dividend tilt shortens effective duration.
+#   ATRPHMM  +0.035  cash gains marginally as risk-off keeps the front end bid.
+VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122}
+
 REGIONS = {
     "US": {
         "3M": 5.5, "6M": 5.5, "12M": 6.0, "5Y": 6.5,
@@ -201,7 +226,7 @@ FUNDS = [
         "gross_local": 5.25,
         "gross_note": "5y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5 - a higher neutral than assumed in August because the inflation regime itself has shifted up (BSP 2027 forecast 5.4%).",
         "vol_beta": 0.021, "fx_exposed": False,
-        "macro_tilt": {"regional": None, "vol_path": +0.10, "rates": +0.25, "energy": +0.05},
+        "macro_tilt": {"regional": None, "rates": +0.25, "energy": +0.05},
         "dd_k_adj": 0.0, "cash_like": True,
     },
     {
@@ -215,7 +240,7 @@ FUNDS = [
         "gross_usd": 7.2,
         "gross_note": "NDX 5y total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.1 -> 19.4.",
         "vol_beta": 1.22 * 0.68, "fx_exposed": True,
-        "macro_tilt": {"regional": "US", "vol_path": +0.60, "rates": -0.10, "energy": -0.10},
+        "macro_tilt": {"regional": "US", "rates": -0.10, "energy": -0.10},
         "dd_k_adj": -0.10, "cash_like": False,
     },
     {
@@ -230,7 +255,7 @@ FUNDS = [
         "gross_usd": 8.3,
         "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
         "vol_beta": 1.05 * 0.92, "fx_exposed": True,
-        "macro_tilt": {"regional": "ASIA", "vol_path": 0.00, "rates": -0.05, "energy": -0.20},
+        "macro_tilt": {"regional": "ASIA", "rates": -0.05, "energy": -0.20},
         "dd_k_adj": +0.05, "cash_like": False,
     },
     {
@@ -246,7 +271,7 @@ FUNDS = [
         "gross_usd": 9.0,
         "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
         "vol_beta": 1.30, "fx_exposed": True,
-        "macro_tilt": {"regional": "GLOBAL_TECH", "vol_path": -0.35, "rates": -0.40, "energy": -0.15},
+        "macro_tilt": {"regional": "GLOBAL_TECH", "rates": -0.40, "energy": -0.15},
         "dd_k_adj": +0.15, "cash_like": False,
     },
 ]
@@ -286,7 +311,8 @@ def build_fund(f):
     t = f["macro_tilt"]
     rs = regional_score(f["region"])
     reg_tilt = (rs - NEUTRAL) * REGIONAL_TILT_PER_PT
-    tilt_total = reg_tilt + t["vol_path"] + t["rates"] + t["energy"]
+    vol_tilt = round(VOL_RAMP * VOL_SENS[f["id"]], 2)   # derived, not hand-set
+    tilt_total = reg_tilt + vol_tilt + t["rates"] + t["energy"]
     macro_net = base_net + tilt_total
 
     k = DD_K + f["dd_k_adj"]
@@ -308,7 +334,7 @@ def build_fund(f):
         "net_base": round(base_net, 2),
         "regional_score": round(rs, 2),
         "tilt_regional": round(reg_tilt, 2),
-        "tilt_vol": t["vol_path"], "tilt_rates": t["rates"], "tilt_energy": t["energy"],
+        "tilt_vol": vol_tilt, "tilt_rates": t["rates"], "tilt_energy": t["energy"],
         "tilt_total": round(tilt_total, 2),
         "net_macro": round(macro_net, 2),
         "vol": round(sig, 2),
@@ -630,6 +656,8 @@ def payload():
         "sp_vol_5y": SP_VOL_5Y,
         "regions": {k: {**v} for k, v in REGIONS.items()},
         "hz_weights": HZ_W,
+        "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
+                        "ramp": round(VOL_RAMP, 2), "sens": VOL_SENS},
         "drivers": [{"name": n, "weight": w, "score": s, "note": t} for n, w, s, t in DRIVERS],
         "gauge": GAUGE,
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
@@ -735,6 +763,15 @@ def report():
     def _ties(m):
         return (abs(1_000_000 * (1 + m["cagr"] / 100) ** 5 - m["terminal_1m"]) < 1.0
                 and abs(1_000_000 * (1 + m["maxdd"] / 100) - m["trough_1m"]) < 1.0)
+    vc = p["vol_channel"]
+    checks.append(("volatility ramp = horizon-blended implied vol minus spot",
+                   abs(vc["blend"] - vc["spot"] - vc["ramp"]) < 0.011))
+    checks.append(("every volatility tilt is derived from the ramp, not hand-set",
+                   all(abs(f2["tilt_vol"] - round(vc["ramp"] * vc["sens"][f2["id"]], 2)) < 1e-9
+                       for f2 in p["funds"])))
+    checks.append(("the covered-call sleeve is the only one paid by a rising ramp",
+                   max(p["funds"], key=lambda f2: f2["tilt_vol"])["id"] == "ATRQIAP"
+                   or vc["ramp"] <= 0))
     checks.append(("peso figures reconcile with the displayed CAGR and drawdown",
                    _ties(p["baseline"]["under_macro"]) and _ties(p["optimized"]["macro"])))
     # regression: no feasible portfolio may exceed the stated drawdown budget
