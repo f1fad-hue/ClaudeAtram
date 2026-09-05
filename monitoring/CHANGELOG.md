@@ -2,6 +2,121 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-05 — Audit: the published drawdown formula did not reproduce the published drawdowns
+
+Full revalidation pass. Four defects found, all four rectified. The first is the
+serious one.
+
+### 1. The drawdown card published a formula that was wrong for three of four funds
+
+The Volatility tab stated expected drawdown as `1.65 × σ − 0.50 × µ` and said the
+coefficients were calibrated against the S&P and Nasdaq medians. True as far as it
+went — but the engine has always applied a **per-fund adjustment** to that
+coefficient, and nothing on the page said so:
+
+| Sleeve | k actually used |
+|---|---|
+| Peso Money Market | 1.65 (floored separately anyway) |
+| Nasdaq Equity Income | **1.55** |
+| Asia Equity | **1.70** |
+| Global Technology | **1.80** |
+
+A reader checking the arithmetic would have found it failed. Global Technology's
+−40.8% is −37.1% under the formula as printed. Worse, it reaches the headline: the
+portfolio coefficients are 1.675 (baseline) and 1.626 (optimised), so the stated
+formula gives **−20.2% → −18.8%** where the page prints **−20.5% → −18.4%**. The
+improvement the whole report turns on would have read 1.4pp instead of 2.1pp.
+
+The adjustments themselves are defensible — left tails genuinely are not the same
+shape across a covered-call fund, an EM index and concentrated long-duration
+growth — so the fix is disclosure, not deletion. Each `k` is now published with the
+reason it differs from the anchor, the portfolio coefficients are printed, and
+**six new checks assert that every drawdown on the page reproduces from the `k`
+printed beside it.** No number changed; the page now supports the numbers it prints.
+
+This is the failure mode worth naming: the engine's own checks all passed, because
+they verified the code against itself. Nothing checked the code against the page's
+*claim* about the code.
+
+### 2. The cost of the Global Technology stub was understated by 2.7x
+
+The report says keeping a 5% stub rather than cutting to zero costs "roughly
+0.03pp of portfolio CAGR". Re-derived against the optimiser's own objective — max
+CAGR subject to the drawdown cap — the best portfolio that drops the sleeve
+entirely (10/65/25/0) returns **7.74%** against 7.66%. The stub costs **0.08pp**.
+The 0.03 was correct for an earlier set of tilts and was never re-derived.
+
+Now computed in the engine and rendered from the payload, with the counterfactual
+allocation named so the reader can check the claim rather than take it. The
+recommendation is unchanged — it is a deliberate purchase of optionality — but it
+is now priced honestly.
+
+### 3. A stale sleeve-comparison figure
+
+"…for a forecast net CAGR only **0.23pp** lower" — the actual gap between Global
+Technology (8.10%) and Nasdaq Equity Income (7.88%) is **0.22pp**. Now rendered
+from the two funds it describes.
+
+### 4. The peso-cash section still argued from July's inflation print
+
+The report claimed "with July inflation at 6.2%, the real yield is roughly −1pp"
+while the Philippines region rationale on the same page had already been updated to
+August's 6.1% and said the gap "narrowed … to roughly −0.4pp". The page contradicted
+itself. Corrected to the August print and stated as the range it actually is:
+**−0.95pp at the 91-day bill to −0.40pp at the 364-day**, with the improvement from
+July made explicit. The Global-Tech-adjacent money-market slide note carried the
+same stale July figure and is fixed too.
+
+### 5. The claim register itself had drifted — eleven rows
+
+`monitoring/CLAIMS.md` exists to catch exactly this class of problem, and it had
+the problem. Eleven rows no longer matched the model they certify:
+
+| Row | Register said | Model says |
+|---|---|---|
+| BSP target RRP rate | 4.75% | **5.00%** |
+| BSP last move | +25bp (June) | **+25bp on 27 Aug, third consecutive** |
+| Spot VIX | 14.13 | **16.44** (14.13 is the 30-day low) |
+| Horizon vol 3M/6M/12M/5Y | 17.94 / 19.10 / 19.54 / 19.55 | **18.27 / 19.25 / 19.62 / 19.57** |
+| Brent crude | $91.28 | **$94.86** |
+| Brent y/y | +32.02% | **+40.33%** |
+| PHP depreciation drift | 1.5% p.a. | **2.0% p.a.** |
+| Regional tilt sensitivity | 0.30pp above 5.5 | **0.675pp above 3.0** |
+| Drawdown model | 1.65σ − 0.50µ | **per-sleeve k, 1.55–1.80** |
+| Header + assumptions preamble | "Job 2 walks this file each Sunday" | no automation since 3 Sep |
+
+All corrected, and rows added for the volatility ramp, the per-sleeve and portfolio
+drawdown coefficients, the reporting scales, and the volatility sensitivities.
+
+The structural fix matters more than the corrections: **the register is now
+machine-checked.** The independent verifier parses `CLAIMS.md` and asserts eighteen
+of its rows against `model/data.json` on every run. A register that certifies stale
+figures is worse than no register — it converts drift into false assurance.
+
+### Also
+
+- The driver-bar caption said the bars "run 1–10"; they fill in proportion to the
+  score from zero. Caption now describes the encoding accurately.
+- Removed a check written this session that could not fail (`… or True`) and
+  replaced it with one that re-derives the portfolio coefficient as the ex-cash
+  weighted average.
+
+**Verification:** engine **29 → 39** checks. The independent verifier — which reads
+only `data.json` and never imports the engine — gained the drawdown-reproduction,
+derived-figure and claim-register blocks and now runs **159 checks, 0 failures**. Volatility
+integration re-done on a 20,000-step grid, portfolio algebra recomputed with an
+explicit double loop, correlation matrix re-tested for positive-definiteness by
+Cholesky, and the 969-portfolio enumeration re-counted from scratch — all agree.
+All 16 original checklist items re-verified against the rendered page at 412px,
+plus 4 build-health checks: **20/20**.
+
+**House cleanup:** repo stays at 8 tracked files with nothing stray. The review
+harness in the scratchpad went from 5.1MB of accumulated one-offs to 40KB — six
+near-identical screenshot scripts collapsed into one parameterised `shot.js`, and
+the stale payload snapshots, duplicated page copies and old PNGs deleted. What
+remains is the three things worth re-running (`audit.py`, `validate.js`,
+`checklist.js`) plus a README saying how. `model/__pycache__` removed.
+
 ## 2026-09-05 — Regional rankings moved to the same 1–5 scale
 
 Follow-up to the gauge change below: the four regional rankings now report on

@@ -251,6 +251,7 @@ FUNDS = [
         "vol_beta": 0.021, "fx_exposed": False,
         "macro_tilt": {"regional": None, "rates": +0.25, "energy": +0.05},
         "dd_k_adj": 0.0, "cash_like": True,
+        "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
     },
     {
         "id": "ATRQIAP", "name": "ATRAM Nasdaq Equity Income Feeder Fund",
@@ -265,6 +266,7 @@ FUNDS = [
         "vol_beta": 1.22 * 0.68, "fx_exposed": True,
         "macro_tilt": {"regional": "US", "rates": -0.10, "energy": -0.10},
         "dd_k_adj": -0.10, "cash_like": False,
+        "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
     },
     {
         "id": "ATRASEQ", "name": "ATRAM Asia Equity Opportunity Feeder Fund",
@@ -280,6 +282,7 @@ FUNDS = [
         "vol_beta": 1.05 * 0.92, "fx_exposed": True,
         "macro_tilt": {"regional": "ASIA", "rates": -0.05, "energy": -0.20},
         "dd_k_adj": +0.05, "cash_like": False,
+        "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
     },
     {
         "id": "ATRGTEC", "name": "ATRAM Global Technology Feeder Fund",
@@ -296,6 +299,7 @@ FUNDS = [
         "vol_beta": 1.30, "fx_exposed": True,
         "macro_tilt": {"regional": "GLOBAL_TECH", "rates": -0.40, "energy": -0.15},
         "dd_k_adj": +0.15, "cash_like": False,
+        "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
     },
 ]
 
@@ -361,6 +365,7 @@ def build_fund(f):
         "tilt_total": round(tilt_total, 2),
         "net_macro": round(macro_net, 2),
         "vol": round(sig, 2),
+        "dd_k": round(k, 2), "dd_k_why": f["dd_k_why"],
         "dd_base": round(-dd(base_net), 1),
         "dd_macro": round(-dd(macro_net), 1),
     }
@@ -541,6 +546,50 @@ OPT_UNDER_BASE = summarise(OPT_W, "net_base")
 # Best pure risk-adjusted portfolio, for reference
 BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
 
+
+# ---- What the Global Technology stub actually costs --------------------------
+# The report argues for keeping a 5% Global Technology position rather than
+# cutting it to zero. That argument is only honest if the price of the stub is
+# stated, and stated correctly: until the 2026-09-05 audit the page claimed
+# "roughly 0.03pp", which was never re-derived after the tilts moved. It is now
+# computed here against the SAME objective the optimiser uses - maximise CAGR
+# subject to the drawdown cap - over the portfolios the enumeration excludes
+# because they drop a fund entirely.
+def _best_without(idx):
+    best = None
+    step = 5
+    for a in range(0, 101, step):
+        for b in range(0, 101 - a, step):
+            for c in range(0, 101 - a - b, step):
+                w = [a, b, c, 100 - a - b - c]
+                if w[idx] != 0:
+                    continue
+                if any(x != 0 and x < 5 for x in w):
+                    continue
+                ww = [x / 100 for x in w]
+                if abs(port_dd(ww, "net_macro")) > DD_CAP + 1e-9:
+                    continue
+                sm = summarise(ww, "net_macro")
+                if best is None or sm["cagr"] > best[1]["cagr"]:
+                    best = (w, sm)
+    return best
+
+_GT_FREE_W, _GT_FREE = _best_without(3)
+STUB = {
+    "fund": "ATRGTEC",
+    "weight": round(OPT_W[3] * 100),
+    "best_without": _GT_FREE_W,
+    "cagr_without": _GT_FREE["cagr"],
+    "cagr_with": OPT["cagr"],
+    "cost": round(_GT_FREE["cagr"] - OPT["cagr"], 2),
+}
+
+# Gap between the two US-tech sleeves' macro-adjusted net CAGR. Quoted in the
+# report; derived here so it cannot drift from the funds it describes.
+_Q = next(f for f in F if f["id"] == "ATRQIAP")
+_G = next(f for f in F if f["id"] == "ATRGTEC")
+TECH_GAP = round(_G["net_macro"] - _Q["net_macro"], 2)
+
 # Efficient frontier: max CAGR at each 1pp drawdown bucket
 FRONTIER = {}
 for w, s in ALL:
@@ -687,7 +736,13 @@ def payload():
         "lookthrough": LOOKTHROUGH,
         "acwi_it_mix": ACWI_IT_MIX,
         "fx": {"drift": FX_DRIFT, "vol": FX_VOL, "corr": FX_CORR},
-        "dd_model": {"k": DD_K, "mu_coef": DD_MU},
+        "dd_model": {"k": DD_K, "mu_coef": DD_MU,
+                     "baseline_k": round(port_k(BASELINE_W), 3),
+                     "optimized_k": round(port_k(OPT_W), 3),
+                     "note": "1.65 is the calibration anchor, not the coefficient every sleeve "
+                             "uses. Each fund carries a declared adjustment for the shape of its "
+                             "own left tail; the portfolio coefficient is the weighted average "
+                             "across the equity sleeves."},
         "baseline": {"weights": [round(x*100) for x in BASELINE_W],
                      "base": BASE, "under_macro": BASE_UNDER_MACRO,
                      "scenarios": run_scenarios(BASELINE_W, "net_macro")},
@@ -697,6 +752,7 @@ def payload():
                       "scenarios": run_scenarios(OPT_W, "net_macro"),
                       "n_feasible": len(FEASIBLE), "n_total": len(ALL)},
         "best_ratio": {"weights": [round(x*100) for x in BEST_RATIO_W], **BEST_RATIO},
+        "stub": STUB, "tech_gap": TECH_GAP,
         "frontier": FRONTIER,
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
@@ -790,6 +846,40 @@ def report():
                        for v in p["regions"].values())))
     checks.append(("the 1-5 tilt coefficient equals the 1-10 one rescaled",
                    abs(REGIONAL_TILT_PER_PT - 0.30 * 9 / 4) < 1e-9))
+    # The drawdown card publishes a formula. These assert the formula, using the
+    # coefficients the page prints, reproduces the drawdowns the page prints -
+    # the audit that was missing when 1.65 was shown as if it applied to every
+    # sleeve while three of four actually used a different k. (Audit 2026-09-05.)
+    for fd in p["funds"]:
+        if fd["id"] == "ATRPHMM":
+            continue
+        pred = fd["dd_k"] * fd["vol"] - p["dd_model"]["mu_coef"] * fd["net_macro"]
+        checks.append((f"{fd['id']} drawdown reproduces from its published k",
+                       abs(-pred - fd["dd_macro"]) < 0.06))
+    checks.append(("every fund's drawdown coefficient carries a stated reason",
+                   all(len(fd.get("dd_k_why", "")) > 30 for fd in p["funds"])))
+    for lab, w, mm, kk in (("baseline", BASELINE_W, p["baseline"]["under_macro"],
+                            p["dd_model"]["baseline_k"]),
+                           ("optimized", OPT_W, p["optimized"]["macro"],
+                            p["dd_model"]["optimized_k"])):
+        pred = kk * mm["vol"] - p["dd_model"]["mu_coef"] * mm["cagr"]
+        checks.append((f"{lab} drawdown reproduces from its published k",
+                       abs(-pred - mm["maxdd"]) < 0.06))
+    for lab, w in (("baseline", BASELINE_W), ("optimized", OPT_W)):
+        eq = [(w[i], p["funds"][i]["dd_k"]) for i in range(4)
+              if not FUNDS[i]["cash_like"]]
+        avg = sum(x * kx for x, kx in eq) / sum(x for x, _ in eq)
+        checks.append((f"{lab} portfolio k is the ex-cash weighted average of the sleeve k's",
+                       abs(avg - p["dd_model"][f"{lab}_k"]) < 0.006))
+    checks.append(("the Global Tech stub cost is derived, and the stub is genuinely dearer",
+                   p["stub"]["cost"] > 0
+                   and abs(p["stub"]["cost"]
+                           - (p["stub"]["cagr_without"] - p["stub"]["cagr_with"])) < 0.006))
+    checks.append(("the quoted tech-sleeve CAGR gap matches the two funds",
+                   abs(p["tech_gap"] - (next(f["net_macro"] for f in p["funds"]
+                                             if f["id"] == "ATRGTEC")
+                                        - next(f["net_macro"] for f in p["funds"]
+                                               if f["id"] == "ATRQIAP"))) < 0.006))
     checks.append(("every fund net CAGR is below its gross", 
                    all(f["net_base"] < f["gross_php"] for f in p["funds"])))
     checks.append(("optimized beats baseline on ret/DD",

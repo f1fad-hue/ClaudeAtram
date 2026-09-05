@@ -253,6 +253,8 @@
    "tilt_total": 0.46,
    "net_macro": 5.0,
    "vol": 0.41,
+   "dd_k": 1.65,
+   "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
    "dd_base": -0.5,
    "dd_macro": -0.5
   },
@@ -280,6 +282,8 @@
    "tilt_total": 0.54,
    "net_macro": 7.88,
    "vol": 16.14,
+   "dd_k": 1.55,
+   "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
    "dd_base": -21.3,
    "dd_macro": -21.1
   },
@@ -307,6 +311,8 @@
    "tilt_total": 0.14,
    "net_macro": 8.46,
    "vol": 18.66,
+   "dd_k": 1.7,
+   "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
    "dd_base": -27.6,
    "dd_macro": -27.5
   },
@@ -334,6 +340,8 @@
    "tilt_total": -0.8,
    "net_macro": 8.1,
    "vol": 24.94,
+   "dd_k": 1.8,
+   "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -40.4,
    "dd_macro": -40.8
   }
@@ -522,7 +530,10 @@
  },
  "dd_model": {
   "k": 1.65,
-  "mu_coef": 0.5
+  "mu_coef": 0.5,
+  "baseline_k": 1.675,
+  "optimized_k": 1.626,
+  "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves."
  },
  "baseline": {
   "weights": [
@@ -692,6 +703,20 @@
   "terminal_1m": 1305103,
   "trough_1m": 981000
  },
+ "stub": {
+  "fund": "ATRGTEC",
+  "weight": 5,
+  "best_without": [
+   10,
+   65,
+   25,
+   0
+  ],
+  "cagr_without": 7.74,
+  "cagr_with": 7.66,
+  "cost": 0.08
+ },
+ "tech_gap": 0.22,
  "frontier": [
   {
    "maxdd": 1,

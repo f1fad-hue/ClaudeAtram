@@ -303,8 +303,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Broad sentiment &middot; driver breakdown</p>
     <div class="card" id="drivers"></div>
-    <p class="note">Driver bars run 1–10 — that is the granularity the underlying
-      evidence supports — and the hairline marks their 5.5 neutral. Composite =
+    <p class="note">Driver scores run 1–10 — that is the granularity the underlying
+      evidence supports — and each bar fills in proportion to its score, with the
+      hairline at the 5.5 neutral. Composite =
       &Sigma;(weight &times; score), then rescaled onto the 1–5 headline gauge:
       1&rarr;1, 5.5&rarr;3.0 neutral, 10&rarr;5.</p>
   </section>
@@ -437,14 +438,25 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <div class="card">
       <h3>Turning volatility into a drawdown number</h3>
       <p>Expected maximum drawdown over a rolling 5-year window is modelled as
-        <span class="num">1.65&nbsp;&times;&nbsp;&sigma;&nbsp;&minus;&nbsp;0.50&nbsp;&times;&nbsp;&mu;</span>
-        — volatility sets the depth, drift claws some of it back. The coefficients are
-        calibrated so the formula reproduces what actually happened: it returns
-        <b class="num">&minus;20%</b> for the S&amp;P 500 (&sigma; 15.5%, &mu; 11%) and
-        <b class="num">&minus;33%</b> for the Nasdaq-100 (&sigma; 24%, &mu; 13%), which
-        are the observed medians for rolling 5-year windows. The money market sleeve is
-        floored separately at a 100bp parallel rate shock on ~0.5y duration, because a
-        cash fund cannot be made to behave like an equity fund by a formula.</p>
+        <span class="num">k&nbsp;&times;&nbsp;&sigma;&nbsp;&minus;&nbsp;0.50&nbsp;&times;&nbsp;&mu;</span>
+        — volatility sets the depth, drift claws some of it back. The anchor is
+        <b class="num">k&nbsp;=&nbsp;1.65</b>, calibrated so the formula reproduces what
+        actually happened at index level: <b class="num">&minus;20%</b> for the
+        S&amp;P 500 (&sigma; 15.5%, &mu; 11%) and <b class="num">&minus;33%</b> for the
+        Nasdaq-100 (&sigma; 24%, &mu; 13%), the observed medians for rolling 5-year
+        windows.</p>
+      <p><strong>1.65 is not the coefficient every sleeve uses.</strong> Left tails are
+        not the same shape across these four funds, so each carries a declared
+        adjustment — and the portfolio coefficient is the weighted average across the
+        equity sleeves. Every drawdown printed on this page is reproducible from the
+        <span class="num">k</span> beside it; before 5 September the page showed 1.65
+        alone, which did not reproduce three of the four.</p>
+      <div class="tw"><table class="dt" id="ddktab"></table></div>
+      <p style="margin-top:11px">The money market sleeve is floored separately at a 100bp
+        parallel rate shock on ~0.5y duration, because a cash fund cannot be made to
+        behave like an equity fund by a formula.</p>
+      <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
+        font-size:11.5px;text-align:center;line-height:1.7;color:var(--ink)" id="ddkport"></div>
     </div>
   </section>
 </div>
@@ -707,7 +719,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         and unhedged peso exposure trims it again, because the peso tends to weaken
         precisely when US equities fall. The result is <b class="num">16.1%</b>
         volatility against Global Technology's <b class="num">24.9%</b> — for a forecast
-        net CAGR only <b class="num">0.23pp</b> lower.</p>
+        net CAGR only <b class="num" id="techgap">—</b> lower.</p>
     </div>
 
     <div class="card">
@@ -731,8 +743,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <p style="margin-bottom:0">Cutting it to 5% rather than zero is deliberate. The
         forecast deliberately sits well below the target fund's realised
         <b class="num">15.20%</b> five-year return, and if that AI capex cycle keeps
-        compounding, this is the sleeve that captures it. A 5% stub keeps the option
-        alive at a cost of roughly <b class="num">0.03pp</b> of portfolio CAGR.</p>
+        compounding, this is the sleeve that captures it. That option is not free, and
+        the page previously understated it: <span id="stubline">—</span></p>
     </div>
 
     <div class="card">
@@ -744,12 +756,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         return. What justifies keeping 15% is that peso cash is genuinely paid right
         now in <em>nominal</em> terms — T-bills at <b class="num">5.14%</b> to
         <b class="num">5.72%</b> after a BSP that has now hiked three times to
-        <b class="num">5.00%</b>. Be clear about what that is and isn't: with July
-        inflation at <b class="num">6.2%</b>, the real yield is roughly
-        <b class="num">&minus;1pp</b>, so this sleeve is losing purchasing power
-        slowly. It earns its 15% on zero duration risk and on being the dry powder to
-        rebalance into a drawdown rather than sell into one — not on being a store of
-        real value.</p>
+        <b class="num">5.00%</b>. Be clear about what that is and isn't: against
+        August inflation of <b class="num">6.1%</b> the real yield still runs from about
+        <b class="num">&minus;0.95pp</b> at the 91-day bill to
+        <b class="num">&minus;0.40pp</b> at the 364-day, so this sleeve is losing
+        purchasing power — considerably more slowly than a month ago, when the same
+        calculation against July's <b class="num">6.2%</b> gave roughly
+        <b class="num">&minus;1pp</b> across the curve, but losing it. It earns its 15%
+        on zero duration risk and on being the dry powder to rebalance into a drawdown
+        rather than sell into one — not on being a store of real value.</p>
     </div>
 
     <div class="card">
@@ -1110,6 +1125,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "tilt_total": 0.46,
    "net_macro": 5.0,
    "vol": 0.41,
+   "dd_k": 1.65,
+   "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
    "dd_base": -0.5,
    "dd_macro": -0.5
   },
@@ -1137,6 +1154,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "tilt_total": 0.54,
    "net_macro": 7.88,
    "vol": 16.14,
+   "dd_k": 1.55,
+   "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
    "dd_base": -21.3,
    "dd_macro": -21.1
   },
@@ -1164,6 +1183,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "tilt_total": 0.14,
    "net_macro": 8.46,
    "vol": 18.66,
+   "dd_k": 1.7,
+   "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
    "dd_base": -27.6,
    "dd_macro": -27.5
   },
@@ -1191,6 +1212,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "tilt_total": -0.8,
    "net_macro": 8.1,
    "vol": 24.94,
+   "dd_k": 1.8,
+   "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -40.4,
    "dd_macro": -40.8
   }
@@ -1379,7 +1402,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
  },
  "dd_model": {
   "k": 1.65,
-  "mu_coef": 0.5
+  "mu_coef": 0.5,
+  "baseline_k": 1.675,
+  "optimized_k": 1.626,
+  "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves."
  },
  "baseline": {
   "weights": [
@@ -1549,6 +1575,20 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "terminal_1m": 1305103,
   "trough_1m": 981000
  },
+ "stub": {
+  "fund": "ATRGTEC",
+  "weight": 5,
+  "best_without": [
+   10,
+   65,
+   25,
+   0
+  ],
+  "cagr_without": 7.74,
+  "cagr_with": 7.66,
+  "cost": 0.08
+ },
+ "tech_gap": 0.22,
  "frontier": [
   {
    "maxdd": 1,
@@ -2128,6 +2168,18 @@ $("#nfeas").textContent = D.optimized.n_feasible;
      neither is a portfolio anyone should hold for five years.`;
 })();
 $("#corrnote").textContent = D.corr_note;
+$("#techgap").textContent = D.tech_gap.toFixed(2) + "pp";
+(function () {
+  const S = D.stub, N = ["Peso Money Market","Nasdaq Equity Income","Asia Equity","Global Technology"];
+  const alt = S.best_without.map((w,i) => w ? `${w}% ${N[i]}` : null).filter(Boolean).join(" / ");
+  $("#stubline").innerHTML =
+    `against the same drawdown budget, the best portfolio that drops Global Technology
+     altogether (${alt}) returns <b class="num">${S.cagr_without.toFixed(2)}%</b> against
+     this one's <b class="num">${S.cagr_with.toFixed(2)}%</b>. The
+     <b class="num">${S.weight}%</b> stub costs
+     <b class="num">${S.cost.toFixed(2)}pp</b> of portfolio CAGR — a real price, paid
+     deliberately for the optionality and for not running a three-fund portfolio.`;
+})();
 
 /* ---------------- gauge ---------------- */
 (function () {
@@ -2355,6 +2407,22 @@ function tipper(host) {
      <td class="${cls(f.tilt_vol)}" style="font-weight:600">${f.tilt_vol === 0 ? "–" : sg(f.tilt_vol) + "pp"}</td>`)));
   vtt.appendChild(vtb);
 
+  // drawdown coefficients - published so every printed DD reproduces
+  const dk = $("#ddktab");
+  dk.appendChild(el("thead", null,
+    `<tr><th>Sleeve</th><th>k</th><th style="text-align:left">Why it differs from 1.65</th></tr>`));
+  const dkb = el("tbody");
+  F.forEach((f, i) => dkb.appendChild(el("tr", null,
+    `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+     <td style="font-weight:600">${f.dd_k.toFixed(2)}</td>
+     <td style="text-align:left;white-space:normal;font-family:var(--body);font-size:11.5px;
+       line-height:1.45;color:var(--ink-2)">${f.dd_k_why}</td>`)));
+  dk.appendChild(dkb);
+  const DM = D.dd_model;
+  $("#ddkport").innerHTML =
+    `portfolio k &nbsp; baseline <b>${DM.baseline_k.toFixed(3)}</b>` +
+    ` &nbsp;·&nbsp; optimised <b style="color:var(--f2)">${DM.optimized_k.toFixed(3)}</b>`;
+
   const ft = $("#fvoltab");
   ft.appendChild(el("thead", null,
     `<tr><th>Fund</th><th>Vol β</th><th>FX</th><th>σ total</th><th>Exp. max DD</th></tr>`));
@@ -2390,7 +2458,7 @@ const LOOKTHRU = {
     "~72% US · ~16% Asia · ~12% Europe by index weight"]
 };
 const NOTE = {
-  ATRPHMM: "High nominal carry and no duration risk, but the real yield is now NEGATIVE: BSP hiked to 5.00% while July inflation printed 6.2%.",
+  ATRPHMM: "High nominal carry and no duration risk, but the real yield is still NEGATIVE: BSP is at 5.00% and August inflation printed 6.1%, a fourth consecutive slowdown.",
   ATRQIAP: "Rising implied vol makes the calls it writes more valuable — the one holding paid by the vol path.",
   ATRASEQ: "10.5× forward against ~52%/~28% EPS growth. Still the top-ranked region on the 5-year anchor.",
   ATRGTEC: "Highest gross return, highest drawdown, and 0.88 correlated to the Nasdaq income sleeve."

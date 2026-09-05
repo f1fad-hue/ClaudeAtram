@@ -34,7 +34,7 @@ sleeves at a combined 55%, which costs drawdown without buying return.
 model/engine.py      the whole model - pure stdlib Python, no dependencies
 model/data.json      generated payload, embedded into the page
 dashboard.html       the published artifact
-monitoring/          weekly job spec, claim register, changelog
+monitoring/          manual review runbook, claim register, changelog
 ```
 
 ## Running it
