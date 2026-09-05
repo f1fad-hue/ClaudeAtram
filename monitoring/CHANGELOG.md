@@ -2,6 +2,86 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-05 — Regional rankings moved to the same 1–5 scale
+
+Follow-up to the gauge change below: the four regional rankings now report on
+**1–5** as well, so every sentiment number on the page reads against one scale.
+
+This one had a trap the gauge did not. Regional scores are not display-only —
+they drive each fund's return tilt through `(score − neutral) × coefficient`.
+Rescaling the scores without rescaling the coefficient would have silently moved
+every allocation. So the coefficient was restated in 1–5 units:
+
+```
+0.675pp per 1–5 point  ==  0.30pp per 1–10 point   (0.30 × 9/4)
+neutral 3.0            ==  neutral 5.5
+```
+
+Verified rather than asserted: the full payload was diffed before and after.
+**Every weight, CAGR, drawdown, volatility, tilt, scenario and frontier point is
+byte-identical.** The only fields that changed are the four reported regional
+scores (`5.70 → 3.09`, `5.95 → 3.20`, `6.80 → 3.58`, `5.84 → 3.15`).
+
+- Heatmap shading anchors rescaled from the research scale, not re-picked by eye
+  (`2.5 → 1.67`, span `6 → 2.67`), so the colour breaks land in the same places.
+- Each region's "why" note is sourced prose written against 1–10 ("the 5-year
+  anchor holds at 6.5", "Neutral, 5.5"). Rewriting those would have risked drift
+  in researched text, so each note now carries a one-line header stating its
+  research-scale blend and that the horizon figures inside it are on that scale.
+- The Asia paragraph in the report quoted `5.5 / 6.5 / 7.0 / 7.5`; now
+  `3.0 / 3.44 / 3.67 / 3.89`, rescaled rather than restated.
+- Fund detail "Regional score … / 10" → "… / 5".
+
+**Checks:** engine 25 → **29**. The verifier's regional block now re-derives the
+blend on the research scale, confirms every reported score is the exact rescale
+of it, and — the check that actually matters — confirms each fund's tilt equals
+what the old 1–10 formula would have produced. **0 failures.**
+
+## 2026-09-05 — Headline macro gauge moved to a 1–5 scale
+
+Requested change: report the overall macro-driver sentiment gauge on **1–5**
+rather than 1–10.
+
+The seven drivers keep their **1–10** scores — that is the granularity the
+underlying evidence supports, and every driver note is written against it
+("held below 6", "held at 1.5 rather than cut further"). Rescoring them onto
+five points would have destroyed real information and risked drift in the
+sourced rationales. Instead the composite is rescaled once, at the headline:
+
+```
+gauge_5 = 1 + (gauge_10 − 1) × 4/9      # 1→1,  5.5→3.0,  10→5
+```
+
+Endpoints map to endpoints, so the driver-scale neutral of 5.5 lands exactly on
+the 1–5 neutral of 3.0 — the dial's neutral is a real midpoint, not an
+approximation. Today: **4.78 / 10 → 2.68 / 5**, displayed as **2.7**.
+
+Changed with it:
+
+- Dial geometry rebuilt for a 1–5 sweep: the four state bands become
+  `1–2 / 2–3 / 3–4 / 4–5`, ticks every 0.5 with integer majors, labels at
+  1 / 3 / 5.
+- Verdict thresholds rescaled from the driver scale, not re-invented:
+  `3.5 → 2.11`, `5.5 → 3.00`, `7.5 → 3.89`. The reading is unchanged —
+  *Neutral, tilted cautious*.
+- Header chip, `/10` suffix, section heading and the rationale prose all follow.
+  The rationale's "rather than a 3 or an 8" is now "rather than a 1.9 or a 4.1",
+  those being the same two anchors rescaled.
+- The driver card's composite row shows both numbers (`4.78 / 10 → 2.7`) so the
+  two scales can never be silently confused.
+- The one place a driver-scale figure still appears in prose (inflation cut
+  3.5 → 3.0) is now explicitly labelled as the 1–10 driver scale.
+
+Regional scores stay 1–10 throughout: they feed the fund tilts through
+`(score − 5.5) × 0.30`, so rescaling them would have moved allocations. It did
+not, and no weight, CAGR or drawdown changed.
+
+**Checks:** engine 22 → **25** (headline in 1–5, composite in 1–10, the rescale
+is exact, and the neutral maps to the neutral). The independent verifier's
+`gauge = Σ(weight × score)` check was pointing at the headline field and so
+failed on the new payload — correctly. It now re-derives both numbers and the
+rescale separately: **0 failures**.
+
 ## 2026-09-05 — Volatility analysis now actually drives the optimiser
 
 The optimised portfolio was described as being built on macro sentiment,

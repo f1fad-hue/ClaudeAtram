@@ -22,7 +22,8 @@ T-bill curve and USD/PHP. Primary sources only. If one is unreachable, leave the
 prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
-3M / 6M / 12M / 5Y, then the 1–10 gauge. The optimised portfolio is built from four
+3M / 6M / 12M / 5Y, then the gauge. Drivers and regions are researched on 1–10;
+both the headline gauge and the regional rankings are reported on 1–5. The optimised portfolio is built from four
 inputs — the broad gauge, the correlated per-sleeve transmission, the **volatility
 ramp** (horizon-blended implied vol minus spot, same horizon weights as the regional
 blend) and the regional rankings. Two of those are derived rather than judged: the

@@ -131,7 +131,12 @@ for lbl, T in HORIZONS:
 SP_VOL_5Y = next(v["implied"] for v in VOL_TS if v["label"] == "5Y")
 
 # ----------------------------------------------------------------------------
-# 3. REGIONAL MACRO-DRIVER SCORES  (1-10, 5.5 = neutral)
+# 3. REGIONAL MACRO-DRIVER SCORES
+#    Researched and scored on 1-10 (the granularity the evidence supports, and the
+#    scale every "why" note below is written against), then REPORTED on 1-5 using
+#    the same endpoint-preserving rescale as the headline gauge: 1->1, 5.5->3.0,
+#    10->5. The fund tilt coefficient is restated in 1-5 units so the rescale moves
+#    no allocation: 0.30 per 1-10 point == 0.675 per 1-5 point.
 #    Each score is an evidence-weighted judgement over the seven drivers in
 #    DRIVERS below; the horizon blend weights near-term signals but keeps the
 #    5-year anchor dominant because the investment horizon is 5 years.
@@ -164,6 +169,14 @@ VOL_RAMP  = VOL_BLEND - MACRO["vix_spot"]
 #   ATRPHMM  +0.035  cash gains marginally as risk-off keeps the front end bid.
 VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122}
 
+
+def to5(v10):
+    """Linear rescale of a 1-10 research score onto 1-5. 1->1, 5.5->3.0, 10->5."""
+    return round(1 + (v10 - 1) * 4 / 9, 2)
+
+
+NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research scale)
+
 REGIONS = {
     "US": {
         "3M": 5.5, "6M": 5.5, "12M": 6.0, "5Y": 6.5,
@@ -184,9 +197,15 @@ REGIONS = {
 }
 for r in REGIONS.values():
     r["blend"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
+    for h in ("3M", "6M", "12M", "5Y", "blend"):
+        r[h + "_10"] = r[h]      # research basis, kept so the rescale stays auditable
+        r[h] = to5(r[h])         # reported value, 1-5
 
 # ----------------------------------------------------------------------------
-# 4. BROAD MACRO GAUGE (1-10) - weighted composite of seven drivers
+# 4. BROAD MACRO GAUGE (1-5) - weighted composite of seven drivers
+#    Drivers are researched and scored on a 1-10 scale (that is the granularity the
+#    underlying evidence supports). The HEADLINE gauge is reported 1-5: endpoints map
+#    to endpoints, so the 1-10 neutral of 5.5 lands exactly on the 1-5 neutral of 3.0.
 # ----------------------------------------------------------------------------
 
 DRIVERS = [
@@ -205,7 +224,11 @@ DRIVERS = [
     ("Geopolitics & energy", 0.1, 1.5,
      "Still the weakest link by a wide margin, and now measurable in the shipping data rather than only the headlines: commodity transits through the Strait held at roughly 5 vessels against a 10-day average of 14 - a two-thirds collapse in throughput. Two Saudi supertankers were struck on 31 Aug, the US hit ~100 Iranian targets on 1 Sep and struck Iranian tankers on 2 Sep under a 'tanker for tanker' policy. Brent $94.86, +40.3% y/y. Held at 1.5 rather than cut further only because Qatari and Omani mediation is live and Tehran has signalled it would return to the June interim terms."),
 ]
-GAUGE = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
+GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
+
+
+GAUGE = to5(GAUGE_10)          # headline, 1-5
+GAUGE_NEUTRAL = NEUTRAL_5
 
 # ----------------------------------------------------------------------------
 # 5. FUNDS - verified structure, fees, and the return build-up
@@ -279,8 +302,8 @@ FUNDS = [
 # MSCI ACWI IT regional decomposition, used to score the Global Tech sleeve
 ACWI_IT_MIX = {"US": 0.72, "ASIA": 0.16, "EUROPE": 0.12}
 
-REGIONAL_TILT_PER_PT = 0.30     # % of 5y CAGR per point of macro score above neutral
-NEUTRAL = 5.5
+REGIONAL_TILT_PER_PT = 0.675    # % of 5y CAGR per point of 1-5 macro score above neutral
+NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts are unchanged
 
 def regional_score(region_key):
     if region_key == "GLOBAL_TECH":
@@ -659,7 +682,7 @@ def payload():
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
                         "ramp": round(VOL_RAMP, 2), "sens": VOL_SENS},
         "drivers": [{"name": n, "weight": w, "score": s, "note": t} for n, w, s, t in DRIVERS],
-        "gauge": GAUGE,
+        "gauge": GAUGE, "gauge_10": GAUGE_10, "gauge_neutral": GAUGE_NEUTRAL,
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
         "lookthrough": LOOKTHROUGH,
         "acwi_it_mix": ACWI_IT_MIX,
@@ -691,14 +714,16 @@ def report():
     for v in p["vol_ts"]:
         A(f"    {v['label']:<5}{v['implied']:>9.2f}%{v['realised']:>9.2f}%"
           f"{v['move_1sd']:>10.2f}%{v['move_2sd']:>10.2f}%")
-    A("\n[2] REGIONAL MACRO-DRIVER RANKING (1-10)")
+    A("\n[2] REGIONAL MACRO-DRIVER RANKING (1-5, neutral 3.0)")
     A(f"    {'region':<14}{'3M':>6}{'6M':>6}{'12M':>6}{'5Y':>6}{'blend':>8}")
     for k, v in sorted(p["regions"].items(), key=lambda t: -t[1]["blend"]):
         A(f"    {k:<14}{v['3M']:>6}{v['6M']:>6}{v['12M']:>6}{v['5Y']:>6}{v['blend']:>8}")
     A("\n[3] BROAD MACRO GAUGE")
     for d in p["drivers"]:
         A(f"    {d['name']:<30} w={d['weight']:.2f}  score={d['score']:.1f}")
-    A(f"    {'COMPOSITE':<30}            GAUGE = {p['gauge']} / 10")
+    A(f"    {'COMPOSITE (driver scale)':<30}            {p['gauge_10']} / 10")
+    A(f"    {'HEADLINE GAUGE':<30}            {p['gauge']} / 5"
+      f"   (neutral {p['gauge_neutral']})")
     A("\n[4] FUNDS - net 5y CAGR after ALL fees, and expected max drawdown")
     A(f"    {'fund':<22}{'fee':>7}{'gross':>8}{'base':>8}{'tilt':>7}{'macro':>8}"
       f"{'vol':>8}{'DD base':>9}{'DD macro':>10}")
@@ -746,7 +771,25 @@ def report():
                    <= abs(p["vol_ts"][0]["implied"] - anchor) + 1e-9))
     checks.append(("every horizon vol is in a sane 10-40% band",
                    all(10 <= v["implied"] <= 40 for v in p["vol_ts"])))
-    checks.append(("gauge within 1-10", 1 <= p["gauge"] <= 10))
+    checks.append(("headline gauge within 1-5", 1 <= p["gauge"] <= 5))
+    checks.append(("driver composite within 1-10", 1 <= p["gauge_10"] <= 10))
+    checks.append(("gauge rescale 1-10 -> 1-5 is exact",
+                   abs(p["gauge"] - (1 + (p["gauge_10"] - 1) * 4 / 9)) <= 0.005))
+    checks.append(("the 1-10 neutral 5.5 maps to the 1-5 neutral",
+                   abs(to5(5.5) - p["gauge_neutral"]) < 1e-9))
+    checks.append(("every regional score is reported in 1-5",
+                   all(1 <= v[h] <= 5 for v in p["regions"].values()
+                       for h in ("3M", "6M", "12M", "5Y", "blend"))))
+    checks.append(("every regional rescale 1-10 -> 1-5 is exact",
+                   all(abs(v[h] - to5(v[h + "_10"])) < 1e-9
+                       for v in p["regions"].values()
+                       for h in ("3M", "6M", "12M", "5Y", "blend"))))
+    checks.append(("regional blend is horizon-weighted on the research scale",
+                   all(abs(v["blend_10"] - sum(v[h + "_10"] * w
+                                               for h, w in HZ_W.items())) < 0.006
+                       for v in p["regions"].values())))
+    checks.append(("the 1-5 tilt coefficient equals the 1-10 one rescaled",
+                   abs(REGIONAL_TILT_PER_PT - 0.30 * 9 / 4) < 1e-9))
     checks.append(("every fund net CAGR is below its gross", 
                    all(f["net_base"] < f["gross_php"] for f in p["funds"])))
     checks.append(("optimized beats baseline on ret/DD",

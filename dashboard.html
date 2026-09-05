@@ -118,6 +118,8 @@ nav{position:fixed;bottom:0;left:0;right:0;z-index:50;
 .cell{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12.5px;font-weight:600;
   text-align:center;padding:7px 0;border-radius:var(--r-s);display:block}
 .rank{font-family:var(--mono);font-size:10px;color:var(--ink-3);font-weight:500}
+.scalenote{display:block;font-family:var(--mono);font-size:10px;color:var(--ink-3);
+  margin:2px 0 5px}
 .rwhy{font-size:12px;color:var(--ink-2);line-height:1.5;padding:9px 0 3px;
   border-top:1px solid var(--line);margin-top:3px}
 .rwhy b{font-size:11px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;
@@ -271,7 +273,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <h1>Peso Four-Fund Macro Desk</h1>
     <div class="sub">ATRAM UITF &middot; as of <span id="asof">—</span></div>
   </div>
-  <div class="hgauge"><b id="hg">—</b><span>Macro 1–10</span></div>
+  <div class="hgauge"><b id="hg">—</b><span>Macro 1–5</span></div>
 </header>
 
 <main>
@@ -281,7 +283,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 
   <section>
     <p class="eyebrow">Overall driver gauge</p>
-    <h2>A 4.8 market: strong earnings, hostile policy</h2>
+    <h2>A 2.7 market: strong earnings, hostile policy</h2>
     <p class="lede">The composite scores seven macro drivers, weighted by how much each
       one actually moves a peso-based investor holding these four funds. It lands
       just below neutral — not a market to hide from, and not one to lever into.</p>
@@ -289,7 +291,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <div class="gaugewrap">
         <div id="gauge"></div>
         <div class="gaugeread">
-          <b id="gv">—<i>/10</i></b>
+          <b id="gv">—<i>/5</i></b>
           <div class="verdict" id="gverdict">—</div>
           <div class="vsub">Earnings are doing all the work. Policy, energy and a
             volatility market that has started to reprice are working against them.</div>
@@ -301,18 +303,26 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Broad sentiment &middot; driver breakdown</p>
     <div class="card" id="drivers"></div>
-    <p class="note">Bars run 1–10; the hairline marks the 5.5 neutral. Composite =
-      &Sigma;(weight &times; score).</p>
+    <p class="note">Driver bars run 1–10 — that is the granularity the underlying
+      evidence supports — and the hairline marks their 5.5 neutral. Composite =
+      &Sigma;(weight &times; score), then rescaled onto the 1–5 headline gauge:
+      1&rarr;1, 5.5&rarr;3.0 neutral, 10&rarr;5.</p>
   </section>
 
   <section>
     <p class="eyebrow">Regional ranking &middot; 3M / 6M / 12M / 5Y</p>
     <h2>Asia still leads, but the near term narrowed</h2>
-    <p>Each region is scored 1–10 on the same seven drivers, then blended with the
-      horizon weights the 5-year mandate implies: <span class="num">3M&nbsp;15%</span>,
+    <p>Each region is scored on the same seven drivers and reported on the same
+      <strong>1–5</strong> scale as the headline gauge, with
+      <span class="num">3.0</span> neutral. Scores are blended with the horizon
+      weights the 5-year mandate implies: <span class="num">3M&nbsp;15%</span>,
       <span class="num">6M&nbsp;25%</span>, <span class="num">12M&nbsp;30%</span>,
       <span class="num">5Y&nbsp;30%</span>. Near-term signals get a vote; they don't
-      get to run the portfolio.</p>
+      get to run the portfolio. Regions are researched on 1–10, like the drivers,
+      then rescaled by the same endpoint-preserving map; the tilt coefficient is
+      restated in 1–5 units (<span class="num">0.675pp</span> per point, formerly
+      <span class="num">0.30pp</span> per 1–10 point) so the rescale moves no
+      allocation.</p>
     <div class="card">
       <div class="tw"><table class="rgrid" id="rtab"></table></div>
       <div id="rwhy"></div>
@@ -640,10 +650,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         next, off the AI and memory cycle, on a forward multiple of
         <b class="num">10.5&times;</b>. That combination — hostile policy, hostile
         energy, excellent earnings, undemanding valuations — is what produces a
-        <b class="num">4.8</b> gauge rather than a 3 or an 8. It has fallen from
-        <b class="num">5.3</b> at the start of September: energy and policy both got worse,
+        <b class="num">2.7</b> gauge on the 1&ndash;5 scale rather than a
+        <b class="num">1.9</b> or a <b class="num">4.1</b>. It has fallen from
+        <b class="num">2.9</b> at the start of September: energy and policy both got worse,
         and only valuation improved. Two drivers moved this week in opposite directions.
-        Inflation was cut from <b class="num">3.5</b> to <b class="num">3.0</b> — US PCE is running
+        Inflation was cut from <b class="num">3.5</b> to <b class="num">3.0</b> on the
+        1&ndash;10 driver scale — US PCE is running
         <b class="num">3.7%</b> over twelve months and <b class="num">4.1%</b> annualised
         over six, so the contained <b class="num">2.5%</b> core CPI this model leaned on is
         no longer the clean anchor it looked like, and euro inflation jumped to
@@ -679,7 +691,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <h3>3 &middot; The two overweights, and why they don't overlap</h3>
       <p>Asia Equity goes to <b class="num">35%</b> because it still ranks first on
         the horizons that matter to a 5-year mandate —
-        <b class="num">5.5 / 6.5 / 7.0 / 7.5</b>, cut at the front end for the energy
+        <b class="num">3.0 / 3.44 / 3.67 / 3.89</b> on the 1&ndash;5 scale, cut at the
+        front end for the energy
         shock but with the 5-year anchor untouched — and because a
         <b class="num">10.5&times;</b> forward multiple against that earnings growth is
         the widest valuation-to-growth gap available in these four funds. It is trimmed
@@ -956,36 +969,56 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
  "sp_vol_5y": 19.57,
  "regions": {
   "US": {
-   "3M": 5.5,
-   "6M": 5.5,
-   "12M": 6.0,
-   "5Y": 6.5,
+   "3M": 3.0,
+   "6M": 3.0,
+   "12M": 3.22,
+   "5Y": 3.44,
    "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.76% near a 3-year high, the 2-year is at its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
-   "blend": 5.95
+   "blend": 3.2,
+   "3M_10": 5.5,
+   "6M_10": 5.5,
+   "12M_10": 6.0,
+   "5Y_10": 6.5,
+   "blend_10": 5.95
   },
   "EUROPE": {
-   "3M": 3.0,
-   "6M": 3.5,
-   "12M": 4.0,
-   "5Y": 4.5,
+   "3M": 1.89,
+   "6M": 2.11,
+   "12M": 2.33,
+   "5Y": 2.56,
    "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
-   "blend": 3.88
+   "blend": 2.28,
+   "3M_10": 3.0,
+   "6M_10": 3.5,
+   "12M_10": 4.0,
+   "5Y_10": 4.5,
+   "blend_10": 3.88
   },
   "ASIA": {
-   "3M": 5.5,
-   "6M": 6.5,
-   "12M": 7.0,
-   "5Y": 7.5,
+   "3M": 3.0,
+   "6M": 3.44,
+   "12M": 3.67,
+   "5Y": 3.89,
    "why": "Still the best fundamentals available, but the near horizons take the energy shock hardest: Korea, Taiwan and Japan are all large net oil importers, and on 2 Sep the KOSPI fell ~4%, the Nikkei 2.9% and MSCI Asia-Pac ex-Japan 2%. That is a macro de-rating, not an earnings event - 10.5x fwd against consensus EPS growth of ~52% (2026) and ~28% (2027) off the AI/memory/semis cycle is intact and now cheaper. The 5-year anchor stays at 7.5; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block.",
-   "blend": 6.8
+   "blend": 3.58,
+   "3M_10": 5.5,
+   "6M_10": 6.5,
+   "12M_10": 7.0,
+   "5Y_10": 7.5,
+   "blend_10": 6.8
   },
   "PHILIPPINES": {
-   "3M": 6.0,
-   "6M": 6.0,
-   "12M": 5.5,
-   "5Y": 5.5,
+   "3M": 3.22,
+   "6M": 3.22,
+   "12M": 3.0,
+   "5Y": 3.0,
    "why": "Near horizons marked back UP: August inflation eased to 6.1%, a fourth consecutive monthly slowdown and a five-month low, inside BSP's own 5.5-6.5% forecast range. Against 364-day T-bills at 5.72% the real yield gap has narrowed from about -1pp to roughly -0.4pp, so the sleeve is losing purchasing power far more slowly than a month ago. The 12M and 5Y anchors stay at 5.5 because the year-to-date average is still 5.2% and BSP's 2027 forecast is 5.4% - this is deceleration, not victory. Previously MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.565, its fourth record low running. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
-   "blend": 5.7
+   "blend": 3.09,
+   "3M_10": 6.0,
+   "6M_10": 6.0,
+   "12M_10": 5.5,
+   "5Y_10": 5.5,
+   "blend_10": 5.7
   }
  },
  "hz_weights": {
@@ -1049,7 +1082,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "note": "Still the weakest link by a wide margin, and now measurable in the shipping data rather than only the headlines: commodity transits through the Strait held at roughly 5 vessels against a 10-day average of 14 - a two-thirds collapse in throughput. Two Saudi supertankers were struck on 31 Aug, the US hit ~100 Iranian targets on 1 Sep and struck Iranian tankers on 2 Sep under a 'tanker for tanker' policy. Brent $94.86, +40.3% y/y. Held at 1.5 rather than cut further only because Qatari and Omani mediation is live and Tehran has signalled it would return to the June interim terms."
   }
  ],
- "gauge": 4.78,
+ "gauge": 2.68,
+ "gauge_10": 4.78,
+ "gauge_neutral": 3.0,
  "funds": [
   {
    "id": "ATRPHMM",
@@ -1067,7 +1102,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "gross_php": 5.25,
    "fx_drift": 0.0,
    "net_base": 4.54,
-   "regional_score": 5.7,
+   "regional_score": 3.09,
    "tilt_regional": 0.06,
    "tilt_vol": 0.1,
    "tilt_rates": 0.25,
@@ -1094,7 +1129,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "gross_php": 9.2,
    "fx_drift": 2.0,
    "net_base": 7.35,
-   "regional_score": 5.95,
+   "regional_score": 3.2,
    "tilt_regional": 0.14,
    "tilt_vol": 0.6,
    "tilt_rates": -0.1,
@@ -1121,7 +1156,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "gross_php": 10.3,
    "fx_drift": 2.0,
    "net_base": 8.32,
-   "regional_score": 6.8,
+   "regional_score": 3.58,
    "tilt_regional": 0.39,
    "tilt_vol": 0.0,
    "tilt_rates": -0.05,
@@ -1148,7 +1183,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "gross_php": 11.0,
    "fx_drift": 2.0,
    "net_base": 8.9,
-   "regional_score": 5.84,
+   "regional_score": 3.15,
    "tilt_regional": 0.1,
    "tilt_vol": -0.35,
    "tilt_rates": -0.4,
@@ -2073,7 +2108,7 @@ document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () =>
 $("#asof").textContent = D.as_of;
 $("#asof2").textContent = D.as_of;
 $("#hg").textContent = D.gauge.toFixed(1);
-$("#gv").innerHTML = D.gauge.toFixed(1) + '<i>/10</i>';
+$("#gv").innerHTML = D.gauge.toFixed(1) + '<i>/5</i>';
 $("#spv").textContent = D.sp_vol_5y.toFixed(2) + "%";
 $("#nfeas").textContent = D.optimized.n_feasible;
 /* The two degenerate corner solutions are rendered from the payload, never typed.
@@ -2097,8 +2132,8 @@ $("#corrnote").textContent = D.corr_note;
 /* ---------------- gauge ---------------- */
 (function () {
   const W = 300, H = 168, cx = 150, cy = 150, R = 116, TH = 20;
-  const s = svg(W, H); s.setAttribute("aria-label", "Macro driver gauge: " + D.gauge + " of 10");
-  const ang = v => Math.PI * (1 - (v - 1) / 9);
+  const s = svg(W, H); s.setAttribute("aria-label", "Macro driver gauge: " + D.gauge + " of 5");
+  const ang = v => Math.PI * (1 - (v - 1) / 4);
   const P = (v, r) => [cx + r * Math.cos(ang(v)), cy - r * Math.sin(ang(v))];
   const arc = (a, b, r, col, w) => {
     const [x1,y1] = P(a,r), [x2,y2] = P(b,r);
@@ -2106,16 +2141,17 @@ $("#corrnote").textContent = D.corr_note;
       stroke:col, "stroke-width":w, "stroke-linecap":"butt" });
   };
   // graded track: 4 bands, each a state not a rank
-  const bands = [[1,3.25,"#B02A37"],[3.25,5.5,"#B07A18"],[5.5,7.75,"#4F9A6A"],[7.75,10,"#177A52"]];
+  const bands = [[1,2,"#B02A37"],[2,3,"#B07A18"],[3,4,"#4F9A6A"],[4,5,"#177A52"]];
   bands.forEach(([a,b,c],i) => { const g = i ? 0.06 : 0;
     s.appendChild(arc(a+g, b, R, c, TH)).setAttribute("opacity", ".26"); });
   // filled portion
   s.appendChild(arc(1, D.gauge, R, "#1D3A63", TH)).setAttribute("opacity",".92");
   // ticks
-  for (let v = 1; v <= 10; v++) {
+  for (let v = 1; v <= 5; v += 0.5) {
     const [x1,y1] = P(v, R - TH/2 - 3), [x2,y2] = P(v, R - TH/2 - 8);
-    s.appendChild(sel("line", { x1,y1,x2,y2, stroke:"#C9D3E2", "stroke-width": v%3===1?1.6:1 }));
-    if (v === 1 || v === 10 || v === 5 || v === 6) {
+    s.appendChild(sel("line", { x1,y1,x2,y2, stroke:"#C9D3E2",
+      "stroke-width": Number.isInteger(v) ? 1.6 : 1 }));
+    if (v === 1 || v === 3 || v === 5) {
       const [tx,ty] = P(v, R - TH/2 - 20);
       const t = sel("text", { x:tx, y:ty+4, "text-anchor":"middle", fill:"#7C8798",
         "font-family":"IBM Plex Mono, monospace", "font-size":"11" });
@@ -2130,8 +2166,8 @@ $("#corrnote").textContent = D.corr_note;
   s.appendChild(sel("circle", { cx:nx, cy:ny, r:1.8, fill:"#FFFFFF" }));
   $("#gauge").appendChild(s);
   const g = D.gauge;
-  $("#gverdict").textContent = g < 3.5 ? "Defensive" : g < 5.5 ? "Neutral, tilted cautious"
-    : g < 7.5 ? "Constructive" : "Risk-on";
+  $("#gverdict").textContent = g < 2.11 ? "Defensive" : g < 3.0 ? "Neutral, tilted cautious"
+    : g < 3.89 ? "Constructive" : "Risk-on";
 })();
 
 /* ---------------- driver rows ---------------- */
@@ -2150,7 +2186,10 @@ $("#corrnote").textContent = D.corr_note;
   });
   box.appendChild(el("div", { class:"drv", style:"border-top:1.5px solid var(--line-2)" },
     `<div class="drvhead"><span class="drvname" style="font-weight:700">Weighted composite</span>
-      <span class="sc" style="color:var(--navy);font-size:16px">${D.gauge.toFixed(1)}</span></div>`));
+      <span class="wt">${D.gauge_10.toFixed(2)} / 10</span>
+      <span class="sc" style="color:var(--navy);font-size:16px">${D.gauge.toFixed(1)}</span></div>
+     <div class="drvnote">Rescaled onto the 1–5 headline gauge, where
+       <span class="num">${D.gauge_neutral.toFixed(1)}</span> is neutral.</div>`));
 })();
 
 /* ---------------- regional ranking ---------------- */
@@ -2161,8 +2200,9 @@ $("#corrnote").textContent = D.corr_note;
   t.appendChild(el("thead", null,
     `<tr><th>Region</th><th>3M</th><th>6M</th><th>12M</th><th>5Y</th><th>Blend</th></tr>`));
   const tb = el("tbody");
-  const shade = v => { const a = Math.max(0, Math.min(1, (v - 2.5) / 6));
-    return v >= 5.5 ? `background:rgba(23,122,82,${(0.07 + a*0.26).toFixed(3)});color:var(--ink)`
+  // shading anchors rescaled from the 1-10 research scale: 2.5 -> 1.67, span 6 -> 2.67
+  const shade = v => { const a = Math.max(0, Math.min(1, (v - 1.67) / 2.67));
+    return v >= 3.0 ? `background:rgba(23,122,82,${(0.07 + a*0.26).toFixed(3)});color:var(--ink)`
                     : `background:rgba(176,42,55,${(0.30 - a*0.22).toFixed(3)});color:var(--ink)`; };
   order.forEach(([k,v], i) => {
     tb.appendChild(el("tr", null,
@@ -2173,7 +2213,9 @@ $("#corrnote").textContent = D.corr_note;
   t.appendChild(tb);
   const w = $("#rwhy");
   order.forEach(([k,v]) => w.appendChild(el("div", { class:"rwhy" },
-    `<b>${NAME[k]} &middot; ${v.blend.toFixed(2)}</b>${v.why}`)));
+    `<b>${NAME[k]} &middot; ${v.blend.toFixed(2)}</b>` +
+    `<span class="scalenote">research scale ${v.blend_10.toFixed(2)} / 10 &mdash; ` +
+    `the horizon figures quoted below are on that scale</span>${v.why}`)));
 })();
 
 /* ---------------- correlated sentiment matrix ---------------- */
@@ -2391,7 +2433,7 @@ const NOTE = {
          <dl style="margin:0">
            <div class="kv"><dt>Volatility σ</dt><dd>${f.vol.toFixed(2)}%</dd></div>
            <div class="kv"><dt>All-in fees</dt><dd>${f.fee_total.toFixed(2)}%</dd></div>
-           <div class="kv"><dt>Regional score</dt><dd>${f.regional_score.toFixed(2)} / 10</dd></div>
+           <div class="kv"><dt>Regional score</dt><dd>${f.regional_score.toFixed(2)} / 5</dd></div>
            <div class="kv"><dt>Baseline weight</dt><dd>${wA}%</dd></div>
            <div class="kv"><dt>Optimised weight</dt><dd style="color:${HEX[i]};font-weight:700">${wB}%
              <span style="font-weight:500;color:var(--ink-3)">(${wB>wA?"+":""}${wB-wA})</span></dd></div>
