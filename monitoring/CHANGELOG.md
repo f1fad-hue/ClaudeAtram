@@ -2,6 +2,71 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-05 — Review: two releases landed, three defects fixed
+
+Full manual review: macro refresh, fact-check, independent maths audit, code
+review, cleanup, and validation of all sixteen original requirements. As-of
+2026-09-03 -> 2026-09-05.
+
+### New data — two scheduled releases since the last review
+
+**US August payrolls (BLS, 4 Sep): +162,000 against a 53,000 consensus**,
+unemployment steady at 4.1%, versus a 31,000 twelve-month average. This retires
+the −23k July print the model had been treating as evidence of a cracking labour
+market — it was noise, not trend. Growth momentum raised **5.0 -> 5.5**, and the
+US near-horizon score **5.0 -> 5.5**.
+
+**PH August CPI (PSA, 4 Sep): 6.1%**, easing from 6.2% — a fourth consecutive
+monthly slowdown and a five-month low, inside BSP's own 5.5–6.5% range. Against
+364-day T-bills at 5.72% the real-yield gap narrows from about −1pp to −0.4pp, so
+the money market sleeve is losing purchasing power far more slowly. Philippines
+3M and 6M raised **5.5 -> 6.0**; the 12M and 5Y anchors held at 5.5 because the
+year-to-date average is still 5.2%.
+
+Fed odds refreshed: **58%** for the 15–16 Sep FOMC, up from 49.4% the day before
+on the payrolls beat — and *down* from the 66% recorded on 3 Sep, a reminder that
+a point-in-time probability is not a standing fact.
+
+### Defects found and fixed
+
+1. **Duplicate source URL.** Adding an August PSA row created a second entry on
+   the same `psa.gov.ph/price-indices/cpi-ir` URL as the July row. Merged into one
+   row covering the series. Caught by the audit's duplicate check.
+
+2. **Two stale corner-solution figures.** The "why not simply maximise return?"
+   passage quoted the min-drawdown portfolio at 5.42% / −2.0%; the Philippines
+   rescore moved it to 5.47% / −1.9%. **Fixed structurally rather than by hand:**
+   both corner solutions now render from the payload at load time, so they cannot
+   drift again. This is the first real bite taken out of the standing
+   "53 hard-coded prose figures" risk.
+
+3. **The gauge dial and the prose disagreed.** The dial and header showed
+   **4.8** (one decimal) while the rationale said **4.78**. For a composite of
+   seven subjective half-point judgements, two decimals is false precision anyway.
+   Prose now reads 4.8, matching the dial. The validator was tightened to compare
+   on displayed precision, so this class of mismatch is caught in future.
+
+### Effect on the portfolio: none
+
+Gauge **4.78** (unchanged on net — the growth upgrade offset the earlier
+inflation cut). Both allocations hold at **20/30/25/25** and **15/45/35/5**.
+Forecasts nudge to **7.50% / −20.5%** and **7.66% / −18.4%**; return per unit of
+drawdown **0.366 -> 0.415**, a 13% gain.
+
+### Validation
+
+All **sixteen original requirements** re-validated against the rendered page:
+**16/16 PASS**, plus three build-health checks. Engine **19/19**. Independent
+re-derivation (reads only `data.json`, never imports the engine): **0 failures**.
+Sources 31 -> 33, all https, no duplicates. Palette still passes colour-vision
+validation. `__pycache__` removed; tree clean; 8 tracked files.
+
+### Still pending
+
+US August CPI publishes **11 September** and the FOMC decides **16 September**;
+the ECB decides **10 September**. All three will move the inflation and policy
+reads. Worth a re-run after each.
+
 ## 2026-09-03 — Manual review: two factual errors corrected
 
 Full review run by hand: macro refresh, source fact-check, independent maths

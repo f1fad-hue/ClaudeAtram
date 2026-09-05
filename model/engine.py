@@ -14,7 +14,7 @@ Run:  python3 engine.py            -> human-readable audit report
 import json, math, sys
 from itertools import product
 
-AS_OF = "2026-09-03"
+AS_OF = "2026-09-05"
 
 # ----------------------------------------------------------------------------
 # 1. VERIFIED INPUTS  (source-cited; see SOURCES dict at bottom)
@@ -27,7 +27,9 @@ MACRO = {
     "us_cpi_headline": 3.4,
     "us_cpi_core": 2.5,
     "us_pce_12m": 3.7, "us_pce_6m": 4.1, "ust_10y": 4.76,
-    "fed_hike_odds_sep": 66.2, "ecb_sep_expected": 2.50,
+    "fed_hike_odds_sep": 58.0, "fed_hike_odds_prev": 49.4, "ecb_sep_expected": 2.50,
+    "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
+    "us_payrolls_12m_avg": 31_000,
     "us_payrolls_jul": -23000,
     "us_unemployment": 4.1,
     "ecb_depo": 2.25,
@@ -40,6 +42,7 @@ MACRO = {
     "bsp_last_move_bp": 25,
     "bsp_hikes_since_apr": 3,
     "bsp_cum_bp": 75,
+    "ph_cpi_aug": 6.1, "ph_cpi_ytd_avg": 5.2,
     "ph_cpi_jul": 6.2, "ph_core_jul": 4.2,
     "ph_cpi_jun": 6.4,
     "bsp_infl_2026": 6.1,
@@ -138,8 +141,8 @@ HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, "5Y": 0.30}
 
 REGIONS = {
     "US": {
-        "3M": 5.0, "6M": 5.5, "12M": 6.0, "5Y": 6.5,
-        "why": "Cut across the near horizons on the September bond rout: the 10-year sits at 4.76%, near a 3-year high, and CME FedWatch prices a Sep-16 hike at ~66% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
+        "3M": 5.5, "6M": 5.5, "12M": 6.0, "5Y": 6.5,
+        "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.76% near a 3-year high, the 2-year is at its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
     },
     "EUROPE": {
         "3M": 3.0, "6M": 3.5, "12M": 4.0, "5Y": 4.5,
@@ -150,8 +153,8 @@ REGIONS = {
         "why": "Still the best fundamentals available, but the near horizons take the energy shock hardest: Korea, Taiwan and Japan are all large net oil importers, and on 2 Sep the KOSPI fell ~4%, the Nikkei 2.9% and MSCI Asia-Pac ex-Japan 2%. That is a macro de-rating, not an earnings event - 10.5x fwd against consensus EPS growth of ~52% (2026) and ~28% (2027) off the AI/memory/semis cycle is intact and now cheaper. The 5-year anchor stays at 7.5; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block.",
     },
     "PHILIPPINES": {
-        "3M": 5.5, "6M": 5.5, "12M": 5.5, "5Y": 5.5,
-        "why": "MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.565, its fourth record low running. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
+        "3M": 6.0, "6M": 6.0, "12M": 5.5, "5Y": 5.5,
+        "why": "Near horizons marked back UP: August inflation eased to 6.1%, a fourth consecutive monthly slowdown and a five-month low, inside BSP's own 5.5-6.5% forecast range. Against 364-day T-bills at 5.72% the real yield gap has narrowed from about -1pp to roughly -0.4pp, so the sleeve is losing purchasing power far more slowly than a month ago. The 12M and 5Y anchors stay at 5.5 because the year-to-date average is still 5.2% and BSP's 2027 forecast is 5.4% - this is deceleration, not victory. Previously MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.565, its fourth record low running. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
     },
 }
 for r in REGIONS.values():
@@ -163,11 +166,11 @@ for r in REGIONS.values():
 
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 3.5,
-     "Tightening is happening, though less of it is priced than this model previously claimed. CME FedWatch puts a 25bp Sep-16 hike at ~66%, up from ~56% before Chair Warsh's hawkish Jackson Hole remarks - but a SECOND hike, fully priced for December a week ago, has slipped to January 2027. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep, which a Reuters poll of economists calls the second and final move of its shortest hiking campaign in 15 years. BSP is at 5.00% after three consecutive hikes. US 10-year 4.76%."),
+     "Tightening is happening, though less of it is priced than this model once claimed. CME FedWatch puts a 25bp hike at the 15-16 Sep FOMC at 58%, up from 49.4% the day before on the August payrolls beat - still one move, not the two this model previously asserted, since the December hike has slipped to January 2027. The 2-year note is at its highest since January 2025. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep, which a Reuters poll of economists calls the second and final move of its shortest hiking campaign in 15 years. BSP is at 5.00% after three consecutive hikes. US 10-year 4.76%."),
     ("Inflation trajectory", 0.15, 3.0,
-     "Cut again: the clean anchor this model leaned on has gone. US core CPI at 2.5% looked contained, but PCE - the measure the Fed actually targets - is running 3.7% over 12 months and 4.1% annualised over 6, which is what Warsh cited at Jackson Hole. Euro HICP jumped to 3.3% in August from 2.9%, on energy at +14.3% y/y (Eurostat flash, 1 Sep). PH headline 6.2% in July with core easing to 4.2%, and BSP's own 2027 forecast raised to 5.4%. Three of three blocs are re-accelerating on the same energy shock."),
-    ("Growth momentum", 0.15, 5.0,
-     "IMF April WEO unchanged and still current: global 3.1% (2026) / 3.2% (2027), US resilient at 2.4%, euro area cut to 0.7%. Trimmed because a Brent move to $95 is a straight tax on every net-importing economy in Europe and Asia. Wide dispersion - a stock-picker's macro, not a beta macro."),
+     "Cut again: the clean anchor this model leaned on has gone. US core CPI at 2.5% looked contained, but PCE - the measure the Fed actually targets - is running 3.7% over 12 months and 4.1% annualised over 6, which is what Warsh cited at Jackson Hole. Euro HICP jumped to 3.3% in August from 2.9%, on energy at +14.3% y/y (Eurostat flash, 1 Sep). PH is the one bloc improving: headline eased to 6.1% in August, a fourth consecutive monthly deceleration and a five-month low, with July core at 4.2% - though the year-to-date average is still 5.2% and BSP's 2027 forecast stands at 5.4%. Three of three blocs are re-accelerating on the same energy shock."),
+    ("Growth momentum", 0.15, 5.5,
+     "Raised on the August payrolls beat: +162k against a 53k consensus and a 31k twelve-month average, with unemployment steady at 4.1%. That retires the -23k July print this model had been treating as evidence of a cracking labour market - it was noise, not trend. IMF April WEO still current: global 3.1% (2026) / 3.2% (2027), US 2.4%, euro area 0.7%. Held below 6 because Brent at $95 is a straight tax on every net importer in Europe and Asia, and because a hot labour market is exactly what lets the Fed hike."),
     ("Corporate earnings", 0.2, 7.5,
      "Still the strongest pillar, and the 2 Sep selloff was macro de-rating rather than an earnings event: Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027) is intact and AI infrastructure capex is still compounding through the semis supply chain. Trimmed a half point for energy input costs and the risk that a sustained $95+ Brent forces the 52% estimate down."),
     ("Valuation support", 0.1, 7.5,
@@ -547,11 +550,18 @@ SOURCES = [
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260611~4d41bd5e83.en.html"),
     ("Bangko Sentral ng Pilipinas", "Key rates - RRP 5.00% after the 27 August 2026 hike, a third consecutive move and +75bp cumulative since April",
      "https://www.bsp.gov.ph/SitePages/Statistics/KeyRates.aspx"),
+    ("US BLS", "Employment Situation, August 2026 - nonfarm payrolls +162,000 against a "
+     "53,000 consensus; unemployment rate steady at 4.1%",
+     "https://www.bls.gov/news.release/empsit.nr0.htm"),
+    ("CNBC", "US payrolls rose 162,000 in August, much more than expected; unemployment "
+     "at 4.1%; Fed hike odds for September rose to ~58% from 49.4%",
+     "https://www.cnbc.com/2026/09/04/jobs-report-august-2026.html"),
     ("Eurostat", "Flash estimate, 1 September 2026 - euro area annual inflation 3.3% in "
      "August, up from 2.9% in July, energy +14.3% y/y",
      "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-01092026-ap"),
-    ("CME Group / FedWatch", "Fed funds futures - ~66% implied probability of a 25bp hike "
-     "at the 16 September 2026 FOMC; the second hike has slipped to January 2027",
+    ("CME Group / FedWatch", "Fed funds futures - 58% implied probability of a 25bp hike "
+     "at the 15-16 September 2026 FOMC, up from 49.4% before the August payrolls beat; "
+     "the second hike has slipped to January 2027",
      "https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html"),
     ("CNBC", "Jackson Hole roundup - Chair Warsh cites PCE at 3.7% over 12 months and 4.1% "
      "annualised over 6, lifting September hike odds",
@@ -562,7 +572,9 @@ SOURCES = [
     ("Bloomberg", "Oil market news, 3 September 2026 - Hormuz commodity transits ~5 vessels "
      "against a 10-day average of 14",
      "https://www.bloomberg.com/news/articles/2026-09-02/latest-oil-market-news-and-analysis-for-sept-3"),
-    ("Philippine Statistics Authority", "Consumer Price Index - headline inflation 6.2% y/y in July 2026, eased from 6.4% in June",
+    ("Philippine Statistics Authority", "Consumer Price Index series - headline inflation "
+     "6.1% y/y in August 2026, easing from 6.2% in July and 6.4% in June; a fourth "
+     "consecutive monthly slowdown and a five-month low, year-to-date average 5.2%",
      "https://psa.gov.ph/price-indices/cpi-ir"),
     ("European Central Bank", "Monetary policy decision, 23 July 2026 - deposit rate HELD at 2.25% after the June hike",
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260723~29f24d99bc.en.html"),
