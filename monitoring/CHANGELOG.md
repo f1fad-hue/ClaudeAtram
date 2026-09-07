@@ -2,6 +2,119 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-07 — Deep scrub: the volatility read was wrong, and correcting it moved the model
+
+Full research pass against live sources. Four factual errors found in inputs this
+model had presented as verified, one of them load-bearing. Correcting them
+materially improved the optimised portfolio's forecast, which is the point of
+checking.
+
+### 1. The central volatility claim was wrong — and wrong in the flattering direction
+
+Last week's page led with "the calm was priced, and it has started to break":
+spot VIX 16.44 on 2 Sep, +10.2% on the day, off a 2026 low of 14.13 set 28 Aug.
+Almost none of that survived contact with the sources.
+
+| Claim | Published | Verified |
+|---|---|---|
+| Spot VIX | 16.44 (2 Sep) | **14.32** (4 Sep close) |
+| 2026 low | 14.13 on 28 Aug | **14.18 on 17 Aug** |
+| Sep future | 17.92 | **16.57** |
+| Dec future | 20.38 | **19.26** |
+
+The VIX did spike to **16.34** on 2 Sep on the Hormuz strikes — then gave the
+entire move back: 15.20 on 3 Sep, 14.32 at Friday's close, within 0.14 of the
+2026 low. The thesis was not merely stale, it was **inverted**: the complacency
+did not break, it re-asserted itself while a shooting war ran in the Strait of
+Hormuz.
+
+One aggregator reported a "5 September close of 14.53". **5 September 2026 was a
+Saturday.** There is no such close, and the figure was discarded — a weekday
+check is now part of accepting any market print.
+
+### 2. The bootstrap was interpolating across a gap it no longer had to
+
+The curve was built from two observable futures (Sep, Dec) with a five-month
+linear guess between them. Four contracts are quoted — Sep 16.57, Oct 18.41,
+Nov 19.08, Dec 19.26 — so the bootstrap now interpolates through all of them.
+The knots are data, not constants, so adding the next contract is an input
+change rather than a code change.
+
+### 3. What that does to the portfolio
+
+This is the whole reason the volatility channel was wired into the optimiser on
+5 September. Spot fell toward its low while the curve held, so:
+
+```
+ramp = 18.68% blended implied − 14.32 spot = +4.36 vol points   (was +2.87)
+```
+
+Every sleeve's tilt moved with it, with nobody re-typing a number. The
+covered-call sleeve's volatility tilt goes **+0.60 → +0.92pp**, Global
+Technology's **−0.35 → −0.53pp**. Consequences:
+
+- **The two US-tech sleeves have swapped places.** Nasdaq Equity Income now
+  forecasts **8.21%** net against Global Technology's **7.92%** — it wins on
+  return *and* on risk (16.0% vol vs 24.7%). The report's "for a forecast net
+  CAGR only 0.22pp lower" is now false in the other direction; the page states
+  the dominance instead, rendered from the funds.
+- **Optimised forecast rises 7.66% → 7.82%**, drawdown improves −18.4% → −18.2%,
+  return-per-drawdown **0.415 → 0.431** (a 15% gain over baseline, was 13%).
+  Weights hold at **15/45/35/5** — the budget still binds there.
+- **The Global Tech stub costs more now: 0.08pp → 0.15pp.** Stated, not buried.
+
+### 4. Three more corrections
+
+- **Hormuz throughput was measured against the wrong baseline.** The page cited
+  ~5 transits "against a 10-day average of 14" — but that average was itself
+  already collapsed. Against the **~85/day pre-crisis baseline**, the 6 transits
+  PortWatch logged on 30 Aug are a **~93% shutdown**, with 436 vessels holding.
+  The conflict is also now direct rather than proxy.
+- **Brent +40.3% → +46.99% y/y**, $94.86 → **$96.28**. The shock is still widening.
+- **Peso 62.565 → 62.59**, a *fifth* consecutive record low, not a fourth.
+  10-year 4.76% → **4.784%** (4.818% intraweek, highest since Nov 2023);
+  2-year **4.377%**, highest since Jan 2025.
+
+### 5. Scores that moved, and why
+
+- **Volatility & risk appetite 4.0 → 3.5.** Cut *because* the previous read was
+  wrong: absorbing a live Hormuz conflict without repricing vol is more
+  complacency, not less.
+- **Asia 3M 5.5 → 6.0.** Last week's cut assumed the 2 Sep selloff was a
+  persistent energy de-rating. It reversed in three sessions on AI and memory
+  demand — SK Hynix ~+7% on the week, Nikkei +1.26% to 65,021, KOSPI back in
+  bull-market territory. The selloff was macro, the earnings never moved.
+- **ECB confirmed and strengthened:** all 65 economists in the 31 Aug–3 Sep
+  Reuters poll see +25bp to 2.50% on 10 Sep, 91% see it held to year end —
+  the shortest hiking campaign since 2011.
+
+Gauge **2.68 → 2.65**.
+
+### 6. A check fired, and the tolerance was the bug
+
+`optimized drawdown reproduces from its published k` failed at a real gap of
+**0.0614** against a hand-picked `< 0.06`. The check was right and the tolerance
+was wrong: it ignored the rounding each published input contributes through the
+formula. Both the engine and the independent verifier now **derive** the bound —
+display rounding (0.05) plus each input's propagated contribution — rather than
+carrying a round number that would drift into meaninglessness. A magic constant
+is how a check gets quietly loosened until it stops biting.
+
+Also fixed: the monetary-policy driver note still ended with a stale "US 10-year
+4.76%" after its opening sentence had been updated to 4.784% — caught by widening
+the checklist's stale-figure guard to every figure corrected this week, which is
+now how that guard is maintained. (The guard excludes the sources list, where
+descriptions legitimately quote older articles verbatim.) Also: a duplicated row
+in the verifier's claim-register map, and the last hard-typed figures in the prose (the conclusion's six numbers, the Hormuz
+scenario, the Asia horizons, the ramp arithmetic, the VIX stat card's 2026 low)
+are now rendered from the payload.
+
+**Verification:** engine **39/39**. Independent verifier **160 checks, 0
+failures**, with the forward-variance curve re-integrated from the payload's own
+futures strip on a 200,000-step grid using its own knots. Claim register updated
+and now **20 rows machine-checked**. All 16 checklist items plus 4 build-health
+checks: **20/20**.
+
 ## 2026-09-05 — Audit: the published drawdown formula did not reproduce the published drawdowns
 
 Full revalidation pass. Four defects found, all four rectified. The first is the

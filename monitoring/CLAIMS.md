@@ -31,21 +31,23 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | US CPI headline y/y (Jul 2026) | 3.4% | P | bls.gov CPI release | 2026-09-05 |
 | US CPI core y/y (Jul 2026) | 2.5% | P | bls.gov | 2026-09-05 |
 | **US PCE y/y / 6m annualised** | **3.7% / 4.1%** | P | cited by Chair Warsh, Jackson Hole (CNBC) | 2026-09-05 |
-| US 10-year Treasury yield | 4.76% | P | market data, 3 Sep | 2026-09-05 |
+| US 10-year Treasury yield | 4.784% (4 Sep); 4.818% intraweek, highest since Nov 2023 | P | market data | 2026-09-07 |
+| US 2-year Treasury yield | 4.377%, highest since Jan 2025 | P | market data | 2026-09-07 |
 | Fed Sep 15-16 hike probability | 58%, from 49.4% pre-payrolls | P | CME FedWatch | 2026-09-05 |
 | **Euro area HICP (Aug 2026 flash)** | **3.3%**, from 2.9% Jul | P | Eurostat flash, 1 Sep | 2026-09-05 |
 | Euro area energy inflation (Aug) | +14.3% y/y | P | Eurostat flash | 2026-09-05 |
-| ECB Sep-10 expectation | +25bp to 2.50%, then done | P | Reuters economist poll | 2026-09-05 |
+| ECB Sep-10 expectation | +25bp to 2.50% — all 65 economists polled; 91% see it held to year end; shortest campaign since 2011 | P | Reuters poll 31 Aug–3 Sep | 2026-09-07 |
 | PH core inflation (Jul 2026) | 4.2%, from 4.4% Jun | P | PSA / BusinessWorld | 2026-09-05 |
-| Hormuz commodity transits | ~5 vessels vs 10-day avg 14 | P | Bloomberg, 3 Sep | 2026-09-05 |
+| Hormuz transits | 6 on 30 Aug vs a ~85/day pre-crisis baseline (~93% shutdown); 436 vessels holding | P | IMF PortWatch / Bloomberg | 2026-09-07 |
 | **US nonfarm payrolls (Aug 2026)** | **+162,000** vs 53,000 consensus | P | bls.gov Employment Situation | 2026-09-05 |
 | US nonfarm payrolls (Jul 2026) | −23,000 | P | bls.gov | 2026-09-05 |
 | **PH CPI (Aug 2026)** | **6.1%**, from 6.2% Jul | P | psa.gov.ph | 2026-09-05 |
 | PH CPI year-to-date average | 5.2% | P | psa.gov.ph | 2026-09-05 |
 | US unemployment rate | 4.1% | P | bls.gov | 2026-09-05 |
 | PH T-bill 91d / 182d / 364d | 5.138% / 5.517% / 5.717% | P | treasury.gov.ph auction results | 2026-09-05 |
-| Brent crude | $94.86 | P | EIA / market data | 2026-09-05 |
-| Brent y/y change | +40.33% | P | market data | 2026-09-05 |
+| USD/PHP | 62.59 (4 Sep) — a FIFTH consecutive record low; the cited BusinessWorld piece covers the fourth (62.565, 2 Sep) | P | market data (4 Sep print verified via search result, not at a primary source) | 2026-09-07 |
+| Brent crude | $96.28 (4 Sep) | P | EIA / market data | 2026-09-07 |
+| Brent y/y change | +46.99% | P | market data | 2026-09-07 |
 | Brent Q1 2026 close | $118 from $61 at year open | P | eia.gov Today in Energy | 2026-09-05 |
 | IMF global growth 2026 / 2027 | 3.1% / 3.2% | P | IMF WEO April 2026 | 2026-09-05 |
 | IMF US growth 2026 / 2027 | 2.4% / 2.0% | P | IMF WEO April 2026 | 2026-09-05 |
@@ -55,15 +57,15 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 
 | Claim | Value | Kind | Source | Last verified |
 |---|---|---|---|---|
-| Spot VIX | 16.44 (2 Sep close, +10.2% on the day) | P | Cboe | 2026-09-05 |
-| VIX 2026 low | 14.13 (28 Aug) | P | Cboe | 2026-09-05 |
-| VIX 30-day range / average | 14.13–18.43 / 15.28 | P | Cboe | 2026-09-05 |
-| September VIX future | 17.92 | P | Cboe | 2026-09-05 |
-| December VIX future | 20.38 | P | Cboe | 2026-09-05 |
+| Spot VIX | 14.32 (4 Sep close - the last trading day; 5 Sep was a Saturday) | P | Cboe | 2026-09-07 |
+| VIX 2026 low | 14.18 (17 Aug) | P | CNBC / Cboe | 2026-09-07 |
+| VIX Hormuz spike | 16.34 (2 Sep close), retraced to 15.20 then 14.32 | P | market reports | 2026-09-07 |
+| VIX 30-day range / average | 14.18–16.80 / 15.28 | P | Cboe | 2026-09-07 |
+| VIX futures strip | Sep 16.57 · Oct 18.41 · Nov 19.08 · Dec 19.26 | P | VIX term-structure data (verified via search result, not at Cboe directly) | 2026-09-07 |
 | Long-run VIX anchor | 19.5 | E | historical VIX mean 1990–2025 | 2026-09-05 |
 | Variance risk premium | 3.5 vol points | E | implied minus realised, long-run | 2026-09-05 |
-| Horizon vol 3M/6M/12M/5Y | 18.27 / 19.25 / 19.62 / 19.57% | D | engine, forward-variance integration | 2026-09-05 |
-| Volatility ramp (blend − spot) | 19.31% − 16.44 = +2.87 vol pts | D | engine | 2026-09-05 |
+| Horizon vol 3M/6M/12M/5Y | 17.43 / 18.37 / 18.88 / 19.37% | D | engine, forward-variance integration over 4 observable contracts | 2026-09-07 |
+| Volatility ramp (blend − spot) | 18.68% − 14.32 = +4.36 vol pts | D | engine | 2026-09-07 |
 
 ## Valuation and earnings
 
