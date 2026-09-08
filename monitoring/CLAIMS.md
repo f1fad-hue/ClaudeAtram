@@ -45,8 +45,8 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | PH CPI year-to-date average | 5.2% | P | psa.gov.ph | 2026-09-05 |
 | US unemployment rate | 4.1% | P | bls.gov | 2026-09-05 |
 | PH T-bill 91d / 182d / 364d | 5.138% / 5.517% / 5.717% | P | treasury.gov.ph auction results | 2026-09-05 |
-| USD/PHP | 62.59 (4 Sep) — a FIFTH consecutive record low; the cited BusinessWorld piece covers the fourth (62.565, 2 Sep) | P | market data (4 Sep print verified via search result, not at a primary source) | 2026-09-07 |
-| Brent crude | $96.28 (4 Sep) | P | EIA / market data | 2026-09-07 |
+| USD/PHP | 62.625 (8 Sep) — the **23rd** record-low close of 2026, past 62.59 on 4 Sep | P | Manila Bulletin / Tribune / BSP (verified via search result) | 2026-09-08 |
+| Brent crude | $96.28; holding above $96 on 7 Sep after +9.3% on the week | P | EIA / market data | 2026-09-08 |
 | Brent y/y change | +46.99% | P | market data | 2026-09-07 |
 | Brent Q1 2026 close | $118 from $61 at year open | P | eia.gov Today in Energy | 2026-09-05 |
 | IMF global growth 2026 / 2027 | 3.1% / 3.2% | P | IMF WEO April 2026 | 2026-09-05 |
@@ -65,7 +65,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | Long-run VIX anchor | 19.5 | E | historical VIX mean 1990–2025 | 2026-09-05 |
 | Variance risk premium | 3.5 vol points | E | implied minus realised, long-run | 2026-09-05 |
 | Horizon vol 3M/6M/12M/10Y | 17.43 / 18.37 / 18.88 / 19.43% | D | engine, forward-variance integration over 4 observable contracts | 2026-09-08 |
-| Volatility ramp (blend − spot) | 18.70% − 14.32 = +4.38 vol pts | D | engine | 2026-09-08 |
+| Volatility ramp (blend − spot) | 18.93% − 14.32 = +4.61 vol pts | D | engine | 2026-09-08 |
 
 ## Valuation and earnings
 
@@ -125,5 +125,5 @@ and the arithmetic that uses them re-derived independently.
 | Regional tilt sensitivity | 0.675pp of CAGR per 1–5 macro score point above the 3.0 neutral (= 0.30pp per 1–10 point) | |
 | Reporting scales | drivers and regions researched 1–10; gauge and regional rankings reported 1–5 | endpoint-preserving rescale, 5.5 → 3.0 |
 | Volatility tilt sensitivity | +0.035 ATRPHMM · +0.210 ATRQIAP · 0.000 ATRASEQ · −0.122 ATRGTEC, per vol point of ramp | structural, not a view |
-| Horizon blend weights | 3M 15% · 6M 25% · 12M 30% · 10Y 30% | the long end stays dominant at the mandate horizon |
-| Drawdown budget for the optimiser | baseline max DD less 2.83pp (= 2.0pp at the 5y calibration, scaled by √(T/5)) | holding it flat would have quietly loosened the objective |
+| Horizon blend weights | 3M 10% · 6M 15% · 12M 25% · 10Y 50% | **reweighted 2026-09-08**: the old 15/25/30/30 put 70% on sub-year horizons while its own comment claimed the anchor was dominant, and it was never revisited when the mandate doubled |
+| Drawdown budget for the optimiser | baseline max DD less 2.83pp (= 2.0pp at the 5y calibration, scaled by √(T/5)); cap 25.97% | holding it flat would have quietly loosened the objective. The cap is published at the precision it is enforced at — it was rounded to 26.0 until 2026-09-08 |

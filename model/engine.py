@@ -43,6 +43,7 @@ MACRO = {
     "ust_10y": 4.784,          # 4 Sep close; hit 4.818 on 2 Sep, highest since Nov 2023
     "ust_10y_wk_high": 4.818,
     "ust_2y": 4.377,           # highest since January 2025
+    "ust_30y": 5.233,
 
     "fed_hike_odds_sep": 58.0, "fed_hike_odds_prev": 49.4, "ecb_sep_expected": 2.50,
     "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
@@ -64,12 +65,14 @@ MACRO = {
     "ph_cpi_jun": 6.4,
     "bsp_infl_2026": 6.1,
     "bsp_infl_2027": 5.4,
-    "usdphp": 62.59,           # 4 Sep - a FIFTH consecutive record low
-    "usdphp_records": 5,
+    "usdphp": 62.625,          # 8 Sep - the 23rd record-low close of 2026
+    "usdphp_records_2026": 23,
+    "usdphp_prev_record": 62.59,   # 4 Sep
     "ph_tbill_91": 5.138,
     "ph_tbill_182": 5.517,
     "ph_tbill_364": 5.717,
-    "brent": 96.28,            # 4 Sep
+    "brent": 96.28,            # holding above $96 on 7 Sep after +9.3% on the week
+    "brent_wk": 9.3,
     "brent_mom": 13.24,
     "brent_yoy": 46.99,        # was 40.33 a day earlier - the shock is still widening
     "hormuz_transits": 6,      # PortWatch, 30 Aug (latest published)
@@ -182,11 +185,27 @@ SP_VOL_LT = next(v["implied"] for v in VOL_TS if v["label"] == HZ_LABEL)
 #    10->5. The fund tilt coefficient is restated in 1-5 units so the rescale moves
 #    no allocation: 0.30 per 1-10 point == 0.675 per 1-5 point.
 #    Each score is an evidence-weighted judgement over the seven drivers in
-#    DRIVERS below; the horizon blend weights near-term signals but keeps the
-#    Long anchor dominant because that is where the mandate sits (HORIZON_Y).
+#    DRIVERS below, blended across horizons by HZ_W.
+#
+#    HORIZON BLEND WEIGHTS - reweighted 2026-09-08.
+#    The old split was 3M 15 / 6M 25 / 12M 30 / long 30, carried over unchanged
+#    when the mandate went from 5 years to 10. Two things were wrong with it:
+#
+#      1. The comment above it claimed the blend "keeps the long anchor
+#         dominant". It did not. 70% of the weight sat on horizons under a year
+#         against 30% on the anchor - the comment described an intent the
+#         numbers contradicted, and nothing checked it.
+#      2. Whatever the right near-term weight is for a FIVE-year mandate, it is
+#         not also right for a TEN-year one. Doubling the holding period without
+#         touching the weights silently doubles how much a 3-month signal counts
+#         per year of mandate.
+#
+#    Now 3M 10 / 6M 15 / 12M 25 / long 50: near-term signals still get a vote
+#    (half the weight), the anchor genuinely dominates, and the check below
+#    asserts it rather than trusting a comment.
 # ----------------------------------------------------------------------------
 
-HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, HZ_LABEL: 0.30}
+HZ_W = {"3M": 0.10, "6M": 0.15, "12M": 0.25, HZ_LABEL: 0.50}
 
 # ----------------------------------------------------------------------------
 # 3b. VOLATILITY RAMP - the optimiser's volatility channel
@@ -224,7 +243,7 @@ NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research sc
 REGIONS = {
     "US": {
         "3M": 5.5, "6M": 5.5, "12M": 6.0, HZ_LABEL: 6.5,
-        "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
+        "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 10-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
     },
     "EUROPE": {
         "3M": 3.0, "6M": 3.5, "12M": 4.0, HZ_LABEL: 4.5,
@@ -232,11 +251,11 @@ REGIONS = {
     },
     "ASIA": {
         "3M": 6.0, "6M": 6.5, "12M": 7.0, HZ_LABEL: 7.5,
-        "why": "3M marked back UP from 5.5. This model cut the near horizon on the 2 Sep selloff - KOSPI ~-4%, Nikkei -2.9%, MSCI Asia-Pac ex-Japan -2% - reading it as an energy-shock de-rating that would persist. It did not persist: the region round-tripped it inside three sessions on AI and memory demand. SK Hynix finished the week ~+7%, Samsung ~+2%, the Nikkei +1.26% to 65,021 snapping a four-day slide, and the KOSPI is back in bull-market territory. That is the point the selloff was making in reverse - it was a macro de-rating, not an earnings event, and the earnings did not move. Still the best fundamentals available: 10.5x forward against consensus EPS growth of ~52% (2026) and ~28% (2027). Held at 6.0 rather than higher because Korea, Taiwan and Japan remain large net oil importers facing Brent +47% y/y, which is a real and continuing terms-of-trade tax. The 5-year anchor stays at 7.5; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block.",
+        "why": "3M marked back UP from 5.5. This model cut the near horizon on the 2 Sep selloff - KOSPI ~-4%, Nikkei -2.9%, MSCI Asia-Pac ex-Japan -2% - reading it as an energy-shock de-rating that would persist. It did not persist: the region round-tripped it inside three sessions on AI and memory demand. SK Hynix finished the week ~+7%, Samsung ~+2%, the Nikkei +1.26% to 65,021 snapping a four-day slide, and the KOSPI is back in bull-market territory. That is the point the selloff was making in reverse - it was a macro de-rating, not an earnings event, and the earnings did not move. Still the best fundamentals available: 10.5x forward against consensus EPS growth of ~52% (2026) and ~28% (2027). Held at 6.0 rather than higher for two reasons that now point the same way: Korea, Taiwan and Japan remain large net oil importers facing Brent +47% y/y, a real and continuing terms-of-trade tax; and China has cut crude imports and refinery runs hard enough to moderate the global price. That cut is a double-edged offset for this sleeve - it caps the input-cost tax, but it is also the clearest read yet on Chinese demand, and this fund's benchmark is Asia Pacific ex-Japan. The AI and memory cycle is carrying the region; Chinese domestic demand is not. The 10-year anchor stays at 7.5, and it now carries half the blend rather than 30%; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block - and LTCMA is a 10-15 year framework, so it fits the lengthened mandate better than it fitted the old one.",
     },
     "PHILIPPINES": {
         "3M": 6.0, "6M": 6.0, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Near horizons marked back UP: August inflation eased to 6.1%, a fourth consecutive monthly slowdown and a five-month low, inside BSP's own 5.5-6.5% forecast range. Against 364-day T-bills at 5.72% the real yield gap has narrowed from about -1pp to roughly -0.4pp, so the sleeve is losing purchasing power far more slowly than a month ago. The 12M and 5Y anchors stay at 5.5 because the year-to-date average is still 5.2% and BSP's 2027 forecast is 5.4% - this is deceleration, not victory. Previously MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.59 on 4 Sep, a FIFTH consecutive record low, on a strong dollar, elevated US yields and domestic political uncertainty. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
+        "why": "Near horizons marked back UP: August inflation eased to 6.1%, a fourth consecutive monthly slowdown and a five-month low, inside BSP's own 5.5-6.5% forecast range. Against 364-day T-bills at 5.72% the real yield gap has narrowed from about -1pp to roughly -0.4pp, so the sleeve is losing purchasing power far more slowly than a month ago. The 12M and 10Y anchors stay at 5.5 because the year-to-date average is still 5.2% and BSP's 2027 forecast is 5.4% - this is deceleration, not victory. Previously MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso keeps making records - 62.59 on 4 Sep, then 62.625 on 8 Sep, the 23rd record-low close of 2026 - on a strong dollar, elevated US yields, a wider external deficit and an import bill inflated by oil. Worth being precise about the cause: the slide is mostly dollar strength and the energy import bill rather than a domestic solvency signal, which is why this sleeve is still held rather than cut. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
     },
 }
 for r in REGIONS.values():
@@ -254,7 +273,7 @@ for r in REGIONS.values():
 
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 3.5,
-     "Tightening is happening, though less of it is priced than this model once claimed. CME FedWatch puts a 25bp hike at the 15-16 Sep FOMC at 58%, up from 49.4% the day before on the August payrolls beat - still one move, not the two this model previously asserted, since the December hike has slipped to January 2027. The 2-year note is at 4.377%, its highest since January 2025, and the 10-year at 4.784% after touching 4.818% on 2 Sep - its highest since November 2023. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep: ALL 65 economists in the 31 Aug - 3 Sep Reuters poll forecast the hike, 91% see the rate ending 2026 there, and 78% see it held through mid-2027 - the second and final move of the ECB's shortest hiking campaign since 2011. BSP is at 5.00% after three consecutive hikes."),
+     "Tightening is happening, though less of it is priced than this model once claimed. CME FedWatch puts a 25bp hike at the 15-16 Sep FOMC at 58%, up from 49.4% the day before on the August payrolls beat - still one move, not the two this model previously asserted, since the December hike has slipped to January 2027. The 2-year note is at 4.377%, its highest since January 2025, and the 10-year at 4.784% after touching 4.818% on 2 Sep - its highest since November 2023. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep: ALL 65 economists in the 31 Aug - 3 Sep Reuters poll forecast the hike, 91% see the rate ending 2026 there, and 78% see it held through mid-2027 - the second and final move of the ECB's shortest hiking campaign since 2011. BSP is at 5.00% after three consecutive hikes. HELD at 3.5 rather than cut further, and the reason is a genuine two-sidedness this note previously omitted: Goldman's Jan Hatzius argues market pricing for the funds rate is still TOO hawkish, calls a September hike 'very unlikely' on softer retail sales and cooling inflation, and expects the range held at 3.50-3.75% through 2026 with cuts pushed to 2027. That is a serious dissent from a house that moves pricing, and it cuts directly against this driver's score. It is not enough to raise the score, because the tightening that has actually HAPPENED is not in dispute - the ECB hikes on 10 Sep, the BSP has moved three times, the 2-year is at a 20-month high - but it is enough that this model should stop presenting the hawkish read as settled. The 11 Sep CPI and the 16 Sep FOMC resolve it; treat this driver as the one most likely to move next."),
     ("Inflation trajectory", 0.15, 3.0,
      "Cut again: the clean anchor this model leaned on has gone. US core CPI at 2.5% looked contained, but PCE - the measure the Fed actually targets - is running 3.7% over 12 months and 4.1% annualised over 6, which is what Warsh cited at Jackson Hole. Euro HICP jumped to 3.3% in August from 2.9%, on energy at +14.3% y/y (Eurostat flash, 1 Sep). PH is the one bloc improving: headline eased to 6.1% in August, a fourth consecutive monthly deceleration and a five-month low, with July core at 4.2% - though the year-to-date average is still 5.2% and BSP's 2027 forecast stands at 5.4%. Three of three blocs are re-accelerating on the same energy shock."),
     ("Growth momentum", 0.15, 5.5,
@@ -266,7 +285,7 @@ DRIVERS = [
     ("Volatility & risk appetite", 0.1, 3.5,
      "CUT, and the previous read was wrong in an instructive way. This model said last week that 'the complacency trade has started to break'. It has not. The Hormuz strikes spiked the VIX to 16.34 on 2 Sep, and it fell back every session after - 15.20 on 3 Sep, then 14.32 at Friday's close on 4 Sep - to within 0.15 of the 14.18 the index printed on 17 Aug, its 2026 low. Meanwhile the futures strip barely moved: Sep 16.57, Oct 18.41, Nov 19.08, Dec 19.26. So spot has round-tripped a war scare in three sessions while the curve still prices 19+ by December. That is a WIDER gap between delivered calm and priced risk than a week ago, not a narrower one, and it is why this driver is cut rather than raised: the market is absorbing a live shooting conflict in the Strait of Hormuz without repricing volatility at all."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "Still the weakest link by a wide margin, and the comparator this model used last week understated it. Transits were reported against a 10-day average of 14 - but that average was already collapsed. Against the PRE-CRISIS baseline of ~85 vessels/day, the 6 transits PortWatch logged on 30 Aug are a ~93% shutdown, with 436 vessels holding position off berth. The conflict is now direct rather than proxy: US forces destroyed one Iranian tanker and disabled two more after IRGC ballistic-missile attacks on US Navy warships, following ~100 US strikes on 1 Sep and two Saudi supertankers hit on 31 Aug. Brent $96.28, and the year-on-year change has WIDENED to +47.0% from +40.3% a week ago. Held at 1.5 rather than cut only because the diplomacy genuinely intensified alongside the fighting: Tehran is pushing a proposal to reopen the Strait and says an Omani-brokered deal is close. Both tails got fatter at once."),
+     "Still the weakest link by a wide margin, and the comparator this model used last week understated it. Transits were reported against a 10-day average of 14 - but that average was already collapsed. Against the PRE-CRISIS baseline of ~85 vessels/day, the 6 transits PortWatch logged on 30 Aug are a ~93% shutdown, with 436 vessels holding position off berth. The conflict is now direct rather than proxy: US forces destroyed one Iranian tanker and disabled two more after IRGC ballistic-missile attacks on US Navy warships, following ~100 US strikes on 1 Sep and two Saudi supertankers hit on 31 Aug. Brent $96.28, and the year-on-year change has WIDENED to +47.0% from +40.3% a week ago. Iran has since threatened a new restricted zone reaching from the US Navy blockade line into parts of the Gulf. Held at 1.5 rather than cut for two offsets that are both real: the diplomacy intensified alongside the fighting - Tehran is pushing a proposal to reopen the Strait and says an Omani-brokered deal is close - and, newly, the DEMAND side is absorbing some of the shock, with China cutting crude imports and refinery runs enough to moderate the price surge. Brent above $96 after +9.3% on the week is a smaller move than a ~93% Hormuz shutdown alone would imply, and that gap is the Chinese demand cut. Note the two-sidedness of that offset: it caps the oil price, which helps every net importer in this portfolio, while signalling exactly the Chinese demand weakness that would hurt Asian earnings."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -815,7 +834,9 @@ def payload():
         "fx": {"drift": FX_DRIFT, "vol": FX_VOL, "corr": FX_CORR},
         "dd_model": {"k": DD_K, "mu_coef": DD_MU,
                      "horizon_y": HORIZON_Y, "calib_y": DD_CALIB_Y,
-                     "horizon_scalar": round(DD_HORIZON_SCALAR, 4),
+                     # 4dp left a 2.5e-04 error in every drawdown - enough to
+                     # flip portfolios sitting on the budget boundary.
+                     "horizon_scalar": round(DD_HORIZON_SCALAR, 9),
                      "baseline_k": round(port_k(BASELINE_W), 3),
                      "optimized_k": round(port_k(OPT_W), 3),
                      "note": "1.65 is the calibration anchor, not the coefficient every sleeve "
@@ -831,7 +852,12 @@ def payload():
                      "scenarios": run_scenarios(BASELINE_W, "net_macro")},
         "optimized": {"weights": [round(x*100) for x in OPT_W],
                       "macro": OPT, "under_base": OPT_UNDER_BASE,
-                      "dd_cap": round(DD_CAP, 1),
+                      # Published at the precision it is ENFORCED at. It was
+                      # round(DD_CAP, 1) = 26.0 against an enforced 25.97, so the
+                      # published constraint was looser than the real one and an
+                      # independent re-derivation got 370 feasible portfolios where
+                      # the engine got 368. (Audit 2026-09-08.)
+                      "dd_cap": round(DD_CAP, 2),
                       "scenarios": run_scenarios(OPT_W, "net_macro"),
                       "n_feasible": len(FEASIBLE), "n_total": len(ALL)},
         "best_ratio": {"weights": [round(x*100) for x in BEST_RATIO_W], **BEST_RATIO},
@@ -938,6 +964,14 @@ def report():
                    and abs(p["vol_ts"][-1]["years"] - HORIZON_Y) < 1e-9))
     checks.append(("the horizon blend's long bucket is the mandate horizon",
                    HZ_LABEL in p["hz_weights"] and len(p["hz_weights"]) == 4))
+    checks.append(("horizon blend weights sum to 1",
+                   abs(sum(p["hz_weights"].values()) - 1.0) < 1e-9))
+    # Asserted, not commented: a long mandate must not be run off near-term signal.
+    checks.append(("the mandate-horizon bucket carries at least half the blend",
+                   p["hz_weights"][HZ_LABEL] >= 0.50 - 1e-9))
+    checks.append(("no single sub-year bucket outweighs the mandate horizon",
+                   all(v <= p["hz_weights"][HZ_LABEL] + 1e-9
+                       for k, v in p["hz_weights"].items() if k != HZ_LABEL)))
     checks.append(("every region is scored at the mandate horizon",
                    all(HZ_LABEL in v for v in p["regions"].values())))
     checks.append(("the drawdown horizon scalar is sqrt(horizon / calibration window)",
@@ -1026,7 +1060,14 @@ def report():
     # regression: no feasible portfolio may exceed the stated drawdown budget
     cap = p["optimized"]["dd_cap"]
     checks.append(("no chosen portfolio exceeds the drawdown budget",
-                   abs(port_dd(OPT_W, "net_macro")) <= cap + 1e-9))
+                   abs(port_dd(OPT_W, "net_macro")) <= DD_CAP + 1e-9))
+    # The published cap must BE the enforced cap. Publishing a rounded, looser
+    # figure made this very check unable to bite: it read the published 26.0
+    # while the optimiser enforced 25.97. (Audit 2026-09-08.)
+    checks.append(("the published drawdown cap is the one actually enforced",
+                   abs(cap - DD_CAP) < 5e-9))
+    checks.append(("the published horizon scalar reproduces the enforced one",
+                   abs(p["dd_model"]["horizon_scalar"] - DD_HORIZON_SCALAR) < 5e-9))
     checks.append(("optimum is the max-CAGR point inside the budget",
                    all(s2["cagr"] <= p["optimized"]["macro"]["cagr"] + 1e-9
                        for w2, s2 in FEASIBLE)))

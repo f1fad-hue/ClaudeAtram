@@ -2,6 +2,103 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-08 — Review: the horizon blend was never reweighted, and the published cap was looser than the enforced one
+
+Research and audit pass. Two model defects found, two relevance gaps closed, one
+input refreshed. No claim was found to be factually wrong this week — the two I
+had flagged as single-sourced both corroborated.
+
+### 1. The horizon blend was carried onto a doubled mandate unchanged
+
+`HZ_W` was `3M 15 / 6M 25 / 12M 30 / long 30`, unchanged when the mandate moved
+from five years to ten on 7 September. Two things were wrong with it:
+
+- **The comment above it claimed the blend "keeps the long anchor dominant."
+  It did not.** 70% of the weight sat on horizons under a year against 30% on
+  the anchor. The comment described an intent the numbers contradicted, and
+  nothing checked it — the same class of defect as the drawdown formula on
+  5 September: prose asserting something the code did not do.
+- Whatever the right near-term weight is for a five-year mandate, it is not also
+  right for a ten-year one. Doubling the holding period without touching the
+  weights silently doubles how much a three-month signal counts per year held.
+
+Now **`3M 10 / 6M 15 / 12M 25 / 10Y 50`** — near-term signals keep half the
+weight, the anchor genuinely dominates, and **three new checks assert it**
+(weights sum to 1; the mandate bucket carries ≥50%; no sub-year bucket outweighs
+it) rather than trusting a comment.
+
+Effect: regional blends rise toward their long anchors (Asia 3.61 → 3.70,
+US 3.20 → 3.28), and the volatility ramp widens **+4.38 → +4.61** because the
+long-horizon vol point now carries half the blend against spot. Optimised CAGR
+**7.76% → 7.82%**, return-per-drawdown **0.300 → 0.304**. Weights hold at
+15/45/35/5.
+
+### 2. The published drawdown cap was looser than the enforced one
+
+`dd_cap` was published as `round(DD_CAP, 1)` = **26.0** while the optimiser
+enforced **25.97**. Consequences:
+
+- An independent re-derivation from the published payload got **370** feasible
+  portfolios where the engine got 368. The verifier caught this; it is the
+  reason it exists.
+- Worse, **the engine's own budget check read the published cap**, so it could
+  not bite: it would have passed a chosen portfolio breaching the real budget by
+  up to 0.03pp.
+
+Compounding it, `horizon_scalar` was published to 4dp, leaving a 2.5e-04 error
+in every drawdown — enough on its own to flip portfolios sitting on the boundary.
+
+Both now published at the precision they are enforced at, the budget check reads
+the enforced cap, and **two new checks assert that the published cap and scalar
+*are* the enforced ones**. A published constraint that differs from the applied
+constraint is worse than no published constraint.
+
+### 3. Relevance: the macro read was one-sided on the driver that matters most
+
+Monetary policy carries the largest driver weight (20%) and the note presented
+the hawkish case as settled. It is not. Goldman's Jan Hatzius argues market
+pricing for the funds rate is **still too hawkish**, calls a September hike
+"very unlikely" on softer retail sales and cooling inflation, and expects
+3.50–3.75% held through 2026 with cuts pushed to 2027. Sources also differ on
+the September odds — 58% post-payrolls against ~30% in the Goldman piece.
+
+Score **held at 3.5**, deliberately: the tightening that has already *happened*
+is not in dispute (ECB hikes 10 Sep, BSP three moves, 2-year at a 20-month high).
+But the note now carries the dissent and flags this as the driver most likely to
+move on the 11 Sep CPI and 16 Sep FOMC.
+
+### 4. Relevance: a new demand-side channel, cutting both ways
+
+China has cut crude imports and refinery runs enough to moderate the price
+surge — Brent is above $96 after +9.3% on the week, a smaller move than a ~93%
+Hormuz shutdown alone implies, and that gap *is* the Chinese demand cut. Added
+to both the energy driver and the Asia rationale, with its two-sidedness stated:
+it caps the input-cost tax on every net importer in this portfolio, while being
+the clearest read yet on the Chinese demand weakness that would hurt Asian
+earnings. Iran's new threatened restricted zone inside the Gulf is recorded too.
+
+### 5. Corroborated, refreshed, and swept
+
+- **Peso confirmed and moved**: 62.59 on 4 Sep verified at two outlets (Manila
+  Bulletin, Tribune — "fifth record low in six sessions"). It has since printed
+  **62.625 on 8 Sep, the 23rd record-low close of 2026**. The rationale now also
+  states *why* — dollar strength and the oil import bill, not a domestic
+  solvency signal — because that is what justifies still holding the sleeve.
+- **VIX complacency corroborated independently**: the contango regime was on its
+  **92nd day** as of 18 August (VIX 15.84 vs VIX3M 19.27). This is the thesis's
+  central claim and it now has support beyond the single strip quote.
+- Brent +9.3% on the week and the 30-year at 5.233% added.
+- **Four stale mandate references** left inside the regional rationales after
+  the horizon change ("the 5-year anchor holds at 6.5", "the 12M and 5Y anchors")
+  — found by sweeping the payload's prose fields for horizon strings, not just
+  the page's. Genuine five-year *facts* (the Fidelity fund's realised 5y return,
+  the NDX 5y average P/E) were left alone.
+- The horizon blend weights were typed into the page prose in two places; both
+  now render from the payload.
+
+**Verification:** engine **45 → 50** checks. Independent verifier **163 checks,
+0 failures**. Checklist 20/20. Repo at 8 tracked files; harness 44KB.
+
 ## 2026-09-08 — Mandate horizon moved 5 years → 10 years
 
 Requested change. It is not a relabel: the horizon is load-bearing in three

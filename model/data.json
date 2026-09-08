@@ -11,6 +11,7 @@
   "ust_10y": 4.784,
   "ust_10y_wk_high": 4.818,
   "ust_2y": 4.377,
+  "ust_30y": 5.233,
   "fed_hike_odds_sep": 58.0,
   "fed_hike_odds_prev": 49.4,
   "ecb_sep_expected": 2.5,
@@ -38,12 +39,14 @@
   "ph_cpi_jun": 6.4,
   "bsp_infl_2026": 6.1,
   "bsp_infl_2027": 5.4,
-  "usdphp": 62.59,
-  "usdphp_records": 5,
+  "usdphp": 62.625,
+  "usdphp_records_2026": 23,
+  "usdphp_prev_record": 62.59,
   "ph_tbill_91": 5.138,
   "ph_tbill_182": 5.517,
   "ph_tbill_364": 5.717,
   "brent": 96.28,
+  "brent_wk": 9.3,
   "brent_mom": 13.24,
   "brent_yoy": 46.99,
   "hormuz_transits": 6,
@@ -145,13 +148,13 @@
    "6M": 3.0,
    "12M": 3.22,
    "10Y": 3.44,
-   "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
-   "blend": 3.2,
+   "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 10-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
+   "blend": 3.28,
    "3M_10": 5.5,
    "6M_10": 5.5,
    "12M_10": 6.0,
    "10Y_10": 6.5,
-   "blend_10": 5.95
+   "blend_10": 6.12
   },
   "EUROPE": {
    "3M": 1.89,
@@ -159,50 +162,50 @@
    "12M": 2.33,
    "10Y": 2.56,
    "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
-   "blend": 2.28,
+   "blend": 2.37,
    "3M_10": 3.0,
    "6M_10": 3.5,
    "12M_10": 4.0,
    "10Y_10": 4.5,
-   "blend_10": 3.88
+   "blend_10": 4.08
   },
   "ASIA": {
    "3M": 3.22,
    "6M": 3.44,
    "12M": 3.67,
    "10Y": 3.89,
-   "why": "3M marked back UP from 5.5. This model cut the near horizon on the 2 Sep selloff - KOSPI ~-4%, Nikkei -2.9%, MSCI Asia-Pac ex-Japan -2% - reading it as an energy-shock de-rating that would persist. It did not persist: the region round-tripped it inside three sessions on AI and memory demand. SK Hynix finished the week ~+7%, Samsung ~+2%, the Nikkei +1.26% to 65,021 snapping a four-day slide, and the KOSPI is back in bull-market territory. That is the point the selloff was making in reverse - it was a macro de-rating, not an earnings event, and the earnings did not move. Still the best fundamentals available: 10.5x forward against consensus EPS growth of ~52% (2026) and ~28% (2027). Held at 6.0 rather than higher because Korea, Taiwan and Japan remain large net oil importers facing Brent +47% y/y, which is a real and continuing terms-of-trade tax. The 5-year anchor stays at 7.5; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block.",
-   "blend": 3.61,
+   "why": "3M marked back UP from 5.5. This model cut the near horizon on the 2 Sep selloff - KOSPI ~-4%, Nikkei -2.9%, MSCI Asia-Pac ex-Japan -2% - reading it as an energy-shock de-rating that would persist. It did not persist: the region round-tripped it inside three sessions on AI and memory demand. SK Hynix finished the week ~+7%, Samsung ~+2%, the Nikkei +1.26% to 65,021 snapping a four-day slide, and the KOSPI is back in bull-market territory. That is the point the selloff was making in reverse - it was a macro de-rating, not an earnings event, and the earnings did not move. Still the best fundamentals available: 10.5x forward against consensus EPS growth of ~52% (2026) and ~28% (2027). Held at 6.0 rather than higher for two reasons that now point the same way: Korea, Taiwan and Japan remain large net oil importers facing Brent +47% y/y, a real and continuing terms-of-trade tax; and China has cut crude imports and refinery runs hard enough to moderate the global price. That cut is a double-edged offset for this sleeve - it caps the input-cost tax, but it is also the clearest read yet on Chinese demand, and this fund's benchmark is Asia Pacific ex-Japan. The AI and memory cycle is carrying the region; Chinese domestic demand is not. The 10-year anchor stays at 7.5, and it now carries half the blend rather than 30%; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block - and LTCMA is a 10-15 year framework, so it fits the lengthened mandate better than it fitted the old one.",
+   "blend": 3.7,
    "3M_10": 6.0,
    "6M_10": 6.5,
    "12M_10": 7.0,
    "10Y_10": 7.5,
-   "blend_10": 6.88
+   "blend_10": 7.08
   },
   "PHILIPPINES": {
    "3M": 3.22,
    "6M": 3.22,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Near horizons marked back UP: August inflation eased to 6.1%, a fourth consecutive monthly slowdown and a five-month low, inside BSP's own 5.5-6.5% forecast range. Against 364-day T-bills at 5.72% the real yield gap has narrowed from about -1pp to roughly -0.4pp, so the sleeve is losing purchasing power far more slowly than a month ago. The 12M and 5Y anchors stay at 5.5 because the year-to-date average is still 5.2% and BSP's 2027 forecast is 5.4% - this is deceleration, not victory. Previously MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.59 on 4 Sep, a FIFTH consecutive record low, on a strong dollar, elevated US yields and domestic political uncertainty. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
-   "blend": 3.09,
+   "why": "Near horizons marked back UP: August inflation eased to 6.1%, a fourth consecutive monthly slowdown and a five-month low, inside BSP's own 5.5-6.5% forecast range. Against 364-day T-bills at 5.72% the real yield gap has narrowed from about -1pp to roughly -0.4pp, so the sleeve is losing purchasing power far more slowly than a month ago. The 12M and 10Y anchors stay at 5.5 because the year-to-date average is still 5.2% and BSP's 2027 forecast is 5.4% - this is deceleration, not victory. Previously MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso keeps making records - 62.59 on 4 Sep, then 62.625 on 8 Sep, the 23rd record-low close of 2026 - on a strong dollar, elevated US yields, a wider external deficit and an import bill inflated by oil. Worth being precise about the cause: the slide is mostly dollar strength and the energy import bill rather than a domestic solvency signal, which is why this sleeve is still held rather than cut. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
+   "blend": 3.05,
    "3M_10": 6.0,
    "6M_10": 6.0,
    "12M_10": 5.5,
    "10Y_10": 5.5,
-   "blend_10": 5.7
+   "blend_10": 5.62
   }
  },
  "hz_weights": {
-  "3M": 0.15,
-  "6M": 0.25,
-  "12M": 0.3,
-  "10Y": 0.3
+  "3M": 0.1,
+  "6M": 0.15,
+  "12M": 0.25,
+  "10Y": 0.5
  },
  "vol_channel": {
-  "blend": 18.7,
+  "blend": 18.93,
   "spot": 14.32,
-  "ramp": 4.38,
+  "ramp": 4.61,
   "sens": {
    "ATRPHMM": 0.035,
    "ATRQIAP": 0.21,
@@ -215,7 +218,7 @@
    "name": "Monetary policy & liquidity",
    "weight": 0.2,
    "score": 3.5,
-   "note": "Tightening is happening, though less of it is priced than this model once claimed. CME FedWatch puts a 25bp hike at the 15-16 Sep FOMC at 58%, up from 49.4% the day before on the August payrolls beat - still one move, not the two this model previously asserted, since the December hike has slipped to January 2027. The 2-year note is at 4.377%, its highest since January 2025, and the 10-year at 4.784% after touching 4.818% on 2 Sep - its highest since November 2023. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep: ALL 65 economists in the 31 Aug - 3 Sep Reuters poll forecast the hike, 91% see the rate ending 2026 there, and 78% see it held through mid-2027 - the second and final move of the ECB's shortest hiking campaign since 2011. BSP is at 5.00% after three consecutive hikes."
+   "note": "Tightening is happening, though less of it is priced than this model once claimed. CME FedWatch puts a 25bp hike at the 15-16 Sep FOMC at 58%, up from 49.4% the day before on the August payrolls beat - still one move, not the two this model previously asserted, since the December hike has slipped to January 2027. The 2-year note is at 4.377%, its highest since January 2025, and the 10-year at 4.784% after touching 4.818% on 2 Sep - its highest since November 2023. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep: ALL 65 economists in the 31 Aug - 3 Sep Reuters poll forecast the hike, 91% see the rate ending 2026 there, and 78% see it held through mid-2027 - the second and final move of the ECB's shortest hiking campaign since 2011. BSP is at 5.00% after three consecutive hikes. HELD at 3.5 rather than cut further, and the reason is a genuine two-sidedness this note previously omitted: Goldman's Jan Hatzius argues market pricing for the funds rate is still TOO hawkish, calls a September hike 'very unlikely' on softer retail sales and cooling inflation, and expects the range held at 3.50-3.75% through 2026 with cuts pushed to 2027. That is a serious dissent from a house that moves pricing, and it cuts directly against this driver's score. It is not enough to raise the score, because the tightening that has actually HAPPENED is not in dispute - the ECB hikes on 10 Sep, the BSP has moved three times, the 2-year is at a 20-month high - but it is enough that this model should stop presenting the hawkish read as settled. The 11 Sep CPI and the 16 Sep FOMC resolve it; treat this driver as the one most likely to move next."
   },
   {
    "name": "Inflation trajectory",
@@ -251,7 +254,7 @@
    "name": "Geopolitics & energy",
    "weight": 0.1,
    "score": 1.5,
-   "note": "Still the weakest link by a wide margin, and the comparator this model used last week understated it. Transits were reported against a 10-day average of 14 - but that average was already collapsed. Against the PRE-CRISIS baseline of ~85 vessels/day, the 6 transits PortWatch logged on 30 Aug are a ~93% shutdown, with 436 vessels holding position off berth. The conflict is now direct rather than proxy: US forces destroyed one Iranian tanker and disabled two more after IRGC ballistic-missile attacks on US Navy warships, following ~100 US strikes on 1 Sep and two Saudi supertankers hit on 31 Aug. Brent $96.28, and the year-on-year change has WIDENED to +47.0% from +40.3% a week ago. Held at 1.5 rather than cut only because the diplomacy genuinely intensified alongside the fighting: Tehran is pushing a proposal to reopen the Strait and says an Omani-brokered deal is close. Both tails got fatter at once."
+   "note": "Still the weakest link by a wide margin, and the comparator this model used last week understated it. Transits were reported against a 10-day average of 14 - but that average was already collapsed. Against the PRE-CRISIS baseline of ~85 vessels/day, the 6 transits PortWatch logged on 30 Aug are a ~93% shutdown, with 436 vessels holding position off berth. The conflict is now direct rather than proxy: US forces destroyed one Iranian tanker and disabled two more after IRGC ballistic-missile attacks on US Navy warships, following ~100 US strikes on 1 Sep and two Saudi supertankers hit on 31 Aug. Brent $96.28, and the year-on-year change has WIDENED to +47.0% from +40.3% a week ago. Iran has since threatened a new restricted zone reaching from the US Navy blockade line into parts of the Gulf. Held at 1.5 rather than cut for two offsets that are both real: the diplomacy intensified alongside the fighting - Tehran is pushing a proposal to reopen the Strait and says an Omani-brokered deal is close - and, newly, the DEMAND side is absorbing some of the shock, with China cutting crude imports and refinery runs enough to moderate the price surge. Brent above $96 after +9.3% on the week is a smaller move than a ~93% Hormuz shutdown alone would imply, and that gap is the Chinese demand cut. Note the two-sidedness of that offset: it caps the oil price, which helps every net importer in this portfolio, while signalling exactly the Chinese demand weakness that would hurt Asian earnings."
   }
  ],
  "gauge": 2.65,
@@ -274,13 +277,13 @@
    "gross_php": 4.85,
    "fx_drift": 0.0,
    "net_base": 4.14,
-   "regional_score": 3.09,
-   "tilt_regional": 0.06,
-   "tilt_vol": 0.15,
+   "regional_score": 3.05,
+   "tilt_regional": 0.03,
+   "tilt_vol": 0.16,
    "tilt_rates": 0.25,
    "tilt_energy": 0.05,
-   "tilt_total": 0.51,
-   "net_macro": 4.65,
+   "tilt_total": 0.49,
+   "net_macro": 4.63,
    "vol": 0.41,
    "dd_k": 1.65,
    "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
@@ -303,13 +306,13 @@
    "gross_php": 9.2,
    "fx_drift": 2.0,
    "net_base": 7.35,
-   "regional_score": 3.2,
-   "tilt_regional": 0.14,
-   "tilt_vol": 0.92,
+   "regional_score": 3.28,
+   "tilt_regional": 0.19,
+   "tilt_vol": 0.97,
    "tilt_rates": -0.1,
    "tilt_energy": -0.1,
-   "tilt_total": 0.86,
-   "net_macro": 8.21,
+   "tilt_total": 0.96,
+   "net_macro": 8.31,
    "vol": 16.04,
    "dd_k": 1.55,
    "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
@@ -332,13 +335,13 @@
    "gross_php": 10.3,
    "fx_drift": 2.0,
    "net_base": 8.32,
-   "regional_score": 3.61,
-   "tilt_regional": 0.41,
+   "regional_score": 3.7,
+   "tilt_regional": 0.47,
    "tilt_vol": 0.0,
    "tilt_rates": -0.05,
    "tilt_energy": -0.2,
-   "tilt_total": 0.16,
-   "net_macro": 8.48,
+   "tilt_total": 0.22,
+   "net_macro": 8.54,
    "vol": 18.53,
    "dd_k": 1.7,
    "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
@@ -361,13 +364,13 @@
    "gross_php": 11.0,
    "fx_drift": 2.0,
    "net_base": 8.9,
-   "regional_score": 3.16,
-   "tilt_regional": 0.1,
-   "tilt_vol": -0.53,
+   "regional_score": 3.24,
+   "tilt_regional": 0.16,
+   "tilt_vol": -0.56,
    "tilt_rates": -0.4,
    "tilt_energy": -0.15,
-   "tilt_total": -0.98,
-   "net_macro": 7.92,
+   "tilt_total": -0.95,
+   "net_macro": 7.95,
    "vol": 24.77,
    "dd_k": 1.8,
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
@@ -562,7 +565,7 @@
   "mu_coef": 0.5,
   "horizon_y": 10.0,
   "calib_y": 5.0,
-  "horizon_scalar": 1.4142,
+  "horizon_scalar": 1.414213562,
   "baseline_k": 1.675,
   "optimized_k": 1.626,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
@@ -596,49 +599,49 @@
     25.0,
     25.0
    ],
-   "cagr": 7.49,
+   "cagr": 7.54,
    "vol": 14.4,
    "maxdd": -28.8,
-   "ret_per_dd": 0.26,
-   "sharpe_like": 0.123,
-   "terminal_1m": 2059115,
+   "ret_per_dd": 0.262,
+   "sharpe_like": 0.127,
+   "terminal_1m": 2068713,
    "trough_1m": 712000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row models the tail from here: full Strait closure and Brent to $130+ from $95. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 2.74,
+    "cagr": 2.79,
     "vol": 23.04,
     "maxdd": -37.2
    },
    {
     "name": "Hawkish repricing",
     "desc": "The 3 July dissents win and the market is already there - two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.15,
+    "cagr": 5.2,
     "vol": 18.72,
     "maxdd": -28.8
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.07,
+    "cagr": 3.12,
     "vol": 20.88,
     "maxdd": -33.4
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 10.06,
+    "cagr": 10.11,
     "vol": 11.52,
-    "maxdd": -14.3
+    "maxdd": -14.2
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.49,
+    "cagr": 7.54,
     "vol": 14.4,
-    "maxdd": -20.4
+    "maxdd": -20.3
    }
   ]
  },
@@ -656,12 +659,12 @@
     35.0,
     5.0
    ],
-   "cagr": 7.76,
+   "cagr": 7.82,
    "vol": 13.61,
    "maxdd": -25.8,
-   "ret_per_dd": 0.3,
-   "sharpe_like": 0.15,
-   "terminal_1m": 2111426,
+   "ret_per_dd": 0.304,
+   "sharpe_like": 0.155,
+   "terminal_1m": 2123212,
    "trough_1m": 742000
   },
   "under_base": {
@@ -679,42 +682,42 @@
    "terminal_1m": 2021122,
    "trough_1m": 739000
   },
-  "dd_cap": 26.0,
+  "dd_cap": 25.97,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row models the tail from here: full Strait closure and Brent to $130+ from $95. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 3.16,
+    "cagr": 3.22,
     "vol": 21.77,
     "maxdd": -33.8
    },
    {
     "name": "Hawkish repricing",
     "desc": "The 3 July dissents win and the market is already there - two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.8,
+    "cagr": 5.87,
     "vol": 17.69,
-    "maxdd": -25.9
+    "maxdd": -25.8
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.86,
+    "cagr": 3.92,
     "vol": 19.73,
-    "maxdd": -30.2
+    "maxdd": -30.1
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 10.2,
+    "cagr": 10.26,
     "vol": 10.88,
     "maxdd": -12.6
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.76,
+    "cagr": 7.82,
     "vol": 13.61,
-    "maxdd": -18.3
+    "maxdd": -18.2
    }
   ],
   "n_feasible": 368,
@@ -730,8 +733,8 @@
   "cagr": 5.18,
   "vol": 2.75,
   "maxdd": -2.9,
-  "ret_per_dd": 1.793,
-  "sharpe_like": -0.194,
+  "ret_per_dd": 1.787,
+  "sharpe_like": -0.197,
   "terminal_1m": 1657035,
   "trough_1m": 971000
  },
@@ -744,11 +747,11 @@
    30,
    0
   ],
-  "cagr_without": 7.94,
-  "cagr_with": 7.76,
-  "cost": 0.18
+  "cagr_without": 8.01,
+  "cagr_with": 7.82,
+  "cost": 0.19
  },
- "tech_gap": -0.29,
+ "tech_gap": -0.36,
  "frontier": [
   {
    "maxdd": 2,
@@ -792,7 +795,7 @@
   },
   {
    "maxdd": 7,
-   "cagr": 5.73,
+   "cagr": 5.74,
    "weights": [
     70.0,
     15.0,
@@ -812,7 +815,7 @@
   },
   {
    "maxdd": 9,
-   "cagr": 5.92,
+   "cagr": 5.93,
    "weights": [
     65.0,
     15.0,
@@ -822,17 +825,17 @@
   },
   {
    "maxdd": 10,
-   "cagr": 6.09,
+   "cagr": 6.12,
    "weights": [
     60.0,
-    25.0,
-    10.0,
+    20.0,
+    15.0,
     5.0
    ]
   },
   {
    "maxdd": 11,
-   "cagr": 6.11,
+   "cagr": 6.13,
    "weights": [
     60.0,
     15.0,
@@ -842,7 +845,7 @@
   },
   {
    "maxdd": 12,
-   "cagr": 6.29,
+   "cagr": 6.31,
    "weights": [
     55.0,
     20.0,
@@ -852,7 +855,7 @@
   },
   {
    "maxdd": 13,
-   "cagr": 6.44,
+   "cagr": 6.47,
    "weights": [
     50.0,
     35.0,
@@ -862,7 +865,7 @@
   },
   {
    "maxdd": 14,
-   "cagr": 6.48,
+   "cagr": 6.51,
    "weights": [
     50.0,
     20.0,
@@ -872,7 +875,7 @@
   },
   {
    "maxdd": 15,
-   "cagr": 6.65,
+   "cagr": 6.68,
    "weights": [
     45.0,
     30.0,
@@ -882,7 +885,7 @@
   },
   {
    "maxdd": 16,
-   "cagr": 6.67,
+   "cagr": 6.7,
    "weights": [
     45.0,
     20.0,
@@ -892,7 +895,7 @@
   },
   {
    "maxdd": 17,
-   "cagr": 6.84,
+   "cagr": 6.88,
    "weights": [
     40.0,
     30.0,
@@ -902,7 +905,7 @@
   },
   {
    "maxdd": 18,
-   "cagr": 7.0,
+   "cagr": 7.05,
    "weights": [
     35.0,
     40.0,
@@ -912,7 +915,7 @@
   },
   {
    "maxdd": 19,
-   "cagr": 7.03,
+   "cagr": 7.07,
    "weights": [
     35.0,
     30.0,
@@ -922,27 +925,27 @@
   },
   {
    "maxdd": 20,
-   "cagr": 7.2,
+   "cagr": 7.26,
    "weights": [
     30.0,
-    40.0,
-    25.0,
+    35.0,
+    30.0,
     5.0
    ]
   },
   {
    "maxdd": 21,
-   "cagr": 7.35,
+   "cagr": 7.42,
    "weights": [
     25.0,
-    55.0,
-    15.0,
+    50.0,
+    20.0,
     5.0
    ]
   },
   {
    "maxdd": 22,
-   "cagr": 7.4,
+   "cagr": 7.45,
    "weights": [
     25.0,
     35.0,
@@ -952,17 +955,17 @@
   },
   {
    "maxdd": 23,
-   "cagr": 7.55,
+   "cagr": 7.63,
    "weights": [
     20.0,
-    50.0,
-    25.0,
+    45.0,
+    30.0,
     5.0
    ]
   },
   {
    "maxdd": 24,
-   "cagr": 7.59,
+   "cagr": 7.65,
    "weights": [
     20.0,
     35.0,
@@ -972,7 +975,7 @@
   },
   {
    "maxdd": 25,
-   "cagr": 7.76,
+   "cagr": 7.82,
    "weights": [
     15.0,
     45.0,
@@ -982,7 +985,7 @@
   },
   {
    "maxdd": 26,
-   "cagr": 7.91,
+   "cagr": 7.98,
    "weights": [
     10.0,
     60.0,
@@ -992,7 +995,7 @@
   },
   {
    "maxdd": 27,
-   "cagr": 7.95,
+   "cagr": 8.02,
    "weights": [
     10.0,
     45.0,
@@ -1002,7 +1005,7 @@
   },
   {
    "maxdd": 28,
-   "cagr": 8.11,
+   "cagr": 8.19,
    "weights": [
     5.0,
     55.0,
@@ -1012,7 +1015,7 @@
   },
   {
    "maxdd": 29,
-   "cagr": 8.14,
+   "cagr": 8.21,
    "weights": [
     5.0,
     45.0,
@@ -1022,7 +1025,7 @@
   },
   {
    "maxdd": 30,
-   "cagr": 8.17,
+   "cagr": 8.23,
    "weights": [
     5.0,
     35.0,
@@ -1032,17 +1035,17 @@
   },
   {
    "maxdd": 31,
-   "cagr": 8.18,
+   "cagr": 8.26,
    "weights": [
     5.0,
-    30.0,
-    60.0,
+    25.0,
+    65.0,
     5.0
    ]
   },
   {
    "maxdd": 32,
-   "cagr": 8.21,
+   "cagr": 8.27,
    "weights": [
     5.0,
     20.0,
@@ -1052,7 +1055,7 @@
   },
   {
    "maxdd": 33,
-   "cagr": 8.22,
+   "cagr": 8.28,
    "weights": [
     5.0,
     15.0,
@@ -1062,7 +1065,7 @@
   },
   {
    "maxdd": 34,
-   "cagr": 8.23,
+   "cagr": 8.29,
    "weights": [
     5.0,
     10.0,
@@ -1072,7 +1075,7 @@
   },
   {
    "maxdd": 35,
-   "cagr": 8.25,
+   "cagr": 8.3,
    "weights": [
     5.0,
     5.0,
@@ -1082,7 +1085,7 @@
   },
   {
    "maxdd": 36,
-   "cagr": 8.19,
+   "cagr": 8.24,
    "weights": [
     5.0,
     5.0,
@@ -1092,7 +1095,7 @@
   },
   {
    "maxdd": 37,
-   "cagr": 8.13,
+   "cagr": 8.19,
    "weights": [
     5.0,
     5.0,
@@ -1102,7 +1105,7 @@
   },
   {
    "maxdd": 38,
-   "cagr": 8.11,
+   "cagr": 8.16,
    "weights": [
     5.0,
     5.0,
@@ -1112,7 +1115,7 @@
   },
   {
    "maxdd": 39,
-   "cagr": 8.05,
+   "cagr": 8.1,
    "weights": [
     5.0,
     5.0,
@@ -1122,7 +1125,7 @@
   },
   {
    "maxdd": 40,
-   "cagr": 8.02,
+   "cagr": 8.07,
    "weights": [
     5.0,
     5.0,
@@ -1132,7 +1135,7 @@
   },
   {
    "maxdd": 41,
-   "cagr": 8.0,
+   "cagr": 8.04,
    "weights": [
     5.0,
     5.0,
@@ -1142,7 +1145,7 @@
   },
   {
    "maxdd": 42,
-   "cagr": 7.97,
+   "cagr": 8.01,
    "weights": [
     5.0,
     5.0,
@@ -1152,7 +1155,7 @@
   },
   {
    "maxdd": 43,
-   "cagr": 7.93,
+   "cagr": 7.97,
    "weights": [
     5.0,
     10.0,
@@ -1162,7 +1165,7 @@
   },
   {
    "maxdd": 44,
-   "cagr": 7.94,
+   "cagr": 7.98,
    "weights": [
     5.0,
     5.0,
@@ -1172,7 +1175,7 @@
   },
   {
    "maxdd": 45,
-   "cagr": 7.91,
+   "cagr": 7.95,
    "weights": [
     5.0,
     5.0,
@@ -1182,7 +1185,7 @@
   },
   {
    "maxdd": 46,
-   "cagr": 7.88,
+   "cagr": 7.92,
    "weights": [
     5.0,
     5.0,
@@ -1192,7 +1195,7 @@
   },
   {
    "maxdd": 47,
-   "cagr": 7.84,
+   "cagr": 7.88,
    "weights": [
     5.0,
     10.0,
@@ -1202,7 +1205,7 @@
   },
   {
    "maxdd": 48,
-   "cagr": 7.85,
+   "cagr": 7.89,
    "weights": [
     5.0,
     5.0,
@@ -1212,7 +1215,7 @@
   },
   {
    "maxdd": 49,
-   "cagr": 7.83,
+   "cagr": 7.86,
    "weights": [
     5.0,
     5.0,
@@ -1222,7 +1225,7 @@
   },
   {
    "maxdd": 51,
-   "cagr": 7.8,
+   "cagr": 7.83,
    "weights": [
     5.0,
     5.0,
