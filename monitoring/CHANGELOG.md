@@ -2,6 +2,87 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-08 — Mandate horizon moved 5 years → 10 years
+
+Requested change. It is not a relabel: the horizon is load-bearing in three
+places, and pretending otherwise would have published numbers that no longer
+mean what they say.
+
+### The horizon is now one constant
+
+`HORIZON_Y = 10.0` in the engine, `HY` / `HYL` in the page — both derived from
+the payload. Previously "5" was spelled out in a dozen places across the engine,
+the page prose, the page's JavaScript, the verifier and the checklist, which is
+why this change touched so much. It should not have to be hunted down again:
+the long volatility point, the horizon blend's long bucket, every regional score
+key, the peso compounding, the drawdown scaling and every visible label now all
+derive from that one number. **Six new engine checks assert exactly that** — that
+the vol curve's last point, the blend's long bucket and every region's long score
+really are the mandate horizon, and that peso terminal value compounds over it.
+
+### What actually changed in the maths
+
+**1. Expected drawdown is not horizon-invariant.** The `k·σ − 0.50µ` calibration
+reproduces S&P −20% and NDX −33%, and those are **rolling five-year medians**.
+A ten-year window gives the path twice as long to find its worst peak-to-trough,
+so the anchors cannot simply be relabelled. Expected maximum drawdown of a
+diffusion scales with σ√T, so the whole calibrated bracket is scaled by
+
+```
+√(T / T_calib) = √(10 / 5) = 1.4142
+```
+
+which turns the anchors into ~−28% (S&P) and ~−47% (NDX) — plausible for
+ten-year windows, and **derived** from the five-year calibration rather than
+re-fitted by eye to ten-year medians this model has not verified at a primary
+source. The drift term scales with the same factor because it is an annualised
+rate offsetting the same window; scaling only the volatility term would quietly
+assume drift stops helping as the horizon lengthens. The scalar is published on
+the page and in the payload, so the printed formula still reproduces every
+printed drawdown — the five drawdown-reproduction checks failed the moment the
+scalar was introduced without it, which is the check doing its job.
+
+The money-market floor is deliberately **not** scaled: a 100bp shock on a
+half-year duration book is the same size at five years or ten.
+
+**2. The optimiser's budget had to scale too.** The objective was "at least
+2.0pp below the baseline's drawdown". With drawdowns ~41% deeper, a flat 2.0pp
+would have quietly *loosened* the constraint. It scales with the drawdowns it
+constrains: **2.83pp**, so the objective means what it meant before.
+
+**3. One return assumption was genuinely a five-year average.** The peso money
+market's gross was a "5y average PH short-rate path" at **5.25%**. The elevated
+front end is a 1–3 year feature, so over a decade far more of the path sits at
+the ~4.50% neutral rate. Cut to **4.85%**. Every other return input is a
+long-horizon capital-market assumption (JPM LTCMA is a 10–15 year framework) and
+is, if anything, better suited to the longer mandate than the shorter one.
+
+**Left alone deliberately** — genuine five-year facts, not mandate references:
+the Fidelity target fund's realised 15.20% five-year return, the NDX five-year
+average forward P/E of 24.7×, and the rolling-five-year calibration medians
+themselves.
+
+### Result
+
+| | 5-year mandate | 10-year mandate |
+|---|---|---|
+| Baseline | 7.57% / −20.3% | **7.49% / −28.8%** |
+| Optimised | 7.82% / −18.2% | **7.76% / −25.8%** |
+| Return per drawdown | 0.374 → 0.431 | **0.260 → 0.300** |
+| ₱1,000,000 becomes | ₱2.11m at 10y | **₱2,111,426** |
+
+Weights hold at **15/45/35/5**. CAGRs dip slightly on the money-market cut;
+drawdowns deepen by the √2 scalar. Return-per-drawdown falls in level — a longer
+window simply contains more drawdown — but the optimised portfolio's *relative*
+advantage over the baseline widens, 15% → 15.4%.
+
+**Verification:** engine **39 → 45** checks. Independent verifier **162 checks,
+0 failures** — its own horizon now reads from the payload rather than assuming
+five years, which is what surfaced the five stale assumptions inside it
+(terminal compounding, the DD recomputation, the feasible-set count, the
+optimality proof and the budget). Checklist 20/20, with its horizon assertions
+and stale-figure guard both keyed to the payload.
+
 ## 2026-09-07 — Deep scrub: the volatility read was wrong, and correcting it moved the model
 
 Full research pass against live sources. Four factual errors found in inputs this

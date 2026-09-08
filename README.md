@@ -1,7 +1,7 @@
 # Peso Four-Fund Macro Desk
 
 A mobile-first macro and allocation dashboard for a peso investor holding four
-ATRAM unit investment trust funds, built for a five-year horizon.
+ATRAM unit investment trust funds, built for a ten-year horizon.
 
 **Live:** https://claude.ai/code/artifact/307440fd-2952-4b4c-b55c-51725163be31
 
@@ -55,6 +55,7 @@ runbook, `monitoring/CLAIMS.md` the checklist of every figure and its source, an
 
 ## Disclaimer
 
-Portfolio analysis on four named funds, not personal financial advice.
+Portfolio analysis on four named funds over a 10-year horizon, not personal
+financial advice.
 Forecasts are modelled expectations, not guarantees. UITF investments are not
 deposits and are not insured by the PDIC.

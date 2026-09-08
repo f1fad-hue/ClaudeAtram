@@ -14,7 +14,20 @@ Run:  python3 engine.py            -> human-readable audit report
 import json, math, sys
 from itertools import product
 
-AS_OF = "2026-09-07"
+AS_OF = "2026-09-08"
+
+# ----------------------------------------------------------------------------
+# INVESTMENT HORIZON
+# The mandate horizon. Every horizon-dependent quantity below derives from this
+# constant rather than hard-coding a number of years, because on 8 Sep the
+# horizon moved 5 -> 10 and the previous build had "5" spelled out in a dozen
+# places. Changing this one line moves the long volatility point, the horizon
+# blend's long bucket, the peso compounding, the drawdown scaling and every
+# label that names the horizon.
+# ----------------------------------------------------------------------------
+HORIZON_Y = 10.0
+HZ_LABEL = f"{HORIZON_Y:.0f}Y"          # "10Y"
+DD_CALIB_Y = 5.0                        # the window the -20%/-33% medians describe
 
 # ----------------------------------------------------------------------------
 # 1. VERIFIED INPUTS  (source-cited; see SOURCES dict at bottom)
@@ -147,7 +160,7 @@ def horizon_vol(T, n=4000):
         acc += _seg_var(fwd_vol(i * h), fwd_vol((i + 1) * h), h)
     return math.sqrt(acc / T)
 
-HORIZONS = [("3M", 0.25), ("6M", 0.50), ("12M", 1.00), ("5Y", 5.00)]
+HORIZONS = [("3M", 0.25), ("6M", 0.50), ("12M", 1.00), (HZ_LABEL, HORIZON_Y)]
 VOL_TS = []
 for lbl, T in HORIZONS:
     iv = horizon_vol(T)
@@ -159,7 +172,7 @@ for lbl, T in HORIZONS:
         "move_1sd": round(iv * math.sqrt(T), 2),
         "move_2sd": round(2 * iv * math.sqrt(T), 2),
     })
-SP_VOL_5Y = next(v["implied"] for v in VOL_TS if v["label"] == "5Y")
+SP_VOL_LT = next(v["implied"] for v in VOL_TS if v["label"] == HZ_LABEL)
 
 # ----------------------------------------------------------------------------
 # 3. REGIONAL MACRO-DRIVER SCORES
@@ -170,10 +183,10 @@ SP_VOL_5Y = next(v["implied"] for v in VOL_TS if v["label"] == "5Y")
 #    no allocation: 0.30 per 1-10 point == 0.675 per 1-5 point.
 #    Each score is an evidence-weighted judgement over the seven drivers in
 #    DRIVERS below; the horizon blend weights near-term signals but keeps the
-#    5-year anchor dominant because the investment horizon is 5 years.
+#    Long anchor dominant because that is where the mandate sits (HORIZON_Y).
 # ----------------------------------------------------------------------------
 
-HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, "5Y": 0.30}
+HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, HZ_LABEL: 0.30}
 
 # ----------------------------------------------------------------------------
 # 3b. VOLATILITY RAMP - the optimiser's volatility channel
@@ -186,7 +199,7 @@ HZ_W = {"3M": 0.15, "6M": 0.25, "12M": 0.30, "5Y": 0.30}
 VOL_BLEND = sum(v["implied"] * HZ_W[v["label"]] for v in VOL_TS)
 VOL_RAMP  = VOL_BLEND - MACRO["vix_spot"]
 
-# Per-fund sensitivity, in pp of 5y CAGR per point of vol ramp. These are
+# Per-fund sensitivity, in pp of net CAGR per point of vol ramp. These are
 # structural properties of each sleeve, not judgements about the current market:
 #   ATRQIAP  +0.210  writes calls on ~78% of a Nasdaq-100 book whose own vol is
 #                    ~1.22x the market; premium scales with implied vol, so a
@@ -210,25 +223,25 @@ NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research sc
 
 REGIONS = {
     "US": {
-        "3M": 5.5, "6M": 5.5, "12M": 6.0, "5Y": 6.5,
+        "3M": 5.5, "6M": 5.5, "12M": 6.0, HZ_LABEL: 6.5,
         "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 5-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
     },
     "EUROPE": {
-        "3M": 3.0, "6M": 3.5, "12M": 4.0, "5Y": 4.5,
+        "3M": 3.0, "6M": 3.5, "12M": 4.0, HZ_LABEL: 4.5,
         "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
     },
     "ASIA": {
-        "3M": 6.0, "6M": 6.5, "12M": 7.0, "5Y": 7.5,
+        "3M": 6.0, "6M": 6.5, "12M": 7.0, HZ_LABEL: 7.5,
         "why": "3M marked back UP from 5.5. This model cut the near horizon on the 2 Sep selloff - KOSPI ~-4%, Nikkei -2.9%, MSCI Asia-Pac ex-Japan -2% - reading it as an energy-shock de-rating that would persist. It did not persist: the region round-tripped it inside three sessions on AI and memory demand. SK Hynix finished the week ~+7%, Samsung ~+2%, the Nikkei +1.26% to 65,021 snapping a four-day slide, and the KOSPI is back in bull-market territory. That is the point the selloff was making in reverse - it was a macro de-rating, not an earnings event, and the earnings did not move. Still the best fundamentals available: 10.5x forward against consensus EPS growth of ~52% (2026) and ~28% (2027). Held at 6.0 rather than higher because Korea, Taiwan and Japan remain large net oil importers facing Brent +47% y/y, which is a real and continuing terms-of-trade tax. The 5-year anchor stays at 7.5; JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block.",
     },
     "PHILIPPINES": {
-        "3M": 6.0, "6M": 6.0, "12M": 5.5, "5Y": 5.5,
+        "3M": 6.0, "6M": 6.0, "12M": 5.5, HZ_LABEL: 5.5,
         "why": "Near horizons marked back UP: August inflation eased to 6.1%, a fourth consecutive monthly slowdown and a five-month low, inside BSP's own 5.5-6.5% forecast range. Against 364-day T-bills at 5.72% the real yield gap has narrowed from about -1pp to roughly -0.4pp, so the sleeve is losing purchasing power far more slowly than a month ago. The 12M and 5Y anchors stay at 5.5 because the year-to-date average is still 5.2% and BSP's 2027 forecast is 5.4% - this is deceleration, not victory. Previously MARKED DOWN from 6.05 - the previous score rested on an error. Peso cash was scored as positive real carry against '~4% inflation'; PH inflation actually printed 6.2% in July, and BSP's own 2027 forecast was RAISED to 5.4% (from 4.5%) on El Nino and wage pressure. T-bills at 5.14% (91d) to 5.72% (364d) are therefore roughly 1pp NEGATIVE in real terms, not positive. Core inflation did ease to 4.2% in July from 4.4%, the one genuine improvement here. BSP hiked to 5.00% on 27 August - a third consecutive move, 75bp cumulative - and the peso still hit a record 62.59 on 4 Sep, a FIFTH consecutive record low, on a strong dollar, elevated US yields and domestic political uncertainty. High nominal carry and zero duration risk are real and still worth holding; the purchasing-power gain is not. Neutral, 5.5.",
     },
 }
 for r in REGIONS.values():
     r["blend"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
-    for h in ("3M", "6M", "12M", "5Y", "blend"):
+    for h in ("3M", "6M", "12M", HZ_LABEL, "blend"):
         r[h + "_10"] = r[h]      # research basis, kept so the rescale stays auditable
         r[h] = to5(r[h])         # reported value, 1-5
 
@@ -277,8 +290,8 @@ FUNDS = [
         "target_verified": True,
         "fee_feeder": 0.71, "fee_target": 0.00, "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
         "gross_usd": None,                 # PHP asset - no FX translation
-        "gross_local": 5.25,
-        "gross_note": "5y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5 - a higher neutral than assumed in August because the inflation regime itself has shifted up (BSP 2027 forecast 5.4%).",
+        "gross_local": 4.85,
+        "gross_note": "10y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
         "vol_beta": 0.021, "fx_exposed": False,
         "macro_tilt": {"regional": None, "rates": +0.25, "energy": +0.05},
         "dd_k_adj": 0.0, "cash_like": True,
@@ -293,7 +306,7 @@ FUNDS = [
         "fee_feeder": 1.50, "fee_target": 0.35,
         "fee_note": "1.50% ATRAM management fee + 0.35% target-fund TER (both verified)",
         "gross_usd": 7.2,
-        "gross_note": "NDX 5y total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.3 -> 19.4.",
+        "gross_note": "NDX long-run total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.3 -> 19.4.",
         "vol_beta": 1.22 * 0.68, "fx_exposed": True,
         "macro_tilt": {"regional": "US", "rates": -0.10, "energy": -0.10},
         "dd_k_adj": -0.10, "cash_like": False,
@@ -337,7 +350,7 @@ FUNDS = [
 # MSCI ACWI IT regional decomposition, used to score the Global Tech sleeve
 ACWI_IT_MIX = {"US": 0.72, "ASIA": 0.16, "EUROPE": 0.12}
 
-REGIONAL_TILT_PER_PT = 0.675    # % of 5y CAGR per point of 1-5 macro score above neutral
+REGIONAL_TILT_PER_PT = 0.675    # % of net CAGR per point of 1-5 macro score above neutral
 NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts are unchanged
 
 def regional_score(region_key):
@@ -349,6 +362,24 @@ def regional_score(region_key):
 
 DD_K = 1.65      # calibrated: 1.65*sigma - 0.5*mu reproduces the observed median
 DD_MU = 0.50     # rolling-5y max drawdown of the S&P 500 (~-20%) and NDX (~-33%)
+
+# Expected maximum drawdown is NOT horizon-invariant: a longer window gives the
+# path more time to find its worst peak-to-trough, so the same fund carries a
+# deeper expected drawdown over 10 years than over 5. The calibration anchors
+# above are rolling-FIVE-year medians, so lengthening the mandate cannot just
+# relabel them.
+#
+# For a diffusion, expected maximum drawdown scales with sigma*sqrt(T), so the
+# whole calibrated quantity scales by sqrt(T / T_calib). At a 10-year horizon
+# that is sqrt(2) = 1.414, which turns the S&P anchor into ~-28% and the NDX
+# anchor into ~-47% - both plausible for rolling 10-year windows, and both
+# DERIVED from the 5-year calibration rather than re-fitted by eye to numbers
+# this model has not verified at a primary source.
+#
+# The drift term scales with the same factor because it is an annualised rate
+# offsetting the same window; scaling only the volatility term would quietly
+# assume drift stops helping as the horizon lengthens.
+DD_HORIZON_SCALAR = math.sqrt(HORIZON_Y / DD_CALIB_Y)
 
 def combine_fx(sig_asset):
     """Total PHP-denominated vol for an unhedged USD asset."""
@@ -362,7 +393,7 @@ def build_fund(f):
         gross_php = f["gross_local"]
     base_net = gross_php - fee
 
-    sig_asset = f["vol_beta"] * SP_VOL_5Y
+    sig_asset = f["vol_beta"] * SP_VOL_LT
     sig = sig_asset if not f["fx_exposed"] else combine_fx(sig_asset)
 
     # macro overlay
@@ -375,10 +406,12 @@ def build_fund(f):
 
     k = DD_K + f["dd_k_adj"]
     def dd(mu):
-        raw = k * sig - DD_MU * mu
+        raw = (k * sig - DD_MU * mu) * DD_HORIZON_SCALAR
         if f["cash_like"]:
-            # money market: bounded by a 100bp parallel shock on ~0.5y duration
-            # less one year of carry - it cannot behave like an equity fund
+            # Money market: bounded by a 100bp parallel shock on ~0.5y duration
+            # less one year of carry - it cannot behave like an equity fund. This
+            # floor is NOT horizon-scaled: a rate shock on a half-year duration
+            # book is the same size whether you hold it 5 years or 10.
             return max(0.5, min(raw, 0.9))
         return max(raw, 0.0)
 
@@ -437,7 +470,7 @@ def port_k(w):
 
 def port_dd(w, key):
     mu = port_ret(w, key)
-    return -max(port_k(w) * port_vol(w) - DD_MU * mu, 0.0)
+    return -max((port_k(w) * port_vol(w) - DD_MU * mu) * DD_HORIZON_SCALAR, 0.0)
 
 def summarise(w, key):
     r, v, d = port_ret(w, key), port_vol(w), port_dd(w, key)
@@ -451,7 +484,7 @@ def summarise(w, key):
         "cagr": r_d, "vol": round(v, 2), "maxdd": d_d,
         "ret_per_dd": round(r / abs(d), 3) if d else None,
         "sharpe_like": round((r - MACRO["ph_tbill_364"]) / v, 3),
-        "terminal_1m": round(1_000_000 * (1 + r_d / 100) ** 5),
+        "terminal_1m": round(1_000_000 * (1 + r_d / 100) ** HORIZON_Y),
         "trough_1m": round(1_000_000 * (1 + d_d / 100)),
     }
 
@@ -545,21 +578,25 @@ def enumerate_portfolios(key, min_w=0.05, max_eq=0.90):
                 out.append((w, summarise(w, key)))
     return out
 
-# --- Baseline: pure 5-year strategic, no macro view -------------------------
+# --- Baseline: pure strategic over the mandate horizon, no macro view -------
 # Horizon-appropriate growth allocation: a 20% liquidity/volatility buffer and
 # the three equity engines held near-equally. This is what you would own if you
-# had a 5-year horizon and NO view on the cycle.
+# had the mandate horizon and NO view on the cycle.
 BASELINE_W = [0.20, 0.30, 0.25, 0.25]
 BASE = summarise(BASELINE_W, "net_base")
 BASE_UNDER_MACRO = summarise(BASELINE_W, "net_macro")
 
 # --- Optimised: maximise macro-adjusted CAGR subject to a drawdown budget ----
-# Objective: the user asked for maximum 5y net CAGR with drawdown held to a
+# Objective: the user asked for maximum net CAGR with drawdown held to a
 # minimum. A pure max-return solve just buys 90% Global Tech; a pure min-DD
 # solve just buys cash. The defensible reading is: beat the baseline's return
 # AND cut its drawdown. So we solve for max CAGR subject to
 #   maxDD <= baseline maxDD - 2.0pp  (a hard, stated improvement)
-DD_BUDGET_IMPROVEMENT = 2.0
+# 2.0pp was the stated improvement at the 5-year calibration. Drawdowns are
+# ~41% deeper at a 10-year horizon, so holding the budget at a flat 2.0pp would
+# quietly LOOSEN the objective. It is scaled by the same factor as the drawdowns
+# it constrains, so the constraint means what it meant before.
+DD_BUDGET_IMPROVEMENT = round(2.0 * DD_HORIZON_SCALAR, 2)
 DD_CAP = abs(BASE_UNDER_MACRO["maxdd"]) - DD_BUDGET_IMPROVEMENT
 
 ALL = enumerate_portfolios("net_macro")
@@ -765,7 +802,7 @@ SOURCES = [
 def payload():
     return {
         "as_of": AS_OF, "macro": MACRO, "vol_ts": VOL_TS,
-        "sp_vol_5y": SP_VOL_5Y,
+        "sp_vol_5y": SP_VOL_LT,
         "regions": {k: {**v} for k, v in REGIONS.items()},
         "hz_weights": HZ_W,
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
@@ -777,12 +814,18 @@ def payload():
         "acwi_it_mix": ACWI_IT_MIX,
         "fx": {"drift": FX_DRIFT, "vol": FX_VOL, "corr": FX_CORR},
         "dd_model": {"k": DD_K, "mu_coef": DD_MU,
+                     "horizon_y": HORIZON_Y, "calib_y": DD_CALIB_Y,
+                     "horizon_scalar": round(DD_HORIZON_SCALAR, 4),
                      "baseline_k": round(port_k(BASELINE_W), 3),
                      "optimized_k": round(port_k(OPT_W), 3),
                      "note": "1.65 is the calibration anchor, not the coefficient every sleeve "
                              "uses. Each fund carries a declared adjustment for the shape of its "
                              "own left tail; the portfolio coefficient is the weighted average "
-                             "across the equity sleeves."},
+                             "across the equity sleeves. The whole quantity is then scaled by "
+                             "sqrt(horizon / calibration window), because expected maximum "
+                             "drawdown grows with the square root of the horizon - the -20% and "
+                             "-33% anchors are rolling FIVE-year medians and cannot simply be "
+                             "relabelled for a longer mandate."},
         "baseline": {"weights": [round(x*100) for x in BASELINE_W],
                      "base": BASE, "under_macro": BASE_UNDER_MACRO,
                      "scenarios": run_scenarios(BASELINE_W, "net_macro")},
@@ -811,16 +854,16 @@ def report():
         A(f"    {v['label']:<5}{v['implied']:>9.2f}%{v['realised']:>9.2f}%"
           f"{v['move_1sd']:>10.2f}%{v['move_2sd']:>10.2f}%")
     A("\n[2] REGIONAL MACRO-DRIVER RANKING (1-5, neutral 3.0)")
-    A(f"    {'region':<14}{'3M':>6}{'6M':>6}{'12M':>6}{'5Y':>6}{'blend':>8}")
+    A(f"    {'region':<14}{'3M':>6}{'6M':>6}{'12M':>6}{HZ_LABEL:>6}{'blend':>8}")
     for k, v in sorted(p["regions"].items(), key=lambda t: -t[1]["blend"]):
-        A(f"    {k:<14}{v['3M']:>6}{v['6M']:>6}{v['12M']:>6}{v['5Y']:>6}{v['blend']:>8}")
+        A(f"    {k:<14}{v['3M']:>6}{v['6M']:>6}{v['12M']:>6}{v[HZ_LABEL]:>6}{v['blend']:>8}")
     A("\n[3] BROAD MACRO GAUGE")
     for d in p["drivers"]:
         A(f"    {d['name']:<30} w={d['weight']:.2f}  score={d['score']:.1f}")
     A(f"    {'COMPOSITE (driver scale)':<30}            {p['gauge_10']} / 10")
     A(f"    {'HEADLINE GAUGE':<30}            {p['gauge']} / 5"
       f"   (neutral {p['gauge_neutral']})")
-    A("\n[4] FUNDS - net 5y CAGR after ALL fees, and expected max drawdown")
+    A(f"\n[4] FUNDS - net {HZ_LABEL} CAGR after ALL fees, and expected max drawdown")
     A(f"    {'fund':<22}{'fee':>7}{'gross':>8}{'base':>8}{'tilt':>7}{'macro':>8}"
       f"{'vol':>8}{'DD base':>9}{'DD macro':>10}")
     for f in p["funds"]:
@@ -875,17 +918,36 @@ def report():
                    abs(to5(5.5) - p["gauge_neutral"]) < 1e-9))
     checks.append(("every regional score is reported in 1-5",
                    all(1 <= v[h] <= 5 for v in p["regions"].values()
-                       for h in ("3M", "6M", "12M", "5Y", "blend"))))
+                       for h in ("3M", "6M", "12M", HZ_LABEL, "blend"))))
     checks.append(("every regional rescale 1-10 -> 1-5 is exact",
                    all(abs(v[h] - to5(v[h + "_10"])) < 1e-9
                        for v in p["regions"].values()
-                       for h in ("3M", "6M", "12M", "5Y", "blend"))))
+                       for h in ("3M", "6M", "12M", HZ_LABEL, "blend"))))
     checks.append(("regional blend is horizon-weighted on the research scale",
                    all(abs(v["blend_10"] - sum(v[h + "_10"] * w
                                                for h, w in HZ_W.items())) < 0.006
                        for v in p["regions"].values())))
     checks.append(("the 1-5 tilt coefficient equals the 1-10 one rescaled",
                    abs(REGIONAL_TILT_PER_PT - 0.30 * 9 / 4) < 1e-9))
+    # Horizon consistency. On 8 Sep the mandate moved 5y -> 10y; these assert the
+    # horizon is one number everywhere rather than a label that drifted from the
+    # maths behind it.
+    dm = p["dd_model"]
+    checks.append(("the volatility term structure's long point is the mandate horizon",
+                   p["vol_ts"][-1]["label"] == HZ_LABEL
+                   and abs(p["vol_ts"][-1]["years"] - HORIZON_Y) < 1e-9))
+    checks.append(("the horizon blend's long bucket is the mandate horizon",
+                   HZ_LABEL in p["hz_weights"] and len(p["hz_weights"]) == 4))
+    checks.append(("every region is scored at the mandate horizon",
+                   all(HZ_LABEL in v for v in p["regions"].values())))
+    checks.append(("the drawdown horizon scalar is sqrt(horizon / calibration window)",
+                   abs(dm["horizon_scalar"] - math.sqrt(dm["horizon_y"] / dm["calib_y"]))
+                   < 5e-5))
+    checks.append(("the drawdown scalar is >1 for a horizon longer than the calibration",
+                   (dm["horizon_scalar"] > 1) == (dm["horizon_y"] > dm["calib_y"])))
+    checks.append(("peso terminal value compounds over the mandate horizon",
+                   abs(1_000_000 * (1 + p["optimized"]["macro"]["cagr"] / 100) ** HORIZON_Y
+                       - p["optimized"]["macro"]["terminal_1m"]) < 1.0))
     # The drawdown card publishes a formula. These assert the formula, using the
     # coefficients the page prints, reproduces the drawdowns the page prints -
     # the audit that was missing when 1.65 was shown as if it applied to every
@@ -896,11 +958,13 @@ def report():
     # number here is how a check gets quietly loosened until it stops biting -
     # this one fired on 7 Sep at a real 0.0614 and the bound below is why.
     def dd_tol(k, mu_coef, vol_dp=0.005, k_dp=0.0, ret_dp=0.005):
-        return 0.05 + k * vol_dp + k_dp + mu_coef * ret_dp
+        hs = p["dd_model"]["horizon_scalar"]
+        return 0.05 + (k * vol_dp + k_dp + mu_coef * ret_dp) * hs
     for fd in p["funds"]:
         if fd["id"] == "ATRPHMM":
             continue
-        pred = fd["dd_k"] * fd["vol"] - p["dd_model"]["mu_coef"] * fd["net_macro"]
+        pred = ((fd["dd_k"] * fd["vol"] - p["dd_model"]["mu_coef"] * fd["net_macro"])
+                * p["dd_model"]["horizon_scalar"])
         checks.append((f"{fd['id']} drawdown reproduces from its published k",
                        abs(-pred - fd["dd_macro"])
                        <= dd_tol(fd["dd_k"], p["dd_model"]["mu_coef"])))
@@ -910,7 +974,8 @@ def report():
                             p["dd_model"]["baseline_k"]),
                            ("optimized", OPT_W, p["optimized"]["macro"],
                             p["dd_model"]["optimized_k"])):
-        pred = kk * mm["vol"] - p["dd_model"]["mu_coef"] * mm["cagr"]
+        pred = ((kk * mm["vol"] - p["dd_model"]["mu_coef"] * mm["cagr"])
+                * p["dd_model"]["horizon_scalar"])
         # portfolio k is published to 3dp, so it contributes vol * 0.0005
         checks.append((f"{lab} drawdown reproduces from its published k",
                        abs(-pred - mm["maxdd"])
@@ -945,7 +1010,7 @@ def report():
                    30 <= sum(r[1] for r in lt["ATRQIAP"]["rows"]) <= 60))
     # regression: peso figures must be reproducible from the displayed numbers
     def _ties(m):
-        return (abs(1_000_000 * (1 + m["cagr"] / 100) ** 5 - m["terminal_1m"]) < 1.0
+        return (abs(1_000_000 * (1 + m["cagr"] / 100) ** HORIZON_Y - m["terminal_1m"]) < 1.0
                 and abs(1_000_000 * (1 + m["maxdd"] / 100) - m["trough_1m"]) < 1.0)
     vc = p["vol_channel"]
     checks.append(("volatility ramp = horizon-blended implied vol minus spot",

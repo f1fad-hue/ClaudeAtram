@@ -64,8 +64,8 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | VIX futures strip | Sep 16.57 · Oct 18.41 · Nov 19.08 · Dec 19.26 | P | VIX term-structure data (verified via search result, not at Cboe directly) | 2026-09-07 |
 | Long-run VIX anchor | 19.5 | E | historical VIX mean 1990–2025 | 2026-09-05 |
 | Variance risk premium | 3.5 vol points | E | implied minus realised, long-run | 2026-09-05 |
-| Horizon vol 3M/6M/12M/5Y | 17.43 / 18.37 / 18.88 / 19.37% | D | engine, forward-variance integration over 4 observable contracts | 2026-09-07 |
-| Volatility ramp (blend − spot) | 18.68% − 14.32 = +4.36 vol pts | D | engine | 2026-09-07 |
+| Horizon vol 3M/6M/12M/10Y | 17.43 / 18.37 / 18.88 / 19.43% | D | engine, forward-variance integration over 4 observable contracts | 2026-09-08 |
+| Volatility ramp (blend − spot) | 18.70% − 14.32 = +4.38 vol pts | D | engine | 2026-09-08 |
 
 ## Valuation and earnings
 
@@ -113,9 +113,11 @@ and the arithmetic that uses them re-derived independently.
 | PHP depreciation drift vs USD | 2.0% p.a. | PPP: PH inflation ~3.9% vs US ~2.4% |
 | USD/PHP volatility | 6.0% | long-run realised |
 | FX/equity correlation | −0.20 | peso weakens in risk-off, cushioning PHP holders |
-| Drawdown model | k·σ − 0.50µ, anchor k = 1.65 | calibrated to S&P 500 ≈ −20% and NDX ≈ −33% rolling 5y medians |
+| Drawdown model | (k·σ − 0.50µ) · √(T/5), anchor k = 1.65 | bracket calibrated to S&P 500 ≈ −20% and NDX ≈ −33% rolling **5y** medians; scaled to the mandate horizon because expected max drawdown grows with √T |
+| Mandate horizon | 10 years (was 5 until 2026-09-08) | one constant `HORIZON_Y` drives the long vol point, the blend's long bucket, peso compounding, drawdown scaling and every label |
+| Drawdown horizon scalar | √(10/5) = 1.4142 | derived from the 5y calibration, not re-fitted to unverified 10y medians |
 | Per-sleeve drawdown k | 1.65 cash · 1.55 ATRQIAP · 1.70 ATRASEQ · 1.80 ATRGTEC | left tails differ in shape; each adjustment is published on the page with its reason |
-| Portfolio drawdown k | 1.675 baseline · 1.626 optimised | ex-cash weighted average of the sleeve coefficients |
+| Portfolio drawdown k | 1.675 baseline · 1.626 optimised | ex-cash weighted average of the sleeve coefficients (before the horizon scalar) |
 | Correlation ATRQIAP↔ATRGTEC | 0.88 | both US mega-cap tech engines |
 | Correlation ATRQIAP↔ATRASEQ | 0.66 | |
 | Correlation ATRASEQ↔ATRGTEC | 0.74 | Asia semis in the global tech complex |
@@ -123,5 +125,5 @@ and the arithmetic that uses them re-derived independently.
 | Regional tilt sensitivity | 0.675pp of CAGR per 1–5 macro score point above the 3.0 neutral (= 0.30pp per 1–10 point) | |
 | Reporting scales | drivers and regions researched 1–10; gauge and regional rankings reported 1–5 | endpoint-preserving rescale, 5.5 → 3.0 |
 | Volatility tilt sensitivity | +0.035 ATRPHMM · +0.210 ATRQIAP · 0.000 ATRASEQ · −0.122 ATRGTEC, per vol point of ramp | structural, not a view |
-| Horizon blend weights | 3M 15% · 6M 25% · 12M 30% · 5Y 30% | 5-year mandate keeps the long end dominant |
-| Drawdown budget for the optimiser | baseline max DD less 2.0pp | states the objective explicitly |
+| Horizon blend weights | 3M 15% · 6M 25% · 12M 30% · 10Y 30% | the long end stays dominant at the mandate horizon |
+| Drawdown budget for the optimiser | baseline max DD less 2.83pp (= 2.0pp at the 5y calibration, scaled by √(T/5)) | holding it flat would have quietly loosened the objective |
