@@ -218,46 +218,59 @@
   {
    "name": "Monetary policy & liquidity",
    "weight": 0.2,
-   "score": 3.5,
+   "score": 2.11,
+   "score_10": 3.5,
    "note": "Tightening is happening, though less of it is priced than this model once claimed. CME FedWatch puts a 25bp hike at the 15-16 Sep FOMC at 58%, up from 49.4% the day before on the August payrolls beat - still one move, not the two this model previously asserted, since the December hike has slipped to January 2027. The 2-year note is at 4.377%, its highest since January 2025, and the 10-year at 4.784% after touching 4.818% on 2 Sep - its highest since November 2023. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep: ALL 65 economists in the 31 Aug - 3 Sep Reuters poll forecast the hike, 91% see the rate ending 2026 there, and 78% see it held through mid-2027 - the second and final move of the ECB's shortest hiking campaign since 2011. BSP is at 5.00% after three consecutive hikes. HELD at 3.5 rather than cut further, and the reason is a genuine two-sidedness this note previously omitted: Goldman's Jan Hatzius argues market pricing for the funds rate is still TOO hawkish, calls a September hike 'very unlikely' on softer retail sales and cooling inflation, and expects the range held at 3.50-3.75% through 2026 with cuts pushed to 2027. That is a serious dissent from a house that moves pricing, and it cuts directly against this driver's score. It is not enough to raise the score, because the tightening that has actually HAPPENED is not in dispute - the ECB hikes on 10 Sep, the BSP has moved three times, the 2-year is at a 20-month high - but it is enough that this model should stop presenting the hawkish read as settled. The 11 Sep CPI and the 16 Sep FOMC resolve it; treat this driver as the one most likely to move next."
   },
   {
    "name": "Inflation trajectory",
    "weight": 0.15,
-   "score": 3.0,
+   "score": 1.89,
+   "score_10": 3.0,
    "note": "Cut again: the clean anchor this model leaned on has gone. US core CPI at 2.5% looked contained, but PCE - the measure the Fed actually targets - is running 3.7% over 12 months and 4.1% annualised over 6, which is what Warsh cited at Jackson Hole. Euro HICP jumped to 3.3% in August from 2.9%, on energy at +14.3% y/y (Eurostat flash, 1 Sep). PH is the one bloc improving: headline eased to 6.1% in August, a fourth consecutive monthly deceleration and a five-month low, with July core at 4.2% - though the year-to-date average is still 5.2% and BSP's 2027 forecast stands at 5.4%. Three of three blocs are re-accelerating on the same energy shock."
   },
   {
    "name": "Growth momentum",
    "weight": 0.15,
-   "score": 5.5,
+   "score": 3.0,
+   "score_10": 5.5,
    "note": "Raised on the August payrolls beat: +162k against a 53k consensus and a 31k twelve-month average, with unemployment steady at 4.1%. That retires the -23k July print this model had been treating as evidence of a cracking labour market - it was noise, not trend. IMF April WEO still current: global 3.1% (2026) / 3.2% (2027), US 2.4%, euro area 0.7%. Held below 6 because Brent at $95 is a straight tax on every net importer in Europe and Asia, and because a hot labour market is exactly what lets the Fed hike."
   },
   {
    "name": "Corporate earnings",
    "weight": 0.2,
-   "score": 7.5,
+   "score": 3.89,
+   "score_10": 7.5,
    "note": "Still the strongest pillar, and the 2 Sep selloff was macro de-rating rather than an earnings event: Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027) is intact and AI infrastructure capex is still compounding through the semis supply chain. Trimmed a half point for energy input costs and the risk that a sustained $95+ Brent forces the 52% estimate down."
   },
   {
    "name": "Valuation support",
    "weight": 0.1,
-   "score": 7.5,
+   "score": 3.89,
+   "score_10": 7.5,
    "note": "The one driver that IMPROVED. The selloff made everything cheaper without changing the earnings: NDX 22.4x fwd still sits BELOW both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount and just fell another 2-4%, Europe 15.4x. No broad bubble multiple anywhere."
   },
   {
    "name": "Volatility & risk appetite",
    "weight": 0.1,
-   "score": 3.5,
+   "score": 2.11,
+   "score_10": 3.5,
    "note": "CUT, and the previous read was wrong in an instructive way. This model said last week that 'the complacency trade has started to break'. It has not. The Hormuz strikes spiked the VIX to 16.34 on 2 Sep, and it fell back every session after - 15.20 on 3 Sep, then 14.32 at Friday's close on 4 Sep - to within 0.15 of the 14.18 the index printed on 17 Aug, its 2026 low. Meanwhile the futures strip barely moved: Sep 16.57, Oct 18.41, Nov 19.08, Dec 19.26. So spot has round-tripped a war scare in three sessions while the curve still prices 19+ by December. That is a WIDER gap between delivered calm and priced risk than a week ago, not a narrower one, and it is why this driver is cut rather than raised: the market is absorbing a live shooting conflict in the Strait of Hormuz without repricing volatility at all."
   },
   {
    "name": "Geopolitics & energy",
    "weight": 0.1,
-   "score": 1.5,
+   "score": 1.22,
+   "score_10": 1.5,
    "note": "Still the weakest link by a wide margin, and the comparator this model used last week understated it. Transits were reported against a 10-day average of 14 - but that average was already collapsed. Against the PRE-CRISIS baseline of ~85 vessels/day, the 6 transits PortWatch logged on 30 Aug are a ~93% shutdown, with 436 vessels holding position off berth. The conflict is now direct rather than proxy: US forces destroyed one Iranian tanker and disabled two more after IRGC ballistic-missile attacks on US Navy warships, following ~100 US strikes on 1 Sep and two Saudi supertankers hit on 31 Aug. Brent $96.28, and the year-on-year change has WIDENED to +47.0% from +40.3% a week ago. Iran has since threatened a new restricted zone reaching from the US Navy blockade line into parts of the Gulf. Held at 1.5 rather than cut for two offsets that are both real: the diplomacy intensified alongside the fighting - Tehran is pushing a proposal to reopen the Strait and says an Omani-brokered deal is close - and, newly, the DEMAND side is absorbing some of the shock, with China cutting crude imports and refinery runs enough to moderate the price surge. Brent above $96 after +9.3% on the week is a smaller move than a ~93% Hormuz shutdown alone would imply, and that gap is the Chinese demand cut. Note the two-sidedness of that offset: it caps the oil price, which helps every net importer in this portfolio, while signalling exactly the Chinese demand weakness that would hurt Asian earnings."
   }
  ],
+ "driver_scale": {
+  "research_max": 10,
+  "reported_max": 5,
+  "neutral": 3.0,
+  "neutral_10": 5.5
+ },
  "gauge": 2.65,
  "gauge_10": 4.72,
  "gauge_neutral": 3.0,

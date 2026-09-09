@@ -105,7 +105,7 @@ nav{position:fixed;bottom:0;left:0;right:0;z-index:50;
 .sc{font-family:var(--mono);font-size:14px;font-weight:600;flex:none;width:30px;text-align:right}
 .track{height:7px;background:var(--surface-3);border-radius:4px;overflow:hidden;position:relative}
 .track i{display:block;height:100%;border-radius:4px}
-.track .mid{position:absolute;left:55%;top:-2px;bottom:-2px;width:1.5px;background:var(--line-2)}
+.track .mid{position:absolute;left:60%;top:-2px;bottom:-2px;width:1.5px;background:var(--line-2)}
 .drvnote{font-size:12px;color:var(--ink-2);margin-top:6px;line-height:1.5}
 
 /* ---------- region grid ---------- */
@@ -303,11 +303,13 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Broad sentiment &middot; driver breakdown</p>
     <div class="card" id="drivers"></div>
-    <p class="note">Driver scores run 1–10 — that is the granularity the underlying
-      evidence supports — and each bar fills in proportion to its score, with the
-      hairline at the 5.5 neutral. Composite =
-      &Sigma;(weight &times; score), then rescaled onto the 1–5 headline gauge:
-      1&rarr;1, 5.5&rarr;3.0 neutral, 10&rarr;5.</p>
+    <p class="note">Drivers are <strong>reported 1–5</strong>, like the gauge and the
+      regional rankings, with the hairline at the <span class="num">3.0</span> neutral.
+      They are <em>researched</em> on 1–10 — that is the granularity the evidence
+      supports, and each note is written against it, so every note carries its
+      research-scale score. The map is the same endpoint-preserving one used everywhere
+      on this page: 1&rarr;1, 5.5&rarr;3.0, 10&rarr;5. Composite =
+      &Sigma;(weight &times; score), which lands on the headline gauge either way round.</p>
   </section>
 
   <section>
@@ -694,16 +696,20 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         <b class="num">1.9</b> or a <b class="num">4.1</b>. It has fallen from
         <b class="num">2.9</b> at the start of September and again this week, and the
         move this week was a <em>correction</em>, not news: volatility &amp; risk
-        appetite is cut <b class="num">4.0</b> to <b class="num">3.5</b> on the 1&ndash;10
-        driver scale because last week's claim that the calm was breaking was simply
-        wrong — the VIX gave the whole Hormuz spike back inside three sessions. The week
-        before, inflation was cut from <b class="num">3.5</b> to <b class="num">3.0</b> —
+        appetite is cut <b class="num">2.33</b> to <b class="num">2.11</b> — the
+        <b class="num">4.0</b> to <b class="num">3.5</b> move on the 1&ndash;10 research
+        scale the driver notes are written against — because last week's claim that the
+        calm was breaking was simply wrong: the VIX gave the whole Hormuz spike back
+        inside three sessions. The week before, inflation was cut
+        <b class="num">2.11</b> to <b class="num">1.89</b>
+        (<b class="num">3.5</b>&rarr;<b class="num">3.0</b> researched) —
         US PCE is running
         <b class="num">3.7%</b> over twelve months and <b class="num">4.1%</b> annualised
         over six, so the contained <b class="num">2.5%</b> core CPI this model leaned on is
         no longer the clean anchor it looked like, and euro inflation jumped to
         <b class="num">3.3%</b> in August on energy at <b class="num">+14.3%</b>. Growth went
-        the other way, <b class="num">5.0</b> to <b class="num">5.5</b>, on August payrolls of
+        the other way, <b class="num">2.78</b> to <b class="num">3.00</b>
+        (<b class="num">5.0</b>&rarr;<b class="num">5.5</b> researched), on August payrolls of
         <b class="num">+162,000</b> against a <b class="num">53,000</b> consensus — which
         retires the <b class="num">&minus;23k</b> July print this model had been treating as a
         cracking labour market. It was noise. The two cancel, and the gauge sits where it was.</p>
@@ -1124,46 +1130,59 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "name": "Monetary policy & liquidity",
    "weight": 0.2,
-   "score": 3.5,
+   "score": 2.11,
+   "score_10": 3.5,
    "note": "Tightening is happening, though less of it is priced than this model once claimed. CME FedWatch puts a 25bp hike at the 15-16 Sep FOMC at 58%, up from 49.4% the day before on the August payrolls beat - still one move, not the two this model previously asserted, since the December hike has slipped to January 2027. The 2-year note is at 4.377%, its highest since January 2025, and the 10-year at 4.784% after touching 4.818% on 2 Sep - its highest since November 2023. Correcting an overstatement: the market prices roughly one hike, not two. The ECB is expected to take the deposit rate to 2.50% on 10 Sep: ALL 65 economists in the 31 Aug - 3 Sep Reuters poll forecast the hike, 91% see the rate ending 2026 there, and 78% see it held through mid-2027 - the second and final move of the ECB's shortest hiking campaign since 2011. BSP is at 5.00% after three consecutive hikes. HELD at 3.5 rather than cut further, and the reason is a genuine two-sidedness this note previously omitted: Goldman's Jan Hatzius argues market pricing for the funds rate is still TOO hawkish, calls a September hike 'very unlikely' on softer retail sales and cooling inflation, and expects the range held at 3.50-3.75% through 2026 with cuts pushed to 2027. That is a serious dissent from a house that moves pricing, and it cuts directly against this driver's score. It is not enough to raise the score, because the tightening that has actually HAPPENED is not in dispute - the ECB hikes on 10 Sep, the BSP has moved three times, the 2-year is at a 20-month high - but it is enough that this model should stop presenting the hawkish read as settled. The 11 Sep CPI and the 16 Sep FOMC resolve it; treat this driver as the one most likely to move next."
   },
   {
    "name": "Inflation trajectory",
    "weight": 0.15,
-   "score": 3.0,
+   "score": 1.89,
+   "score_10": 3.0,
    "note": "Cut again: the clean anchor this model leaned on has gone. US core CPI at 2.5% looked contained, but PCE - the measure the Fed actually targets - is running 3.7% over 12 months and 4.1% annualised over 6, which is what Warsh cited at Jackson Hole. Euro HICP jumped to 3.3% in August from 2.9%, on energy at +14.3% y/y (Eurostat flash, 1 Sep). PH is the one bloc improving: headline eased to 6.1% in August, a fourth consecutive monthly deceleration and a five-month low, with July core at 4.2% - though the year-to-date average is still 5.2% and BSP's 2027 forecast stands at 5.4%. Three of three blocs are re-accelerating on the same energy shock."
   },
   {
    "name": "Growth momentum",
    "weight": 0.15,
-   "score": 5.5,
+   "score": 3.0,
+   "score_10": 5.5,
    "note": "Raised on the August payrolls beat: +162k against a 53k consensus and a 31k twelve-month average, with unemployment steady at 4.1%. That retires the -23k July print this model had been treating as evidence of a cracking labour market - it was noise, not trend. IMF April WEO still current: global 3.1% (2026) / 3.2% (2027), US 2.4%, euro area 0.7%. Held below 6 because Brent at $95 is a straight tax on every net importer in Europe and Asia, and because a hot labour market is exactly what lets the Fed hike."
   },
   {
    "name": "Corporate earnings",
    "weight": 0.2,
-   "score": 7.5,
+   "score": 3.89,
+   "score_10": 7.5,
    "note": "Still the strongest pillar, and the 2 Sep selloff was macro de-rating rather than an earnings event: Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027) is intact and AI infrastructure capex is still compounding through the semis supply chain. Trimmed a half point for energy input costs and the risk that a sustained $95+ Brent forces the 52% estimate down."
   },
   {
    "name": "Valuation support",
    "weight": 0.1,
-   "score": 7.5,
+   "score": 3.89,
+   "score_10": 7.5,
    "note": "The one driver that IMPROVED. The selloff made everything cheaper without changing the earnings: NDX 22.4x fwd still sits BELOW both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount and just fell another 2-4%, Europe 15.4x. No broad bubble multiple anywhere."
   },
   {
    "name": "Volatility & risk appetite",
    "weight": 0.1,
-   "score": 3.5,
+   "score": 2.11,
+   "score_10": 3.5,
    "note": "CUT, and the previous read was wrong in an instructive way. This model said last week that 'the complacency trade has started to break'. It has not. The Hormuz strikes spiked the VIX to 16.34 on 2 Sep, and it fell back every session after - 15.20 on 3 Sep, then 14.32 at Friday's close on 4 Sep - to within 0.15 of the 14.18 the index printed on 17 Aug, its 2026 low. Meanwhile the futures strip barely moved: Sep 16.57, Oct 18.41, Nov 19.08, Dec 19.26. So spot has round-tripped a war scare in three sessions while the curve still prices 19+ by December. That is a WIDER gap between delivered calm and priced risk than a week ago, not a narrower one, and it is why this driver is cut rather than raised: the market is absorbing a live shooting conflict in the Strait of Hormuz without repricing volatility at all."
   },
   {
    "name": "Geopolitics & energy",
    "weight": 0.1,
-   "score": 1.5,
+   "score": 1.22,
+   "score_10": 1.5,
    "note": "Still the weakest link by a wide margin, and the comparator this model used last week understated it. Transits were reported against a 10-day average of 14 - but that average was already collapsed. Against the PRE-CRISIS baseline of ~85 vessels/day, the 6 transits PortWatch logged on 30 Aug are a ~93% shutdown, with 436 vessels holding position off berth. The conflict is now direct rather than proxy: US forces destroyed one Iranian tanker and disabled two more after IRGC ballistic-missile attacks on US Navy warships, following ~100 US strikes on 1 Sep and two Saudi supertankers hit on 31 Aug. Brent $96.28, and the year-on-year change has WIDENED to +47.0% from +40.3% a week ago. Iran has since threatened a new restricted zone reaching from the US Navy blockade line into parts of the Gulf. Held at 1.5 rather than cut for two offsets that are both real: the diplomacy intensified alongside the fighting - Tehran is pushing a proposal to reopen the Strait and says an Omani-brokered deal is close - and, newly, the DEMAND side is absorbing some of the shock, with China cutting crude imports and refinery runs enough to moderate the price surge. Brent above $96 after +9.3% on the week is a smaller move than a ~93% Hormuz shutdown alone would imply, and that gap is the Chinese demand cut. Note the two-sidedness of that offset: it caps the oil price, which helps every net importer in this portfolio, while signalling exactly the Chinese demand weakness that would hurt Asian earnings."
   }
  ],
+ "driver_scale": {
+  "research_max": 10,
+  "reported_max": 5,
+  "neutral": 3.0,
+  "neutral_10": 5.5
+ },
  "gauge": 2.65,
  "gauge_10": 4.72,
  "gauge_neutral": 3.0,
@@ -2350,23 +2369,32 @@ $("#stubline").innerHTML = (function () {
 /* ---------------- driver rows ---------------- */
 (function () {
   const box = $("#drivers");
+  const DS = D.driver_scale, MAXS = DS.reported_max, NEU = DS.neutral;
+  // thresholds are the old 1-10 breaks (6.5 / 4.5) carried across by the same map,
+  // so the colour a driver gets does not change with the scale it is reported on
+  const to5 = v => 1 + (v - 1) * 4 / 9;
+  const GOOD = to5(6.5), WARN = to5(4.5);
   D.drivers.forEach(d => {
-    const k = d.score >= 6.5 ? "good" : d.score >= 4.5 ? "warn" : "bad";
+    const k = d.score >= GOOD ? "good" : d.score >= WARN ? "warn" : "bad";
     const col = k === "good" ? "var(--good)" : k === "warn" ? "var(--warn)" : "var(--bad)";
     box.appendChild(el("div", { class:"drv" },
       `<div class="drvhead"><span class="drvname">${d.name}</span>
         <span class="wt">w ${(d.weight*100).toFixed(0)}%</span>
-        <span class="sc" style="color:${col}">${d.score.toFixed(1)}</span></div>
-       <div class="track"><i style="width:${(d.score/10*100).toFixed(1)}%;background:${col}"></i>
+        <span class="sc" style="color:${col}">${d.score.toFixed(2)}</span></div>
+       <div class="track"><i style="width:${(d.score/MAXS*100).toFixed(1)}%;background:${col}"></i>
         <span class="mid"></span></div>
-       <div class="drvnote">${d.note}</div>`));
+       <div class="drvnote"><span class="scalenote">research scale
+         ${d.score_10.toFixed(1)} / ${DS.research_max} — the figures quoted below are on
+         that scale</span>${d.note}</div>`));
   });
   box.appendChild(el("div", { class:"drv", style:"border-top:1.5px solid var(--line-2)" },
     `<div class="drvhead"><span class="drvname" style="font-weight:700">Weighted composite</span>
-      <span class="wt">${D.gauge_10.toFixed(2)} / 10</span>
-      <span class="sc" style="color:var(--navy);font-size:16px">${D.gauge.toFixed(1)}</span></div>
-     <div class="drvnote">Rescaled onto the 1–5 headline gauge, where
-       <span class="num">${D.gauge_neutral.toFixed(1)}</span> is neutral.</div>`));
+      <span class="wt">${D.gauge_10.toFixed(2)} / ${DS.research_max}</span>
+      <span class="sc" style="color:var(--navy);font-size:16px">${D.gauge.toFixed(2)}</span></div>
+     <div class="drvnote">The weighted composite of the scores above <em>is</em> the
+       headline gauge — the rescale is affine and the weights sum to 1, so blending then
+       rescaling and rescaling then blending give the same number.
+       <span class="num">${NEU.toFixed(1)}</span> is neutral.</div>`));
 })();
 
 /* ---------------- regional ranking ---------------- */

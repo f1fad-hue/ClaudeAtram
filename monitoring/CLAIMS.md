@@ -123,7 +123,7 @@ and the arithmetic that uses them re-derived independently.
 | Correlation ATRASEQ↔ATRGTEC | 0.74 | Asia semis in the global tech complex |
 | Money market vs equities | 0.00 | |
 | Regional tilt sensitivity | 0.675pp of CAGR per 1–5 macro score point above the 3.0 neutral (= 0.30pp per 1–10 point) | |
-| Reporting scales | drivers and regions researched 1–10; gauge and regional rankings reported 1–5 | endpoint-preserving rescale, 5.5 → 3.0 |
+| Reporting scales | **everything the reader sees is 1–5** — gauge, regional rankings and (from 2026-09-09) the seven driver scores. All three are *researched* on 1–10, the granularity the evidence supports and the scale every note is written against; each note carries its research-scale score | one endpoint-preserving rescale throughout: 1→1, 5.5→3.0 neutral, 10→5. The map is affine and the driver weights sum to 1, so the weighted composite of the reported driver scores **is** the headline gauge — asserted, not assumed |
 | Volatility tilt sensitivity | +0.035 ATRPHMM · +0.210 ATRQIAP · 0.000 ATRASEQ · −0.122 ATRGTEC, per vol point of ramp | structural, not a view |
 | Horizon blend weights | 3M 10% · 6M 15% · 12M 25% · 10Y 50% | **reweighted 2026-09-08**: the old 15/25/30/30 put 70% on sub-year horizons while its own comment claimed the anchor was dominant, and it was never revisited when the mandate doubled |
 | Drawdown budget for the optimiser | baseline max DD less 2.83pp (= 2.0pp at the 5y calibration, scaled by √(T/5)) | holding it flat would have quietly loosened the objective. The cap is published at the precision it is enforced at — it was rounded until 2026-09-08 |

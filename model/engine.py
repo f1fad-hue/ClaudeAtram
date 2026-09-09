@@ -862,7 +862,17 @@ def payload():
         "hz_weights": HZ_W,
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
                         "ramp": round(VOL_RAMP, 2), "sens": VOL_SENS},
-        "drivers": [{"name": n, "weight": w, "score": s, "note": t} for n, w, s, t in DRIVERS],
+        # Each driver is RESEARCHED on 1-10 (score_10) - the granularity the evidence
+        # supports, and the scale every note below is written against - and REPORTED on
+        # 1-5 (score) by the same endpoint-preserving rescale used for the gauge and the
+        # regional rankings. Since to5() is affine and the weights sum to 1, the weighted
+        # composite of the REPORTED scores is exactly the headline gauge; the check block
+        # asserts that rather than assuming it.
+        "drivers": [{"name": n, "weight": w,
+                     "score": to5(s), "score_10": s, "note": t}
+                    for n, w, s, t in DRIVERS],
+        "driver_scale": {"research_max": 10, "reported_max": 5,
+                         "neutral": NEUTRAL_5, "neutral_10": 5.5},
         "gauge": GAUGE, "gauge_10": GAUGE_10, "gauge_neutral": GAUGE_NEUTRAL,
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
         "lookthrough": LOOKTHROUGH,
@@ -920,10 +930,11 @@ def report():
     A(f"    {'region':<14}{'3M':>6}{'6M':>6}{'12M':>6}{HZ_LABEL:>6}{'blend':>8}")
     for k, v in sorted(p["regions"].items(), key=lambda t: -t[1]["blend"]):
         A(f"    {k:<14}{v['3M']:>6}{v['6M']:>6}{v['12M']:>6}{v[HZ_LABEL]:>6}{v['blend']:>8}")
-    A("\n[3] BROAD MACRO GAUGE")
+    A("\n[3] BROAD MACRO GAUGE (drivers reported 1-5, researched 1-10)")
     for d in p["drivers"]:
-        A(f"    {d['name']:<30} w={d['weight']:.2f}  score={d['score']:.1f}")
-    A(f"    {'COMPOSITE (driver scale)':<30}            {p['gauge_10']} / 10")
+        A(f"    {d['name']:<30} w={d['weight']:.2f}  "
+          f"score={d['score']:.2f} / 5   ({d['score_10']:.1f} / 10)")
+    A(f"    {'COMPOSITE (research scale)':<30}            {p['gauge_10']} / 10")
     A(f"    {'HEADLINE GAUGE':<30}            {p['gauge']} / 5"
       f"   (neutral {p['gauge_neutral']})")
     A(f"\n[4] FUNDS - net {HZ_LABEL} CAGR after ALL fees, and expected max drawdown")
@@ -979,6 +990,19 @@ def report():
                    abs(p["gauge"] - (1 + (p["gauge_10"] - 1) * 4 / 9)) <= 0.005))
     checks.append(("the 1-10 neutral 5.5 maps to the 1-5 neutral",
                    abs(to5(5.5) - p["gauge_neutral"]) < 1e-9))
+    # Driver scale. The last 1-10 surface on the page moved to 1-5 on 2026-09-09;
+    # these assert the reported scores really are the research scores rescaled, and
+    # that the composite of the reported scores IS the headline gauge (true because
+    # to5 is affine and the weights sum to 1 - asserted, not assumed).
+    checks.append(("every driver score is reported in 1-5",
+                   all(1 <= d["score"] <= 5 for d in p["drivers"])))
+    checks.append(("every driver rescale 1-10 -> 1-5 is exact",
+                   all(abs(d["score"] - to5(d["score_10"])) < 1e-9 for d in p["drivers"])))
+    checks.append(("the weighted composite of the reported driver scores is the gauge",
+                   abs(sum(d["weight"] * d["score"] for d in p["drivers"]) - p["gauge"])
+                   <= 0.006))
+    checks.append(("driver weights still sum to 1 after the rescale",
+                   abs(sum(d["weight"] for d in p["drivers"]) - 1.0) < 1e-9))
     checks.append(("every regional score is reported in 1-5",
                    all(1 <= v[h] <= 5 for v in p["regions"].values()
                        for h in ("3M", "6M", "12M", HZ_LABEL, "blend"))))

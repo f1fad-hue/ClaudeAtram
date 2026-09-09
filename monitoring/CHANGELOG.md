@@ -2,6 +2,58 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-09 (later) — Driver sentiments moved to 1–5; the page is now one scale throughout
+
+Requested change, and the last one needed: the seven driver scores were the only
+1–10 surface left. Gauge and regional rankings had already moved.
+
+Handled exactly as the regions were on 5 September. The drivers stay
+**researched on 1–10** — that is the granularity the evidence supports, and every
+driver note is written against it ("held below 6", "held at 1.5 rather than cut
+further"). Rewriting sourced prose onto five points would destroy information and
+risk drift. So the score is rescaled once, at the reported value, and **each note
+now carries its research-scale score** the way the region rationales already do.
+
+| Driver | Reported | Researched |
+|---|---|---|
+| Monetary policy & liquidity | **2.11** | 3.5 |
+| Inflation trajectory | **1.89** | 3.0 |
+| Growth momentum | **3.00** | 5.5 |
+| Corporate earnings | **3.89** | 7.5 |
+| Valuation support | **3.89** | 7.5 |
+| Volatility & risk appetite | **2.11** | 3.5 |
+| Geopolitics & energy | **1.22** | 1.5 |
+
+One property worth stating because it makes the page self-consistent rather than
+merely relabelled: `to5` is **affine** and the driver weights sum to 1, so
+blending-then-rescaling and rescaling-then-blending give the same number. The
+weighted composite of the *reported* scores therefore **is** the headline gauge,
+2.65. Both the engine and the independent verifier now assert that rather than
+assuming it.
+
+Also changed: bars fill against 5 rather than 10; the neutral hairline moves from
+55% to 60% of the track (3.0 of 5, where it was 5.5 of 10) — Growth momentum at
+exactly 3.00 lands on it, which is a free visual check; and the colour thresholds
+are the old 1–10 breaks (6.5 / 4.5) carried across **by the same map**, so no
+driver changes colour as a result of the rescale.
+
+### A hand-typed rescale was wrong, and now there is a guard
+
+Rewriting the report prose, I typed `to5(4.0)` as **2.44**. It is **2.33**. Caught
+by re-deriving every figure I had just written rather than trusting the typing —
+and the honest lesson is that this is the fourth time a hard-typed derived figure
+has gone wrong on this page.
+
+So the checklist gained a guard that parses the rendered prose for every
+"reported (researched)" pair and asserts the pair actually satisfies `to5`.
+**Verified to bite**: reintroducing 2.44 makes it fail, restoring 2.33 makes it
+pass. A check that has never been seen to fail is not evidence of anything.
+
+**Verification:** engine **53 → 57** checks. Independent verifier **171 checks,
+0 failures** — it failed first, correctly, because it was still reading `score`
+as the research value; it now re-derives both scales and the affine property
+independently. Checklist **20 → 21**, all passing. Repo 8 tracked files.
+
 ## 2026-09-09 — Two fee errors, and an optimiser with no diversification constraint
 
 The most consequential review so far. Chasing the two target-fund fee estimates
