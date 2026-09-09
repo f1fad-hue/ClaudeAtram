@@ -2,6 +2,101 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-09 — Two fee errors, and an optimiser with no diversification constraint
+
+The most consequential review so far. Chasing the two target-fund fee estimates
+to primary sources changed the recommended allocation, and the change exposed a
+missing constraint that had been hidden by luck.
+
+### 1. The Asia fee estimate was wrong by ~0.75pp a year
+
+`ATRASEQ`'s target-fund ongoing charge carried **0.80%** — an unanchored guess
+the register had honestly flagged as "not located". J.P. Morgan publishes a
+**1.50% management fee** for the JPMorgan Asia Equity Dividend Fund. An ongoing
+charge cannot be *below* the management fee, so 0.80% was not merely uncertain,
+it was **impossible**.
+
+Corrected to **1.55%** (published 1.50% plus ~0.05% operating costs). Still an
+estimate — the OCF for the exact share class ATRAM's feeder buys is not
+published — but now anchored on a published figure and erring high rather than
+low. All-in stack **1.98% → 2.73%**, the highest on the sheet.
+
+Consequence: Asia Equity's forecast net CAGR falls **8.54% → 7.79%** and the
+sleeve drops **from first to third**. Its macro case is unchanged and still the
+strongest — this is a cost finding, not a change of view — but it was being
+overweighted partly on a return that a fee error had inflated.
+
+### 2. The Global Tech estimate is no longer an estimate
+
+Fidelity **publishes** the Global Technology Fund's OCF: **1.04%** for the
+W-Acc-GBP class (AMC 0.80% + operating costs) — the same class this model
+already cites for the fund's realised five-year return. Promoted from a 0.95%
+estimate to a verified figure. The JEPQ UCITS TER of 0.35% was re-confirmed
+across three independent sources and stands.
+
+One fee estimate now remains on the page, down from two.
+
+### 3. The optimiser had no diversification constraint — and nobody could tell
+
+With Asia's return corrected, the optimiser immediately proposed **15 / 75 / 5 / 5**
+— 75% in a single fund. A "four-fund portfolio" that is one fund plus three stubs,
+and flatly against the argument the report itself makes ("it is the same bet,
+twice"). **The page argued the principle; the code never encoded it.**
+
+It had never bound before, because the drawdown budget happened to do the job by
+accident. That is the worst kind of missing constraint: invisible until the day
+it matters.
+
+Added an explicit **50% single-sleeve cap**, stated on the page as part of the
+objective rather than applied silently, with three checks asserting it (both
+portfolios respect it, the enumerated set respects it, and the stub
+counterfactual obeys the same cap so its "cost" is measured against something
+the objective would actually allow). It is not reverse-engineered to reproduce
+the old answer — the previous optimum was 45%, comfortably inside it.
+
+Enumerated set **969 → 633** portfolios; feasible **252**.
+
+### 4. A check that encoded a contingent fact as a law
+
+`the Global Tech stub cost is derived, and the stub is genuinely dearer` asserted
+`cost > 0`. That stopped being true today: the counterfactual is drawn from a
+*different* feasible set, so its best point can be better, equal or worse than
+the chosen one. **The stub is now free** — it cost 0.15pp a week ago, and the fee
+corrections closed the gap.
+
+Same failure mode as the "vol term structure is monotone rising" invariant on
+4 September: a fact that was true when written, written in as a law. The check now
+asserts the arithmetic identity and reports the sign as a finding. The page's
+"That option is not free" claim — true yesterday, false today — is replaced by
+text that states whichever way the sign falls, and says plainly that it changed.
+
+### 5. Result
+
+| | Before | After |
+|---|---|---|
+| Baseline | 7.54% / −28.8% | **7.33% / −28.9%** |
+| Optimised | **15/45/35/5**, 7.82% / −25.8% | **15/50/30/5**, 7.58% / −25.6% |
+| Return per drawdown | 0.262 → 0.304 | **0.253 → 0.296** |
+
+Returns fall because the fees are real and were understated. The optimised
+portfolio still beats the baseline on both axes, and by a slightly wider relative
+margin (17% vs 15%).
+
+### 6. Also
+
+- Peso **62.625**, the 23rd record-low close of 2026 — and a dating check:
+  a wire story dated the 9th reports the **8th's** close. Trade date is now
+  recorded against publication date, with the prior session (62.586, not a
+  record) noted so the sequence is auditable.
+- The rationale's hard-typed allocation figures (45%, 35%, 5%) and the "Why
+  15 / 45 / 35 / 5" heading now render from the payload — they would have gone
+  stale the moment the weights moved, which is exactly what happened today.
+
+**Verification:** engine **50 → 53** checks. Independent verifier **167 checks,
+0 failures** — it disagreed with the engine on the feasible-set size until it was
+taught the cap *from the payload*, which is the behaviour that makes it worth
+having. Checklist 20/20. Repo 8 tracked files; harness 44KB.
+
 ## 2026-09-08 — Review: the horizon blend was never reweighted, and the published cap was looser than the enforced one
 
 Research and audit pass. Two model defects found, two relevance gaps closed, one

@@ -45,7 +45,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | PH CPI year-to-date average | 5.2% | P | psa.gov.ph | 2026-09-05 |
 | US unemployment rate | 4.1% | P | bls.gov | 2026-09-05 |
 | PH T-bill 91d / 182d / 364d | 5.138% / 5.517% / 5.717% | P | treasury.gov.ph auction results | 2026-09-05 |
-| USD/PHP | 62.625 (8 Sep) — the **23rd** record-low close of 2026, past 62.59 on 4 Sep | P | Manila Bulletin / Tribune / BSP (verified via search result) | 2026-09-08 |
+| USD/PHP | 62.625 — **8 Sep close** (reported 9 Sep), the 23rd record-low close of 2026, past 62.59 on 4 Sep; prior session 62.586 | P | Manila Times / BusinessWorld / Philstar | 2026-09-09 |
 | Brent crude | $96.28; holding above $96 on 7 Sep after +9.3% on the week | P | EIA / market data | 2026-09-08 |
 | Brent y/y change | +46.99% | P | market data | 2026-09-07 |
 | Brent Q1 2026 close | $118 from $61 at year open | P | eia.gov Today in Energy | 2026-09-05 |
@@ -90,17 +90,17 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | ATRQIAP management fee | 1.50% p.a. | P | ATRAM / launch coverage | 2026-09-05 |
 | ATRQIAP target fund | JPM Nasdaq Equity Premium Income Active UCITS ETF, IE000U9J8HX9 | P | ATRAM / JPMAM | 2026-09-05 |
 | ATRQIAP stated benchmark | 75% Nasdaq-100 Index | P | ATRAM / launch coverage | 2026-09-05 |
-| Target-fund TER (JEPQ UCITS) | 0.35% | P | JPMAM factsheet | 2026-09-05 |
+| Target-fund TER (JEPQ UCITS) | 0.35% | P | JPMAM factsheet — re-confirmed across justETF, Morningstar and Cbonds | 2026-09-09 |
 | Underlying distribution yield | ~9% p.a. | P | JPMAM / justETF | 2026-09-05 |
 | ATRASEQ trustee + auditor fee | 1.17% + 0.01% | P | ATRAM KIIDS | 2026-09-05 |
 | ATRASEQ target fund | JPMorgan Asia Equity Dividend Fund | P | ATRAM KIIDS | 2026-09-05 |
 | ATRASEQ inception | 08 Dec 2016 | P | ATRAM / uitf.com.ph | 2026-09-05 |
-| **ATRASEQ target-fund OCF** | **0.80%** | **E** | **not located — promote when published** | 2026-09-05 |
+| **ATRASEQ target-fund OCF** | **1.55%** | **E** | anchored on JPMAM's **published 1.50% management fee** for the JPMorgan Asia Equity Dividend Fund; exact share-class OCF still not published, so this errs high. Raised from an unanchored 0.80% on 2026-09-09 | 2026-09-09 |
 | ATRGTEC management fee | 1.15% p.a. | P | ATRAM KIIDS | 2026-09-05 |
 | ATRGTEC target fund | Fidelity Funds – Global Technology Fund | P | ATRAM KIIDS | 2026-09-05 |
 | ATRGTEC benchmark | MSCI ACWI Information Technology | P | Fidelity factsheet | 2026-09-05 |
 | Fidelity Global Technology 5y annualised | 15.20% (W GBP, to 20 Aug 2026) | P | Fidelity / platform data | 2026-09-05 |
-| **ATRGTEC target-fund OCF** | **0.95%** | **E** | **not located — promote when published** | 2026-09-05 |
+| ATRGTEC target-fund OCF | **1.04%** | **P** | Fidelity published OCF, W-Acc-GBP class (AMC 0.80% + operating costs), as of 30.04.25 — **promoted from a 0.95% estimate** | 2026-09-09 |
 
 ## Modelled assumptions (not published figures)
 
@@ -126,4 +126,5 @@ and the arithmetic that uses them re-derived independently.
 | Reporting scales | drivers and regions researched 1–10; gauge and regional rankings reported 1–5 | endpoint-preserving rescale, 5.5 → 3.0 |
 | Volatility tilt sensitivity | +0.035 ATRPHMM · +0.210 ATRQIAP · 0.000 ATRASEQ · −0.122 ATRGTEC, per vol point of ramp | structural, not a view |
 | Horizon blend weights | 3M 10% · 6M 15% · 12M 25% · 10Y 50% | **reweighted 2026-09-08**: the old 15/25/30/30 put 70% on sub-year horizons while its own comment claimed the anchor was dominant, and it was never revisited when the mandate doubled |
-| Drawdown budget for the optimiser | baseline max DD less 2.83pp (= 2.0pp at the 5y calibration, scaled by √(T/5)); cap 25.97% | holding it flat would have quietly loosened the objective. The cap is published at the precision it is enforced at — it was rounded to 26.0 until 2026-09-08 |
+| Drawdown budget for the optimiser | baseline max DD less 2.83pp (= 2.0pp at the 5y calibration, scaled by √(T/5)) | holding it flat would have quietly loosened the objective. The cap is published at the precision it is enforced at — it was rounded until 2026-09-08 |
+| Single-sleeve concentration cap | 50% | **added 2026-09-09.** Until then the objective had no diversification constraint; it never bound until the Asia fee correction, at which point the optimiser proposed 75% in one fund |

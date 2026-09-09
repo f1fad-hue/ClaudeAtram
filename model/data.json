@@ -1,5 +1,5 @@
 {
- "as_of": "2026-09-08",
+ "as_of": "2026-09-09",
  "macro": {
   "fed_funds_lower": 3.5,
   "fed_funds_upper": 3.75,
@@ -42,6 +42,7 @@
   "usdphp": 62.625,
   "usdphp_records_2026": 23,
   "usdphp_prev_record": 62.59,
+  "usdphp_prev_close": 62.586,
   "ph_tbill_91": 5.138,
   "ph_tbill_182": 5.517,
   "ph_tbill_364": 5.717,
@@ -327,26 +328,26 @@
    "region": "ASIA",
    "target": "Target fund: JPMorgan Asia Equity Dividend Fund (Asia Pacific ex-Japan). Feeder launched 08 Dec 2016.",
    "target_verified": true,
-   "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~0.80% estimated target-fund OCF (ESTIMATE - not verifiable at source)",
+   "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~1.55% estimated target-fund OCF (ESTIMATE, anchored on JPMAM's published 1.50% management fee for this fund; exact share-class OCF not published)",
    "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
    "fee_feeder": 1.18,
-   "fee_target": 0.8,
-   "fee_total": 1.98,
+   "fee_target": 1.55,
+   "fee_total": 2.73,
    "gross_php": 10.3,
    "fx_drift": 2.0,
-   "net_base": 8.32,
+   "net_base": 7.57,
    "regional_score": 3.7,
    "tilt_regional": 0.47,
    "tilt_vol": 0.0,
    "tilt_rates": -0.05,
    "tilt_energy": -0.2,
    "tilt_total": 0.22,
-   "net_macro": 8.54,
+   "net_macro": 7.79,
    "vol": 18.53,
    "dd_k": 1.7,
    "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
-   "dd_base": -38.7,
-   "dd_macro": -38.5
+   "dd_base": -39.2,
+   "dd_macro": -39.0
   },
   {
    "id": "ATRGTEC",
@@ -356,26 +357,26 @@
    "region": "GLOBAL_TECH",
    "target": "Target fund: Fidelity Funds - Global Technology Fund. Benchmark: MSCI ACWI Information Technology. Target-fund 5y annualised: 15.20% (W GBP class, to 20 Aug 2026).",
    "target_verified": true,
-   "fee_note": "1.15% ATRAM management fee (verified) + ~0.95% estimated target-fund OCF (ESTIMATE - not verifiable at source)",
+   "fee_note": "1.15% ATRAM management fee (verified) + 1.04% target-fund OCF (PUBLISHED by Fidelity for the W-Acc-GBP class, AMC 0.80%)",
    "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
    "fee_feeder": 1.15,
-   "fee_target": 0.95,
-   "fee_total": 2.1,
+   "fee_target": 1.04,
+   "fee_total": 2.19,
    "gross_php": 11.0,
    "fx_drift": 2.0,
-   "net_base": 8.9,
+   "net_base": 8.81,
    "regional_score": 3.24,
    "tilt_regional": 0.16,
    "tilt_vol": -0.56,
    "tilt_rates": -0.4,
    "tilt_energy": -0.15,
    "tilt_total": -0.95,
-   "net_macro": 7.95,
+   "net_macro": 7.86,
    "vol": 24.77,
    "dd_k": 1.8,
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -56.8,
-   "dd_macro": -57.4
+   "dd_macro": -57.5
   }
  ],
  "corr": [
@@ -567,7 +568,7 @@
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.675,
-  "optimized_k": 1.626,
+  "optimized_k": 1.618,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -584,13 +585,13 @@
     25.0,
     25.0
    ],
-   "cagr": 7.34,
+   "cagr": 7.13,
    "vol": 14.4,
-   "maxdd": -28.9,
-   "ret_per_dd": 0.254,
-   "sharpe_like": 0.113,
-   "terminal_1m": 2030560,
-   "trough_1m": 711000
+   "maxdd": -29.1,
+   "ret_per_dd": 0.245,
+   "sharpe_like": 0.098,
+   "terminal_1m": 1991182,
+   "trough_1m": 709000
   },
   "under_macro": {
    "weights": [
@@ -599,638 +600,459 @@
     25.0,
     25.0
    ],
-   "cagr": 7.54,
+   "cagr": 7.33,
    "vol": 14.4,
-   "maxdd": -28.8,
-   "ret_per_dd": 0.262,
-   "sharpe_like": 0.127,
-   "terminal_1m": 2068713,
-   "trough_1m": 712000
+   "maxdd": -28.9,
+   "ret_per_dd": 0.253,
+   "sharpe_like": 0.112,
+   "terminal_1m": 2028669,
+   "trough_1m": 711000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row models the tail from here: full Strait closure and Brent to $130+ from $95. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 2.79,
+    "cagr": 2.58,
     "vol": 23.04,
-    "maxdd": -37.2
+    "maxdd": -37.3
    },
    {
     "name": "Hawkish repricing",
     "desc": "The 3 July dissents win and the market is already there - two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.2,
+    "cagr": 4.99,
     "vol": 18.72,
-    "maxdd": -28.8
+    "maxdd": -28.9
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.12,
+    "cagr": 2.91,
     "vol": 20.88,
-    "maxdd": -33.4
+    "maxdd": -33.5
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 10.11,
+    "cagr": 9.9,
     "vol": 11.52,
-    "maxdd": -14.2
+    "maxdd": -14.3
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.54,
+    "cagr": 7.33,
     "vol": 14.4,
-    "maxdd": -20.3
+    "maxdd": -20.5
    }
   ]
  },
  "optimized": {
   "weights": [
    15,
-   45,
-   35,
+   50,
+   30,
    5
   ],
   "macro": {
    "weights": [
     15.0,
-    45.0,
-    35.0,
+    50.0,
+    30.0,
     5.0
    ],
-   "cagr": 7.82,
-   "vol": 13.61,
-   "maxdd": -25.8,
-   "ret_per_dd": 0.304,
-   "sharpe_like": 0.155,
-   "terminal_1m": 2123212,
-   "trough_1m": 742000
+   "cagr": 7.58,
+   "vol": 13.54,
+   "maxdd": -25.6,
+   "ret_per_dd": 0.296,
+   "sharpe_like": 0.138,
+   "terminal_1m": 2076421,
+   "trough_1m": 744000
   },
   "under_base": {
    "weights": [
     15.0,
-    45.0,
-    35.0,
+    50.0,
+    30.0,
     5.0
    ],
-   "cagr": 7.29,
-   "vol": 13.61,
-   "maxdd": -26.1,
-   "ret_per_dd": 0.279,
-   "sharpe_like": 0.115,
-   "terminal_1m": 2021122,
-   "trough_1m": 739000
+   "cagr": 7.01,
+   "vol": 13.54,
+   "maxdd": -26.0,
+   "ret_per_dd": 0.269,
+   "sharpe_like": 0.095,
+   "terminal_1m": 1968991,
+   "trough_1m": 740000
   },
-  "dd_cap": 25.97,
+  "dd_cap": 26.07,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row models the tail from here: full Strait closure and Brent to $130+ from $95. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 3.22,
-    "vol": 21.77,
-    "maxdd": -33.8
+    "cagr": 3.08,
+    "vol": 21.66,
+    "maxdd": -33.5
    },
    {
     "name": "Hawkish repricing",
     "desc": "The 3 July dissents win and the market is already there - two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.87,
-    "vol": 17.69,
-    "maxdd": -25.8
+    "cagr": 5.6,
+    "vol": 17.6,
+    "maxdd": -25.7
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.92,
-    "vol": 19.73,
-    "maxdd": -30.1
+    "cagr": 3.78,
+    "vol": 19.63,
+    "maxdd": -29.9
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 10.26,
-    "vol": 10.88,
-    "maxdd": -12.6
+    "cagr": 9.97,
+    "vol": 10.83,
+    "maxdd": -12.5
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.82,
-    "vol": 13.61,
-    "maxdd": -18.2
+    "cagr": 7.58,
+    "vol": 13.54,
+    "maxdd": -18.1
    }
   ],
-  "n_feasible": 368,
-  "n_total": 969
+  "n_feasible": 252,
+  "n_total": 633
  },
  "best_ratio": {
   "weights": [
-   85.0,
-   5.0,
+   50.0,
+   40.0,
    5.0,
    5.0
   ],
-  "cagr": 5.18,
-  "vol": 2.75,
-  "maxdd": -2.9,
-  "ret_per_dd": 1.787,
-  "sharpe_like": -0.197,
-  "terminal_1m": 1657035,
-  "trough_1m": 971000
+  "cagr": 6.42,
+  "vol": 8.19,
+  "maxdd": -13.9,
+  "ret_per_dd": 0.463,
+  "sharpe_like": 0.086,
+  "terminal_1m": 1863084,
+  "trough_1m": 861000
  },
  "stub": {
   "fund": "ATRGTEC",
   "weight": 5,
   "best_without": [
-   10,
-   60,
-   30,
+   15,
+   50,
+   35,
    0
   ],
-  "cagr_without": 8.01,
-  "cagr_with": 7.82,
-  "cost": 0.19
+  "cagr_without": 7.58,
+  "cagr_with": 7.58,
+  "cost": 0.0
  },
- "tech_gap": -0.36,
+ "tech_gap": -0.45,
+ "max_sleeve": 0.5,
  "frontier": [
   {
-   "maxdd": 2,
-   "cagr": 5.18,
-   "weights": [
-    85.0,
-    5.0,
-    5.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 4,
-   "cagr": 5.37,
-   "weights": [
-    80.0,
-    5.0,
-    10.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 5,
-   "cagr": 5.54,
-   "weights": [
-    75.0,
-    15.0,
-    5.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 6,
-   "cagr": 5.57,
-   "weights": [
-    75.0,
-    5.0,
-    15.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 7,
-   "cagr": 5.74,
-   "weights": [
-    70.0,
-    15.0,
-    10.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 8,
-   "cagr": 5.76,
-   "weights": [
-    70.0,
-    5.0,
-    20.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 9,
-   "cagr": 5.93,
-   "weights": [
-    65.0,
-    15.0,
-    15.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 10,
-   "cagr": 6.12,
-   "weights": [
-    60.0,
-    20.0,
-    15.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 11,
-   "cagr": 6.13,
-   "weights": [
-    60.0,
-    15.0,
-    20.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 12,
-   "cagr": 6.31,
-   "weights": [
-    55.0,
-    20.0,
-    20.0,
-    5.0
-   ]
-  },
-  {
    "maxdd": 13,
-   "cagr": 6.47,
+   "cagr": 6.42,
    "weights": [
     50.0,
-    35.0,
-    10.0,
+    40.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 14,
-   "cagr": 6.51,
+   "cagr": 6.37,
    "weights": [
     50.0,
-    20.0,
-    25.0,
+    30.0,
+    15.0,
     5.0
    ]
   },
   {
    "maxdd": 15,
-   "cagr": 6.68,
+   "cagr": 6.61,
    "weights": [
     45.0,
-    30.0,
-    20.0,
+    45.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 16,
-   "cagr": 6.7,
+   "cagr": 6.58,
    "weights": [
     45.0,
-    20.0,
-    30.0,
-    5.0
+    40.0,
+    5.0,
+    10.0
    ]
   },
   {
    "maxdd": 17,
-   "cagr": 6.88,
+   "cagr": 6.79,
    "weights": [
     40.0,
-    30.0,
-    25.0,
+    50.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 18,
-   "cagr": 7.05,
+   "cagr": 6.95,
    "weights": [
     35.0,
-    40.0,
-    20.0,
+    50.0,
+    10.0,
     5.0
    ]
   },
   {
    "maxdd": 19,
-   "cagr": 7.07,
+   "cagr": 6.95,
    "weights": [
     35.0,
-    30.0,
-    30.0,
-    5.0
+    50.0,
+    5.0,
+    10.0
    ]
   },
   {
    "maxdd": 20,
-   "cagr": 7.26,
+   "cagr": 7.11,
    "weights": [
     30.0,
-    35.0,
-    30.0,
+    50.0,
+    15.0,
     5.0
    ]
   },
   {
    "maxdd": 21,
-   "cagr": 7.42,
+   "cagr": 7.11,
    "weights": [
-    25.0,
+    30.0,
     50.0,
-    20.0,
-    5.0
+    10.0,
+    10.0
    ]
   },
   {
    "maxdd": 22,
-   "cagr": 7.45,
+   "cagr": 7.26,
    "weights": [
     25.0,
-    35.0,
-    35.0,
+    50.0,
+    20.0,
     5.0
    ]
   },
   {
    "maxdd": 23,
-   "cagr": 7.63,
+   "cagr": 7.42,
    "weights": [
     20.0,
-    45.0,
-    30.0,
+    50.0,
+    25.0,
     5.0
    ]
   },
   {
    "maxdd": 24,
-   "cagr": 7.65,
+   "cagr": 7.43,
    "weights": [
     20.0,
-    35.0,
-    40.0,
-    5.0
+    50.0,
+    20.0,
+    10.0
    ]
   },
   {
    "maxdd": 25,
-   "cagr": 7.82,
+   "cagr": 7.58,
    "weights": [
     15.0,
-    45.0,
-    35.0,
+    50.0,
+    30.0,
     5.0
    ]
   },
   {
    "maxdd": 26,
-   "cagr": 7.98,
+   "cagr": 7.58,
    "weights": [
-    10.0,
-    60.0,
+    15.0,
+    50.0,
     25.0,
-    5.0
+    10.0
    ]
   },
   {
    "maxdd": 27,
-   "cagr": 8.02,
+   "cagr": 7.74,
    "weights": [
     10.0,
-    45.0,
-    40.0,
+    50.0,
+    35.0,
     5.0
    ]
   },
   {
    "maxdd": 28,
-   "cagr": 8.19,
+   "cagr": 7.74,
    "weights": [
-    5.0,
-    55.0,
-    35.0,
-    5.0
+    10.0,
+    50.0,
+    30.0,
+    10.0
    ]
   },
   {
    "maxdd": 29,
-   "cagr": 8.21,
+   "cagr": 7.9,
    "weights": [
     5.0,
-    45.0,
-    45.0,
+    50.0,
+    40.0,
     5.0
    ]
   },
   {
    "maxdd": 30,
-   "cagr": 8.23,
+   "cagr": 7.9,
    "weights": [
     5.0,
+    50.0,
     35.0,
-    55.0,
-    5.0
+    10.0
    ]
   },
   {
    "maxdd": 31,
-   "cagr": 8.26,
+   "cagr": 7.9,
    "weights": [
     5.0,
-    25.0,
-    65.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 32,
-   "cagr": 8.27,
-   "weights": [
-    5.0,
-    20.0,
-    70.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 33,
-   "cagr": 8.28,
-   "weights": [
-    5.0,
-    15.0,
-    75.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 34,
-   "cagr": 8.29,
-   "weights": [
-    5.0,
-    10.0,
-    80.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 35,
-   "cagr": 8.3,
-   "weights": [
-    5.0,
-    5.0,
-    85.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 36,
-   "cagr": 8.24,
-   "weights": [
-    5.0,
-    5.0,
-    75.0,
+    50.0,
+    30.0,
     15.0
    ]
   },
   {
-   "maxdd": 37,
-   "cagr": 8.19,
+   "maxdd": 32,
+   "cagr": 7.91,
    "weights": [
     5.0,
+    50.0,
+    25.0,
+    20.0
+   ]
+  },
+  {
+   "maxdd": 33,
+   "cagr": 7.91,
+   "weights": [
     5.0,
-    65.0,
+    50.0,
+    20.0,
     25.0
    ]
   },
   {
-   "maxdd": 38,
-   "cagr": 8.16,
+   "maxdd": 34,
+   "cagr": 7.91,
    "weights": [
     5.0,
-    5.0,
-    60.0,
+    50.0,
+    15.0,
     30.0
    ]
   },
   {
-   "maxdd": 39,
-   "cagr": 8.1,
+   "maxdd": 35,
+   "cagr": 7.92,
    "weights": [
     5.0,
+    50.0,
+    10.0,
+    35.0
+   ]
+  },
+  {
+   "maxdd": 36,
+   "cagr": 7.92,
+   "weights": [
     5.0,
     50.0,
+    5.0,
     40.0
    ]
   },
   {
-   "maxdd": 40,
-   "cagr": 8.07,
+   "maxdd": 37,
+   "cagr": 7.89,
    "weights": [
     5.0,
+    45.0,
+    10.0,
+    40.0
+   ]
+  },
+  {
+   "maxdd": 38,
+   "cagr": 7.9,
+   "weights": [
     5.0,
     45.0,
+    5.0,
     45.0
    ]
   },
   {
-   "maxdd": 41,
-   "cagr": 8.04,
+   "maxdd": 39,
+   "cagr": 7.88,
    "weights": [
     5.0,
-    5.0,
     40.0,
+    5.0,
+    50.0
+   ]
+  },
+  {
+   "maxdd": 40,
+   "cagr": 7.82,
+   "weights": [
+    5.0,
+    30.0,
+    15.0,
+    50.0
+   ]
+  },
+  {
+   "maxdd": 41,
+   "cagr": 7.74,
+   "weights": [
+    5.0,
+    15.0,
+    30.0,
     50.0
    ]
   },
   {
    "maxdd": 42,
-   "cagr": 8.01,
+   "cagr": 7.69,
    "weights": [
     5.0,
     5.0,
-    35.0,
-    55.0
-   ]
-  },
-  {
-   "maxdd": 43,
-   "cagr": 7.97,
-   "weights": [
-    5.0,
-    10.0,
-    25.0,
-    60.0
-   ]
-  },
-  {
-   "maxdd": 44,
-   "cagr": 7.98,
-   "weights": [
-    5.0,
-    5.0,
-    30.0,
-    60.0
-   ]
-  },
-  {
-   "maxdd": 45,
-   "cagr": 7.95,
-   "weights": [
-    5.0,
-    5.0,
-    25.0,
-    65.0
-   ]
-  },
-  {
-   "maxdd": 46,
-   "cagr": 7.92,
-   "weights": [
-    5.0,
-    5.0,
-    20.0,
-    70.0
-   ]
-  },
-  {
-   "maxdd": 47,
-   "cagr": 7.88,
-   "weights": [
-    5.0,
-    10.0,
-    10.0,
-    75.0
-   ]
-  },
-  {
-   "maxdd": 48,
-   "cagr": 7.89,
-   "weights": [
-    5.0,
-    5.0,
-    15.0,
-    75.0
-   ]
-  },
-  {
-   "maxdd": 49,
-   "cagr": 7.86,
-   "weights": [
-    5.0,
-    5.0,
-    10.0,
-    80.0
-   ]
-  },
-  {
-   "maxdd": 51,
-   "cagr": 7.83,
-   "weights": [
-    5.0,
-    5.0,
-    5.0,
-    85.0
+    40.0,
+    50.0
    ]
   }
  ],

@@ -14,7 +14,7 @@ Run:  python3 engine.py            -> human-readable audit report
 import json, math, sys
 from itertools import product
 
-AS_OF = "2026-09-08"
+AS_OF = "2026-09-09"
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -65,9 +65,13 @@ MACRO = {
     "ph_cpi_jun": 6.4,
     "bsp_infl_2026": 6.1,
     "bsp_infl_2027": 5.4,
+    # 8 Sep close (Tue), reported 9 Sep. Prior session closed 62.586 - not a record;
+    # the record it broke is 62.59 from 4 Sep. Trade date checked against publication
+    # date, because a wire story dated the 9th reports the 8th's close.
     "usdphp": 62.625,          # 8 Sep - the 23rd record-low close of 2026
     "usdphp_records_2026": 23,
     "usdphp_prev_record": 62.59,   # 4 Sep
+    "usdphp_prev_close": 62.586,   # 7 Sep - not a record
     "ph_tbill_91": 5.138,
     "ph_tbill_182": 5.517,
     "ph_tbill_364": 5.717,
@@ -337,9 +341,18 @@ FUNDS = [
         "target": "Target fund: JPMorgan Asia Equity Dividend Fund (Asia Pacific ex-Japan). "
                   "Feeder launched 08 Dec 2016.",
         "target_verified": True,
-        "fee_feeder": 1.18, "fee_target": 0.80,
-        "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~0.80% estimated "
-                    "target-fund OCF (ESTIMATE - not verifiable at source)",
+        # RAISED 0.80 -> 1.55 on 2026-09-09. The 0.80% carried since launch was an
+        # unanchored guess. J.P. Morgan publishes a MANAGEMENT FEE of 1.50% p.a. for
+        # this fund, so the ongoing charge cannot be 0.80% - it is at least the
+        # management fee. 1.55% = the published 1.50% plus ~0.05% operating costs.
+        # Still an ESTIMATE, because the exact OCF for the share class ATRAM's feeder
+        # buys is not published; but it is now anchored on a published figure and
+        # errs HIGH rather than low. This cost Asia Equity 0.75pp of net CAGR and
+        # dropped it from first to third on the sheet.
+        "fee_feeder": 1.18, "fee_target": 1.55,
+        "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~1.55% estimated "
+                    "target-fund OCF (ESTIMATE, anchored on JPMAM's published 1.50% "
+                    "management fee for this fund; exact share-class OCF not published)",
         "gross_usd": 8.3,
         "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
         "vol_beta": 1.05 * 0.92, "fx_exposed": True,
@@ -354,9 +367,12 @@ FUNDS = [
                   "MSCI ACWI Information Technology. Target-fund 5y annualised: 15.20% "
                   "(W GBP class, to 20 Aug 2026).",
         "target_verified": True,
-        "fee_feeder": 1.15, "fee_target": 0.95,
-        "fee_note": "1.15% ATRAM management fee (verified) + ~0.95% estimated "
-                    "target-fund OCF (ESTIMATE - not verifiable at source)",
+        # PROMOTED from a 0.95% estimate to Fidelity's PUBLISHED 1.04% OCF for the
+        # W-Acc-GBP class (AMC 0.80% + operating costs), the same class this model
+        # already cites for the fund's realised 5-year return. (Verified 2026-09-09.)
+        "fee_feeder": 1.15, "fee_target": 1.04,
+        "fee_note": "1.15% ATRAM management fee (verified) + 1.04% target-fund OCF "
+                    "(PUBLISHED by Fidelity for the W-Acc-GBP class, AMC 0.80%)",
         "gross_usd": 9.0,
         "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
         "vol_beta": 1.30, "fx_exposed": True,
@@ -581,17 +597,32 @@ LOOKTHROUGH = {
 
 GRID = [x / 100 for x in range(0, 101, 5)]      # every weight ends in 5 or 0
 
-def enumerate_portfolios(key, min_w=0.05, max_eq=0.90):
-    """All 5%-granular, fully-invested portfolios holding all four funds."""
+# Single-sleeve concentration cap. Added 2026-09-09, and the reason matters:
+# until then the objective had NO diversification constraint. It happened not to
+# bind, because the drawdown budget was doing the job by accident. When the Asia
+# fee correction cut that sleeve's return, the optimiser immediately went to 75%
+# in one fund - a "four-fund portfolio" that is really one fund plus three stubs,
+# and flatly against the diversification argument the report itself makes ("it is
+# the same bet, twice"). The page argued the principle; the code never encoded it.
+#
+# 50% is the rule: no single sleeve may exceed half the portfolio. It is stated
+# on the page as part of the objective, not applied silently, and it is NOT
+# reverse-engineered to reproduce any previous answer (the old optimum was 45%,
+# comfortably inside it).
+MAX_SLEEVE = 0.50
+
+def enumerate_portfolios(key, min_w=0.05, max_sleeve=MAX_SLEEVE):
+    """All 5%-granular, fully-invested portfolios holding all four funds,
+    with no single sleeve above the concentration cap."""
     out = []
     for a in GRID:
-        if a < min_w: continue
+        if a < min_w or a > max_sleeve + 1e-9: continue
         for b in GRID:
-            if b < min_w: continue
+            if b < min_w or b > max_sleeve + 1e-9: continue
             for c in GRID:
-                if c < min_w: continue
+                if c < min_w or c > max_sleeve + 1e-9: continue
                 d = round(1 - a - b - c, 10)
-                if d < min_w - 1e-9 or d > 1: continue
+                if d < min_w - 1e-9 or d > max_sleeve + 1e-9: continue
                 if round(d * 100) % 5 != 0: continue
                 w = [a, b, c, d]
                 out.append((w, summarise(w, key)))
@@ -652,6 +683,11 @@ def _best_without(idx):
                 if w[idx] != 0:
                     continue
                 if any(x != 0 and x < 5 for x in w):
+                    continue
+                # the counterfactual must obey the same concentration cap as the
+                # chosen portfolio, or the "cost" of the stub is measured against
+                # something the objective would never have allowed
+                if any(x > MAX_SLEEVE * 100 + 1e-9 for x in w):
                     continue
                 ww = [x / 100 for x in w]
                 if abs(port_dd(ww, "net_macro")) > DD_CAP + 1e-9:
@@ -862,6 +898,7 @@ def payload():
                       "n_feasible": len(FEASIBLE), "n_total": len(ALL)},
         "best_ratio": {"weights": [round(x*100) for x in BEST_RATIO_W], **BEST_RATIO},
         "stub": STUB, "tech_gap": TECH_GAP,
+        "max_sleeve": MAX_SLEEVE,
         "frontier": FRONTIER,
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
@@ -972,6 +1009,15 @@ def report():
     checks.append(("no single sub-year bucket outweighs the mandate horizon",
                    all(v <= p["hz_weights"][HZ_LABEL] + 1e-9
                        for k, v in p["hz_weights"].items() if k != HZ_LABEL)))
+    # Concentration. The report argues against doubling up; the objective must too.
+    cap_pc = p["max_sleeve"] * 100
+    checks.append(("no sleeve in either portfolio exceeds the concentration cap",
+                   all(w <= cap_pc + 1e-9
+                       for w in p["baseline"]["weights"] + p["optimized"]["weights"])))
+    checks.append(("the enumerated set respects the concentration cap",
+                   all(max(w) <= MAX_SLEEVE + 1e-9 for w, _ in ALL)))
+    checks.append(("the stub counterfactual obeys the same cap as the chosen portfolio",
+                   max(p["stub"]["best_without"]) <= cap_pc + 1e-9))
     checks.append(("every region is scored at the mandate horizon",
                    all(HZ_LABEL in v for v in p["regions"].values())))
     checks.append(("the drawdown horizon scalar is sqrt(horizon / calibration window)",
@@ -1021,10 +1067,16 @@ def report():
         avg = sum(x * kx for x, kx in eq) / sum(x for x, _ in eq)
         checks.append((f"{lab} portfolio k is the ex-cash weighted average of the sleeve k's",
                        abs(avg - p["dd_model"][f"{lab}_k"]) < 0.006))
-    checks.append(("the Global Tech stub cost is derived, and the stub is genuinely dearer",
-                   p["stub"]["cost"] > 0
-                   and abs(p["stub"]["cost"]
-                           - (p["stub"]["cagr_without"] - p["stub"]["cagr_with"])) < 0.006))
+    # This check used to also assert cost > 0 - "the stub is genuinely dearer".
+    # That was a contingent fact written in as an invariant, and it stopped being
+    # true on 2026-09-09 when the fee corrections closed the gap: the counterfactual
+    # is drawn from a DIFFERENT feasible set (no Global Tech at all), so its best
+    # point can be better, equal or worse than the chosen one. The cost is an
+    # arithmetic identity; its sign is a finding, not a law. (Same failure mode as
+    # the "vol term structure is monotone rising" invariant, 2026-09-04.)
+    checks.append(("the Global Tech stub cost is the derived difference, whatever its sign",
+                   abs(p["stub"]["cost"]
+                       - (p["stub"]["cagr_without"] - p["stub"]["cagr_with"])) < 0.006))
     checks.append(("the quoted tech-sleeve CAGR gap matches the two funds",
                    abs(p["tech_gap"] - (next(f["net_macro"] for f in p["funds"]
                                              if f["id"] == "ATRGTEC")
