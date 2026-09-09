@@ -116,6 +116,7 @@ and the arithmetic that uses them re-derived independently.
 | Drawdown model | (k·σ − 0.50µ) · √(T/5), anchor k = 1.65 | bracket calibrated to S&P 500 ≈ −20% and NDX ≈ −33% rolling **5y** medians; scaled to the mandate horizon because expected max drawdown grows with √T |
 | Mandate horizon | 10 years (was 5 until 2026-09-08) | one constant `HORIZON_Y` drives the long vol point, the blend's long bucket, peso compounding, drawdown scaling and every label |
 | Drawdown horizon scalar | √(10/5) = 1.4142 | derived from the 5y calibration, not re-fitted to unverified 10y medians |
+| Scenario drawdowns | same `(k·σ − 0.50µ)·√(T/5)` as everything else | **the scalar was missing from `run_scenarios` between 2026-09-07 and 2026-09-09**, so the stress table sat next to headline figures on a different horizon scaling |
 | Per-sleeve drawdown k | 1.65 cash · 1.55 ATRQIAP · 1.70 ATRASEQ · 1.80 ATRGTEC | left tails differ in shape; each adjustment is published on the page with its reason |
 | Portfolio drawdown k | 1.675 baseline · 1.626 optimised | ex-cash weighted average of the sleeve coefficients (before the horizon scalar) |
 | Correlation ATRQIAP↔ATRGTEC | 0.88 | both US mega-cap tech engines |

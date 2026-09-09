@@ -624,38 +624,38 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row models the tail from here: full Strait closure and Brent to $130+ from $95. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $96. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
     "cagr": 2.58,
     "vol": 23.04,
-    "maxdd": -37.3
+    "maxdd": -52.7
    },
    {
     "name": "Hawkish repricing",
-    "desc": "The 3 July dissents win and the market is already there - two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
+    "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and the difference matters: the market prices roughly ONE hike (58% for 16 Sep), not two - the December move slipped to January 2027. This row models the market coming round to the dissenters instead: a second hike returning to the 2026 strip on top of September. Until 2026-09-09 this description said two hikes were already priced, contradicting the monetary-policy driver on the same page, which had been corrected on 5 September and this had not. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
     "cagr": 4.99,
     "vol": 18.72,
-    "maxdd": -28.9
+    "maxdd": -40.8
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
     "cagr": 2.91,
     "vol": 20.88,
-    "maxdd": -33.5
+    "maxdd": -47.4
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
     "cagr": 9.9,
     "vol": 11.52,
-    "maxdd": -14.3
+    "maxdd": -20.3
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
     "cagr": 7.33,
     "vol": 14.4,
-    "maxdd": -20.5
+    "maxdd": -28.9
    }
   ]
  },
@@ -700,38 +700,38 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row models the tail from here: full Strait closure and Brent to $130+ from $95. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $96. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
     "cagr": 3.08,
     "vol": 21.66,
-    "maxdd": -33.5
+    "maxdd": -47.4
    },
    {
     "name": "Hawkish repricing",
-    "desc": "The 3 July dissents win and the market is already there - two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
+    "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and the difference matters: the market prices roughly ONE hike (58% for 16 Sep), not two - the December move slipped to January 2027. This row models the market coming round to the dissenters instead: a second hike returning to the 2026 strip on top of September. Until 2026-09-09 this description said two hikes were already priced, contradicting the monetary-policy driver on the same page, which had been corrected on 5 September and this had not. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
     "cagr": 5.6,
     "vol": 17.6,
-    "maxdd": -25.7
+    "maxdd": -36.3
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
     "cagr": 3.78,
     "vol": 19.63,
-    "maxdd": -29.9
+    "maxdd": -42.2
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
     "cagr": 9.97,
     "vol": 10.83,
-    "maxdd": -12.5
+    "maxdd": -17.7
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
     "cagr": 7.58,
     "vol": 13.54,
-    "maxdd": -18.1
+    "maxdd": -25.6
    }
   ],
   "n_feasible": 252,

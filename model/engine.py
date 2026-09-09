@@ -729,12 +729,19 @@ FRONTIER = [{"maxdd": k, "cagr": v[1]["cagr"], "weights": v[1]["weights"]}
 # vol multiplier, keyed to a live, named risk in the current macro picture.
 SCENARIOS = [
     ("Hormuz escalation", "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, "
-     "~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep. This row "
-     "models the tail from here: full Strait closure and Brent to $130+ from $95. Global "
-     "CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+     "~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US "
+     "forces have since destroyed one Iranian tanker and disabled two more. This row "
+     f"models the tail from here: full Strait closure and Brent to $130+ from "
+     f"${MACRO['brent']:.0f}. Global CPI re-accelerates, Fed forced to hike, multiples "
+     "compress hardest at the long end.",
      {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5}, 1.60),
-    ("Hawkish repricing", "The 3 July dissents win and the market is already there - "
-     "two hikes are priced for Sep-16 and Dec, with the 10-year at a near-3-year high. "
+    ("Hawkish repricing", "The three July dissenters win. NOTE this row is a TAIL, not "
+     "the base case, and the difference matters: the market prices roughly ONE hike "
+     "(58% for 16 Sep), not two - the December move slipped to January 2027. This row "
+     "models the market coming round to the dissenters instead: a second hike returning "
+     "to the 2026 strip on top of September. Until 2026-09-09 this description said two "
+     "hikes were already priced, contradicting the monetary-policy driver on the same "
+     "page, which had been corrected on 5 September and this had not. "
      "Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
      {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
@@ -754,7 +761,14 @@ def run_scenarios(w, key):
         r = sum(w[i] * (F[i][key] + shock[F[i]["id"]]) for i in range(4))
         s = [w[i] * F[i]["vol"] * volmul for i in range(4)]
         v = math.sqrt(sum(s[i] * s[j] * CORR[i][j] for i in range(4) for j in range(4)))
-        d = -max(port_k(w) * v - DD_MU * r, 0.0)
+        # The horizon scalar belongs here exactly as it does in port_dd(). It was
+        # MISSING from 2026-09-07, when the mandate moved to 10 years, until the
+        # 2026-09-09 audit: every other drawdown on the page was scaled and these
+        # were not, so the stress table understated the tail by a factor of 1.414
+        # while sitting next to headline figures that did not. The "Grind-on base
+        # case" row - zero shock, 1.0 vol multiplier - is the tell: it must
+        # reproduce the headline portfolio exactly, and it did not.
+        d = -max((port_k(w) * v - DD_MU * r) * DD_HORIZON_SCALAR, 0.0)
         rows.append({"name": name, "desc": desc, "cagr": round(r, 2),
                      "vol": round(v, 2), "maxdd": round(d, 1)})
     return rows
@@ -990,10 +1004,53 @@ def report():
                    abs(p["gauge"] - (1 + (p["gauge_10"] - 1) * 4 / 9)) <= 0.005))
     checks.append(("the 1-10 neutral 5.5 maps to the 1-5 neutral",
                    abs(to5(5.5) - p["gauge_neutral"]) < 1e-9))
+    # The 1-5 neutral appears in three payload fields (gauge_neutral,
+    # driver_scale.neutral, and implicitly the regional NEUTRAL). Three copies of
+    # one constant is a drift risk with no upside, so tie them together rather
+    # than trusting them to stay equal. (Audit 2026-09-09.)
+    checks.append(("every published 1-5 neutral is the same number",
+                   p["driver_scale"]["neutral"] == p["gauge_neutral"] == NEUTRAL_5))
+    checks.append(("the driver research neutral is the 1-10 neutral",
+                   abs(p["driver_scale"]["neutral_10"] - 5.5) < 1e-9))
     # Driver scale. The last 1-10 surface on the page moved to 1-5 on 2026-09-09;
     # these assert the reported scores really are the research scores rescaled, and
     # that the composite of the reported scores IS the headline gauge (true because
     # to5 is affine and the weights sum to 1 - asserted, not assumed).
+    # Prose-vs-payload regression guards. These are TARGETED, not general
+    # contradiction detection: they encode the two specific ways the scenario
+    # descriptions drifted from the macro block. On 2026-09-09 the "Hawkish
+    # repricing" row still said two hikes were priced, three days after the
+    # monetary-policy driver on the same page was corrected to one.
+    _prose = " ".join(x["desc"] for x in
+                      p["optimized"]["scenarios"] + p["baseline"]["scenarios"])
+    checks.append(("no scenario asserts a hike count the macro block does not price",
+                   "two hikes are priced" not in _prose
+                   and "two hikes priced" not in _prose))
+    checks.append(("the Brent anchor quoted in scenario prose matches the input",
+                   f"${MACRO['brent']:.0f}" in _prose))
+    checks.append(("the September hike odds quoted in prose match the input",
+                   f"{MACRO['fed_hike_odds_sep']:.0f}%" in _prose))
+
+    # The zero-shock scenario is an identity, not an approximation: no shock and a
+    # 1.0 volatility multiplier is the modelled path, so it must reproduce the
+    # headline row of the portfolio it describes - CAGR, vol AND drawdown. Only
+    # the drawdown ever disagreed, and nothing was checking it. (Audit 2026-09-09.)
+    for lab, port, scens in (("baseline", p["baseline"]["under_macro"],
+                              p["baseline"]["scenarios"]),
+                             ("optimized", p["optimized"]["macro"],
+                              p["optimized"]["scenarios"])):
+        base_row = next((x for x in scens if x["name"].startswith("Grind")), None)
+        checks.append((f"{lab} zero-shock scenario reproduces the headline row",
+                       base_row is not None
+                       and abs(base_row["cagr"] - port["cagr"]) < 0.011
+                       and abs(base_row["vol"] - port["vol"]) < 0.011
+                       and abs(base_row["maxdd"] - port["maxdd"]) < 0.06))
+    # and every scenario drawdown must carry the same horizon scaling as the rest
+    checks.append(("scenario drawdowns are on the same horizon scaling as the page",
+                   all(abs(x["maxdd"]
+                               + max((port_k(OPT_W) * x["vol"] - DD_MU * x["cagr"])
+                                     * DD_HORIZON_SCALAR, 0.0)) < 0.06
+                       for x in p["optimized"]["scenarios"])))
     checks.append(("every driver score is reported in 1-5",
                    all(1 <= d["score"] <= 5 for d in p["drivers"])))
     checks.append(("every driver rescale 1-10 -> 1-5 is exact",

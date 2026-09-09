@@ -2,6 +2,85 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-09 (audit) — The stress table was on a different horizon from the rest of the page
+
+Validation-only pass: no new research, no input changes. Three defects found by
+looking where nothing was looking. One is serious.
+
+### 1. Scenario drawdowns were never horizon-scaled
+
+When the mandate moved to ten years on 7 September, `DD_HORIZON_SCALAR` was
+applied in `build_fund()` and in `port_dd()` — but **not in `run_scenarios()`**.
+For two days the stress table published drawdowns on the *five-year* calibration
+while every other drawdown on the page was on the ten-year one, understating the
+tail by a factor of 1.414.
+
+The tell was sitting in plain sight: the **"Grind-on base case"** row is defined
+as zero shock and a 1.0 volatility multiplier — *"the modelled path"* — so it
+must reproduce the headline portfolio exactly. CAGR matched (7.58%), volatility
+matched (13.54%), and drawdown read **−18.1% against a headline −25.6%**. The
+same portfolio, described two ways, on one page.
+
+| Scenario (optimised) | Published | Corrected |
+|---|---|---|
+| Hormuz escalation | −33.5% | **−47.4%** |
+| Hawkish repricing | −25.7% | **−36.3%** |
+| AI capex digestion | −29.9% | **−42.2%** |
+| Disinflation restart | −12.5% | **−17.7%** |
+| Grind-on base case | −18.1% | **−25.6%** |
+
+Fixed, and **three checks added**: both zero-shock rows must reproduce their
+headline row on all three figures, and every scenario drawdown must reproduce
+from the published coefficients including the scalar. All three verified to bite
+by reverting the fix. The independent verifier gained a whole scenario block —
+it had never re-derived the stress engine at all.
+
+### 2. The "Hawkish repricing" scenario contradicted the driver on the same page
+
+Its description said *"two hikes are priced for Sep-16 and Dec"*. The
+monetary-policy driver was corrected on 5 September to say the opposite —
+*"still one move, not the two this model previously asserted, since the December
+hike has slipped to January 2027"*. The correction was applied in one place and
+not the other, and nothing compared them.
+
+Rewritten to say what the row actually is: a **tail**, modelling the market
+coming round to the dissenters, explicitly against a base case of roughly one
+hike at 58%. Also fixed *"The 3 July dissents"* → *"The three July dissenters"*
+(it read as a date; the FOMC was 28–29 July), and the Brent anchor now
+interpolates `MACRO["brent"]` instead of carrying a typed \$95.
+
+**Three targeted regression guards added** — no scenario may assert a hike count
+the macro block doesn't price; the Brent anchor and the September odds quoted in
+prose must match the inputs. Two verified to bite by injecting the old text.
+
+### 3. One constant published three times
+
+The 1–5 neutral appeared as `gauge_neutral`, `driver_scale.neutral` and the
+regional `NEUTRAL_5`. Three copies of one number with nothing tying them
+together. Now asserted equal in both harnesses.
+
+### What was checked and found sound
+
+Worth recording, because "no finding" is a result:
+
+- **The efficient frontier is correct.** All 30 buckets independently reproduced;
+  every point is the max-CAGR portfolio in its bucket and respects the cap.
+  My first re-derivation reported **16 mismatches** — all phantom, because I
+  bucketed with `round()` on unrounded drawdowns where the engine uses
+  `floor()` on rounded ones. The bucketing rule is part of the claim, and I
+  nearly filed sixteen false bugs by not reproducing it exactly. The check now
+  in the verifier encodes the rule explicitly.
+- `best_ratio`, the look-through tables, the source list, fee arithmetic and the
+  peso reconciliation all re-derived clean.
+- Dead-code sweep: no unused constants, no uncalled functions, no orphaned
+  parameters. Three payload keys the page never reads (`acwi_it_mix`, `fx`,
+  and the now-tied `gauge_neutral`) are engine- and verifier-side inputs, not
+  clutter. `tilt_regional` / `tilt_rates` / `tilt_energy` appeared unused by a
+  naive scan but are read through dynamic string keys — checked before reporting.
+
+**Verification:** engine **57 → 65** checks. Independent verifier **171 → 184**,
+0 failures. Checklist 21/21. Repo 8 tracked files.
+
 ## 2026-09-09 (later) — Driver sentiments moved to 1–5; the page is now one scale throughout
 
 Requested change, and the last one needed: the seven driver scores were the only
