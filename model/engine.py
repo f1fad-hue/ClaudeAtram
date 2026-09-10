@@ -11,7 +11,8 @@ figure recomputes. No hard-coded outputs.
 Run:  python3 engine.py            -> human-readable audit report
       python3 engine.py --json     -> machine-readable payload for the dashboard
 """
-import json, math, sys
+import datetime as _dt
+import json, math, re, sys
 from itertools import product
 
 AS_OF = "2026-09-09"
@@ -99,8 +100,10 @@ MACRO = {
     # contract's level is the forward vol, and it is what the bootstrap interpolates
     # between. Four contracts are observable, so the curve no longer has to guess
     # across a five-month gap between Sep and Dec.
-    "vix_futs": [("Sep", 0.068, 16.57), ("Oct", 0.164, 18.41),
-                 ("Nov", 0.241, 19.08), ("Dec", 0.318, 19.26)],
+    # Levels only. The MATURITIES are derived below from the contract settlement
+    # rule and VIX_QUOTE_DATE - see the note there for why they are no longer typed.
+    "vix_futs_levels": [("Sep", 2026, 9, 16.57), ("Oct", 2026, 10, 18.41),
+                        ("Nov", 2026, 11, 19.08), ("Dec", 2026, 12, 19.26)],
     "vix_fut_sep": 16.57,
     "vix_fut_dec": 19.26,
     "vix_longrun": 19.5,
@@ -127,6 +130,70 @@ MACRO = {
     "ltcma_em_eq": 7.8,
     "ltcma_6040plus": 6.9,
 }
+
+# ----------------------------------------------------------------------------
+# 1b. VIX FUTURES MATURITIES - derived, not typed
+#     The strip's levels are quoted at a market close; its MATURITIES are a
+#     function of the calendar. They used to be four hard-typed constants, and on
+#     2026-09-10 an audit backed all four out to an implied base date of
+#     6 September 2026 - a SUNDAY, matching neither the quote date (4 Sep, the
+#     Friday close every level here comes from) nor AS_OF. Nothing checked them,
+#     so the time axis had drifted away from the prices sitting on it, and would
+#     have drifted further every time AS_OF moved.
+#
+#     They are now derived. A VIX future settles on the Wednesday 30 days before
+#     the third Friday of the month AFTER the contract month; on that date it
+#     pays out on 30-day forward implied vol, so the t at which the contract's
+#     level IS the forward vol is the settlement date plus 15 days - the centre
+#     of the 30-day window it prices. Maturities are measured from the QUOTE
+#     DATE, not from AS_OF: the whole curve, spot included, is one market close,
+#     and measuring a 4 Sep curve from a 9 Sep origin would misdate every point.
+# ----------------------------------------------------------------------------
+
+VIX_QUOTE_DATE = "2026-09-04"   # Friday close - the date every VIX level here is from
+VIX_FWD_WINDOW_D = 30           # a VIX future pays on 30-day forward implied vol
+
+def _third_friday(y, m):
+    return [_dt.date(y, m, d) for d in range(15, 22)
+            if _dt.date(y, m, d).weekday() == 4][0]
+
+def vix_settlement(y, m):
+    """Settlement date of the VIX future for contract month (y, m)."""
+    ny, nm = (y + 1, 1) if m == 12 else (y, m + 1)
+    return _third_friday(ny, nm) - _dt.timedelta(days=VIX_FWD_WINDOW_D)
+
+def vix_maturity(y, m, quote=None):
+    """Years from the quote date to the centre of the contract's 30-day window."""
+    q = _dt.date.fromisoformat(quote or VIX_QUOTE_DATE)
+    centre = vix_settlement(y, m) + _dt.timedelta(days=VIX_FWD_WINDOW_D // 2)
+    return (centre - q).days / 365.0
+
+MACRO["vix_futs"] = [(lbl, round(vix_maturity(y, m), 4), lvl)
+                     for lbl, y, m, lvl in MACRO["vix_futs_levels"]]
+MACRO["vix_fut_sep"] = MACRO["vix_futs"][0][2]
+MACRO["vix_fut_dec"] = MACRO["vix_futs"][-1][2]
+
+# ----------------------------------------------------------------------------
+# 1c. PENDING CATALYSTS
+#     Scheduled events that land AFTER the as-of date and are therefore NOT in
+#     any number on this page. They are listed so a reader knows what the model
+#     cannot know yet, and checked so the page can never describe an event in the
+#     future tense once its date has passed - the failure mode that has produced
+#     four stale-figure defects in this changelog.
+# ----------------------------------------------------------------------------
+
+CATALYSTS = [
+    ("2026-09-10", "ECB Governing Council decision",
+     "Consensus is a second and final +25bp to a 2.50% deposit rate - all 65 "
+     "economists in the 31 Aug-3 Sep Reuters poll. Feeds the monetary driver "
+     "and the Europe regional score."),
+    ("2026-09-11", "US August CPI",
+     "The monetary driver is explicitly the one most likely to move on this "
+     "print, and the inflation driver is scored on the PCE/CPI divergence."),
+    ("2026-09-16", "FOMC decision",
+     "A 25bp hike is priced at 58%. Resolves the disagreement this model "
+     "records between market pricing and Goldman's call for no September move."),
+]
 
 # ----------------------------------------------------------------------------
 # 2. VOLATILITY TERM STRUCTURE
@@ -247,11 +314,11 @@ NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research sc
 REGIONS = {
     "US": {
         "3M": 5.5, "6M": 5.5, "12M": 6.0, HZ_LABEL: 6.5,
-        "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 10-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
+        "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +47% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 10-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
     },
     "EUROPE": {
         "3M": 3.0, "6M": 3.5, "12M": 4.0, HZ_LABEL: 4.5,
-        "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
+        "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +47% y/y, up from +40% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
     },
     "ASIA": {
         "3M": 6.0, "6M": 6.5, "12M": 7.0, HZ_LABEL: 7.5,
@@ -281,7 +348,7 @@ DRIVERS = [
     ("Inflation trajectory", 0.15, 3.0,
      "Cut again: the clean anchor this model leaned on has gone. US core CPI at 2.5% looked contained, but PCE - the measure the Fed actually targets - is running 3.7% over 12 months and 4.1% annualised over 6, which is what Warsh cited at Jackson Hole. Euro HICP jumped to 3.3% in August from 2.9%, on energy at +14.3% y/y (Eurostat flash, 1 Sep). PH is the one bloc improving: headline eased to 6.1% in August, a fourth consecutive monthly deceleration and a five-month low, with July core at 4.2% - though the year-to-date average is still 5.2% and BSP's 2027 forecast stands at 5.4%. Three of three blocs are re-accelerating on the same energy shock."),
     ("Growth momentum", 0.15, 5.5,
-     "Raised on the August payrolls beat: +162k against a 53k consensus and a 31k twelve-month average, with unemployment steady at 4.1%. That retires the -23k July print this model had been treating as evidence of a cracking labour market - it was noise, not trend. IMF April WEO still current: global 3.1% (2026) / 3.2% (2027), US 2.4%, euro area 0.7%. Held below 6 because Brent at $95 is a straight tax on every net importer in Europe and Asia, and because a hot labour market is exactly what lets the Fed hike."),
+     "Raised on the August payrolls beat: +162k against a 53k consensus and a 31k twelve-month average, with unemployment steady at 4.1%. That retires the -23k July print this model had been treating as evidence of a cracking labour market - it was noise, not trend. IMF April WEO still current: global 3.1% (2026) / 3.2% (2027), US 2.4%, euro area 0.7%. Held below 6 because Brent at $96 is a straight tax on every net importer in Europe and Asia, and because a hot labour market is exactly what lets the Fed hike."),
     ("Corporate earnings", 0.2, 7.5,
      "Still the strongest pillar, and the 2 Sep selloff was macro de-rating rather than an earnings event: Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027) is intact and AI infrastructure capex is still compounding through the semis supply chain. Trimmed a half point for energy input costs and the risk that a sustained $95+ Brent forces the 52% estimate down."),
     ("Valuation support", 0.1, 7.5,
@@ -301,7 +368,24 @@ GAUGE_NEUTRAL = NEUTRAL_5
 # 5. FUNDS - verified structure, fees, and the return build-up
 # ----------------------------------------------------------------------------
 
-FX_DRIFT = 2.0          # PPP-implied PHP depreciation vs USD, %/yr (PH ~3.9% infl vs US ~2.4%)
+# Expected PHP depreciation against the USD, %/yr, applied to every unhedged
+# sleeve - so this constant moves three of the four funds and deserves a stated
+# derivation. It used to carry the comment "PPP-implied (PH ~3.9% infl vs US
+# ~2.4%)", which computes to 1.5, not 2.0; the number and its own justification
+# disagreed and nothing checked either. (Audit 2026-09-10.)
+#
+# What it actually is: a 10-year blend between the two differentials this model
+# already carries. Relative PPP says expected depreciation IS the inflation
+# differential. At the long-run anchors that is ~3.9% PH (BSP's 2-4% target band,
+# upper half) less ~2.4% US = ~1.5pp. On the CURRENT prints it is 6.1% less 3.4%
+# = ~2.7pp. A ten-year mandate spends its first years nearer the second number
+# and the rest nearer the first, so the constant sits between them rather than at
+# either end. The check below asserts exactly that bracket, so if PH inflation
+# converges past 2.0pp above the US - or the long-run anchors move above it -
+# this stops being defensible and says so.
+FX_DRIFT = 2.0
+FX_PPP_PH_LR = 3.9      # long-run PH inflation anchor (BSP 2-4% band, upper half)
+FX_PPP_US_LR = 2.4      # long-run US inflation anchor
 FX_VOL   = 6.0          # USD/PHP annualised vol, %
 FX_CORR  = -0.20        # peso weakens in risk-off -> cushions PHP-denominated USD assets
 
@@ -316,7 +400,7 @@ FUNDS = [
         "gross_local": 4.85,
         "gross_note": "10y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
         "vol_beta": 0.021, "fx_exposed": False,
-        "macro_tilt": {"regional": None, "rates": +0.25, "energy": +0.05},
+        "macro_tilt": {"rates": +0.25, "energy": +0.05},
         "dd_k_adj": 0.0, "cash_like": True,
         "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
     },
@@ -331,7 +415,7 @@ FUNDS = [
         "gross_usd": 7.2,
         "gross_note": "NDX long-run total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.3 -> 19.4.",
         "vol_beta": 1.22 * 0.68, "fx_exposed": True,
-        "macro_tilt": {"regional": "US", "rates": -0.10, "energy": -0.10},
+        "macro_tilt": {"rates": -0.10, "energy": -0.10},
         "dd_k_adj": -0.10, "cash_like": False,
         "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
     },
@@ -356,7 +440,7 @@ FUNDS = [
         "gross_usd": 8.3,
         "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
         "vol_beta": 1.05 * 0.92, "fx_exposed": True,
-        "macro_tilt": {"regional": "ASIA", "rates": -0.05, "energy": -0.20},
+        "macro_tilt": {"rates": -0.05, "energy": -0.20},
         "dd_k_adj": +0.05, "cash_like": False,
         "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
     },
@@ -376,7 +460,7 @@ FUNDS = [
         "gross_usd": 9.0,
         "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
         "vol_beta": 1.30, "fx_exposed": True,
-        "macro_tilt": {"regional": "GLOBAL_TECH", "rates": -0.40, "energy": -0.15},
+        "macro_tilt": {"rates": -0.40, "energy": -0.15},
         "dd_k_adj": +0.15, "cash_like": False,
         "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
     },
@@ -513,14 +597,28 @@ def summarise(w, key):
     # not the raw ones, so a reader who multiplies out the displayed CAGR gets
     # exactly the peso number printed beside it. Using the raw values instead
     # left a ~P235 gap that nobody could reconcile. (Audit 2026-09-03.)
-    r_d, d_d = round(r, 2), round(d, 1)
+    # Every published RATIO is built from the published (rounded) inputs for the
+    # same reason: ret_per_dd used raw r and raw d while cagr and maxdd printed
+    # rounded, so a reader dividing 7.33 by 28.9 got 0.254 against a printed
+    # 0.253 - two of the four portfolios failed to reconcile. The 2026-09-03 fix
+    # was applied to the peso figures and missed the ratios three lines above
+    # them. (Audit 2026-09-10.)
+    r_d, d_d, v_d = round(r, 2), round(d, 1), round(v, 2)
     return {
         "weights": [round(x * 100, 1) for x in w],
-        "cagr": r_d, "vol": round(v, 2), "maxdd": d_d,
-        "ret_per_dd": round(r / abs(d), 3) if d else None,
-        "sharpe_like": round((r - MACRO["ph_tbill_364"]) / v, 3),
+        "cagr": r_d, "vol": v_d, "maxdd": d_d,
+        "ret_per_dd": round(r_d / abs(d_d), 3) if d_d else None,
+        "sharpe_like": round((r_d - MACRO["ph_tbill_364"]) / v_d, 3),
         "terminal_1m": round(1_000_000 * (1 + r_d / 100) ** HORIZON_Y),
-        "trough_1m": round(1_000_000 * (1 + d_d / 100)),
+        # The drawdown applied to the OPENING peso value. Read it as "the worst
+        # this is expected to look for money invested today", before any growth
+        # cushion has been built - which is the number that matters to someone
+        # deciding now. It is deliberately NOT the trough of the modelled path:
+        # drawdown is defined peak-to-trough, and a drawdown arriving late in a
+        # 10-year mandate starts from a peak well above P1,000,000. The page
+        # used to label this "Value at expected trough", which asserted the
+        # second reading while computing the first. (Audit 2026-09-10.)
+        "worst_1m_from_open": round(1_000_000 * (1 + d_d / 100)),
     }
 
 # ----------------------------------------------------------------------------
@@ -871,7 +969,11 @@ SOURCES = [
 def payload():
     return {
         "as_of": AS_OF, "macro": MACRO, "vol_ts": VOL_TS,
-        "sp_vol_5y": SP_VOL_LT,
+        # Named for the constant it publishes, not for a horizon. It was
+        # "sp_vol_5y" until 2026-09-10 and had held the TEN-year implied vol
+        # since the mandate lengthened - a field whose name contradicted its
+        # contents is exactly how a correct number gets used wrongly.
+        "sp_vol_lt": SP_VOL_LT,
         "regions": {k: {**v} for k, v in REGIONS.items()},
         "hz_weights": HZ_W,
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
@@ -891,7 +993,11 @@ def payload():
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
         "lookthrough": LOOKTHROUGH,
         "acwi_it_mix": ACWI_IT_MIX,
-        "fx": {"drift": FX_DRIFT, "vol": FX_VOL, "corr": FX_CORR},
+        "fx": {"drift": FX_DRIFT, "vol": FX_VOL, "corr": FX_CORR,
+               "ppp_lr": round(FX_PPP_PH_LR - FX_PPP_US_LR, 2),
+               "ppp_now": round(MACRO["ph_cpi_aug"] - MACRO["us_cpi_headline"], 2)},
+        "vix_quote_date": VIX_QUOTE_DATE,
+        "catalysts": [{"date": d, "what": w, "why": y} for d, w, y in CATALYSTS],
         "dd_model": {"k": DD_K, "mu_coef": DD_MU,
                      "horizon_y": HORIZON_Y, "calib_y": DD_CALIB_Y,
                      # 4dp left a 2.5e-04 error in every drawdown - enough to
@@ -1030,6 +1136,76 @@ def report():
                    f"${MACRO['brent']:.0f}" in _prose))
     checks.append(("the September hike odds quoted in prose match the input",
                    f"{MACRO['fed_hike_odds_sep']:.0f}%" in _prose))
+
+    # GENERAL prose-vs-input guard, replacing what used to be one-off string
+    # checks. A handful of inputs get quoted by name all over the notes; when one
+    # moves, every note that quotes it has to move too. On 2026-09-10 Brent was
+    # being quoted three different ways on one page - "$95" in the growth driver
+    # against an input of $96.28, and "+40% y/y" in the US and Europe notes while
+    # the geopolitics driver on the same page said the y/y had "WIDENED to +47.0%
+    # from +40.3% a week ago". Two notes carried the superseded number and the
+    # page contradicted itself. This scans every note for the named quantities
+    # and requires each quote to round to the input it names.
+    # Scope: prose that describes the CURRENT market. Scenario descriptions are
+    # excluded by construction - "Brent to $130+ from $96" is a counterfactual,
+    # not a quote of the input, and the scenario rows keep their own anchor check
+    # above. Scoping this correctly is the point: loosening the tolerance until
+    # $130 passed would have made the guard useless for its actual job.
+    _all_prose = " ".join(
+        [d[3] for d in DRIVERS] + [r["why"] for r in REGIONS.values()]
+        + [f["gross_note"] for f in FUNDS] + [f["fee_note"] for f in FUNDS])
+    _quoted = [
+        (r"Brent[^.]{0,20}?\$(\d+(?:\.\d+)?)", MACRO["brent"], 1.0, "Brent level"),
+        (r"Brent \+(\d+(?:\.\d+)?)%", MACRO["brent_yoy"], 1.0, "Brent y/y"),
+    ]
+    for pat, want, tol, lab in _quoted:
+        found = [float(x) for x in re.findall(pat, _all_prose)]
+        checks.append((f"every {lab} quoted in prose matches the input",
+                       bool(found) and all(abs(v - want) <= tol for v in found)))
+
+    # ---- the volatility time axis ------------------------------------------
+    # Every maturity on the strip must reproduce from the contract settlement
+    # rule and the quote date. Until 2026-09-10 they were four typed constants
+    # that backed out to an implied base date of Sunday 6 September - neither the
+    # quote date nor AS_OF - and nothing was checking them.
+    # Every catalyst the page presents as pending must actually still be pending.
+    _asof = _dt.date.fromisoformat(AS_OF)
+    checks.append(("every pending catalyst is dated after the as-of date",
+                   all(_dt.date.fromisoformat(d) > _asof for d, _, _ in CATALYSTS)))
+    checks.append(("catalysts are listed in date order",
+                   [d for d, _, _ in CATALYSTS] == sorted(d for d, _, _ in CATALYSTS)))
+
+    _q = _dt.date.fromisoformat(VIX_QUOTE_DATE)
+    checks.append(("the VIX quote date is a trading weekday", _q.weekday() < 5))
+    checks.append(("the VIX quote date is not after the model as-of date",
+                   _q <= _dt.date.fromisoformat(AS_OF)))
+    checks.append(("every VIX future settles on a Wednesday",
+                   all(vix_settlement(y, m).weekday() == 2
+                       for _, y, m, _ in MACRO["vix_futs_levels"])))
+    checks.append(("every VIX settlement is 30 days before a third Friday",
+                   all((vix_settlement(y, m) + _dt.timedelta(days=30)).weekday() == 4
+                       and 15 <= (vix_settlement(y, m)
+                                  + _dt.timedelta(days=30)).day <= 21
+                       for _, y, m, _ in MACRO["vix_futs_levels"])))
+    checks.append(("every published maturity reproduces from the settlement rule",
+                   all(abs(t - vix_maturity(y, m)) < 5e-5
+                       for (_, t, _), (_, y, m, _)
+                       in zip(MACRO["vix_futs"], MACRO["vix_futs_levels"]))))
+    checks.append(("maturities are positive and strictly increasing",
+                   all(t > 0 for _, t, _ in MACRO["vix_futs"])
+                   and all(a[1] < b[1] for a, b
+                           in zip(MACRO["vix_futs"], MACRO["vix_futs"][1:]))))
+
+    # ---- the FX drift bracket ----------------------------------------------
+    # FX_DRIFT moves three of the four sleeves, so it must stay inside the two
+    # inflation differentials this model already carries: the long-run PPP anchor
+    # below it and the current print above it. Its old comment claimed a pure PPP
+    # derivation that computed to 1.5 against a constant of 2.0.
+    _ppp_lr = FX_PPP_PH_LR - FX_PPP_US_LR
+    _ppp_now = MACRO["ph_cpi_aug"] - MACRO["us_cpi_headline"]
+    checks.append((f"FX drift sits between long-run PPP ({_ppp_lr:.1f}) and the "
+                   f"current differential ({_ppp_now:.1f})",
+                   _ppp_lr <= FX_DRIFT <= _ppp_now))
 
     # The zero-shock scenario is an identity, not an approximation: no shock and a
     # 1.0 volatility multiplier is the modelled path, so it must reproduce the
@@ -1178,7 +1354,8 @@ def report():
     # regression: peso figures must be reproducible from the displayed numbers
     def _ties(m):
         return (abs(1_000_000 * (1 + m["cagr"] / 100) ** HORIZON_Y - m["terminal_1m"]) < 1.0
-                and abs(1_000_000 * (1 + m["maxdd"] / 100) - m["trough_1m"]) < 1.0)
+                and abs(1_000_000 * (1 + m["maxdd"] / 100)
+                        - m["worst_1m_from_open"]) < 1.0)
     vc = p["vol_channel"]
     checks.append(("volatility ramp = horizon-blended implied vol minus spot",
                    abs(vc["blend"] - vc["spot"] - vc["ramp"]) < 0.011))

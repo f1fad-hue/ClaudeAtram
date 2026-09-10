@@ -61,10 +61,14 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | VIX 2026 low | 14.18 (17 Aug) | P | CNBC / Cboe | 2026-09-07 |
 | VIX Hormuz spike | 16.34 (2 Sep close), retraced to 15.20 then 14.32 | P | market reports | 2026-09-07 |
 | VIX 30-day range / average | 14.18–16.80 / 15.28 | P | Cboe | 2026-09-07 |
-| VIX futures strip | Sep 16.57 · Oct 18.41 · Nov 19.08 · Dec 19.26 | P | VIX term-structure data (verified via search result, not at Cboe directly) | 2026-09-07 |
+| VIX futures strip (levels) | Sep 16.57 · Oct 18.41 · Nov 19.08 · Dec 19.26 | P | VIX term-structure data (verified via search result, not at Cboe directly) | 2026-09-07 |
+| VIX quote date | 2026-09-04 (Friday close) | P | the date every VIX level above is quoted at; asserted to be a weekday and not after AS_OF | 2026-09-10 |
+| VIX futures maturities | 0.0740 · 0.1699 · 0.2466 · 0.3233 yr | D | derived from the contract settlement rule (Wednesday 30d before the following month's third Friday, plus a 15d window centre) off the quote date; independently re-derived by the verifier | 2026-09-10 |
+| Expected PHP depreciation (FX_DRIFT) | 2.0%/yr | E | between long-run relative PPP (3.9 − 2.4 = 1.5pp) and the current print differential (6.1 − 3.4 = 2.7pp); bracket asserted from the model's own inflation inputs | 2026-09-10 |
+| Worst-case peso value, ₱1m | ₱744,000 optimised · ₱711,000 baseline | D | the expected max drawdown applied to the OPENING value — the worst case for money invested today, deliberately NOT the low point of the modelled path | 2026-09-10 |
 | Long-run VIX anchor | 19.5 | E | historical VIX mean 1990–2025 | 2026-09-05 |
 | Variance risk premium | 3.5 vol points | E | implied minus realised, long-run | 2026-09-05 |
-| Horizon vol 3M/6M/12M/10Y | 17.43 / 18.37 / 18.88 / 19.43% | D | engine, forward-variance integration over 4 observable contracts | 2026-09-08 |
+| Horizon vol 3M/6M/12M/10Y | 17.35 / 18.33 / 18.86 / 19.43% | D | engine, forward-variance integration over 4 observable contracts, maturities derived from the VIX settlement calendar off the 4 Sep quote date | 2026-09-10 |
 | Volatility ramp (blend − spot) | 18.93% − 14.32 = +4.61 vol pts | D | engine | 2026-09-08 |
 
 ## Valuation and earnings

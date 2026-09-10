@@ -17,17 +17,19 @@ anything, because several of the traps are subtle and already documented.
 
 **1. Refresh the macro inputs** — the `VERIFIED INPUTS` block in
 `model/engine.py`. Policy rates (Fed, ECB, BSP), prices (US CPI from BLS, PH CPI
-from PSA, Brent), the VIX complex (spot plus the two nearest futures), the PH
+from PSA, Brent), the VIX complex (spot plus the four observable futures — LEVELS only; the
+maturities are derived from the settlement calendar, do not type them), the PH
 T-bill curve and USD/PHP. Primary sources only. If one is unreachable, leave the
 prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
-3M / 6M / 12M / 5Y, then the gauge. Drivers and regions are researched on 1–10;
+3M / 6M / 12M / 10Y, then the gauge. Drivers and regions are researched on 1–10;
 both the headline gauge and the regional rankings are reported on 1–5. The optimised portfolio is built from four
 inputs — the broad gauge, the correlated per-sleeve transmission, the **volatility
 ramp** (horizon-blended implied vol minus spot, same horizon weights as the regional
 blend) and the regional rankings. Two of those are derived rather than judged: the
-regional tilt is `(score − 5.5) × 0.30`, and each fund's volatility tilt is
+regional tilt is `(score − 3.0) × 0.675` on the reported 1–5 scale (identical to
+the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's volatility tilt is
 `ramp × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
 of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
 not because you have a view on the market. Never change a score without rewriting
@@ -48,16 +50,6 @@ against the payload. Render at 412px and look at it.
 **5. Publish, then push** — or better, push first. The repo is the source of
 truth; the artifact is a rendering of it.
 
-## Running it
-
-```
-python3 model/engine.py           # audit report; exits 0 only if all checks pass
-python3 model/engine.py --json    # regenerate model/data.json
-```
-
-Then re-embed the payload into `dashboard.html`'s `<script id="D">` block and
-republish to the same artifact URL.
-
 ## Invariants — a job must never break these
 
 1. All four funds appear in both portfolios, always. Never drop one.
@@ -71,6 +63,12 @@ republish to the same artifact URL.
 6. An unverifiable number is **labelled on the page as an estimate**, never
    quietly presented as fact.
 7. Light theme, mobile-first, bottom tab bar. Do not redesign it.
+8. Anything the calendar determines is **derived, never typed**. VIX futures
+   maturities come from the settlement rule and `VIX_QUOTE_DATE`; typing them
+   is how the time axis silently drifted three days off its own prices.
+9. Every figure quoted in a driver note, region note or fund note must equal the
+   input it names. The page has contradicted itself on Brent twice; a general
+   prose-vs-input guard now checks the named quantities on every run.
 
 ## Authoritative source set
 
@@ -84,14 +82,29 @@ portal (uitf.com.ph).
 > this environment. When `WebFetch` returns `EGRESS_BLOCKED`, fall back to
 > `WebSearch`, and record in `CLAIMS.md` that the figure was verified via
 > search result rather than a direct fetch of the primary document.
+>
+> Both channels can be down at once — on 2026-09-10 `WebSearch` was unavailable
+> for every query and no research was possible at all. When that happens: do not
+> refresh a single input. Leave every value at its prior figure, leave `AS_OF`
+> where it is, say plainly in the report that the pass was validation-only, and
+> do the math/code half of the review, which needs no network. A model whose
+> inputs are honestly a week old is worth more than one carrying numbers that
+> were guessed to look current.
 
 ## Running the engine
 
 ```
-python3 model/engine.py           # audit report + sanity checks (exit 0 = pass)
-python3 model/engine.py --json    # payload consumed by dashboard.html
+python3 model/engine.py                      # audit report + checks (exit 0 = pass)
+python3 model/engine.py --json > model/data.json   # regenerate the payload
 ```
 
-The engine has no third-party dependencies. Regenerate `model/data.json` and
-re-embed it into `dashboard.html` (the `<script id="D">` block) after any change.
+`--json` writes to **stdout**; it does not update `model/data.json` on its own.
+That matters more than it looks: on 2026-09-10 the independent verifier — which
+reads only `model/data.json` — passed 184 checks against a payload one engine-run
+behind, because the redirect had been skipped. Both commands above, then re-embed
+into `dashboard.html`'s `<script id="D">` block, in that order, every time. The
+verifier now refuses to run unless `model/data.json` is byte-identical to the
+payload the page carries, so this cannot pass silently again.
+
+The engine has no third-party dependencies.
 

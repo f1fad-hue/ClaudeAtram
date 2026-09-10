@@ -2,6 +2,166 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-10 (audit) — A time axis three days off its own prices, and a peso figure that meant something else
+
+**No research was possible this pass.** `WebSearch` was unavailable for every
+query attempted and direct fetches are blocked by the egress proxy, so not one
+input was refreshed and `AS_OF` stays at 2026-09-09. Everything below is math,
+code and internal-consistency work, which needs no network. Six defects.
+
+### 1. The VIX futures maturities were measured from a Sunday
+
+The strip's four maturities were hard-typed constants. Backing each one out
+against the contract settlement rule — a VIX future settles the Wednesday 30 days
+before the third Friday of the following month, and prices the 30-day window
+centred 15 days later — gives an implied base date of **6 September 2026 for all
+four**. That is a Sunday. It is neither the quote date (Friday 4 September, the
+close every level on the strip comes from) nor `AS_OF` (9 September).
+
+So the forward-variance integration was running a 4 September curve off a
+6 September origin: the time axis had drifted away from the prices sitting on it,
+and would have drifted further every time `AS_OF` moved without anyone noticing,
+because nothing checked a typed constant.
+
+The effect was small — the horizon blend moves 18.93 → 18.92, the ramp 4.613 →
+4.595, and one fund's volatility tilt by 0.01pp — but the mechanism was broken,
+and 3M implied vol did move 17.43 → 17.35. Maturities are now **derived** from
+`vix_settlement()` and a new `VIX_QUOTE_DATE`, so the base date is provably the
+quote date. `MACRO["vix_futs_levels"]` carries levels and contract months only;
+there is nothing left to type wrongly.
+
+Six checks added. The strong one lives in the independent verifier, which
+re-derives the settlement calendar from scratch and asserts that **every
+published maturity implies the same base date and that it is the quote date** —
+the check that would have caught this the day it was introduced. The engine-side
+checks (quote date is a weekday, quote date is not after `AS_OF`, settlements
+land on Wednesdays 30 days before a third Friday) are tripwires against
+re-hardcoding rather than independent verification, and are described that way.
+
+### 2. "Value at expected trough" was not the trough
+
+The peso illustration printed ₱744,000 under the label *Value at expected
+trough*, computed as the drawdown applied to the opening ₱1,000,000. But the same
+page defines drawdown as the expected 10-year maximum, **peak to trough**. Those
+two statements cannot both hold: at 7.58% for ten years the modelled peak is
+about ₱2.08M, so a peak-to-trough drawdown of 25.6% arriving late in the mandate
+troughs near ₱1.54M, not ₱744k — a factor of two apart.
+
+The number is worth printing; it is the worst case for money invested *today*,
+before any growth cushion exists, which is the number that matters to someone
+deciding now. The label asserted the other reading. Renamed to
+`worst_1m_from_open`, relabelled on the page as "Worst case for money invested
+today", and the note now states explicitly that it is deliberately not the low
+point of the modelled path and why.
+
+### 3. Two published ratios could not be reconciled from the published figures
+
+`ret_per_dd` and `sharpe_like` were computed from raw values while `cagr`,
+`vol` and `maxdd` printed rounded. A reader dividing the printed 7.33 by the
+printed 28.9 got 0.254 against a printed 0.253; two of the four portfolios
+failed to reconcile.
+
+This is the *same defect* fixed on 2026-09-03 for the peso figures, whose whole
+point was that a reader who multiplies out the displayed CAGR should get the
+displayed peso number. That fix was applied to `terminal_1m` and missed the two
+ratios three lines above it in the same function. Both now build from the
+published figures.
+
+The verifier had a check for this and it passed anyway: its tolerance was 0.002
+and the error was 0.001. That is the second time a tolerance has been the bug
+rather than the check. Tightened to 6e-4 — the last published digit — and a
+matching check added for `sharpe_like`, which reconciled only by luck.
+
+### 4. The page contradicted itself on Brent, twice
+
+Brent was quoted three ways at once: `$95` in the growth-momentum driver against
+an input of `$96.28`; `+40% y/y` in the US and Europe region notes while the
+geopolitics driver on the same page said the year-on-year had *"WIDENED to +47.0%
+from +40.3% a week ago"*. The Europe note was a full week behind — it carried the
+superseded pair (`+40%` from `+32%`) that the geopolitics note describes as last
+week's. A reader comparing the US note to the Asia note saw two different numbers
+for one input.
+
+Fixed, and generalised. The three prose guards added on 2026-09-09 were
+deliberately targeted at specific strings; targeted guards do not catch the next
+instance of the same class. There is now a **general prose-vs-input scan**: every
+driver note, region note and fund note is scanned for the named quantities and
+each quote must match the input it names.
+
+Worth recording how the guard first failed. Scoped to include scenario
+descriptions, it flagged `"Brent to $130+ from $96"` — the Hormuz closure
+counterfactual, which is correct prose. The fix was to scope the guard to notes
+describing the *current* market, not to widen the tolerance until $130 passed;
+a guard loose enough to accept $130 would never catch a $95. Scenario rows keep
+their own anchor check.
+
+### 5. `FX_DRIFT` did not match the derivation printed beside it
+
+`FX_DRIFT = 2.0` carried the comment *"PPP-implied PHP depreciation vs USD
+(PH ~3.9% infl vs US ~2.4%)"*. That differential is 1.5, not 2.0. The constant
+adds directly to the gross return of three of the four sleeves, and neither the
+number nor its stated justification was checked.
+
+The constant is left at 2.0 — it is defensible for a ten-year mandate, sitting
+between long-run relative PPP (1.5pp) and the current print differential (6.1
+less 3.4 = 2.7pp), and moving a lever this large on judgement alone during a pass
+with no research would have been worse than leaving it. What is fixed is the
+dishonesty: the comment now states the actual reasoning, the two anchors are
+named constants, and a check asserts `1.5 <= FX_DRIFT <= 2.7` from the model's
+own inflation inputs. If PH inflation converges past 2.0pp above the US, the
+check fails and says so.
+
+### 6. The independent verifier audited a stale payload
+
+The verifier reads only `model/data.json`, deliberately, so the engine cannot
+mark its own homework. Nothing forced that file to be current. After the engine
+changed above, the verifier ran clean — 184 checks, zero failures — against the
+*previous* payload, because `--json` prints to stdout and the redirect into
+`model/data.json` had been skipped.
+
+A verifier that can silently audit superseded numbers is worse than no verifier,
+because it produces false confidence. It now asserts, before anything else, that
+`model/data.json` is byte-identical to the payload embedded in `dashboard.html`.
+It also no longer depends on the working directory, having died twice on that.
+
+### Also
+
+- `macro_tilt["regional"]` was set on all four funds and read nowhere. It
+  shadowed the live `region` field and had already silently diverged from it on
+  the money-market sleeve (`None` against `"PHILIPPINES"`). Removed. The
+  2026-09-09 dead-code sweep looked for unused constants, functions and
+  parameters, and did not look for unused dict keys.
+- The runbook had drifted from the model it describes: the regional tilt formula
+  was still the pre-rescale `(score − 5.5) × 0.30`, the horizon table still said
+  `5Y`, and it still described the VIX complex as "spot plus the two nearest
+  futures" when the bootstrap has used four contracts since 2026-09-08. Two
+  near-identical "how to run it" sections merged into one.
+- The egress note assumed `WebSearch` as the fallback when `WebFetch` is blocked.
+  Both were unavailable today. The runbook now says what to do when there is no
+  research channel at all: refresh nothing, move no dates, and say so.
+- The payload field `sp_vol_5y` had held the **ten-year** implied vol since the
+  mandate lengthened on 8 September. The value was right and every consumer used
+  it correctly, but a field whose name contradicts its contents is how a correct
+  number eventually gets used wrongly. Renamed `sp_vol_lt`, after the constant it
+  publishes rather than after a horizon.
+- Added a **pending-catalyst block** to the page, listing scheduled events dated
+  after `AS_OF` that no number on the page accounts for — today the ECB decision
+  (10 Sep), US August CPI (11 Sep) and the FOMC (16 Sep), all three of which hit
+  inputs currently doing real work. Two checks assert the list is in date order
+  and that every entry is genuinely still pending, so the page cannot describe a
+  passed event in the future tense.
+
+### On `AS_OF`
+
+It stays at **2026-09-09** even though this pass ran on the 10th. No input was
+refreshed, so moving it would assert a currency the data does not have. The
+as-of date describes when the numbers were verified, not when someone last
+looked at the file.
+
+**Checks: engine 65 → 76, independent verifier 184 → 197, requirements checklist
+21/21.** All eight new checks were verified to bite by injecting the defect they
+target and confirming the failure.
+
 ## 2026-09-09 (audit) — The stress table was on a different horizon from the rest of the page
 
 Validation-only pass: no new research, no input changes. Three defects found by

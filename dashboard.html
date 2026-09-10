@@ -265,6 +265,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   border-top:1px solid var(--line);margin-top:6px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;
   scroll-behavior:auto!important}}
+.cat{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.cat:first-child{border-top:0}
+.catwhen{flex:0 0 84px;font-weight:600;font-variant-numeric:tabular-nums;font-size:12px}
 </style>
 
 <div id="app">
@@ -649,8 +652,14 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <h3>&#8369;1,000,000 over ten years</h3>
       <div class="tw"><table class="dt" id="pesotab"></table></div>
       <p class="note">Terminal value compounds the forecast net CAGR over 10 years.
-        Trough shows the peso value at the expected maximum drawdown — a path you should
-        expect to live through at some point, not a tail event.</p>
+        The worst-case row applies the expected maximum drawdown to the
+        <em>opening</em> &#8369;1,000,000 — what this is expected to look like at its
+        worst for money invested today, before any growth cushion has been built.
+        It is deliberately not the low point of the modelled path: drawdown is
+        measured peak to trough, and a drawdown arriving late in the mandate would
+        start from a peak well above &#8369;1,000,000. This is the conservative
+        reading, and it is a path you should expect to live through at some point,
+        not a tail event.</p>
     </div>
   </section>
 </div>
@@ -843,6 +852,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       needs to stay honest, written out so it can be worked through deliberately.
       The figures carry the as-of date in the header — treat anything older than
       a week as a forecast built on stale inputs.</p>
+    <div class="card">
+      <h3>Not in these numbers yet</h3>
+      <p class="note">Scheduled events dated after the as-of date above. Nothing
+        on this page accounts for them.</p>
+      <div id="catalysts"></div>
+    </div>
     <div class="card" id="monitors"></div>
   </section>
 
@@ -972,25 +987,29 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "vix_1m_avg": 15.28,
   "vix_1m_low": 14.18,
   "vix_1m_high": 16.8,
-  "vix_futs": [
+  "vix_futs_levels": [
    [
     "Sep",
-    0.068,
+    2026,
+    9,
     16.57
    ],
    [
     "Oct",
-    0.164,
+    2026,
+    10,
     18.41
    ],
    [
     "Nov",
-    0.241,
+    2026,
+    11,
     19.08
    ],
    [
     "Dec",
-    0.318,
+    2026,
+    12,
     19.26
    ]
   ],
@@ -1018,32 +1037,54 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "taiwan_ytd": 49.0,
   "ltcma_us_eq": 6.7,
   "ltcma_em_eq": 7.8,
-  "ltcma_6040plus": 6.9
+  "ltcma_6040plus": 6.9,
+  "vix_futs": [
+   [
+    "Sep",
+    0.074,
+    16.57
+   ],
+   [
+    "Oct",
+    0.1699,
+    18.41
+   ],
+   [
+    "Nov",
+    0.2466,
+    19.08
+   ],
+   [
+    "Dec",
+    0.3233,
+    19.26
+   ]
+  ]
  },
  "vol_ts": [
   {
    "label": "3M",
    "years": 0.25,
-   "implied": 17.43,
-   "realised": 13.93,
-   "move_1sd": 8.72,
-   "move_2sd": 17.43
+   "implied": 17.35,
+   "realised": 13.85,
+   "move_1sd": 8.67,
+   "move_2sd": 17.35
   },
   {
    "label": "6M",
    "years": 0.5,
-   "implied": 18.37,
-   "realised": 14.87,
-   "move_1sd": 12.99,
-   "move_2sd": 25.98
+   "implied": 18.33,
+   "realised": 14.83,
+   "move_1sd": 12.96,
+   "move_2sd": 25.92
   },
   {
    "label": "12M",
    "years": 1.0,
-   "implied": 18.88,
-   "realised": 15.38,
-   "move_1sd": 18.88,
-   "move_2sd": 37.75
+   "implied": 18.86,
+   "realised": 15.36,
+   "move_1sd": 18.86,
+   "move_2sd": 37.71
   },
   {
    "label": "10Y",
@@ -1051,17 +1092,17 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "implied": 19.43,
    "realised": 15.93,
    "move_1sd": 61.45,
-   "move_2sd": 122.9
+   "move_2sd": 122.89
   }
  ],
- "sp_vol_5y": 19.43,
+ "sp_vol_lt": 19.43,
  "regions": {
   "US": {
    "3M": 3.0,
    "6M": 3.0,
    "12M": 3.22,
    "10Y": 3.44,
-   "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +40% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 10-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
+   "why": "Near term marked back UP on the August payrolls beat - +162k against a 53k consensus, unemployment steady at 4.1% - which retires the -23k July print as noise and removes the growth scare from the near-horizon score. The offset is that a hot labour market is what lets the Fed move: the 10-year sits at 4.784% after touching 4.818% - its highest since November 2023 - the 2-year is at 4.377%, its highest since January 2025, and CME FedWatch prices a 15-16 Sep hike at 58% - one hike, not the two this model previously claimed, since the December move has slipped to January 2027. Payrolls -23k, unemployment 4.1%. Core CPI 2.5% looks contained, but PCE - the Fed's actual target - runs 3.7% y/y and 4.1% annualised over six months, so the clean anchor is gone; headline 3.4% also faces Brent +47% y/y. NDX 22.4x fwd stays BELOW its 10y (22.9x) and 5y (24.7x) averages, and the US is a net energy exporter, so the 10-year anchor holds at 6.5 while duration-sensitive growth de-rates near term.",
    "blend": 3.28,
    "3M_10": 5.5,
    "6M_10": 5.5,
@@ -1074,7 +1115,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 2.11,
    "12M": 2.33,
    "10Y": 2.56,
-   "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +40% y/y, up from +32% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
+   "why": "Still the worst policy/growth mismatch in the world, and it got worse. The ECB hiked +25bp to 2.25% in June - first in 3 years - held on 23 July, and a further hike to 2.50% on 10 September is consensus - the second and final move of its shortest hiking campaign in 15 years, per a Reuters poll - all into IMF growth of just 0.7% for 2026 (from 1.1%). August HICP jumped to 3.3% from 2.9% with energy at +14.3% y/y (Eurostat flash). Europe is the largest net energy importer in the world facing Brent +47% y/y, up from +40% a week ago. Offset: cheapest large market at 15.4x fwd, +9.5% YTD.",
    "blend": 2.37,
    "3M_10": 3.0,
    "6M_10": 3.5,
@@ -1116,9 +1157,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "10Y": 0.5
  },
  "vol_channel": {
-  "blend": 18.93,
+  "blend": 18.91,
   "spot": 14.32,
-  "ramp": 4.61,
+  "ramp": 4.59,
   "sens": {
    "ATRPHMM": 0.035,
    "ATRQIAP": 0.21,
@@ -1146,7 +1187,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.15,
    "score": 3.0,
    "score_10": 5.5,
-   "note": "Raised on the August payrolls beat: +162k against a 53k consensus and a 31k twelve-month average, with unemployment steady at 4.1%. That retires the -23k July print this model had been treating as evidence of a cracking labour market - it was noise, not trend. IMF April WEO still current: global 3.1% (2026) / 3.2% (2027), US 2.4%, euro area 0.7%. Held below 6 because Brent at $95 is a straight tax on every net importer in Europe and Asia, and because a hot labour market is exactly what lets the Fed hike."
+   "note": "Raised on the August payrolls beat: +162k against a 53k consensus and a 31k twelve-month average, with unemployment steady at 4.1%. That retires the -23k July print this model had been treating as evidence of a cracking labour market - it was noise, not trend. IMF April WEO still current: global 3.1% (2026) / 3.2% (2027), US 2.4%, euro area 0.7%. Held below 6 because Brent at $96 is a straight tax on every net importer in Europe and Asia, and because a hot labour market is exactly what lets the Fed hike."
   },
   {
    "name": "Corporate earnings",
@@ -1234,11 +1275,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "net_base": 7.35,
    "regional_score": 3.28,
    "tilt_regional": 0.19,
-   "tilt_vol": 0.97,
+   "tilt_vol": 0.96,
    "tilt_rates": -0.1,
    "tilt_energy": -0.1,
-   "tilt_total": 0.96,
-   "net_macro": 8.31,
+   "tilt_total": 0.95,
+   "net_macro": 8.3,
    "vol": 16.04,
    "dd_k": 1.55,
    "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
@@ -1484,8 +1525,28 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
  "fx": {
   "drift": 2.0,
   "vol": 6.0,
-  "corr": -0.2
+  "corr": -0.2,
+  "ppp_lr": 1.5,
+  "ppp_now": 2.7
  },
+ "vix_quote_date": "2026-09-04",
+ "catalysts": [
+  {
+   "date": "2026-09-10",
+   "what": "ECB Governing Council decision",
+   "why": "Consensus is a second and final +25bp to a 2.50% deposit rate - all 65 economists in the 31 Aug-3 Sep Reuters poll. Feeds the monetary driver and the Europe regional score."
+  },
+  {
+   "date": "2026-09-11",
+   "what": "US August CPI",
+   "why": "The monetary driver is explicitly the one most likely to move on this print, and the inflation driver is scored on the PCE/CPI divergence."
+  },
+  {
+   "date": "2026-09-16",
+   "what": "FOMC decision",
+   "why": "A 25bp hike is priced at 58%. Resolves the disagreement this model records between market pricing and Goldman's call for no September move."
+  }
+ ],
  "dd_model": {
   "k": 1.65,
   "mu_coef": 0.5,
@@ -1516,7 +1577,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "ret_per_dd": 0.245,
    "sharpe_like": 0.098,
    "terminal_1m": 1991182,
-   "trough_1m": 709000
+   "worst_1m_from_open": 709000
   },
   "under_macro": {
    "weights": [
@@ -1528,10 +1589,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "cagr": 7.33,
    "vol": 14.4,
    "maxdd": -28.9,
-   "ret_per_dd": 0.253,
+   "ret_per_dd": 0.254,
    "sharpe_like": 0.112,
    "terminal_1m": 2028669,
-   "trough_1m": 711000
+   "worst_1m_from_open": 711000
   },
   "scenarios": [
    {
@@ -1551,7 +1612,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 2.91,
+    "cagr": 2.9,
     "vol": 20.88,
     "maxdd": -47.4
    },
@@ -1585,13 +1646,13 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     30.0,
     5.0
    ],
-   "cagr": 7.58,
+   "cagr": 7.57,
    "vol": 13.54,
    "maxdd": -25.6,
    "ret_per_dd": 0.296,
-   "sharpe_like": 0.138,
-   "terminal_1m": 2076421,
-   "trough_1m": 744000
+   "sharpe_like": 0.137,
+   "terminal_1m": 2074492,
+   "worst_1m_from_open": 744000
   },
   "under_base": {
    "weights": [
@@ -1603,45 +1664,45 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "cagr": 7.01,
    "vol": 13.54,
    "maxdd": -26.0,
-   "ret_per_dd": 0.269,
+   "ret_per_dd": 0.27,
    "sharpe_like": 0.095,
    "terminal_1m": 1968991,
-   "trough_1m": 740000
+   "worst_1m_from_open": 740000
   },
   "dd_cap": 26.07,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $96. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 3.08,
+    "cagr": 3.07,
     "vol": 21.66,
     "maxdd": -47.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and the difference matters: the market prices roughly ONE hike (58% for 16 Sep), not two - the December move slipped to January 2027. This row models the market coming round to the dissenters instead: a second hike returning to the 2026 strip on top of September. Until 2026-09-09 this description said two hikes were already priced, contradicting the monetary-policy driver on the same page, which had been corrected on 5 September and this had not. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.6,
+    "cagr": 5.59,
     "vol": 17.6,
     "maxdd": -36.3
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.78,
+    "cagr": 3.77,
     "vol": 19.63,
     "maxdd": -42.2
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.97,
+    "cagr": 9.96,
     "vol": 10.83,
     "maxdd": -17.7
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.58,
+    "cagr": 7.57,
     "vol": 13.54,
     "maxdd": -25.6
    }
@@ -1659,10 +1720,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "cagr": 6.42,
   "vol": 8.19,
   "maxdd": -13.9,
-  "ret_per_dd": 0.463,
+  "ret_per_dd": 0.462,
   "sharpe_like": 0.086,
   "terminal_1m": 1863084,
-  "trough_1m": 861000
+  "worst_1m_from_open": 861000
  },
  "stub": {
   "fund": "ATRGTEC",
@@ -1673,11 +1734,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    35,
    0
   ],
-  "cagr_without": 7.58,
-  "cagr_with": 7.58,
+  "cagr_without": 7.57,
+  "cagr_with": 7.57,
   "cost": 0.0
  },
- "tech_gap": -0.45,
+ "tech_gap": -0.44,
  "max_sleeve": 0.5,
  "frontier": [
   {
@@ -1702,7 +1763,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 15,
-   "cagr": 6.61,
+   "cagr": 6.6,
    "weights": [
     45.0,
     45.0,
@@ -1722,7 +1783,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 17,
-   "cagr": 6.79,
+   "cagr": 6.78,
    "weights": [
     40.0,
     50.0,
@@ -1732,7 +1793,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 18,
-   "cagr": 6.95,
+   "cagr": 6.94,
    "weights": [
     35.0,
     50.0,
@@ -1752,7 +1813,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 20,
-   "cagr": 7.11,
+   "cagr": 7.1,
    "weights": [
     30.0,
     50.0,
@@ -1762,7 +1823,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 21,
-   "cagr": 7.11,
+   "cagr": 7.1,
    "weights": [
     30.0,
     50.0,
@@ -1792,7 +1853,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 24,
-   "cagr": 7.43,
+   "cagr": 7.42,
    "weights": [
     20.0,
     50.0,
@@ -1802,7 +1863,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 25,
-   "cagr": 7.58,
+   "cagr": 7.57,
    "weights": [
     15.0,
     50.0,
@@ -1822,7 +1883,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 27,
-   "cagr": 7.74,
+   "cagr": 7.73,
    "weights": [
     10.0,
     50.0,
@@ -1842,7 +1903,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 29,
-   "cagr": 7.9,
+   "cagr": 7.89,
    "weights": [
     5.0,
     50.0,
@@ -1852,7 +1913,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 30,
-   "cagr": 7.9,
+   "cagr": 7.89,
    "weights": [
     5.0,
     50.0,
@@ -1872,7 +1933,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 32,
-   "cagr": 7.91,
+   "cagr": 7.9,
    "weights": [
     5.0,
     50.0,
@@ -1882,7 +1943,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 33,
-   "cagr": 7.91,
+   "cagr": 7.9,
    "weights": [
     5.0,
     50.0,
@@ -1902,7 +1963,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 35,
-   "cagr": 7.92,
+   "cagr": 7.91,
    "weights": [
     5.0,
     50.0,
@@ -1932,7 +1993,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 38,
-   "cagr": 7.9,
+   "cagr": 7.89,
    "weights": [
     5.0,
     45.0,
@@ -1942,7 +2003,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 39,
-   "cagr": 7.88,
+   "cagr": 7.87,
    "weights": [
     5.0,
     40.0,
@@ -2215,7 +2276,7 @@ $("#asof").textContent = D.as_of;
 $("#asof2").textContent = D.as_of;
 $("#hg").textContent = D.gauge.toFixed(1);
 $("#gv").innerHTML = D.gauge.toFixed(1) + '<i>/5</i>';
-$("#spv").textContent = D.sp_vol_5y.toFixed(2) + "%";
+$("#spv").textContent = D.sp_vol_lt.toFixed(2) + "%";
 $("#nfeas").textContent = D.optimized.n_feasible;
 /* The two degenerate corner solutions are rendered from the payload, never typed.
    They move whenever the macro tilts move, and typing them is how they go stale. */
@@ -2582,7 +2643,7 @@ function tipper(host) {
     `<tr><th>Fund</th><th>Vol β</th><th>FX</th><th>σ total</th><th>Exp. max DD</th></tr>`));
   const fb = el("tbody");
   F.forEach((f,i) => {
-    const beta = f.vol / D.sp_vol_5y;
+    const beta = f.vol / D.sp_vol_lt;
     fb.appendChild(el("tr", null,
       `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
        <td>${beta.toFixed(2)}×</td><td>${f.fx_drift ? "unhedged" : "—"}</td>
@@ -2926,14 +2987,29 @@ function donut(host, w, title, cagr, dd) {
      <td style="font-weight:600">${peso(B.terminal_1m)}</td>
      <td class="pos">+${peso(B.terminal_1m-A.terminal_1m).slice(1)}</td>`));
   tb.appendChild(el("tr", null,
-    `<td>Value at expected trough</td><td>${peso(A.trough_1m)}</td>
-     <td style="font-weight:600">${peso(B.trough_1m)}</td>
-     <td class="pos">+${peso(B.trough_1m-A.trough_1m).slice(1)}</td>`));
+    `<td>Worst case for money invested today</td>
+     <td>${peso(A.worst_1m_from_open)}</td>
+     <td style="font-weight:600">${peso(B.worst_1m_from_open)}</td>
+     <td class="pos">+${peso(B.worst_1m_from_open-A.worst_1m_from_open).slice(1)}</td>`));
   tb.appendChild(el("tr", null,
     `<td>Total gain over 10 years</td><td>${peso(A.terminal_1m-1000000)}</td>
      <td style="font-weight:600">${peso(B.terminal_1m-1000000)}</td>
      <td class="pos">+${peso(B.terminal_1m-A.terminal_1m).slice(1)}</td>`));
   t.appendChild(tb);
+})();
+
+/* ---------------- pending catalysts ---------------- */
+(function () {
+  const host = $("#catalysts");
+  if (!host || !D.catalysts) return;
+  D.catalysts.forEach(c => {
+    const d = new Date(c.date + "T00:00:00");
+    const when = d.toLocaleDateString("en-GB",
+      { day: "numeric", month: "short", weekday: "short" });
+    host.appendChild(el("div", { class: "cat" },
+      `<div class="catwhen">${when}</div>
+       <div><b>${c.what}</b><div class="note">${c.why}</div></div>`));
+  });
 })();
 
 /* ---------------- monitoring ---------------- */
