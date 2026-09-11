@@ -54,8 +54,14 @@ truth; the artifact is a rendering of it.
 
 1. All four funds appear in both portfolios, always. Never drop one.
 2. Every allocation weight ends in **5 or 0** and each portfolio sums to **100**.
-3. Every figure on the page comes from `model/engine.py`. If a number is typed
-   into `dashboard.html` by hand, it is a bug — move it into the engine.
+3. Every figure on the page comes from `model/engine.py`. If a model OUTPUT is
+   typed into `dashboard.html` by hand, it is a bug — move it into the payload and
+   render it. `checklist.js` enforces this two ways: C1 requires every hard-typed
+   figure to be a rounding of some payload number, and C2 is a ratchet freezing the
+   count of hard-typed figures at 41 (all inputs and constants, no outputs). C1
+   alone is not enough — it cannot catch a wrong figure whose value coincides with
+   an unrelated model number, which is exactly how a stale −40% drawdown survived.
+   Raise the ratchet only with a reason.
 4. `python3 model/engine.py` exits 0 with all sanity checks passing *before*
    anything is republished.
 5. Only primary sources. The issuing institution's own publication, never an

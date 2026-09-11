@@ -2,6 +2,70 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-11 (editing pass) — Made the page concise, and found three stale figures doing it
+
+Asked to make the page concise. It is **28% shorter** — 54,333 to 39,062 characters
+of rendered text, 30.2 to 22.7 phone screens — with no requirement dropped: still
+81/81 engine checks, 207 verifier checks and the full requirements checklist.
+
+### What was cut
+
+- **Driver and region notes, 10,845 → 4,937 chars.** These had accumulated a running
+  commentary on the model's own past mistakes — "this model said last week…",
+  "previously MARKED DOWN from 6.05…", "the previous read was wrong in an instructive
+  way". That history is real and worth keeping, but its home is this file, not a
+  driver tile on a phone. The notes now lead with the judgement and the two or three
+  numbers behind it.
+- **The on-page review runbook, ~1,100px.** It duplicated `monitoring/README.md`,
+  was an operator's checklist rather than anything a reader of the portfolio needs,
+  and had itself gone stale (it still described the VIX bootstrap as "spot plus the
+  two nearest futures"; it has used four contracts since 8 September). Replaced by
+  the one paragraph that matters: nothing refreshes itself, the header carries the
+  as-of date, and the procedure lives in the repo.
+- **The sources list, ~2,650px** — nearly three phone screens. All 37 sources and
+  every link are still there, now behind a `<details>` summary showing the count.
+- The drawdown-model card, the report's setup and conclusion sections, the peso note
+  and the fee-provenance note, all trimmed without losing a claim.
+
+### Three stale figures found while editing
+
+Reading the page closely for length is a different pass from checking it for
+correctness, and it turned up three things three days of audits had missed:
+
+1. **Global Technology's drawdown was printed as −40%** against a modelled **−57.6%**.
+   Hard-typed, and 17 points wrong.
+2. **"Bootstrapped piecewise from the three observable points"** — the curve has used
+   five knots (spot plus four futures) since 8 September.
+3. **"Spot fell back toward its 2026 low while the curve held"** — last week's story,
+   printed in the week spot broke out to 17.84.
+
+All three now render from the payload.
+
+### The check that should have caught them, and did not
+
+`checklist.js` carried a check named "no stale hard-typed figures found this pass".
+It was a **denylist of specific strings from past incidents** — `16.44`, `0.23pp`,
+`out of 969`, and so on. A denylist can only catch a figure that has already been
+found stale once. It passed clean on all three of the above, because they were new.
+This is the same failure mode as the targeted prose guards on 9 September: a list of
+yesterday's mistakes is not a detector.
+
+Replaced with the positive form of runbook invariant 3, in two parts:
+
+- **C1 — traceability.** Every hard-typed number in the static markup must be a
+  rounding of some payload number. Getting to zero violations required publishing
+  `regional_tilt_per_pt` and a derived `real_yield` block, which were the last two
+  page figures with no payload counterpart.
+- **C2 — ratchet.** C1 has a limit worth stating plainly: it cannot catch a figure
+  whose *wrong* value happens to coincide with an unrelated model number. The −40%
+  is exactly that case — 40.0 appears in the payload as a frontier weight — so C1
+  alone would not have caught it either. C2 freezes the count of hard-typed figures
+  at 41, all of them inputs and constants. A new hard-typed figure cannot be added
+  without tripping it. Verified by reinstating the −40%: C1 passes, C2 fails.
+
+That pairing is the actual lesson. The first check tells you a figure came from
+nowhere; only the second stops a wrong one being typed in the first place.
+
 ## 2026-09-11 (research + audit) — The calm broke, and the curve did not move with it
 
 Search was available again after being down for all of 10 September, so this was a

@@ -268,6 +268,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 .cat{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
 .cat:first-child{border-top:0}
 .catwhen{flex:0 0 84px;font-weight:600;font-variant-numeric:tabular-nums;font-size:12px}
+.discl>summary{cursor:pointer;font-size:13px;color:var(--muted);list-style:none;padding:2px 0}
+.discl>summary::-webkit-details-marker{display:none}
+.discl>summary::after{content:" ▸";font-size:11px}
+.discl[open]>summary::after{content:" ▾"}
+.discl[open]>summary{margin-bottom:8px;border-bottom:1px solid var(--line);padding-bottom:8px}
 </style>
 
 <div id="app">
@@ -328,7 +333,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       mandate silently doubles how much a three-month signal counts per year of
       holding period. Regions are researched on 1–10, like the drivers,
       then rescaled by the same endpoint-preserving map; the tilt coefficient is
-      restated in 1–5 units (<span class="num">0.675pp</span> per point, formerly
+      restated in 1–5 units (<span class="num" id="tiltpp">—</span> per point, formerly
       <span class="num">0.30pp</span> per 1–10 point) so the rescale moves no
       allocation.</p>
     <div class="card">
@@ -410,14 +415,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         font-size:12px;text-align:center;line-height:1.7;color:var(--ink)">
         &sigma;(0&rarr;T) = &radic;( <sup>1</sup>&frasl;<sub>T</sub> &int;<sub>0</sub><sup>T</sup> &sigma;<sub>f</sub>(t)&sup2; dt )
       </div>
-      <p style="margin-top:11px">The forward curve &sigma;<sub>f</sub>(t) is bootstrapped
-        piecewise from the three observable points — spot VIX, the September future,
-        the December future — then mean-reverted beyond the last liquid contract toward
-        the long-run VIX anchor of <b class="num">19.5</b> at speed
-        <span class="num">&kappa;&nbsp;=&nbsp;1.5</span>/yr. The realised-equivalent
-        line subtracts the <b class="num">3.5</b>-point variance risk premium: options
-        have persistently overpriced delivered volatility, and a drawdown model fed on
-        implied vol alone would systematically overstate the damage.</p>
+      <p style="margin-top:11px">&sigma;<sub>f</sub>(t) is bootstrapped piecewise from
+        <b class="num" id="nknots">—</b> observable points — spot plus
+        <b class="num" id="nfuts">—</b> futures, each placed at the centre of the 30-day
+        window it prices — then mean-reverted beyond the last liquid contract toward the
+        long-run anchor of <b class="num">19.5</b> at
+        <span class="num">&kappa;&nbsp;=&nbsp;1.5</span>/yr. The realised-equivalent line
+        subtracts the <b class="num">3.5</b>-point variance risk premium: options
+        persistently overprice delivered volatility, and a drawdown model fed on implied
+        vol alone would overstate the damage.</p>
       <div class="tw"><table class="dt" id="voltab"></table></div>
       <p class="note">1&sigma; and 2&sigma; are S&amp;P-equivalent moves over the full
         horizon (&sigma;&radic;T), before any fund's volatility beta is applied.</p>
@@ -441,55 +447,47 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 
     <div class="card">
       <h3>How this curve moves the allocation</h3>
-      <p>The term structure is not just description — it is one of the four inputs the
-        optimised portfolio is built from. The signal is the <strong>ramp</strong>: how far
-        the horizon-blended implied vol sits above spot, using the same
-        <span class="num" id="hzw2">—</span>
-        weights as the regional blend. That is how much repricing the option market is
-        still pointing at.</p>
+      <p>The term structure is one of the four inputs the optimised portfolio is built
+        from. The signal is the <strong>ramp</strong>: how far horizon-blended implied
+        vol sits above spot, on the same <span class="num" id="hzw2">—</span> weights as
+        the regional blend — how much repricing the option market still points at.</p>
       <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
         font-size:12px;text-align:center;line-height:1.7;color:var(--ink)" id="rampline"></div>
       <p style="margin-top:11px">Each sleeve then earns or pays that ramp according to a
         structural sensitivity — a property of how the fund is built, not a view on the
         market. Only the covered-call sleeve is <em>paid</em> by a rising ramp.</p>
       <div class="tw"><table class="dt" id="voltilt"></table></div>
-      <p class="note">These tilts are derived from the ramp, not hand-set, and this week
-        shows why that matters: spot fell back toward its 2026 low while the curve held,
-        so the ramp widened from <b class="num">+2.87</b> to
-        <b class="num" id="rampwas">—</b> vol points and every sleeve's tilt moved with
-        it — without anyone re-typing a number.</p>
+      <p class="note">These tilts are derived from the ramp, not hand-set, so they move
+        when the curve does without anyone re-typing a number. The ramp is measured on
+        the curve's own quote date; spot has since risen toward it, which would
+        <em>narrow</em> the ramp once the strip is re-quoted.</p>
     </div>
 
     <div class="card">
       <h3>Turning volatility into a drawdown number</h3>
       <p>Expected maximum drawdown is modelled as
         <span class="num">(k&nbsp;&times;&nbsp;&sigma;&nbsp;&minus;&nbsp;0.50&nbsp;&times;&nbsp;&mu;)&nbsp;&times;&nbsp;&radic;(T&nbsp;/&nbsp;5)</span>
-        — volatility sets the depth, drift claws some of it back, and the horizon
-        decides how much room the path has to find its worst peak-to-trough. The
-        anchor is <b class="num">k&nbsp;=&nbsp;1.65</b>, calibrated so the bracket
-        reproduces what actually happened at index level over
-        <strong>rolling five-year windows</strong>: <b class="num">&minus;20%</b> for
-        the S&amp;P 500 (&sigma; 15.5%, &mu; 11%) and <b class="num">&minus;33%</b> for
-        the Nasdaq-100 (&sigma; 24%, &mu; 13%), the observed medians.</p>
-      <p><strong>A longer mandate cannot simply relabel those anchors.</strong> They
-        describe five-year windows, and expected maximum drawdown grows with the square
-        root of the horizon, so the whole calibrated quantity is scaled by
-        <b class="num" id="ddscal">—</b>. That is derived from the five-year
-        calibration, not re-fitted by eye to ten-year medians this model has not
-        verified at a primary source — and it is why every drawdown on this page is
-        deeper than it was when the mandate was five years.</p>
-      <p><strong>1.65 is not the coefficient every sleeve uses.</strong> Left tails are
-        not the same shape across these four funds, so each carries a declared
-        adjustment — and the portfolio coefficient is the weighted average across the
-        equity sleeves. Every drawdown printed on this page is reproducible from the
-        <span class="num">k</span> beside it; before 5 September the page showed 1.65
-        alone, which did not reproduce three of the four.</p>
+        — volatility sets the depth, drift claws some back, and the horizon decides how
+        much room the path has to find its worst peak-to-trough. The anchor
+        <b class="num">k&nbsp;=&nbsp;1.65</b> is calibrated to reproduce the observed
+        medians over <strong>rolling five-year windows</strong>:
+        <b class="num">&minus;20%</b> for the S&amp;P 500 (&sigma; 15.5%, &mu; 11%) and
+        <b class="num">&minus;33%</b> for the Nasdaq-100 (&sigma; 24%, &mu; 13%).</p>
+      <p><strong>A longer mandate cannot just relabel those anchors.</strong> Expected
+        maximum drawdown grows with the square root of the horizon, so the calibrated
+        quantity is scaled by <b class="num" id="ddscal">—</b> — derived from the
+        five-year calibration rather than re-fitted by eye to ten-year medians this
+        model has not verified.</p>
+      <p><strong>1.65 is not the coefficient every sleeve uses.</strong> Left tails
+        differ across these four funds, so each carries a declared adjustment, and the
+        portfolio coefficient is the weighted average across the equity sleeves. Every
+        drawdown printed here is reproducible from the <span class="num">k</span>
+        beside it.</p>
       <div class="tw"><table class="dt" id="ddktab"></table></div>
-      <p style="margin-top:11px">The money market sleeve is floored separately at a 100bp
-        parallel rate shock on ~0.5y duration, because a cash fund cannot be made to
+      <p style="margin-top:11px">The money market sleeve is floored separately at a
+        100bp parallel rate shock on ~0.5y duration — a cash fund cannot be made to
         behave like an equity fund by a formula. That floor is deliberately
-        <em>not</em> horizon-scaled: a rate shock on a half-year duration book is the
-        same size whether you hold it five years or ten.</p>
+        <em>not</em> horizon-scaled.</p>
       <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
         font-size:11.5px;text-align:center;line-height:1.7;color:var(--ink)" id="ddkport"></div>
     </div>
@@ -550,13 +548,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <p class="eyebrow">Fee transparency</p>
     <div class="card">
       <h3>Where the estimates are, and where they aren't</h3>
-      <p>Feeder-level fees are taken from ATRAM's own published fund documents and the
-        launch coverage. Target-fund charges are verified where the target publishes a
-        TER — the JPMorgan Nasdaq Equity Premium Income UCITS ETF discloses
-        <b class="num">0.35%</b>. For the two SICAV targets the ongoing charge is an
-        estimate, flagged as such in every table on this page rather than quietly folded
-        in. If those estimates are wrong by 25bp, net CAGR moves by 25bp — the ranking
-        of the four sleeves does not change.</p>
+      <p>Feeder-level fees come from ATRAM's own published fund documents. Target-fund charges come from the target manager: J.P. Morgan for the Nasdaq and Asia sleeves, Fidelity for Global Technology. One figure remains an estimate — the JPMorgan Asia Equity Dividend ongoing charge — and it is labelled as one wherever it appears.</p>
       <div class="tw"><table class="dt" id="feetab"></table></div>
     </div>
   </section>
@@ -621,11 +613,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       was enumerated and scored — <b class="num" id="ntotal">—</b> portfolios. The line
       below is the upper edge: the highest achievable 10-year net CAGR at each level of
       expected drawdown. The optimised portfolio sits on that edge.</p>
-    <p class="note">The concentration cap was added on 9 September, and it matters: until
-      then the objective had no diversification constraint at all. It never bound, so
-      nobody noticed — until a fee correction cut Asia Equity's return and the optimiser
-      immediately proposed <b class="num">75%</b> in a single fund. This page argues
-      against doubling up; the objective now encodes that instead of merely asserting it.</p>
+    <p class="note">A 50% concentration cap is part of the objective, not a silent filter. Without it the optimiser went to 75% in one fund — a "four-fund portfolio" that is really one fund plus three stubs, and against the diversification argument this report itself makes.</p>
     <div class="card">
       <figure class="rel">
         <div id="frontier"></div>
@@ -662,15 +650,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <div class="card">
       <h3>&#8369;1,000,000 over ten years</h3>
       <div class="tw"><table class="dt" id="pesotab"></table></div>
-      <p class="note">Terminal value compounds the forecast net CAGR over 10 years.
-        The worst-case row applies the expected maximum drawdown to the
-        <em>opening</em> &#8369;1,000,000 — what this is expected to look like at its
-        worst for money invested today, before any growth cushion has been built.
-        It is deliberately not the low point of the modelled path: drawdown is
-        measured peak to trough, and a drawdown arriving late in the mandate would
-        start from a peak well above &#8369;1,000,000. This is the conservative
-        reading, and it is a path you should expect to live through at some point,
-        not a tail event.</p>
+      <p class="note">Terminal value compounds the forecast net CAGR over 10 years. The
+        worst-case row applies the expected maximum drawdown to the <em>opening</em>
+        &#8369;1,000,000 — the worst case for money invested today, before any growth
+        cushion exists. It is deliberately not the low point of the modelled path:
+        drawdown is measured peak to trough, and one arriving late in the mandate would
+        start from a peak well above &#8369;1,000,000.</p>
     </div>
   </section>
 </div>
@@ -696,46 +681,25 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <div class="card">
       <h3>1 &middot; The setup</h3>
       <p>Three central banks that matter to this portfolio are leaning the same way,
-        and it is the wrong way for long-duration assets. The Fed held at
-        <b class="num">3.50–3.75%</b> on a <b>9–3 vote in which the three dissents
-        wanted a hike</b>. The ECB has now finished a cycle: <b class="num">+25bp</b> to
-        <b class="num">2.25%</b> in June, its first in three years, then a second and
-        final <b class="num">+25bp</b> to <b class="num" id="ecbnow"></b> on
-        <b>10 September</b> — taken explicitly because the Middle East energy shock
-        will hold euro inflation above target for an extended period, and delivered
-        into IMF growth of just <b class="num">0.7%</b>. The BSP hiked
-        <b class="num">+25bp</b> to <b class="num">5.00%</b> on 27 August — its
-        <b>third consecutive hike</b>, <b class="num">+75bp</b> cumulative since April.
-        This is no longer a tightening <em>bias</em>; it is a tightening cycle, and the
-        US is now the last piece: CME FedWatch puts the 16 September hike at
-        <b class="num" id="oddsnow"></b>, up from <b class="num">70%</b> on 10 September
-        after a hot PPI and <b class="num">58%</b> a week ago. The 10-year closed
-        <b class="num" id="ust10"></b> on 10 September, a <b>ten-year high</b>. It is
-        happening because Brent at <b class="num" id="brentnow"></b> — up
-        <b class="num" id="brentyoy"></b> year on year, and through
-        <b class="num" id="brenthigh"></b> intraday on 10 September, its highest since
-        19 May — is pushing headline inflation back up even as core behaves.</p>
-      <p style="margin-bottom:0">Against that, corporate earnings are still the
-        strongest pillar in the picture. Asia ex-Japan consensus has EPS growing
-        roughly <b class="num">52%</b> this year and <b class="num">28%</b> next, off
-        the AI and memory cycle, on a forward multiple of <b class="num">10.5&times;</b>,
-        and none of those estimates has been cut. That combination — hostile policy,
-        hostile energy, intact earnings, undemanding valuations — is what produces a
-        <b class="num" id="gaugenow"></b> gauge on the 1&ndash;5 scale rather than a
-        <b class="num">1.9</b> or a <b class="num">4.1</b>.</p>
-      <p style="margin-bottom:0"><strong>What moved this week was not a correction.</strong>
-        Last week the gauge fell because this model was marking down its own mistaken
-        call that the calm was breaking. This week it fell because the calm actually
-        broke, and because three separate things resolved against the portfolio inside
-        four sessions: the ECB hiked, August CPI pushed the September FOMC from a
-        coin-flip to near-certainty, and Brent went through <b class="num">$108</b> as
-        Saudi output fell roughly <b class="num">1.9&nbsp;mb/d</b> on Houthi strikes.
-        Geopolitics &amp; energy is cut to the floor of its scale; monetary policy and
-        growth are both cut; volatility &amp; risk appetite is cut as spot vol broke a
-        28-session range. The one driver that improved is valuation support, and it
-        improved for the reason it always does in a week like this — the same earnings
-        got cheaper. The gauge is a weighted read of all seven, which is why it fell
-        by about a fifth of a point rather than falling off a cliff.</p>
+        and it is the wrong way for long-duration assets. The ECB finished its cycle on
+        <b>10 September</b> — a second and final <b class="num">+25bp</b> to
+        <b class="num" id="ecbnow"></b>, delivered into IMF growth of just
+        <b class="num">0.7%</b> because the energy shock will hold inflation above
+        target. BSP is at <b class="num">5.00%</b> after three consecutive hikes. The US
+        is the last piece: FedWatch puts the 16 September hike at
+        <b class="num" id="oddsnow"></b>, from <b class="num">58%</b> a week ago, and the
+        10-year closed <b class="num" id="ust10"></b> — a <b>ten-year high</b>. The cause
+        is Brent at <b class="num" id="brentnow"></b>, up
+        <b class="num" id="brentyoy"></b> year on year and through
+        <b class="num" id="brenthigh"></b> on 10 September.</p>
+      <p style="margin-bottom:0">Against that, earnings have not moved: Asia ex-Japan
+        consensus still has EPS growing <b class="num">52%</b> this year and
+        <b class="num">28%</b> next on a <b class="num">10.5&times;</b> forward
+        multiple. Hostile policy, hostile energy, intact earnings, cheap valuations —
+        that is a <b class="num" id="gaugenow"></b> gauge, not a
+        <b class="num">1.9</b> or a <b class="num">4.1</b>. Six of seven drivers fell
+        this week; the one that rose was valuation support, because the same earnings
+        got cheaper.</p>
     </div>
 
     <div class="card">
@@ -752,34 +716,25 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 
     <div class="card">
       <h3>3 &middot; The two overweights, and why they don't overlap</h3>
-      <p><strong>Asia Equity is cut to <b class="num" id="wAseq">—</b>, and the reason
-        is a fee correction, not a change of view.</strong> Until 9 September this model
-        carried an unanchored <b class="num">0.80%</b> estimate for the target fund's
-        ongoing charge. J.P. Morgan publishes a <b class="num">1.50%</b> management fee
-        for that fund — the ongoing charge cannot be below it. Corrected to
-        <b class="num">1.55%</b>, the all-in stack is <b class="num" id="feeAseq">—</b>
-        and the sleeve drops from <em>first to third</em> on forecast net return. The
-        macro case is unchanged and still the best on the sheet — it ranks first on
-        the horizons that matter to a 10-year mandate,
-        <b class="num" id="asiahz">—</b> on the 1&ndash;5 scale — the near term marked
-        back <em>up</em> this week, because the 2 September selloff this model had read
-        as a persistent energy de-rating reversed inside three sessions on AI and memory
-        demand — and because a
-        <b class="num">10.5&times;</b> forward multiple against that earnings growth is
-        the widest valuation-to-growth gap available in these four funds. It is trimmed
-        below the unconstrained maximum for two honest reasons: Korea is already up
-        <b class="num">71%</b> and Taiwan <b class="num">49%</b> year to date, so a good
-        deal of the re-rating has been collected; and Asia is the region most exposed to
-        an energy shock it imports, which costs it <b class="num">&minus;0.20pp</b> in
-        the tilt.</p>
+      <p><strong>Asia Equity is cut to <b class="num" id="wAseq">—</b>, and the
+        reason is a fee correction, not a change of view.</strong> J.P. Morgan
+        publishes a <b class="num">1.50%</b> management fee for the target fund, so the
+        <b class="num">0.80%</b> ongoing charge this model carried until 9 September was
+        impossible. Corrected, the all-in stack is <b class="num" id="feeAseq">—</b> and
+        the sleeve falls from <em>first to third</em> on forecast net return. The macro
+        case still ranks first over the horizons that matter to a 10-year mandate
+        (<b class="num" id="asiahz">—</b> on the 1&ndash;5 scale), and
+        <b class="num">10.5&times;</b> forward against that earnings growth is the
+        widest valuation-to-growth gap in these four funds. It is held below the
+        unconstrained maximum because Korea is already up <b class="num">71%</b> and
+        Taiwan <b class="num">49%</b> year to date, and because Asia is the region most
+        exposed to an energy shock it imports.</p>
       <p style="margin-bottom:0">Nasdaq Equity Income goes to
         <b class="num" id="wQiap">—</b> — the concentration cap, and nothing else, is
-        what stops it going higher — because it is the best drawdown-adjusted holding on
-        the sheet. Option
-        overwriting cuts its volatility to roughly two-thirds of the raw Nasdaq-100,
-        and unhedged peso exposure trims it again, because the peso tends to weaken
-        precisely when US equities fall. <strong>As of this week the comparison is no
-        longer a trade-off at all</strong>, and that is new: <span id="techgap">—</span></p>
+        what stops it going higher — because it is the best drawdown-adjusted holding
+        on the sheet. Option overwriting cuts its volatility to roughly two-thirds of
+        the raw Nasdaq-100, and unhedged peso exposure trims it again, because the peso
+        tends to weaken precisely when US equities fall. <span id="techgap">—</span></p>
     </div>
 
     <div class="card">
@@ -797,9 +752,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         <li><b>It is the most rate-sensitive thing you own.</b> Longest-duration equity,
           in a world where three central banks are leaning hawkish:
           <b class="num">&minus;0.40pp</b>.</li>
-        <li><b>It carries a <span class="num">&minus;40%</span> expected drawdown.</b>
-          At a 25% weight that single sleeve contributes more to portfolio drawdown than
-          the money market and Asia sleeves combined.</li>
+        <li><b>It carries a <span class="num" id="gtecdd">—</span> expected
+          drawdown</b> — the deepest on the sheet. At a 25% weight that single sleeve
+          contributes more to portfolio drawdown than the money market and Asia sleeves
+          combined.</li>
       </ul>
       <p style="margin-bottom:0">Cutting it to 5% rather than zero is deliberate. The
         forecast deliberately sits well below the target fund's realised
@@ -811,30 +767,25 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <h3>5 &middot; Cash is a position here, not a residual</h3>
       <p style="margin-bottom:0">The money market sleeve is cut from
         <b class="num">20%</b> to <b class="num">15%</b>, which looks backwards for a
-        risk-reducing portfolio. It isn't: the drawdown control is coming from the
+        risk-reducing portfolio. It isn't: the drawdown control comes from the
         <em>equity mix</em>, not from hiding in cash, so the cash can be spent on
-        return. What justifies keeping 15% is that peso cash is genuinely paid right
-        now in <em>nominal</em> terms — T-bills at <b class="num">5.14%</b> to
-        <b class="num">5.72%</b> after a BSP that has now hiked three times to
-        <b class="num">5.00%</b>. Be clear about what that is and isn't: against
-        August inflation of <b class="num">6.1%</b> the real yield still runs from about
-        <b class="num">&minus;0.95pp</b> at the 91-day bill to
-        <b class="num">&minus;0.40pp</b> at the 364-day, so this sleeve is losing
-        purchasing power — considerably more slowly than a month ago, when the same
-        calculation against July's <b class="num">6.2%</b> gave roughly
-        <b class="num">&minus;1pp</b> across the curve, but losing it. It earns its 15%
-        on zero duration risk and on being the dry powder to rebalance into a drawdown
-        rather than sell into one — not on being a store of real value.</p>
+        return. What justifies keeping 15% is that peso cash is genuinely paid in
+        <em>nominal</em> terms — T-bills at <b class="num">5.14%</b> to
+        <b class="num">5.72%</b> after three BSP hikes to <b class="num">5.00%</b>.
+        Against August inflation of <b class="num" id="rycpi">—</b> the real yield still
+        runs about <b class="num" id="ry91">—</b> to <b class="num" id="ry364">—</b>, so
+        the sleeve is losing purchasing power — slowly. It earns its place on zero
+        duration risk and on being the dry powder to rebalance <em>into</em> a drawdown
+        rather than sell into one, not on being a store of real value.</p>
     </div>
 
     <div class="card">
       <h3>Conclusion</h3>
       <p id="concl">Moving from the baseline to the optimised allocation improves both
         axes at once.</p>
-      <p style="margin-bottom:0">That is a genuine improvement on both axes at once, not
-        a trade of one for the other — and it comes from re-weighting four funds the
-        investor already holds, with no new products, no leverage and no market timing.
-        The mechanism is simple enough to state in one sentence: <strong>swap
+      <p style="margin-bottom:0">Both axes improve at once — not a trade of one for the
+        other — from re-weighting four funds the investor already holds, with no new
+        products, no leverage and no market timing. In one sentence: <strong>swap
         concentrated long-duration tech beta for the same tech exposure with the
         volatility sold, and put the proceeds into the cheapest earnings growth
         available.</strong></p>
@@ -862,26 +813,23 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Keeping this current</p>
     <h2>Reviewed by hand</h2>
-    <p>There is no automated refresh. Everything below is the review this page
-      needs to stay honest, written out so it can be worked through deliberately.
-      The figures carry the as-of date in the header — treat anything older than
-      a week as a forecast built on stale inputs.</p>
-    <div class="card">
-      <h3>Not in these numbers yet</h3>
-      <p class="note">Scheduled events dated after the as-of date above. Nothing
-        on this page accounts for them.</p>
-      <div id="catalysts"></div>
-    </div>
-    <div class="card" id="monitors"></div>
+    <p>Nothing here refreshes itself. Every figure is recomputed from the model engine
+      when the inputs are refreshed by hand, and the header carries the as-of date —
+      treat anything more than a week old as a forecast built on stale inputs. The
+      review procedure, the claim register and the full defect history live in the
+      repository alongside the engine.</p>
   </section>
 
   <section>
     <p class="eyebrow">Sources</p>
     <h2>Every number traces to one of these</h2>
-    <p>Primary sources are central banks, statistical agencies and the fund managers'
-      own published documents. Where a figure is an estimate rather than a published
-      number, it is labelled as an estimate on the page where it appears.</p>
-    <div class="card" id="sources"></div>
+    <p>Central banks, statistical agencies and the fund managers' own documents. Where
+      a figure is an estimate rather than a published number, it is labelled as one
+      where it appears.</p>
+    <details class="card discl">
+      <summary><b id="srccount">—</b> sources &middot; tap to open</summary>
+      <div id="sources"></div>
+    </details>
   </section>
 
   <section>
@@ -893,15 +841,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
           expectations built from published capital-market assumptions and current
           valuations. They are not guarantees, and no fund's realised return will
           match them exactly.</li>
-        <li><b>One fee estimate left.</b> The ongoing charges of the JPMorgan Asia Equity
-          Dividend and Fidelity Global Technology target funds are taken at
-          <b class="num">1.55%</b> and — no longer an estimate —
-          <b class="num">1.04%</b>. Fidelity publishes the Global Technology OCF, so that
-          one is now a verified figure. The Asia estimate is anchored on J.P. Morgan's
-          published <b class="num">1.50%</b> management fee for the target fund and
-          deliberately errs high; it replaced an unanchored <b class="num">0.80%</b>
-          that had flattered the sleeve by roughly <b class="num">0.75pp</b> a year.
-          Every other fee on this page is a published number.</li>
+        <li><b>One fee estimate left.</b> Every fee here is a published number except
+          the JPMorgan Asia Equity Dividend ongoing charge, taken at
+          <b class="num">1.55%</b> — anchored on J.P. Morgan's published
+          <b class="num">1.50%</b> management fee and deliberately erring high.</li>
         <li><b>Drawdown is expected, not worst-case.</b> The figures describe a
           drawdown you should plan to experience. The stress scenarios show the tail.</li>
         <li><b>Correlations are stable inputs to an unstable world.</b> The
@@ -1129,7 +1072,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 2.78,
    "12M": 3.0,
    "10Y": 3.44,
-   "why": "CUT across the near horizons, anchor held. The August payrolls beat still stands (+162k against a 53k consensus, unemployment 4.1%) but the rate path has repriced hard against duration: the 10-year closed 4.92% on 10 Sep, a ten-year high after touching 4.93%, and CME FedWatch has the 15-16 Sep hike at 85.6% against 58% a week ago. US equities fell four straight sessions into 11 Sep as WTI crossed $100. August CPI was genuinely mixed - core improved to 2.4% y/y and shelter eased to 3.0%, but core rose 0.3% on the month against a 0.2% consensus and gasoline is +27.4% y/y. The 10-year anchor stays at 6.5 on two structural points that the last fortnight has strengthened rather than weakened: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX 22.4x forward still sits below its 10y (22.9x) and 5y (24.7x) averages.",
+   "why": "Near horizons cut, ten-year anchor held. Payrolls are strong, but the rate path has repriced hard against duration: the 10-year closed 4.92%, a ten-year high, and the 16 Sep hike is 85.6% priced. Equities fell four straight sessions. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
    "blend": 3.15,
    "3M_10": 4.5,
    "6M_10": 5.0,
@@ -1142,7 +1085,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 1.89,
    "12M": 2.11,
    "10Y": 2.56,
-   "why": "CUT again, and it remains the worst policy/growth mismatch in the world. The ECB delivered on 10 Sep: deposit rate to 2.50%, MRO 2.65%, MLF 2.90%, effective 16 Sep - the second and final move of its shortest hiking campaign since 2011, taken explicitly because the Middle East energy shock will hold inflation above target for an extended period. That is a central bank tightening into IMF growth of 0.7% for 2026, down from 1.1%. August HICP was 3.3% against 2.9% in July with energy +14.3% y/y, and inflation excluding energy was 2.2% - so essentially the entire overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +61.6% y/y, up from +47% a week ago. The offset is unchanged and still real: at 15.4x forward it is the cheapest large market on the sheet, and the hiking cycle is now over by the ECB's own guidance.",
+   "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +61.6% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
    "blend": 2.26,
    "3M_10": 2.5,
    "6M_10": 3.0,
@@ -1155,7 +1098,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 3.0,
    "12M": 3.44,
    "10Y": 3.89,
-   "why": "CUT at the near horizons; the round-trip this model recorded last week did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2%, SoftBank -4% - and this time it was not only an energy de-rating: markets are now pricing BoJ tightening alongside the Fed, so the region faces a rate shock and a terms-of-trade shock at once. Korea, Taiwan and Japan are all large net oil importers facing Brent +61.6% y/y. Being straight about the record here: last week this note read the early-September bounce as evidence the selloff was a macro de-rating that the earnings would shrug off. The earnings still have not moved, but the de-rating has resumed and deepened, so the near-term score was too high. The 10-year anchor stays at 7.5 and the reason is unchanged: 10.5x forward against consensus EPS growth of ~52% (2026) and ~28% (2027) is a two-decade-wide discount, and JPM LTCMA still puts EM equity at 7.8%, the highest of any equity block, on a 10-15 year framework that fits this mandate.",
+   "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one, with the BoJ now expected to tighten alongside the Fed. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
    "blend": 3.53,
    "3M_10": 5.0,
    "6M_10": 5.5,
@@ -1168,7 +1111,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 3.0,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Marked DOWN at the near horizons to flat neutral across the curve. The nominal carry is intact and improving - BSP is at 5.00% after three consecutive hikes, 364-day T-bills yield 5.72%, and economists see room for one more move - but the real-carry argument has weakened. August inflation eased to 6.1%, a fourth consecutive deceleration and a five-month low, which is why this was scored 6.0 near-term last week; Brent at $106 against $96 works directly against a fifth month, and the Philippines imports essentially all of its crude. The peso closed at another record low of 62.68 on 11 Sep after touching 62.775 intraday, driven by the same forces as the last twenty-three records: a strong dollar, ten-year-high US yields and an import bill inflated by oil. Held at neutral rather than cut because the sleeve's actual job in this portfolio is zero duration risk and high nominal carry, and both are unimpaired; what is impaired is the purchasing power of the carry, which is exactly what a neutral score should say.",
+   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1%, a fourth consecutive deceleration, and Brent at $106 works directly against a fifth in a country that imports essentially all of its crude. The peso closed at another record low of 62.68. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
    "blend": 3.0,
    "3M_10": 5.5,
    "6M_10": 5.5,
@@ -1204,49 +1147,49 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.2,
    "score": 1.67,
    "score_10": 2.5,
-   "note": "CUT, and the two-sidedness this note carried last week has been settled by events. The ECB delivered on 10 Sep: deposit rate +25bp to 2.50%, MRO 2.65%, MLF 2.90%, effective 16 Sep, with the Governing Council tying the move explicitly to the Middle East energy shock and saying inflation will sit above 2% for an extended period. That is the second and final move of its shortest hiking campaign since 2011, and it is now done rather than forecast. On the US side the repricing has been violent: CME FedWatch has a 25bp hike at the 15-16 Sep FOMC at 85.6% after the August CPI print, up from 70% on 10 Sep after a hot PPI and 58% a week ago. The 10-year closed 4.92% on 10 Sep, a TEN-YEAR high, having touched 4.93%. Goldman's Jan Hatzius argued a week ago that pricing was too hawkish and a September move 'very unlikely'; that call has been overtaken, and this model records it rather than quietly dropping it. BSP is at 5.00% after three consecutive hikes and economists see room for one more. Scored 2.5, not lower, for one reason: tightening that is fully priced is tightening the market has already absorbed, and an 85.6% probability leaves far less repricing risk into the meeting than 58% did."
+   "note": "Tightening is now delivered rather than forecast. The ECB hiked 25bp to 2.50% on 10 Sep, its second and final move; CME FedWatch puts a US hike on 16 Sep at 85.6%, from 58% a week ago; the 10-year closed 4.92%, a ten-year high. BSP is at 5.00% after three consecutive hikes. Not scored lower because a hike priced at 85.6% is one the market has already largely absorbed."
   },
   {
    "name": "Inflation trajectory",
    "weight": 0.15,
    "score": 1.89,
    "score_10": 3.0,
-   "note": "HELD, and genuinely two-sided rather than held for want of a view. The core measure improved: August core CPI printed 2.4% y/y against 2.5% in July, and shelter - the stickiest large component - eased to 3.0% from 3.2%, with food at 2.7% from 3.0%. Headline was unchanged at 3.4%, in line. Against that, the energy pass-through is now unmistakable and accelerating: core rose 0.3% on the month, 0.1pp above consensus; headline rose 0.4% with gasoline up 3.9% on the month and accounting for over a third of the increase; gasoline is +27.4% y/y against +24.6% in July and fuel oil +52% against +39.1%. So the underlying disinflation is intact and the energy shock is eating it in real time. Euro HICP is 3.3% with energy +14.3% y/y. PH headline eased to 6.1% in August, a fourth consecutive deceleration, but Brent at $106 works directly against a fifth."
+   "note": "Genuinely two-sided. The core measure improved - August core CPI 2.4% y/y from 2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that progress in real time: core rose 0.3% on the month against a 0.2% consensus, gasoline is +27.4% y/y and fuel oil +52%. Euro HICP 3.3%. PH eased to 6.1%, a fourth straight deceleration that Brent at $106 works directly against."
   },
   {
    "name": "Growth momentum",
    "weight": 0.15,
    "score": 2.56,
    "score_10": 4.5,
-   "note": "CUT. The August payrolls beat that raised this driver last week is intact (+162k against a 53k consensus, unemployment 4.1%), but the terms-of-trade shock has widened faster than the labour market can offset. Brent passed $108 on 10 Sep, its highest since 19 May, and Saudi crude production fell about 1.9 million barrels a day in August after Houthi strikes on Abha, Jazan, Najran and Khamis Mushait. US equities fell for a fourth straight session on 10 Sep and Asia followed on the 11th. IMF April WEO still current (global 3.1% / 3.2%, US 2.4%, euro area 0.7%) but it was written against an oil price forty dollars lower. A hot labour market is also exactly what lets the Fed hike into this."
+   "note": "Cut. August payrolls were strong - +162k against a 53k consensus, unemployment 4.1% - but the terms-of-trade shock is widening faster than a tight labour market offsets it. Saudi output fell ~1.9 mb/d after Houthi strikes, US equities fell four straight sessions and Asia followed. The IMF's 3.1% global forecast was written against an oil price forty dollars lower."
   },
   {
    "name": "Corporate earnings",
    "weight": 0.2,
    "score": 3.67,
    "score_10": 7.0,
-   "note": "Still the strongest pillar, trimmed a further half point. Nothing has broken in the earnings themselves - Asia ex-Japan EPS ~+52% (2026) / ~+28% (2027) is unrevised and the AI capex cycle is still compounding through the semis supply chain. What has changed is the input-cost path: at $106 Brent rather than $96, the margin assumption underneath those estimates is harder to hold, and the selling on 11 Sep hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%, SoftBank -4%. That is still de-rating rather than downgrade, but the gap between the two narrows every week the oil price stays here."
+   "note": "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) is unrevised and the AI capex cycle keeps compounding through the semis supply chain. Trimmed because the margin assumption underneath those estimates is harder to hold at $106 oil than at $96, and the selling hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."
   },
   {
    "name": "Valuation support",
    "weight": 0.1,
    "score": 4.11,
    "score_10": 8.0,
-   "note": "RAISED, and for the same reason it was raised last week: the selloff made everything cheaper without changing the earnings. Four consecutive down sessions in the US and a 1.9% Nikkei fall have taken multiples lower again against unrevised estimates. NDX 22.4x forward sits below both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount, Europe 15.4x. This is the one driver the oil shock improves, and it is worth being clear why that is not a contradiction: a cheaper multiple on the same earnings is genuinely better compensation for the same risk."
+   "note": "The one driver the shock improves. Four down sessions in the US and a 1.9% Nikkei fall took multiples lower against estimates that did not move. NDX 22.4x forward sits below both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount, Europe 15.4x. A cheaper multiple on the same earnings is better compensation for the same risk."
   },
   {
    "name": "Volatility & risk appetite",
    "weight": 0.1,
    "score": 1.89,
    "score_10": 3.0,
-   "note": "CUT, and the call this model has been making for two weeks has now resolved AGAINST the complacency. Last week this note said the market was 'absorbing a live shooting conflict in the Strait of Hormuz without repricing volatility at all', with spot back at 14.32 while the curve priced 19+ by December. That gap has now closed from the spot side, hard: the VIX closed 17.84 on 10 Sep, +8.38% on the session, after touching 18.17 - breaking a 28-session range of 14 to 17 that had held since mid-August. Note what this does and does not mean. It does NOT vindicate the 'complacency is breaking' read this model made and then retracted on 5 Sep; that call was wrong on its own timing and evidence, and being right a week later by a different route is not the same as having been right. What it means is that the repricing the curve had been pointing at is now arriving in spot, driven by WTI crossing $100 and an inflation print that pushed the September hike to 85.6%."
+   "note": "The calm broke. The VIX closed 17.84 on 10 Sep, +8.38%, after touching 18.17 - ending a 28-session range of 14 to 17 that had held since mid-August. The trigger was WTI through $100 and a CPI print that made the September hike near-certain. The futures curve has priced this for weeks; it is now arriving in spot."
   },
   {
    "name": "Geopolitics & energy",
    "weight": 0.1,
    "score": 1.0,
    "score_10": 1.0,
-   "note": "CUT to the floor - this is now the worst reading this driver can carry, and the evidence has moved decisively in one direction. Brent passed $108 on 10 Sep, the highest since 19 May, and is +61.6% year on year against +47.0% a week ago. US Central Command confirmed the destruction of five named Iranian tankers in the Gulf of Oman and near Kharg Island. Houthi forces struck Saudi energy facilities at Abha, Jazan, Najran and Khamis Mushait, wounding 73 and forcing operational halts, and Saudi crude production fell roughly 1.9 million barrels a day in August as a result. Tanker rates are at record highs. Hormuz transits remain at 6 a day on PortWatch's latest published day against a pre-crisis baseline of ~85 - a ~93% shutdown - and the conflict has widened to the Bab al-Mandab. The offsets this note carried last week have not survived: the Omani-brokered reopening proposal has gone quiet, and the Chinese demand cut that was capping the price has been overwhelmed by supply losses. A floor score is not a forecast of catastrophe; it says this driver has no remaining capacity to get worse within its scale."
+   "note": "At the floor of the scale. Brent passed $108 on 10 Sep, its highest since 19 May, with Brent +61.6% y/y against +47% a week ago. US Central Command confirmed five Iranian tankers destroyed; Houthi strikes on Saudi energy sites cut output ~1.9 mb/d; tanker rates are at record highs. Hormuz transits are 6 a day against a ~85 pre-crisis baseline, a ~93% shutdown, and the conflict has widened to the Bab al-Mandab. A floor score says this driver has no room left to worsen within its scale, not that catastrophe is forecast."
   }
  ],
  "driver_scale": {
@@ -1561,6 +1504,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "ppp_now": 2.7
  },
  "vix_quote_date": "2026-09-04",
+ "regional_tilt_per_pt": 0.675,
+ "real_yield": {
+  "cpi": 6.1,
+  "t91": -0.96,
+  "t364": -0.38
+ },
  "catalysts": [
   {
    "date": "2026-09-16",
@@ -2330,7 +2279,6 @@ $("#corrnote").textContent = D.corr_note;
 (function () {
   const A = D.baseline.under_macro, B = D.optimized.macro, VC = D.vol_channel;
   const F2 = Object.fromEntries(D.funds.map(f => [f.id, f]));
-  $("#rampwas").textContent = (VC.ramp >= 0 ? "+" : "\u2212") + Math.abs(VC.ramp).toFixed(2);
   $("#qiaptilt").textContent = sg(F2.ATRQIAP.tilt_vol) + "pp";
   const capPc = (D.max_sleeve*100).toFixed(0) + "%";
   const WIDX = {ATRPHMM:0, ATRQIAP:1, ATRASEQ:2, ATRGTEC:3};
@@ -3047,6 +2995,15 @@ function donut(host, w, title, cagr, dd) {
   set("gaugenow",  D.gauge.toFixed(2));
   set("rlvix",     D.vol_channel.latest.toFixed(2));
   set("rldec",     m.vix_fut_dec.toFixed(2));
+  const gt = D.funds.find(f => f.id === "ATRGTEC");
+  set("gtecdd",    "\u2212" + Math.abs(gt.dd_macro).toFixed(0) + "%");
+  set("nfuts",     String(m.vix_futs.length));
+  set("nknots",    String(m.vix_futs.length + 1));
+  const RY = D.real_yield, mn = v => (v < 0 ? "\u2212" : "+") + Math.abs(v).toFixed(2) + "pp";
+  set("rycpi",     RY.cpi.toFixed(1) + "%");
+  set("ry91",      mn(RY.t91));
+  set("ry364",     mn(RY.t364));
+  set("tiltpp",    D.regional_tilt_per_pt.toFixed(3) + "pp");
 })();
 
 /* ---------------- volatility: curve vs latest spot ---------------- */
@@ -3079,43 +3036,8 @@ function donut(host, w, title, cagr, dd) {
   });
 })();
 
-/* ---------------- monitoring ---------------- */
-(function () {
-  const M = [
-    ["Refresh the macro inputs", "Start here",
-     "Every downstream number is a function of these. Refresh them first, from the issuing institution rather than an aggregator, then let the engine recompute.",
-     ["Policy rates: Federal Reserve, ECB, BSP",
-      "Prices: US CPI (BLS), PH CPI (PSA), Brent",
-      "The VIX complex: spot plus the two nearest futures",
-      "PH T-bill curve and the USD/PHP rate",
-      "Leave a value untouched and mark it stale rather than guess at it"]],
-    ["Re-score and re-optimise", "After the inputs move",
-     "Scores are judgements, so they need re-arguing, not just recomputing. Change a score only alongside the reason for it.",
-     ["Re-score the seven drivers and the four regions across 3M / 6M / 12M / " + HYL,
-      "Rewrite each region's rationale to cite the new evidence",
-      "Re-run the optimiser; weights stay multiples of 5 and hold all four funds",
-      "Any allocation move of 5pp or more deserves an explicit justification"]],
-    ["Re-verify the claims", "Weekly if you can",
-     "The claim register lists every figure on this page with its source and the date it was last checked. Work down it.",
-     ["Confirm each figure at its primary source, never a secondary quote",
-      "The two estimated target-fund charges are still estimates — check for a published OCF",
-      "The Asia Equity holdings are still a declared gap — fill it only from a primary source",
-      "Do not upgrade a claim's provenance unless you actually opened the document"]],
-    ["Audit the maths and the page", "Before republishing",
-     "The engine checks itself, but a check can encode a false assumption. Interrogate the checks, not just their output.",
-     ["Run the engine — every check must pass, and never loosen one to get green",
-      "Confirm the published page and the engine still agree, figure for figure",
-      "Re-derive the volatility integration and drawdown calibration independently",
-      "Cross-check the figures written into the page's prose against the payload",
-      "Render at phone width: no overflow, no clipped labels, no console errors"]]
-  ];
-  $("#monitors").innerHTML = M.map(([h, w, p, li], i) =>
-    `<div class="mon"><span class="idx">${i+1}</span><div class="mb">
-      <h4>${h}</h4><span class="when">${w}</span>
-      <p>${p}</p><ul>${li.map(x=>`<li>${x}</li>`).join("")}</ul></div></div>`).join("");
-})();
-
 /* ---------------- sources ---------------- */
+$("#srccount").textContent = D.sources.length;
 $("#sources").innerHTML = D.sources.map(s =>
   `<a class="src" href="${s.url}" target="_blank" rel="noopener noreferrer">
      <div class="o">${s.org} ↗</div><div class="w">${s.what}</div></a>`).join("");
