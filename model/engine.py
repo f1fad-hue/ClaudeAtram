@@ -45,10 +45,9 @@ MACRO = {
     "us_cpi_shelter": 3.0,     # eased from 3.2
     "us_cpi_gasoline_yoy": 27.4,
     "us_pce_12m": 3.7, "us_pce_6m": 4.1,
-    "ust_10y": 4.92,           # 10 Sep - a ten-year high
-    "ust_10y_wk_high": 4.93,   # 10 Sep intraday
-    "ust_2y": 4.377,           # highest since January 2025
-    "ust_30y": 5.233,
+    "ust_10y": 4.96,           # 11 Sep close; 4.92 on 10 Sep was already a ten-year high
+    "ust_2y": 4.63,            # 11 Sep close - was 4.377 and marked STALE on 10 Sep
+    "ust_30y": 5.36,           # 11 Sep close
 
     "fed_hike_odds_sep": 85.6,   # CME FedWatch, 11 Sep, after August CPI
     "fed_hike_odds_prev": 70.0,  # 10 Sep, after PPI
@@ -62,14 +61,13 @@ MACRO = {
     "ecb_last_move_bp": 25,
     "ea_hicp_aug": 3.3, "ea_hicp_jul": 2.9, "ea_energy_aug": 14.3,
     "ea_hicp_2026": 3.0,
-    "ea_hicp_2027": 2.3,
     "ea_hicp_2028": 2.0,
     "bsp_rrp": 5.0,
     "bsp_last_move_bp": 25,
     "bsp_hikes_since_apr": 3,
     "bsp_cum_bp": 75,
     "ph_cpi_aug": 6.1, "ph_cpi_ytd_avg": 5.2,
-    "ph_cpi_jul": 6.2, "ph_core_jul": 4.2,
+    "ph_cpi_jul": 6.2,
     "ph_cpi_jun": 6.4,
     "bsp_infl_2026": 6.1,
     "bsp_infl_2027": 5.4,
@@ -83,11 +81,13 @@ MACRO = {
     "ph_tbill_91": 5.138,
     "ph_tbill_182": 5.517,
     "ph_tbill_364": 5.717,
-    "brent": 105.82,           # 11 Sep 09:15 ET; Brent benchmark
+    "brent": 104.61,           # 11 Sep SETTLE, -2.8% on the day, +8.7% on the week
     "brent_high": 108.0,       # 10 Sep session - highest since 19 May 2026
     "brent_prev": 96.28,       # 7 Sep - the level this model carried a week ago,
                                # published so notes can cite the move auditably
-    "brent_wk": 9.3,
+    "brent_closure": 130.0,    # the Hormuz full-closure level the stress row models;
+                               # published so the scenario and the notes citing it
+                               # cannot drift apart
     "brent_mom": 13.24,
     # Year-ago base, implied by the last verified pair ($96.28 at +46.99% y/y).
     # brent_yoy is DERIVED from it below rather than typed, so the level and the
@@ -119,6 +119,17 @@ MACRO = {
     "vix_latest_chg_pct": 8.38,
     "vix_latest_high": 18.17,  # 10 Sep intraday
     "vix_prev_close": 16.46,   # 9 Sep close, implied by the +8.38% move
+    # THE SESSION AFTER. 11 Sep reversed much of it: equities rose for the first time
+    # in five sessions, oil settled down, and the VIX was -12.50% at midday. No
+    # CONFIRMED 11 Sep close was found, so nothing is typed as one - vix_latest stays
+    # the last verified close. The reversal is recorded because it changes the read,
+    # not because it changes the curve.
+    "vix_next_intraday_pct": -12.50,   # 11 Sep midday, from the 17.84 close
+    "vix_next_date": "2026-09-11",
+    "spx_close": 7656.98, "spx_chg_pct": 0.86,      # 11 Sep - first gain in five
+    "wti_settle": 100.05, "wti_chg_pct": -2.4,      # 11 Sep settle
+    "brent_wk_pct": 8.7,                             # week to 11 Sep, still above $100
+    "hormuz_talks": "Tehran to meet Gulf states in Oman on the Strait (11 Sep)",
     "vix_prev": 15.20,         # 3 Sep close, after the -6.98% unwind
     "vix_spike": 16.34,        # 2 Sep close, the Hormuz spike
     "vix_2026_low": 14.18,     # 17 Aug intraday, the 2026 low
@@ -158,7 +169,6 @@ MACRO = {
     "taiwan_ytd": 49.0,
     "ltcma_us_eq": 6.7,
     "ltcma_em_eq": 7.8,
-    "ltcma_6040plus": 6.9,
 }
 
 # ----------------------------------------------------------------------------
@@ -224,7 +234,7 @@ CATALYSTS = [
      "part of why the Nikkei fell 1.9% on 11 September."),
     ("2026-10-06", "Philippine September CPI",
      "The peso sleeve's real-carry argument rests on PH inflation decelerating; "
-     "August was the fourth consecutive slowdown, and Brent at $106 works "
+     "August was the fourth consecutive slowdown, and Brent at $105 works "
      "directly against a fifth."),
 ]
 
@@ -347,11 +357,11 @@ NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research sc
 REGIONS = {
     "US": {
         "3M": 4.5, "6M": 5.0, "12M": 5.5, HZ_LABEL: 6.5,
-        "why": "Near horizons cut, ten-year anchor held. Payrolls are strong, but the rate path has repriced hard against duration: the 10-year closed 4.92%, a ten-year high, and the 16 Sep hike is 85.6% priced. Equities fell four straight sessions. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
+        "why": "Near horizons cut, ten-year anchor held. Payrolls are strong, but the rate path has repriced hard against duration: the 10-year closed 4.96%, past the 4.92% ten-year high set the session before, with the 2-year at 4.63% and the 30-year at 5.36%, and the 16 Sep hike is 85.6% priced. Equities fell four straight sessions. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
     },
     "EUROPE": {
         "3M": 2.5, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
-        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +61.6% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
+        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +59.7% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
     },
     "ASIA": {
         "3M": 5.0, "6M": 5.5, "12M": 6.5, HZ_LABEL: 7.5,
@@ -359,7 +369,7 @@ REGIONS = {
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1%, a fourth consecutive deceleration, and Brent at $106 works directly against a fifth in a country that imports essentially all of its crude. The peso closed at another record low of 62.68. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1%, a fourth consecutive deceleration - though BSP's own 2027 forecast is 5.4% - and Brent at $105 works directly against a fifth in a country that imports essentially all of its crude. The peso closed at another record low of 62.68. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
     },
 }
 for r in REGIONS.values():
@@ -381,13 +391,15 @@ DRIVERS = [
      "on 10 Sep, its second and final move; CME FedWatch puts a US hike on 16 Sep at "
      "85.6%, from 58% a week ago; the 10-year closed 4.92%, a ten-year high. BSP is "
      "at 5.00% after three consecutive hikes. Not scored lower because a hike priced "
-     "at 85.6% is one the market has already largely absorbed."),
+     "at 85.6% is one the market has already largely absorbed. The Fed itself is "
+     "still formally on hold - a 9-3 hold (3 dissents for a HIKE) in July - so a "
+     "move would be the committee catching up to its own dissenters."),
     ("Inflation trajectory", 0.15, 3.0,
      "Genuinely two-sided. The core measure improved - August core CPI 2.4% y/y from "
      "2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that "
      "progress in real time: core rose 0.3% on the month against a 0.2% consensus, "
      "gasoline is +27.4% y/y and fuel oil +52%. Euro HICP 3.3%. PH eased to 6.1%, a "
-     "fourth straight deceleration that Brent at $106 works directly against."),
+     "fourth straight deceleration that Brent at $105 works directly against."),
     ("Growth momentum", 0.15, 4.5,
      "Cut. August payrolls were strong - +162k against a 53k consensus, unemployment "
      "4.1% - but the terms-of-trade shock is widening faster than a tight labour "
@@ -407,19 +419,31 @@ DRIVERS = [
      "10.5x is a two-decade-wide discount, Europe 15.4x. A cheaper multiple on the "
      "same earnings is better compensation for the same risk."),
     ("Volatility & risk appetite", 0.1, 3.0,
-     "The calm broke. The VIX closed 17.84 on 10 Sep, +8.38%, after touching 18.17 - "
-     "ending a 28-session range of 14 to 17 that had held since mid-August. The "
-     "trigger was WTI through $100 and a CPI print that made the September hike "
-     "near-certain. The futures curve has priced this for weeks; it is now arriving "
-     "in spot."),
-    ("Geopolitics & energy", 0.1, 1.0,
-     "At the floor of the scale. Brent passed $108 on 10 Sep, its highest since "
-     "19 May, with Brent +61.6% y/y against +47% a week ago. US Central Command "
-     "confirmed five Iranian tankers destroyed; Houthi strikes on Saudi energy sites "
-     "cut output ~1.9 mb/d; tanker rates are at record highs. Hormuz transits are 6 "
-     "a day against a ~85 pre-crisis baseline, a ~93% shutdown, and the conflict has "
-     "widened to the Bab al-Mandab. A floor score says this driver has no room left "
-     "to worsen within its scale, not that catastrophe is forecast."),
+     "Held, and the reason is a round trip rather than a regime change. Spot broke "
+     "out on 10 Sep - the VIX closed 17.84, +8.38%, after touching 18.17, ending a "
+     "28-session range of 14 to 17 - on WTI through $100 and a CPI print that made "
+     "the September hike near-certain. The very next session gave most of it back: "
+     "the S&P 500 rose 0.86% to 7,656.98, its first gain in five sessions, oil "
+     "settled down 2.8%, and the "
+     "VIX was -12.50% at midday. This model has now twice mistaken a single session "
+     "for a regime change, so it is not calling one here. What is unchanged is the "
+     "shape of the trade: the curve still prices 19+ by December while delivered "
+     "volatility keeps returning to the mid-teens, and that gap is what the "
+     "covered-call sleeve is paid to carry."),
+    ("Geopolitics & energy", 0.1, 1.5,
+     "Still the weakest link by a wide margin. Brent passed $108 on 10 Sep, its "
+     "highest since 19 May, then settled the week at $104.61 - Brent +59.7% y/y "
+     "against +47% a week ago, and +8.7% on the week. US Central Command confirmed "
+     "five Iranian tankers destroyed; Houthi strikes on Saudi energy sites cut output "
+     "~1.9 mb/d; tanker rates are at record highs. Hormuz transits are 6 a day against "
+     "a ~85 pre-crisis baseline, a ~93% shutdown, with 436 vessels holding position "
+     "off berth. NOT scored at the floor, and the "
+     "reason is internal consistency rather than optimism: the Hormuz row in the "
+     "stress table on this same page models full closure and Brent above $130, a "
+     "strictly worse state than today. A floor score would assert this driver has no "
+     "room left to worsen while the page models it worsening. Friday's 2.8% decline "
+     "came on news that Tehran to meet Gulf states in Oman on the Strait - "
+     "diplomacy this model has watched stall before, and is not pricing."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -892,7 +916,7 @@ SCENARIOS = [
     ("Hormuz escalation", "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, "
      "~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US "
      "forces have since destroyed one Iranian tanker and disabled two more. This row "
-     f"models the tail from here: full Strait closure and Brent to $130+ from "
+     f"models the tail from here: full Strait closure and Brent to ${MACRO['brent_closure']:.0f}+ from "
      f"${MACRO['brent']:.0f}. Global CPI re-accelerates, Fed forced to hike, multiples "
      "compress hardest at the long end.",
      {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5}, 1.60),
@@ -1245,7 +1269,8 @@ def report():
     # the current level ($105.82). Requiring every quote to equal spot would have
     # forced the true statement out of the prose to satisfy the check - the same
     # scoping mistake the scenario counterfactual exposed on 2026-09-10.
-    _brent_ok = [MACRO["brent"], MACRO["brent_high"], MACRO["brent_prev"]]
+    _brent_ok = [MACRO["brent"], MACRO["brent_high"], MACRO["brent_prev"],
+                 MACRO["brent_closure"]]
     _quoted = [
         (r"Brent[^.]{0,20}?\$(\d+(?:\.\d+)?)", _brent_ok, 1.0, "Brent level"),
         (r"Brent \+(\d+(?:\.\d+)?)%", [MACRO["brent_yoy"]], 1.0, "Brent y/y"),
@@ -1255,6 +1280,14 @@ def report():
         checks.append((f"every {lab} quoted in prose matches a published input",
                        bool(found) and all(any(abs(v - w) <= tol for w in wants)
                                            for v in found)))
+
+    # A driver cannot sit at the floor of its scale while the page models a state
+    # strictly worse than the one it describes. On 2026-09-11 geopolitics & energy was
+    # scored 1.0 - "no room left to worsen" - beside a Hormuz row modelling full
+    # closure and Brent above $130 against a settle of $104.61. Both cannot be true.
+    _geo = next(d for d in DRIVERS if d[0].startswith("Geopolitics"))
+    checks.append(("no driver sits at the scale floor while a worse state is modelled",
+                   _geo[2] > 1.0 and MACRO["brent_closure"] > MACRO["brent"]))
 
     # ---- the volatility time axis ------------------------------------------
     # Every maturity on the strip must reproduce from the contract settlement

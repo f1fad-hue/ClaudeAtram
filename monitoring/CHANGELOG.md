@@ -2,6 +2,89 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-11 (second pass) — The breakout reversed, and a driver was scored below its own stress row
+
+Full checklist run plus a research pass to close the three gaps recorded this
+morning. All 22 requirements pass. Two of the three gaps are closed with confirmed
+figures, and the volatility call published earlier today needed correcting within
+hours.
+
+### The correction
+
+This morning's page was headlined **"The calm broke — from the spot side"**, on the
+10 September VIX close of 17.84. The very next session reversed most of it: the
+S&P 500 rose 0.86% to 7,656.98, its first gain in five; WTI settled down 2.4% at
+$100.05; Brent settled down 2.8%; and the VIX was **−12.50% at midday** on news that
+Tehran will meet Gulf states in Oman about the Strait.
+
+So the range break did not hold. The headline is now **"A range break that did not
+hold"**, and the driver note says plainly that this model has twice mistaken a single
+session for a regime change and is not doing it a third time. No confirmed 11 Sep VIX
+close was found, so none is carried — the reversal is recorded as the intraday move
+it verifiably was.
+
+### A driver scored below the worst case on its own page
+
+Geopolitics & energy was at **1.0, the floor of the research scale**, with a note
+saying the driver had "no room left to worsen". On the same page, the Hormuz row of
+the stress table models full Strait closure and Brent above $130 against a settle of
+$104.61 — a strictly worse state. Both cannot be true.
+
+Raised to 1.5, and the inconsistency is now machine-checked: no driver may sit at the
+scale floor while the page models a state worse than the one it describes. The
+closure level is published as an input so the scenario and every note citing it
+cannot drift apart. Verified to bite.
+
+### Gaps closed
+
+- **Brent now has a confirmed settle** — $104.61 on 11 Sep, −2.8% on the day, +8.7%
+  on the week, still above $100. This morning's figure was a timestamped intraday
+  print because sources spread $102–108 with no settle confirmed.
+- **The 2-year Treasury yield is no longer stale** — 4.63% on 11 Sep against the
+  4.377% carried since 7 Sep, a 25bp move. The 10-year is 4.96% and the 30-year 5.36%.
+- **The VIX futures strip still has no fresh quote.** Every source found still echoes
+  the 4 September levels beside a spot near 14.9. The curve stays on its quote date;
+  the gap remains open and is recorded as open.
+
+### A new check, and a flaw in it found by its own bite test
+
+The verifier now asserts that **every published input is cited somewhere** — in code,
+in prose, or in the page markup. This is the inverse of checklist C1: C1 says every
+figure on the page traces to an input, this says every input reaches the page.
+
+It matters more than housekeeping. An uncited input is a number sitting in the
+payload that can whitelist a *wrong* page figure by coincidence — which is exactly how
+a stale −40% drawdown passed C1 yesterday, by matching an unrelated frontier weight.
+Fewer unused numbers means a stricter C1.
+
+It immediately found eight orphans, most created by yesterday's conciseness pass:
+`ust_10y_wk_high`, `ust_2y`, `ust_30y`, `ea_hicp_2027`, `ph_core_jul`,
+`bsp_infl_2027`, `brent_wk`, `ltcma_6040plus`. Five were dropped as no longer earning
+their place; three were freshly researched and are now cited in the notes.
+
+**The first version of this check was broken, and its own bite test caught it.** A
+probe input of 1234.56 was reported as cited. The cause: the check generated an
+"abbreviated thousands" candidate as `value/1000` rounded, which for anything between
+1000 and 9999 produces the token **"1"** — and "1" matches somewhere in any document.
+Worse, that bug had made the check pass on the eight real orphans above, so its first
+green run was false. Fixed by only generating that candidate when it is a distinctive
+token, and requiring every candidate to be at least two characters.
+
+Two lessons, both already in this file in other forms: a check is not verified until
+you have watched it fail, and a check that passes on its first run deserves more
+suspicion than one that fails.
+
+### Also
+
+- The US note still said the 10-year "closed 4.92%" after the input moved to 4.96%.
+  Payload prose is not covered by C1, which only scans static page markup — noted as
+  a remaining hole rather than papered over.
+- `checklist.js` requirement 6 was still labelled "net 5y CAGR" three days after the
+  mandate went to ten years. The check itself was correct; only its name was stale.
+
+**Checks: engine 81 → 82, independent verifier 207 → 208, requirements checklist
+22/22.** Both new checks verified to bite.
+
 ## 2026-09-11 (editing pass) — Made the page concise, and found three stale figures doing it
 
 Asked to make the page concise. It is **28% shorter** — 54,333 to 39,062 characters
