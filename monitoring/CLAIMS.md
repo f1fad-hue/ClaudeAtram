@@ -17,8 +17,10 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | Claim | Value | Kind | Source | Last verified |
 |---|---|---|---|---|
 | Fed funds target range | 3.50–3.75% | P | federalreserve.gov FOMC statement 2026-07-29 | 2026-09-05 |
+| Sep FOMC hike odds | 85.6% (11 Sep, after August CPI); 70% on 10 Sep after PPI; 58% a week earlier | P | CME FedWatch (verified via search result) | 2026-09-11 |
+| US August CPI | headline 3.4% y/y unchanged, +0.4% m/m; core 2.4% y/y, +0.3% m/m (0.1pp above consensus); shelter 3.0% from 3.2%; gasoline +27.4% y/y | P | BLS release 2026-09-11 (verified via search result) | 2026-09-11 |
 | July FOMC vote | 9–3 hold, 3 dissents for a hike | P | federalreserve.gov | 2026-09-05 |
-| ECB deposit facility rate | 2.25% | P | ecb.europa.eu decision 2026-06-11 | 2026-09-05 |
+| ECB deposit facility rate | **2.50%** — hiked +25bp on 10 Sep 2026; MRO 2.65%, MLF 2.90%, effective 16 Sep | P | ECB Governing Council decision 2026-09-10 (verified via search result) | 2026-09-11 |
 | ECB June move | +25bp, first hike in 3 years | P | ecb.europa.eu | 2026-09-05 |
 | Euro-area HICP projection | 3.0% / 2.3% / 2.0% (2026/27/28) | P | Eurosystem staff projections | 2026-09-05 |
 | BSP target RRP rate | 5.00% | P | bsp.gov.ph key rates | 2026-09-05 |
@@ -31,23 +33,23 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | US CPI headline y/y (Jul 2026) | 3.4% | P | bls.gov CPI release | 2026-09-05 |
 | US CPI core y/y (Jul 2026) | 2.5% | P | bls.gov | 2026-09-05 |
 | **US PCE y/y / 6m annualised** | **3.7% / 4.1%** | P | cited by Chair Warsh, Jackson Hole (CNBC) | 2026-09-05 |
-| US 10-year Treasury yield | 4.784% (4 Sep); 4.818% intraweek, highest since Nov 2023 | P | market data | 2026-09-07 |
-| US 2-year Treasury yield | 4.377%, highest since Jan 2025 | P | market data | 2026-09-07 |
+| US 10-year Treasury yield | 4.92% (10 Sep close), 4.93% intraday — a **ten-year high** | P | market data (verified via search result) | 2026-09-11 |
+| US 2-year Treasury yield | 4.377%, highest since Jan 2025 | P | market data | 2026-09-07 — **STALE**: no 10 Sep print found; the 10-year moved 14bp over the same window, so treat this as a floor |
 | Fed Sep 15-16 hike probability | 58%, from 49.4% pre-payrolls | P | CME FedWatch | 2026-09-05 |
 | **Euro area HICP (Aug 2026 flash)** | **3.3%**, from 2.9% Jul | P | Eurostat flash, 1 Sep | 2026-09-05 |
 | Euro area energy inflation (Aug) | +14.3% y/y | P | Eurostat flash | 2026-09-05 |
 | ECB Sep-10 expectation | +25bp to 2.50% — all 65 economists polled; 91% see it held to year end; shortest campaign since 2011 | P | Reuters poll 31 Aug–3 Sep | 2026-09-07 |
 | PH core inflation (Jul 2026) | 4.2%, from 4.4% Jun | P | PSA / BusinessWorld | 2026-09-05 |
-| Hormuz transits | 6 on 30 Aug vs a ~85/day pre-crisis baseline (~93% shutdown); 436 vessels holding | P | IMF PortWatch / Bloomberg | 2026-09-07 |
+| Hormuz transits | 6 on **6 Sep** (latest published day found) vs a ~85/day pre-crisis baseline (~93% shutdown) | P | IMF PortWatch (verified via search result, not at PortWatch directly; a separate non-PortWatch estimate put traffic nearer ~10/day on 10 Sep) | 2026-09-11 |
 | **US nonfarm payrolls (Aug 2026)** | **+162,000** vs 53,000 consensus | P | bls.gov Employment Situation | 2026-09-05 |
 | US nonfarm payrolls (Jul 2026) | −23,000 | P | bls.gov | 2026-09-05 |
 | **PH CPI (Aug 2026)** | **6.1%**, from 6.2% Jul | P | psa.gov.ph | 2026-09-05 |
 | PH CPI year-to-date average | 5.2% | P | psa.gov.ph | 2026-09-05 |
 | US unemployment rate | 4.1% | P | bls.gov | 2026-09-05 |
 | PH T-bill 91d / 182d / 364d | 5.138% / 5.517% / 5.717% | P | treasury.gov.ph auction results | 2026-09-05 |
-| USD/PHP | 62.625 — **8 Sep close** (reported 9 Sep), the 23rd record-low close of 2026, past 62.59 on 4 Sep; prior session 62.586 | P | Manila Times / BusinessWorld / Philstar | 2026-09-09 |
-| Brent crude | $96.28; holding above $96 on 7 Sep after +9.3% on the week | P | EIA / market data | 2026-09-08 |
-| Brent y/y change | +46.99% | P | market data | 2026-09-07 |
+| USD/PHP | 62.68 — **11 Sep close**, another record low; 62.775 intraday; prior record 62.625 on 8 Sep | P | Philippine business press (verified via search result) | 2026-09-11 |
+| Brent crude | $105.82 (11 Sep 09:15 ET); **passed $108 on 10 Sep**, highest since 19 May | P | market data (verified via search result). NOTE: intraday sources on 10 Sep spread $102–108; no single settle confirmed at a primary source, so the level is timestamped rather than presented as a close | 2026-09-11 |
+| Brent y/y change | +61.56% | D | derived from $105.82 against a $65.50 year-ago base, itself implied by the last verified pair ($96.28 at +46.99%) | 2026-09-11 |
 | Brent Q1 2026 close | $118 from $61 at year open | P | eia.gov Today in Energy | 2026-09-05 |
 | IMF global growth 2026 / 2027 | 3.1% / 3.2% | P | IMF WEO April 2026 | 2026-09-05 |
 | IMF US growth 2026 / 2027 | 2.4% / 2.0% | P | IMF WEO April 2026 | 2026-09-05 |
@@ -60,6 +62,8 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | Spot VIX | 14.32 (4 Sep close - the last trading day; 5 Sep was a Saturday) | P | Cboe | 2026-09-07 |
 | VIX 2026 low | 14.18 (17 Aug) | P | CNBC / Cboe | 2026-09-07 |
 | VIX Hormuz spike | 16.34 (2 Sep close), retraced to 15.20 then 14.32 | P | market reports | 2026-09-07 |
+| VIX latest close | **17.84 on 10 Sep**, +8.38%, high 18.17 — broke a 28-session 14–17 range | P | market reports, two independent searches agreeing; one outlet also printed 17.47/+6.14% for the same session, and both imply the same 16.46 prior close, so the close is carried as 17.84 and the discrepancy is recorded rather than hidden | 2026-09-11 |
+| VIX futures strip is NOT re-quoted | curve still on its 4 Sep quote date | — | every source found on 11 Sep echoes the same four 4 Sep levels beside a spot near 14.9, which dates those quotes rather than confirming them; the curve is therefore left on 4 Sep and the 3.52-point spot divergence is published | 2026-09-11 |
 | VIX 30-day range / average | 14.18–16.80 / 15.28 | P | Cboe | 2026-09-07 |
 | VIX futures strip (levels) | Sep 16.57 · Oct 18.41 · Nov 19.08 · Dec 19.26 | P | VIX term-structure data (verified via search result, not at Cboe directly) | 2026-09-07 |
 | VIX quote date | 2026-09-04 (Friday close) | P | the date every VIX level above is quoted at; asserted to be a weekday and not after AS_OF | 2026-09-10 |

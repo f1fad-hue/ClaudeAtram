@@ -2,6 +2,129 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-11 (research + audit) — The calm broke, and the curve did not move with it
+
+Search was available again after being down for all of 10 September, so this was a
+full input refresh as well as an audit. Nearly every macro input moved, the broad
+gauge fell 2.65 → 2.43, and the optimised weights did not change at all.
+
+### What actually happened in the market
+
+- **The ECB hiked.** Deposit rate +25bp to **2.50%** on 10 Sep, MRO 2.65%, MLF
+  2.90%, effective 16 Sep — the second and final move of its shortest campaign
+  since 2011, taken explicitly because the energy shock will hold inflation above
+  target for an extended period.
+- **August CPI printed on 11 Sep.** Headline **3.4%** unchanged and in line; core
+  **2.4%** y/y, better than the 2.5% this model carried; but core rose 0.3% m/m
+  against a 0.2% consensus, headline 0.4% m/m with gasoline contributing over a
+  third, gasoline **+27.4%** y/y and fuel oil **+52%**. Disinflation intact
+  underneath, energy eating it in real time.
+- **September FOMC went from a coin-flip to near-certainty.** CME FedWatch
+  **58% → 70% → 85.6%** across 4, 10 and 11 September. The US 10-year closed
+  **4.92%**, a ten-year high.
+- **Brent went through $108** on 10 Sep, highest since 19 May, **+61.6% y/y**
+  against +47% a week ago. Saudi output fell ~1.9 mb/d after Houthi strikes; US
+  CENTCOM confirmed five Iranian tankers destroyed; tanker rates at record highs.
+- **The peso set another record low**, 62.68 on 11 Sep, 62.775 intraday.
+- **The VIX broke out.** Closed **17.84** on 10 Sep, +8.38%, after touching 18.17 —
+  ending a 28-session range of 14 to 17.
+
+### The judgement call this pass turned on
+
+For three weeks the central claim on this page was that the market was priced for
+calm it did not expect to keep: spot near its 2026 low while the curve priced 19+
+by December. **That gap has now closed from the spot side.** The obvious move was
+to re-anchor the volatility curve on 17.84 and re-run everything.
+
+That would have been wrong, and the model does not do it. The futures strip has
+not been re-quoted since 4 September. Every source found on 11 September still
+echoes the same four contract levels — 16.57 / 18.41 / 19.08 / 19.26 — *alongside
+a spot of about 14.9*, which dates those quotes rather than confirming them.
+Splicing a 10 September spot onto a 4 September strip does not produce a newer
+term structure; it produces a front-month backwardation that no market printed,
+and that artefact would flow straight through the vol ramp into every fund's tilt
+and into the optimiser.
+
+So the curve keeps its own spot of 14.32, paired with the strip it was bootstrapped
+from and with the `VIX_QUOTE_DATE` introduced yesterday. The latest observation is
+published as a separate, separately-dated field, the 3.52-point divergence is stated
+on the page rather than buried, and the news is carried by the volatility **driver
+score**, which is a judgement, rather than by the curve, which is an arithmetic
+object requiring a consistent snapshot. Six checks enforce the separation, including
+one that fails if the curve's t=0 is ever silently replaced by the latest spot.
+
+### Scores
+
+Gauge **2.65 → 2.43** (1–5). Geopolitics & energy cut to the **floor** of its scale;
+monetary policy 3.5 → 2.5; growth 5.5 → 4.5; earnings 7.5 → 7.0; volatility &
+risk appetite 3.5 → 3.0. Valuation support was the one improvement, 7.5 → 8.0 —
+the same earnings got cheaper. Regions: US 5.5/5.5/6.0/6.5 → 4.5/5.0/5.5/6.5,
+Europe 3.0/3.5/4.0/4.5 → 2.5/3.0/3.5/4.5, Asia 6.0/6.5/7.0/7.5 → 5.0/5.5/6.5/7.5,
+Philippines 6.0/6.0/5.5/5.5 → flat 5.5. Every ten-year anchor held; all the cuts
+are at horizons under a year, which is what a terms-of-trade shock should do to a
+ten-year mandate.
+
+Two notes now record calls that went against this model rather than quietly
+dropping them: the Asia note says plainly that last week's read of the early-September
+bounce was too generous at the near horizon, and the volatility note says that being
+right about the repricing a week later by a different route is **not** the same as
+having been right when it first made the call and retracted it.
+
+### Result
+
+Optimised weights are **unchanged at 15 / 50 / 30 / 5** despite every input moving.
+Net CAGR 7.58% → 7.49%, drawdown −25.6% → −25.7%, baseline 7.33% → 7.25%. The
+allocation is not sensitive to a week of bad news, which is worth more as evidence
+than a reshuffle would have been.
+
+### Defects found and fixed
+
+1. **A guard that had stopped biting.** The scenario rows now interpolate the hike
+   odds from the input, so the check that "prose matches the input" passed with the
+   input reverted to 58 — the prose moved with it. A presence test was no better,
+   because the notes legitimately carry the figure's history ("up from 58% a week
+   ago"), which satisfies a presence check with a stale number. The guard now reads
+   the FedWatch sentence in the monetary-policy note — the one place the live figure
+   is asserted by hand — and requires the first percentage in it to be the input.
+   Verified to bite.
+2. **The Brent guard was too narrow in the other direction.** Written on 10 Sep to
+   require every quoted Brent figure to equal spot, it rejected the true statements
+   "passed $108 on 10 Sep" and "at $106 rather than $96". The rule should be that a
+   quoted figure matches *some published input*, not that it matches spot, so the
+   dated high and the prior level are now published and the guard accepts any of the
+   three. Same scoping lesson as the $130 counterfactual, in the opposite direction.
+3. **The odds check's number format was hard-coded.** It rendered the input with
+   `:.0f`, which matched "58%" but not "85.6%", so refreshing the input failed a
+   check that was testing the formatter rather than the prose.
+4. **`brent_yoy` was a typed constant** beside a typed `brent`. They were consistent
+   only because someone kept them so. The y/y is now derived from the level and a
+   published year-ago base, so the two cannot drift apart.
+5. Stale page narrative: the volatility panel headline and lede, the rationale-report
+   lede, the `#volpara` term-structure paragraph and the whole "what changed this
+   week" block all still described the calm holding. Rewritten, and every figure in
+   them now renders from the payload rather than being typed.
+
+### Honest limits on this pass
+
+- **Brent has no confirmed settle.** Intraday sources on 10 Sep spread $102 to $108.
+  The level is carried as a timestamped print ($105.82, 11 Sep 09:15 ET) rather than
+  presented as a close, and CLAIMS.md records the spread.
+- **One outlet printed two different VIX closes for 10 Sep** — 17.84 (+8.38%) and
+  17.47 (+6.14%). Both imply the same 16.46 prior close. 17.84 is carried, confirmed
+  by a second independent search, and the discrepancy is recorded rather than hidden.
+- **The 2-year Treasury yield is stale.** No 10 Sep print was found; it is marked
+  STALE in CLAIMS.md rather than rolled forward on the 10-year's move.
+- **Hormuz transits** are 6 on PortWatch's latest published day, reported via search
+  rather than read at PortWatch. A separate non-PortWatch estimate put traffic nearer
+  10/day on 10 Sep; both are recorded.
+- 14.53 surfaced again as a "7 September" VIX print. 7 September 2026 was **Labor
+  Day** and US markets were closed, so there is no such close — the same figure this
+  model discarded on 2026-09-08 when it was labelled 5 September, which was a
+  Saturday. Discarded again.
+
+**Checks: engine 76 → 81, independent verifier 197 → 207, requirements checklist
+21/21.** All six new checks verified to bite by injecting the defect they target.
+
 ## 2026-09-10 (audit) — A time axis three days off its own prices, and a peso figure that meant something else
 
 **No research was possible this pass.** `WebSearch` was unavailable for every
