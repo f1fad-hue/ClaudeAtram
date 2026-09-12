@@ -13,6 +13,7 @@
   "us_pce_12m": 3.7,
   "us_pce_6m": 4.1,
   "ust_10y": 4.96,
+  "ust_10y_prev_high": 4.92,
   "ust_2y": 4.63,
   "ust_30y": 5.36,
   "fed_hike_odds_sep": 85.6,
@@ -56,6 +57,14 @@
   "brent_yr_ago": 65.5,
   "hormuz_transits": 6,
   "hormuz_baseline": 85,
+  "hormuz_lloyds": 14,
+  "hormuz_lloyds_dwt": 10000,
+  "hormuz_us_claim": 30,
+  "hormuz_flow_now": 15.5,
+  "hormuz_flow_gap": 7.5,
+  "hormuz_flow_prewar": 23.0,
+  "hormuz_flow_trough": 5.5,
+  "hormuz_dark": 5.0,
   "hormuz_vessels_waiting": 436,
   "vix_spot": 14.32,
   "vix_latest": 17.84,
@@ -63,14 +72,14 @@
   "vix_latest_chg_pct": 8.38,
   "vix_latest_high": 18.17,
   "vix_prev_close": 16.46,
-  "vix_next_intraday_pct": -12.5,
+  "vix_next_close": 15.84,
+  "vix_next_chg_pct": -11.21,
   "vix_next_date": "2026-09-11",
   "spx_close": 7656.98,
   "spx_chg_pct": 0.86,
   "wti_settle": 100.05,
   "wti_chg_pct": -2.4,
   "brent_wk_pct": 8.7,
-  "hormuz_talks": "Tehran to meet Gulf states in Oman on the Strait (11 Sep)",
   "vix_prev": 15.2,
   "vix_spike": 16.34,
   "vix_2026_low": 14.18,
@@ -123,11 +132,18 @@
   "asia_fwd_pe": 10.5,
   "asia_eps_2026": 52.5,
   "asia_eps_2027": 27.5,
+  "nikkei": 64011,
+  "kospi": 6910,
   "korea_ytd": 71.0,
   "taiwan_ytd": 49.0,
   "ltcma_us_eq": 6.7,
+  "ndx_growth_premium": 1.3,
+  "qiap_capture": 78,
+  "phmm_gross_prev": 5.25,
   "ltcma_em_eq": 7.8,
   "brent_yoy": 59.71,
+  "hormuz_vessel_drop_pct": 93.0,
+  "hormuz_flow_drop_pct": 33.0,
   "vix_futs": [
    [
     "Sep",
@@ -267,7 +283,7 @@
    "weight": 0.2,
    "score": 1.67,
    "score_10": 2.5,
-   "note": "Tightening is now delivered rather than forecast. The ECB hiked 25bp to 2.50% on 10 Sep, its second and final move; CME FedWatch puts a US hike on 16 Sep at 85.6%, from 58% a week ago; the 10-year closed 4.92%, a ten-year high. BSP is at 5.00% after three consecutive hikes. Not scored lower because a hike priced at 85.6% is one the market has already largely absorbed. The Fed itself is still formally on hold - a 9-3 hold (3 dissents for a HIKE) in July - so a move would be the committee catching up to its own dissenters."
+   "note": "Tightening is now delivered rather than forecast. The ECB hiked 25bp to 2.50% on 10 Sep, its second and final move; CME FedWatch puts a US hike on 16 Sep at 85.6%, from 58% a week ago; the 10-year closed 4.96%, past the 4.92% ten-year high set the session before. BSP is at 5.00% after three consecutive hikes. Not scored lower because a hike priced at 85.6% is one the market has already largely absorbed. The Fed itself is still formally on hold - a 9-3 hold (3 dissents for a HIKE) in July - so a move would be the committee catching up to its own dissenters."
   },
   {
    "name": "Inflation trajectory",
@@ -288,7 +304,7 @@
    "weight": 0.2,
    "score": 3.67,
    "score_10": 7.0,
-   "note": "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) is unrevised and the AI capex cycle keeps compounding through the semis supply chain. Trimmed because the margin assumption underneath those estimates is harder to hold at $106 oil than at $96, and the selling hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."
+   "note": "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) is unrevised and the AI capex cycle keeps compounding through the semis supply chain. Trimmed because the margin assumption underneath those estimates is harder to hold at $105 oil than at $96, and the selling hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."
   },
   {
    "name": "Valuation support",
@@ -302,14 +318,14 @@
    "weight": 0.1,
    "score": 1.89,
    "score_10": 3.0,
-   "note": "Held, and the reason is a round trip rather than a regime change. Spot broke out on 10 Sep - the VIX closed 17.84, +8.38%, after touching 18.17, ending a 28-session range of 14 to 17 - on WTI through $100 and a CPI print that made the September hike near-certain. The very next session gave most of it back: the S&P 500 rose 0.86% to 7,656.98, its first gain in five sessions, oil settled down 2.8%, and the VIX was -12.50% at midday. This model has now twice mistaken a single session for a regime change, so it is not calling one here. What is unchanged is the shape of the trade: the curve still prices 19+ by December while delivered volatility keeps returning to the mid-teens, and that gap is what the covered-call sleeve is paid to carry."
+   "note": "Held, and the reason is a round trip rather than a regime change. Spot broke out on 10 Sep - the VIX closed 17.84, +8.38%, after touching 18.17, ending a 28-session range of 14 to 17 - on WTI through $100 and a CPI print that made the September hike near-certain. The very next session gave most of it back: the S&P 500 rose 0.86% to 7,656.98, its first gain in five sessions, oil settled down 2.8%, and the VIX closed 15.84, -11.21%, back inside the range it had just left. This model has now twice mistaken a single session for a regime change, so it is not calling one here. What is unchanged is the shape of the trade: the curve still prices 19+ by December while delivered volatility keeps returning to the mid-teens, and that gap is what the covered-call sleeve is paid to carry."
   },
   {
    "name": "Geopolitics & energy",
    "weight": 0.1,
    "score": 1.22,
    "score_10": 1.5,
-   "note": "Still the weakest link by a wide margin. Brent passed $108 on 10 Sep, its highest since 19 May, then settled the week at $104.61 - Brent +59.7% y/y against +47% a week ago, and +8.7% on the week. US Central Command confirmed five Iranian tankers destroyed; Houthi strikes on Saudi energy sites cut output ~1.9 mb/d; tanker rates are at record highs. Hormuz transits are 6 a day against a ~85 pre-crisis baseline, a ~93% shutdown, with 436 vessels holding position off berth. NOT scored at the floor, and the reason is internal consistency rather than optimism: the Hormuz row in the stress table on this same page models full closure and Brent above $130, a strictly worse state than today. A floor score would assert this driver has no room left to worsen while the page models it worsening. Friday's 2.8% decline came on news that Tehran to meet Gulf states in Oman on the Strait - diplomacy this model has watched stall before, and is not pricing."
+   "note": "Still the weakest link by a wide margin, and this note is CORRECTED for overstating the disruption. It previously read the shutdown off VESSEL COUNTS alone - 6 transits a day against a ~85 baseline, 'a ~93% shutdown'. Two problems. The counts themselves disagree by about five times depending on what is counted: IMF PortWatch logs 6 a day across all transits, Lloyd's List Intelligence 14 a day counting only cargo vessels over 10,000 dwt, and the US government claims around 30. More importantly, vessel count is not supply. Goldman puts Gulf crude and product exports at 15.5 mb/d against a 20.0 mb/d pre-war baseline - about two-thirds, up from a 5.5 mb/d trough in March - with roughly 5.0 mb/d moving via dark crossings and ship-to-ship transfers. That is about a third of supply lost, not 93%, and it is the version this model's own Brent input corroborates: $105 oil is not what a 93% shutdown prices. The damage is still severe: Brent settled $104.61, +59.7% y/y and +8.7% on the week, Saudi output is down ~1.9 mb/d after Houthi strikes, US Central Command confirmed five Iranian tankers destroyed, tanker rates are at record highs, 436 vessels are holding position off berth, and the conflict has reached the Bab al-Mandab. Held at 1.5 rather than raised on the flows recovery, because that recovery is already IN the $104.61 price - crediting the driver for it would count the same good news twice. Not scored at the floor either: the stress table models full closure and Brent above $130, so a floor would assert no room left to worsen while the page models it worsening."
   }
  ],
  "driver_scale": {
@@ -631,6 +647,11 @@
   "t364": -0.38
  },
  "catalysts": [
+  {
+   "date": "2026-09-14",
+   "what": "Iran-GCC talks on the Strait, in Oman",
+   "why": "GCC foreign ministers and Iraq meet Tehran in Muscat. Iran and Oman have already agreed a temporary shipping lane and mine clearing; this is the meeting that would put it into effect. The single largest swing factor for the energy driver and, through Brent, for three of the four sleeves."
+  },
   {
    "date": "2026-09-16",
    "what": "FOMC decision",

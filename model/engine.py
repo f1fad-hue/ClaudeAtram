@@ -45,7 +45,8 @@ MACRO = {
     "us_cpi_shelter": 3.0,     # eased from 3.2
     "us_cpi_gasoline_yoy": 27.4,
     "us_pce_12m": 3.7, "us_pce_6m": 4.1,
-    "ust_10y": 4.96,           # 11 Sep close; 4.92 on 10 Sep was already a ten-year high
+    "ust_10y": 4.96,           # 11 Sep close
+    "ust_10y_prev_high": 4.92, # 10 Sep - the ten-year high it passed
     "ust_2y": 4.63,            # 11 Sep close - was 4.377 and marked STALE on 10 Sep
     "ust_30y": 5.36,           # 11 Sep close
 
@@ -93,8 +94,28 @@ MACRO = {
     # brent_yoy is DERIVED from it below rather than typed, so the level and the
     # change can never drift apart the way the quoted figures did on 2026-09-10.
     "brent_yr_ago": 65.50,
-    "hormuz_transits": 6,      # PortWatch, 6 Sep (latest published day found)
-    "hormuz_baseline": 85,     # pre-crisis transits/day - the honest comparator
+    # HORMUZ. Two different things get measured here and they do not agree, so both
+    # are carried. VESSEL COUNTS differ ~5x across sources because they count
+    # different things; OIL VOLUME is what actually reaches this portfolio, through
+    # the Brent price. Until 2026-09-12 this model published only the vessel count
+    # and called it a "~93% shutdown", which described a supply collapse its own
+    # Brent input contradicted.
+    "hormuz_transits": 6,          # IMF PortWatch, all transits, 6 Sep
+    "hormuz_baseline": 85,         # pre-crisis transits/day, same basis
+    "hormuz_lloyds": 14,           # Lloyd's List Intelligence, 17-23 Aug
+    "hormuz_lloyds_dwt": 10000,    # Lloyd's counts only cargo vessels above this
+    "hormuz_us_claim": 30,         # US government claim; basis undisclosed
+    # Goldman's OWN pair, kept together. Mixing their 15.5 with a 20.0 baseline taken
+    # from a different (Hormuz-transit-only) source gave a 22% loss, which flatly
+    # contradicts Goldman's own "two-thirds of pre-war" headline. Their note says
+    # exports are 15-16 mb/d and "still 7 to 8 mb/d below pre-conflict", so their
+    # baseline is ~23, and 15.5/23.0 = 67% - two-thirds, as stated. Two measures of
+    # the same strait are not interchangeable just because both are in mb/d.
+    "hormuz_flow_now": 15.5,       # mb/d Gulf crude+products, Goldman 28 Aug (15-16)
+    "hormuz_flow_gap": 7.5,        # mb/d still below pre-conflict, Goldman (7-8)
+    "hormuz_flow_prewar": 23.0,    # mb/d, = 15.5 + 7.5, Goldman's implied baseline
+    "hormuz_flow_trough": 5.5,     # mb/d, March trough (5-6)
+    "hormuz_dark": 5.0,            # mb/d moving via dark crossings / STS transfers
     "hormuz_vessels_waiting": 436,
     # The VIX spiked to 16.34 on 2 Sep on the Hormuz strikes and has since fallen
     # BACK toward the 2026 low. The calm did not break - it re-asserted itself,
@@ -124,12 +145,15 @@ MACRO = {
     # CONFIRMED 11 Sep close was found, so nothing is typed as one - vix_latest stays
     # the last verified close. The reversal is recorded because it changes the read,
     # not because it changes the curve.
-    "vix_next_intraday_pct": -12.50,   # 11 Sep midday, from the 17.84 close
+    # 11 Sep CLOSE, confirmed: 15.84, -11.21%. That implies a prior close of
+    # 15.84/(1-0.1121) = 17.84, which independently corroborates the 10 Sep
+    # figure against one outlet that printed "near 17.89".
+    "vix_next_close": 15.84,
+    "vix_next_chg_pct": -11.21,
     "vix_next_date": "2026-09-11",
     "spx_close": 7656.98, "spx_chg_pct": 0.86,      # 11 Sep - first gain in five
     "wti_settle": 100.05, "wti_chg_pct": -2.4,      # 11 Sep settle
     "brent_wk_pct": 8.7,                             # week to 11 Sep, still above $100
-    "hormuz_talks": "Tehran to meet Gulf states in Oman on the Strait (11 Sep)",
     "vix_prev": 15.20,         # 3 Sep close, after the -6.98% unwind
     "vix_spike": 16.34,        # 2 Sep close, the Hormuz spike
     "vix_2026_low": 14.18,     # 17 Aug intraday, the 2026 low
@@ -165,9 +189,13 @@ MACRO = {
     "asia_fwd_pe": 10.5,
     "asia_eps_2026": 52.5,
     "asia_eps_2027": 27.5,
+    "nikkei": 64011, "kospi": 6910,   # 11 Sep closes
     "korea_ytd": 71.0,
     "taiwan_ytd": 49.0,
     "ltcma_us_eq": 6.7,
+    "ndx_growth_premium": 1.3,     # NDX total return over US large cap in the build-up
+    "qiap_capture": 78,            # covered-call upside capture, % of the NDX
+    "phmm_gross_prev": 5.25,       # the PH short-rate assumption before the mandate lengthened
     "ltcma_em_eq": 7.8,
 }
 
@@ -209,6 +237,13 @@ def vix_maturity(y, m, quote=None):
     return (centre - q).days / 365.0
 
 MACRO["brent_yoy"] = round((MACRO["brent"] / MACRO["brent_yr_ago"] - 1) * 100, 2)
+# The vessel-count drop the geopolitics note quotes in order to correct it. Derived
+# rather than typed so the figure and the counts it comes from cannot drift apart -
+# and so the note's own arithmetic is auditable rather than asserted.
+MACRO["hormuz_vessel_drop_pct"] = round(
+    (1 - MACRO["hormuz_transits"] / MACRO["hormuz_baseline"]) * 100, 0)
+MACRO["hormuz_flow_drop_pct"] = round(
+    (1 - MACRO["hormuz_flow_now"] / MACRO["hormuz_flow_prewar"]) * 100, 0)
 
 MACRO["vix_futs"] = [(lbl, round(vix_maturity(y, m), 4), lvl)
                      for lbl, y, m, lvl in MACRO["vix_futs_levels"]]
@@ -225,6 +260,11 @@ MACRO["vix_fut_dec"] = MACRO["vix_futs"][-1][2]
 # ----------------------------------------------------------------------------
 
 CATALYSTS = [
+    ("2026-09-14", "Iran-GCC talks on the Strait, in Oman",
+     "GCC foreign ministers and Iraq meet Tehran in Muscat. Iran and Oman have "
+     "already agreed a temporary shipping lane and mine clearing; this is the "
+     "meeting that would put it into effect. The single largest swing factor for "
+     "the energy driver and, through Brent, for three of the four sleeves."),
     ("2026-09-16", "FOMC decision",
      "A 25bp hike is priced at 85.6% after August CPI, up from 70% before it and "
      "58% a week ago. The monetary driver is scored on tightening that has "
@@ -389,7 +429,8 @@ DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 2.5,
      "Tightening is now delivered rather than forecast. The ECB hiked 25bp to 2.50% "
      "on 10 Sep, its second and final move; CME FedWatch puts a US hike on 16 Sep at "
-     "85.6%, from 58% a week ago; the 10-year closed 4.92%, a ten-year high. BSP is "
+     "85.6%, from 58% a week ago; the 10-year closed 4.96%, past the 4.92% ten-year "
+     "high set the session before. BSP is "
      "at 5.00% after three consecutive hikes. Not scored lower because a hike priced "
      "at 85.6% is one the market has already largely absorbed. The Fed itself is "
      "still formally on hold - a 9-3 hold (3 dissents for a HIKE) in July - so a "
@@ -410,7 +451,7 @@ DRIVERS = [
      "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) "
      "is unrevised and the AI capex cycle keeps compounding through the semis supply "
      "chain. Trimmed because the margin assumption underneath those estimates is "
-     "harder to hold at $106 oil than at $96, and the selling hit the earnings "
+     "harder to hold at $105 oil than at $96, and the selling hit the earnings "
      "engines directly - Samsung -3.5%, SK Hynix -2.2%."),
     ("Valuation support", 0.1, 8.0,
      "The one driver the shock improves. Four down sessions in the US and a 1.9% "
@@ -424,26 +465,34 @@ DRIVERS = [
      "28-session range of 14 to 17 - on WTI through $100 and a CPI print that made "
      "the September hike near-certain. The very next session gave most of it back: "
      "the S&P 500 rose 0.86% to 7,656.98, its first gain in five sessions, oil "
-     "settled down 2.8%, and the "
-     "VIX was -12.50% at midday. This model has now twice mistaken a single session "
+     "settled down 2.8%, and the VIX closed 15.84, -11.21%, back inside the range "
+     "it had just left. This model has now twice mistaken a single session "
      "for a regime change, so it is not calling one here. What is unchanged is the "
      "shape of the trade: the curve still prices 19+ by December while delivered "
      "volatility keeps returning to the mid-teens, and that gap is what the "
      "covered-call sleeve is paid to carry."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "Still the weakest link by a wide margin. Brent passed $108 on 10 Sep, its "
-     "highest since 19 May, then settled the week at $104.61 - Brent +59.7% y/y "
-     "against +47% a week ago, and +8.7% on the week. US Central Command confirmed "
-     "five Iranian tankers destroyed; Houthi strikes on Saudi energy sites cut output "
-     "~1.9 mb/d; tanker rates are at record highs. Hormuz transits are 6 a day against "
-     "a ~85 pre-crisis baseline, a ~93% shutdown, with 436 vessels holding position "
-     "off berth. NOT scored at the floor, and the "
-     "reason is internal consistency rather than optimism: the Hormuz row in the "
-     "stress table on this same page models full closure and Brent above $130, a "
-     "strictly worse state than today. A floor score would assert this driver has no "
-     "room left to worsen while the page models it worsening. Friday's 2.8% decline "
-     "came on news that Tehran to meet Gulf states in Oman on the Strait - "
-     "diplomacy this model has watched stall before, and is not pricing."),
+     "Still the weakest link by a wide margin, and this note is CORRECTED for "
+     "overstating the disruption. It previously read the shutdown off VESSEL COUNTS "
+     "alone - 6 transits a day against a ~85 baseline, 'a ~93% shutdown'. Two "
+     "problems. The counts themselves disagree by about five times depending on what "
+     "is counted: IMF PortWatch logs 6 a day across all transits, Lloyd's List "
+     "Intelligence 14 a day counting only cargo vessels over 10,000 dwt, and the US "
+     "government claims around 30. More importantly, vessel count is not supply. "
+     "Goldman puts Gulf crude and product exports at 15.5 mb/d against a 20.0 mb/d "
+     "pre-war baseline - about two-thirds, up from a 5.5 mb/d trough in March - with "
+     "roughly 5.0 mb/d moving via dark crossings and ship-to-ship transfers. That is "
+     "about a third of supply lost, not 93%, and it is the version this model's own "
+     "Brent input corroborates: $105 oil is not what a 93% shutdown prices. The damage "
+     "is still severe: Brent settled $104.61, +59.7% y/y and +8.7% on the week, Saudi "
+     "output is down ~1.9 mb/d after Houthi strikes, US Central Command confirmed five "
+     "Iranian tankers destroyed, tanker rates are at record highs, 436 vessels are "
+     "holding position off berth, and the conflict has reached the Bab al-Mandab. Held "
+     "at 1.5 rather than raised on the flows recovery, because that recovery is "
+     "already IN the $104.61 price - crediting the driver for it would count the same "
+     "good news twice. Not scored at the floor either: the stress table models full "
+     "closure and Brent above $130, so a floor would assert no room left to worsen "
+     "while the page models it worsening."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -1280,6 +1329,42 @@ def report():
         checks.append((f"every {lab} quoted in prose matches a published input",
                        bool(found) and all(any(abs(v - w) <= tol for w in wants)
                                            for v in found)))
+
+    # The Hormuz disruption must be stated on the measure that reaches this
+    # portfolio. Until 2026-09-12 the page published a vessel-count drop
+    # (6 of ~85) as "a ~93% shutdown", which describes a supply collapse that the
+    # model's own Brent input contradicts: Goldman puts Gulf flows at ~2/3 of
+    # pre-war. These assert the volume measure is published, that it is the one
+    # quoted, and that the vessel counts are published as the disputed range they
+    # are rather than as a single settled number.
+    _geo_note = next(d[3] for d in DRIVERS if d[0].startswith("Geopolitics"))
+    _flow_loss = 1 - MACRO["hormuz_flow_now"] / MACRO["hormuz_flow_prewar"]
+    checks.append(("Hormuz is quoted on oil volume, not vessel count alone",
+                   "mb/d" in _geo_note and str(MACRO["hormuz_flow_now"]) in _geo_note))
+    # Not just "all three strings appear": with the counts collapsed to one number
+    # that passes trivially while the disagreement it exists to record has vanished.
+    # The point is that the sources DISAGREE, so assert the spread. (Bite test,
+    # 2026-09-12.)
+    _counts = [MACRO["hormuz_transits"], MACRO["hormuz_lloyds"], MACRO["hormuz_us_claim"]]
+    checks.append(("the vessel counts are published as a disputed range, not one number",
+                   len(set(_counts)) == 3 and max(_counts) >= 3 * min(_counts)))
+    # NOT a string check on "93% shutdown": the note now quotes that phrase in order
+    # to correct it, and a literal search cannot tell an assertion from a retraction -
+    # the same trap as the $130 counterfactual on 2026-09-10. What is actually
+    # required is that both measures are published, so a reader can see how far apart
+    # they are, and that the two disagree by enough to be worth stating.
+    _vessel_loss = 1 - MACRO["hormuz_transits"] / MACRO["hormuz_baseline"]
+    checks.append(("both the vessel-count and volume measures are published",
+                   0.2 < _flow_loss < 0.5 and _vessel_loss > 0.8))
+    checks.append(("the two Hormuz measures are far enough apart to require both",
+                   _vessel_loss - _flow_loss > 0.3))
+    checks.append(("the Gulf flow baseline is the source's own, not a borrowed one",
+                   abs(MACRO["hormuz_flow_now"] + MACRO["hormuz_flow_gap"]
+                       - MACRO["hormuz_flow_prewar"]) < 1e-9
+                   and 0.64 < MACRO["hormuz_flow_now"] / MACRO["hormuz_flow_prewar"] < 0.70))
+    checks.append(("the flows trough is below the current reading",
+                   MACRO["hormuz_flow_trough"] < MACRO["hormuz_flow_now"]
+                   < MACRO["hormuz_flow_prewar"]))
 
     # A driver cannot sit at the floor of its scale while the page models a state
     # strictly worse than the one it describes. On 2026-09-11 geopolitics & energy was

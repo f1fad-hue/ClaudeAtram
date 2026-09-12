@@ -72,9 +72,18 @@ truth; the artifact is a rendering of it.
 8. Anything the calendar determines is **derived, never typed**. VIX futures
    maturities come from the settlement rule and `VIX_QUOTE_DATE`; typing them
    is how the time axis silently drifted three days off its own prices.
-9. Every figure quoted in a driver note, region note or fund note must equal the
-   input it names. The page has contradicted itself on Brent twice; a general
-   prose-vs-input guard now checks the named quantities on every run.
+9. Every number in a driver, region or fund note must be a rounding of a published
+   input — not just the named quantities. The verifier enforces this; it is how a
+   stale "closed 4.92%" and a "$106 oil" survived guards that only looked near the
+   word "Brent". A model assumption stated only in prose is not published: if a
+   number moves the model, it goes in the inputs.
+10. State a disruption on the measure that reaches the portfolio. Hormuz was
+   published as a "~93% shutdown" from vessel counts while oil flows were at
+   two-thirds of pre-war — a claim the model's own Brent input contradicted. Where
+   sources disagree, publish the range, not the most dramatic number.
+11. Never pair one source's current reading with another source's baseline. Goldman's
+   15.5 mb/d against a 20.0 mb/d baseline from a different measure gave 22% where
+   the source said a third. Keep a source's own pair together.
 
 ## Authoritative source set
 

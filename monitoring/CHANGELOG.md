@@ -2,6 +2,99 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-12 — The page's central geopolitical claim was contradicted by its own oil price
+
+Saturday, markets closed, so the 11 September inputs are complete for the week.
+Research closed the last two open gaps and turned up a substantive error in the
+driver that carries the portfolio's largest macro risk.
+
+### "A ~93% shutdown" was the wrong measure
+
+The geopolitics note read the Hormuz disruption off **vessel counts** — 6 transits a
+day against a ~85 baseline — and called it *"a ~93% shutdown"*. Two things are wrong
+with that.
+
+**The vessel counts themselves disagree by about five times.** IMF PortWatch logs 6 a
+day across all transits; Lloyd's List Intelligence logs 14, counting only cargo
+vessels over 10,000 dwt; the US government claims around 30. Al Jazeera ran a piece
+on 3 September specifically about the gap between US-claimed transits and ship-tracker
+data. This model published one of those numbers as settled fact.
+
+**More importantly, vessel count is not supply.** Goldman puts Gulf crude and product
+exports at 15.5 mb/d against a ~23 mb/d pre-war baseline — about two-thirds, up from
+a 5.5 mb/d trough in March — with roughly 5 mb/d moving through dark crossings and
+ship-to-ship transfers. That is about a **third** of supply lost, not 93%.
+
+The tell was internal, and it had been sitting on the page for days: **$105 oil is
+not what a 93% shutdown prices.** The model's own Brent input contradicted its own
+geopolitics narrative, and nothing was comparing them.
+
+Both measures are now published and both appear on the page, with the point stated
+plainly: they measure different things and the oil price follows the volume one. The
+score is **held at 1.5 rather than raised** on the flows recovery, because that
+recovery is already in the $104.61 price — crediting the driver for it would count
+the same good news twice.
+
+Four checks added, three verified to bite.
+
+### A mixed baseline inside the fix
+
+The first version of the correction paired Goldman's 15.5 mb/d with a 20.0 mb/d
+baseline taken from a different source measuring Hormuz transit alone. That gives a
+22% loss — which flatly contradicts Goldman's own "two-thirds" headline. Their note
+says exports are 15-16 mb/d and "still 7 to 8 mb/d below pre-conflict", so their
+baseline is ~23, and 15.5/23.0 = 67%.
+
+Caught because the percentage is **derived rather than typed**: printing it showed 22%
+where the source said a third. Two measures of the same strait are not
+interchangeable just because both are quoted in mb/d. The baseline is now tied to the
+source's own pair by a check.
+
+### Gaps closed
+
+- **The 11 September VIX close is confirmed: 15.84, −11.21%.** Yesterday only a midday
+  −12.50% was available. The close also corroborates the 10 Sep figure arithmetically:
+  15.84 / (1 − 0.1121) = 17.84, against one outlet that printed "near 17.89".
+- **Iran and the GCC meet in Oman on Monday 14 September** — now a catalyst, and the
+  single largest swing factor for the energy driver. One search summary dated it the
+  15th; the Monday after Friday 11 September 2026 is the **14th**.
+- The VIX futures strip still has no fresh quote. Third day open, still recorded open.
+
+### Prose traceability — the hole flagged yesterday, now closed
+
+checklist.js C1 scans only the static page markup, so numbers written into the
+**payload's own notes** were never checked. That is how the monetary note kept
+asserting the 10-year "closed 4.92%" after the input moved to 4.96%, and the earnings
+note kept "$106 oil" against a $104.61 settle — the Brent guard missed the second
+because it only looks within 20 characters of the word "Brent".
+
+The verifier now requires every number in every driver, region and fund note to be a
+rounding of some payload quantity. It flagged 15 on its first run. Two were the stale
+figures above. The rest were **model assumptions living only in prose with no
+published counterpart** — the 78% covered-call upside capture, the 1.3pp NDX growth
+premium, the 5.25% pre-lengthening short-rate assumption, the Nikkei and KOSPI closes,
+Lloyd's 10,000 dwt threshold. All are now inputs, which is where a number that moves
+the model belongs.
+
+Exclusions are stated rather than fudged: calendar years are labels, tenors like
+"364d" are identifiers, and index names that contain a number ("S&P 500") are names.
+
+### A check that passed while its subject vanished
+
+The bite test caught one of the new checks failing to fail. "The disputed vessel
+counts are all published" tested that three strings appear in the note — so collapsing
+all three counts to the same number passed it, while the disagreement the check exists
+to record had disappeared. It now asserts the counts are distinct and the spread is
+at least threefold.
+
+That is the third time a first-run-green check has turned out not to bite. The
+pattern is consistent enough to name: **a check written as "the right words are
+present" almost never holds; one written as "the quantities stand in the right
+relation" usually does.**
+
+**Checks: engine 82 → 88, independent verifier 208 → 209, requirements checklist
+22/22.**
+
 ## 2026-09-11 (second pass) — The breakout reversed, and a driver was scored below its own stress row
 
 Full checklist run plus a research pass to close the three gaps recorded this

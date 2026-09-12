@@ -41,7 +41,10 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | Euro area energy inflation (Aug) | +14.3% y/y | P | Eurostat flash | 2026-09-05 |
 | ECB Sep-10 expectation | +25bp to 2.50% — all 65 economists polled; 91% see it held to year end; shortest campaign since 2011 | P | Reuters poll 31 Aug–3 Sep | 2026-09-07 |
 | PH core inflation (Jul 2026) | 4.2%, from 4.4% Jun | P | PSA / BusinessWorld | 2026-09-05 |
-| Hormuz transits | 6 on **6 Sep** (latest published day found) vs a ~85/day pre-crisis baseline (~93% shutdown) | P | IMF PortWatch (verified via search result, not at PortWatch directly; a separate non-PortWatch estimate put traffic nearer ~10/day on 10 Sep) | 2026-09-11 |
+| Hormuz — **oil volume** (the measure that reaches this portfolio) | Gulf crude+products **15.5 mb/d** vs a **23.0 mb/d** pre-war baseline = **~67%, two-thirds**; trough was 5.5 mb/d in March; ~5.0 mb/d moves via dark crossings and ship-to-ship | P | Goldman Sachs (Struyven, Zhestkova Grigsby) 2026-08-28 via Bloomberg/Rigzone (verified via search result). Baseline is Goldman's OWN (15.5 + their stated 7.5 still-below), not borrowed from another source | 2026-09-12 |
+| Hormuz — **vessel counts** (disputed, ~5x spread) | IMF PortWatch **6/day** (all transits) · Lloyd's List Intelligence **14/day** (cargo >10,000 dwt, 17–23 Aug) · US government **~30/day** (basis undisclosed) · JMIC 1 Sep advisory: "far below baseline" | P | PortWatch / Lloyd's / Al Jazeera 2026-09-03 "Why data doesn't match US claims" (all verified via search result) | 2026-09-12 |
+| Hormuz baseline, vessel basis | ~85 transits/day pre-crisis (~93% drop) — **NOT a supply figure**; the ~85 counts all vessel types while the oil moves on a subset | P | IMF PortWatch | 2026-09-12 |
+| Hormuz diplomacy | Iran + GCC foreign ministers and Iraq meet in Oman **Monday 14 Sep**; Iran and Oman have already agreed a temporary shipping lane and mine clearing | P | Al Jazeera 2026-09-11 (verified via search result). NOTE: one search summary put this on 15 Sep; the Monday after Friday 11 September 2026 is the **14th** | 2026-09-12 |
 | **US nonfarm payrolls (Aug 2026)** | **+162,000** vs 53,000 consensus | P | bls.gov Employment Situation | 2026-09-05 |
 | US nonfarm payrolls (Jul 2026) | −23,000 | P | bls.gov | 2026-09-05 |
 | **PH CPI (Aug 2026)** | **6.1%**, from 6.2% Jul | P | psa.gov.ph | 2026-09-05 |
@@ -63,7 +66,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | Spot VIX | 14.32 (4 Sep close - the last trading day; 5 Sep was a Saturday) | P | Cboe | 2026-09-07 |
 | VIX 2026 low | 14.18 (17 Aug) | P | CNBC / Cboe | 2026-09-07 |
 | VIX Hormuz spike | 16.34 (2 Sep close), retraced to 15.20 then 14.32 | P | market reports | 2026-09-07 |
-| 11 Sep session (reversal) | S&P +0.86% to 7,656.98 — first gain in five sessions; WTI settled $100.05, −2.4%; VIX −12.50% at midday. No confirmed VIX close found for 11 Sep, so none is carried | P | market reporting 2026-09-11 (verified via search result) | 2026-09-11 |
+| 11 Sep session (reversal) | S&P +0.86% to 7,656.98 — first gain in five sessions; WTI settled $100.05, −2.4%; **VIX closed 15.84, −11.21%** — gap closed, and the −11.21% from 15.84 implies a 17.84 prior close, independently corroborating the 10 Sep figure against one outlet that printed "near 17.89"; Nikkei 64,011, KOSPI 6,910 | P | market reporting 2026-09-11/12 (verified via search result) | 2026-09-12 |
 | Hormuz diplomacy | Tehran to meet Gulf states in Oman on the Strait (11 Sep) — the reason oil settled down 2.8% | P | oil market reporting 2026-09-11 (verified via search result) | 2026-09-11 |
 | Brent full-closure scenario level | $130 | E | the stress row's modelled level, published so the scenario and every note citing it cannot drift | 2026-09-11 |
 | VIX latest close | **17.84 on 10 Sep**, +8.38%, high 18.17 — broke a 28-session 14–17 range | P | market reports, two independent searches agreeing; one outlet also printed 17.47/+6.14% for the same session, and both imply the same 16.46 prior close, so the close is carried as 17.84 and the discrepancy is recorded rather than hidden | 2026-09-11 |
