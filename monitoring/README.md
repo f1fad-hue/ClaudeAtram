@@ -84,6 +84,16 @@ truth; the artifact is a rendering of it.
 11. Never pair one source's current reading with another source's baseline. Goldman's
    15.5 mb/d against a 20.0 mb/d baseline from a different measure gave 22% where
    the source said a third. Keep a source's own pair together.
+12. Reference data (fund fact sheets, holdings, sector splits) must carry a real
+   date — day precision, not "2026" — and be within 60 days of `REVIEW_DATE`. The
+   JEPQ table sat on a 73-day-old sheet with Tesla in a top ten it had already left.
+13. `AS_OF` is the market data date; `REVIEW_DATE` is when a human last worked the
+   page. They are not the same on a weekend, and reference data retrieved during a
+   review is legitimately newer than the market snapshot.
+14. An unsourced constant that happens to be right is still unsourced. `vol_beta`
+   carried 0.68 for months; J.P. Morgan publishes 13.9/20.4 = 0.681. Derive it from
+   the published pair, and make the verifier read the same published figures rather
+   than keeping its own copy of the constant.
 
 ## Authoritative source set
 

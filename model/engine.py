@@ -15,7 +15,13 @@ import datetime as _dt
 import json, math, re, sys
 from itertools import product
 
-AS_OF = "2026-09-11"
+# Two different dates, which this model had been conflating. AS_OF is the market
+# data date - the last trading session every price, yield and level comes from.
+# REVIEW_DATE is when a human last worked through the page. On a weekend review they
+# differ, and reference data retrieved during the review is legitimately NEWER than
+# the market snapshot: a look-through read today is not "stale by -2 days".
+AS_OF = "2026-09-11"        # last trading session (Friday)
+REVIEW_DATE = "2026-09-13"  # this review
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -156,10 +162,20 @@ MACRO = {
     "brent_wk_pct": 8.7,                             # week to 11 Sep, still above $100
     "vix_prev": 15.20,         # 3 Sep close, after the -6.98% unwind
     "vix_spike": 16.34,        # 2 Sep close, the Hormuz spike
-    "vix_2026_low": 14.18,     # 17 Aug intraday, the 2026 low
+    # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
+    # 17 Aug was widely reported as the year's low at the time, and was carried as
+    # such; on 4 Sep the index slid to 13.80 just before the payrolls release and
+    # then rebounded to close 14.32. Both are kept - the August print is still cited
+    # historically, but it is no longer the low.
+    "vix_2026_low": 13.80,     # 4 Sep intraday, before the payrolls print
+    "vix_aug_low": 14.18,      # 17 Aug intraday - the 2026 low UNTIL 4 Sep
     "vix_1m_avg": 15.28,
-    "vix_1m_low": 14.18,
-    "vix_1m_high": 16.80,      # 1 Sep intraday
+    "vix_1m_low": 13.80,
+    # Dated 2 Sep, not 1 Sep. Two independent accounts put the spike peak on the
+    # 2nd, which is also the session whose CLOSE (16.34) this model calls the
+    # Hormuz spike - an intraday 16.82 above that close is coherent; a 1 Sep high
+    # above a higher 2 Sep close was not.
+    "vix_1m_high": 16.82,      # 2 Sep intraday
     # VIX futures strip. Effective centre = expiry + 15 days, because a VIX future
     # settles on 30-day forward implied vol; that centre is the t at which the
     # contract's level is the forward vol, and it is what the bootstrap interpolates
@@ -520,6 +536,12 @@ GAUGE_NEUTRAL = NEUTRAL_5
 # converges past 2.0pp above the US - or the long-run anchors move above it -
 # this stops being defensible and says so.
 FX_DRIFT = 2.0
+# Published volatility figures behind the covered-call sleeve's vol beta.
+# Source: J.P. Morgan JEPQ fact sheet, 31 July 2026 (since-inception annualised).
+JEPQ_VOL = 13.9         # JEPQ annualised standard deviation, %
+NDX_VOL  = 20.4         # Nasdaq-100 annualised standard deviation, same window, %
+JEPQ_BETA = 0.81        # 5-year monthly beta vs the index, published
+
 FX_PPP_PH_LR = 3.9      # long-run PH inflation anchor (BSP 2-4% band, upper half)
 FX_PPP_US_LR = 2.4      # long-run US inflation anchor
 FX_VOL   = 6.0          # USD/PHP annualised vol, %
@@ -550,7 +572,13 @@ FUNDS = [
         "fee_note": "1.50% ATRAM management fee + 0.35% target-fund TER (both verified)",
         "gross_usd": 7.2,
         "gross_note": "NDX long-run total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.3 -> 19.4.",
-        "vol_beta": 1.22 * 0.68, "fx_exposed": True,
+        # NDX vol relative to the S&P (1.22, assumption) times the covered-call
+        # vol factor, which is no longer a magic number: J.P. Morgan's own fact
+        # sheet (31 Jul 2026) puts JEPQ since-inception annualised standard
+        # deviation at 13.9% against the Nasdaq-100's 20.4%, i.e. 0.681. The 0.68
+        # carried here for months happened to be right to two decimals, but it was
+        # unsourced; it is now derived from two published figures.
+        "vol_beta": 1.22 * (JEPQ_VOL / NDX_VOL), "fx_exposed": True,
         "macro_tilt": {"rates": -0.10, "energy": -0.10},
         "dd_k_adj": -0.10, "cash_like": False,
         "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
@@ -575,6 +603,11 @@ FUNDS = [
                     "management fee for this fund; exact share-class OCF not published)",
         "gross_usd": 8.3,
         "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
+        # ASSUMPTION, not a published figure: Asia Pacific ex-Japan vol at ~1.05x
+        # the S&P, times ~0.92 for the dividend tilt's lower beta. Neither leg is
+        # sourced to a manager document, and CLAIMS.md records it as an estimate.
+        # Unlike the covered-call factor next door, no published pair was found to
+        # anchor it. (Reviewed 2026-09-13.)
         "vol_beta": 1.05 * 0.92, "fx_exposed": True,
         "macro_tilt": {"rates": -0.05, "energy": -0.20},
         "dd_k_adj": +0.05, "cash_like": False,
@@ -595,6 +628,13 @@ FUNDS = [
                     "(PUBLISHED by Fidelity for the W-Acc-GBP class, AMC 0.80%)",
         "gross_usd": 9.0,
         "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
+        # ASSUMPTION: concentrated global tech at ~1.30x the S&P. Cross-check
+        # rather than confirmation - Fidelity publishes a 3-year annualised
+        # volatility of 17.23% for this fund (USD I Acc, Jun 2026), which implies
+        # a ~1.30 beta only if S&P REALISED vol over that window was ~13.3%. That
+        # is plausible but unverified here, and the two are not the same quantity:
+        # this beta is applied to FORWARD implied vol, not trailing realised.
+        # Recorded as an estimate. (Reviewed 2026-09-13.)
         "vol_beta": 1.30, "fx_exposed": True,
         "macro_tilt": {"rates": -0.40, "energy": -0.15},
         "dd_k_adj": +0.15, "cash_like": False,
@@ -768,31 +808,38 @@ LOOKTHROUGH = {
     "ATRPHMM": {
         "dp": 3,
         "kind": "instruments",
-        "as_of": "2026-08",
+        # Dated AS_OF, because these ARE the live curve, not an August snapshot -
+        # the rows were labelled "2026-08" while carrying today's yields. And they
+        # are now DERIVED from the same inputs the rest of the page uses: they were
+        # a hand-typed copy of MACRO's T-bill values with nothing tying the two
+        # together. (Audit 2026-09-13.)
+        "as_of": AS_OF,
         "note": "A money market fund holds paper, not shares. The live PH curve "
                 "is the honest look-through.",
-        "rows": [["91-day T-bill", 5.138], ["182-day T-bill", 5.517],
-                 ["364-day T-bill", 5.717]],
+        "rows": [["91-day T-bill", MACRO["ph_tbill_91"]],
+                 ["182-day T-bill", MACRO["ph_tbill_182"]],
+                 ["364-day T-bill", MACRO["ph_tbill_364"]]],
         "unit": "% yield",
         "source": "Bureau of the Treasury PH auction results",
     },
     "ATRQIAP": {
         "dp": 1,
         "kind": "stocks",
-        "as_of": "2026-06-30",
+        "as_of": "2026-07-31",
         "note": "Top 10 equity positions of the JPMorgan Nasdaq Equity Premium "
                 "Income strategy. Figures are from the US-listed JEPQ factsheet; "
                 "ATRAM's feeder holds the UCITS sister fund (IE000U9J8HX9), which "
-                "runs the same strategy on the same universe.",
-        "rows": [["NVIDIA", 6.7], ["Apple", 5.8], ["Micron Technology", 5.6],
-                 ["Alphabet Class C", 5.0], ["Microsoft", 3.9],
-                 ["Advanced Micro Devices", 3.9], ["Amazon", 3.7],
-                 ["Lam Research", 2.9], ["Tesla", 2.4], ["Meta Platforms", 2.4]],
+                "runs the same strategy on the same universe. Refreshed to the "
+                "31 July sheet on 2026-09-13: the 30 June list carried here had "
+                "Tesla in the top ten and no Broadcom, which the later sheet "
+                "reverses, and six of the ten weights had moved.",
+        "rows": [["NVIDIA", 6.9], ["Apple", 6.4], ["Alphabet Class C", 5.3],
+                 ["Microsoft", 5.0], ["Amazon", 4.3], ["Micron Technology", 4.1],
+                 ["Advanced Micro Devices", 3.3], ["Meta Platforms", 2.4],
+                 ["Broadcom", 2.3], ["Lam Research", 2.0]],
         "unit": "% of fund",
-        "sectors": [["Information Technology", 50.9],
-                    ["Communication Services", 10.2],
-                    ["Consumer Discretionary", 9.2]],
-        "source": "J.P. Morgan Asset Management JEPQ factsheet, 30 June 2026",
+        "sectors": [["Information Technology", 47.7]],
+        "source": "J.P. Morgan Asset Management JEPQ factsheet, 31 July 2026",
     },
     "ATRASEQ": {
         "dp": 1,
@@ -810,14 +857,24 @@ LOOKTHROUGH = {
     "ATRGTEC": {
         "dp": 2,
         "kind": "sectors",
-        "as_of": "2026",
+        # Was dated "2026" - a year, which is not a date and cannot be checked for
+        # staleness. This is now the RETRIEVAL date, and the note says so: Fidelity's
+        # factsheet page does not expose its own snapshot date at the source
+        # reachable from here, so the figures are its latest published month-end
+        # rather than 13 September. Refreshed the same day; every weight had moved
+        # and the residual line changed from "Managed funds" to "Cash and
+        # equivalents". (Audit 2026-09-13.)
+        "as_of": "2026-09-13",
         "note": "Fidelity publishes this fund's sector composition but not a "
                 "current top-10 list at a source reachable from here. Sector "
-                "weights use the Industry Classification Benchmark and sum to "
-                "100.2% on the manager's own rounding.",
-        "rows": [["Technology", 65.30], ["Consumer Discretionary", 11.73],
-                 ["Industrials", 10.74], ["Telecommunications", 7.33],
-                 ["Real Estate", 2.73], ["Energy", 1.43], ["Managed funds", 0.94]],
+                "weights use the Industry Classification Benchmark. The date is "
+                "when these were read from Fidelity's factsheet page, which does "
+                "not publish its own snapshot date there - so they are Fidelity's "
+                "latest month-end, not a 13 September position.",
+        "rows": [["Technology", 66.45], ["Consumer Discretionary", 11.99],
+                 ["Industrials", 10.40], ["Telecommunications", 6.47],
+                 ["Real Estate", 2.67], ["Energy", 0.95],
+                 ["Cash and equivalents", 0.47]],
         "unit": "% of fund",
         "sub": [["Technology hardware & equipment", 33.28],
                 ["Software & computer services", 32.02]],
@@ -1049,7 +1106,7 @@ SOURCES = [
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260723~29f24d99bc.en.html"),
     ("BSP Monetary Policy Report", "February 2026 economic outlook and inflation path",
      "https://www.bsp.gov.ph/Price%20Stability/MonetaryPolicyReport/FullReport-February2026.pdf"),
-    ("CNBC", "VIX hits its 2026 low of 14.18 on 17 August - the complacency baseline this model measures the ramp against",
+    ("CNBC", "VIX hits 14.18 on 17 August, reported at the time as the 2026 low. It was, until 4 September, when the index slid to 13.80 before the payrolls print. The ramp is measured against the curve, not against either low",
      "https://www.cnbc.com/2026/08/17/stock-market-volatility-vix-wall-street.html"),
     ("Reuters (via KFGO)", "ECB to raise a second time on 10 Sep then stop - all 65 economists polled 31 Aug-3 Sep forecast 2.50%, 91% see it held to year end",
      "https://kfgo.com/2026/09/03/ecb-to-raise-rates-a-second-time-in-september-but-then-done-say-economists-reuters-poll/"),
@@ -1132,10 +1189,15 @@ def payload():
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
         "lookthrough": LOOKTHROUGH,
         "acwi_it_mix": ACWI_IT_MIX,
+        # The covered-call sleeve's vol factor, published so it is auditable rather
+        # than a constant folded into vol_beta.
+        "jepq_vol": JEPQ_VOL, "ndx_vol": NDX_VOL, "jepq_beta": JEPQ_BETA,
+        "cc_vol_factor": round(JEPQ_VOL / NDX_VOL, 4),
         "fx": {"drift": FX_DRIFT, "vol": FX_VOL, "corr": FX_CORR,
                "ppp_lr": round(FX_PPP_PH_LR - FX_PPP_US_LR, 2),
                "ppp_now": round(MACRO["ph_cpi_aug"] - MACRO["us_cpi_headline"], 2)},
         "vix_quote_date": VIX_QUOTE_DATE,
+        "review_date": REVIEW_DATE,
         # Published so the page never has to type them: the regional tilt coefficient
         # and the peso sleeve's real yield were the last two hard-typed figures in the
         # static markup with no payload counterpart. (Audit 2026-09-11.)
@@ -1330,6 +1392,47 @@ def report():
                        bool(found) and all(any(abs(v - w) <= tol for w in wants)
                                            for v in found)))
 
+    # Look-through freshness and ordering. The JEPQ table sat on the 30 June fact
+    # sheet until 2026-09-13 - 73 days stale - by which point Tesla had left the top
+    # ten and Broadcom had entered, and six of the ten weights had moved. The
+    # existing check only asked whether the weights summed to a plausible 30-60%,
+    # which a stale-but-coherent table passes. Fund fact sheets are monthly, so 60
+    # days allows one publication lag and no more.
+    def _lt_date(t):
+        """Normalise a YYYY / YYYY-MM / YYYY-MM-DD as-of to the end of its period."""
+        parts = t.split("-")
+        if len(parts) == 3:
+            return _dt.date.fromisoformat(t)
+        if len(parts) == 2:
+            y, m = int(parts[0]), int(parts[1])
+            ny, nm = (y + 1, 1) if m == 12 else (y, m + 1)
+            return _dt.date(ny, nm, 1) - _dt.timedelta(days=1)
+        return _dt.date(int(parts[0]), 12, 31)
+
+    _LT_MAX_AGE_D = 60
+    _asof_d = _dt.date.fromisoformat(REVIEW_DATE)
+    for _k, _v in LOOKTHROUGH.items():
+        if not _v.get("as_of"):
+            continue
+        _age = (_asof_d - _lt_date(_v["as_of"])).days
+        checks.append((f"{_k} look-through is within {_LT_MAX_AGE_D} days of the as-of date",
+                       0 <= _age <= _LT_MAX_AGE_D))
+    # Weight-ranked kinds only. A yield curve is ordered by TENOR, and the money
+    # market rows (5.138 / 5.517 / 5.717) ascend correctly - the first version of
+    # this check called that a defect.
+    checks.append(("weight-ranked look-through rows descend",
+                   all(all(v["rows"][i][1] >= v["rows"][i + 1][1]
+                           for i in range(len(v["rows"]) - 1))
+                       for v in LOOKTHROUGH.values()
+                       if v.get("rows") and v["kind"] in ("stocks", "sectors"))))
+
+    # The covered-call vol factor must be the published ratio, not a typed constant.
+    _q = next(f for f in FUNDS if f["id"] == "ATRQIAP")
+    checks.append(("the covered-call vol factor is the published JEPQ/NDX ratio",
+                   abs(_q["vol_beta"] / 1.22 - JEPQ_VOL / NDX_VOL) < 1e-9))
+    checks.append(("the published JEPQ vol is below the index it is written on",
+                   JEPQ_VOL < NDX_VOL and 0.5 < JEPQ_VOL / NDX_VOL < 0.85))
+
     # The Hormuz disruption must be stated on the measure that reaches this
     # portfolio. Until 2026-09-12 the page published a vessel-count drop
     # (6 of ~85) as "a ~93% shutdown", which describes a supply collapse that the
@@ -1386,6 +1489,9 @@ def report():
     checks.append(("catalysts are listed in date order",
                    [d for d, _, _ in CATALYSTS] == sorted(d for d, _, _ in CATALYSTS)))
 
+    checks.append(("the review date is not before the market as-of date",
+                   _dt.date.fromisoformat(REVIEW_DATE)
+                   >= _dt.date.fromisoformat(AS_OF)))
     _q = _dt.date.fromisoformat(VIX_QUOTE_DATE)
     checks.append(("the VIX quote date is a trading weekday", _q.weekday() < 5))
     # The latest observed spot is a SEPARATE observation from the curve's spot and

@@ -2,6 +2,105 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-13 — Stale reference data, and a magic number that turned out to be right
+
+Sunday. No market data since Friday's close, so this was a scrub of the things that
+do not move with the tape — and most of what it found had been sitting there for
+weeks.
+
+### The 2026 VIX low moved on 4 September and the model did not notice
+
+The page carried **14.18 (17 August)** as the year's low, which is what it was when
+the model adopted it. On **4 September the index slid to 13.80** just before the
+payrolls release, then rebounded to close 14.32. The low had been superseded for nine
+days. Both are now carried — the August print is still cited historically, but it is
+no longer the low — and the source entry that called 14.18 "the complacency baseline
+this model measures the ramp against" is corrected: the ramp is measured against the
+curve, not against either low.
+
+The same research also re-dated the one-month high: two accounts put the spike peak
+at **16.82 on 2 September**, not 16.80 on the 1st. That is coherent with the 2 Sep
+*close* of 16.34 being the spike; a 1 Sep intraday high above a higher 2 Sep close
+was not.
+
+### A magic number, finally sourced — and it was right
+
+`vol_beta` for the covered-call sleeve was `1.22 * 0.68`. The **0.68** had been an
+unsourced constant since launch, flagged as undocumented on 10 September and never
+resolved. J.P. Morgan's own JEPQ fact sheet (31 July 2026) publishes a
+since-inception annualised standard deviation of **13.9%** against the Nasdaq-100's
+**20.4%** — a ratio of **0.681**.
+
+So the constant was right to two decimals, and had been for months. That is worth
+being clear about: being correct is not the same as being *sourced*, and an unsourced
+number that happens to be right is still a number nobody can check. It is now derived
+from the two published figures, both are in the payload, and the independent verifier
+reads them from there rather than hard-coding its own copy — it had been carrying the
+same `1.22 * 0.68` on its side, so the two agreed with each other and with nothing
+else.
+
+The other two vol betas (Asia 1.05 × 0.92, Global Tech 1.30) remain **assumptions**
+and are now labelled as such in the code and in CLAIMS.md. Fidelity publishes a 3-year
+annualised volatility of 17.23% for the Global Technology fund, which implies a ~1.30
+beta only if S&P realised vol over that window was ~13.3% — plausible, unverified, and
+not the same quantity, since this beta applies to forward implied vol. Recorded as a
+cross-check, not a confirmation.
+
+### Look-through data was a month and a half stale
+
+The JEPQ table was on the **30 June** fact sheet, 73 days old. On the 31 July sheet,
+**Tesla has left the top ten and Broadcom has entered**, and six of the ten weights
+had moved. The existing check only asked whether the weights summed to a plausible
+30-60%, which a stale-but-coherent table passes comfortably.
+
+Fidelity's sector breakdown had moved too — every weight, and the residual line
+changed from "Managed funds 0.94%" to "Cash and equivalents 0.47%".
+
+Both refreshed. New checks: look-through data must be within 60 days of the review
+(one monthly publication lag and no more), and weight-ranked rows must descend.
+
+### Three date problems underneath that
+
+- The money-market look-through was dated **"2026-08"** while carrying *today's*
+  T-bill yields — and it carried them as a hand-typed copy of `MACRO`'s values with
+  nothing tying the two together. Now derived from the same inputs and dated properly.
+- The Fidelity entry was dated **"2026"**. A year is not a date and cannot be checked
+  for staleness. It is now the retrieval date, with the note saying so explicitly:
+  Fidelity's page does not publish its own snapshot date at the source reachable from
+  here, so the figures are its latest month-end, not a 13 September position.
+- Fixing those exposed a conflation the model had lived with from the start.
+  **`AS_OF` and the review date are different things.** `AS_OF` is the market data
+  date — the last trading session every price comes from. On a weekend review,
+  reference data retrieved during the review is legitimately *newer* than the market
+  snapshot; the first version of the freshness check called that "stale by −2 days".
+  `REVIEW_DATE` now exists alongside `AS_OF`, both appear in the footer, and a check
+  asserts the review is never before the market date.
+
+### Two of my own checks were wrong before the data was
+
+- The ordering check flagged the money-market rows as out of order. They are a yield
+  **curve**, ordered by tenor: 5.138 / 5.517 / 5.717 ascends correctly. Scoped to
+  weight-ranked kinds.
+- C1 scanned only static markup, so figures hard-typed into the page's own JavaScript
+  prose maps were invisible — the money-market bullet carried a `"Live curve: 91d
+  5.14% · 182d 5.52% · 364d 5.72%"` copy of the T-bill inputs. Derived now, and C1
+  extended to scan those maps.
+
+C1's extension also confirmed yesterday's finding again. Injecting a wrong `4.11%`
+into that bullet, **C1 passed** — 4.11 coincides with something among ~400 payload
+numbers — and **C2's ratchet caught it**. Value-matching cannot catch a wrong figure
+whose value collides; only the ratchet stops one being introduced.
+
+### One thing I checked and did not file
+
+The Asia fund's slide appeared to show "~72% US · ~16% Asia · ~12% Europe", which
+would be the Global Tech index mix on the wrong card. It was not: reading the slides
+individually shows each has its own bullets. The apparent overlap was an artifact of
+`innerText` concatenating across sibling cards in my query, not a rendering bug.
+
+**Checks: engine 88 → 95, independent verifier 209, requirements checklist 22/22.**
+Six new checks verified to bite.
+
 ## 2026-09-12 — The page's central geopolitical claim was contradicted by its own oil price
 
 Saturday, markets closed, so the 11 September inputs are complete for the week.

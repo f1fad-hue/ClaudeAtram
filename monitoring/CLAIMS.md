@@ -64,7 +64,12 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | Claim | Value | Kind | Source | Last verified |
 |---|---|---|---|---|
 | Spot VIX | 14.32 (4 Sep close - the last trading day; 5 Sep was a Saturday) | P | Cboe | 2026-09-07 |
-| VIX 2026 low | 14.18 (17 Aug) | P | CNBC / Cboe | 2026-09-07 |
+| VIX 2026 low | **13.80 — 4 Sep intraday**, just before the payrolls release, then rebounded to close 14.32 | P | market reporting (verified via search result) — **CORRECTED**: 14.18 on 17 Aug was the year's low when this model adopted it, and was superseded on 4 Sep without the model noticing for nine days | 2026-09-13 |
+| VIX August low | 14.18 (17 Aug intraday) — the 2026 low *until* 4 Sep, still cited historically | P | CNBC 2026-08-17 | 2026-09-13 |
+| VIX 1-month high | 16.82 (2 Sep intraday); the 2 Sep **close** was 16.34 | P | market reporting (verified via search result). Previously carried as 16.80 on 1 Sep; two accounts put the peak on the 2nd, which is coherent with that session's close being the spike | 2026-09-13 |
+| Asia Equity vol beta | 1.05 × 0.92 = 0.966 | **E** | ASSUMPTION — Asia Pacific ex-Japan vol ~1.05× the S&P, times ~0.92 for the dividend tilt. Neither leg sourced to a manager document; no published pair found to anchor it | 2026-09-13 |
+| Global Technology vol beta | 1.30 | **E** | ASSUMPTION. Cross-check only: Fidelity publishes 3y annualised volatility of 17.23% (USD I Acc, Jun 2026), which implies ~1.30 beta only if S&P realised vol over that window was ~13.3% — plausible, unverified, and not the same quantity (this beta applies to forward implied vol) | 2026-09-13 |
+| Covered-call vol factor | JEPQ since-inception annualised σ **13.9%** vs Nasdaq-100 **20.4%** → factor **0.681**; published beta 0.81 | P | J.P. Morgan JEPQ fact sheet, 31 Jul 2026 (verified via search result) — replaces an unsourced 0.68 carried in `vol_beta` since launch | 2026-09-13 |
 | VIX Hormuz spike | 16.34 (2 Sep close), retraced to 15.20 then 14.32 | P | market reports | 2026-09-07 |
 | 11 Sep session (reversal) | S&P +0.86% to 7,656.98 — first gain in five sessions; WTI settled $100.05, −2.4%; **VIX closed 15.84, −11.21%** — gap closed, and the −11.21% from 15.84 implies a 17.84 prior close, independently corroborating the 10 Sep figure against one outlet that printed "near 17.89"; Nikkei 64,011, KOSPI 6,910 | P | market reporting 2026-09-11/12 (verified via search result) | 2026-09-12 |
 | Hormuz diplomacy | Tehran to meet Gulf states in Oman on the Strait (11 Sep) — the reason oil settled down 2.8% | P | oil market reporting 2026-09-11 (verified via search result) | 2026-09-11 |
