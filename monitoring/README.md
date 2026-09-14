@@ -90,6 +90,11 @@ truth; the artifact is a rendering of it.
 13. `AS_OF` is the market data date; `REVIEW_DATE` is when a human last worked the
    page. They are not the same on a weekend, and reference data retrieved during a
    review is legitimately newer than the market snapshot.
+16. Derive every tolerance from the publication precision of the figures it
+   compares, and re-derive it when that precision changes. A hand-picked constant
+   has now been the defect twice, and a 0.006 left behind by a 3dp-to-5dp change
+   was 1200x too loose. Never copy a tolerance into the verifier - re-derive it
+   there, or both harnesses fail the same way on the same day.
 15. Validate that data reaches the SCREEN, not just that it is correct in the
    payload. The catalyst block was deleted from the markup and went unnoticed for
    three days because every check validated the payload and the renderer's own

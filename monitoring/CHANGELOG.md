@@ -2,6 +2,83 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-14 (second pass) — The Hormuz bypass was shut, and both harnesses carried the same wrong constant
+
+Research turned up two developments that matter more than anything in the code, and
+the code review found a tolerance that was wrong in *both* the engine and the
+supposedly independent verifier.
+
+### The bypass is shut
+
+Drone strikes launched from Iraq on 10-11 September hit Saudi Arabia's **East-West
+(Petroline) pipeline** and Riyadh closed it on the 11th; satellite imagery shows fire
+damage at a pumping station. That 1,200 km line to Yanbu on the Red Sea was moving
+roughly **5.0 mb/d specifically to route around the Strait**.
+
+This undercuts the offset this model was leaning on. Goldman's "two-thirds of pre-war"
+reading — 15.5 mb/d against a 23.0 mb/d baseline, published here two days ago — is
+dated **28 August**, and a material part of what it measured ran through the line
+that is now shut. No post-shutdown flow figure has been published, so none is
+invented: the flow reading now carries its own as-of date and the note says plainly
+that two-thirds is the last measured level and is **stale in a knowable direction**.
+
+### The diplomacy was called off
+
+The Oman meeting at which Iran was to unveil the temporary shipping lane agreed with
+Muscat was postponed on the day, "in the interests of consensus", with no new date.
+Last week's note said this model was not pricing that diplomacy. That was right.
+
+It is no longer a dated catalyst, but it is **not dropped either** — a new
+`POSTPONED` block carries it, because "the thing that was going to settle this did
+not happen" is information, and silently removing the row would read as though the
+meeting had gone ahead.
+
+Geopolitics & energy cut **1.5 → 1.25**. Still not at the floor, for the same reason
+as before: the stress table models full closure and Brent above $130. Gauge 2.46 → 2.44.
+
+### Monday's close: mislabelled data, discarded
+
+One search returned S&P 7,657 / Nasdaq 26,333.04 / Dow 52,573.29 / VIX 15.84 as
+Monday's close. Every one of those is **Friday's** figure to the decimal, and
+same-day reporting had Monday *falling* on oil and AI names. A day cannot be both
++0.9% and lower. Discarded, and recorded in CLAIMS as discarded. Market inputs stay
+at Friday's close.
+
+### A hand-picked tolerance, wrong in both harnesses
+
+Cutting a driver to 1.25 broke the check that the weighted composite of the reported
+1-5 scores equals the headline gauge. The error was **0.0065** against a hand-picked
+tolerance of **0.006**.
+
+The score was not the problem. Each reported score is `to5()` rounded to 2dp and the
+weights sum to 1, so the composite carries up to 0.005 of rounding, and the gauge
+itself rounds for another 0.005: the **derived** bound is 0.010. The 0.006 had been
+passing only because the scores happened to round favourably.
+
+Worse, the independent verifier carried **the same 0.006** and failed the same way on
+the same day. Both sides wrong in the same direction is exactly what an independent
+verifier exists to prevent — and it did not, because the constant had been *copied*
+rather than re-derived. Both are now derived from publication precision.
+
+This is the second time a hand-picked tolerance has been the defect rather than the
+check (the first was 0.0614 against a hand-picked 0.06 on 2026-09-06).
+
+### A tolerance left behind by a precision change
+
+Yesterday `port_k` moved from 3dp to 5dp. The check that the portfolio k equals the
+ex-cash weighted average still allowed **0.006** — roughly **1200x** looser than a 5dp
+figure warrants, and it would have passed a materially wrong average. Now derived
+from the published precision, and verified to bite on a 0.001 perturbation that the
+old tolerance swallowed. The tech-gap check had the opposite problem, 0.006 where
+three 2dp figures propagate to 0.015 — too tight is a defect too, it just waits
+longer to fire.
+
+**The rule these three share:** a tolerance is only as good as the precision it was
+derived from, and it must move when that precision moves. A copied constant does
+neither.
+
+**Checks: engine 97, independent verifier 209, requirements checklist 23/23.**
+
 ## 2026-09-14 — A contract that expires on Wednesday, and a tolerance that policed itself
 
 Monday. No 14 September market data was reported yet when this ran, so the market

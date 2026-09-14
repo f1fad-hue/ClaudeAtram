@@ -121,6 +121,19 @@ MACRO = {
     "hormuz_flow_gap": 7.5,        # mb/d still below pre-conflict, Goldman (7-8)
     "hormuz_flow_prewar": 23.0,    # mb/d, = 15.5 + 7.5, Goldman's implied baseline
     "hormuz_flow_trough": 5.5,     # mb/d, March trough (5-6)
+    # The flow reading's OWN date. It matters more than usual now: Goldman's
+    # two-thirds was measured on 28 August, and on 11 September drone strikes
+    # launched from Iraq hit Saudi Arabia's East-West (Petroline) pipeline, which
+    # Riyadh then shut. That pipeline was carrying roughly 5 mb/d to the Red Sea
+    # port of Yanbu specifically to BYPASS Hormuz - so a material part of the
+    # recovery Goldman measured has since been taken out, and the 15.5 figure is
+    # stale in a knowable direction. No post-shutdown flow number has been
+    # published, so none is invented here.
+    "hormuz_flow_asof": "2026-08-28",
+    "petroline_bypass": 5.0,       # mb/d rerouted via the pipeline before the strike
+    "petroline_capacity": 7.0,     # mb/d design capacity after expansion
+    "petroline_km": 1200,          # east-west across the peninsula to Yanbu
+    "petroline_shut": "2026-09-11",
     "hormuz_dark": 5.0,            # mb/d moving via dark crossings / STS transfers
     "hormuz_vessels_waiting": 436,
     # The VIX spiked to 16.34 on 2 Sep on the Hormuz strikes and has since fallen
@@ -275,12 +288,16 @@ MACRO["vix_fut_dec"] = MACRO["vix_futs"][-1][2]
 #     four stale-figure defects in this changelog.
 # ----------------------------------------------------------------------------
 
+# Postponed with no new date, so it is NOT a dated catalyst. Recorded here rather
+# than dropped, because "the thing that was going to resolve this did not happen" is
+# itself information the page should carry. (2026-09-14.)
+POSTPONED = [("Iran-GCC talks on the Strait, in Oman",
+              "Called off on 14 September 'in the interests of consensus' per Oman's "
+              "foreign minister, with no new date. Iran had been due to unveil the "
+              "temporary shipping lane it agreed with Muscat. The energy driver does "
+              "not price this diplomacy and said so before the postponement.")]
+
 CATALYSTS = [
-    ("2026-09-14", "Iran-GCC talks on the Strait, in Oman",
-     "GCC foreign ministers and Iraq meet Tehran in Muscat. Iran and Oman have "
-     "already agreed a temporary shipping lane and mine clearing; this is the "
-     "meeting that would put it into effect. The single largest swing factor for "
-     "the energy driver and, through Brent, for three of the four sleeves."),
     ("2026-09-16", "FOMC decision",
      "A 25bp hike is priced at 85.6% after August CPI, up from 70% before it and "
      "58% a week ago. The monetary driver is scored on tightening that has "
@@ -489,28 +506,32 @@ DRIVERS = [
      "shape of the trade: the curve still prices 19+ by December while delivered "
      "volatility keeps returning to the mid-teens, and that gap is what the "
      "covered-call sleeve is paid to carry."),
-    ("Geopolitics & energy", 0.1, 1.5,
-     "Still the weakest link by a wide margin, and this note is CORRECTED for "
-     "overstating the disruption. It previously read the shutdown off VESSEL COUNTS "
-     "alone - 6 transits a day against a ~85 baseline, 'a ~93% shutdown'. Two "
-     "problems. The counts themselves disagree by about five times depending on what "
-     "is counted: IMF PortWatch logs 6 a day across all transits, Lloyd's List "
-     "Intelligence 14 a day counting only cargo vessels over 10,000 dwt, and the US "
-     "government claims around 30. More importantly, vessel count is not supply. "
-     "Goldman puts Gulf crude and product exports at 15.5 mb/d against a 20.0 mb/d "
-     "pre-war baseline - about two-thirds, up from a 5.5 mb/d trough in March - with "
-     "roughly 5.0 mb/d moving via dark crossings and ship-to-ship transfers. That is "
-     "about a third of supply lost, not 93%, and it is the version this model's own "
-     "Brent input corroborates: $105 oil is not what a 93% shutdown prices. The damage "
-     "is still severe: Brent settled $104.61, +59.7% y/y and +8.7% on the week, Saudi "
-     "output is down ~1.9 mb/d after Houthi strikes, US Central Command confirmed five "
-     "Iranian tankers destroyed, tanker rates are at record highs, 436 vessels are "
-     "holding position off berth, and the conflict has reached the Bab al-Mandab. Held "
-     "at 1.5 rather than raised on the flows recovery, because that recovery is "
-     "already IN the $104.61 price - crediting the driver for it would count the same "
-     "good news twice. Not scored at the floor either: the stress table models full "
-     "closure and Brent above $130, so a floor would assert no room left to worsen "
-     "while the page models it worsening."),
+    ("Geopolitics & energy", 0.1, 1.25,
+     "CUT. Two things went the wrong way and one of them undercuts the offset this "
+     "note was leaning on. First, the HORMUZ BYPASS IS SHUT: drone strikes launched "
+     "from Iraq hit Saudi Arabia's 1200 km East-West (Petroline) pipeline on 11 Sep "
+     "and Riyadh closed it, with satellite imagery showing fire damage at a pumping "
+     "station. That line was moving roughly 5.0 mb/d to the Red Sea port of Yanbu "
+     "specifically to route AROUND the Strait. Second, the Oman meeting at which "
+     "Iran was to unveil a temporary shipping lane to the Gulf states was postponed "
+     "on the day, 'in the interests of consensus', with no new date. This note said "
+     "last week that it was not pricing that diplomacy; that was the right call. "
+     "Read the disruption on VOLUME, not vessel counts. The counts disagree about "
+     "fivefold by what they count - IMF PortWatch 6 transits a day against a ~85 "
+     "baseline, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the "
+     "US government around 30 - and none of them is supply. Goldman put Gulf crude "
+     "and product exports at 15.5 mb/d against a 23.0 mb/d pre-war baseline, about "
+     "two-thirds, up from a 5.5 mb/d trough in March. But that reading is dated "
+     "2026-08-28, BEFORE the pipeline was hit, and a material part of what it "
+     "measured ran through the line that is now shut. No post-shutdown figure has "
+     "been published, so none is invented here - the honest statement is that "
+     "two-thirds is the last measured level and is now stale in a knowable "
+     "direction. Brent settled $104.61 on Friday, +8.7% on the week, and traded toward $108 on Monday, "
+     "a four-month high, +59.7% y/y. Saudi output was already down ~1.9 mb/d after "
+     "Houthi strikes; tanker rates are at record highs; 436 vessels are holding off "
+     "berth. Still NOT scored at the floor: the stress table models full closure and "
+     "Brent above $130, a strictly worse state, so a floor would assert no room left "
+     "to worsen while the page models it worsening."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -1225,6 +1246,7 @@ def payload():
             "t364": round(MACRO["ph_tbill_364"] - MACRO["ph_cpi_aug"], 2),
         },
         "catalysts": [{"date": d, "what": w, "why": y} for d, w, y in CATALYSTS],
+        "postponed": [{"what": w, "why": y} for w, y in POSTPONED],
         "dd_model": {"k": DD_K, "mu_coef": DD_MU,
                      "horizon_y": HORIZON_Y, "calib_y": DD_CALIB_Y,
                      # 4dp left a 2.5e-04 error in every drawdown - enough to
@@ -1613,9 +1635,17 @@ def report():
                    all(1 <= d["score"] <= 5 for d in p["drivers"])))
     checks.append(("every driver rescale 1-10 -> 1-5 is exact",
                    all(abs(d["score"] - to5(d["score_10"])) < 1e-9 for d in p["drivers"])))
+    # Tolerance DERIVED, not picked. Each reported score is to5() rounded to 2dp
+    # (+-0.005) and the weights sum to 1, so the composite carries up to 0.005 of
+    # rounding; the gauge itself rounds at 2dp for another 0.005. Bound = 0.010.
+    # The hand-picked 0.006 that stood here passed only because the scores happened
+    # to round favourably - it failed the moment a driver moved to 1.25, on an error
+    # of 0.0065 that is well inside what the published precision permits. Second
+    # time a hand-picked tolerance has been the defect rather than the check.
+    _comp_bound = sum(d["weight"] for d in p["drivers"]) * 0.005 + 0.005
     checks.append(("the weighted composite of the reported driver scores is the gauge",
                    abs(sum(d["weight"] * d["score"] for d in p["drivers"]) - p["gauge"])
-                   <= 0.006))
+                   <= _comp_bound))
     checks.append(("driver weights still sum to 1 after the rescale",
                    abs(sum(d["weight"] for d in p["drivers"]) - 1.0) < 1e-9))
     checks.append(("every regional score is reported in 1-5",
@@ -1704,8 +1734,16 @@ def report():
         eq = [(w[i], p["funds"][i]["dd_k"]) for i in range(4)
               if not FUNDS[i]["cash_like"]]
         avg = sum(x * kx for x, kx in eq) / sum(x for x, _ in eq)
+        # Bound derived from how precisely k is PUBLISHED, which changed on
+        # 2026-09-14 from 3dp to 5dp. The 0.006 that stood here was set when the
+        # figure printed at 3dp and was left behind by that change - against a 5dp
+        # value it is roughly 1200x looser than the arithmetic warrants, so it would
+        # have passed a materially wrong weighted average. A tolerance is only as
+        # good as the precision it was derived from, and it must move with it.
+        _k_pub = p["dd_model"][f"{lab}_k"]
+        _k_dec = len(repr(float(_k_pub)).split(".")[1].rstrip("0")) if "." in repr(float(_k_pub)) else 0
         checks.append((f"{lab} portfolio k is the ex-cash weighted average of the sleeve k's",
-                       abs(avg - p["dd_model"][f"{lab}_k"]) < 0.006))
+                       abs(avg - _k_pub) <= 0.5 * 10 ** (-_k_dec) + 1e-12))
     # This check used to also assert cost > 0 - "the stub is genuinely dearer".
     # That was a contingent fact written in as an invariant, and it stopped being
     # true on 2026-09-09 when the fee corrections closed the gap: the counterfactual

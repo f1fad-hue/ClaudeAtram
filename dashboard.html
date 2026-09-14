@@ -828,6 +828,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <p class="note">Scheduled events dated after the market as-of date above.
         Nothing on this page accounts for them.</p>
       <div id="catalysts"></div>
+      <div id="postponed"></div>
     </div>
   </section>
 
@@ -960,6 +961,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "hormuz_flow_gap": 7.5,
   "hormuz_flow_prewar": 23.0,
   "hormuz_flow_trough": 5.5,
+  "hormuz_flow_asof": "2026-08-28",
+  "petroline_bypass": 5.0,
+  "petroline_capacity": 7.0,
+  "petroline_km": 1200,
+  "petroline_shut": "2026-09-11",
   "hormuz_dark": 5.0,
   "hormuz_vessels_waiting": 436,
   "vix_spot": 14.32,
@@ -1220,9 +1226,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "name": "Geopolitics & energy",
    "weight": 0.1,
-   "score": 1.22,
-   "score_10": 1.5,
-   "note": "Still the weakest link by a wide margin, and this note is CORRECTED for overstating the disruption. It previously read the shutdown off VESSEL COUNTS alone - 6 transits a day against a ~85 baseline, 'a ~93% shutdown'. Two problems. The counts themselves disagree by about five times depending on what is counted: IMF PortWatch logs 6 a day across all transits, Lloyd's List Intelligence 14 a day counting only cargo vessels over 10,000 dwt, and the US government claims around 30. More importantly, vessel count is not supply. Goldman puts Gulf crude and product exports at 15.5 mb/d against a 20.0 mb/d pre-war baseline - about two-thirds, up from a 5.5 mb/d trough in March - with roughly 5.0 mb/d moving via dark crossings and ship-to-ship transfers. That is about a third of supply lost, not 93%, and it is the version this model's own Brent input corroborates: $105 oil is not what a 93% shutdown prices. The damage is still severe: Brent settled $104.61, +59.7% y/y and +8.7% on the week, Saudi output is down ~1.9 mb/d after Houthi strikes, US Central Command confirmed five Iranian tankers destroyed, tanker rates are at record highs, 436 vessels are holding position off berth, and the conflict has reached the Bab al-Mandab. Held at 1.5 rather than raised on the flows recovery, because that recovery is already IN the $104.61 price - crediting the driver for it would count the same good news twice. Not scored at the floor either: the stress table models full closure and Brent above $130, so a floor would assert no room left to worsen while the page models it worsening."
+   "score": 1.11,
+   "score_10": 1.25,
+   "note": "CUT. Two things went the wrong way and one of them undercuts the offset this note was leaning on. First, the HORMUZ BYPASS IS SHUT: drone strikes launched from Iraq hit Saudi Arabia's 1200 km East-West (Petroline) pipeline on 11 Sep and Riyadh closed it, with satellite imagery showing fire damage at a pumping station. That line was moving roughly 5.0 mb/d to the Red Sea port of Yanbu specifically to route AROUND the Strait. Second, the Oman meeting at which Iran was to unveil a temporary shipping lane to the Gulf states was postponed on the day, 'in the interests of consensus', with no new date. This note said last week that it was not pricing that diplomacy; that was the right call. Read the disruption on VOLUME, not vessel counts. The counts disagree about fivefold by what they count - IMF PortWatch 6 transits a day against a ~85 baseline, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the US government around 30 - and none of them is supply. Goldman put Gulf crude and product exports at 15.5 mb/d against a 23.0 mb/d pre-war baseline, about two-thirds, up from a 5.5 mb/d trough in March. But that reading is dated 2026-08-28, BEFORE the pipeline was hit, and a material part of what it measured ran through the line that is now shut. No post-shutdown figure has been published, so none is invented here - the honest statement is that two-thirds is the last measured level and is now stale in a knowable direction. Brent settled $104.61 on Friday, +8.7% on the week, and traded toward $108 on Monday, a four-month high, +59.7% y/y. Saudi output was already down ~1.9 mb/d after Houthi strikes; tanker rates are at record highs; 436 vessels are holding off berth. Still NOT scored at the floor: the stress table models full closure and Brent above $130, a strictly worse state, so a floor would assert no room left to worsen while the page models it worsening."
   }
  ],
  "driver_scale": {
@@ -1231,8 +1237,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "neutral": 3.0,
   "neutral_10": 5.5
  },
- "gauge": 2.46,
- "gauge_10": 4.28,
+ "gauge": 2.44,
+ "gauge_10": 4.25,
  "gauge_neutral": 3.0,
  "funds": [
   {
@@ -1542,11 +1548,6 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
  },
  "catalysts": [
   {
-   "date": "2026-09-14",
-   "what": "Iran-GCC talks on the Strait, in Oman",
-   "why": "GCC foreign ministers and Iraq meet Tehran in Muscat. Iran and Oman have already agreed a temporary shipping lane and mine clearing; this is the meeting that would put it into effect. The single largest swing factor for the energy driver and, through Brent, for three of the four sleeves."
-  },
-  {
    "date": "2026-09-16",
    "what": "FOMC decision",
    "why": "A 25bp hike is priced at 85.6% after August CPI, up from 70% before it and 58% a week ago. The monetary driver is scored on tightening that has already happened; this would be the first US move of the cycle."
@@ -1560,6 +1561,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "date": "2026-10-06",
    "what": "Philippine September CPI",
    "why": "The peso sleeve's real-carry argument rests on PH inflation decelerating; August was the fourth consecutive slowdown, and Brent at $105 works directly against a fifth."
+  }
+ ],
+ "postponed": [
+  {
+   "what": "Iran-GCC talks on the Strait, in Oman",
+   "why": "Called off on 14 September 'in the interests of consensus' per Oman's foreign minister, with no new date. Iran had been due to unveil the temporary shipping lane it agreed with Muscat. The energy driver does not price this diplomacy and said so before the postponement."
   }
  ],
  "dd_model": {
@@ -3068,6 +3075,16 @@ function donut(host, w, title, cagr, dd) {
     host.appendChild(el("div", { class: "cat" },
       `<div class="catwhen">${when}</div>
        <div><b>${c.what}</b><div class="note">${c.why}</div></div>`));
+  });
+  // Events that were going to resolve something and then did not. Carried rather
+  // than dropped: "the thing that would have settled this was called off" is itself
+  // information, and silently removing it would look like the event had happened.
+  const ph = $("#postponed");
+  (D.postponed || []).forEach(x => {
+    if (!ph) return;
+    ph.appendChild(el("div", { class: "cat" },
+      `<div class="catwhen">Postponed</div>
+       <div><b>${x.what}</b><div class="note">${x.why}</div></div>`));
   });
 })();
 
