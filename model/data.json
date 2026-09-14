@@ -637,7 +637,7 @@
   "ppp_now": 2.7
  },
  "vix_quote_date": "2026-09-04",
- "review_date": "2026-09-13",
+ "review_date": "2026-09-14",
  "regional_tilt_per_pt": 0.675,
  "real_yield": {
   "cpi": 6.1,
@@ -656,9 +656,9 @@
    "why": "A 25bp hike is priced at 85.6% after August CPI, up from 70% before it and 58% a week ago. The monetary driver is scored on tightening that has already happened; this would be the first US move of the cycle."
   },
   {
-   "date": "2026-09-17",
+   "date": "2026-09-18",
    "what": "Bank of Japan decision",
-   "why": "Asian markets are now pricing BoJ tightening alongside the Fed, which is part of why the Nikkei fell 1.9% on 11 September."
+   "why": "The BoJ meets 17-18 September; the decision lands on the 18th, not the 17th, which is what this list said until 2026-09-14. Asian markets are pricing BoJ tightening alongside the Fed, which is part of why the Nikkei fell 1.9% on 11 September."
   },
   {
    "date": "2026-10-06",
@@ -673,7 +673,7 @@
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.675,
-  "optimized_k": 1.618,
+  "optimized_k": 1.61765,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -740,7 +740,7 @@
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
     "cagr": 9.82,
     "vol": 11.52,
-    "maxdd": -20.4
+    "maxdd": -20.3
    },
    {
     "name": "Grind-on base case",

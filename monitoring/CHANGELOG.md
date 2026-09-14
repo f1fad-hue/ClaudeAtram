@@ -2,6 +2,112 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-14 — A contract that expires on Wednesday, and a tolerance that policed itself
+
+Monday. No 14 September market data was reported yet when this ran, so the market
+inputs stand at Friday's close; `REVIEW_DATE` moves to today, `AS_OF` stays at
+2026-09-11. Research corrected one date, and the code review found three defects
+plus two flaws in checks I wrote during the same pass.
+
+### The front VIX contract settles on Wednesday and nothing knew
+
+The strip's September contract settles **16 September**. Maturities are measured to
+the centre of the 30-day window each contract prices, so the front maturity stays
+*positive* until 1 October — which means the existing "maturities are positive and
+strictly increasing" check would not have fired for another fortnight, while the
+bootstrap interpolated through a contract that had stopped trading.
+
+Now checked against `REVIEW_DATE`, so it fires the day a contract expires. Verified
+by moving the review date to Thursday: both the expiry guard and the days-to-front
+check fail.
+
+### The BoJ catalyst was on the wrong day
+
+Listed as 17 September. The Bank of Japan meets **17-18** and the decision lands on
+the **18th**. The FOMC entry was right (15-16, decision the 16th) — the error was
+dating one two-day meeting from its start and the other from its decision.
+
+### Scenario drawdowns did not reconcile, for the third time
+
+Two of the ten stress rows were 0.1 out from their own printed cagr and vol. This is
+the same defect as the peso figures (2026-09-03) and `ret_per_dd` (2026-09-11): a
+published figure computed from raw values while its inputs print rounded. Each time
+it was fixed where it was found rather than everywhere the pattern occurs.
+
+The substantive cause here was different, though, and worth separating: the
+**published `port_k` was lossy**. At 3dp, the AI-capex row reconstructs to −42.34
+from the exact coefficient and −42.35 from the published 1.618 — which print as
+−42.3 and −42.4. Published at 5dp now. Rounding the scenario inputs as well is a
+consistency fix, not a caught bug, and it is recorded as such.
+
+### The stub counterfactual could have dropped a second fund
+
+`_best_without(3)` forces Global Technology to zero and re-optimises. It required
+non-zero sleeves to be at least 5% — but permitted *other* sleeves to be zero too,
+so a two-fund portfolio like [50, 50, 0, 0] was reachable. The stub's "cost" would
+then be measured against something the objective forbids, which is precisely the
+error the concentration-cap guard beside it was added to prevent.
+
+It is not binding today — the answer is [15, 50, 35, 0], holding all three — so this
+is a latent bug closed by reasoning rather than by a failing test, and it is recorded
+that way rather than dressed up as a catch.
+
+### Two checks I wrote in this same pass were wrong
+
+**A check that compared the engine to itself.** The new scenario-reconstruction check
+computed `round(port_k(OPT_W), 5)` locally instead of reading the published value —
+so it could not detect the payload publishing a lossier figure, the one thing it
+existed to catch.
+
+**A tolerance that policed itself.** Having fixed that, the check still would not
+fire. It used a bound derived from half a unit in the last published place of each
+input, propagated through the drawdown formula. That bound is correct and useless:
+as `k` is published less precisely its error term grows, so the tolerance grows in
+lockstep with the error it is meant to police. Three bite tests passed in a row
+before this became obvious.
+
+The honest question was never "is the error inside a bound I derived" but "does a
+reader reconstructing from the published row land on the printed number". That is
+now asserted directly, with no tolerance to get wrong — and it fails immediately at
+3dp and 2dp.
+
+This is the fourth first-run-green check in a week. Yesterday's note said a check
+written as "the right words are present" rarely holds while one written as "the
+quantities stand in the right relation" usually does. Today adds the sharper
+version: **a tolerance derived from the same quantity it is checking cannot detect a
+defect in that quantity.** When the check and the thing checked share a parameter,
+the check is a tautology wearing arithmetic.
+
+### The catalyst block had been missing from the page for three days
+
+The worst find of the pass, and it was found by eye rather than by any check.
+
+The **"Not in these numbers yet"** block — the pending-catalyst list added on
+10 September — was deleted from the markup by the conciseness edit on the 11th. That
+edit replaced the whole "Keeping this current" section, and the catalyst card sat
+inside the replaced range. Three days, three reviews, and nothing caught it:
+
+- The payload still carried all four catalysts.
+- The engine still checked they were in date order and still pending.
+- The verifier still re-derived them independently.
+- `validate.js` reported **no JS errors** — because the renderer opens with
+  `if (!host || !D.catalysts) return;`, so a missing mount point is a silent no-op.
+
+Every check validated the data. None validated that the data reached the screen. The
+defensive guard I wrote to make the renderer robust is exactly what hid its absence.
+
+Restored, and **check F** added: every payload collection the page is meant to render
+must actually appear in the DOM — exact counts for lists (catalysts, sources, fund
+slides), at-least counts for charts that legitimately draw extra marks. Verified by
+deleting the mount point again.
+
+Two of the five selectors were wrong on the first run, and both were mine rather than
+the page's: the driver list has 7 drivers plus a weighted-composite row, and the
+frontier draws 42 circles for 29 points because it marks both portfolios. Checked
+before filing.
+
+**Checks: engine 95 → 97, independent verifier 209, requirements checklist 22 → 23.**
+
 ## 2026-09-13 — Stale reference data, and a magic number that turned out to be right
 
 Sunday. No market data since Friday's close, so this was a scrub of the things that

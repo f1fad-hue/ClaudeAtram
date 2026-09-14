@@ -90,6 +90,15 @@ truth; the artifact is a rendering of it.
 13. `AS_OF` is the market data date; `REVIEW_DATE` is when a human last worked the
    page. They are not the same on a weekend, and reference data retrieved during a
    review is legitimately newer than the market snapshot.
+15. Validate that data reaches the SCREEN, not just that it is correct in the
+   payload. The catalyst block was deleted from the markup and went unnoticed for
+   three days because every check validated the payload and the renderer's own
+   `if (!host) return` guard swallowed the missing mount point. Defensive guards
+   hide missing mount points; count rendered rows against payload rows.
+14a. A tolerance derived from the same quantity it is checking cannot detect a
+   defect in that quantity. Prefer "does the reader land on the printed number" to
+   any propagated-error bound. And never let a check recompute a value the payload
+   already publishes — that compares the engine to itself.
 14. An unsourced constant that happens to be right is still unsourced. `vol_beta`
    carried 0.68 for months; J.P. Morgan publishes 13.9/20.4 = 0.681. Derive it from
    the published pair, and make the verifier read the same published figures rather

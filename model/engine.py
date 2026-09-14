@@ -21,7 +21,7 @@ from itertools import product
 # differ, and reference data retrieved during the review is legitimately NEWER than
 # the market snapshot: a look-through read today is not "stale by -2 days".
 AS_OF = "2026-09-11"        # last trading session (Friday)
-REVIEW_DATE = "2026-09-13"  # this review
+REVIEW_DATE = "2026-09-14"  # this review
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -285,9 +285,11 @@ CATALYSTS = [
      "A 25bp hike is priced at 85.6% after August CPI, up from 70% before it and "
      "58% a week ago. The monetary driver is scored on tightening that has "
      "already happened; this would be the first US move of the cycle."),
-    ("2026-09-17", "Bank of Japan decision",
-     "Asian markets are now pricing BoJ tightening alongside the Fed, which is "
-     "part of why the Nikkei fell 1.9% on 11 September."),
+    ("2026-09-18", "Bank of Japan decision",
+     "The BoJ meets 17-18 September; the decision lands on the 18th, not the "
+     "17th, which is what this list said until 2026-09-14. Asian markets are "
+     "pricing BoJ tightening alongside the Fed, which is part of why the Nikkei "
+     "fell 1.9% on 11 September."),
     ("2026-10-06", "Philippine September CPI",
      "The peso sleeve's real-carry argument rests on PH inflation decelerating; "
      "August was the fourth consecutive slowdown, and Brent at $105 works "
@@ -973,7 +975,14 @@ def _best_without(idx):
                 w = [a, b, c, 100 - a - b - c]
                 if w[idx] != 0:
                     continue
-                if any(x != 0 and x < 5 for x in w):
+                # Every sleeve EXCEPT the excluded one must still be held at the
+                # 5% minimum. Without this the counterfactual could drop a second
+                # fund - [50, 50, 0, 0] was reachable - and the stub's "cost" would
+                # be measured against a two-fund portfolio the objective forbids,
+                # exactly the error the concentration-cap guard below was added to
+                # prevent. It did not bite today ([15, 50, 35, 0] holds all three),
+                # but nothing stopped it. (Audit 2026-09-14.)
+                if any(i != idx and x < 5 for i, x in enumerate(w)):
                     continue
                 # the counterfactual must obey the same concentration cap as the
                 # chosen portfolio, or the "cost" of the stub is measured against
@@ -1058,9 +1067,17 @@ def run_scenarios(w, key):
         # while sitting next to headline figures that did not. The "Grind-on base
         # case" row - zero shock, 1.0 vol multiplier - is the tell: it must
         # reproduce the headline portfolio exactly, and it did not.
-        d = -max((port_k(w) * v - DD_MU * r) * DD_HORIZON_SCALAR, 0.0)
-        rows.append({"name": name, "desc": desc, "cagr": round(r, 2),
-                     "vol": round(v, 2), "maxdd": round(d, 1)})
+        # Built from the ROUNDED cagr and vol, for the same reason summarise() is:
+        # a reader dividing out the printed row must land on the printed drawdown.
+        # Computed from raw r and v, two of the ten rows were 0.1 out from their own
+        # printed inputs. This is the THIRD place this defect has appeared - the
+        # peso figures on 2026-09-03, ret_per_dd on 2026-09-11, and here - each time
+        # because the fix was applied where it was found rather than everywhere the
+        # pattern occurs. (Audit 2026-09-14.)
+        r_d, v_d = round(r, 2), round(v, 2)
+        d = -max((port_k(w) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0)
+        rows.append({"name": name, "desc": desc, "cagr": r_d,
+                     "vol": v_d, "maxdd": round(d, 1)})
     return rows
 
 # ----------------------------------------------------------------------------
@@ -1213,8 +1230,13 @@ def payload():
                      # 4dp left a 2.5e-04 error in every drawdown - enough to
                      # flip portfolios sitting on the budget boundary.
                      "horizon_scalar": round(DD_HORIZON_SCALAR, 9),
-                     "baseline_k": round(port_k(BASELINE_W), 3),
-                     "optimized_k": round(port_k(OPT_W), 3),
+                     # 5dp, not 3. At 3dp the published k is LOSSY enough to move a
+                     # reconstructed scenario drawdown by a rounding step: the AI
+                     # capex row reproduces as -42.34 from the exact k and -42.35
+                     # from 1.618, which print as -42.3 and -42.4. The page shows it
+                     # formatted; the payload should not throw the precision away.
+                     "baseline_k": round(port_k(BASELINE_W), 5),
+                     "optimized_k": round(port_k(OPT_W), 5),
                      "note": "1.65 is the calibration anchor, not the coefficient every sleeve "
                              "uses. Each fund carries a declared adjustment for the shape of its "
                              "own left tail; the portfolio coefficient is the weighted average "
@@ -1522,6 +1544,22 @@ def report():
                    all(abs(t - vix_maturity(y, m)) < 5e-5
                        for (_, t, _), (_, y, m, _)
                        in zip(MACRO["vix_futs"], MACRO["vix_futs_levels"]))))
+    # A settled contract is not on the curve. The September contract settles
+    # 16 September and nothing in this model knew that: maturities are measured to
+    # the 30-day window CENTRE, so the front maturity stays positive until 1 October
+    # and the existing positivity check would not fire for another two weeks - by
+    # which point the bootstrap would have been interpolating through a contract
+    # that stopped trading. Checked against REVIEW_DATE, so it fires the day the
+    # contract expires rather than a fortnight later. (Audit 2026-09-14.)
+    _rev = _dt.date.fromisoformat(REVIEW_DATE)
+    _settled = [lbl for lbl, y, m, _ in MACRO["vix_futs_levels"]
+                if vix_settlement(y, m) <= _rev]
+    checks.append(("no contract on the strip has already settled",
+                   not _settled))
+    _days_to_front = (vix_settlement(*MACRO["vix_futs_levels"][0][1:3]) - _rev).days
+    checks.append((f"front contract has {_days_to_front} days to settlement",
+                   _days_to_front > 0))
+
     checks.append(("maturities are positive and strictly increasing",
                    all(t > 0 for _, t, _ in MACRO["vix_futs"])
                    and all(a[1] < b[1] for a, b
@@ -1553,10 +1591,23 @@ def report():
                        and abs(base_row["vol"] - port["vol"]) < 0.011
                        and abs(base_row["maxdd"] - port["maxdd"]) < 0.06))
     # and every scenario drawdown must carry the same horizon scaling as the rest
-    checks.append(("scenario drawdowns are on the same horizon scaling as the page",
-                   all(abs(x["maxdd"]
-                               + max((port_k(OPT_W) * x["vol"] - DD_MU * x["cagr"])
-                                     * DD_HORIZON_SCALAR, 0.0)) < 0.06
+    # Every scenario row must reproduce from ITS OWN printed figures and the
+    # published k - the guarantee check B makes for the fund table.
+    #
+    # This began as a derived-tolerance bound: half a unit in the last published
+    # place of each input, propagated through d = (k*v - 0.50*r)*scalar. That bound
+    # is correct and useless. As k is published less precisely its error term grows,
+    # so the tolerance grows in lockstep with the error it is meant to police - the
+    # check can never fail on precision, which is exactly what it was added to
+    # catch. Three bite tests passed in a row before that became obvious.
+    #
+    # The honest question is not "is the error inside a bound I derived" but "does a
+    # reader reconstructing from the published row land on the printed number". That
+    # is asserted directly, with no tolerance to get wrong. (Audit 2026-09-14.)
+    _pk = p["dd_model"]["optimized_k"]
+    checks.append(("every scenario drawdown reproduces from its own printed row",
+                   all(round(-max((_pk * x["vol"] - DD_MU * x["cagr"])
+                                  * DD_HORIZON_SCALAR, 0.0), 1) == x["maxdd"]
                        for x in p["optimized"]["scenarios"])))
     checks.append(("every driver score is reported in 1-5",
                    all(1 <= d["score"] <= 5 for d in p["drivers"])))
