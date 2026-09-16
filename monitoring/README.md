@@ -90,6 +90,14 @@ truth; the artifact is a rendering of it.
 13. `AS_OF` is the market data date; `REVIEW_DATE` is when a human last worked the
    page. They are not the same on a weekend, and reference data retrieved during a
    review is legitimately newer than the market snapshot.
+17. A market print that will not CHAIN is not a print. Every close must reproduce
+   the next day's published move; where three reported figures for one session are
+   mutually inconsistent, publish none of them and say the series lags. The
+   arithmetic chain also settles disputed DATES - a move off a confirmed close can
+   only belong to the next trading session.
+18. Refactoring a block of inputs can delete inputs. The "every published input is
+   cited" check finds orphans, not removals. After any structural edit, diff the
+   input keys before and after.
 16. Derive every tolerance from the publication precision of the figures it
    compares, and re-derive it when that precision changes. A hand-picked constant
    has now been the defect twice, and a 0.006 left behind by a 3dp-to-5dp change

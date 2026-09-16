@@ -2,6 +2,88 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-16 — The strip rolled, a refactor that deleted four inputs, and a VIX close that would not chain
+
+FOMC day, and the day the September VIX contract settles. The expiry guard written
+on Monday fired on schedule, which is the first time a check here has caught
+something before it became a defect rather than after.
+
+### The strip is rolled
+
+The September contract settled today and is dropped: a settled contract is not a
+forward price. The three that remain are still 4 September quotes — a sixth day of
+searching produced nothing but the same levels beside a spot near 14.9, which dates
+them rather than confirming them. Dropping the front contract moves the horizon blend
+by 0.04 and changes **no** fund's volatility tilt, so the roll is safe; the curve now
+runs on 3 contracts and 4 knots, and the page says so.
+
+### Market inputs refreshed
+
+The 10-year closed **5.00%** on 15 September after touching **5.04%** — its highest
+since 2007. Brent settled **$108.75** (+66.0% y/y), WTI $105.83, and equities have
+fallen in six of the last seven sessions. FOMC odds 92%. Volatility & risk appetite
+cut 3.0 → 2.5 and growth 4.5 → 4.0; gauge 2.44 → 2.39. Weights unchanged.
+
+### A VIX close that would not chain
+
+The 15 September close was reported as *"16.93, down 0.27 points or −1.57%"*. Those
+three cannot all be true against a 17.10 prior: −0.27 gives 16.83 and −1.58%, while
+16.93 is −0.17 and −0.99%; for −1.57% to land on 16.93 the prior would have to be
+17.20. **No close is published for the 15th.**
+
+The 14th, by contrast, is solid — and by arithmetic rather than by counting sources.
+One outlet dated the +7.95% move to the 15th, but 15.84 (a confirmed 11 September
+close) × 1.0795 = 17.10, and the session after Friday the 11th is Monday the 14th.
+The chain settles the date.
+
+### The VIX fields were refactored into a series — and the refactor deleted four inputs
+
+`vix_latest` / `vix_next_close` / `vix_prev_close` / `vix_prev` / `vix_spike` had
+grown around a single two-day episode and did not generalise: adding two more closes
+would have needed another pair of fields. They are now one `vix_history` list with
+everything derived from it, so the move percentage is computed rather than asserted
+and cannot disagree with the levels.
+
+**The replacement range ran past its intended end and silently deleted
+`spx_close`, `wti_settle`, `brent_wk_pct` and the equity levels.** Nothing caught it
+directly: the "every published input is cited" check finds *orphaned* inputs, not
+*removed* ones. What surfaced it was the prose that cited them failing traceability —
+a check built for a different purpose catching this one sideways. Restored.
+
+Three new checks on the series itself: every close on a weekday, dates in order with
+no duplicates, and the published move reproducing from the last two closes. The
+verifier re-derives the whole chain rather than just the last pair.
+
+### A lag that is now stated rather than silent
+
+Withholding the 15th leaves the VIX series one session behind `AS_OF`. That is the
+right outcome, but a *silent* lag is not: a check now reports the gap in its own name
+and fails beyond five sessions. A series that quietly stops tracking is the failure
+mode this is for.
+
+### The page broke and the engine could not see it
+
+Removing those fields left four `toFixed()` calls on `undefined` in the volatility
+lede. **All 100 engine checks and all 212 verifier checks passed** while the page threw
+a JS error on load — both harnesses read the payload, and the payload was fine.
+
+`validate.js` caught it. This is the second time in three days that a page-level
+failure was invisible to the data-level checks (the catalyst block on the 14th was
+the first), and it is the same lesson from the other direction: **the payload being
+correct says nothing about the page working.** The lede is rewritten around the
+current picture rather than patched.
+
+### Also
+
+- `$105` was still being quoted as the *current* Brent level in three notes. It passed
+  the traceability guard by matching the prior settle at $104.61 — traceable, and
+  wrong for what the sentence claims. A figure can be sourced and still be the wrong
+  figure for its sentence.
+- One of my own edits duplicated "a four-month high" inside a sentence. Caught by
+  reading the rendered output rather than by any check.
+
+**Checks: engine 97 → 100, independent verifier 209 → 212, requirements checklist 23/23.**
+
 ## 2026-09-14 (second pass) — The Hormuz bypass was shut, and both harnesses carried the same wrong constant
 
 Research turned up two developments that matter more than anything in the code, and

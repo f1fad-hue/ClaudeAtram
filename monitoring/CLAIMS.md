@@ -33,7 +33,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | US CPI headline y/y (Jul 2026) | 3.4% | P | bls.gov CPI release | 2026-09-05 |
 | US CPI core y/y (Jul 2026) | 2.5% | P | bls.gov | 2026-09-05 |
 | **US PCE y/y / 6m annualised** | **3.7% / 4.1%** | P | cited by Chair Warsh, Jackson Hole (CNBC) | 2026-09-05 |
-| US 10-year Treasury yield | 4.96% (11 Sep close); 4.92% on 10 Sep was already a ten-year high | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
+| US 10-year Treasury yield | **5.00% (15 Sep close)**, touched 5.04% intraday — highest since 2007, a 19-year high | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
 | US 2-year Treasury yield | 4.63% (11 Sep close) — **gap closed**; was 4.377% and marked STALE on 10 Sep | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
 | US 30-year Treasury yield | 5.36% (11 Sep close) | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
 | Fed Sep 15-16 hike probability | 58%, from 49.4% pre-payrolls | P | CME FedWatch | 2026-09-05 |
@@ -57,8 +57,8 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | US unemployment rate | 4.1% | P | bls.gov | 2026-09-05 |
 | PH T-bill 91d / 182d / 364d | 5.138% / 5.517% / 5.717% | P | treasury.gov.ph auction results | 2026-09-05 |
 | USD/PHP | 62.68 — **11 Sep close**, another record low; 62.775 intraday; prior record 62.625 on 8 Sep | P | Philippine business press (verified via search result) | 2026-09-11 |
-| Brent crude | **$104.61 — a confirmed 11 Sep SETTLE**, −2.8% on the day, +8.7% on the week, above $100; passed $108 on 10 Sep, highest since 19 May | P | oil market reporting 2026-09-11 (verified via search result) — **gap closed**: the 10 Sep level had no confirmed settle and sources spread $102–108 | 2026-09-11 |
-| Brent y/y change | +59.71% | D | derived from the $104.61 settle against a $65.50 year-ago base, itself implied by the last verified pair ($96.28 at +46.99%) | 2026-09-11 |
+| Brent crude | **$108.75 — 15 Sep settle (Nov contract)**, +~3% on the day, a four-month high; $104.61 on 11 Sep | P | oil market reporting 2026-09-11 (verified via search result) — **gap closed**: the 10 Sep level had no confirmed settle and sources spread $102–108 | 2026-09-11 |
+| Brent y/y change | +66.03% | D | derived from the $104.61 settle against a $65.50 year-ago base, itself implied by the last verified pair ($96.28 at +46.99%) | 2026-09-11 |
 | Brent Q1 2026 close | $118 from $61 at year open | P | eia.gov Today in Energy | 2026-09-05 |
 | IMF global growth 2026 / 2027 | 3.1% / 3.2% | P | IMF WEO April 2026 | 2026-09-05 |
 | IMF US growth 2026 / 2027 | 2.4% / 2.0% | P | IMF WEO April 2026 | 2026-09-05 |
@@ -89,7 +89,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | Worst-case peso value, ₱1m | ₱744,000 optimised · ₱711,000 baseline | D | the expected max drawdown applied to the OPENING value — the worst case for money invested today, deliberately NOT the low point of the modelled path | 2026-09-10 |
 | Long-run VIX anchor | 19.5 | E | historical VIX mean 1990–2025 | 2026-09-05 |
 | Variance risk premium | 3.5 vol points | E | implied minus realised, long-run | 2026-09-05 |
-| Horizon vol 3M/6M/12M/10Y | 17.35 / 18.33 / 18.86 / 19.43% | D | engine, forward-variance integration over 4 observable contracts, maturities derived from the VIX settlement calendar off the 4 Sep quote date | 2026-09-10 |
+| Horizon vol 3M/6M/12M/10Y | 17.20 / 18.26 / 18.82 / 19.43% | D | engine, forward-variance integration over 4 observable contracts, maturities derived from the VIX settlement calendar off the 4 Sep quote date | 2026-09-10 |
 | Volatility ramp (blend − spot) | 18.93% − 14.32 = +4.61 vol pts | D | engine | 2026-09-08 |
 
 ## Valuation and earnings
