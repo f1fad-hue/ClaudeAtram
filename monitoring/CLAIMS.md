@@ -16,10 +16,13 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 
 | Claim | Value | Kind | Source | Last verified |
 |---|---|---|---|---|
-| Fed funds target range | 3.50–3.75% | P | federalreserve.gov FOMC statement 2026-07-29 | 2026-09-05 |
-| Sep FOMC hike odds | 85.6% (11 Sep, after August CPI); 70% on 10 Sep after PPI; 58% a week earlier | P | CME FedWatch (verified via search result) | 2026-09-11 |
+| Fed funds target range | **3.75–4.00%** — raised 25bp on 16 Sep 2026, first increase since 2023 | P | federalreserve.gov FOMC statement 2026-07-29 | 2026-09-05 |
+| Fed dot plot, Sep 2026 | Median end-2026 policy rate **4.1%** — one more hike. 12 of 18 participants at 4.125%, 4 at 4.375%; 16 of 18 see at least one more | P | FOMC Summary of Economic Projections, 16 Sep 2026 (verified via search result) | 2026-09-17 |
+| Next-move odds | October **50.9%**; cumulative at least one more by December **88.5%** | P | CME FedWatch, 17 Sep (verified via search result) | 2026-09-17 |
+| 16 Sep session | S&P 7,551.81 (−0.45%) · Dow 51,461.90 (−1.21%) · Nasdaq 25,978.42 (−0.01%) — all three reversed intraday gains after Warsh spoke; VIX 16.93 | P | market reporting 2026-09-16 (verified via search result) | 2026-09-17 |
+| VIX chain, 14–16 Sep | 17.10 → **17.20** → 16.93. The 16.93/−0.27/−1.57% triple was withheld on 16 Sep because it could not chain off 17.10; it was real but **mis-dated to the 15th**. The missing 17.20 close on the 15th makes all three reconcile exactly | P | market reporting (verified via search result) | 2026-09-17 |
 | US August CPI | headline 3.4% y/y unchanged, +0.4% m/m; core 2.4% y/y, +0.3% m/m (0.1pp above consensus); shelter 3.0% from 3.2%; gasoline +27.4% y/y | P | BLS release 2026-09-11 (verified via search result) | 2026-09-11 |
-| July FOMC vote | 9–3 hold, 3 dissents for a hike | P | federalreserve.gov | 2026-09-05 |
+| September FOMC vote | **Unanimous** to hike (July was 9–3 to hold, with 3 dissenting for a hike) | P | federalreserve.gov | 2026-09-05 |
 | ECB deposit facility rate | **2.50%** — hiked +25bp on 10 Sep 2026; MRO 2.65%, MLF 2.90%, effective 16 Sep | P | ECB Governing Council decision 2026-09-10 (verified via search result) | 2026-09-11 |
 | ECB June move | +25bp, first hike in 3 years | P | ecb.europa.eu | 2026-09-05 |
 | Euro-area HICP projection | 3.0% / 2.3% / 2.0% (2026/27/28) | P | Eurosystem staff projections | 2026-09-05 |
@@ -33,7 +36,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | US CPI headline y/y (Jul 2026) | 3.4% | P | bls.gov CPI release | 2026-09-05 |
 | US CPI core y/y (Jul 2026) | 2.5% | P | bls.gov | 2026-09-05 |
 | **US PCE y/y / 6m annualised** | **3.7% / 4.1%** | P | cited by Chair Warsh, Jackson Hole (CNBC) | 2026-09-05 |
-| US 10-year Treasury yield | **5.00% (15 Sep close)**, touched 5.04% intraday — highest since 2007, a 19-year high | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
+| US 10-year Treasury yield | **5.016% (16 Sep close)**, +2bp after the hike — back above 5%, highest since 2007; 5.00% on 15 Sep after a 5.04% intraday | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
 | US 2-year Treasury yield | 4.63% (11 Sep close) — **gap closed**; was 4.377% and marked STALE on 10 Sep | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
 | US 30-year Treasury yield | 5.36% (11 Sep close) | P | Treasury Yields Snapshot 2026-09-11 (verified via search result) | 2026-09-11 |
 | Fed Sep 15-16 hike probability | 58%, from 49.4% pre-payrolls | P | CME FedWatch | 2026-09-05 |
@@ -57,8 +60,8 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 | US unemployment rate | 4.1% | P | bls.gov | 2026-09-05 |
 | PH T-bill 91d / 182d / 364d | 5.138% / 5.517% / 5.717% | P | treasury.gov.ph auction results | 2026-09-05 |
 | USD/PHP | 62.68 — **11 Sep close**, another record low; 62.775 intraday; prior record 62.625 on 8 Sep | P | Philippine business press (verified via search result) | 2026-09-11 |
-| Brent crude | **$108.75 — 15 Sep settle (Nov contract)**, +~3% on the day, a four-month high; $104.61 on 11 Sep | P | oil market reporting 2026-09-11 (verified via search result) — **gap closed**: the 10 Sep level had no confirmed settle and sources spread $102–108 | 2026-09-11 |
-| Brent y/y change | +66.03% | D | derived from the $104.61 settle against a $65.50 year-ago base, itself implied by the last verified pair ($96.28 at +46.99%) | 2026-09-11 |
+| Brent crude | **$105.83 — 16 Sep settle**, −2.92 (−2.69%) on the day, off the $108.75 four-month high set on the 15th | P | oil market reporting 2026-09-11 (verified via search result) — **gap closed**: the 10 Sep level had no confirmed settle and sources spread $102–108 | 2026-09-11 |
+| Brent y/y change | +61.57% | D | derived from the $104.61 settle against a $65.50 year-ago base, itself implied by the last verified pair ($96.28 at +46.99%) | 2026-09-11 |
 | Brent Q1 2026 close | $118 from $61 at year open | P | eia.gov Today in Energy | 2026-09-05 |
 | IMF global growth 2026 / 2027 | 3.1% / 3.2% | P | IMF WEO April 2026 | 2026-09-05 |
 | IMF US growth 2026 / 2027 | 2.4% / 2.0% | P | IMF WEO April 2026 | 2026-09-05 |

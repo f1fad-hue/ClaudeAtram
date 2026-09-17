@@ -2,6 +2,74 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-17 — The Fed moved, and yesterday's withheld print turns out to have been mis-dated
+
+The FOMC hiked. Yesterday's decision to withhold a VIX close that would not chain is
+resolved, and it resolved in favour of the discipline rather than against it.
+
+### The Fed raised to 3.75-4.00%, unanimously
+
+First increase since 2023, and the three July dissenters carried the whole committee.
+Warsh: the Fed had "removed a dose of accommodation" and would deliver a "timelier
+return" to 2%. The dot plot is the harder part — median end-2026 policy rate **4.1%**,
+with **12 of 18** participants at 4.125% and another **4 at 4.375%**, so 16 of 18 see
+at least one more hike this year and a quarter see two. October is close to a coin
+flip at 50.9%; cumulative odds of at least one more by December are 88.5%.
+
+The 10-year closed **5.016%**, back above 5%. Equities reversed intraday gains once
+Warsh spoke: S&P 7,551.81, Dow 51,461.90 (−1.21%), Nasdaq 25,978.42. Brent settled
+**$105.83**, off the $108.75 high.
+
+Monetary policy cut 2.5 → 2.25; gauge 2.39 → 2.37. Weights unchanged at 15/50/30/5.
+
+### The withheld VIX print was real — and mis-dated
+
+Yesterday this model refused to publish a 15 September close reported as *"16.93,
+down 0.27 points or −1.57%"*, because those three figures could not chain off a
+corroborated 17.10 prior.
+
+They were correct figures. They belong to **16 September**. The missing link is a
+**17.20** close on the 15th, against which −0.27 and −1.57% both reconcile exactly.
+The chain now reads 17.10 → 17.20 → 16.93 and closes without a residual.
+
+This is the clearest vindication the chain rule has had. Publishing those numbers
+yesterday would have put a real close on the wrong day and broken the series; the
+rule caught a **dating** error, not a value error, which is the harder of the two to
+see. Both closes are now carried.
+
+### The September-odds field outlived its meeting
+
+`fed_hike_odds_sep` described a decision that has happened. An input named for a
+pending event that has since resolved is worse than a stale number — it asserts the
+past is still open. Replaced with `fed_hike_odds_oct` and a cumulative December
+figure, the check that reads the FedWatch sentence repointed, and the FOMC catalyst
+rolled from 16 September to 28 October.
+
+Same class as the postponed Oman talks on the 14th: **a catalyst list is only honest
+if entries leave it when they resolve.**
+
+### The page broke again, the same way
+
+Renaming that field and `ust_10y_intraday` left three `toFixed()` calls on
+`undefined`. Engine 100/100 and verifier all-green while the page threw on load —
+`validate.js` caught it.
+
+**Third time in four days.** The pattern is now unmistakable and worth stating as a
+rule rather than an observation: *every* rename or removal of a payload field is a
+page change, because the page reads the payload by name. The data-level harnesses
+cannot see it by construction. The runbook now says to grep the page for a field
+name before renaming it, not after.
+
+### Also
+
+- Catalysts went out of date order when the FOMC entry was rolled to October — caught
+  by the ordering check, which exists precisely because a list that looks sorted is
+  not the same as one that is.
+- Four prose figures went stale behind the input changes ($104.61, $96, +66.0%,
+  +7.95%) and were caught by prose traceability rather than by eye.
+
+**Checks: engine 100, independent verifier 212, requirements checklist 23/23.**
+
 ## 2026-09-16 — The strip rolled, a refactor that deleted four inputs, and a VIX close that would not chain
 
 FOMC day, and the day the September VIX contract settles. The expiry guard written

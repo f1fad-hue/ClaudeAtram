@@ -20,8 +20,8 @@ from itertools import product
 # REVIEW_DATE is when a human last worked through the page. On a weekend review they
 # differ, and reference data retrieved during the review is legitimately NEWER than
 # the market snapshot: a look-through read today is not "stale by -2 days".
-AS_OF = "2026-09-15"        # last COMPLETED session (Tuesday); the FOMC decides today
-REVIEW_DATE = "2026-09-16"  # this review
+AS_OF = "2026-09-16"        # last completed session - FOMC day
+REVIEW_DATE = "2026-09-17"  # this review
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -41,9 +41,20 @@ DD_CALIB_Y = 5.0                        # the window the -20%/-33% medians descr
 # ----------------------------------------------------------------------------
 
 MACRO = {
-    "fed_funds_lower": 3.5,
-    "fed_funds_upper": 3.75,
-    "fed_vote": '9-3 hold (3 dissents for a HIKE)',
+    # THE FED MOVED. 16 September 2026: +25bp to 3.75-4.00%, the first increase
+    # since 2023, and UNANIMOUS - the three July dissenters got the whole committee.
+    # The "Hawkish repricing" stress row was written when a second hike returning to
+    # the 2026 strip was the tail; the dot plot now has it as the median.
+    "fed_funds_lower": 3.75,
+    "fed_funds_upper": 4.00,
+    "fed_funds_prev_upper": 3.75,
+    "fed_vote": 'unanimous hike (was 9-3 hold with 3 dissents for a hike in July)',
+    "fed_dot_2026": 4.1,          # median end-2026 policy rate, i.e. one more hike
+    "fed_dots_one_more": 12,      # of 18, at 4.125%
+    "fed_dots_two_more": 4,       # of 18, at 4.375%
+    "fed_dots_participants": 18,
+    "fed_dot_one_more_level": 4.125,   # midpoint the 12 project
+    "fed_dot_two_more_level": 4.375,   # midpoint the 4 project
     "us_cpi_headline": 3.4,
     "us_cpi_core": 2.4,        # Aug CPI, released 11 Sep (was 2.5 in July)
     "us_cpi_core_mom": 0.3,    # 0.1pp above consensus
@@ -51,13 +62,18 @@ MACRO = {
     "us_cpi_shelter": 3.0,     # eased from 3.2
     "us_cpi_gasoline_yoy": 27.4,
     "us_pce_12m": 3.7, "us_pce_6m": 4.1,
-    "ust_10y": 5.00,           # 15 Sep close - highest since 2007, a 19-year high
-    "ust_10y_intraday": 5.04,  # 15 Sep intraday, before closing at 5.00
+    "ust_10y": 5.016,          # 16 Sep close, +2bp after the hike; above 5% again
+    "ust_10y_prev": 5.00,      # 15 Sep close - highest since 2007, a 19-year high
+    "ust_10y_intraday": 5.04,  # 15 Sep intraday
     "ust_2y": 4.63,            # 11 Sep close - was 4.377 and marked STALE on 10 Sep
     "ust_30y": 5.36,           # 11 Sep close
 
-    "fed_hike_odds_sep": 92.0,   # CME FedWatch, 15 Sep, into the decision
-    "fed_hike_odds_prev": 85.6,  # 11 Sep, after August CPI
+    # The September meeting is DECIDED, so these now describe the NEXT move rather
+    # than a meeting that has happened. Carrying a "September odds" field past the
+    # September decision would be an input describing the past as if it were pending.
+    "fed_hike_odds_oct": 50.9,   # CME FedWatch, 17 Sep - close to a coin flip
+    "fed_hike_odds_dec": 88.5,   # cumulative, at least one more by December
+    "fed_hike_odds_sep_final": 92.0,   # where September pricing ended up, for the record
  "ecb_sep_delivered": 2.50,
     "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
     "us_payrolls_12m_avg": 31_000,
@@ -88,9 +104,9 @@ MACRO = {
     "ph_tbill_91": 5.138,
     "ph_tbill_182": 5.517,
     "ph_tbill_364": 5.717,
-    "brent": 108.75,           # 15 Sep SETTLE (Nov contract), +~3% on the day
-    "brent_high": 108.75,      # 15 Sep - a four-month high
-    "brent_prev": 104.61,      # 11 Sep settle - the level carried before today,
+    "brent": 105.83,           # 16 Sep SETTLE, -2.92 (-2.69%) on the day
+    "brent_high": 108.75,      # 15 Sep - the four-month high
+    "brent_prev": 108.75,      # 15 Sep settle - the level carried before today,
                                # published so notes can cite the move auditably
     "brent_closure": 130.0,    # the Hormuz full-closure level the stress row models;
                                # published so the scenario and the notes citing it
@@ -164,6 +180,14 @@ MACRO = {
         # 11th is Monday the 14th. One outlet dated that same +7.95% move to the
         # 15th; the arithmetic chain off a confirmed close settles it.
         ("2026-09-14", 17.10),   # +7.95%
+        # 15 and 16 Sep were WITHHELD on 2026-09-16 because the figures reported for
+        # the 15th - "16.93, down 0.27 or -1.57%" - could not chain off a 17.10
+        # prior. They were real; they were mis-dated. Those figures belong to the
+        # 16th, and the missing link is a 17.20 close on the 15th, against which
+        # -0.27 and -1.57% both reconcile exactly. The chain discipline held: the
+        # numbers were not published until they could be made to add up.
+        ("2026-09-15", 17.20),
+        ("2026-09-16", 16.93),   # -0.27, -1.57%, on the hike and Warsh's remarks
         # The 15 Sep close is NOT carried. It was reported as "16.93, down 0.27
         # points or -1.57%" - those three cannot all be true against a 17.10 prior:
         # -0.27 gives 16.83 and -1.58%, while 16.93 is -0.17 and -0.99%. For -1.57%
@@ -179,9 +203,9 @@ MACRO = {
     # swallowed them. Nothing caught it, because the "every published input is
     # cited" check finds orphaned inputs, not REMOVED ones; the prose that cited
     # them is what failed. Restored with the 15 Sep session.
-    "spx_close": 7585.73, "spx_chg_pct": -0.45,   # 15 Sep - 6th drop in 7 sessions
-    "nasdaq_close": 25981.57, "nasdaq_chg_pct": -0.78,
-    "dow_close": 52093.11, "dow_chg_pct": -0.63,
+    "spx_close": 7551.81, "spx_chg_pct": -0.45,   # 16 Sep - reversed after Warsh spoke
+    "nasdaq_close": 25978.42, "nasdaq_chg_pct": -0.01,
+    "dow_close": 51461.90, "dow_chg_pct": -1.21,
     "wti_settle": 105.83, "wti_chg_pct": 4.0,     # 15 Sep settle
     "brent_wk_pct": 8.7,                          # week to 11 Sep
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
@@ -325,10 +349,6 @@ POSTPONED = [("Iran-GCC talks on the Strait, in Oman",
               "not price this diplomacy and said so before the postponement.")]
 
 CATALYSTS = [
-    ("2026-09-16", "FOMC decision",
-     "A 25bp hike is priced at 85.6% after August CPI, up from 70% before it and "
-     "58% a week ago. The monetary driver is scored on tightening that has "
-     "already happened; this would be the first US move of the cycle."),
     ("2026-09-18", "Bank of Japan decision",
      "The BoJ meets 17-18 September; the decision lands on the 18th, not the "
      "17th, which is what this list said until 2026-09-14. Asian markets are "
@@ -338,6 +358,11 @@ CATALYSTS = [
      "The peso sleeve's real-carry argument rests on PH inflation decelerating; "
      "August was the fourth consecutive slowdown, and Brent at $109 works "
      "directly against a fifth."),
+    ("2026-10-28", "FOMC decision",
+     "The September hike is done; October is close to a coin flip at 50.9%, and "
+     "cumulative odds of at least one further move by December are 88.5%. The dot "
+     "plot median already has one more this year, so the question is timing, and "
+     "whether the four participants who see two are right."),
 ]
 
 # ----------------------------------------------------------------------------
@@ -463,7 +488,7 @@ REGIONS = {
     },
     "EUROPE": {
         "3M": 2.5, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
-        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +66.0% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
+        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +61.6% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
     },
     "ASIA": {
         "3M": 5.0, "6M": 5.5, "12M": 6.5, HZ_LABEL: 7.5,
@@ -488,16 +513,22 @@ for r in REGIONS.values():
 # ----------------------------------------------------------------------------
 
 DRIVERS = [
-    ("Monetary policy & liquidity", 0.2, 2.5,
-     "Tightening is now delivered rather than forecast. The ECB hiked 25bp to 2.50% "
-     "on 10 Sep, its second and final move; CME FedWatch puts a US hike on 16 Sep at "
-     "92.0%, from 85.6% after the CPI print; the 10-year closed 5.00% on 15 Sep - "
-     "touching 5.04% intraday, its highest since 2007 - as a global bond selloff "
-     "met surging energy. BSP is "
-     "at 5.00% after three consecutive hikes. Not scored lower because a hike priced "
-     "at 85.6% is one the market has already largely absorbed. The Fed itself is "
-     "still formally on hold - a 9-3 hold (3 dissents for a HIKE) in July - so a "
-     "move would be the committee catching up to its own dissenters."),
+    ("Monetary policy & liquidity", 0.2, 2.25,
+     "CUT. The tightening this driver has been scoring as priced is now DELIVERED, "
+     "and the guidance behind it is harder than the move. On 16 September the Fed "
+     "raised 25bp to 3.75-4.00%, its first increase since 2023, and did it "
+     "UNANIMOUSLY - a unanimous hike (was 9-3 hold with 3 dissents for a hike in July), so the dissenters carried the whole committee. Warsh said "
+     "the Fed had 'removed a dose of accommodation' and promised a 'timelier return' "
+     "to 2%. The dot plot is the hawkish part: a median end-2026 policy rate of 4.1%, "
+     "with 12 of 18 participants at 4.125% and another 4 at 4.375% - so 16 of 18 see "
+     "at least one more hike this year, and a quarter of them see two. CME FedWatch "
+     "puts October at 50.9%, close to a coin flip, and cumulative odds of at least one "
+     "further move by December at 88.5%. The 10-year closed 5.016%, back above 5% and "
+     "its highest since 2007. The ECB finished its own cycle on 10 Sep at 2.50%; BSP "
+     "is at 5.00% after three hikes. Not cut further than 2.25 for the reason this "
+     "driver has held all month: what is priced is absorbed, and an 88.5% cumulative "
+     "probability leaves less repricing risk into December than a coin-flip October "
+     "does. The risk is no longer the hike - it is the second one."),
     ("Inflation trajectory", 0.15, 3.0,
      "Genuinely two-sided. The core measure improved - August core CPI 2.4% y/y from "
      "2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that "
@@ -516,7 +547,7 @@ DRIVERS = [
      "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) "
      "is unrevised and the AI capex cycle keeps compounding through the semis supply "
      "chain. Trimmed because the margin assumption underneath those estimates is "
-     "harder to hold at $109 oil than at the $104.61 carried a week ago, and the selling has hit the earnings "
+     "harder to hold at $106 oil than at the $108.75 peak two sessions ago, and the selling has hit the earnings "
      "engines directly - Samsung -3.5%, SK Hynix -2.2%."),
     ("Valuation support", 0.1, 8.0,
      "The one driver the shock improves. Four down sessions in the US and a 1.9% "
@@ -527,9 +558,10 @@ DRIVERS = [
     ("Volatility & risk appetite", 0.1, 2.5,
      "CUT. The range break this note declined to call a regime change a week ago has "
      "now held. Spot broke out on 10 Sep, gave most of it back the next session, then "
-     "went again: the VIX closed 17.10 on 14 Sep, +7.95%, and equities have fallen in "
-     "six of the last seven sessions with the S&P at 7585.73, the Nasdaq at 25981.57 "
-     "and the Dow at 52093.11. What makes this different from the 10 Sep spike is "
+     "went again: the VIX closed 17.10 on 14 Sep, then 17.20, then 16.93 after the hike, and equities have fallen in "
+     "six of the last seven sessions with the S&P at 7551.81, the Nasdaq at 25978.42 and the Dow at 51461.90 "
+     "after all three reversed intraday gains once Warsh spoke. What makes this "
+     "different from the 10 Sep spike is "
      "that the driver is no longer only the war: the US 10-year closed 5.00% on "
      "15 Sep after touching 5.04%, its highest since 2007, and WTI settled 105.83. A "
      "rate shock and an energy shock at once is a harder thing for equity volatility "
@@ -559,7 +591,7 @@ DRIVERS = [
      "been published, so none is invented here - the honest statement is that "
      "two-thirds is the last measured level and is now stale in a knowable "
      "direction. Brent settled $108.75 on 15 Sep, a four-month high, after +8.7% the week "
-     "before, +66.0% y/y. Saudi output was already down ~1.9 mb/d after "
+     "before, +61.6% y/y. Saudi output was already down ~1.9 mb/d after "
      "Houthi strikes; tanker rates are at record highs; 436 vessels are holding off "
      "berth. Still NOT scored at the floor: the stress table models full closure and "
      "Brent above $130, a strictly worse state, so a floor would assert no room left "
@@ -1090,10 +1122,11 @@ SCENARIOS = [
      {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5}, 1.60),
     ("Hawkish repricing", "The three July dissenters win. NOTE this row is a TAIL, not "
      "the base case, and what makes it a tail has changed since 9 September. September "
-     f"is no longer the question: a 25bp hike is priced at {MACRO['fed_hike_odds_sep']:.1f}% "
-     "for 16 Sep, so the move is effectively in the market and largely in the price. "
-     "This row models what is NOT priced - a SECOND hike returning to the 2026 strip "
-     "behind it, after the December move had already slipped to January 2027. "
+     f"is no longer the question - it HAPPENED. The Fed hiked 25bp to 3.75-4.00% on "
+     f"16 September, unanimously, and the dot plot now has a median of "
+     f"{MACRO['fed_dot_2026']}% for end-2026, i.e. one more. This row models what is "
+     f"still NOT priced: a SECOND hike on top of that, which {MACRO['fed_dots_two_more']} "
+     f"of {MACRO['fed_dots_participants']} participants already see. "
      "Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
      {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
@@ -1428,7 +1461,11 @@ def report():
     # a presence check with a stale number. So this reads the FedWatch sentence in
     # the monetary-policy driver note - the one place the live figure is asserted -
     # and requires the first percentage in it to be the input.
-    _odds = MACRO["fed_hike_odds_sep"]
+    # Tracks the NEXT decision, not one that has happened. The field this read was
+    # renamed on 2026-09-17 when the September meeting decided: an input called
+    # "September odds" surviving past the September meeting would describe the past
+    # as though it were still pending.
+    _odds = MACRO["fed_hike_odds_oct"]
     _mon = next(d[3] for d in DRIVERS if d[0].startswith("Monetary"))
     _m = re.search(r"FedWatch[^.]*?(\d+(?:\.\d+)?)%", _mon)
     checks.append(("the live hike odds asserted in the monetary note match the input",

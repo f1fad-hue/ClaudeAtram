@@ -95,6 +95,12 @@ truth; the artifact is a rendering of it.
    mutually inconsistent, publish none of them and say the series lags. The
    arithmetic chain also settles disputed DATES - a move off a confirmed close can
    only belong to the next trading session.
+19. Renaming or removing a payload field IS a page change - the page reads fields by
+   name, and no data-level check can see the break. Grep `dashboard.html` for the
+   field name BEFORE the rename. Three page breaks in four days came this way.
+20. An input named for a pending event must be renamed when that event resolves.
+   `fed_hike_odds_sep` outliving the September FOMC asserted that a decided meeting
+   was still open. Catalysts leave the list when they happen; so do their inputs.
 18. Refactoring a block of inputs can delete inputs. The "every published input is
    cited" check finds orphans, not removals. After any structural edit, diff the
    input keys before and after.
