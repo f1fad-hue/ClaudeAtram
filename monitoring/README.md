@@ -101,6 +101,44 @@ truth; the artifact is a rendering of it.
 20. An input named for a pending event must be renamed when that event resolves.
    `fed_hike_odds_sep` outliving the September FOMC asserted that a decided meeting
    was still open. Catalysts leave the list when they happen; so do their inputs.
+   The rename is only half of it: GREP THE PROSE that reads the field. The report
+   tab still said "FedWatch puts the 16 September hike at 50.9%" after the field
+   had correctly become `fed_hike_odds_oct`, so the number was right and the
+   sentence was a lie.
+21. A prose check that asks "does this quote match SOME published input" is not a
+   staleness check. "Brent at $109" passed for nine days because $109 is within a
+   dollar of the dated four-month high, while spot was $103.87. Scope by CONTEXT,
+   not by loosening or tightening tolerance: an undated present-tense quote must be
+   spot; only a quote sitting beside a date may cite a dated input. Dateness
+   attaches to the QUOTE, not to its sentence - one sentence holding both a current
+   level and a dated high will otherwise exempt both. And do not key the pattern on
+   a benchmark's name: "$106 oil" names nothing and drifted underneath a regex that
+   required the word "Brent".
+22. A superlative is a claim about WHICH number, not just how big. "Its highest
+   since 2007" was rendered from `ust_10y_prev` - correct only while the previous
+   close and the intraday peak coincided, which ended the day they diverged. If a
+   figure carries a superlative, bind it to the input that owns the superlative,
+   and DATE it: `brent_high` had its date typed into prose and was wrong by five
+   days from the moment the high moved.
+23. A stale input ages SILENTLY when everything paired with it ages too. The VIX
+   strip and its spot are quoted together, so every internal consistency check kept
+   passing while the pair drifted 15 days from the market. Two things fix that, and
+   both are needed: an EXPIRY derived from the data's own structure (one 30-day
+   roll window, because past that the front contract has settled), and an
+   INDEPENDENT reading that the model never sees - VIX3M measured the error at
+   -4.97% and gave its sign, which disclosure alone never did.
+25. A DUPLICATE ELEMENT ID renders the second one empty and nothing can see it.
+   `getElementById` returns the first match, so the payload is right, the setter
+   reports success, no JS error is thrown, and every data-level check passes while
+   a sentence reads "from one market close, , and the strip has not been re-quoted".
+   Two checks now: no duplicate id on the page, and no renderer target left empty.
+   LOOK AT THE RENDERED PAGE every pass - this was found by reading a screenshot,
+   not by a harness.
+24. C1 and C2 only see elements carrying `class="num"`. A live figure written
+   straight into a heading is invisible to both - "A 2.7 market" sat above a gauge
+   reading 2.39 in the first heading on the page, and C1 would not have flagged it
+   even if it had scanned, because 2.7 traces: it is also the CPI food print.
+   Check G now requires a heading to carry no number or to read one from an id.
 18. Refactoring a block of inputs can delete inputs. The "every published input is
    cited" check finds orphans, not removals. After any structural edit, diff the
    input keys before and after.

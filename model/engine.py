@@ -20,8 +20,8 @@ from itertools import product
 # REVIEW_DATE is when a human last worked through the page. On a weekend review they
 # differ, and reference data retrieved during the review is legitimately NEWER than
 # the market snapshot: a look-through read today is not "stale by -2 days".
-AS_OF = "2026-09-16"        # last completed session - FOMC day
-REVIEW_DATE = "2026-09-17"  # this review
+AS_OF = "2026-09-18"        # last completed session (Friday, triple witching)
+REVIEW_DATE = "2026-09-19"  # this review (Saturday)
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -62,9 +62,14 @@ MACRO = {
     "us_cpi_shelter": 3.0,     # eased from 3.2
     "us_cpi_gasoline_yoy": 27.4,
     "us_pce_12m": 3.7, "us_pce_6m": 4.1,
-    "ust_10y": 5.016,          # 16 Sep close, +2bp after the hike; above 5% again
-    "ust_10y_prev": 5.00,      # 15 Sep close - highest since 2007, a 19-year high
-    "ust_10y_intraday": 5.04,  # 15 Sep intraday
+    "ust_10y": 4.94,           # 18 Sep close, easing back from above 5%
+    "ust_10y_prev": 5.016,     # 16 Sep close, +2bp after the hike
+    # ONE name for the intraday peak. Both of these existed, with the same value
+    # and the same date, and the page fed its "highest since 2007" superlative from
+    # ust_10y_PREV instead of either - correct only while the previous close and the
+    # peak happened to coincide. They stopped coinciding on 2026-09-18 and the page
+    # printed 5.02% under a claim that belongs to 5.04%.
+    "ust_10y_peak": 5.04,      # 15 Sep intraday - highest since 2007
     "ust_2y": 4.63,            # 11 Sep close - was 4.377 and marked STALE on 10 Sep
     "ust_30y": 5.36,           # 11 Sep close
 
@@ -74,7 +79,7 @@ MACRO = {
     "fed_hike_odds_oct": 50.9,   # CME FedWatch, 17 Sep - close to a coin flip
     "fed_hike_odds_dec": 88.5,   # cumulative, at least one more by December
     "fed_hike_odds_sep_final": 92.0,   # where September pricing ended up, for the record
- "ecb_sep_delivered": 2.50,
+    "ecb_sep_delivered": 2.50,
     "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
     "us_payrolls_12m_avg": 31_000,
     "us_payrolls_jul": -23000,
@@ -85,6 +90,18 @@ MACRO = {
     "ea_hicp_aug": 3.3, "ea_hicp_jul": 2.9, "ea_energy_aug": 14.3,
     "ea_hicp_2026": 3.0,
     "ea_hicp_2028": 2.0,
+    # BANK OF JAPAN - hiked 18 Sep, and the yen FELL. This matters to the Asia
+    # sleeve in the opposite direction to the obvious one: a hike that weakens the
+    # currency is the market saying the cycle is nearly done, not that carry has
+    # improved. Three months from the previous move against six before it, so the
+    # pace quickened even as the board split.
+    "boj_rate": 1.25,          # 18 Sep, +25bp - highest since 1995
+    "boj_rate_prev": 1.00,
+    "boj_vote_for": 7, "boj_vote_against": 2,   # Asada and Sato dissented
+    "boj_gap_months": 3, "boj_gap_months_prev": 6,
+    "usdjpy": 156.86,          # 18 Sep close, +0.58% - a two-week low for the yen
+    "jp_core_cpi": 1.7, "jp_core_cpi_prev": 1.8,   # Aug, released hours before
+    "jp_core_core_cpi": 1.9,   # ex fresh food AND fuel - the BoJ's demand gauge
     "bsp_rrp": 5.0,
     "bsp_last_move_bp": 25,
     "bsp_hikes_since_apr": 3,
@@ -94,19 +111,39 @@ MACRO = {
     "ph_cpi_jun": 6.4,
     "bsp_infl_2026": 6.1,
     "bsp_infl_2027": 5.4,
-    # 8 Sep close (Tue), reported 9 Sep. Prior session closed 62.586 - not a record;
-    # the record it broke is 62.59 from 4 Sep. Trade date checked against publication
-    # date, because a wire story dated the 9th reports the 8th's close.
-    "usdphp": 62.68,           # 11 Sep close - another record low
-    "usdphp_records_2026": 23,
-    "usdphp_prev_record": 62.625,  # 8 Sep
-    "usdphp_intraday_low": 62.775, # 11 Sep
+    # The peso came OFF its record and this model did not notice for five days.
+    # Until 2026-09-19 it carried the 11 Sep close of 62.68 and described it as
+    # "another record low"; by then 62.86 (14 Sep) was the record and the peso had
+    # recovered to 62.749. Spot and the record are separate inputs now, because
+    # conflating a dated record with a moving level is what produced the error:
+    # the record only ever moves one way, spot does not.
+    # Trade date is checked against publication date - a wire story dated the 15th
+    # reports the 14th's close.
+    "usdphp": 62.749,          # 18 Sep close, -1.9 centavos on the day
+    "usdphp_prev": 62.73,      # 17 Sep close
+    "usdphp_record": 62.86,        # 14 Sep close - the weakest close on record
+    "usdphp_record_date": "2026-09-14",
+    "usdphp_record_intraday": 62.925,  # 15 Sep intraday - weakest print on record
+    # 24, not 23. BusinessWorld counted 62.625 (8 Sep) as the 23rd record of 2026
+    # and 62.68 (11 Sep) as the 24th; this model had the count attached to the
+    # level below it from launch until 2026-09-19. It is carried as-of the 11 Sep
+    # print because that is the last record published with a running YTD count.
+    # 62.86 is at least one more, but no source states its ordinal and an ordinal
+    # cannot be derived from a price, so it is not asserted.
+    "usdphp_records_2026": 24, "usdphp_records_asof": "2026-09-11",
+    "usdphp_sept_records": 6,      # 14 Sep was the sixth record of the month
+    "usdphp_2025_close": 58.79,    # 29 Dec 2025 - the YTD base, move DERIVED below
+    "ph_10y": 7.50,            # 18 Sep - the domestic yield the peso recovery cost
     "ph_tbill_91": 5.138,
     "ph_tbill_182": 5.517,
     "ph_tbill_364": 5.717,
-    "brent": 105.83,           # 16 Sep SETTLE, -2.92 (-2.69%) on the day
-    "brent_high": 108.75,      # 15 Sep - the four-month high
-    "brent_prev": 108.75,      # 15 Sep settle - the level carried before today,
+    "brent": 103.87,           # 18 Sep SETTLE, -0.95 (-0.91%) on the day
+    "brent_high": 108.75,      # the four-month high
+    # DATED, because the page hard-typed "on 10 September" against it and was wrong
+    # by five days from the moment the high moved. A dated figure whose date lives
+    # only in prose is a figure whose date is not maintained.
+    "brent_high_date": "2026-09-15",
+    "brent_prev": 104.82,      # 17 Sep settle - the level carried before today,
                                # published so notes can cite the move auditably
     "brent_closure": 130.0,    # the Hormuz full-closure level the stress row models;
                                # published so the scenario and the notes citing it
@@ -152,16 +189,26 @@ MACRO = {
     "petroline_shut": "2026-09-11",
     "hormuz_dark": 5.0,            # mb/d moving via dark crossings / STS transfers
     "hormuz_vessels_waiting": 436,
-    # The VIX spiked to 16.34 on 2 Sep on the Hormuz strikes and has since fallen
-    # BACK toward the 2026 low. The calm did not break - it re-asserted itself,
-    # which widens rather than closes the gap to the futures curve.
+    # That reading is now OUT OF DATE and was carried too long: through 2026-09-18
+    # this comment still said the VIX had "fallen BACK toward the 2026 low", which
+    # widened the gap to the futures curve. It did the opposite. Spot ran to 17.20
+    # on 15 Sep and settled 15.44 on the 18th, so realised volatility has spent a
+    # fortnight CLOSING the gap to the strip from below.
     # 5 Sep 2026 was a SATURDAY. One aggregator reported a "5 Sep close of 14.53";
-    # there is no such close, and it was discarded. Friday 4 Sep is the last print.
+    # there is no such close, and it was discarded. Friday 4 Sep is the last print
+    # that belongs to the curve's quote date.
     # THE CURVE'S t=0. This is the spot that belongs to VIX_QUOTE_DATE, and it must
     # stay paired with the futures strip below: the bootstrap integrates forward
     # variance from spot through the strip, so a spot from one date and a strip
     # from another is not a term structure, it is two half-curves glued together.
     "vix_spot": 14.32,         # 4 Sep close (Friday) - the curve's own spot
+    # AN INDEPENDENT READ ON THE SAME SHAPE. VIX3M is a market-published constant-
+    # maturity 3-month implied vol - it is not an input to the bootstrap, so the
+    # ratio it implies is a free test of whether the forward-variance integration
+    # produces a term structure the market would recognise. Both legs are from one
+    # source on one date, and the published IVTS reproduces from them exactly
+    # (15.84 / 18.60 = 0.8516), which is why the pair is trusted.
+    "vix3m": 18.60, "vix3m_spot": 15.84, "vix3m_date": "2026-09-11",
     # SPOT HISTORY, newest last. This replaced a sprawl of one-off fields -
     # vix_latest / vix_next_close / vix_prev_close / vix_prev / vix_spike - that had
     # grown around a single two-day episode and did not generalise: adding the
@@ -188,6 +235,15 @@ MACRO = {
         # numbers were not published until they could be made to add up.
         ("2026-09-15", 17.20),
         ("2026-09-16", 16.93),   # -0.27, -1.57%, on the hike and Warsh's remarks
+        # 17-18 Sep. The LEVELS are corroborated by two separate reports; the
+        # percentage descriptors attached to them are not. One outlet called the
+        # 17th "nearly 13%" and a weekly summary called the 18th "-12.8%", and
+        # neither chains off a 16.93 prior - both would need a ~17.7 close before
+        # them, which contradicts a triple-corroborated 16.93. The levels are
+        # carried and the derived moves (-8.92%, +0.13%) are computed from the
+        # chain; the descriptors are recorded in CLAIMS as not reconciling.
+        ("2026-09-17", 15.42),   # post-Fed relief rally: S&P +1.14%, Nasdaq +1.69%
+        ("2026-09-18", 15.44),   # triple witching, ~$7tn of options expiring
         # The 15 Sep close is NOT carried. It was reported as "16.93, down 0.27
         # points or -1.57%" - those three cannot all be true against a 17.10 prior:
         # -0.27 gives 16.83 and -1.58%, while 16.93 is -0.17 and -0.99%. For -1.57%
@@ -203,11 +259,12 @@ MACRO = {
     # swallowed them. Nothing caught it, because the "every published input is
     # cited" check finds orphaned inputs, not REMOVED ones; the prose that cited
     # them is what failed. Restored with the 15 Sep session.
-    "spx_close": 7551.81, "spx_chg_pct": -0.45,   # 16 Sep - reversed after Warsh spoke
-    "nasdaq_close": 25978.42, "nasdaq_chg_pct": -0.01,
-    "dow_close": 51461.90, "dow_chg_pct": -1.21,
-    "wti_settle": 105.83, "wti_chg_pct": 4.0,     # 15 Sep settle
-    "brent_wk_pct": 8.7,                          # week to 11 Sep
+    "spx_close": 7650.50, "spx_chg_pct": 0.17,    # 18 Sep - triple witching, ~$7tn expiry
+    "nasdaq_close": 26522.55, "nasdaq_chg_pct": 0.39,
+    "dow_close": 51682.64, "dow_chg_pct": -0.18,
+    "wti_settle": 100.30, "wti_chg_pct": -1.6,    # 18 Sep settle, flat on the week
+    "brent_wk_pct": -1.0,                         # week to 18 Sep
+    "spx_wk_pct": -0.1, "nasdaq_wk_pct": 0.7, "dow_wk_pct": -1.7,  # week to 18 Sep
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
     # such; on 4 Sep the index slid to 13.80 just before the payrolls release and
@@ -233,9 +290,15 @@ MACRO = {
     # contract is not a forward price. Dropped rather than carried - the expiry
     # guard added on 14 Sep fires the moment it settles, which is what it was for.
     # The three that remain are still 4 September quotes and still stale; that is
-    # disclosed rather than fixed, because no fresher strip has been found in six
+    # disclosed rather than fixed, because no fresher strip has been found in nine
     # days of looking. Dropping the front contract moves the horizon blend by 0.04
     # and changes no fund's volatility tilt.
+    # As of 2026-09-19 the cost of that staleness is MEASURED, not guessed: against
+    # VIX3M on 11 Sep, re-anchored to the same spot, this curve reads 4.97% LOW.
+    # The direction matters - the model's implied vol, and therefore its forecast
+    # drawdowns, are marginally understated rather than overstated. Two checks now
+    # bound it: the residual itself, and a hard stop when the strip passes one
+    # roll window.
     "vix_futs_levels": [("Oct", 2026, 10, 18.41),
                         ("Nov", 2026, 11, 19.08), ("Dec", 2026, 12, 19.26)],
     "vix_fut_sep": 16.57,
@@ -315,8 +378,20 @@ MACRO["vix_latest_chg_pct"] = round(
     (MACRO["vix_latest"] / MACRO["vix_prev_close"] - 1) * 100, 2)
 MACRO["vix_episode_high"] = max(v for _, v in _VH)
 MACRO["vix_episode_low"] = min(v for _, v in _VH)
+# The episode high has a DATE, and the page needed it: without one the prose called
+# 17.84 a mid-week peak when it belongs to 10 Sep, a week before the week described.
+# A superlative without its date drifts the moment the window moves.
+MACRO["vix_episode_high_date"] = max(_VH, key=lambda r: r[1])[0]
+MACRO["vix_episode_low_date"] = min(_VH, key=lambda r: r[1])[0]
 
 MACRO["brent_yoy"] = round((MACRO["brent"] / MACRO["brent_yr_ago"] - 1) * 100, 2)
+# The peso's year-to-date loss of VALUE, which is what a peso holder experiences:
+# 1 - base/spot, not spot/base - 1. Both conventions are in circulation and they
+# differ by half a point at this level, so the one that reaches the portfolio is
+# the one computed, and it is computed rather than typed.
+MACRO["usdphp_ytd_pct"] = round(
+    (1 - MACRO["usdphp_2025_close"] / MACRO["usdphp"]) * 100, 2)
+MACRO["usdphp_chg_ctvo"] = round((MACRO["usdphp"] - MACRO["usdphp_prev"]) * 100, 1)
 # The vessel-count drop the geopolitics note quotes in order to correct it. Derived
 # rather than typed so the figure and the counts it comes from cannot drift apart -
 # and so the note's own arithmetic is auditable rather than asserted.
@@ -349,14 +424,9 @@ POSTPONED = [("Iran-GCC talks on the Strait, in Oman",
               "not price this diplomacy and said so before the postponement.")]
 
 CATALYSTS = [
-    ("2026-09-18", "Bank of Japan decision",
-     "The BoJ meets 17-18 September; the decision lands on the 18th, not the "
-     "17th, which is what this list said until 2026-09-14. Asian markets are "
-     "pricing BoJ tightening alongside the Fed, which is part of why the Nikkei "
-     "fell 1.9% on 11 September."),
     ("2026-10-06", "Philippine September CPI",
      "The peso sleeve's real-carry argument rests on PH inflation decelerating; "
-     "August was the fourth consecutive slowdown, and Brent at $109 works "
+     "August was the fourth consecutive slowdown, and Brent at $104 works "
      "directly against a fifth."),
     ("2026-10-28", "FOMC decision",
      "The September hike is done; October is close to a coin flip at 50.9%, and "
@@ -397,12 +467,27 @@ def fwd_vol(t):
     vinf = MACRO["vix_longrun"]
     return vinf + (v_last - vinf) * math.exp(-KAPPA * (t - t_last))
 
-def horizon_vol(T, n=4000):
-    """Annualised implied vol for a 0->T horizon via forward-variance integration."""
+def _fwd_vol_on(knots, t):
+    """fwd_vol against an arbitrary knot set - used to re-anchor the curve to a
+    different t=0 without mutating the published one."""
+    if t <= 0:
+        return knots[0][1]
+    for (ta, va), (tb, vb) in zip(knots, knots[1:]):
+        if t <= tb:
+            return va + (vb - va) * (t - ta) / (tb - ta)
+    t_last, v_last = knots[-1]
+    vinf = MACRO["vix_longrun"]
+    return vinf + (v_last - vinf) * math.exp(-KAPPA * (t - t_last))
+
+def _horizon_vol_on(knots, T, n=4000):
     h, acc = T / n, 0.0
     for i in range(n):
-        acc += _seg_var(fwd_vol(i * h), fwd_vol((i + 1) * h), h)
+        acc += _seg_var(_fwd_vol_on(knots, i * h), _fwd_vol_on(knots, (i + 1) * h), h)
     return math.sqrt(acc / T)
+
+def horizon_vol(T, n=4000):
+    """Annualised implied vol for a 0->T horizon via forward-variance integration."""
+    return _horizon_vol_on(VOL_KNOTS, T, n)
 
 HORIZONS = [("3M", 0.25), ("6M", 0.50), ("12M", 1.00), (HZ_LABEL, HORIZON_Y)]
 VOL_TS = []
@@ -417,6 +502,14 @@ for lbl, T in HORIZONS:
         "move_2sd": round(2 * iv * math.sqrt(T), 2),
     })
 SP_VOL_LT = next(v["implied"] for v in VOL_TS if v["label"] == HZ_LABEL)
+
+# What the stale strip costs, measured rather than asserted. Re-anchor the curve to
+# the spot of the VIX3M observation date, integrate to 0.25y, and compare with the
+# market's own 3-month index. Same t=0, same strip, so the residual is the strip's
+# age and nothing else. It is NEGATIVE, which means this model's implied vol sits
+# below the market's - so its forecast drawdowns are, if anything, a touch small.
+VIX3M_MODEL = _horizon_vol_on([(0.0, MACRO["vix3m_spot"])] + VOL_KNOTS[1:], 0.25)
+VIX3M_RESID = round((VIX3M_MODEL / MACRO["vix3m"] - 1) * 100, 2)
 
 # ----------------------------------------------------------------------------
 # 3. REGIONAL MACRO-DRIVER SCORES
@@ -488,15 +581,15 @@ REGIONS = {
     },
     "EUROPE": {
         "3M": 2.5, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
-        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +61.6% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
+        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +58.6% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
     },
     "ASIA": {
         "3M": 5.0, "6M": 5.5, "12M": 6.5, HZ_LABEL: 7.5,
-        "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one, with the BoJ now expected to tighten alongside the Fed. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
+        "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1%, a fourth consecutive deceleration - though BSP's own 2027 forecast is 5.4% - and Brent at $109 works directly against a fifth in a country that imports essentially all of its crude. The peso closed at another record low of 62.68. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1%, a fourth consecutive deceleration - though BSP's own 2027 forecast is 5.4% - and Brent at $104 works directly against a fifth in a country that imports essentially all of its crude. The peso has come off its record: it closed 62.749 on 18 Sep, having set the weakest close on record at 62.86 on 14 Sep and the weakest intraday print at 62.925 the next day. That is a 6.3% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% are what the recovery cost. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
     },
 }
 for r in REGIONS.values():
@@ -523,9 +616,12 @@ DRIVERS = [
      "with 12 of 18 participants at 4.125% and another 4 at 4.375% - so 16 of 18 see "
      "at least one more hike this year, and a quarter of them see two. CME FedWatch "
      "puts October at 50.9%, close to a coin flip, and cumulative odds of at least one "
-     "further move by December at 88.5%. The 10-year closed 5.016%, back above 5% and "
-     "its highest since 2007. The ECB finished its own cycle on 10 Sep at 2.50%; BSP "
-     "is at 5.00% after three hikes. Not cut further than 2.25 for the reason this "
+     "further move by December at 88.5%. The long end has already given some of it "
+     "back: the 10-year closed 5.016% on 16 Sep, then eased to 4.94% by the 18th, "
+     "having peaked at 5.04% intraday on the 15th - the highest since 2007, and the "
+     "figure that superlative belongs to. The ECB finished its own cycle on 10 Sep "
+     "at 2.50%; BSP is at 5.00% after three hikes; and the BoJ joined on 18 Sep, "
+     "+25bp to 1.25%, the highest since 1995, on a 7-2 vote. Not cut further than 2.25 for the reason this "
      "driver has held all month: what is priced is absorbed, and an 88.5% cumulative "
      "probability leaves less repricing risk into December than a coin-flip October "
      "does. The risk is no longer the hike - it is the second one."),
@@ -534,42 +630,48 @@ DRIVERS = [
      "2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that "
      "progress in real time: core rose 0.3% on the month against a 0.2% consensus, "
      "gasoline is +27.4% y/y and fuel oil +52%. Euro HICP 3.3%. PH eased to 6.1%, a "
-     "fourth straight deceleration that Brent at $109 works directly against."),
+     "fourth straight deceleration that Brent at $104 works directly against."),
     ("Growth momentum", 0.15, 4.0,
      "Cut. August payrolls were strong - +162k against a 53k consensus, unemployment "
      "4.1% - but the terms-of-trade shock is widening faster than a tight labour "
-     "market offsets it. Saudi output fell ~1.9 mb/d after Houthi strikes and US "
-     "equities have now fallen in six of seven sessions. The IMF's 3.1% global "
-     "forecast was written against an oil price forty dollars lower - and against a "
-     "10-year yield nowhere near 5.00%, a second tax on every long-duration cash "
-     "flow in this portfolio."),
+     "market offsets it. Saudi output fell ~1.9 mb/d after Houthi strikes, and the "
+     "breadth underneath the index is where the damage shows: the Dow lost 1.7% on "
+     "the week, a third straight losing week and its worst since March, while the "
+     "Nasdaq gained 0.7% and the S&P finished flat at -0.1%. That spread is a market "
+     "paying for duration and growth and selling everything else. The IMF's 3.1% "
+     "global forecast was written against an oil price nearly forty dollars lower - "
+     "and against a 10-year yield nowhere near 4.94%, a second tax on every "
+     "long-duration cash flow in this portfolio."),
     ("Corporate earnings", 0.2, 7.0,
      "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) "
      "is unrevised and the AI capex cycle keeps compounding through the semis supply "
      "chain. Trimmed because the margin assumption underneath those estimates is "
-     "harder to hold at $106 oil than at the $108.75 peak two sessions ago, and the selling has hit the earnings "
-     "engines directly - Samsung -3.5%, SK Hynix -2.2%."),
+     "harder to hold at $104 oil than at $65.50, where it was a year ago - though the "
+     "$108.75 peak of 15 Sep has come off 4.5%, the first easing in this episode. "
+     "The selling has hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."),
     ("Valuation support", 0.1, 8.0,
-     "The one driver the shock improves. Four down sessions in the US and a 1.9% "
-     "Nikkei fall took multiples lower against estimates that did not move. NDX "
+     "The one driver the shock improves. A month of de-rating - the Dow's third "
+     "straight losing week, a 1.9% Nikkei fall - took multiples lower against "
+     "estimates that did not move, and last week's partial bounce did not undo it. NDX "
      "22.4x forward sits below both its 10y (22.9x) and 5y (24.7x) averages, Asia at "
      "10.5x is a two-decade-wide discount, Europe 15.4x. A cheaper multiple on the "
      "same earnings is better compensation for the same risk."),
-    ("Volatility & risk appetite", 0.1, 2.5,
-     "CUT. The range break this note declined to call a regime change a week ago has "
-     "now held. Spot broke out on 10 Sep, gave most of it back the next session, then "
-     "went again: the VIX closed 17.10 on 14 Sep, then 17.20, then 16.93 after the hike, and equities have fallen in "
-     "six of the last seven sessions with the S&P at 7551.81, the Nasdaq at 25978.42 and the Dow at 51461.90 "
-     "after all three reversed intraday gains once Warsh spoke. What makes this "
-     "different from the 10 Sep spike is "
-     "that the driver is no longer only the war: the US 10-year closed 5.00% on "
-     "15 Sep after touching 5.04%, its highest since 2007, and WTI settled 105.83. A "
-     "rate shock and an energy shock at once is a harder thing for equity volatility "
-     "to absorb than either alone. The 15 September VIX close is not carried here: "
-     "three figures were reported for it that cannot all be true against a 17.10 "
-     "prior, so the series stops at the 14th and says so. The curve, still quoted "
-     "4 September, prices 19+ by December - and delivered volatility has now spent a "
-     "week closing the gap from below rather than the curve coming down."),
+    ("Volatility & risk appetite", 0.1, 3.0,
+     "RAISED from 2.5, and still well below neutral. The VIX ran 17.10 on 14 Sep and 17.20 on "
+     "the 15th, held 16.93 through the hike on the 16th, then dropped to 15.42 on "
+     "the 17th and closed 15.44 on the 18th - back inside the range it broke out of, "
+     "with the event risk that justified the premium now behind it. Equities agreed: "
+     "the S&P closed 7650.50 (+0.17%), the Nasdaq 26522.55 (+0.39%) and the Dow "
+     "51682.64 (-0.18%) through triple witching and a roughly $7tn expiry without "
+     "a volatility event. The rate "
+     "leg eased too, the US 10-year closing 4.94% on 18 Sep after peaking at 5.04% "
+     "intraday on the 15th, its highest since 2007, and WTI settling $100.30. This "
+     "is a half-point back rather than a reversal: two weeks of 15-17 prints is "
+     "still a higher floor than the 13.80 low of 4 Sep, the curve prices 19+ by "
+     "December, and the energy leg has not unwound. What earns the half point is "
+     "structural, not price - the three dated events that justified the premium "
+     "have all passed without one. Geopolitics is NOT raised alongside it: crude "
+     "easing off a peak is price, and the pipeline is still shut."),
     ("Geopolitics & energy", 0.1, 1.25,
      "CUT. Two things went the wrong way and one of them undercuts the offset this "
      "note was leaning on. First, the HORMUZ BYPASS IS SHUT: drone strikes launched "
@@ -590,8 +692,9 @@ DRIVERS = [
      "measured ran through the line that is now shut. No post-shutdown figure has "
      "been published, so none is invented here - the honest statement is that "
      "two-thirds is the last measured level and is now stale in a knowable "
-     "direction. Brent settled $108.75 on 15 Sep, a four-month high, after +8.7% the week "
-     "before, +61.6% y/y. Saudi output was already down ~1.9 mb/d after "
+     "direction. Brent settled $103.87 on 18 Sep, off the $108.75 four-month high "
+     "set on 15 Sep and down 1.0% on the week, but still +58.6% y/y. The shock has "
+     "stopped widening; it has not unwound. Saudi output was already down ~1.9 mb/d after "
      "Houthi strikes; tanker rates are at record highs; 436 vessels are holding off "
      "berth. Still NOT scored at the floor: the stress table models full closure and "
      "Brent above $130, a strictly worse state, so a floor would assert no room left "
@@ -1229,8 +1332,24 @@ SOURCES = [
      "https://www.militarytimes.com/news/your-military/2026/09/01/us-launches-new-barrage-of-strikes-on-iran-around-strait-of-hormuz/"),
     ("Axios", "US strikes Iranian oil tankers for the first time, 2 September 2026 - new 'tanker for tanker' retaliation policy",
      "https://www.axios.com/2026/09/02/iran-tankers-hormuz-attacks-oil"),
-    ("BusinessWorld", "Philippine peso falls to a new all-time low of P62.565 per dollar, 2 September 2026 - a fourth consecutive record low. The peso has since printed a FIFTH record of P62.59 on 4 September, which is the figure this model uses",
-     "https://bworldonline.com/editors-picks/2026/09/03/774273/philippine-peso-falls-to-new-all-time-low-p62-565-vs-dollar/"),
+    ("The Manila Times", "Peso closes weaker at P62.749 to the dollar, 18 September 2026 - down 1.9 centavos from P62.73, with PH 10-year yields around 7.50%. This is the level the model carries",
+     "https://www.manilatimes.net/2026/09/18/business/peso-closes-weaker-at-p627491/2428119"),
+    ("GMA News", "Peso closes at a fresh record low of P62.86 to the dollar, 14 September 2026 - the sixth record of the month, from P62.68 on the 11th. The record and the current level are separate inputs; this is the record",
+     "https://www.gmanetwork.com/news/money/economy/1002326/peso-closes-at-fresh-record-low-of-p62-86-to-us-dollar/story/"),
+    ("BusinessWorld", "Peso rebounds after hitting the P62.90 range, 16 September 2026 - closed P62.835 on the 15th with an intraday trough of P62.925, the weakest print on record",
+     "https://bworldonline.com/banking-finance/2026/09/16/777421/peso-rebounds-after-hitting-p62-90-range/"),
+    ("Bank of Japan", "Statement on Monetary Policy, 18 September 2026 - policy rate raised 25bp to 1.25%, the highest since 1995, on a 7-2 vote with Asada and Sato dissenting",
+     "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k260918a.pdf"),
+    ("CNBC", "Bank of Japan raises rates to a 31-year high, 18 September 2026 - and the yen FELL, the split vote casting doubt on the pace of further tightening",
+     "https://www.cnbc.com/2026/09/18/japan-raises-rates-30-year-high-yen-jgb.html"),
+    ("Reuters", "Japan core CPI rose 1.7% y/y in August 2026, released 18 September - below the 1.8% consensus and down from 1.8% in July; ex fresh food and fuel 1.9%",
+     "https://www.investing.com/news/economic-indicators/japans-august-core-consumer-prices-rise-17-yryr-4906565"),
+    ("CNBC", "Stock market close, 18 September 2026 - S&P 500 7,650.50 (+0.17%), Nasdaq 26,522.55 (+0.39%), Dow 51,682.64 (-0.18%, -95.40 points) on triple witching",
+     "https://www.cnbc.com/2026/09/17/stock-market-today-live-updates.html"),
+    ("CNBC", "Oil prices, 18 September 2026 - Brent settled $103.87 (-0.9%), WTI $100.30 (-1.6%); Brent lost nearly 1% on the week, WTI finished flat",
+     "https://www.cnbc.com/2026/09/18/oil-prices-today-brent-wti-saudi-arabia-houthi.html"),
+    ("thetrading.tools", "VIX term structure, 11 September 2026 close - VIX 15.84, VIX3M 18.60, IVTS 0.8516. Used ONLY as an independent check on the bootstrapped curve; it is not an input to it",
+     "https://www.thetrading.tools/vix-term-structure"),
     ("J.P. Morgan Asset Management", "2026 Long-Term Capital Market Assumptions - US equity 6.7%, EM equity 7.8%",
      "https://am.jpmorgan.com/us/en/asset-management/adv/about-us/media/press-releases/jp-morgan-releases-2026-long-term-capital-market-assumptions/"),
     ("J.P. Morgan Asset Management", "Nasdaq Equity Premium Income Active UCITS ETF (IE000U9J8HX9) factsheet - 0.35% TER",
@@ -1276,7 +1395,15 @@ def payload():
                         "latest": MACRO["vix_latest"],
                         "latest_date": MACRO["vix_latest_date"],
                         "latest_gap": round(MACRO["vix_latest"] - MACRO["vix_spot"], 2),
-                        "ramp": round(VOL_RAMP, 2), "sens": VOL_SENS},
+                        "ramp": round(VOL_RAMP, 2), "sens": VOL_SENS,
+                        # The independent market read, and the measured cost of the
+                        # strip's age. Published so the page can state the gap
+                        # rather than the reader having to infer it.
+                        "vix3m": MACRO["vix3m"], "vix3m_date": MACRO["vix3m_date"],
+                        "vix3m_model": round(VIX3M_MODEL, 2),
+                        "vix3m_resid": VIX3M_RESID,
+                        "strip_age_d": (_dt.date.fromisoformat(REVIEW_DATE)
+                                        - _dt.date.fromisoformat(VIX_QUOTE_DATE)).days},
         # Each driver is RESEARCHED on 1-10 (score_10) - the granularity the evidence
         # supports, and the scale every note below is written against - and REPORTED on
         # 1-5 (score) by the same endpoint-preserving rescale used for the gauge and the
@@ -1485,9 +1612,13 @@ def report():
     # not a quote of the input, and the scenario rows keep their own anchor check
     # above. Scoping this correctly is the point: loosening the tolerance until
     # $130 passed would have made the guard useless for its actual job.
+    # Catalyst text is on the page and carries the same quotes, so it is scanned
+    # with the rest. It was outside this join until 2026-09-19, which is why the
+    # catalyst note kept its own private copy of the stale "$109" for nine days.
     _all_prose = " ".join(
         [d[3] for d in DRIVERS] + [r["why"] for r in REGIONS.values()]
-        + [f["gross_note"] for f in FUNDS] + [f["fee_note"] for f in FUNDS])
+        + [f["gross_note"] for f in FUNDS] + [f["fee_note"] for f in FUNDS]
+        + [c[2] for c in CATALYSTS] + [p[1] for p in POSTPONED])
     # A quoted Brent figure must match SOME published Brent input, not only spot:
     # the notes legitimately cite the dated session high ($108 on 10 Sep) beside
     # the current level ($105.82). Requiring every quote to equal spot would have
@@ -1504,6 +1635,41 @@ def report():
         checks.append((f"every {lab} quoted in prose matches a published input",
                        bool(found) and all(any(abs(v - w) <= tol for w in wants)
                                            for v in found)))
+
+    # ...but "matches SOME published input" is too weak on its own, and it stayed
+    # too weak for nine days. Three notes said "Brent at $109 works directly
+    # against" in the present tense while spot was $103.87; $109 is within
+    # tolerance of the dated four-month HIGH, so the check above passed every day
+    # the sentence was wrong. A quote only earns the dated inputs by being dated.
+    # Sentences carrying a date, or the "$130" closure counterfactual, may cite a
+    # dated or hypothetical level; an undated present-tense quote must be spot.
+    # A DATE here means a day pinned to a month ("15 Sep", "2 September"), not a
+    # bare year: the first version of this check accepted any 19xx/20xx token, so
+    # "BSP's own 2027 forecast is 5.4% - and Brent at $109" read as dated and the
+    # injected staleness passed. A forecast year does not date a price.
+    _DATED = re.compile(r"\b\d{1,2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
+                        r"[a-z]*\b", re.I)
+    # Dateness attaches to the QUOTE, not the sentence. The first version tested
+    # whole sentences, so one sentence holding both a current level and a dated
+    # high ("$104 oil ... the $108.75 peak of 15 Sep") exempted BOTH - and a
+    # re-injected stale $106 passed. A date earns only the quote it sits beside.
+    # Not only quotes that say "Brent", either: the earnings note said "$106 oil"
+    # with no benchmark named, under a pattern that required the word.
+    _OILQ = re.compile(r"Brent[^.;]{0,20}?\$(\d+(?:\.\d+)?)"
+                       r"|\$(\d{2,3}(?:\.\d+)?)(?= oil\b)"
+                       r"|oil (?:price )?(?:at|near|around) \$(\d{2,3}(?:\.\d+)?)")
+    _DATE_WINDOW = 45     # chars either side of the quote a date may sit in
+    _undated = []
+    for _q in _OILQ.finditer(_all_prose):
+        _v = float(next(g for g in _q.groups() if g))
+        if abs(_v - MACRO["brent_closure"]) <= 1.0:
+            continue              # the full-closure counterfactual, not a quote
+        _ctx = _all_prose[max(0, _q.start() - _DATE_WINDOW):_q.end() + _DATE_WINDOW]
+        if _DATED.search(_ctx):
+            continue              # dated quotes may cite a dated input
+        _undated.append(_v)
+    checks.append(("every UNDATED crude level in prose is the current spot",
+                   all(abs(v - MACRO["brent"]) <= 1.0 for v in _undated)))
 
     # Look-through freshness and ordering. The JEPQ table sat on the 30 June fact
     # sheet until 2026-09-13 - 73 days stale - by which point Tesla had left the top
@@ -1633,11 +1799,37 @@ def report():
     checks.append(("the latest VIX move reproduces from its own prior close",
                    abs(MACRO["vix_prev_close"] * (1 + MACRO["vix_latest_chg_pct"] / 100)
                        - MACRO["vix_latest"]) < 0.02))
+    # FREE CORROBORATION OF THE BOOTSTRAP, and a measurement of what the stale
+    # strip costs. VIX3M is a market-published constant-maturity 3-month implied
+    # vol; it is not an input here, so comparing it to the model's sigma(0->0.25)
+    # tests the forward-variance integration against something it never saw.
+    # The two are seven days apart, so the comparison RE-ANCHORS the curve to the
+    # spot of the VIX3M date rather than budgeting a tolerance for the mismatch:
+    # same t=0, same strip, one number each. The first version compared ratios at
+    # different spots inside a 0.10 band and bit on nothing.
+    # The bound is one full mis-quote of the strip. Moving every future 10% moves
+    # this residual 6.7 points, so +/-10% passes a correct curve, fails a strip
+    # priced 10% too low (-11.7%), and fails a flat curve (-14.8%).
+    checks.append((f"the bootstrapped 3M vol tracks VIX3M at the same spot "
+                   f"({VIX3M_MODEL:.2f} vs {MACRO['vix3m']:.2f}, {VIX3M_RESID:+.2f}%)",
+                   abs(VIX3M_RESID) <= 10.0))
     checks.append(("the curve's spot is NOT silently replaced by the latest spot",
                    VOL_KNOTS[0][1] == MACRO["vix_spot"]
                    and MACRO["vix_spot"] != MACRO["vix_latest"]))
     checks.append(("the VIX quote date is not after the model as-of date",
                    _q <= _dt.date.fromisoformat(AS_OF)))
+    # The strip has an EXPIRY, and nothing said so. It has not been re-quoted since
+    # 4 Sep - fifteen days at this review, after nine consecutive days of failing to
+    # find a fresh one - and a stale strip ages silently because the spot paired
+    # with it ages in lockstep, so every internal consistency check still passes.
+    # The bound is one roll window, the same 30 days the contracts themselves are
+    # defined on: past that, the front contract this strip was quoted against has
+    # settled and been replaced, so the curve describes a set of contracts that no
+    # longer exists. Derived from VIX_FWD_WINDOW_D rather than chosen.
+    checks.append((f"the VIX strip is younger than one roll window "
+                   f"({(_dt.date.fromisoformat(REVIEW_DATE) - _q).days}d of "
+                   f"{VIX_FWD_WINDOW_D}d)",
+                   (_dt.date.fromisoformat(REVIEW_DATE) - _q).days < VIX_FWD_WINDOW_D))
     checks.append(("every VIX future settles on a Wednesday",
                    all(vix_settlement(y, m).weekday() == 2
                        for _, y, m, _ in MACRO["vix_futs_levels"])))

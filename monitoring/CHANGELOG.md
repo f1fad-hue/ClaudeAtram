@@ -2,6 +2,179 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-19 — The peso came off its record, and three notes quoted a Brent price that was five days dead
+
+A week of resolutions: the Fed hiked, the Bank of Japan hiked, triple witching cleared,
+and volatility went back inside the range it broke. Most of what this review found is
+the wreckage those resolutions left in prose that was written for the week before.
+
+### "Brent at $109" survived nine days of checks because the check was scoped wrong
+
+Three notes — the Philippines regional note, the inflation driver and the PH CPI
+catalyst — said *"Brent at $109 works directly against"* in the present tense while
+Brent settled **$103.87**. The prose-vs-input scan passed them every day, because it
+asked whether a quoted level matched **some** published Brent input, and $109 is within
+tolerance of the dated four-month high of $108.75.
+
+That scoping was deliberate once: it was added so a note could legitimately cite a
+dated session high beside the current level. The defect is that it never distinguished
+the two cases. A quote only earns the dated inputs by being dated.
+
+The new check separates them, and getting it right took three attempts, each of which
+failed its own bite test:
+
+1. **First version** treated a bare year as a date, so *"BSP's own 2027 forecast is
+   5.4% — and Brent at $109"* read as dated. A forecast year does not date a price.
+2. **Second version** tested whole sentences. One sentence holding both a current
+   level and a dated high exempted **both**. Dateness attaches to the quote, not the
+   sentence — the check now looks in a 45-character window around each quote.
+3. **Third version** still required the literal word "Brent", so the earnings note's
+   *"$106 oil"* — no benchmark named — was invisible. Now three patterns cover it.
+
+All four sites bite-tested by re-injection. Catalyst and postponed prose were also
+outside the scanned set entirely, which is why the catalyst kept its own private copy
+of the stale figure; they are inside it now.
+
+### The peso came off its record and the model carried the record as if it were spot
+
+`usdphp` was **62.68**, the 11 Sep close, described as *"another record low"*. By this
+review it was neither current nor the record:
+
+- **62.86** on 14 Sep is the weakest **close** on record (the sixth record of September)
+- **62.925** on 15 Sep is the weakest **intraday** print
+- **62.749** on 18 Sep is where it actually is, down 1.9 centavos from 62.73
+
+Spot and the record are separate inputs now. Conflating a dated record with a moving
+level is what produced the error: the record only ever moves one way, spot does not.
+
+**And the record count was off by one.** BusinessWorld counted 62.625 (8 Sep) as the
+23rd record of 2026 and 62.68 (11 Sep) as the **24th**; this model had 23 attached to
+the level above it, from launch. 62.86 is at least one more, but no source states its
+ordinal and an ordinal cannot be derived from a price, so nothing is asserted.
+
+**The source entry was also describing a figure the model had stopped using.** It read
+*"the peso has since printed a FIFTH record of P62.59 on 4 September, **which is the
+figure this model uses**"* — while the model used 62.68. Replaced with the three
+sources actually behind the inputs.
+
+### "Its highest since 2007" was printed against the wrong number, on the page
+
+The volatility tab said the 10-year *"closed 4.94% after touching **5.02%**, its
+highest since 2007"*. The element was fed `ust_10y_prev` — the previous close — while
+the intraday peak the superlative belongs to is **5.04%**. It was right only while the
+previous close and the peak coincided, and they stopped coinciding on the 18th.
+
+Two duplicate inputs were feeding this confusion: `ust_10y_peak` and
+`ust_10y_intraday`, same value, same date, different names. One name now.
+
+The same defect had a second instance: the report tab dated the Brent four-month high
+*"on 10 September"* when it belongs to the **15th**. `brent_high_date` is an input now
+— a dated figure whose date lives only in prose is a figure whose date is not
+maintained.
+
+### The first heading on the page was a hard-typed number, one tenth wrong
+
+`<h2>A 2.7 market: strong earnings, hostile policy</h2>` sat above a gauge reading
+**2.39**. Neither C1 nor C2 could see it: both scan only elements carrying
+`class="num"`, and a figure written straight into an `<h2>` carries nothing. C1 would
+not have flagged it even if it had scanned — 2.7 traces, because it is also the CPI
+food print.
+
+**New check G**: a heading either carries no number, or gets it from an element with an
+id. Bite-tested by re-injection.
+
+### What the stale VIX strip costs is now measured, not disclosed
+
+The strip has not been re-quoted since 4 September — **15 days**, the ninth consecutive
+day of searching without a fresh one. Until now that was disclosed and left there. A
+stale strip ages silently, because the spot paired with it ages in lockstep and every
+internal consistency check still passes.
+
+**VIX3M is a free test.** It is a market-published constant-maturity 3-month implied
+vol, and it is not an input to the bootstrap. Re-anchor this curve to the spot of the
+VIX3M observation date, integrate to three months, and it reads **17.68** against a
+published **18.60** — **−4.97%**. Same t=0, same strip, so the residual is the strip's
+age and nothing else.
+
+The sign matters and is now stated on the page: this model's implied volatility is
+**low** against the market's, so its forecast drawdowns are if anything a touch
+shallow.
+
+Two new checks bound it. The residual itself, at ±10% — derived, not picked: moving
+every future 10% moves the residual 6.7 points, so the band passes a correct curve,
+fails a strip priced 10% too low (−11.7%) and fails a flat curve (−14.8%). And a hard
+stop once the strip passes **one 30-day roll window**, because past that the front
+contract it was quoted against has settled and the curve describes contracts that no
+longer exist. The bound is `VIX_FWD_WINDOW_D`, the same constant the maturities are
+derived from.
+
+### The page claimed the curve had moved. It had not.
+
+*"Move the curve and that number moves with it; this week it moved, and the sleeve's
+edge grew."* The ramp is `blend − curve spot`, and both legs come from the 4 Sep
+curve, so the ramp cannot move until the strip is re-quoted. What moved was delivered
+volatility, toward the curve rather than the curve toward it.
+
+### October odds were printed as September odds
+
+The report tab: *"FedWatch puts **the 16 September hike** at 50.9%"*. The September
+hike happened on the 16th. 50.9% is `fed_hike_odds_oct`. The field was correctly
+renamed when the meeting resolved; the prose that read it was not.
+
+### Resolved and carried forward
+
+- **BoJ hiked 18 Sep, +25bp to 1.25%** — highest since 1995, **7–2** (Asada and Sato
+  dissenting), three months from the last move against six before it. **The yen FELL**,
+  USD/JPY 156.86, a two-week low: a hike that weakens the currency prices the end of a
+  cycle, not improving carry. The board tightened into core CPI that had **slowed** to
+  1.7% from 1.8% hours earlier, on a demand gauge at 1.9%.
+- The resolved BoJ catalyst was removed from the pending list.
+- **18 Sep session**: S&P 7,650.50 (+0.17%), Nasdaq 26,522.55 (+0.39%), Dow 51,682.64
+  (−0.18%). Week: −0.1% / +0.7% / −1.7%, the Dow's third straight losing week and worst
+  since March. Chain verified: 51,682.64 + 95.40 = 51,778.04, and 95.40/51,778.04 =
+  0.18% ✓.
+- **Brent $103.87**, WTI **$100.30**, 10-year **4.94%**.
+- The 15 September VIX note on the page still said the close was withheld. It was
+  resolved on the 17th as a **dating** error, not a level dispute; the page now says so.
+- The `vix_spot` commentary still read *"has since fallen BACK toward the 2026 low …
+  which widens the gap to the futures curve"*. It did the opposite.
+
+### A sentence read "from one market close, , and the strip has not been re-quoted"
+
+Two `<b>` elements printed the curve's quote date and **both carried `id="vquoted"`**.
+`getElementById` returns the first match, so the second was never filled and rendered
+as nothing between two commas.
+
+Nothing could see it. The payload was right, the setter reported success, no JS error
+was thrown, and every data-level check passed. It was found by looking at the rendered
+page.
+
+**Checks H and H2**: no duplicate element id anywhere on the page, and no element the
+renderer targets may render empty. Both bite-tested by restoring the duplicate.
+
+### Scores
+
+**Volatility & risk appetite 2.5 → 3.0.** What earns it is structural, not price: the
+three dated events holding a premium in the front of the curve — the Fed hike, the BoJ
+hike, a triple-witching expiry — all cleared without a volatility event. Geopolitics
+was deliberately **not** raised beside it: crude easing 4.5% off a peak is a price, and
+the Petroline bypass is still shut.
+
+Gauge 2.37 → **2.39**. Weights unchanged at 15/50/30/5.
+
+### Harnesses
+
+Engine 100 → **103**. Verifier 212 → **218**, 0 failures. Checklist 23 → **26**.
+Playwright DOM clean, no JS errors.
+
+**Twelve new checks, every one bite-tested by injecting the defect it is meant to
+catch** —
+and three of them failed their first bite test and had to be rewritten before they bit.
+Both the undated-crude rule and the strip-age bound exist in the engine *and*
+independently in the verifier, which never imports the engine; the verifier also
+re-derives the VIX3M residual on its own 200,000-point Riemann sum. Catalyst and
+postponed prose were outside the verifier's prose scan too, and are inside it now.
+
 ## 2026-09-17 — The Fed moved, and yesterday's withheld print turns out to have been mis-dated
 
 The FOMC hiked. Yesterday's decision to withhold a VIX close that would not chain is
