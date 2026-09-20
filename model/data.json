@@ -27,6 +27,7 @@
   "fed_hike_odds_oct": 50.9,
   "fed_hike_odds_dec": 88.5,
   "fed_hike_odds_sep_final": 92.0,
+  "fed_hike_odds_sep_date": "2026-09-16",
   "ecb_sep_delivered": 2.5,
   "us_payrolls_aug": 162000,
   "us_payrolls_aug_consensus": 53000,
@@ -57,6 +58,10 @@
   "bsp_cum_bp": 75,
   "ph_cpi_aug": 6.1,
   "ph_cpi_ytd_avg": 5.2,
+  "ph_rice_cpi_aug": 19.4,
+  "ph_rice_cpi_jul": 17.1,
+  "ph_food_cpi_aug": 4.6,
+  "ph_food_cpi_jul": 5.2,
   "ph_cpi_jul": 6.2,
   "ph_cpi_jun": 6.4,
   "bsp_infl_2026": 6.1,
@@ -81,7 +86,9 @@
   "brent_closure": 130.0,
   "brent_mom": 13.24,
   "brent_yr_ago": 65.5,
-  "hormuz_transits": 6,
+  "hormuz_transits": 8,
+  "hormuz_transits_date": "2026-09-13",
+  "hormuz_transits_cadence_d": 7,
   "hormuz_baseline": 85,
   "hormuz_lloyds": 14,
   "hormuz_lloyds_dwt": 10000,
@@ -95,8 +102,33 @@
   "petroline_capacity": 7.0,
   "petroline_km": 1200,
   "petroline_shut": "2026-09-11",
+  "petroline_struck": "2026-09-10",
+  "petroline_struck_disputed": true,
+  "petroline_repair_wk_lo": 3,
+  "petroline_repair_wk_hi": 5,
+  "petroline_full_wk": 6,
+  "petroline_target_pct": 50,
+  "yanbu_dry_since": "2026-09-11",
+  "yanbu_loss_lo": 2.5,
+  "yanbu_loss_hi": 2.7,
+  "yanbu_stocks_mb": 15,
+  "yanbu_buffer_d_lo": 4,
+  "yanbu_buffer_d_hi": 7,
   "hormuz_dark": 5.0,
-  "hormuz_vessels_waiting": 436,
+  "hormuz_queue": [
+   [
+    "2026-09-18",
+    369
+   ],
+   [
+    "2026-09-19",
+    357
+   ],
+   [
+    "2026-09-20",
+    376
+   ]
+  ],
   "vix_spot": 14.32,
   "vix3m": 18.6,
   "vix3m_spot": 15.84,
@@ -226,7 +258,12 @@
   "brent_yoy": 58.58,
   "usdphp_ytd_pct": 6.31,
   "usdphp_chg_ctvo": 1.9,
-  "hormuz_vessel_drop_pct": 93.0,
+  "hormuz_vessel_drop_pct": 91.0,
+  "hormuz_queue_date": "2026-09-20",
+  "hormuz_queue_now": 376,
+  "hormuz_queue_lo": 357,
+  "hormuz_queue_hi": 376,
+  "hormuz_transits_age_d": 7,
   "hormuz_flow_drop_pct": 33.0,
   "vix_futs": [
    [
@@ -287,13 +324,13 @@
    "6M": 2.78,
    "12M": 3.0,
    "10Y": 3.44,
-   "why": "Near horizons cut, ten-year anchor held. Payrolls are strong, but the rate path has repriced hard against duration: the 10-year closed 5.00% on 15 Sep after touching 5.04%, its highest since 2007, with the 2-year at 4.63% and the 30-year at 5.36%, and the hike is 92.0% priced. Equities fell four straight sessions. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
-   "blend": 3.15,
+   "why": "Near horizons cut, ten-year anchor held. Payrolls are strong, but the rate path has repriced hard against duration and only partly back: the 10-year peaked at 5.04% intraday on 15 Sep, its highest since 2007, closed 5.016% on the 16th after the hike, and eased to 4.94% by the 18th, with the 2-year at 4.63% and the 30-year at 5.36%. The September hike is DONE: delivered 16 Sep, and 92.0% priced going into it. This note still called it pending four days after the fact. What is priced now is the next one: October at 50.9%, at least one more by December at 88.5%. Equities steadied into the week's end, the S&P +0.17% and the Nasdaq +0.39% on 18 Sep, but the Dow lost 1.7% on the week. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
+   "blend_10": 5.83,
    "3M_10": 4.5,
    "6M_10": 5.0,
    "12M_10": 5.5,
    "10Y_10": 6.5,
-   "blend_10": 5.83
+   "blend": 3.14
   },
   "EUROPE": {
    "3M": 1.67,
@@ -301,12 +338,12 @@
    "12M": 2.11,
    "10Y": 2.56,
    "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +58.6% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
-   "blend": 2.26,
+   "blend_10": 3.83,
    "3M_10": 2.5,
    "6M_10": 3.0,
    "12M_10": 3.5,
    "10Y_10": 4.5,
-   "blend_10": 3.83
+   "blend": 2.26
   },
   "ASIA": {
    "3M": 2.78,
@@ -314,25 +351,25 @@
    "12M": 3.44,
    "10Y": 3.89,
    "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
-   "blend": 3.53,
+   "blend_10": 6.7,
    "3M_10": 5.0,
    "6M_10": 5.5,
    "12M_10": 6.5,
    "10Y_10": 7.5,
-   "blend_10": 6.7
+   "blend": 3.53
   },
   "PHILIPPINES": {
    "3M": 3.0,
    "6M": 3.0,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1%, a fourth consecutive deceleration - though BSP's own 2027 forecast is 5.4% - and Brent at $104 works directly against a fifth in a country that imports essentially all of its crude. The peso has come off its record: it closed 62.749 on 18 Sep, having set the weakest close on record at 62.86 on 14 Sep and the weakest intraday print at 62.925 the next day. That is a 6.3% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% are what the recovery cost. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
-   "blend": 3.0,
+   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. Two things work against a fifth. Brent at $104 in a country that imports essentially all of its crude is the obvious one. The less obvious one is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso has come off its record: it closed 62.749 on 18 Sep, having set the weakest close on record at 62.86 on 14 Sep and the weakest intraday print at 62.925 the next day. That is a 6.3% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% are what the recovery cost. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+   "blend_10": 5.5,
    "3M_10": 5.5,
    "6M_10": 5.5,
    "12M_10": 5.5,
    "10Y_10": 5.5,
-   "blend_10": 5.5
+   "blend": 3.0
   }
  },
  "hz_weights": {
@@ -359,7 +396,7 @@
   "vix3m_date": "2026-09-11",
   "vix3m_model": 17.68,
   "vix3m_resid": -4.97,
-  "strip_age_d": 15
+  "strip_age_d": 16
  },
  "drivers": [
   {
@@ -409,7 +446,7 @@
    "weight": 0.1,
    "score": 1.11,
    "score_10": 1.25,
-   "note": "CUT. Two things went the wrong way and one of them undercuts the offset this note was leaning on. First, the HORMUZ BYPASS IS SHUT: drone strikes launched from Iraq hit Saudi Arabia's 1200 km East-West (Petroline) pipeline on 11 Sep and Riyadh closed it, with satellite imagery showing fire damage at a pumping station. That line was moving roughly 5.0 mb/d to the Red Sea port of Yanbu specifically to route AROUND the Strait. Second, the Oman meeting at which Iran was to unveil a temporary shipping lane to the Gulf states was postponed on the day, 'in the interests of consensus', with no new date. This note said last week that it was not pricing that diplomacy; that was the right call. Read the disruption on VOLUME, not vessel counts. The counts disagree about fivefold by what they count - IMF PortWatch 6 transits a day against a ~85 baseline, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the US government around 30 - and none of them is supply. Goldman put Gulf crude and product exports at 15.5 mb/d against a 23.0 mb/d pre-war baseline, about two-thirds, up from a 5.5 mb/d trough in March. But that reading is dated 2026-08-28, BEFORE the pipeline was hit, and a material part of what it measured ran through the line that is now shut. No post-shutdown figure has been published, so none is invented here - the honest statement is that two-thirds is the last measured level and is now stale in a knowable direction. Brent settled $103.87 on 18 Sep, off the $108.75 four-month high set on 15 Sep and down 1.0% on the week, but still +58.6% y/y. The shock has stopped widening; it has not unwound. Saudi output was already down ~1.9 mb/d after Houthi strikes; tanker rates are at record highs; 436 vessels are holding off berth. Still NOT scored at the floor: the stress table models full closure and Brent above $130, a strictly worse state, so a floor would assert no room left to worsen while the page models it worsening."
+   "note": "CUT, and held at 1.25 for a reason this week rather than by inertia. The HORMUZ BYPASS IS STILL SHUT, but it now has a repair timetable and that cuts both ways. Drone strikes launched from Iraq hit Saudi Arabia's 1200 km East-West (Petroline) pipeline - dated 10 Sep by one account and the 11th by another - and Riyadh closed the line on 11 Sep, with satellite imagery showing fire damage at a pumping station. That line was moving roughly 5.0 mb/d to the Red Sea port of Yanbu specifically to route AROUND the Strait. Aramco is bypassing the damaged section and targeting 50% of capacity within days and full capacity in about six weeks; regional officials put the repair at three to five weeks with only partial flows meanwhile. Kpler's independent read - a Yanbu export loss of 2.5 to 2.7 mb/d - is about half of 5.0, which is what a line running at the targeted half would cost, so the two numbers corroborate rather than compete. Against that: no Saudi crude has left Yanbu since 11 Sep, stockpiles there are below 15 million barrels, a buffer of four to seven days, and term cargoes to European refiners are already being cancelled or deferred. A dated path back is genuinely better than none; a four-day buffer is genuinely worse. They do not net to a score change, and manufacturing one would be noise. Second, the Oman meeting at which Iran was to unveil a temporary shipping lane to the Gulf states was postponed on the day, 'in the interests of consensus', with no new date. This note said last week that it was not pricing that diplomacy; that was the right call. Read the disruption on VOLUME, not vessel counts. The counts disagree about fivefold by what they count - IMF PortWatch 8 transits a day against a ~85 baseline, on its own basis and its own 13 Sep reading, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the US government around 30 - and none of them is supply. Goldman put Gulf crude and product exports at 15.5 mb/d against a 23.0 mb/d pre-war baseline, about two-thirds, up from a 5.5 mb/d trough in March. But that reading is dated 2026-08-28, BEFORE the pipeline was hit, and a material part of what it measured ran through the line that is now shut. No post-shutdown figure has been published, so none is invented here - the honest statement is that two-thirds is the last measured level and is now stale in a knowable direction. Brent settled $103.87 on 18 Sep, off the $108.75 four-month high set on 15 Sep and down 1.0% on the week, but still +58.6% y/y. The shock has stopped widening; it has not unwound. Saudi output was already down ~1.9 mb/d after Houthi strikes and tanker rates are at record highs. The queue off berth is not a trend: 369 vessels on 18 Sep, 357 on the 19th, 376 on the 20th, all on one source's stated basis - AIS-visible, holding off berth, excluding ships within 25 km of a working port. It is oscillating between 357 and 376, and the first two points alone would have read as a drawdown. The higher count this note quoted until 2026-09-20 came from late August on an UNDISCLOSED basis; it has been dropped rather than compared against, because two vessel counts are not a trend just because both are vessel counts. Still NOT scored at the floor: the stress table models full closure and Brent above $130, a strictly worse state, so a floor would assert no room left to worsen while the page models it worsening."
   }
  ],
  "driver_scale": {
@@ -467,13 +504,13 @@
    "gross_php": 9.2,
    "fx_drift": 2.0,
    "net_base": 7.35,
-   "regional_score": 3.15,
-   "tilt_regional": 0.1,
+   "regional_score": 3.14,
+   "tilt_regional": 0.09,
    "tilt_vol": 0.96,
    "tilt_rates": -0.1,
    "tilt_energy": -0.1,
-   "tilt_total": 0.86,
-   "net_macro": 8.21,
+   "tilt_total": 0.85,
+   "net_macro": 8.2,
    "vol": 16.07,
    "dd_k": 1.55,
    "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
@@ -720,7 +757,7 @@
   "ppp_now": 2.7
  },
  "vix_quote_date": "2026-09-04",
- "review_date": "2026-09-19",
+ "review_date": "2026-09-20",
  "regional_tilt_per_pt": 0.675,
  "real_yield": {
   "cpi": 6.1,
@@ -731,7 +768,7 @@
   {
    "date": "2026-10-06",
    "what": "Philippine September CPI",
-   "why": "The peso sleeve's real-carry argument rests on PH inflation decelerating; August was the fourth consecutive slowdown, and Brent at $104 works directly against a fifth."
+   "why": "The peso sleeve's real-carry argument rests on PH inflation decelerating; August was the fourth consecutive slowdown, and two things work against a fifth - Brent at $104, and rice inflation accelerating to 19.4% from 17.1% inside a print whose deceleration came from food falling to 4.6%."
   },
   {
    "date": "2026-10-28",
@@ -784,26 +821,26 @@
     25.0,
     25.0
    ],
-   "cagr": 7.25,
+   "cagr": 7.24,
    "vol": 14.41,
    "maxdd": -29.0,
    "ret_per_dd": 0.25,
    "sharpe_like": 0.106,
-   "terminal_1m": 2013599,
+   "terminal_1m": 2011722,
    "worst_1m_from_open": 710000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $104. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 2.5,
+    "cagr": 2.49,
     "vol": 23.05,
     "maxdd": -52.8
    },
    {
     "name": "Hawkish repricing",
     "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and what makes it a tail has changed since 9 September. September is no longer the question - it HAPPENED. The Fed hiked 25bp to 3.75-4.00% on 16 September, unanimously, and the dot plot now has a median of 4.1% for end-2026, i.e. one more. This row models what is still NOT priced: a SECOND hike on top of that, which 4 of 18 participants already see. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.91,
+    "cagr": 4.9,
     "vol": 18.73,
     "maxdd": -40.9
    },
@@ -817,14 +854,14 @@
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.82,
+    "cagr": 9.81,
     "vol": 11.52,
-    "maxdd": -20.3
+    "maxdd": -20.4
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.25,
+    "cagr": 7.24,
     "vol": 14.41,
     "maxdd": -29.0
    }
@@ -844,12 +881,12 @@
     30.0,
     5.0
    ],
-   "cagr": 7.49,
+   "cagr": 7.48,
    "vol": 13.55,
    "maxdd": -25.7,
    "ret_per_dd": 0.291,
-   "sharpe_like": 0.131,
-   "terminal_1m": 2059115,
+   "sharpe_like": 0.13,
+   "terminal_1m": 2057200,
    "worst_1m_from_open": 743000
   },
   "under_base": {
@@ -872,40 +909,40 @@
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $104. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 2.99,
+    "cagr": 2.98,
     "vol": 21.68,
     "maxdd": -47.5
    },
    {
     "name": "Hawkish repricing",
     "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and what makes it a tail has changed since 9 September. September is no longer the question - it HAPPENED. The Fed hiked 25bp to 3.75-4.00% on 16 September, unanimously, and the dot plot now has a median of 4.1% for end-2026, i.e. one more. This row models what is still NOT priced: a SECOND hike on top of that, which 4 of 18 participants already see. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.51,
+    "cagr": 5.5,
     "vol": 17.62,
     "maxdd": -36.4
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.69,
+    "cagr": 3.68,
     "vol": 19.65,
-    "maxdd": -42.3
+    "maxdd": -42.4
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.88,
+    "cagr": 9.87,
     "vol": 10.84,
     "maxdd": -17.8
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.49,
+    "cagr": 7.48,
     "vol": 13.55,
     "maxdd": -25.7
    }
   ],
-  "n_feasible": 252,
+  "n_feasible": 251,
   "n_total": 633
  },
  "best_ratio": {
@@ -915,12 +952,12 @@
    5.0,
    5.0
   ],
-  "cagr": 6.36,
+  "cagr": 6.35,
   "vol": 8.21,
   "maxdd": -14.0,
   "ret_per_dd": 0.454,
-  "sharpe_like": 0.078,
-  "terminal_1m": 1852607,
+  "sharpe_like": 0.077,
+  "terminal_1m": 1850866,
   "worst_1m_from_open": 860000
  },
  "stub": {
@@ -933,15 +970,15 @@
    0
   ],
   "cagr_without": 7.48,
-  "cagr_with": 7.49,
-  "cost": -0.01
+  "cagr_with": 7.48,
+  "cost": 0.0
  },
- "tech_gap": -0.44,
+ "tech_gap": -0.43,
  "max_sleeve": 0.5,
  "frontier": [
   {
    "maxdd": 14,
-   "cagr": 6.36,
+   "cagr": 6.35,
    "weights": [
     50.0,
     40.0,
@@ -951,7 +988,7 @@
   },
   {
    "maxdd": 15,
-   "cagr": 6.54,
+   "cagr": 6.53,
    "weights": [
     45.0,
     45.0,
@@ -961,7 +998,7 @@
   },
   {
    "maxdd": 16,
-   "cagr": 6.52,
+   "cagr": 6.51,
    "weights": [
     45.0,
     40.0,
@@ -971,7 +1008,7 @@
   },
   {
    "maxdd": 17,
-   "cagr": 6.72,
+   "cagr": 6.71,
    "weights": [
     40.0,
     50.0,
@@ -991,7 +1028,7 @@
   },
   {
    "maxdd": 19,
-   "cagr": 6.88,
+   "cagr": 6.87,
    "weights": [
     35.0,
     50.0,
@@ -1001,7 +1038,7 @@
   },
   {
    "maxdd": 20,
-   "cagr": 7.03,
+   "cagr": 7.02,
    "weights": [
     30.0,
     50.0,
@@ -1011,7 +1048,7 @@
   },
   {
    "maxdd": 21,
-   "cagr": 7.03,
+   "cagr": 7.02,
    "weights": [
     30.0,
     50.0,
@@ -1021,7 +1058,7 @@
   },
   {
    "maxdd": 22,
-   "cagr": 7.18,
+   "cagr": 7.17,
    "weights": [
     25.0,
     50.0,
@@ -1041,7 +1078,7 @@
   },
   {
    "maxdd": 24,
-   "cagr": 7.34,
+   "cagr": 7.33,
    "weights": [
     20.0,
     50.0,
@@ -1051,7 +1088,7 @@
   },
   {
    "maxdd": 25,
-   "cagr": 7.49,
+   "cagr": 7.48,
    "weights": [
     15.0,
     50.0,
@@ -1081,7 +1118,7 @@
   },
   {
    "maxdd": 28,
-   "cagr": 7.65,
+   "cagr": 7.64,
    "weights": [
     10.0,
     50.0,
@@ -1091,7 +1128,7 @@
   },
   {
    "maxdd": 29,
-   "cagr": 7.8,
+   "cagr": 7.79,
    "weights": [
     5.0,
     50.0,
@@ -1101,7 +1138,7 @@
   },
   {
    "maxdd": 30,
-   "cagr": 7.8,
+   "cagr": 7.79,
    "weights": [
     5.0,
     50.0,
@@ -1121,7 +1158,7 @@
   },
   {
    "maxdd": 32,
-   "cagr": 7.81,
+   "cagr": 7.8,
    "weights": [
     5.0,
     50.0,
@@ -1141,7 +1178,7 @@
   },
   {
    "maxdd": 34,
-   "cagr": 7.82,
+   "cagr": 7.81,
    "weights": [
     5.0,
     50.0,
@@ -1171,7 +1208,7 @@
   },
   {
    "maxdd": 37,
-   "cagr": 7.83,
+   "cagr": 7.82,
    "weights": [
     5.0,
     50.0,
@@ -1201,7 +1238,7 @@
   },
   {
    "maxdd": 40,
-   "cagr": 7.76,
+   "cagr": 7.75,
    "weights": [
     5.0,
     35.0,
@@ -1288,7 +1325,7 @@
   },
   {
    "org": "Philippine Statistics Authority",
-   "what": "Consumer Price Index series - headline inflation 6.1% y/y in August 2026, easing from 6.2% in July and 6.4% in June; a fourth consecutive monthly slowdown and a five-month low, year-to-date average 5.2%",
+   "what": "Consumer Price Index series - headline inflation 6.1% y/y in August 2026, easing from 6.2% in July and 6.4% in June; a fourth consecutive monthly slowdown and a five-month low, year-to-date average 5.2%. The deceleration came from food, 4.6% from 5.2%, while RICE accelerated to 19.4% from 17.1%",
    "url": "https://psa.gov.ph/price-indices/cpi-ir"
   },
   {
@@ -1365,6 +1402,26 @@
    "org": "BusinessWorld",
    "what": "Peso rebounds after hitting the P62.90 range, 16 September 2026 - closed P62.835 on the 15th with an intraday trough of P62.925, the weakest print on record",
    "url": "https://bworldonline.com/banking-finance/2026/09/16/777421/peso-rebounds-after-hitting-p62-90-range/"
+  },
+  {
+   "org": "IMF PortWatch",
+   "what": "Strait of Hormuz daily transit calls - 8 transits on 13 September 2026 against a pre-crisis baseline of 85/day (baseline measured 28 Feb 2025 to 27 Feb 2026). Published weekly on Tuesdays, so the reading is structurally a few days behind",
+   "url": "https://portwatch.imf.org/pages/cc317ba850e34c4dadbead6f7b336fb1"
+  },
+  {
+   "org": "Straits Daily Brief",
+   "what": "Strait of Hormuz status, 18-20 September 2026 - AIS-visible vessels holding position away from berth in the Hormuz and Gulf watch box, excluding ships within 25 km of a working port: 369, 357 and 376",
+   "url": "https://straits.live/briefs/2026-09-20"
+  },
+  {
+   "org": "Bloomberg",
+   "what": "Saudi Arabia seeks to resume half of its key oil pipeline within days, 16 September 2026 - Aramco bypassing the damaged section, targeting full capacity in about six weeks",
+   "url": "https://www.bloomberg.com/news/articles/2026-09-16/saudis-seek-to-resume-half-of-key-oil-pipeline-within-days"
+  },
+  {
+   "org": "Engineering News-Record",
+   "what": "Saudi Aramco works to bypass damage on the East-West pipeline - regional officials cited on 18 September put repairs at three to five weeks with only partial flows meanwhile; no Saudi crude had left Yanbu since 11 September; Yanbu stocks below 15 million barrels, a four-to-seven-day buffer; Kpler puts the Yanbu export loss at 2.5-2.7 mb/d",
+   "url": "https://www.enr.com/articles/63668-saudi-aramco-works-to-bypass-damage-on-critical-east-west-oil-pipeline"
   },
   {
    "org": "Bank of Japan",

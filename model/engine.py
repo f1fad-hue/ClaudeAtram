@@ -20,8 +20,11 @@ from itertools import product
 # REVIEW_DATE is when a human last worked through the page. On a weekend review they
 # differ, and reference data retrieved during the review is legitimately NEWER than
 # the market snapshot: a look-through read today is not "stale by -2 days".
-AS_OF = "2026-09-18"        # last completed session (Friday, triple witching)
-REVIEW_DATE = "2026-09-19"  # this review (Saturday)
+# NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
+# Sunday, because a weekday written beside a date is a second copy of the date
+# that nobody updates. Both weekdays are derived and checked below instead.
+AS_OF = "2026-09-18"        # last completed trading session (triple witching)
+REVIEW_DATE = "2026-09-20"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -78,7 +81,12 @@ MACRO = {
     # September decision would be an input describing the past as if it were pending.
     "fed_hike_odds_oct": 50.9,   # CME FedWatch, 17 Sep - close to a coin flip
     "fed_hike_odds_dec": 88.5,   # cumulative, at least one more by December
-    "fed_hike_odds_sep_final": 92.0,   # where September pricing ended up, for the record
+    # A settled reading of a DECIDED meeting. Kept for the record, and registered
+    # in RESOLVED_ODDS below so prose quoting it has to say which meeting and when:
+    # the US regional note said "the hike is 92.0% priced" in the present tense for
+    # five days after the hike had been delivered.
+    "fed_hike_odds_sep_final": 92.0,
+    "fed_hike_odds_sep_date": "2026-09-16",
     "ecb_sep_delivered": 2.50,
     "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
     "us_payrolls_12m_avg": 31_000,
@@ -107,6 +115,13 @@ MACRO = {
     "bsp_hikes_since_apr": 3,
     "bsp_cum_bp": 75,
     "ph_cpi_aug": 6.1, "ph_cpi_ytd_avg": 5.2,
+    # The headline decelerated for a fourth month, but the largest single food
+    # component went the other way and hard. The peso sleeve's real-carry argument
+    # rests on a FIFTH deceleration; a staple re-accelerating 2.3pp in one month is
+    # the most concrete thing working against it, and the note had only the oil
+    # price to point at.
+    "ph_rice_cpi_aug": 19.4, "ph_rice_cpi_jul": 17.1,
+    "ph_food_cpi_aug": 4.6, "ph_food_cpi_jul": 5.2,
     "ph_cpi_jul": 6.2,
     "ph_cpi_jun": 6.4,
     "bsp_infl_2026": 6.1,
@@ -159,8 +174,15 @@ MACRO = {
     # the Brent price. Until 2026-09-12 this model published only the vessel count
     # and called it a "~93% shutdown", which described a supply collapse its own
     # Brent input contradicted.
-    "hormuz_transits": 6,          # IMF PortWatch, all transits, 6 Sep
-    "hormuz_baseline": 85,         # pre-crisis transits/day, same basis
+    # PortWatch publishes WEEKLY, on Tuesdays, so this reading is structurally a
+    # few days behind and carrying it undated let it go fourteen days stale: 6 was
+    # the 6 September count and was still here on the 19th. Both the reading and
+    # its date are inputs now, and a check bounds the gap.
+    "hormuz_transits": 8,          # IMF PortWatch, all transits
+    "hormuz_transits_date": "2026-09-13",
+    "hormuz_transits_cadence_d": 7,   # weekly Tuesday publication
+    "hormuz_baseline": 85,         # pre-crisis transits/day, SAME PortWatch basis
+                                   # (measured 28 Feb 2025 - 27 Feb 2026)
     "hormuz_lloyds": 14,           # Lloyd's List Intelligence, 17-23 Aug
     "hormuz_lloyds_dwt": 10000,    # Lloyd's counts only cargo vessels above this
     "hormuz_us_claim": 30,         # US government claim; basis undisclosed
@@ -187,8 +209,37 @@ MACRO = {
     "petroline_capacity": 7.0,     # mb/d design capacity after expansion
     "petroline_km": 1200,          # east-west across the peninsula to Yanbu
     "petroline_shut": "2026-09-11",
+    # The STRIKE and the SHUTDOWN are different days and the model's notes had been
+    # conflating them. Accounts also disagree on the strike: one dates the pumping
+    # station hit 10 Sep, another says "last Thursday" (the 11th) from a 18 Sep
+    # story. The shutdown is corroborated; the strike date is recorded as disputed
+    # rather than silently picked, because nothing downstream depends on it.
+    "petroline_struck": "2026-09-10",
+    "petroline_struck_disputed": True,
+    # REPAIR, which the model had no view of at all - so "still shut" was carrying
+    # an implied permanence the reporting does not support. Aramco is bypassing the
+    # damaged section, targeting half capacity within days and full in about six
+    # weeks (16 Sep); regional officials cited by AP on 18 Sep put repairs at three
+    # to five weeks with only partial flows during the work. Both are INTENTIONS
+    # and ESTIMATES, not deliveries: no Saudi crude had left Yanbu since 11 Sep.
+    "petroline_repair_wk_lo": 3, "petroline_repair_wk_hi": 5,
+    "petroline_full_wk": 6,
+    "petroline_target_pct": 50,
+    "yanbu_dry_since": "2026-09-11",
+    # Kpler's independent read, and a check on the 5.0 carried above: it puts the
+    # Yanbu export loss at 2.5-2.7 mb/d, which is about half of 5.0 - consistent
+    # with a line running at the ~50% Aramco is targeting.
+    "yanbu_loss_lo": 2.5, "yanbu_loss_hi": 2.7,
+    "yanbu_stocks_mb": 15,         # below this by 18 Sep
+    "yanbu_buffer_d_lo": 4, "yanbu_buffer_d_hi": 7,
     "hormuz_dark": 5.0,            # mb/d moving via dark crossings / STS transfers
-    "hormuz_vessels_waiting": 436,
+    # THE QUEUE, on a stated basis and as a SERIES. 436 was a 30 August reading on
+    # an undisclosed basis and sat here for three weeks. These three are one
+    # source, one methodology, one daily snapshot time: AIS-visible vessels holding
+    # position away from berth in the Hormuz and Gulf watch box, excluding ships
+    # within 25 km of a working port. Three points, because two would have let this
+    # note call 369 -> 357 a drawdown; 376 the next day says it is oscillating.
+    "hormuz_queue": [("2026-09-18", 369), ("2026-09-19", 357), ("2026-09-20", 376)],
     # That reading is now OUT OF DATE and was carried too long: through 2026-09-18
     # this comment still said the VIX had "fallen BACK toward the 2026 low", which
     # widened the gap to the futures curve. It did the opposite. Spot ran to 17.20
@@ -397,6 +448,18 @@ MACRO["usdphp_chg_ctvo"] = round((MACRO["usdphp"] - MACRO["usdphp_prev"]) * 100,
 # and so the note's own arithmetic is auditable rather than asserted.
 MACRO["hormuz_vessel_drop_pct"] = round(
     (1 - MACRO["hormuz_transits"] / MACRO["hormuz_baseline"]) * 100, 0)
+# The queue's latest reading and its range, derived from the series so the note
+# cannot quote a level the series does not contain, nor call three noisy points a
+# trend. Ordered and de-duplicated by the checks below.
+_HQ = MACRO["hormuz_queue"]
+MACRO["hormuz_queue_date"], MACRO["hormuz_queue_now"] = _HQ[-1]
+MACRO["hormuz_queue_lo"] = min(v for _, v in _HQ)
+MACRO["hormuz_queue_hi"] = max(v for _, v in _HQ)
+# How stale the PortWatch reading is at this review, against its own publication
+# cadence. Derived, so it cannot be described as fresh once it is not.
+MACRO["hormuz_transits_age_d"] = (
+    _dt.date.fromisoformat(REVIEW_DATE)
+    - _dt.date.fromisoformat(MACRO["hormuz_transits_date"])).days
 MACRO["hormuz_flow_drop_pct"] = round(
     (1 - MACRO["hormuz_flow_now"] / MACRO["hormuz_flow_prewar"]) * 100, 0)
 
@@ -426,8 +489,9 @@ POSTPONED = [("Iran-GCC talks on the Strait, in Oman",
 CATALYSTS = [
     ("2026-10-06", "Philippine September CPI",
      "The peso sleeve's real-carry argument rests on PH inflation decelerating; "
-     "August was the fourth consecutive slowdown, and Brent at $104 works "
-     "directly against a fifth."),
+     "August was the fourth consecutive slowdown, and two things work against a "
+     "fifth - Brent at $104, and rice inflation accelerating to 19.4% from 17.1% "
+     "inside a print whose deceleration came from food falling to 4.6%."),
     ("2026-10-28", "FOMC decision",
      "The September hike is done; October is close to a coin flip at 50.9%, and "
      "cumulative odds of at least one further move by December are 88.5%. The dot "
@@ -577,7 +641,7 @@ NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research sc
 REGIONS = {
     "US": {
         "3M": 4.5, "6M": 5.0, "12M": 5.5, HZ_LABEL: 6.5,
-        "why": "Near horizons cut, ten-year anchor held. Payrolls are strong, but the rate path has repriced hard against duration: the 10-year closed 5.00% on 15 Sep after touching 5.04%, its highest since 2007, with the 2-year at 4.63% and the 30-year at 5.36%, and the hike is 92.0% priced. Equities fell four straight sessions. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
+        "why": "Near horizons cut, ten-year anchor held. Payrolls are strong, but the rate path has repriced hard against duration and only partly back: the 10-year peaked at 5.04% intraday on 15 Sep, its highest since 2007, closed 5.016% on the 16th after the hike, and eased to 4.94% by the 18th, with the 2-year at 4.63% and the 30-year at 5.36%. The September hike is DONE: delivered 16 Sep, and 92.0% priced going into it. This note still called it pending four days after the fact. What is priced now is the next one: October at 50.9%, at least one more by December at 88.5%. Equities steadied into the week's end, the S&P +0.17% and the Nasdaq +0.39% on 18 Sep, but the Dow lost 1.7% on the week. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
     },
     "EUROPE": {
         "3M": 2.5, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
@@ -589,14 +653,25 @@ REGIONS = {
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1%, a fourth consecutive deceleration - though BSP's own 2027 forecast is 5.4% - and Brent at $104 works directly against a fifth in a country that imports essentially all of its crude. The peso has come off its record: it closed 62.749 on 18 Sep, having set the weakest close on record at 62.86 on 14 Sep and the weakest intraday print at 62.925 the next day. That is a 6.3% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% are what the recovery cost. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. Two things work against a fifth. Brent at $104 in a country that imports essentially all of its crude is the obvious one. The less obvious one is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso has come off its record: it closed 62.749 on 18 Sep, having set the weakest close on record at 62.86 on 14 Sep and the weakest intraday print at 62.925 the next day. That is a 6.3% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% are what the recovery cost. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
     },
 }
+# to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
+# then blending - EXACTLY. It stops being true the moment either side is rounded,
+# and to5() rounds to 2dp. Blending on the research scale and rescaling the result
+# printed a US blend of 3.15 while a reader blending the four REPORTED scores with
+# the printed horizon weights got 3.14. One region in four failed to reconcile, on
+# the page, for as long as anyone had been looking.
+# The reader's route is now the definition: the blend is the horizon-weighted
+# average of the values actually printed. blend_10 is still published on the
+# research basis for audit, and is still checked against the research-scale
+# horizons - it is simply no longer to5() of itself.  (Audit 2026-09-20.)
 for r in REGIONS.values():
-    r["blend"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
-    for h in ("3M", "6M", "12M", HZ_LABEL, "blend"):
+    r["blend_10"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
+    for h in ("3M", "6M", "12M", HZ_LABEL):
         r[h + "_10"] = r[h]      # research basis, kept so the rescale stays auditable
         r[h] = to5(r[h])         # reported value, 1-5
+    r["blend"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
 
 # ----------------------------------------------------------------------------
 # 4. BROAD MACRO GAUGE (1-5) - weighted composite of seven drivers
@@ -673,18 +748,31 @@ DRIVERS = [
      "have all passed without one. Geopolitics is NOT raised alongside it: crude "
      "easing off a peak is price, and the pipeline is still shut."),
     ("Geopolitics & energy", 0.1, 1.25,
-     "CUT. Two things went the wrong way and one of them undercuts the offset this "
-     "note was leaning on. First, the HORMUZ BYPASS IS SHUT: drone strikes launched "
-     "from Iraq hit Saudi Arabia's 1200 km East-West (Petroline) pipeline on 11 Sep "
-     "and Riyadh closed it, with satellite imagery showing fire damage at a pumping "
-     "station. That line was moving roughly 5.0 mb/d to the Red Sea port of Yanbu "
-     "specifically to route AROUND the Strait. Second, the Oman meeting at which "
+     "CUT, and held at 1.25 for a reason this week rather than by inertia. The "
+     "HORMUZ BYPASS IS STILL SHUT, but it now has a repair timetable and that cuts "
+     "both ways. Drone strikes launched from Iraq hit Saudi Arabia's 1200 km "
+     "East-West (Petroline) pipeline - dated 10 Sep by one account and the 11th by "
+     "another - and Riyadh closed the line on 11 Sep, with satellite imagery "
+     "showing fire damage at a pumping station. That line was moving roughly "
+     "5.0 mb/d to the Red Sea port of Yanbu specifically to route AROUND the "
+     "Strait. Aramco is bypassing the damaged section and targeting 50% of capacity "
+     "within days and full capacity in about six weeks; regional officials put the "
+     "repair at three to five weeks with only partial flows meanwhile. Kpler's "
+     "independent read - a Yanbu export loss of 2.5 to 2.7 mb/d - is about half of "
+     "5.0, which is what a line running at the targeted half would cost, so the "
+     "two numbers corroborate rather than compete. Against that: no Saudi crude has "
+     "left Yanbu since 11 Sep, stockpiles there are below 15 million barrels, a "
+     "buffer of four to seven days, and term cargoes to European refiners are "
+     "already being cancelled or deferred. A dated path back is genuinely better "
+     "than none; a four-day buffer is genuinely worse. They do not net to a "
+     "score change, and manufacturing one would be noise. Second, the Oman meeting at which "
      "Iran was to unveil a temporary shipping lane to the Gulf states was postponed "
      "on the day, 'in the interests of consensus', with no new date. This note said "
      "last week that it was not pricing that diplomacy; that was the right call. "
      "Read the disruption on VOLUME, not vessel counts. The counts disagree about "
-     "fivefold by what they count - IMF PortWatch 6 transits a day against a ~85 "
-     "baseline, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the "
+     "fivefold by what they count - IMF PortWatch 8 transits a day against a ~85 "
+     "baseline, on its own basis and its own 13 Sep reading, Lloyd's List "
+     "Intelligence 14 counting only cargo over 10000 dwt, the "
      "US government around 30 - and none of them is supply. Goldman put Gulf crude "
      "and product exports at 15.5 mb/d against a 23.0 mb/d pre-war baseline, about "
      "two-thirds, up from a 5.5 mb/d trough in March. But that reading is dated "
@@ -695,8 +783,14 @@ DRIVERS = [
      "direction. Brent settled $103.87 on 18 Sep, off the $108.75 four-month high "
      "set on 15 Sep and down 1.0% on the week, but still +58.6% y/y. The shock has "
      "stopped widening; it has not unwound. Saudi output was already down ~1.9 mb/d after "
-     "Houthi strikes; tanker rates are at record highs; 436 vessels are holding off "
-     "berth. Still NOT scored at the floor: the stress table models full closure and "
+     "Houthi strikes and tanker rates are at record highs. The queue off berth is "
+     "not a trend: 369 vessels on 18 Sep, 357 on the 19th, 376 on the 20th, all on "
+     "one source's stated basis - AIS-visible, holding off berth, excluding ships "
+     "within 25 km of a working port. It is oscillating between 357 and 376, and "
+     "the first two points alone would have read as a drawdown. The higher count "
+     "this note quoted until 2026-09-20 came from late August on an UNDISCLOSED "
+     "basis; it has been dropped rather than compared against, because two vessel "
+     "counts are not a trend just because both are vessel counts. Still NOT scored at the floor: the stress table models full closure and "
      "Brent above $130, a strictly worse state, so a floor would assert no room left "
      "to worsen while the page models it worsening."),
 ]
@@ -969,7 +1063,19 @@ def summarise(w, key):
     # 0.253 - two of the four portfolios failed to reconcile. The 2026-09-03 fix
     # was applied to the peso figures and missed the ratios three lines above
     # them. (Audit 2026-09-10.)
-    r_d, d_d, v_d = round(r, 2), round(d, 1), round(v, 2)
+    # The PUBLISHED drawdown is rebuilt from the published cagr and vol, not
+    # rounded down from the raw one. The two agreed today - but only by luck of
+    # where the numbers fell: the baseline under macro came out -29.0019 raw
+    # against -29.0080 by the reader's route, 0.006pp from rounding to different
+    # tenths. The page invites the reader to reproduce the drawdown from the k,
+    # vol and CAGR printed beside it, so that route is the one that defines the
+    # number. This is the same fix already applied to the peso figures (2026-09-03)
+    # and the ratios (2026-09-10), and the scenario rows have always worked this
+    # way; the headline rows were the last place the raw value still surfaced.
+    # port_dd() itself is UNCHANGED and still raw - the optimiser's constraint must
+    # test the true drawdown, not a display value.  (Audit 2026-09-20.)
+    r_d, v_d = round(r, 2), round(v, 2)
+    d_d = round(-max((port_k(w) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0), 1)
     return {
         "weights": [round(x * 100, 1) for x in w],
         "cagr": r_d, "vol": v_d, "maxdd": d_d,
@@ -1136,8 +1242,17 @@ ALL = enumerate_portfolios("net_macro")
 # them, at the last audit - because -18.5099 displays as -18.5. The winner was
 # unaffected, but a constraint that says "<= cap" must actually mean it.
 # (Audit 2026-09-03.)
+# BOTH ROUTES, because each alone admits a portfolio the other rejects. Testing
+# only the rounded value admits one up to 0.05pp genuinely over budget (the
+# 2026-09-03 finding above). Testing only the raw value admits one that PRINTS as
+# over budget: [25, 30, 25, 20] came out 26.1477 raw, inside a 26.17 cap, and
+# published -26.2, which a reader comparing against the printed cap reads as a
+# breach. It surfaced on 2026-09-20 when the regional-blend fix moved returns a
+# hundredth and broke the coincidence that had been hiding it. A portfolio is
+# feasible only if it respects the cap as computed AND as shown.
 FEASIBLE = [(w, s) for w, s in ALL
-            if abs(port_dd(w, "net_macro")) <= DD_CAP + 1e-9]
+            if abs(port_dd(w, "net_macro")) <= DD_CAP + 1e-9
+            and abs(s["maxdd"]) <= DD_CAP + 1e-9]
 FEASIBLE.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
 OPT_W, OPT = FEASIBLE[0]
 OPT_UNDER_BASE = summarise(OPT_W, "net_base")
@@ -1306,7 +1421,9 @@ SOURCES = [
      "https://www.bloomberg.com/news/articles/2026-09-02/latest-oil-market-news-and-analysis-for-sept-3"),
     ("Philippine Statistics Authority", "Consumer Price Index series - headline inflation "
      "6.1% y/y in August 2026, easing from 6.2% in July and 6.4% in June; a fourth "
-     "consecutive monthly slowdown and a five-month low, year-to-date average 5.2%",
+     "consecutive monthly slowdown and a five-month low, year-to-date average 5.2%. "
+     "The deceleration came from food, 4.6% from 5.2%, while RICE accelerated to "
+     "19.4% from 17.1%",
      "https://psa.gov.ph/price-indices/cpi-ir"),
     ("European Central Bank", "Monetary policy decision, 23 July 2026 - deposit rate HELD at 2.25% after the June hike",
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260723~29f24d99bc.en.html"),
@@ -1338,6 +1455,14 @@ SOURCES = [
      "https://www.gmanetwork.com/news/money/economy/1002326/peso-closes-at-fresh-record-low-of-p62-86-to-us-dollar/story/"),
     ("BusinessWorld", "Peso rebounds after hitting the P62.90 range, 16 September 2026 - closed P62.835 on the 15th with an intraday trough of P62.925, the weakest print on record",
      "https://bworldonline.com/banking-finance/2026/09/16/777421/peso-rebounds-after-hitting-p62-90-range/"),
+    ("IMF PortWatch", "Strait of Hormuz daily transit calls - 8 transits on 13 September 2026 against a pre-crisis baseline of 85/day (baseline measured 28 Feb 2025 to 27 Feb 2026). Published weekly on Tuesdays, so the reading is structurally a few days behind",
+     "https://portwatch.imf.org/pages/cc317ba850e34c4dadbead6f7b336fb1"),
+    ("Straits Daily Brief", "Strait of Hormuz status, 18-20 September 2026 - AIS-visible vessels holding position away from berth in the Hormuz and Gulf watch box, excluding ships within 25 km of a working port: 369, 357 and 376",
+     "https://straits.live/briefs/2026-09-20"),
+    ("Bloomberg", "Saudi Arabia seeks to resume half of its key oil pipeline within days, 16 September 2026 - Aramco bypassing the damaged section, targeting full capacity in about six weeks",
+     "https://www.bloomberg.com/news/articles/2026-09-16/saudis-seek-to-resume-half-of-key-oil-pipeline-within-days"),
+    ("Engineering News-Record", "Saudi Aramco works to bypass damage on the East-West pipeline - regional officials cited on 18 September put repairs at three to five weeks with only partial flows meanwhile; no Saudi crude had left Yanbu since 11 September; Yanbu stocks below 15 million barrels, a four-to-seven-day buffer; Kpler puts the Yanbu export loss at 2.5-2.7 mb/d",
+     "https://www.enr.com/articles/63668-saudi-aramco-works-to-bypass-damage-on-critical-east-west-oil-pipeline"),
     ("Bank of Japan", "Statement on Monetary Policy, 18 September 2026 - policy rate raised 25bp to 1.25%, the highest since 1995, on a 7-2 vote with Asada and Sato dissenting",
      "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/k260918a.pdf"),
     ("CNBC", "Bank of Japan raises rates to a 31-year high, 18 September 2026 - and the yen FELL, the split vote casting doubt on the pace of further tightening",
@@ -1761,16 +1886,73 @@ def report():
     # rule and the quote date. Until 2026-09-10 they were four typed constants
     # that backed out to an implied base date of Sunday 6 September - neither the
     # quote date nor AS_OF - and nothing was checking them.
-    # Every catalyst the page presents as pending must actually still be pending.
+    # THE TWO HEADLINE DATES THEMSELVES. Neither was checked: AS_OF is the last
+    # completed trading session, so it cannot land on a weekend, and REVIEW_DATE is
+    # when a human worked through the page, so it cannot precede the data it was
+    # reviewing. The weekday used to be typed in a comment beside REVIEW_DATE and
+    # said "Saturday" on a Sunday - a second copy of a date that nobody maintains.
     _asof = _dt.date.fromisoformat(AS_OF)
+    _revd = _dt.date.fromisoformat(REVIEW_DATE)
+    checks.append((f"the as-of date is a trading weekday ({_asof:%A})",
+                   _asof.weekday() < 5))
+
+    # A PROBABILITY FOR A MEETING THAT HAS HAPPENED must be quoted with the meeting
+    # it belongs to. "the hike is 92.0% priced" read as pending for five days after
+    # the hike was delivered, because the input was correctly kept "for the record"
+    # and the sentence reading it was not updated. Renaming a field is half the fix;
+    # the prose that reads it is the other half (runbook 20).
+    # This is a narrow guard, and says so: it fires only where the VALUE is quoted.
+    # It cannot police tense in general, and pretending otherwise would be the
+    # "right words are present" check this project has been caught writing before.
+    RESOLVED_ODDS = [("fed_hike_odds_sep_final", "fed_hike_odds_sep_date")]
+    for _vk, _dk in RESOLVED_ODDS:
+        _d = _dt.date.fromisoformat(MACRO[_dk])
+        checks.append((f"{_vk} describes a meeting that has actually happened",
+                       _d <= _asof))
+        _needle = f"{MACRO[_vk]:.1f}%"
+        _day = f"{_d.day} {_d:%b}"
+        _hits = [s for s in re.split(r"(?<=[.;])\s+", _all_prose) if _needle in s]
+        checks.append((f"every sentence quoting {_needle} names its meeting date "
+                       f"({_day})",
+                       all(_day in s or f"{_d.day} {_d:%B}" in s for s in _hits)))
+
+    # HORMUZ COUNTS. The transit reading sat undated and went fourteen days stale.
+    # PortWatch publishes weekly, so one cadence of lag is structural and two means
+    # a publication was missed - the bound is derived from the cadence, not chosen.
+    _hd = _dt.date.fromisoformat(MACRO["hormuz_transits_date"])
+    _hc = MACRO["hormuz_transits_cadence_d"]
+    checks.append(("the transit reading is not dated after the review",
+                   _hd <= _revd))
+    checks.append((f"the transit reading is within two publication cycles "
+                   f"({MACRO['hormuz_transits_age_d']}d of {2 * _hc}d)",
+                   MACRO["hormuz_transits_age_d"] <= 2 * _hc))
+    # The queue is a SERIES now, for the reason the note gives: two points out of
+    # three read as a drawdown that the third contradicts.
+    _hqd = [d for d, _ in MACRO["hormuz_queue"]]
+    checks.append(("the vessel queue is in date order with no repeats",
+                   _hqd == sorted(set(_hqd)) and len(_hqd) == len(set(_hqd))))
+    checks.append(("no vessel-queue reading is dated after the review",
+                   all(_dt.date.fromisoformat(d) <= _revd for d in _hqd)))
+    checks.append(("the queue needs 3+ points before any note calls a direction",
+                   len(MACRO["hormuz_queue"]) >= 3))
+    # Kpler's Yanbu loss against the model's own pre-strike throughput: a line
+    # running at the targeted half should cost about half of what it carried.
+    # Independent numbers that agree are worth asserting; if they stop agreeing,
+    # one of them has moved and the note that reconciles them is wrong.
+    _ymid = (MACRO["yanbu_loss_lo"] + MACRO["yanbu_loss_hi"]) / 2
+    _half = MACRO["petroline_bypass"] * MACRO["petroline_target_pct"] / 100
+    checks.append((f"Kpler's Yanbu loss is about half the pre-strike throughput "
+                   f"({_ymid:.2f} vs {_half:.2f} mb/d)", abs(_ymid - _half) <= 0.5))
+    # (the review-date-vs-as-of ordering is already asserted below, beside the
+    # catalyst checks - not duplicated here)
     checks.append(("every pending catalyst is dated after the as-of date",
                    all(_dt.date.fromisoformat(d) > _asof for d, _, _ in CATALYSTS)))
     checks.append(("catalysts are listed in date order",
                    [d for d, _, _ in CATALYSTS] == sorted(d for d, _, _ in CATALYSTS)))
 
-    checks.append(("the review date is not before the market as-of date",
-                   _dt.date.fromisoformat(REVIEW_DATE)
-                   >= _dt.date.fromisoformat(AS_OF)))
+    checks.append((f"the review date is not before the market as-of date "
+                   f"({_revd:%A} {REVIEW_DATE} vs {_asof:%A} {AS_OF})",
+                   _revd >= _asof))
     _q = _dt.date.fromisoformat(VIX_QUOTE_DATE)
     checks.append(("the VIX quote date is a trading weekday", _q.weekday() < 5))
     # The latest observed spot is a SEPARATE observation from the curve's spot and
@@ -1907,6 +2089,18 @@ def report():
                    all(round(-max((_pk * x["vol"] - DD_MU * x["cagr"])
                                   * DD_HORIZON_SCALAR, 0.0), 1) == x["maxdd"]
                        for x in p["optimized"]["scenarios"])))
+    # THE SAME QUESTION, asked of the four headline rows. It was only ever asked of
+    # the scenarios, and the headline rows reached the reader's answer by luck: the
+    # baseline under macro came out -29.0019 raw against -29.0080 by the reader's
+    # route, 0.006pp from rounding to different tenths.  (Audit 2026-09-20.)
+    _hd_rows = [(p["baseline"]["base"], p["dd_model"]["baseline_k"]),
+                (p["baseline"]["under_macro"], p["dd_model"]["baseline_k"]),
+                (p["optimized"]["under_base"], p["dd_model"]["optimized_k"]),
+                (p["optimized"]["macro"], p["dd_model"]["optimized_k"])]
+    checks.append(("every headline drawdown reproduces from its own printed row",
+                   all(round(-max((_k * x["vol"] - DD_MU * x["cagr"])
+                                  * DD_HORIZON_SCALAR, 0.0), 1) == x["maxdd"]
+                       for x, _k in _hd_rows)))
     checks.append(("every driver score is reported in 1-5",
                    all(1 <= d["score"] <= 5 for d in p["drivers"])))
     checks.append(("every driver rescale 1-10 -> 1-5 is exact",
@@ -1927,10 +2121,18 @@ def report():
     checks.append(("every regional score is reported in 1-5",
                    all(1 <= v[h] <= 5 for v in p["regions"].values()
                        for h in ("3M", "6M", "12M", HZ_LABEL, "blend"))))
+    # The four HORIZON scores are to5() of their research values. The BLEND is not,
+    # and deliberately so since 2026-09-20: it is the horizon-weighted average of
+    # the printed scores, because that is the arithmetic a reader does. Asserting
+    # to5(blend_10) here would re-impose the route that printed 3.15 over a page
+    # showing 3.14.
     checks.append(("every regional rescale 1-10 -> 1-5 is exact",
                    all(abs(v[h] - to5(v[h + "_10"])) < 1e-9
                        for v in p["regions"].values()
-                       for h in ("3M", "6M", "12M", HZ_LABEL, "blend"))))
+                       for h in ("3M", "6M", "12M", HZ_LABEL))))
+    checks.append(("every regional blend reproduces from the scores printed beside it",
+                   all(v["blend"] == round(sum(v[h] * w for h, w in HZ_W.items()), 2)
+                       for v in p["regions"].values())))
     checks.append(("regional blend is horizon-weighted on the research scale",
                    all(abs(v["blend_10"] - sum(v[h + "_10"] * w
                                                for h, w in HZ_W.items())) < 0.006
@@ -2067,6 +2269,15 @@ def report():
     cap = p["optimized"]["dd_cap"]
     checks.append(("no chosen portfolio exceeds the drawdown budget",
                    abs(port_dd(OPT_W, "net_macro")) <= DD_CAP + 1e-9))
+    # FEASIBILITY MUST MEAN THE SAME THING ON BOTH ROUTES. The constraint is tested
+    # on the true drawdown, deliberately; the page prints the reader-reproducible
+    # one. Nothing had been asserting that a portfolio admitted by the first is not
+    # shown breaching the cap by the second. They agree today, but only because the
+    # two routes happen to land the same side of every boundary - the same
+    # coincidence that let the headline rows reconcile by luck.
+    checks.append(("every feasible portfolio respects the cap on the PUBLISHED "
+                   "drawdown too",
+                   all(abs(s["maxdd"]) <= DD_CAP + 1e-9 for _, s in FEASIBLE)))
     # The published cap must BE the enforced cap. Publishing a rounded, looser
     # figure made this very check unable to bite: it read the published 26.0
     # while the optimiser enforced 25.97. (Audit 2026-09-08.)

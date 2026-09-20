@@ -127,6 +127,23 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+28. EVERY PUBLISHED FIGURE IS COMPUTED FROM THE FIGURES PUBLISHED BESIDE IT, not
+   from the raw values behind them. This has now been the defect five times. An
+   exact algebraic identity does NOT exempt a step: to5() is affine and the
+   horizon weights sum to 1, so blending then rescaling equals rescaling then
+   blending - until either side is rounded, and to5() rounds to 2dp. That printed
+   a US regional blend of 3.15 above four scores averaging 3.14. And agreement
+   today is not the same as correctness: the headline drawdowns matched the
+   reader's route by 0.006pp of luck. When a bite test cannot fail on live data,
+   CONSTRUCT the divergence and prove the check fires on it.
+26. The rule reaches the SCREEN, not just the payload. The regional row was right
+   in the payload and still did not add up rendered, because the horizons printed
+   at 1dp against a 2dp blend. Check the arithmetic against the DOM cells.
+27. When two rules each admit what the other rejects, apply BOTH. Feasibility on
+   the raw drawdown admits a portfolio that PRINTS as over budget; feasibility on
+   the rounded one admits a portfolio genuinely over budget by up to 0.05pp. The
+   cap must hold as computed AND as shown. A fix that surfaces a second defect the
+   same day usually means the first was hiding it, not causing it.
 25. A DUPLICATE ELEMENT ID renders the second one empty and nothing can see it.
    `getElementById` returns the first match, so the payload is right, the setter
    reports success, no JS error is thrown, and every data-level check passes while

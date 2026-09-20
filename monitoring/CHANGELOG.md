@@ -2,6 +2,162 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-20 — One region in four did not add up, and nobody could have noticed from the page
+
+A Sunday: no new session, so `AS_OF` holds at Friday 18 September and this was a
+maths-and-sources pass. It found more than the news did.
+
+### The US regional blend printed 3.15 above four scores that average 3.14
+
+The blend is defined as the horizon-weighted average of the four horizon scores
+shown beside it. The engine computed it on the **1–10 research scale** and then
+rescaled the result, while printing the four horizons rescaled individually.
+
+`to5()` is affine and the horizon weights sum to 1, so blending-then-rescaling
+equals rescaling-then-blending — **exactly**. That identity is what made this look
+safe. It stops holding the moment either side is rounded, and `to5()` rounds to
+2dp. One region in four fell on the wrong side of it.
+
+The reader's route is the definition now: the blend is the weighted average of the
+values actually printed. `blend_10` is still published on the research basis and
+still checked against the research-scale horizons — it is simply no longer
+`to5()` of itself, and the check that asserted it was has been split in two.
+
+**And the table still did not add up on screen.** The payload was right, but the
+page printed horizons at 1dp against a 2dp blend, so 2.56 rendered as "2.6" and a
+reader blending what they could see got 3.13. The row is at 2dp throughout now,
+and **check I** verifies the arithmetic against the RENDERED cells, not the payload.
+
+### Headline drawdowns reconciled by luck
+
+The page invites a reader to reproduce each drawdown from the `k`, vol and CAGR
+printed beside it. Those drawdowns were rounded down from the raw computation
+instead. They agreed — the baseline under macro coming out −29.0019 raw against
+−29.0080 by the reader's route, **0.006pp from rounding to different tenths**.
+
+Both are published from the reader's route now, as the peso figures (2026-09-03),
+the ratios (2026-09-10) and the scenario rows already were. `port_dd()` itself is
+unchanged and still raw: the optimiser's constraint must test the true drawdown,
+not a display value.
+
+A no-op today, verified. The bite test had to construct the divergence: nudge the
+Asia sleeve +0.294pp and the raw route publishes −28.9 while the printed row gives
+−29.0. The new check fails on that, and passes with the fix.
+
+### Fixing the blend surfaced a second defect immediately
+
+`n_feasible` fell 252 → 251, and the new consistency check failed. The portfolio
+`[25, 30, 25, 20]` has a raw drawdown of **26.1477** — inside the 26.17 cap — and
+publishes **−26.2**. A reader comparing the printed drawdown against the printed
+cap sees a portfolio admitted in breach of its own stated constraint.
+
+This had been latent; the blend fix moved returns by a hundredth and broke the
+coincidence hiding it. Feasibility now requires the cap to hold **on both routes**.
+Testing only the raw value admits what prints as a breach; testing only the rounded
+one admits a portfolio genuinely over budget by up to 0.05pp, which is the
+2026-09-03 finding that put the raw test there in the first place. Neither rule
+alone is right.
+
+Weights unchanged at 15/50/30/5. Optimised CAGR 7.49 → **7.48**, baseline 7.25 →
+**7.24**.
+
+### "The hike is 92.0% priced" — four days after it was delivered
+
+The US regional note said it in the present tense. `fed_hike_odds_sep_final` was
+correctly renamed and kept "for the record" when the meeting resolved; the sentence
+reading it was not touched. That is runbook 20's other half, and it is now a check:
+any sentence quoting a resolved meeting's odds must name the meeting's date, and
+the input must describe a meeting that has actually happened.
+
+The check is narrow and says so in its own comment — it fires only where the value
+is quoted, and cannot police tense in general. Pretending otherwise would be the
+"right words are present" check this project has been caught writing before.
+
+### A weekday typed beside a date said Saturday on a Sunday
+
+`REVIEW_DATE`'s comment. A weekday written next to a date is a second copy of that
+date that nobody maintains. Both weekdays are derived now, and two checks assert
+what the comment used to claim: `AS_OF` must be a trading weekday, and the review
+date must not precede it. A duplicate ordering check three hundred lines apart was
+removed rather than left to drift.
+
+### Hormuz: a count fourteen days stale, and a queue that is not a trend
+
+**IMF PortWatch transits: 6 → 8**, and the 6 was dated **6 September**. PortWatch
+publishes weekly on Tuesdays, so some lag is structural — but the reading carried
+no date, so nothing could tell structural lag from neglect. Both the reading and
+its date are inputs now, with a bound derived from the cadence: two publication
+cycles, because at more than that a publication has been missed.
+
+**The vessel queue is a series, not a number.** It was 436 from 30 August, on an
+undisclosed basis, and had sat for three weeks. The replacement is three points on
+one stated methodology — AIS-visible, holding off berth, excluding ships within
+25 km of a working port: **369 (18th), 357 (19th), 376 (20th)**. The first two
+alone read as a drawdown; the third says it is oscillating. A check requires three
+points before any note calls a direction.
+
+The old 436 is **dropped, not compared against**. Its basis is unknown, so setting
+it beside a figure with a stated basis is the mixed-basis error this model already
+made once with Goldman's flow reading. The verifier caught the numeral sitting in
+prose with nothing to trace to.
+
+### Petroline has a repair timetable, and the notes did not know
+
+They said "still shut", which carries an implied permanence the reporting does not
+support. Aramco is bypassing the damaged section, targeting **50% of capacity
+within days** and full in **about six weeks**; regional officials put repairs at
+**three to five weeks** with only partial flows meanwhile.
+
+Against that, the downside is worse than the notes had: **no Saudi crude has left
+Yanbu since 11 September**, stocks there are below **15 million barrels** — a
+**four-to-seven-day** buffer — and term cargoes to European refiners are being
+cancelled or deferred.
+
+A dated path back is genuinely better than none; a four-day buffer is genuinely
+worse. **Geopolitics held at 1.25.** They do not net to a score change and
+manufacturing one would be noise.
+
+Kpler's independent Yanbu export loss of **2.5–2.7 mb/d** is about half the 5.0
+mb/d the line was carrying — what a line running at the targeted half would cost.
+A check asserts that agreement, so if either number moves the note reconciling them
+fails rather than quietly becoming wrong.
+
+**The strike date is disputed** and recorded as such: one account dates the
+pumping-station hit 10 Sep, another says "last Thursday" — the 11th — from an
+18 September story. The shutdown is corroborated and nothing downstream depends on
+the strike date, so it is not resolved by picking.
+
+### Re-verified, unchanged
+
+- **PH August CPI 6.1%** — re-checked against PSA and three Philippine outlets
+  after one search summary put inflation at "6.2% as of mid-September". That is
+  July's figure. 6.1% stands.
+- **JEPQ look-through** — 31 July 2026 is still the latest published fact sheet
+  and all ten weights match. The 51-day age is JPM's publication lag, not model
+  staleness; the 60-day check will fail around 29 Sep if the August sheet is late.
+- **BSP forecasts** — 6.1% for 2026 and 5.4% for 2027 both confirmed.
+- Portfolio arithmetic re-derived from scratch against the payload alone: all four
+  metric sets, all 633 enumerated portfolios, all 29 frontier buckets, the
+  correlation matrix (symmetric, unit-diagonal, PSD, min eigenvalue 0.110), the
+  drawdown calibration (S&P −20.075 vs −20 observed, NDX −33.100 vs −33), every
+  fund's fee stack, FX translation and volatility. Zero mismatches.
+
+### New, and material
+
+**Rice.** August's deceleration came from food falling to 4.6% from 5.2% — while
+**rice accelerated to 19.4% from 17.1%**, +2.3pp in a month. The peso note argued
+against a fifth deceleration on the oil price alone. A staple re-accelerating like
+that is the more concrete risk, and the model was not carrying it.
+
+### Harnesses
+
+Engine 103 → **115**. Verifier 218 → **222**, 0 failures. Checklist 26 → **27**.
+Playwright DOM clean.
+
+Twelve new checks. Every one bite-tested by injecting the defect it is meant to
+catch — and for the two reconcilability checks the injection had to be
+*constructed*, because the defect they guard is invisible until the numbers move.
+
 ## 2026-09-19 — The peso came off its record, and three notes quoted a Brent price that was five days dead
 
 A week of resolutions: the Fed hiked, the Bank of Japan hiked, triple witching cleared,
