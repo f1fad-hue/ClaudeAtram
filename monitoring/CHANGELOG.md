@@ -2,6 +2,115 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-21 — 4.94% was the seventeenth's close, and this page published it as the eighteenth's for two days
+
+The chain rule caught it. Monday's 10-year closed 4.951%, down "more than 4 basis
+points" — which backs out to a Friday near 4.99%, and 4.94% cannot produce that.
+
+### The error
+
+The Federal Reserve's own H.15 gives **4.94% for 17 September**. CNBC has the
+10-year falling "more than 7 basis points" that day, after the hike. Friday the
+18th went the **other way**, rising 5–7bp to hover near 5%.
+
+This model published 4.94% as the 18 September close from 2026-09-19, and wrote
+prose on top of it: *"the rate leg eased too, the US 10-year closing 4.94% on
+18 Sep"*. The level was real. The date was wrong, and the narrative built on the
+date was wrong with it.
+
+**Third instance of this exact failure mode** — after the 15 September VIX print
+(a real close attached to the wrong session) and the 14 September equity figures
+(Friday's numbers republished as Monday's). A real number on the wrong date is the
+hardest kind of error to see, because every sanity check on the number passes.
+
+**The 18th is now WITHHELD.** Sources put it at 4.99, 5.00 and 5.01 — they agree it
+rose and disagree by two basis points on where it landed. Those three levels are
+published as an input, so the page can show *why* the session is withheld rather
+than assert that it is.
+
+### Why it survived two reviews: a date in a comment is not a date
+
+`ust_10y` was a scalar with `# 18 Sep close` beside it. Nothing could read that
+comment, so nothing could check the level's age, notice a missing session, or
+chain it. **Brent, WTI, the 30-year, the peso, the PSEi and the PH 10-year all had
+the same shape** — the VIX was the only series with a real date.
+
+All of them are dated inputs now, and the 10-year is a series like the VIX, able to
+carry a gap. Three new families of check:
+
+- **Every market series is bounded against `AS_OF`** — five calendar days, enough
+  for a long weekend plus one withheld session.
+- **A withheld session must look deliberate**: a real weekday, at or before
+  `AS_OF`, genuinely absent from its own series.
+- **Every index move reproduces from its own published previous close.** The chain
+  rule, in code rather than in a sentence. Previous closes for all three indices
+  are published inputs now.
+
+### 21 September, carried
+
+- **Nasdaq 27,122.09 (+2.26%) — a record close, its first since June.** S&P
+  7,764.70 (+1.49%), Dow 52,048.83 (+0.71%, +366.19 points). The Dow chains to the
+  cent: 52,048.83 − 366.19 = 51,682.64, exactly the close carried before today.
+- **VIX 14.81, −4.08%** — and 15.44 × (1 − 0.0408) = 14.81 exactly. Below where
+  spot sat before the 10 September break.
+- **10-year 4.951%, 30-year 5.284%** (the 30-year had been 5.36% from 11 Sep).
+- **Peso 62.780**, −3.1 centavos, chaining exactly off 62.749. **PSEi 5,843.79**,
+  −12.12 points, which adds back to 5,855.91 — the 18th's close.
+
+### 21 September oil, withheld
+
+Every source agrees crude fell a fourth session, on UN General Assembly diplomacy,
+on the Petroline closure being read as less disruptive than first feared, and on
+Hormuz flows proving resilient. **None agrees where it settled.**
+
+Brent is reported at **100.06 (−3.67%), 100.34 (−3.4%), 101.40 (−$2.51) and 101.5
+(−2.3%)**; WTI at 95.78, 97.56, 97.86 and 97.9. Each level reproduces the 18th by
+its own percentage, so the chain rule — which resolved the VIX dispute on the 17th
+and found today's 10-year error — cannot choose between them.
+
+The **Brent–WTI spread** favours the ~101.4 / 97.86 pair: 3.54 against Friday's
+3.57, where the alternatives imply 4.56 and 2.50. That is one structural argument
+against two sources, and it is not enough to publish a settle by. The direction is
+in the notes; the level is not. The page says so, and shows the four candidates.
+
+### Two scores that did not move, and why
+
+**Volatility held at 3.0.** VIX 14.81 is below its pre-break level and the rate leg
+confirmed it — a case for another half point, two days after the last one. Declined
+on two grounds. A **dated binary sits inside 48 hours**: Trump addresses the UNGA
+on the 22nd weighing what he has called a big decision on new strikes, and Iran's
+president speaks the day after. Marking down risk the day before that is marking
+down risk *into* an event. And the thing this portfolio is actually paid on has not
+moved — the strip is still the 4 September quote, so falling spot **widens** the
+ramp rather than confirming calm. Spot is one of the two pieces; the curve is the
+other, and it has not spoken since 4 September.
+
+**Geopolitics held at 1.25.** The market repriced the whole complex downward on the
+21st. This page does not follow it: the reporting that moved the price sits beside
+reporting that Trump is weighing new strikes, that Tehran remains defiant, and that
+Yanbu has a four-to-seven-day buffer. A market pricing de-escalation ahead of a
+binary is taking a view, not producing a fact this page can score.
+
+Both UNGA speeches are pending catalysts now.
+
+### A verifier that died mid-run
+
+`_cited()` called `float()` on a list. The first list-valued input that was not also
+named in the engine body — `ust_10y_disputed` — raised `TypeError` and took the
+whole verifier down before it reported anything. A list is cited when every scalar
+inside it is, and the helper recurses now.
+
+Worth naming: the verifier failed **loudly**, which is why it took thirty seconds
+to find. A harness that crashes is a better harness than one that silently skips.
+
+### Harnesses
+
+Engine 115 → **128**. Verifier 222 → **235**, 0 failures. Checklist **27**.
+Playwright DOM clean. Twenty-two new checks, every family bite-tested by injecting
+the defect it catches. The date bounds and the chain rule exist in the engine
+**and** independently in the verifier, which never imports it — the same
+belt-and-braces the undated-crude rule got on the 19th.
+
 ## 2026-09-20 — One region in four did not add up, and nobody could have noticed from the page
 
 A Sunday: no new session, so `AS_OF` holds at Friday 18 September and this was a

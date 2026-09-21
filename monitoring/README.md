@@ -127,6 +127,18 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+30. A DATE IN A COMMENT IS NOT A DATE. `ust_10y` was a scalar with `# 18 Sep
+   close` beside it; the comment was WRONG for two days and nothing could read it
+   to find out. Every market input carries its own date field now, every one is
+   bounded against AS_OF, and any series that can have a gap is a SERIES, not a
+   scalar. The same applies to a weekday typed beside a date (runbook 20 region).
+29. THE CHAIN RULE BELONGS IN CODE, not in a sentence. "A print that will not
+   reproduce the next session's published move is not a print" has now caught a
+   value dispute (15 Sep VIX), a dating error in that dispute (17 Sep), and a
+   dating error nobody had questioned (the 10-year, 21 Sep). Publish the PREVIOUS
+   close as an input so the chain is checkable rather than asserted. And a real
+   number on the wrong date is the hardest error to see, because every sanity
+   check on the NUMBER passes.
 28. EVERY PUBLISHED FIGURE IS COMPUTED FROM THE FIGURES PUBLISHED BESIDE IT, not
    from the raw values behind them. This has now been the defect five times. An
    exact algebraic identity does NOT exempt a step: to5() is affine and the
