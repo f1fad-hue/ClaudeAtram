@@ -2,6 +2,169 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-23 — The macro drivers never reached the portfolio, and the check for it read the words, not the wiring
+
+### The finding
+
+The page says the optimised portfolio is built from the macro drivers. It was not.
+Each fund's **rates** and **energy** tilt — the "Policy-rate / duration bias" and
+"Energy shock & geopolitics" rows of the correlated-sentiment table — was a typed
+constant. The Monetary and Geopolitics drivers fed only the headline gauge, and the
+gauge feeds nothing.
+
+The history shows it plainly. Since launch the Monetary driver has moved
+**4.0 → 3.5 → 2.5 → 2.25** and Geopolitics **2.5 → 1.5 → 1.0 → 1.5 → 1.25 → 1.5**,
+and Global Technology's rates tilt stayed at **−0.40** and its energy tilt at
+**−0.15** through every one of those moves. Seven driver changes in three weeks; not
+one reached a fund's return, the optimiser, or the allocation.
+
+**Checklist item 15 passed the whole time**, because it asked whether the words
+"broad macro", "correlated sentiment", "volatility term structure" and "regional
+rankings" appeared on the page. They did. It is failure mode (d) from this project's
+own list — a check written as "the right words are present" rather than "the
+quantities stand in the right relation" — on the requirement that matters most.
+
+### The fix
+
+The drivers are transmitted now exactly the way the volatility ramp already was:
+signal × structural sensitivity. The typed per-fund values are kept and **re-read as
+what they always implicitly were**: each fund's tilt at the driver readings in force
+when they were written — Monetary 4.0, Geopolitics 2.5, commit `918c280`, 2 Sep.
+Calibrating there states the *original* judgment rather than making a new one; the
+tilt today is what that judgment implies at today's readings. Linear in distance
+from the 5.5 neutral, which is the minimal assumption and is stated as one.
+
+| | rates | energy | net CAGR |
+|---|---|---|---|
+| Peso Money Market | +0.25 → **+0.54** | +0.05 → **+0.07** | 4.60 → **4.91** |
+| Nasdaq Equity Income | −0.10 → **−0.22** | −0.10 → **−0.13** | 8.20 → **8.05** |
+| Asia Equity | −0.05 → **−0.11** | −0.20 → **−0.27** | 7.68 → **7.55** |
+| Global Technology | −0.40 → **−0.87** | −0.15 → **−0.20** | 7.77 → **7.25** |
+
+**The recommended allocation does not change: 15 / 50 / 30 / 5.** That was checked
+in the scratchpad before anything went into the engine. Optimised CAGR 7.48% →
+**7.39%**, drawdown −25.7% → **−25.8%**; baseline 7.24% → **7.10%**. Every future
+driver move now reaches the returns, which is what the page has always said.
+
+Checklist item 15 now re-derives every tilt channel from its own signal —
+regional from the regional blend, volatility from the ramp, rates and energy from
+the published driver scores and calibration record — and **fails when the engine is
+reverted to typed constants** (bite-tested). The verifier re-derives the same
+thing independently.
+
+The money-market sleeve's post-tilt return (4.91%) now exceeds its gross yield
+(4.85%): a hawkish-rates tailwind larger than its fee. Checklist item 6 had been
+comparing the post-tilt figure to gross and failed on a correct number; the
+requirement is "net CAGR minus fees", so it now compares the after-fee return.
+
+The Portfolios lede also claimed all four inputs are "blended across 3, 6 and 12
+months". Two are. It says what the code does now, including that until today the
+rates and energy tilts were constants.
+
+### The 10-year: one basis, and every earlier problem traced to mixing two
+
+CNBC's bond stories are written **during** the session and quote yields to 3dp.
+The Treasury's daily par curve and the Fed's H.15, built from it, publish the
+~3:30pm **close** to 2dp. This model's 10-year series had both, and that one fact
+explains all three of its problems:
+
+- **Monday's "4.951% close" was a mid-session print; the close was 4.96%.** Tuesday's
+  CNBC story had the 10-year "less than 1 basis point lower at 4.959%" — 0.1bp below
+  4.96, and impossible against a 4.951 close.
+- **The 18 Sep "dispute" was not three readings of one close.** 4.99 and 5.00 were
+  intraday quotes; 5.01% was the Treasury par close. On the official basis it chains
+  both ways: +7bp on the 17th's 4.94 (matching the reported "+7bp") and −5bp into the
+  21st's 4.96 (matching "fell more than 4bp"). **The withheld session is resolved.**
+- 5.016% on the 16th was a 3dp print and is out of the series.
+
+The series is official closes only now — 4.94 · 5.01 · 4.96 · 4.97 — and **the
+precision is the signature**: a check fails on any 3dp value in it. The 2-year and
+30-year are 3dp mid-session readings with no official close found, so they are
+labelled as readings, and another check fails if any note calls them a close.
+
+**The 2-year had no date field and was 12 days stale** — 4.63% from 11 Sep against
+~4.743% now. The lag bound added on the 21st listed the 10- and 30-year and missed
+it. **Equities had no date field either**: every other market block was dated on the
+21st and the three index closes were not, their date living in a comment — the
+exact failure that review was fixing.
+
+### Monday's oil: withheld, then resolved — against the heuristic
+
+On the 21st four Brent settles were in circulation and the Brent–WTI spread
+favoured the ~101.4 / 97.86 pair, because it held Friday's 3.57. The page declined to
+publish a settle on one structural argument against two sources.
+
+**Tuesday settled Brent 99.25 (−1%) and WTI 94.59 (−1.2%), and those moves fit only a
+Monday of 100.34 / 95.78** — the pair the spread argument had ruled out. The
+spread-favoured pair would need Tuesday falls of −2.1% and −3.3%. The spread went
+3.57 → 4.56 → 4.66 and stayed wide.
+
+**Had the heuristic been published on Monday, the page would have printed the wrong
+settle.** That is the strongest vindication the withholding discipline has had.
+
+The check I first wrote for it was wrong, and its own bite test caught that. "The
+previous settle is one of the disputed candidates" passed for *every* candidate,
+including the wrong one — the "matches SOME published input" weakness from the 19th,
+reintroduced two days later by the person who wrote that runbook entry. Replaced
+with the chain itself: Tuesday's reported move must land on Tuesday's settle from
+this prior, at the precision the move was reported. At Brent's 0dp "1%" two
+candidates near 100 both fit; what eliminates 100.06 is its WTI partner, which
+misses WTI's 1dp move by $1.8.
+
+### Echoes, three of them
+
+Tuesday's research turned up three figures stamped with the wrong date: an S&P
+"7,764.70" for the 22nd (Monday's close, impossible beside its own "+0.02%"); a VIX
+"16.34" (the **2 September** close already in the series, which would be +10% on a
+flat day); and a peso "P62.625, a new all-time low" (the **8 September** record,
+pasted under Tuesday). All three failed the chain and were discarded. The VIX close
+used instead, 14.87, is corroborated **backwards**: a live quote on the 23rd showed
+14.25 "down 4.17%", and 14.25 / (1 − 0.0417) = 14.87.
+
+The peso is held at 21 Sep: it rebounded on the 22nd, but no genuine close was found.
+
+### The UN week, and one score restored
+
+- **Petroline restarted on 22 Sep**, with a cargo loading at Yanbu for China — the
+  first deliveries rather than intentions. Well below normal: 40% within a couple of
+  days, six to eight weeks to full. One report dates the shutdown 13 Sep; 11 Sep is
+  carried and the dissent recorded.
+- **Trump at the UNGA**: a deal with Iran "after the midterms"; without one he could
+  "annihilate" Iran. **Witkoff and Kushner met an Iranian delegation for three hours**
+  (one account says indirectly). No outcome. Pezeshkian speaks today.
+- **Geopolitics 1.25 → 1.5, restored and no higher.** The 14 Sep cut named two
+  reasons — the bypass shut and the Oman talks called off. On 22 Sep both reversed as
+  facts, not prices. It stops at 1.5 because the Strait is still closed, the deal is
+  six weeks out, and the restart is at 40%.
+- **Volatility held at 3.0** for a second review. Of the two reasons given on the
+  21st, one resolved (the UN binary passed without an event) and one stands (the strip
+  has not moved since 4 Sep). Raising on half the evidence is the same mistake as
+  cutting on half of it.
+- Gauge 2.39 → **2.40**. The resolved UN catalyst was retired; Pezeshkian's stays.
+
+### Also
+
+- **The verifier bucketed the frontier with `round()`**; the engine uses `floor()`.
+  It compared the optimum against the next bucket up and passed for weeks because that
+  bucket happened to hold a CAGR at least as high. The same mismatch produced sixteen
+  phantom frontier "bugs" earlier. It now also requires the optimum to be the
+  bucket's *own* portfolio, not one within a cent.
+- Two verifier tolerances were a full cent (0.011) on sums that are exact by
+  construction; now float noise.
+- CLAIMS.md carried two "US 30-year" rows, the stale one never removed.
+- A duplicate `brent_21sep` input was added and removed in the same review — one
+  name for one number, as runbook 22 already says.
+- JEPQ look-through: 31 July is still JPM's latest sheet. **The 60-day check will fail
+  on 30 Sep** if August is not out; that will be a publication lag, and should be
+  recorded as one rather than suppressed.
+- VIX strip: 19 days, thirteenth day of searching, against a 30-day bound.
+
+### Harnesses
+
+Engine 128 → **135**. Verifier 235 → **240**, 0 failures. Checklist **27**, with
+items 6 and 15 rewritten. Playwright DOM clean. Every new check bite-tested; one of
+mine failed its own bite test and was replaced the same hour.
+
 ## 2026-09-21 — 4.94% was the seventeenth's close, and this page published it as the eighteenth's for two days
 
 The chain rule caught it. Monday's 10-year closed 4.951%, down "more than 4 basis

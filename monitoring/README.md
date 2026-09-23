@@ -127,6 +127,23 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+33. A REQUIREMENT IS CHECKED ON ITS MECHANISM, NOT ITS WORDING. Checklist item 15
+   ("optimised from macro + correlated sentiment + volatility + regional") asked
+   whether those words appeared on the page, and passed for three weeks while no
+   macro driver reached any fund: the rates and energy tilts were typed constants.
+   For every requirement that says "X is built from Y", the check must perturb or
+   re-derive Y and show X move. If a check would pass on a page whose code does
+   nothing, it is testing the copywriting.
+32. WHEN A SERIES MIXES TWO KINDS OF NUMBER, EVERY SYMPTOM LOOKS LIKE A DIFFERENT
+   BUG. The 10-year's wrong date, its "disputed" session and its intraday-as-close
+   error were one defect: CNBC mid-session prints (3dp) mixed with official closes
+   (2dp). State the basis of every series, keep one basis per series, and use the
+   precision as a tripwire.
+31. A HEURISTIC THAT CANNOT BE CHECKED IS NOT EVIDENCE. The Brent-WTI spread
+   "favoured" the wrong Monday settle; the next session's chain found the right
+   one. Withholding cost one day of a stale number. Publishing on the heuristic
+   would have cost a wrong one. And a check of the form "value is one of the
+   candidates" is the runbook-21 weakness again - it passes the wrong candidate.
 30. A DATE IN A COMMENT IS NOT A DATE. `ust_10y` was a scalar with `# 18 Sep
    close` beside it; the comment was WRONG for two days and nothing could read it
    to find out. Every market input carries its own date field now, every one is
