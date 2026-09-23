@@ -2,6 +2,143 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-23 (second pass) — A Fed-hawkish repricing re-verified the allocation, a peso gap resolved, oil withheld a second time, and a banker's-rounding bug in the tilt math no one had hit until today
+
+### The macro refresh
+
+Three things arrived the same day and repriced the front of the curve harder than
+at any point since the Fed's own hike: the September flash PMI (composite **58.4**,
+from 56.0 — the strongest US private-sector expansion since July 2021, with input
+costs rising the fastest since October 2022), a weak **$70bn 5-year note auction**,
+and Fed Governor Barr — a sitting voting member — saying "in my base case, further
+policy adjustments are likely to be needed." CME FedWatch's October odds jumped
+**50.9% → 73%** in a day — the biggest one-day move in Treasuries since April 2025.
+On official closes the 10-year went 4.94/5.01/4.96/4.97/**5.10%**, a 13bp jump and
+the largest single-session move in this series, after peaking intraday at
+**5.135%** — the highest since July 2007, superseding the 15 Sep peak of 5.04%
+(preserved as `ust_10y_peak_prev`/`ust_10y_peak_prev_date`, the same pattern used
+for the VIX 2026 low). The 2-year traded near 4.947% (highest since May 2024), the
+30-year near 5.39% (highest since July 2004). Equities gave back the UN-week gains:
+S&P −0.75% to 7706.03, Nasdaq −1.13% to 26936.04 (ending its two-session record
+streak), Dow −0.68% to 51511.59. The VIX, paradoxically, fell a third straight
+session to 14.21 (−4.44%) — published as a genuine disagreement between the rates
+and equity-vol markets, not resolved by picking a side.
+
+Six driver scores moved: Monetary policy & liquidity cut again, 2.25 → **1.75**
+(the "what is priced is absorbed" argument that had held it for a week broke).
+Growth momentum was *raised*, 4.0 → **4.25**, on the PMI print itself — kept in its
+own lane rather than double-counted in Monetary's cut. Inflation trajectory cut
+slightly, 3.0 → **2.75**, on the PMI's input-cost reading. Valuation support raised,
+8.0 → **8.25**, on today's broad de-rating. Volatility & risk appetite and
+Geopolitics & energy both held, at 3.0 and 1.5.
+
+**The recommended allocation is unchanged: 15 / 50 / 30 / 5** — re-verified against
+the driver-tilt transmission mechanism added earlier today, on a materially
+different macro day than the one it was built and tested against. Macro-view CAGR
+moved 7.39% → **7.36%**; drawdown essentially flat at −25.8%. This is the central
+"revalidate the portfolio allocations" answer for today's review: the allocation is
+robust to a hawkish Fed surprise, only the forecast figures shifted at the margin.
+
+### The peso gap, resolved
+
+Yesterday's review left the 22 Sep USD/PHP close **HELD at the 21st's 62.780**,
+pending verification, because the only level found under the 22nd's date was the
+8 Sep record (62.625) mis-pasted onto the wrong day. A 23 Sep recap article gives
+the genuine 22 Sep close: **62.725**, appreciating 5.5 centavos — consistent with
+"rebounded" and distinct from the record it had been confused with. The peso then
+held flat at 62.725 on the 23rd. 62.780 (21 Sep) is preserved as `usdphp_prev2` for
+the audit trail, the same pattern used elsewhere for superseded records.
+
+### Oil withheld a second time — the discipline vindicated again
+
+21 Sep's oil settle was withheld last session on the ground that no candidate
+reconciled against both the Brent and WTI legs; it was resolved a day later by the
+chain, proving the discipline correct. The same test was applied to **23 Sep** and
+produced the same verdict: three candidate settle pairs (Brent 98.44/101.61/103.08,
+WTI 89.31/92.16/92.54), and while one Brent leg chains exactly off the verified
+22nd (99.25), every WTI leg misses the 22nd's WTI close (94.59) by several dollars.
+A settle that agrees on one leg and fails the other is not verified. **Withheld,
+not guessed** — published as a disputed range (`brent_disputed_23sep` /
+`wti_disputed_23sep`) rather than an asserted settle.
+
+### A hand-typed figure caught before publication
+
+A first draft of the Philippines regional note described the peso's year-to-date
+loss of purchasing power as "6.5%", typed by eye. The actual derived figure —
+`round((1 - usdphp_2025_close / usdphp) * 100, 2)` at the new 62.725 spot — is
+**6.27%**. Caught by checking the arithmetic before committing the sentence, not by
+a harness; recorded because it is exactly the class of error this review discipline
+exists to catch.
+
+### The rounding-convention bug
+
+The driver-tilt transmission mechanism (added earlier today) computes each fund's
+rates and energy tilt as `round(calibrated_tilt * scale, 2)`, where `scale` is
+derived from how far the current driver score sits from its calibration anchor.
+Today's Monetary scale factor came out to exactly **2.5** for the first time,
+and two funds' tilt products landed exactly on a .5-at-the-second-decimal
+boundary: ATRPHMM's `0.25 * 2.5 = 0.625` and ATRASEQ's `-0.05 * 2.5 = -0.125`.
+
+Python's built-in `round()` uses banker's rounding (ties to even):
+`round(0.625, 2) == 0.62`, `round(-0.125, 2) == -0.12`. The independent
+`checklist.js` verifier's `r2()` helper uses round-half-up:
+`Math.round(0.625*100+1e-9)/100 === 0.63`. The two verifiers silently disagreed by
+exactly 0.01 at the boundary — invisible until today's scale factor happened to
+produce an exact tie, eleven days after the transmission mechanism itself was
+added and bite-tested.
+
+**Fix:** added a `rnd()` helper to `model/engine.py` (`decimal.Decimal` +
+`ROUND_HALF_UP`) and applied it to every tilt calculation (`reg_tilt`, `vol_tilt`,
+`rates_tilt`, `energy_tilt`, `tilt_total`) and to the self-checks that re-derive
+them. Round-half-up is the more defensible convention for a financial model.
+The independent `audit.py` re-derivation of the same arithmetic carried the same
+bug (it re-derives the transmission from the published driver scores, never
+importing the engine) and got the same fix, so the two verifiers now agree at
+the boundary rather than one silently exploiting the other's blind spot.
+
+### House cleanup: seven uncited inputs
+
+The independent audit checks that every published input is cited somewhere in
+code, prose or markup — an uncited input is dead weight that can coincidentally
+whitelist a wrong page figure. Today's changes introduced three new orphans:
+`ust_10y_peak_prev_date`, `brent_disputed_23sep` and `wti_disputed_23sep` (all
+recorded as numbers/dates but never quoted verbatim — the prose says "15 Sep" and
+"three incompatible settle pairs", not the ISO dates or the disputed levels
+themselves). The audit also surfaced four pre-existing orphans that had never
+been caught before: `fed_vote`, `fed_dot_two_more_level`, `petroline_restart` and
+`yanbu_first_cargo`. All seven are now cited via a documentation block in
+`engine.py` that names each field explicitly, immediately after the `MACRO` dict.
+
+The same audit pass caught eleven prose numbers with no backing input at all —
+the PMI figures (58.4, 56.0, 58.7, 56, 56.7, 53.1) and the $70bn auction size,
+written straight into the Monetary and Growth driver notes without ever being
+recorded as data. Six new `MACRO` fields (`us_pmi_composite_sep/aug`,
+`us_pmi_services_sep/consensus`, `us_pmi_manufacturing_sep/aug`,
+`us_5y_auction_size_bn`) now back every one of them.
+
+### Stale static text found beyond the payload (page-level sweep)
+
+Three narrative issues would not have been caught by any payload-only check,
+because the text was hardcoded rather than computed: (1) the Report tab's "1 · The
+setup" card still attributed the day's driver movement to geopolitics & energy
+(true on the 22nd, stale today) — rewritten to describe today's actual two-driver,
+opposite-direction move. (2) The Volatility tab's headline and lede still described
+the yield curve as "range-bound just under 5%" — rewritten around today's new
+post-2007 high and the rates/vol paradox. (3) The 10-year peak reference had "15
+September" hardcoded beside a value that had just moved to a new date — replaced
+with a dynamic binding (`ust10pkd`) off `ust_10y_peak_date`.
+
+### Harness results
+
+`model/engine.py` self-check: **136/136**. `checklist.js`: **27/27** (was 27, with
+2 transient failures during this review — the rounding mismatch on check 15, and a
+duplicate-element-id pair on the Volatility tab from an added paragraph — both
+fixed before commit). `audit.py` (scratchpad, independent, never imports the
+engine): **0 failures** on the final payload, run for the first time this session.
+`validate.js` (Playwright): `jsErrors: []`, allocation and CAGR/drawdown figures
+confirmed matching. Screenshots of the Volatility and Report tabs at 412px
+confirmed the new narrative renders correctly.
+
 ## 2026-09-23 — The macro drivers never reached the portfolio, and the check for it read the words, not the wiring
 
 ### The finding

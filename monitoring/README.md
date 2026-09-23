@@ -127,6 +127,20 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+34. TWO VERIFIERS THAT ROUND DIFFERENTLY WILL EVENTUALLY DISAGREE ABOUT A NUMBER
+   THAT IS OTHERWISE CORRECT. The driver-tilt transmission multiplies a typed
+   constant by a scale factor derived from a driver score; on 2026-09-23 that
+   scale hit exactly 2.5 for the first time, and two funds' tilt products landed
+   exactly on a .5-at-the-2dp boundary (0.25*2.5=0.625, -0.05*2.5=-0.125). Python's
+   `round()` rounds half-to-even (0.625->0.62); the independent checklist's `r2()`
+   rounds half-up (0.625->0.63). Both are "correct" roundings of a correct number,
+   and they silently disagreed by 0.01 at the boundary - invisible for eleven days
+   until a scale factor happened to produce an exact tie. Pick ONE convention
+   (round-half-up is the more defensible one for a financial model) and use it
+   EVERYWHERE two things must agree bit-for-bit on a rounded value: the engine, the
+   independent audit's re-derivation of the same arithmetic, and any verifier that
+   checks it. A tolerance does not fix this - the disagreement is exactly 0.01, not
+   noise - the rounding function itself has to match.
 33. A REQUIREMENT IS CHECKED ON ITS MECHANISM, NOT ITS WORDING. Checklist item 15
    ("optimised from macro + correlated sentiment + volatility + regional") asked
    whether those words appeared on the page, and passed for three weeks while no
