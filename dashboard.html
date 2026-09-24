@@ -642,12 +642,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Feasible set</p>
     <h2>Why this point, out of <span id="ntotal3">—</span></h2>
-    <p>Every fully-invested 5%-granular allocation holding all four funds, with
-      <strong>no single sleeve above <span class="num" id="capsleeve">—</span></strong>,
-      was enumerated and scored — <b class="num" id="ntotal">—</b> portfolios. The line
+    <p>Every fully-invested 5%-granular allocation holding all four funds, <strong>each
+      at <span class="num" id="minsleeve">—</span> or more</strong>, was enumerated and
+      scored — <b class="num" id="ntotal">—</b> portfolios. The line
       below is the upper edge: the highest achievable 10-year net CAGR at each level of
       expected drawdown. The optimised portfolio sits on that edge.</p>
-    <p class="note">A 50% concentration cap is part of the objective, not a silent filter. Without it the optimiser went to 75% in one fund — a "four-fund portfolio" that is really one fund plus three stubs, and against the diversification argument this report itself makes.</p>
+    <p class="note" id="capnote">No single-fund cap.</p>
     <div class="card">
       <figure class="rel">
         <div id="frontier"></div>
@@ -660,8 +660,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <p id="extremes">Because the answer is degenerate.</p>
       <p style="margin-bottom:0">So the objective is stated explicitly and solved:
         <strong>maximise 10-year net CAGR subject to expected maximum drawdown coming
-        in below the baseline's by the stated budget, and to no sleeve exceeding
-        <span class="num" id="capsleeve2">—</span></strong>. That left
+        in below the baseline's by the stated budget, with every fund held at
+        <span class="num" id="minsleeve2">—</span> or more</strong>. That left
         <b class="num" id="nfeas">—</b> feasible portfolios out of
         <b class="num" id="ntotal2">—</b>, and the winner is the one that beats the
         baseline on <em>both</em> sides at once.</p>
@@ -769,26 +769,27 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     </div>
 
     <div class="card">
-      <h3>3 &middot; The two overweights, and why they don't overlap</h3>
-      <p><strong>Asia Equity is cut to <b class="num" id="wAseq">—</b>, and the
-        reason is a fee correction, not a change of view.</strong> J.P. Morgan
-        publishes a <b class="num">1.50%</b> management fee for the target fund, so the
-        <b class="num">0.80%</b> ongoing charge this model carried until 9 September was
-        impossible. Corrected, the all-in stack is <b class="num" id="feeAseq">—</b> and
-        the sleeve falls from <em>first to third</em> on forecast net return. The macro
-        case still ranks first over the horizons that matter to a 10-year mandate
-        (<b class="num" id="asiahz">—</b> on the 1&ndash;5 scale), and
-        <b class="num">10.5&times;</b> forward against that earnings growth is the
-        widest valuation-to-growth gap in these four funds. It is held below the
-        unconstrained maximum because Korea is already up <b class="num">71%</b> and
-        Taiwan <b class="num">49%</b> year to date, and because Asia is the region most
-        exposed to an energy shock it imports.</p>
-      <p style="margin-bottom:0">Nasdaq Equity Income goes to
-        <b class="num" id="wQiap">—</b> — the concentration cap, and nothing else, is
-        what stops it going higher — because it is the best drawdown-adjusted holding
-        on the sheet. Option overwriting cuts its volatility to roughly two-thirds of
-        the raw Nasdaq-100, and unhedged peso exposure trims it again, because the peso
-        tends to weaken precisely when US equities fall. <span id="techgap">—</span></p>
+      <h3>3 &middot; One sleeve carries the portfolio, by choice</h3>
+      <p><strong>Nasdaq Equity Income goes to <b class="num" id="wQiap">—</b>, because it
+        is the best drawdown-adjusted holding on the sheet.</strong> Option overwriting
+        cuts its volatility to roughly two-thirds of the raw Nasdaq-100, and unhedged
+        peso exposure trims it again, because the peso tends to weaken precisely when
+        US equities fall. <span id="techgap">—</span></p>
+      <p><span id="capwhy">—</span> That concentration is a stated choice, not a model
+        finding: it puts most of the portfolio in one feeder fund, one manager and one
+        covered-call strategy on one index, and the gain rests on the model's most
+        assumption-driven estimates for that one fund.</p>
+      <p style="margin-bottom:0"><strong>Asia Equity falls to
+        <b class="num" id="wAseq">—</b>, the floor — and that is not a change of
+        view.</strong> The macro case still ranks first over the horizons that matter
+        to a 10-year mandate (<b class="num" id="asiahz">—</b> on the 1&ndash;5 scale),
+        and <b class="num">10.5&times;</b> forward against that earnings growth is the
+        widest valuation-to-growth gap in these four funds. But J.P. Morgan publishes a
+        <b class="num">1.50%</b> management fee for the target fund, so the all-in stack
+        is <b class="num" id="feeAseq">—</b>, and after it the sleeve's forecast net
+        return of <b class="num" id="aseqnet">—</b> sits below the income sleeve's
+        <b class="num" id="qiapnet">—</b> at higher volatility. With no cap, nothing
+        gives the optimiser a reason to hold more of it than the minimum.</p>
     </div>
 
     <div class="card">
@@ -843,8 +844,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         other — from re-weighting four funds the investor already holds, with no new
         products, no leverage and no market timing. In one sentence: <strong>swap
         concentrated long-duration tech beta for the same tech exposure with the
-        volatility sold, and put the proceeds into the cheapest earnings growth
-        available.</strong></p>
+        volatility sold, and let that one sleeve carry the portfolio, with peso cash as
+        the ballast.</strong></p>
     </div>
 
     <div class="card">
@@ -1306,8 +1307,6 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "asia_eps_2027": 27.5,
   "nikkei": 64011,
   "kospi": 6910,
-  "korea_ytd": 71.0,
-  "taiwan_ytd": 49.0,
   "ltcma_us_eq": 6.7,
   "ndx_growth_premium": 1.3,
   "qiap_capture": 78,
@@ -1888,7 +1887,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.675,
-  "optimized_k": 1.61765,
+  "optimized_k": 1.57353,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -1969,114 +1968,237 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
  "optimized": {
   "weights": [
    15,
-   50,
-   30,
+   75,
+   5,
    5
   ],
   "macro": {
    "weights": [
     15.0,
-    50.0,
-    30.0,
+    75.0,
+    5.0,
     5.0
    ],
-   "cagr": 7.36,
-   "vol": 13.55,
-   "maxdd": -25.8,
-   "ret_per_dd": 0.285,
-   "sharpe_like": 0.121,
-   "terminal_1m": 2034347,
-   "worst_1m_from_open": 742000
+   "cagr": 7.48,
+   "vol": 13.8,
+   "maxdd": -25.4,
+   "ret_per_dd": 0.294,
+   "sharpe_like": 0.128,
+   "terminal_1m": 2057200,
+   "worst_1m_from_open": 746000
   },
   "under_base": {
    "weights": [
     15.0,
-    50.0,
-    30.0,
+    75.0,
+    5.0,
     5.0
    ],
-   "cagr": 7.01,
-   "vol": 13.55,
-   "maxdd": -26.0,
-   "ret_per_dd": 0.27,
-   "sharpe_like": 0.095,
-   "terminal_1m": 1968991,
-   "worst_1m_from_open": 740000
+   "cagr": 6.95,
+   "vol": 13.8,
+   "maxdd": -25.8,
+   "ret_per_dd": 0.269,
+   "sharpe_like": 0.089,
+   "terminal_1m": 1957978,
+   "worst_1m_from_open": 742000
   },
   "dd_cap": 26.27,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $103. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 2.86,
-    "vol": 21.68,
-    "maxdd": -47.6
+    "cagr": 3.48,
+    "vol": 22.08,
+    "maxdd": -46.7
    },
    {
     "name": "Hawkish repricing",
     "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and what makes it a tail has changed since 9 September. September is no longer the question - it HAPPENED. The Fed hiked 25bp to 3.75-4.00% on 16 September, unanimously, and the dot plot now has a median of 4.1% for end-2026, i.e. one more. This row models what is still NOT priced: a SECOND hike on top of that, which 4 of 18 participants already see. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
     "cagr": 5.38,
-    "vol": 17.62,
-    "maxdd": -36.5
+    "vol": 17.94,
+    "maxdd": -36.1
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.56,
-    "vol": 19.65,
-    "maxdd": -42.4
+    "cagr": 4.18,
+    "vol": 20.01,
+    "maxdd": -41.6
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.75,
-    "vol": 10.84,
-    "maxdd": -17.9
+    "cagr": 9.62,
+    "vol": 11.04,
+    "maxdd": -17.8
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.36,
-    "vol": 13.55,
-    "maxdd": -25.8
+    "cagr": 7.48,
+    "vol": 13.8,
+    "maxdd": -25.4
    }
   ],
-  "n_feasible": 252,
-  "n_total": 633
+  "n_feasible": 365,
+  "n_total": 969
  },
  "best_ratio": {
   "weights": [
-   50.0,
-   40.0,
+   85.0,
+   5.0,
    5.0,
    5.0
   ],
-  "cagr": 6.43,
-  "vol": 8.21,
-  "maxdd": -13.9,
-  "ret_per_dd": 0.463,
-  "sharpe_like": 0.087,
-  "terminal_1m": 1864836,
-  "worst_1m_from_open": 861000
+  "cagr": 5.38,
+  "vol": 2.76,
+  "maxdd": -2.8,
+  "ret_per_dd": 1.921,
+  "sharpe_like": -0.122,
+  "terminal_1m": 1688814,
+  "worst_1m_from_open": 972000
  },
  "stub": {
   "fund": "ATRGTEC",
   "weight": 5,
   "best_without": [
-   15,
-   50,
-   35,
+   10,
+   85,
+   5,
    0
   ],
-  "cagr_without": 7.39,
-  "cagr_with": 7.36,
-  "cost": 0.03
+  "cagr_without": 7.68,
+  "cagr_with": 7.48,
+  "cost": 0.2
  },
  "tech_gap": -0.9,
- "max_sleeve": 0.5,
+ "min_sleeve": 0.05,
+ "cap_counterfactual": {
+  "max_sleeve": 0.5,
+  "weights": [
+   15,
+   50,
+   30,
+   5
+  ],
+  "cagr": 7.36,
+  "maxdd": -25.8,
+  "ret_per_dd": 0.285
+ },
  "frontier": [
   {
+   "maxdd": 2,
+   "dd": -2.8,
+   "cagr": 5.38,
+   "weights": [
+    85.0,
+    5.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 4,
+   "dd": -4.3,
+   "cagr": 5.53,
+   "weights": [
+    80.0,
+    10.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 5,
+   "dd": -5.8,
+   "cagr": 5.68,
+   "weights": [
+    75.0,
+    15.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 6,
+   "dd": -6.1,
+   "cagr": 5.66,
+   "weights": [
+    75.0,
+    10.0,
+    10.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 7,
+   "dd": -7.4,
+   "cagr": 5.83,
+   "weights": [
+    70.0,
+    20.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 8,
+   "dd": -8.7,
+   "cagr": 5.79,
+   "weights": [
+    70.0,
+    15.0,
+    5.0,
+    10.0
+   ]
+  },
+  {
+   "maxdd": 9,
+   "dd": -9.0,
+   "cagr": 5.98,
+   "weights": [
+    65.0,
+    25.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 10,
+   "dd": -10.6,
+   "cagr": 6.13,
+   "weights": [
+    60.0,
+    30.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 11,
+   "dd": -11.8,
+   "cagr": 6.09,
+   "weights": [
+    60.0,
+    25.0,
+    5.0,
+    10.0
+   ]
+  },
+  {
+   "maxdd": 12,
+   "dd": -12.3,
+   "cagr": 6.28,
+   "weights": [
+    55.0,
+    35.0,
+    5.0,
+    5.0
+   ]
+  },
+  {
    "maxdd": 13,
+   "dd": -13.9,
    "cagr": 6.43,
    "weights": [
     50.0,
@@ -2087,6 +2209,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 14,
+   "dd": -14.1,
    "cagr": 6.38,
    "weights": [
     50.0,
@@ -2097,6 +2220,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 15,
+   "dd": -15.5,
    "cagr": 6.58,
    "weights": [
     45.0,
@@ -2107,6 +2231,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 16,
+   "dd": -16.7,
    "cagr": 6.54,
    "weights": [
     45.0,
@@ -2117,6 +2242,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 17,
+   "dd": -17.2,
    "cagr": 6.73,
    "weights": [
     40.0,
@@ -2127,16 +2253,18 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 18,
-   "cagr": 6.86,
+   "dd": -18.8,
+   "cagr": 6.88,
    "weights": [
     35.0,
-    50.0,
-    10.0,
+    55.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 19,
+   "dd": -19.9,
    "cagr": 6.84,
    "weights": [
     35.0,
@@ -2147,166 +2275,183 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 20,
-   "cagr": 6.98,
+   "dd": -20.5,
+   "cagr": 7.03,
    "weights": [
     30.0,
-    50.0,
-    15.0,
+    60.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 21,
-   "cagr": 6.96,
+   "dd": -21.6,
+   "cagr": 6.99,
    "weights": [
     30.0,
-    50.0,
-    10.0,
+    55.0,
+    5.0,
     10.0
    ]
   },
   {
    "maxdd": 22,
-   "cagr": 7.11,
+   "dd": -22.1,
+   "cagr": 7.18,
    "weights": [
     25.0,
-    50.0,
-    20.0,
+    65.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 23,
-   "cagr": 7.09,
-   "weights": [
-    25.0,
-    50.0,
-    15.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 24,
-   "cagr": 7.24,
+   "dd": -23.8,
+   "cagr": 7.33,
    "weights": [
     20.0,
-    50.0,
-    25.0,
+    70.0,
+    5.0,
     5.0
    ]
   },
   {
+   "maxdd": 24,
+   "dd": -24.8,
+   "cagr": 7.29,
+   "weights": [
+    20.0,
+    65.0,
+    5.0,
+    10.0
+   ]
+  },
+  {
    "maxdd": 25,
-   "cagr": 7.36,
+   "dd": -25.4,
+   "cagr": 7.48,
    "weights": [
     15.0,
-    50.0,
-    30.0,
+    75.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 26,
-   "cagr": 7.34,
+   "dd": -26.5,
+   "cagr": 7.44,
    "weights": [
     15.0,
-    45.0,
-    35.0,
-    5.0
+    70.0,
+    5.0,
+    10.0
    ]
   },
   {
    "maxdd": 27,
-   "cagr": 7.49,
+   "dd": -27.1,
+   "cagr": 7.63,
    "weights": [
     10.0,
-    50.0,
-    35.0,
+    80.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 28,
-   "cagr": 7.47,
+   "dd": -28.7,
+   "cagr": 7.78,
    "weights": [
-    10.0,
-    45.0,
-    40.0,
+    5.0,
+    85.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 29,
-   "cagr": 7.62,
+   "dd": -29.8,
+   "cagr": 7.74,
    "weights": [
     5.0,
-    50.0,
-    40.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 30,
-   "cagr": 7.6,
-   "weights": [
+    80.0,
     5.0,
-    50.0,
-    35.0,
     10.0
    ]
   },
   {
-   "maxdd": 31,
-   "cagr": 7.57,
+   "maxdd": 30,
+   "dd": -30.9,
+   "cagr": 7.69,
    "weights": [
     5.0,
-    50.0,
-    30.0,
+    75.0,
+    5.0,
+    15.0
+   ]
+  },
+  {
+   "maxdd": 31,
+   "dd": -31.1,
+   "cagr": 7.6,
+   "weights": [
+    5.0,
+    55.0,
+    25.0,
     15.0
    ]
   },
   {
    "maxdd": 32,
-   "cagr": 7.55,
+   "dd": -32.1,
+   "cagr": 7.65,
    "weights": [
     5.0,
-    50.0,
-    25.0,
+    70.0,
+    5.0,
     20.0
    ]
   },
   {
    "maxdd": 33,
-   "cagr": 7.53,
+   "dd": -33.3,
+   "cagr": 7.6,
    "weights": [
     5.0,
-    50.0,
-    20.0,
+    65.0,
+    5.0,
     25.0
    ]
   },
   {
    "maxdd": 34,
-   "cagr": 7.51,
+   "dd": -34.6,
+   "cagr": 7.56,
    "weights": [
     5.0,
-    50.0,
-    15.0,
+    60.0,
+    5.0,
     30.0
    ]
   },
   {
    "maxdd": 35,
-   "cagr": 7.49,
+   "dd": -35.9,
+   "cagr": 7.51,
    "weights": [
     5.0,
-    50.0,
-    10.0,
+    55.0,
+    5.0,
     35.0
    ]
   },
   {
    "maxdd": 36,
+   "dd": -36.0,
    "cagr": 7.46,
    "weights": [
     5.0,
@@ -2317,6 +2462,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 37,
+   "dd": -37.3,
    "cagr": 7.47,
    "weights": [
     5.0,
@@ -2327,6 +2473,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 38,
+   "dd": -38.7,
    "cagr": 7.42,
    "weights": [
     5.0,
@@ -2337,6 +2484,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 39,
+   "dd": -39.2,
    "cagr": 7.35,
    "weights": [
     5.0,
@@ -2347,6 +2495,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 40,
+   "dd": -40.2,
    "cagr": 7.38,
    "weights": [
     5.0,
@@ -2357,22 +2506,123 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 41,
-   "cagr": 7.28,
+   "dd": -41.7,
+   "cagr": 7.33,
    "weights": [
     5.0,
-    20.0,
-    25.0,
-    50.0
+    35.0,
+    5.0,
+    55.0
    ]
   },
   {
    "maxdd": 42,
-   "cagr": 7.21,
+   "dd": -42.0,
+   "cagr": 7.28,
+   "weights": [
+    5.0,
+    25.0,
+    15.0,
+    55.0
+   ]
+  },
+  {
+   "maxdd": 43,
+   "dd": -43.2,
+   "cagr": 7.29,
+   "weights": [
+    5.0,
+    30.0,
+    5.0,
+    60.0
+   ]
+  },
+  {
+   "maxdd": 44,
+   "dd": -44.8,
+   "cagr": 7.24,
+   "weights": [
+    5.0,
+    25.0,
+    5.0,
+    65.0
+   ]
+  },
+  {
+   "maxdd": 45,
+   "dd": -45.0,
+   "cagr": 7.22,
+   "weights": [
+    5.0,
+    20.0,
+    10.0,
+    65.0
+   ]
+  },
+  {
+   "maxdd": 46,
+   "dd": -46.4,
+   "cagr": 7.2,
+   "weights": [
+    5.0,
+    20.0,
+    5.0,
+    70.0
+   ]
+  },
+  {
+   "maxdd": 47,
+   "dd": -47.2,
+   "cagr": 7.13,
    "weights": [
     5.0,
     5.0,
-    40.0,
-    50.0
+    20.0,
+    70.0
+   ]
+  },
+  {
+   "maxdd": 48,
+   "dd": -48.1,
+   "cagr": 7.15,
+   "weights": [
+    5.0,
+    15.0,
+    5.0,
+    75.0
+   ]
+  },
+  {
+   "maxdd": 49,
+   "dd": -49.8,
+   "cagr": 7.11,
+   "weights": [
+    5.0,
+    10.0,
+    5.0,
+    80.0
+   ]
+  },
+  {
+   "maxdd": 50,
+   "dd": -50.1,
+   "cagr": 7.08,
+   "weights": [
+    5.0,
+    5.0,
+    10.0,
+    80.0
+   ]
+  },
+  {
+   "maxdd": 51,
+   "dd": -51.6,
+   "cagr": 7.06,
+   "weights": [
+    5.0,
+    5.0,
+    5.0,
+    85.0
    ]
   }
  ],
@@ -2783,7 +3033,7 @@ $("#nfeas").textContent = D.optimized.n_feasible;
     `Because the answer is degenerate. Maximise return alone and the optimiser puts
      <b class="num">${top(mr.weights)}%</b> into ${big(mr.weights)} — the highest
      macro-adjusted sleeve — for a <b class="num">${mr.cagr.toFixed(2)}%</b> CAGR and a
-     <b class="num">−${mr.maxdd}%</b> drawdown. Minimise drawdown alone and it puts
+     <b class="num">${pc1(mr.dd)}</b> drawdown. Minimise drawdown alone and it puts
      <b class="num">${top(md.weights)}%</b> into ${big(md.weights)} for
      <b class="num">${md.cagr.toFixed(2)}%</b> and <b class="num">${pc1(md.maxdd)}</b>.
      Neither is what "maximum growth while controlling drawdown to a minimum" means, and
@@ -2795,13 +3045,35 @@ $("#corrnote").textContent = D.corr_note;
   const A = D.baseline.under_macro, B = D.optimized.macro, VC = D.vol_channel;
   const F2 = Object.fromEntries(D.funds.map(f => [f.id, f]));
   $("#qiaptilt").textContent = sg(F2.ATRQIAP.tilt_vol) + "pp";
-  const capPc = (D.max_sleeve*100).toFixed(0) + "%";
   const WIDX = {ATRPHMM:0, ATRQIAP:1, ATRASEQ:2, ATRGTEC:3};
   $("#wAseq").textContent = D.optimized.weights[WIDX.ATRASEQ] + "%";
   $("#wQiap").textContent = D.optimized.weights[WIDX.ATRQIAP] + "%";
   $("#wGtec").textContent = D.optimized.weights[WIDX.ATRGTEC] + "%";
   $("#feeAseq").textContent = D.funds[WIDX.ATRASEQ].fee_total.toFixed(2) + "%";
-  ["#capsleeve","#capsleeve2"].forEach(id => { $(id).textContent = capPc; });
+  const minPc = (D.min_sleeve*100).toFixed(0) + "%";
+  ["#minsleeve","#minsleeve2"].forEach(id => { $(id).textContent = minPc; });
+  $("#aseqnet").textContent = D.funds[WIDX.ATRASEQ].net_macro.toFixed(2) + "%";
+  $("#qiapnet").textContent = D.funds[WIDX.ATRQIAP].net_macro.toFixed(2) + "%";
+  /* The removed cap's counterfactual is DERIVED in the engine, so what the choice
+     buys and costs is computed rather than typed. */
+  const CC = D.cap_counterfactual, CCw = CC.weights.join(" / "), OB = D.optimized.macro;
+  const ccPc = (CC.max_sleeve*100).toFixed(0) + "%";
+  $("#capnote").innerHTML =
+    `<b>No single-fund cap.</b> A ${ccPc} cap on any one fund applied from 9 to 24
+     September and was removed on 24 September by the portfolio owner's decision. Under
+     the same objective and drawdown budget it would choose
+     <b class="num">${CCw}</b> at <b class="num">${pc(CC.cagr)}</b> and
+     <b class="num">${pc1(CC.maxdd)}</b>; without it the optimiser chooses
+     <b class="num">${D.optimized.weights.join(" / ")}</b> at
+     <b class="num">${pc(OB.cagr)}</b> and <b class="num">${pc1(OB.maxdd)}</b>. What now
+     stops the concentration is the drawdown budget, not a diversification rule.`;
+  $("#capwhy").innerHTML =
+    `There is no single-fund cap, so what stops it going higher is the drawdown budget:
+     one more step from cash into this sleeve breaks it. The ${ccPc} cap removed on
+     24 September would have held it to ${ccPc} (<b class="num">${CCw}</b>); dropping it
+     adds <b class="num">${(OB.cagr - CC.cagr).toFixed(2)}pp</b> of forecast CAGR and
+     moves expected drawdown from <b class="num">${pc1(CC.maxdd)}</b> to
+     <b class="num">${pc1(OB.maxdd)}</b>.`;
   ["#ntotal","#ntotal2","#ntotal3"].forEach(id => { $(id).textContent = D.optimized.n_total; });
   $("#whyalloc").textContent = "Why " + D.optimized.weights.join(" / ");
   const hzTxt = ["3M","6M","12M",HYL]
@@ -2856,7 +3128,7 @@ $("#corrnote").textContent = D.corr_note;
   const F2 = Object.fromEntries(D.funds.map(f => [f.id, f]));
   const q = F2.ATRQIAP, g = F2.ATRGTEC, gap = D.tech_gap;   // GTEC net minus QIAP net
   $("#techgap").innerHTML = gap < 0
-    ? `the income sleeve now carries <b class="num">${q.vol.toFixed(1)}%</b> volatility
+    ? `The income sleeve now carries <b class="num">${q.vol.toFixed(1)}%</b> volatility
        against Global Technology's <b class="num">${g.vol.toFixed(1)}%</b> AND a
        <b class="num">${Math.abs(gap).toFixed(2)}pp</b> HIGHER forecast net CAGR
        (<b class="num">${q.net_macro.toFixed(2)}%</b> vs
@@ -2864,14 +3136,14 @@ $("#corrnote").textContent = D.corr_note;
        overweight costs nothing in expected return. The widening volatility ramp did
        that: it pays the sleeve that sells volatility and charges the one with the
        longest duration.`
-    : `the income sleeve carries <b class="num">${q.vol.toFixed(1)}%</b> volatility
+    : `The income sleeve carries <b class="num">${q.vol.toFixed(1)}%</b> volatility
        against Global Technology's <b class="num">${g.vol.toFixed(1)}%</b>, for a
        forecast net CAGR only <b class="num">${gap.toFixed(2)}pp</b> lower.`;
 })();
 $("#stubline").innerHTML = (function () {
     const S = D.stub, N = ["Peso Money Market","Nasdaq Equity Income","Asia Equity","Global Technology"];
     const alt = S.best_without.map((w,i) => w ? `${w}% ${N[i]}` : null).filter(Boolean).join(" / ");
-    const head = `Against the same drawdown budget and the same concentration cap, the best
+    const head = `Against the same drawdown budget and the same minimum weights, the best
       portfolio that drops Global Technology altogether (${alt}) returns
       <b class="num">${S.cagr_without.toFixed(2)}%</b> against this one's
       <b class="num">${S.cagr_with.toFixed(2)}%</b>.`;
@@ -3416,7 +3688,7 @@ function donut(host, w, title, cagr, dd) {
   const P = D.frontier.filter(p => p.maxdd >= 2 && p.maxdd <= 32);
   const W = 452, H = 240, ml = 40, mr = 16, mt = 16, mb = 40;
   const iw = W-ml-mr, ih = H-mt-mb;
-  const xs = P.map(p=>p.maxdd), ys = P.map(p=>p.cagr);
+  const xs = P.map(p=>-p.dd), ys = P.map(p=>p.cagr);
   const x0 = Math.min(...xs), x1 = Math.max(...xs);
   const y0 = Math.floor(Math.min(...ys)*2)/2 - 0.2, y1 = Math.ceil(Math.max(...ys)*2)/2 + 0.2;
   const X = v => ml + iw*(v-x0)/(x1-x0), Y = v => mt + ih*(1-(v-y0)/(y1-y0));
@@ -3434,9 +3706,9 @@ function donut(host, w, title, cagr, dd) {
   const ax = sel("text",{x:ml+iw/2,y:H-4,"text-anchor":"middle",fill:"#525E70",
     "font-family":"IBM Plex Mono, monospace","font-size":"9.5","letter-spacing":"0.5"});
   ax.textContent = "EXPECTED MAXIMUM DRAWDOWN"; s.appendChild(ax);
-  s.appendChild(sel("path",{d:P.map((p,i)=>(i?"L":"M")+X(p.maxdd)+" "+Y(p.cagr)).join(" "),
+  s.appendChild(sel("path",{d:P.map((p,i)=>(i?"L":"M")+X(-p.dd)+" "+Y(p.cagr)).join(" "),
     fill:"none",stroke:"#3670D6","stroke-width":2,"stroke-linejoin":"round"}));
-  P.forEach(p => s.appendChild(sel("circle",{cx:X(p.maxdd),cy:Y(p.cagr),r:3.2,
+  P.forEach(p => s.appendChild(sel("circle",{cx:X(-p.dd),cy:Y(p.cagr),r:3.2,
     fill:"#3670D6",stroke:"#FFFFFF","stroke-width":1.5})));
   const A = D.baseline.under_macro, B = D.optimized.macro;
   const mark = (dd, cg, lab, col, dy) => {
@@ -3452,10 +3724,10 @@ function donut(host, w, title, cagr, dd) {
   const host = $("#frontier"); host.appendChild(s);
   const tp = tipper(host);
   P.forEach(p => {
-    const hit = sel("circle",{cx:X(p.maxdd),cy:Y(p.cagr),r:12,fill:"transparent",style:"cursor:pointer"});
+    const hit = sel("circle",{cx:X(-p.dd),cy:Y(p.cagr),r:12,fill:"transparent",style:"cursor:pointer"});
     const go = () => { const r = host.getBoundingClientRect();
-      tp.show(X(p.maxdd)/W*r.width, Y(p.cagr)/H*r.height,
-        `CAGR ${p.cagr.toFixed(2)}%  DD −${p.maxdd}%\n${p.weights.map((w,i)=>F[i].short.padEnd(20)+String(w).padStart(3)+"%").join("\n")}`); };
+      tp.show(X(-p.dd)/W*r.width, Y(p.cagr)/H*r.height,
+        `CAGR ${p.cagr.toFixed(2)}%  DD ${pc1(p.dd)}\n${p.weights.map((w,i)=>F[i].short.padEnd(20)+String(w).padStart(3)+"%").join("\n")}`); };
     hit.addEventListener("pointerenter",go); hit.addEventListener("pointerdown",go);
     hit.addEventListener("pointerleave",()=>tp.hide());
     s.appendChild(hit);

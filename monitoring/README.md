@@ -34,7 +34,12 @@ the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's
 of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
 not because you have a view on the market. Never change a score without rewriting
 its rationale to cite the new evidence. Re-run the optimiser; weights stay
-multiples of 5, sum to 100, and hold all four funds.
+multiples of 5, sum to 100, and hold all four funds at 5% or more. There is **no
+single-fund cap** since 2026-09-24 (the owner's decision; it was 50% from 9 Sep):
+the drawdown budget is what limits concentration, and the page publishes what the
+old 50% cap would have chosen beside the actual choice. Reinstating a cap means
+a max-weight filter back in `enumerate_portfolios` and `_best_without` in
+`engine.py`, plus the page passages that describe the choice.
 
 **3. Re-verify the claims** in `CLAIMS.md`, marking each VERIFIED / CHANGED /
 STALE / UNREACHABLE with the date. Do not promote a claim from "verified via

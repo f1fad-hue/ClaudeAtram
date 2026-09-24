@@ -559,8 +559,6 @@ MACRO = {
     "asia_eps_2026": 52.5,
     "asia_eps_2027": 27.5,
     "nikkei": 64011, "kospi": 6910,   # 11 Sep closes
-    "korea_ytd": 71.0,
-    "taiwan_ytd": 49.0,
     "ltcma_us_eq": 6.7,
     "ndx_growth_premium": 1.3,     # NDX total return over US large cap in the build-up
     "qiap_capture": 78,            # covered-call upside capture, % of the NDX
@@ -1516,32 +1514,31 @@ LOOKTHROUGH = {
 
 GRID = [x / 100 for x in range(0, 101, 5)]      # every weight ends in 5 or 0
 
-# Single-sleeve concentration cap. Added 2026-09-09, and the reason matters:
-# until then the objective had NO diversification constraint. It happened not to
-# bind, because the drawdown budget was doing the job by accident. When the Asia
-# fee correction cut that sleeve's return, the optimiser immediately went to 75%
-# in one fund - a "four-fund portfolio" that is really one fund plus three stubs,
-# and flatly against the diversification argument the report itself makes ("it is
-# the same bet, twice"). The page argued the principle; the code never encoded it.
-#
-# 50% is the rule: no single sleeve may exceed half the portfolio. It is stated
-# on the page as part of the objective, not applied silently, and it is NOT
-# reverse-engineered to reproduce any previous answer (the old optimum was 45%,
-# comfortably inside it).
-MAX_SLEEVE = 0.50
+# NO SINGLE-SLEEVE CAP - removed 2026-09-24 at the portfolio owner's instruction.
+# A 50% cap applied from 2026-09-09: it was added when the Asia fee correction
+# sent the optimiser to 75% in one fund, and it bound on Nasdaq Equity Income
+# every day since. Removing it is a stated choice about concentration, not a
+# model finding: on the model's own numbers it buys ~0.12pp of CAGR and a
+# slightly shallower drawdown, and puts three-quarters of the portfolio in one
+# feeder, one manager and one covered-call strategy. The page publishes what the
+# 50% cap would have chosen (CAP_COUNTERFACTUAL) beside what it chooses now, so
+# the trade stays visible. What remains is the 5% floor that keeps all four
+# funds held (invariant 1) - which also bounds any one sleeve at 85% - and the
+# drawdown budget, which is what now stops the concentration.
+MIN_SLEEVE = 0.05
 
-def enumerate_portfolios(key, min_w=0.05, max_sleeve=MAX_SLEEVE):
-    """All 5%-granular, fully-invested portfolios holding all four funds,
-    with no single sleeve above the concentration cap."""
+def enumerate_portfolios(key, min_w=MIN_SLEEVE):
+    """All 5%-granular, fully-invested portfolios holding all four funds at the
+    minimum weight or above."""
     out = []
     for a in GRID:
-        if a < min_w or a > max_sleeve + 1e-9: continue
+        if a < min_w: continue
         for b in GRID:
-            if b < min_w or b > max_sleeve + 1e-9: continue
+            if b < min_w: continue
             for c in GRID:
-                if c < min_w or c > max_sleeve + 1e-9: continue
+                if c < min_w: continue
                 d = round(1 - a - b - c, 10)
-                if d < min_w - 1e-9 or d > max_sleeve + 1e-9: continue
+                if d < min_w - 1e-9: continue
                 if round(d * 100) % 5 != 0: continue
                 w = [a, b, c, d]
                 out.append((w, summarise(w, key)))
@@ -1589,6 +1586,16 @@ FEASIBLE.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
 OPT_W, OPT = FEASIBLE[0]
 OPT_UNDER_BASE = summarise(OPT_W, "net_base")
 
+# What the former 50% single-sleeve cap would choose under the same objective and
+# the same drawdown budget - published so the cost and benefit of removing it are
+# computed, not asserted.
+CAP_COUNTERFACTUAL_MAX = 0.50
+_capw, _caps = next((w, s) for w, s in FEASIBLE if max(w) <= CAP_COUNTERFACTUAL_MAX + 1e-9)
+CAP_COUNTERFACTUAL = {"max_sleeve": CAP_COUNTERFACTUAL_MAX,
+                      "weights": [round(x * 100) for x in _capw],
+                      "cagr": _caps["cagr"], "maxdd": _caps["maxdd"],
+                      "ret_per_dd": _caps["ret_per_dd"]}
+
 # Best pure risk-adjusted portfolio, for reference
 BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
 
@@ -1611,18 +1618,13 @@ def _best_without(idx):
                 if w[idx] != 0:
                     continue
                 # Every sleeve EXCEPT the excluded one must still be held at the
-                # 5% minimum. Without this the counterfactual could drop a second
+                # minimum. Without this the counterfactual could drop a second
                 # fund - [50, 50, 0, 0] was reachable - and the stub's "cost" would
                 # be measured against a two-fund portfolio the objective forbids,
                 # exactly the error the concentration-cap guard below was added to
                 # prevent. It did not bite today ([15, 50, 35, 0] holds all three),
                 # but nothing stopped it. (Audit 2026-09-14.)
-                if any(i != idx and x < 5 for i, x in enumerate(w)):
-                    continue
-                # the counterfactual must obey the same concentration cap as the
-                # chosen portfolio, or the "cost" of the stub is measured against
-                # something the objective would never have allowed
-                if any(x > MAX_SLEEVE * 100 + 1e-9 for x in w):
+                if any(i != idx and x < MIN_SLEEVE * 100 - 1e-9 for i, x in enumerate(w)):
                     continue
                 ww = [x / 100 for x in w]
                 if abs(port_dd(ww, "net_macro")) > DD_CAP + 1e-9:
@@ -1654,7 +1656,11 @@ for w, s in ALL:
     b = math.floor(abs(s["maxdd"]))
     if b not in FRONTIER or s["cagr"] > FRONTIER[b][1]["cagr"]:
         FRONTIER[b] = (w, s)
-FRONTIER = [{"maxdd": k, "cagr": v[1]["cagr"], "weights": v[1]["weights"]}
+# "maxdd" is the BUCKET (whole-percent floor); "dd" is the point's own published
+# drawdown. The page plotted and labelled points at the bucket - "-28%" for a
+# -28.7% portfolio, and the optimised marker (at its true -25.4) sat beside its
+# own frontier point (at 25). Both are published so the chart can use the real one.
+FRONTIER = [{"maxdd": k, "dd": v[1]["maxdd"], "cagr": v[1]["cagr"], "weights": v[1]["weights"]}
             for k, v in sorted(FRONTIER.items())]
 
 # ----------------------------------------------------------------------------
@@ -1994,7 +2000,8 @@ def payload():
                       "n_feasible": len(FEASIBLE), "n_total": len(ALL)},
         "best_ratio": {"weights": [round(x*100) for x in BEST_RATIO_W], **BEST_RATIO},
         "stub": STUB, "tech_gap": TECH_GAP,
-        "max_sleeve": MAX_SLEEVE,
+        "min_sleeve": MIN_SLEEVE,
+        "cap_counterfactual": CAP_COUNTERFACTUAL,
         "frontier": FRONTIER,
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
@@ -2733,15 +2740,31 @@ def report():
     checks.append(("no single sub-year bucket outweighs the mandate horizon",
                    all(v <= p["hz_weights"][HZ_LABEL] + 1e-9
                        for k, v in p["hz_weights"].items() if k != HZ_LABEL)))
-    # Concentration. The report argues against doubling up; the objective must too.
-    cap_pc = p["max_sleeve"] * 100
-    checks.append(("no sleeve in either portfolio exceeds the concentration cap",
-                   all(w <= cap_pc + 1e-9
-                       for w in p["baseline"]["weights"] + p["optimized"]["weights"])))
-    checks.append(("the enumerated set respects the concentration cap",
-                   all(max(w) <= MAX_SLEEVE + 1e-9 for w, _ in ALL)))
-    checks.append(("the stub counterfactual obeys the same cap as the chosen portfolio",
-                   max(p["stub"]["best_without"]) <= cap_pc + 1e-9))
+    # THE FLOOR, NOT A CAP. The single-sleeve cap was removed on 2026-09-24; the 5%
+    # floor that keeps all four funds held (invariant 1) is what the enumeration
+    # still enforces, and the set must be the COMPLETE grid above it - a cap left
+    # behind in the loop would shrink it silently.
+    _mn = p["min_sleeve"] * 100
+    checks.append(("every portfolio holds all four funds at the minimum weight",
+                   all(x >= _mn - 1e-9 for x in p["baseline"]["weights"]
+                       + p["optimized"]["weights"])
+                   and all(min(w) >= MIN_SLEEVE - 1e-9 for w, _ in ALL)))
+    _units = round((1 - 4 * MIN_SLEEVE) / 0.05)
+    checks.append((f"the enumeration is the complete 5% grid above the floor "
+                   f"({math.comb(_units + 3, 3)} portfolios)",
+                   p["optimized"]["n_total"] == math.comb(_units + 3, 3)))
+    checks.append(("the stub counterfactual holds every other fund at the minimum",
+                   sum(1 for x in p["stub"]["best_without"] if x == 0) == 1
+                   and all(x >= _mn - 1e-9 for x in p["stub"]["best_without"] if x)))
+    checks.append(("every frontier point's own drawdown lies in its bucket",
+                   all(math.floor(abs(f["dd"])) == f["maxdd"] for f in p["frontier"])))
+    # The published 50%-cap counterfactual must BE the best capped point in budget.
+    _cc = p["cap_counterfactual"]
+    _cbest = max((s["cagr"], [round(x * 100) for x in w]) for w, s in FEASIBLE
+                 if max(w) <= _cc["max_sleeve"] + 1e-9)
+    checks.append(("the published 50%-cap counterfactual is the best capped point in budget",
+                   _cc["weights"] == _cbest[1] and abs(_cc["cagr"] - _cbest[0]) < 1e-9
+                   and _cc["cagr"] <= p["optimized"]["macro"]["cagr"] + 1e-9))
     checks.append(("every region is scored at the mandate horizon",
                    all(HZ_LABEL in v for v in p["regions"].values())))
     checks.append(("the drawdown horizon scalar is sqrt(horizon / calibration window)",

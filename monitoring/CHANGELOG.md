@@ -2,6 +2,65 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-24 (later) — Single-fund cap removed at the owner's instruction: the allocation moves to 15 / 75 / 5 / 5
+
+**A decision, not a finding.** The 50% single-sleeve cap (added 9 Sep) was
+removed on the portfolio owner's instruction, after the trade-off was laid out:
+
+| | With 50% cap | No cap (now) |
+|---|---|---|
+| Weights (cash / Nasdaq Income / Asia / Global Tech) | 15 / 50 / 30 / 5 | **15 / 75 / 5 / 5** |
+| 10-year net CAGR (macro view) | 7.36% | **7.48%** |
+| Expected max drawdown | −25.8% | **−25.4%** |
+| Return per unit of drawdown | 0.285 | **0.294** |
+| ₱1m after 10 years | ₱2,034,347 | **₱2,057,200** |
+| Feasible / enumerated | 252 / 633 | **365 / 969** |
+
+The 25 points come entirely out of Asia Equity, whose after-fee forecast (7.53%)
+sits below Nasdaq Equity Income's (8.00%) at higher volatility; with no cap
+nothing holds Asia above the 5% floor. What now stops the concentration is the
+drawdown budget: one more step from cash into the income sleeve (10 / 80 / 5 / 5)
+reaches −27.1% against a −26.27% budget. The cost is concentration — three
+quarters of the portfolio in one feeder, one manager, one covered-call strategy
+on one index — and the gain rests on the model's most assumption-driven estimates
+for that one fund. The page says so, and publishes the capped counterfactual
+beside the choice (`cap_counterfactual`, derived and checked, not typed).
+
+**Also moved, and stated:** keeping 5% in Global Technology now costs **0.20pp**
+of CAGR (was 0.03pp) — without it the best in-budget portfolio is 10 / 85 / 5 / 0
+at 7.68%. Optimised drawdown k 1.618 → **1.574**.
+
+### What the change touched
+
+- **Engine**: `MAX_SLEEVE` removed; `MIN_SLEEVE` (5%) is the only per-fund bound.
+  The cap checks were replaced, not deleted: every portfolio must hold all four
+  funds at the floor, the enumeration must be the complete 5% grid above it
+  (969 = C(19,3), so a cap left behind in the loop would fail), and the published
+  counterfactual must be the best capped point in budget.
+- **Page**: the Portfolios feasible-set text and objective; Report section 3,
+  rewritten from "two overweights" to "one sleeve carries the portfolio, by
+  choice", with Asia at the floor explained; the conclusion, which had said
+  "put the proceeds into the cheapest earnings growth available" — Asia, now 5%.
+- **Retired inputs**: `korea_ytd` / `taiwan_ytd` (+71% / +49%) left with the old
+  Asia paragraph. Both were dated **20 July** and had been quoted in the Report as
+  current; Taiwan's only surviving "citation" was the number 49 appearing
+  elsewhere by coincidence.
+- **Frontier chart**: points were plotted and labelled at their whole-percent
+  bucket — "−28%" for a −28.7% portfolio, and the optimised marker sat beside its
+  own frontier point. Each point now carries its own drawdown (`dd`), checked to
+  lie in its bucket.
+- **Independent audit**: its frontier re-derivation bucketed on the RAW
+  drawdown rounded, while the engine (correctly, invariant 28) buckets on the
+  PUBLISHED one rebuilt from the printed vol and CAGR. The capped set never
+  straddled the difference; the uncapped one does ([10, 70, 15, 5]: raw −26.94,
+  published −27.0). Fixed in the audit, which now also re-derives the capped
+  counterfactual and asserts the cap is gone from the payload rather than set wide.
+- A lowercase sentence start in the income-sleeve line, pre-existing, fixed.
+
+`engine.py` **154/154** · `audit.py` **0 failures** · `checklist.js` **27/27** ·
+`validate.js` clean · screenshots of the Portfolios note, Report section 3 and the
+frontier at 412px.
+
 ## 2026-09-24 — Last pass withheld an oil settle over a contract roll, and six of its figures did not survive a second look
 
 Same trading session (AS_OF stays 23 Sep; the US had not reopened), reviewed
