@@ -2,6 +2,79 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-24 (third pass) — The dominant sleeve's drawdown multiplier double-counted its own cushion; the allocation moves to 15 / 70 / 10 / 5
+
+### 1. An error in the model, found because the cap removal made it load-bearing
+
+The income sleeve (ATRQIAP) carried a drawdown k of **1.55**, below the 1.65
+anchor, on the reason that "realised drawdowns run shallower than the raw
+volatility implies". But k multiplies the sleeve's *own* volatility, which is
+already JEPQ's — 0.681× the raw Nasdaq-100 — and the option premium is already
+in its return. The same cushion was counted three times. Covered calls are
+negatively skewed (capped upside, full downside), which argues against a lower
+k, not for one. **Set to the 1.65 anchor** rather than to a higher figure this
+model has no measurement for.
+
+| | Before | After |
+|---|---|---|
+| Optimised | 15 / 75 / 5 / 5 · 7.48% · −25.4% | **15 / 70 / 10 / 5 · 7.46% · −26.9%** |
+| Baseline | 20 / 30 / 25 / 25 · 7.06% · −29.1% | 20 / 30 / 25 / 25 · 7.06% · **−29.9%** |
+| Drawdown budget | −26.27% | −27.07% |
+| Old 50% cap would choose | 15 / 50 / 30 / 5 · 7.36% · −25.8% | 15 / 50 / 30 / 5 · 7.36% · **−26.9%** |
+
+Why it matters now and did not before: at 30–50% of the portfolio the
+adjustment moved the result a little; at 75% it set it. The 70/75 boundary is
+thin — 15 / 75 / 5 / 5 misses the budget by 0.06pp — so the income sleeve's
+estimates carry this allocation, and the page now says so.
+
+**Sensitivity of the allocation to that sleeve** (run before the fix, so read the
+directions, not the digits): vol factor 0.681 → 0.81 moves it to 20 / 65 / 10 / 5;
+→ 0.90 to 20 / 50 / 25 / 5; FX correlation −0.20 → 0 leaves the weights unchanged
+but deepens the drawdown 2.2pp.
+
+### 2. A false claim on the page, found by running it
+
+"What would change this view" said Brent under $70 and the Fed cutting would send
+Global Technology "back to a full weight". With the rates and energy drags at
+neutral, the optimiser holds **15 / 70 / 10 / 5** — unchanged; the forecast rises
+to 7.72%. The input that actually decides the concentration is the **volatility
+ramp**: at zero the optimiser holds **20 / 25 / 50 / 5** (6.88%), and a
+backwardated curve pushes further (25 / 10 / 60 / 5 at a −2 ramp). Both
+counterfactuals are now engine outputs (`WHAT_IF`), checked to run on the live
+optimiser and re-derived independently by the audit. The "Asia EPS revisions"
+item, irrelevant once Asia sits at the floor, is replaced by the income sleeve's
+own estimates.
+
+### 3. Data refreshed
+
+- **PH, 24 Sep** (Manila closes before New York opens, so AS_OF moves to 24 Sep
+  with US series one session behind — the footer now says so): peso **62.735**
+  (+1 centavo), PSEi **5,730.02** (−65.12, −1.12%). Both chain; the PSEi had no
+  chain check at all and now has one (bite-tested). USD/PHP YTD loss 6.27% → 6.29%.
+- **Hormuz vessel counts**: PortWatch **1 transit on 20 Sep** (was 8 on 13 Sep).
+  Lloyd's 14/day was quoted undated for a month; it now carries "the week to
+  23 Aug" in prose, enforced by a check. The page's "Gulf exports are 15.5 mb/d"
+  (a 28 Aug reading, before the pipeline strike) now reads "were … on 28 August".
+- **Nikkei 65,513.94 (24 Sep)**, past the 11 Sep sell-off the Asia note describes;
+  Korea shut for Chuseok.
+- **23 Sep oil re-corroborated**: a mislabelled "settle" of WTI $89.89 (−0.70%) is
+  a morning quote, but 89.89 / 0.993 = **90.52** — independent confirmation of the
+  November WTI prior that was implied yesterday.
+
+### 4. House cleanup
+
+- **Retired**: the PH 10-year yield (7.50%, 18 Sep — not refreshable, not
+  load-bearing, and six days behind the lag bound once AS_OF moved; the bound is
+  not loosened to keep a figure) and `usdphp_prev2` (unused).
+- A contrived check I wrote this pass (a peso move under 100 centavos) was removed
+  before commit: it tested nothing.
+- The audit's per-sleeve k table existed as four inline copies; now one constant.
+- An unverified characterisation I wrote ("a strong market for the strategy") was
+  replaced with the checkable fact (history begins May 2022).
+
+`engine.py` **158/158** · `audit.py` **0 failures** · `checklist.js` **27/27** ·
+`validate.js` clean.
+
 ## 2026-09-24 (later) — Single-fund cap removed at the owner's instruction: the allocation moves to 15 / 75 / 5 / 5
 
 **A decision, not a finding.** The 50% single-sleeve cap (added 9 Sep) was

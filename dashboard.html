@@ -780,16 +780,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         covered-call strategy on one index, and the gain rests on the model's most
         assumption-driven estimates for that one fund.</p>
       <p style="margin-bottom:0"><strong>Asia Equity falls to
-        <b class="num" id="wAseq">—</b>, the floor — and that is not a change of
-        view.</strong> The macro case still ranks first over the horizons that matter
+        <b class="num" id="wAseq">—</b><span id="asiafloor">—</span> — and that is not
+        a change of view.</strong> The macro case still ranks first over the horizons that matter
         to a 10-year mandate (<b class="num" id="asiahz">—</b> on the 1&ndash;5 scale),
         and <b class="num">10.5&times;</b> forward against that earnings growth is the
         widest valuation-to-growth gap in these four funds. But J.P. Morgan publishes a
         <b class="num">1.50%</b> management fee for the target fund, so the all-in stack
         is <b class="num" id="feeAseq">—</b>, and after it the sleeve's forecast net
         return of <b class="num" id="aseqnet">—</b> sits below the income sleeve's
-        <b class="num" id="qiapnet">—</b> at higher volatility. With no cap, nothing
-        gives the optimiser a reason to hold more of it than the minimum.</p>
+        <b class="num" id="qiapnet">—</b> at higher volatility. <span id="asiawhy">—</span></p>
     </div>
 
     <div class="card">
@@ -851,24 +850,33 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <div class="card">
       <h3>What would change this view</h3>
       <ul class="plain">
-        <li><b>Brent back below $70 and the Fed cutting.</b> The energy and policy
-          drags reverse; Global Technology goes back to a full weight and the
-          covered-call overweight loses its edge.</li>
-        <li><b>VIX futures flipping into backwardation.</b> The premium the income
-          sleeve harvests compresses; its <b class="num" id="qiaptilt">—</b> tilt goes to
-          zero — and it is now the largest single tilt in the model, so that reversal
-          would cost more than any other single change on this list.</li>
-        <li><b>Asia EPS revisions turning negative.</b> The <b class="num">10.5&times;</b>
-          multiple is only cheap against the growth; take the growth away and it isn't.</li>
+        <li><b>The volatility curve flattening.</b> The income sleeve's
+          <b class="num" id="qiaptilt">—</b> tilt — paid by the gap between spot VIX and
+          the futures curve — is the largest single tilt in the model. With that gap
+          at zero, the same optimiser holds <b class="num" id="wi1w">—</b> for
+          <b class="num" id="wi1c">—</b>; a curve in backwardation pushes further the
+          same way. This is the one input that decides how much of the portfolio sits
+          in a single fund.</li>
+        <li><b>The rates and energy drags lifting.</b> With the Monetary and
+          Geopolitics drivers back at neutral, the optimiser holds
+          <b class="num" id="wi2w">—</b> for <b class="num" id="wi2c">—</b>.
+          <span id="wi2note">—</span></li>
+        <li><b>The income sleeve's own estimates.</b> It is
+          <b class="num" id="wQiap2">—</b> of the portfolio, and its volatility comes
+          from a fund history that begins in May 2022 — about four years, one market
+          cycle at most. A higher volatility estimate, or a deeper drawdown multiplier, moves weight
+          out of it; with this much in one sleeve its estimates carry the result more
+          than any other input on this page.</li>
         <li><b>Strait of Hormuz closure.</b> Modelled below at
           <b class="num" id="hormuzdd">—</b> — the scenario in which this portfolio's
           drawdown control is genuinely tested, and the one now partly under way. Read
-          it on <em>volume</em>, not vessel counts: Gulf exports are
-          <b class="num" id="hzflow">—</b> against a
+          it on <em>volume</em>, not vessel counts: Gulf exports were
+          <b class="num" id="hzflow">—</b> on <b id="hzflowd">—</b> — the last
+          reading, taken before the pipeline was struck and restarted — against a
           <b class="num" id="hzpre">—</b> pre-war baseline, about
-          <b class="num" id="hzrem">—</b> of normal, while vessel transits are down
-          <b class="num" id="hzves">—</b>. Those two measure different things and the
-          oil price follows the first.</li>
+          <b class="num" id="hzrem">—</b> of normal, while vessel transits were down
+          <b class="num" id="hzves">—</b> on <b id="hzvesd">—</b>. Those two measure
+          different things and the oil price follows the first.</li>
       </ul>
     </div>
   </section>
@@ -954,7 +962,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 </div>
 <script id="D" type="application/json">
 {
- "as_of": "2026-09-23",
+ "as_of": "2026-09-24",
  "macro": {
   "fed_funds_lower": 3.75,
   "fed_funds_upper": 4.0,
@@ -1069,10 +1077,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "ph_cpi_jun": 6.4,
   "bsp_infl_2026": 6.1,
   "bsp_infl_2027": 5.4,
-  "usdphp": 62.725,
-  "usdphp_date": "2026-09-23",
+  "usdphp": 62.735,
+  "usdphp_date": "2026-09-24",
   "usdphp_prev": 62.725,
-  "usdphp_prev2": 62.78,
   "usdphp_record": 62.86,
   "usdphp_record_date": "2026-09-14",
   "usdphp_record_intraday": 62.925,
@@ -1080,12 +1087,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "usdphp_records_asof": "2026-09-11",
   "usdphp_sept_records": 6,
   "usdphp_2025_close": 58.79,
-  "ph_10y": 7.5,
-  "ph_10y_date": "2026-09-18",
-  "psei": 5795.14,
-  "psei_chg_pts": -19.42,
-  "psei_chg_pct": -0.33,
-  "psei_date": "2026-09-23",
+  "psei": 5730.02,
+  "psei_chg_pts": -65.12,
+  "psei_chg_pct": -1.12,
+  "psei_date": "2026-09-24",
+  "psei_prev": 5795.14,
   "ph_tbill_91": 5.138,
   "ph_tbill_182": 5.517,
   "ph_tbill_364": 5.717,
@@ -1131,11 +1137,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "brent_mom": 13.24,
   "brent_yr_ago": 66.57,
   "brent_yr_ago_date": "2025-09-22",
-  "hormuz_transits": 8,
-  "hormuz_transits_date": "2026-09-13",
+  "hormuz_transits": 1,
+  "hormuz_transits_date": "2026-09-20",
   "hormuz_transits_cadence_d": 7,
   "hormuz_baseline": 85,
   "hormuz_lloyds": 14,
+  "hormuz_lloyds_asof": "2026-08-23",
   "hormuz_lloyds_dwt": 10000,
   "hormuz_us_claim": 30,
   "hormuz_flow_now": 15.5,
@@ -1307,6 +1314,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "asia_eps_2027": 27.5,
   "nikkei": 64011,
   "kospi": 6910,
+  "nikkei_latest": 65513.94,
+  "nikkei_latest_chg_pct": 0.76,
+  "nikkei_latest_date": "2026-09-24",
   "ltcma_us_eq": 6.7,
   "ndx_growth_premium": 1.3,
   "qiap_capture": 78,
@@ -1337,14 +1347,14 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "fed_hike_odds_oct_chg_pp": 18.0,
   "brent_off_high_pct": 5.21,
   "brent_chg_pct": 3.86,
-  "usdphp_ytd_pct": 6.27,
-  "usdphp_chg_ctvo": 0.0,
-  "hormuz_vessel_drop_pct": 91.0,
+  "usdphp_ytd_pct": 6.29,
+  "usdphp_chg_ctvo": 1.0,
+  "hormuz_vessel_drop_pct": 99.0,
   "hormuz_queue_date": "2026-09-20",
   "hormuz_queue_now": 376,
   "hormuz_queue_lo": 357,
   "hormuz_queue_hi": 376,
-  "hormuz_transits_age_d": 11,
+  "hormuz_transits_age_d": 4,
   "hormuz_flow_drop_pct": 33.0,
   "vix_futs": [
    [
@@ -1431,7 +1441,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 3.0,
    "12M": 3.44,
    "10Y": 3.89,
-   "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
+   "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. Japan has since recovered past that level: the Nikkei closed 65,513.94 on 24 Sep, +0.76% on its return from the equinox holiday, while Korea was shut for Chuseok and has no newer print. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
    "blend_10": 6.7,
    "3M_10": 5.0,
    "6M_10": 5.5,
@@ -1444,7 +1454,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 3.0,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has held there: 62.725, flat on 23 Sep after appreciating 5.5 centavos on the 22nd on US-Iran talk optimism, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.27% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% on 18 Sep are what the earlier recovery cost. The PSEi fell a fourth straight session, to 5795.14. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has stayed near it: 62.735 on 24 Sep, a centavo weaker after a flat 23rd, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.29% loss of purchasing power against the dollar this year. The PSEi fell another 1.12% on 24 Sep to 5730.02, extending a losing streak through the whole week. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
    "blend_10": 5.5,
    "3M_10": 5.5,
    "6M_10": 5.5,
@@ -1527,7 +1537,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.1,
    "score": 1.22,
    "score_10": 1.5,
-   "note": "RESTORED to 1.5, where it stood before 14 Sep - and no higher. The cut to 1.25 was made for two named reasons: the Hormuz bypass was shut, and the Oman talks were called off. On 22 Sep BOTH reversed as facts rather than as prices. Saudi Arabia restarted the 1200 km East-West (Petroline) pipeline, which had been carrying roughly 5.0 mb/d to Yanbu specifically to route around the Strait, and a cargo was scheduled to load there for China the same day. And US negotiators met an Iranian delegation for three hours on the sidelines of the UN General Assembly; Trump called it very good, though one account describes the talks as indirect, through mediators. A score cut for two reasons comes back when both reasons are gone. It does not go further, because what is left is still bad. The pipeline is at well below normal throughput - 40% within a couple of days, six to eight weeks to full - and Kpler's Yanbu loss of 2.5 to 2.7 mb/d does not close in a week. Trump put a deal after the US midterms, six weeks out, and said that without one he could annihilate Iran; Iran's terms are the blockade lifted, frozen assets returned and an end to the war on all fronts. The Strait itself is still closed. Read the disruption on VOLUME, not vessel counts. The counts disagree about fivefold by what they count - IMF PortWatch 8 transits a day against an 85 baseline on its 13 Sep reading, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the US government around 30 - and none of them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up from a 5.5 trough in March, is dated 2026-08-28 and predates both the pipeline strike and its restart, so it is carried as the last measurement and nothing more. Aramco loaded ~14mb onto seven VLCCs at Ras Tanura on 20 Sep - a different port, before the pipeline restart - which is the resilience this score has been crediting even while Yanbu stayed dry. The queue off berth is oscillating, not draining: 369, 357 and 376 vessels on 18-20 Sep on one stated basis. Brent settled at $103.08 on 23 Sep, up 3.86%, snapping five straight down sessions - still 5.21% below the $108.75 high of 15 Sep, and +54.8% on a year earlier. That session was withheld on this page's first pass and resolved on its second: two Brent candidates each reproduced their own percentage, the post-settlement reporting put oil UP, and the WTI gap that blocked it was a contract roll - the October contract expired on 22 Sep, so every Wednesday WTI print was November. Pezeshkian's UNGA reply on the 23rd is what the market rallied on: defiant, not conciliatory - 'Iran cannot be made to surrender' - he held up images of the war's dead and rejected Trump's own account that a deal is likely after the midterms, and Iran's military said it was ready for 'more crushing' strikes. The price moved; this score does not, for the same reason it did not rise when crude fell on the 21st: rhetoric is not a fact, and nothing said on the 23rd reverses the pipeline restart or the meeting of the 22nd. The fact to watch is Saudi Arabia's reported aim of a meaningful Petroline resumption by Saturday. Still NOT scored at the floor or near it: the stress table models full closure and Brent above $130, a strictly worse state that is not off the table while the Strait stays shut."
+   "note": "RESTORED to 1.5, where it stood before 14 Sep - and no higher. The cut to 1.25 was made for two named reasons: the Hormuz bypass was shut, and the Oman talks were called off. On 22 Sep BOTH reversed as facts rather than as prices. Saudi Arabia restarted the 1200 km East-West (Petroline) pipeline, which had been carrying roughly 5.0 mb/d to Yanbu specifically to route around the Strait, and a cargo was scheduled to load there for China the same day. And US negotiators met an Iranian delegation for three hours on the sidelines of the UN General Assembly; Trump called it very good, though one account describes the talks as indirect, through mediators. A score cut for two reasons comes back when both reasons are gone. It does not go further, because what is left is still bad. The pipeline is at well below normal throughput - 40% within a couple of days, six to eight weeks to full - and Kpler's Yanbu loss of 2.5 to 2.7 mb/d does not close in a week. Trump put a deal after the US midterms, six weeks out, and said that without one he could annihilate Iran; Iran's terms are the blockade lifted, frozen assets returned and an end to the war on all fronts. The Strait itself is still closed. Read the disruption on VOLUME, not vessel counts. The counts run from 1 to 30 a day depending on what is counted and when - IMF PortWatch 1 transit against an 85 baseline on its 20 Sep reading (8 on the 13th), Lloyd's List Intelligence 14 a day in the week to 23 Aug counting only cargo over 10000 dwt, the US government around 30 on a basis it does not state - and none of them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up from a 5.5 trough in March, is dated 2026-08-28 and predates both the pipeline strike and its restart, so it is carried as the last measurement and nothing more. Aramco loaded ~14mb onto seven VLCCs at Ras Tanura on 20 Sep - a different port, before the pipeline restart - which is the resilience this score has been crediting even while Yanbu stayed dry. The queue off berth is oscillating, not draining: 369, 357 and 376 vessels on 18-20 Sep on one stated basis. Brent settled at $103.08 on 23 Sep, up 3.86%, snapping five straight down sessions - still 5.21% below the $108.75 high of 15 Sep, and +54.8% on a year earlier. That session was withheld on this page's first pass and resolved on its second: two Brent candidates each reproduced their own percentage, the post-settlement reporting put oil UP, and the WTI gap that blocked it was a contract roll - the October contract expired on 22 Sep, so every Wednesday WTI print was November. Pezeshkian's UNGA reply on the 23rd is what the market rallied on: defiant, not conciliatory - 'Iran cannot be made to surrender' - he held up images of the war's dead and rejected Trump's own account that a deal is likely after the midterms, and Iran's military said it was ready for 'more crushing' strikes. The price moved; this score does not, for the same reason it did not rise when crude fell on the 21st: rhetoric is not a fact, and nothing said on the 23rd reverses the pipeline restart or the meeting of the 22nd. The fact to watch is Saudi Arabia's reported aim of a meaningful Petroline resumption by Saturday. Still NOT scored at the floor or near it: the stress table models full closure and Brent above $130, a strictly worse state that is not off the table while the Strait stays shut."
   }
  ],
  "driver_scale": {
@@ -1569,7 +1579,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_k": 1.65,
    "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
    "dd_base": -0.5,
-   "dd_macro": -0.5
+   "dd_macro": -0.5,
+   "net_novol": 4.84,
+   "net_neutral": 4.3
   },
   {
    "id": "ATRQIAP",
@@ -1597,10 +1609,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "tilt_total": 0.65,
    "net_macro": 8.0,
    "vol": 16.07,
-   "dd_k": 1.55,
-   "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
-   "dd_base": -30.0,
-   "dd_macro": -29.6
+   "dd_k": 1.65,
+   "dd_k_why": "At the 1.65 anchor: the premium's cushion is already in this sleeve's volatility (0.681x the Nasdaq-100) and its return; capped upside with full downside is negatively skewed, which argues against a lower k, not for one.",
+   "dd_base": -32.3,
+   "dd_macro": -31.8,
+   "net_novol": 7.04,
+   "net_neutral": 8.38
   },
   {
    "id": "ATRASEQ",
@@ -1631,7 +1645,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_k": 1.7,
    "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
    "dd_base": -39.2,
-   "dd_macro": -39.2
+   "dd_macro": -39.2,
+   "net_novol": 7.53,
+   "net_neutral": 7.93
   },
   {
    "id": "ATRGTEC",
@@ -1662,7 +1678,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_k": 1.8,
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -56.8,
-   "dd_macro": -58.0
+   "dd_macro": -58.0,
+   "net_novol": 7.66,
+   "net_neutral": 8.3
   }
  ],
  "corr": [
@@ -1696,7 +1714,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "ATRPHMM": {
    "dp": 3,
    "kind": "instruments",
-   "as_of": "2026-09-23",
+   "as_of": "2026-09-24",
    "note": "A money market fund holds paper, not shares. The live PH curve is the honest look-through.",
    "rows": [
     [
@@ -1886,8 +1904,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "horizon_y": 10.0,
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
-  "baseline_k": 1.675,
-  "optimized_k": 1.57353,
+  "baseline_k": 1.7125,
+  "optimized_k": 1.66471,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -1906,11 +1924,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ],
    "cagr": 7.13,
    "vol": 14.41,
-   "maxdd": -29.1,
-   "ret_per_dd": 0.245,
+   "maxdd": -29.9,
+   "ret_per_dd": 0.238,
    "sharpe_like": 0.098,
    "terminal_1m": 1991182,
-   "worst_1m_from_open": 709000
+   "worst_1m_from_open": 701000
   },
   "under_macro": {
    "weights": [
@@ -1921,11 +1939,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ],
    "cagr": 7.06,
    "vol": 14.41,
-   "maxdd": -29.1,
-   "ret_per_dd": 0.243,
+   "maxdd": -29.9,
+   "ret_per_dd": 0.236,
    "sharpe_like": 0.093,
    "terminal_1m": 1978210,
-   "worst_1m_from_open": 709000
+   "worst_1m_from_open": 701000
   },
   "scenarios": [
    {
@@ -1933,114 +1951,114 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $103. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
     "cagr": 2.31,
     "vol": 23.05,
-    "maxdd": -53.0
+    "maxdd": -54.2
    },
    {
     "name": "Hawkish repricing",
     "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and what makes it a tail has changed since 9 September. September is no longer the question - it HAPPENED. The Fed hiked 25bp to 3.75-4.00% on 16 September, unanimously, and the dot plot now has a median of 4.1% for end-2026, i.e. one more. This row models what is still NOT priced: a SECOND hike on top of that, which 4 of 18 participants already see. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
     "cagr": 4.72,
     "vol": 18.73,
-    "maxdd": -41.0
+    "maxdd": -42.0
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
     "cagr": 2.63,
     "vol": 20.89,
-    "maxdd": -47.6
+    "maxdd": -48.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
     "cagr": 9.63,
     "vol": 11.52,
-    "maxdd": -20.5
+    "maxdd": -21.1
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
     "cagr": 7.06,
     "vol": 14.41,
-    "maxdd": -29.1
+    "maxdd": -29.9
    }
   ]
  },
  "optimized": {
   "weights": [
    15,
-   75,
-   5,
+   70,
+   10,
    5
   ],
   "macro": {
    "weights": [
     15.0,
-    75.0,
-    5.0,
+    70.0,
+    10.0,
     5.0
    ],
-   "cagr": 7.48,
-   "vol": 13.8,
-   "maxdd": -25.4,
-   "ret_per_dd": 0.294,
+   "cagr": 7.46,
+   "vol": 13.67,
+   "maxdd": -26.9,
+   "ret_per_dd": 0.277,
    "sharpe_like": 0.128,
-   "terminal_1m": 2057200,
-   "worst_1m_from_open": 746000
+   "terminal_1m": 2053375,
+   "worst_1m_from_open": 731000
   },
   "under_base": {
    "weights": [
     15.0,
-    75.0,
-    5.0,
+    70.0,
+    10.0,
     5.0
    ],
-   "cagr": 6.95,
-   "vol": 13.8,
-   "maxdd": -25.8,
-   "ret_per_dd": 0.269,
-   "sharpe_like": 0.089,
-   "terminal_1m": 1957978,
-   "worst_1m_from_open": 742000
+   "cagr": 6.96,
+   "vol": 13.67,
+   "maxdd": -27.3,
+   "ret_per_dd": 0.255,
+   "sharpe_like": 0.091,
+   "terminal_1m": 1959810,
+   "worst_1m_from_open": 727000
   },
-  "dd_cap": 26.27,
+  "dd_cap": 27.07,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $103. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
-    "cagr": 3.48,
-    "vol": 22.08,
-    "maxdd": -46.7
+    "cagr": 3.36,
+    "vol": 21.88,
+    "maxdd": -49.1
    },
    {
     "name": "Hawkish repricing",
     "desc": "The three July dissenters win. NOTE this row is a TAIL, not the base case, and what makes it a tail has changed since 9 September. September is no longer the question - it HAPPENED. The Fed hiked 25bp to 3.75-4.00% on 16 September, unanimously, and the dot plot now has a median of 4.1% for end-2026, i.e. one more. This row models what is still NOT priced: a SECOND hike on top of that, which 4 of 18 participants already see. Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
     "cagr": 5.38,
-    "vol": 17.94,
-    "maxdd": -36.1
+    "vol": 17.77,
+    "maxdd": -38.0
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.18,
-    "vol": 20.01,
-    "maxdd": -41.6
+    "cagr": 4.06,
+    "vol": 19.83,
+    "maxdd": -43.8
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.62,
-    "vol": 11.04,
-    "maxdd": -17.8
+    "cagr": 9.65,
+    "vol": 10.94,
+    "maxdd": -18.9
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.48,
-    "vol": 13.8,
-    "maxdd": -25.4
+    "cagr": 7.46,
+    "vol": 13.67,
+    "maxdd": -26.9
    }
   ],
-  "n_feasible": 365,
+  "n_feasible": 367,
   "n_total": 969
  },
  "best_ratio": {
@@ -2052,24 +2070,24 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   ],
   "cagr": 5.38,
   "vol": 2.76,
-  "maxdd": -2.8,
-  "ret_per_dd": 1.921,
+  "maxdd": -2.9,
+  "ret_per_dd": 1.855,
   "sharpe_like": -0.122,
   "terminal_1m": 1688814,
-  "worst_1m_from_open": 972000
+  "worst_1m_from_open": 971000
  },
  "stub": {
   "fund": "ATRGTEC",
   "weight": 5,
   "best_without": [
-   10,
-   85,
+   15,
+   80,
    5,
    0
   ],
-  "cagr_without": 7.68,
-  "cagr_with": 7.48,
-  "cost": 0.2
+  "cagr_without": 7.53,
+  "cagr_with": 7.46,
+  "cost": 0.07
  },
  "tech_gap": -0.9,
  "min_sleeve": 0.05,
@@ -2082,13 +2100,37 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    5
   ],
   "cagr": 7.36,
-  "maxdd": -25.8,
-  "ret_per_dd": 0.285
+  "maxdd": -26.9,
+  "ret_per_dd": 0.274
+ },
+ "what_if": {
+  "vol_flat": {
+   "weights": [
+    20,
+    25,
+    50,
+    5
+   ],
+   "cagr": 6.88,
+   "maxdd": -27.1,
+   "dd_cap": 27.17
+  },
+  "drags_neutral": {
+   "weights": [
+    15,
+    70,
+    10,
+    5
+   ],
+   "cagr": 7.72,
+   "maxdd": -26.7,
+   "dd_cap": 26.77
+  }
  },
  "frontier": [
   {
    "maxdd": 2,
-   "dd": -2.8,
+   "dd": -2.9,
    "cagr": 5.38,
    "weights": [
     85.0,
@@ -2099,7 +2141,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 4,
-   "dd": -4.3,
+   "dd": -4.5,
    "cagr": 5.53,
    "weights": [
     80.0,
@@ -2111,6 +2153,17 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 5,
    "dd": -5.8,
+   "cagr": 5.49,
+   "weights": [
+    80.0,
+    5.0,
+    5.0,
+    10.0
+   ]
+  },
+  {
+   "maxdd": 6,
+   "dd": -6.2,
    "cagr": 5.68,
    "weights": [
     75.0,
@@ -2120,19 +2173,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 6,
-   "dd": -6.1,
-   "cagr": 5.66,
-   "weights": [
-    75.0,
-    10.0,
-    10.0,
-    5.0
-   ]
-  },
-  {
    "maxdd": 7,
-   "dd": -7.4,
+   "dd": -7.9,
    "cagr": 5.83,
    "weights": [
     70.0,
@@ -2143,18 +2185,18 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 8,
-   "dd": -8.7,
-   "cagr": 5.79,
+   "dd": -8.3,
+   "cagr": 5.78,
    "weights": [
     70.0,
+    10.0,
     15.0,
-    5.0,
-    10.0
+    5.0
    ]
   },
   {
    "maxdd": 9,
-   "dd": -9.0,
+   "dd": -9.6,
    "cagr": 5.98,
    "weights": [
     65.0,
@@ -2165,7 +2207,18 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "maxdd": 10,
-   "dd": -10.6,
+   "dd": -10.8,
+   "cagr": 5.94,
+   "weights": [
+    65.0,
+    20.0,
+    5.0,
+    10.0
+   ]
+  },
+  {
+   "maxdd": 11,
+   "dd": -11.3,
    "cagr": 6.13,
    "weights": [
     60.0,
@@ -2175,8 +2228,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 11,
-   "dd": -11.8,
+   "maxdd": 12,
+   "dd": -12.5,
    "cagr": 6.09,
    "weights": [
     60.0,
@@ -2186,8 +2239,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 12,
-   "dd": -12.3,
+   "maxdd": 13,
+   "dd": -13.1,
    "cagr": 6.28,
    "weights": [
     55.0,
@@ -2197,8 +2250,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 13,
-   "dd": -13.9,
+   "maxdd": 14,
+   "dd": -14.8,
    "cagr": 6.43,
    "weights": [
     50.0,
@@ -2208,19 +2261,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 14,
-   "dd": -14.1,
-   "cagr": 6.38,
+   "maxdd": 15,
+   "dd": -15.9,
+   "cagr": 6.39,
    "weights": [
     50.0,
-    30.0,
-    15.0,
-    5.0
+    35.0,
+    5.0,
+    10.0
    ]
   },
   {
-   "maxdd": 15,
-   "dd": -15.5,
+   "maxdd": 16,
+   "dd": -16.6,
    "cagr": 6.58,
    "weights": [
     45.0,
@@ -2230,8 +2283,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 16,
-   "dd": -16.7,
+   "maxdd": 17,
+   "dd": -17.6,
    "cagr": 6.54,
    "weights": [
     45.0,
@@ -2241,8 +2294,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 17,
-   "dd": -17.2,
+   "maxdd": 18,
+   "dd": -18.3,
    "cagr": 6.73,
    "weights": [
     40.0,
@@ -2252,8 +2305,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 18,
-   "dd": -18.8,
+   "maxdd": 19,
+   "dd": -19.9,
+   "cagr": 6.86,
+   "weights": [
+    35.0,
+    50.0,
+    10.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 20,
+   "dd": -20.1,
    "cagr": 6.88,
    "weights": [
     35.0,
@@ -2263,19 +2327,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 19,
-   "dd": -19.9,
-   "cagr": 6.84,
-   "weights": [
-    35.0,
-    50.0,
-    5.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 20,
-   "dd": -20.5,
+   "maxdd": 21,
+   "dd": -21.9,
    "cagr": 7.03,
    "weights": [
     30.0,
@@ -2285,8 +2338,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 21,
-   "dd": -21.6,
+   "maxdd": 22,
+   "dd": -22.9,
    "cagr": 6.99,
    "weights": [
     30.0,
@@ -2296,8 +2349,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 22,
-   "dd": -22.1,
+   "maxdd": 23,
+   "dd": -23.6,
    "cagr": 7.18,
    "weights": [
     25.0,
@@ -2307,8 +2360,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 23,
-   "dd": -23.8,
+   "maxdd": 24,
+   "dd": -24.6,
+   "cagr": 7.14,
+   "weights": [
+    25.0,
+    60.0,
+    5.0,
+    10.0
+   ]
+  },
+  {
+   "maxdd": 25,
+   "dd": -25.4,
    "cagr": 7.33,
    "weights": [
     20.0,
@@ -2318,19 +2382,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 24,
-   "dd": -24.8,
-   "cagr": 7.29,
+   "maxdd": 26,
+   "dd": -26.9,
+   "cagr": 7.46,
    "weights": [
-    20.0,
-    65.0,
-    5.0,
-    10.0
+    15.0,
+    70.0,
+    10.0,
+    5.0
    ]
   },
   {
-   "maxdd": 25,
-   "dd": -25.4,
+   "maxdd": 27,
+   "dd": -27.1,
    "cagr": 7.48,
    "weights": [
     15.0,
@@ -2340,19 +2404,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 26,
-   "dd": -26.5,
-   "cagr": 7.44,
-   "weights": [
-    15.0,
-    70.0,
-    5.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 27,
-   "dd": -27.1,
+   "maxdd": 28,
+   "dd": -28.9,
    "cagr": 7.63,
    "weights": [
     10.0,
@@ -2362,8 +2415,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 28,
-   "dd": -28.7,
+   "maxdd": 29,
+   "dd": -29.9,
+   "cagr": 7.59,
+   "weights": [
+    10.0,
+    75.0,
+    5.0,
+    10.0
+   ]
+  },
+  {
+   "maxdd": 30,
+   "dd": -30.7,
    "cagr": 7.78,
    "weights": [
     5.0,
@@ -2373,8 +2437,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 29,
-   "dd": -29.8,
+   "maxdd": 31,
+   "dd": -31.6,
    "cagr": 7.74,
    "weights": [
     5.0,
@@ -2384,8 +2448,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 30,
-   "dd": -30.9,
+   "maxdd": 32,
+   "dd": -32.7,
    "cagr": 7.69,
    "weights": [
     5.0,
@@ -2395,19 +2459,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 31,
-   "dd": -31.1,
-   "cagr": 7.6,
-   "weights": [
-    5.0,
-    55.0,
-    25.0,
-    15.0
-   ]
-  },
-  {
-   "maxdd": 32,
-   "dd": -32.1,
+   "maxdd": 33,
+   "dd": -33.8,
    "cagr": 7.65,
    "weights": [
     5.0,
@@ -2417,8 +2470,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 33,
-   "dd": -33.3,
+   "maxdd": 34,
+   "dd": -34.9,
    "cagr": 7.6,
    "weights": [
     5.0,
@@ -2428,8 +2481,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 34,
-   "dd": -34.6,
+   "maxdd": 35,
+   "dd": -35.0,
+   "cagr": 7.48,
+   "weights": [
+    5.0,
+    40.0,
+    30.0,
+    25.0
+   ]
+  },
+  {
+   "maxdd": 36,
+   "dd": -36.1,
    "cagr": 7.56,
    "weights": [
     5.0,
@@ -2439,8 +2503,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 35,
-   "dd": -35.9,
+   "maxdd": 37,
+   "dd": -37.3,
    "cagr": 7.51,
    "weights": [
     5.0,
@@ -2450,19 +2514,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 36,
-   "dd": -36.0,
-   "cagr": 7.46,
-   "weights": [
-    5.0,
-    45.0,
-    15.0,
-    35.0
-   ]
-  },
-  {
-   "maxdd": 37,
-   "dd": -37.3,
+   "maxdd": 38,
+   "dd": -38.6,
    "cagr": 7.47,
    "weights": [
     5.0,
@@ -2472,8 +2525,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 38,
-   "dd": -38.7,
+   "maxdd": 39,
+   "dd": -39.9,
    "cagr": 7.42,
    "weights": [
     5.0,
@@ -2483,8 +2536,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 39,
-   "dd": -39.2,
+   "maxdd": 40,
+   "dd": -40.0,
    "cagr": 7.35,
    "weights": [
     5.0,
@@ -2494,8 +2547,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 40,
-   "dd": -40.2,
+   "maxdd": 41,
+   "dd": -41.3,
    "cagr": 7.38,
    "weights": [
     5.0,
@@ -2505,8 +2558,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 41,
-   "dd": -41.7,
+   "maxdd": 42,
+   "dd": -42.7,
    "cagr": 7.33,
    "weights": [
     5.0,
@@ -2516,19 +2569,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 42,
-   "dd": -42.0,
-   "cagr": 7.28,
+   "maxdd": 43,
+   "dd": -43.0,
+   "cagr": 7.24,
    "weights": [
     5.0,
-    25.0,
     15.0,
+    25.0,
     55.0
    ]
   },
   {
-   "maxdd": 43,
-   "dd": -43.2,
+   "maxdd": 44,
+   "dd": -44.1,
    "cagr": 7.29,
    "weights": [
     5.0,
@@ -2538,8 +2591,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 44,
-   "dd": -44.8,
+   "maxdd": 45,
+   "dd": -45.6,
    "cagr": 7.24,
    "weights": [
     5.0,
@@ -2549,19 +2602,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 45,
-   "dd": -45.0,
-   "cagr": 7.22,
+   "maxdd": 46,
+   "dd": -46.1,
+   "cagr": 7.15,
    "weights": [
     5.0,
-    20.0,
-    10.0,
+    5.0,
+    25.0,
     65.0
    ]
   },
   {
-   "maxdd": 46,
-   "dd": -46.4,
+   "maxdd": 47,
+   "dd": -47.1,
    "cagr": 7.2,
    "weights": [
     5.0,
@@ -2571,19 +2624,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 47,
-   "dd": -47.2,
-   "cagr": 7.13,
-   "weights": [
-    5.0,
-    5.0,
-    20.0,
-    70.0
-   ]
-  },
-  {
    "maxdd": 48,
-   "dd": -48.1,
+   "dd": -48.6,
    "cagr": 7.15,
    "weights": [
     5.0,
@@ -2593,8 +2635,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 49,
-   "dd": -49.8,
+   "maxdd": 50,
+   "dd": -50.2,
    "cagr": 7.11,
    "weights": [
     5.0,
@@ -2604,19 +2646,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 50,
-   "dd": -50.1,
-   "cagr": 7.08,
-   "weights": [
-    5.0,
-    5.0,
-    10.0,
-    80.0
-   ]
-  },
-  {
    "maxdd": 51,
-   "dd": -51.6,
+   "dd": -51.8,
    "cagr": 7.06,
    "weights": [
     5.0,
@@ -2794,8 +2825,13 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "org": "IMF PortWatch",
-   "what": "Strait of Hormuz daily transit calls - 8 transits on 13 September 2026 against a pre-crisis baseline of 85/day (baseline measured 28 Feb 2025 to 27 Feb 2026). Published weekly on Tuesdays, so the reading is structurally a few days behind",
+   "what": "Strait of Hormuz daily transit calls - 1 transit on 20 September 2026 (8 on 13 September) against a pre-crisis baseline of 85/day, via the Straits Daily Brief (baseline measured 28 Feb 2025 to 27 Feb 2026). Published weekly on Tuesdays, so the reading is structurally a few days behind",
    "url": "https://portwatch.imf.org/pages/cc317ba850e34c4dadbead6f7b336fb1"
+  },
+  {
+   "org": "TradingKey",
+   "what": "Nikkei 225 closes up 0.76% at 65,513.94 on its return from holiday; South Korean markets closed (Chuseok), 24 September 2026",
+   "url": "https://www.tradingkey.com/analysis/stocks/more/262184314-japan-south-korea-stocks-kospi-nikkei-softbank-kioxia-tradingkey"
   },
   {
    "org": "Straits Daily Brief",
@@ -3017,7 +3053,10 @@ document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () =>
 }));
 
 $("#asof").textContent = D.as_of;
-$("#asof2").textContent = D.as_of;
+/* PH closes can be a session ahead of US ones (Manila closes before New York
+   opens); say so where the page states its data date. */
+$("#asof2").textContent = D.as_of + (D.macro.equity_date !== D.as_of
+  ? " (Philippine close; US markets " + D.macro.equity_date + ")" : "");
 $("#revd").textContent = D.review_date;
 $("#hg").textContent = D.gauge.toFixed(1);
 $("#gv").innerHTML = D.gauge.toFixed(1) + '<i>/5</i>';
@@ -3069,11 +3108,29 @@ $("#corrnote").textContent = D.corr_note;
      stops the concentration is the drawdown budget, not a diversification rule.`;
   $("#capwhy").innerHTML =
     `There is no single-fund cap, so what stops it going higher is the drawdown budget:
-     one more step from cash into this sleeve breaks it. The ${ccPc} cap removed on
+     the next 5% step into this sleeve breaches it. The ${ccPc} cap removed on
      24 September would have held it to ${ccPc} (<b class="num">${CCw}</b>); dropping it
-     adds <b class="num">${(OB.cagr - CC.cagr).toFixed(2)}pp</b> of forecast CAGR and
-     moves expected drawdown from <b class="num">${pc1(CC.maxdd)}</b> to
-     <b class="num">${pc1(OB.maxdd)}</b>.`;
+     adds <b class="num">${(OB.cagr - CC.cagr).toFixed(2)}pp</b> of forecast CAGR` +
+    (CC.maxdd === OB.maxdd
+      ? ` at the same expected drawdown, <b class="num">${pc1(OB.maxdd)}</b>.`
+      : ` and moves expected drawdown from <b class="num">${pc1(CC.maxdd)}</b> to
+         <b class="num">${pc1(OB.maxdd)}</b>.`);
+  const aW = D.optimized.weights[WIDX.ATRASEQ], mW = D.min_sleeve * 100;
+  $("#asiafloor").textContent = aW === mW ? ", the floor"
+    : `, ${aW - mW} points above the ${mW}% floor`;
+  $("#asiawhy").textContent = aW === mW
+    ? "With no cap, nothing gives the optimiser a reason to hold more of it than the minimum."
+    : "It holds more than the minimum only because the income sleeve cannot go higher "
+      + "inside the drawdown budget, and Asia has the next-best forecast return.";
+  const WI = D.what_if, wj = w => w.join(" / "), same = (a, b) => a.join() === b.join();
+  $("#wi1w").textContent = wj(WI.vol_flat.weights);
+  $("#wi1c").textContent = pc(WI.vol_flat.cagr);
+  $("#wi2w").textContent = wj(WI.drags_neutral.weights);
+  $("#wi2c").textContent = pc(WI.drags_neutral.cagr);
+  $("#wi2note").textContent = same(WI.drags_neutral.weights, D.optimized.weights)
+    ? "The weights do not move: those drags lower the forecast, but they are not what sets this allocation."
+    : "The weights move, so those drags are part of what sets this allocation.";
+  $("#wQiap2").textContent = D.optimized.weights[WIDX.ATRQIAP] + "%";
   ["#ntotal","#ntotal2","#ntotal3"].forEach(id => { $(id).textContent = D.optimized.n_total; });
   $("#whyalloc").textContent = "Why " + D.optimized.weights.join(" / ");
   const hzTxt = ["3M","6M","12M",HYL]
@@ -3822,6 +3879,10 @@ function donut(host, w, title, cagr, dd) {
   set("hzpre",     m.hormuz_flow_prewar.toFixed(1) + " mb/d");
   set("hzrem",     (100 * m.hormuz_flow_now / m.hormuz_flow_prewar).toFixed(0) + "%");
   set("hzves",     m.hormuz_vessel_drop_pct.toFixed(0) + "%");
+  const dm = iso => new Date(iso + "T00:00:00")
+    .toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+  set("hzflowd",   dm(m.hormuz_flow_asof));
+  set("hzvesd",    dm(m.hormuz_transits_date));
   const RY = D.real_yield, mn = v => (v < 0 ? "\u2212" : "+") + Math.abs(v).toFixed(2) + "pp";
   set("rycpi",     RY.cpi.toFixed(1) + "%");
   set("ry91",      mn(RY.t91));

@@ -24,7 +24,7 @@ from itertools import product
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-09-23"        # last completed trading session
+AS_OF = "2026-09-24"        # last completed trading session (PH; US closes lag to 23 Sep)
 REVIEW_DATE = "2026-09-24"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -219,10 +219,11 @@ MACRO = {
     # the discarded "62.625" should have looked like and did not - a weakening
     # claim on a session that strengthened. 23 Sep: flat, "matched its previous
     # session's close" - two independent radar.ph/Manila Times pieces agree.
-    "usdphp": 62.725,          # 23 Sep, flat on the day
-    "usdphp_date": "2026-09-23",
-    "usdphp_prev": 62.725,     # 22 Sep close - confirmed, see above
-    "usdphp_prev2": 62.780,    # 21 Sep close, for the audit trail
+    # 24 Sep: weaker by 1 centavo, 62.725 -> 62.735, intraday low 62.795 (radar.ph,
+    # BusinessWorld - two independent reports agree to the tenth of a centavo).
+    "usdphp": 62.735,          # 24 Sep
+    "usdphp_date": "2026-09-24",
+    "usdphp_prev": 62.725,     # 23 Sep close (flat on the 22nd's 62.725)
     "usdphp_record": 62.86,        # 14 Sep close - the weakest close on record
     "usdphp_record_date": "2026-09-14",
     "usdphp_record_intraday": 62.925,  # 15 Sep intraday - weakest print on record
@@ -235,10 +236,9 @@ MACRO = {
     "usdphp_records_2026": 24, "usdphp_records_asof": "2026-09-11",
     "usdphp_sept_records": 6,      # 14 Sep was the sixth record of the month
     "usdphp_2025_close": 58.79,    # 29 Dec 2025 - the YTD base, move DERIVED below
-    "ph_10y": 7.50,            # the domestic yield the peso recovery cost
-    "ph_10y_date": "2026-09-18",
-    "psei": 5795.14, "psei_chg_pts": -19.42, "psei_chg_pct": -0.33,
-    "psei_date": "2026-09-23",   # 5795.14 + 19.42 = 5814.56, the 22 Sep close; fourth down day
+    "psei": 5730.02, "psei_chg_pts": -65.12, "psei_chg_pct": -1.12,
+    "psei_date": "2026-09-24",   # 5730.02 + 65.12 = 5795.14, the 23 Sep close
+    "psei_prev": 5795.14,
     "ph_tbill_91": 5.138,
     "ph_tbill_182": 5.517,
     "ph_tbill_364": 5.717,
@@ -320,12 +320,13 @@ MACRO = {
     # few days behind and carrying it undated let it go fourteen days stale: 6 was
     # the 6 September count and was still here on the 19th. Both the reading and
     # its date are inputs now, and a check bounds the gap.
-    "hormuz_transits": 8,          # IMF PortWatch, all transits
-    "hormuz_transits_date": "2026-09-13",
+    "hormuz_transits": 1,          # IMF PortWatch, all transits (was 8 on 13 Sep)
+    "hormuz_transits_date": "2026-09-20",
     "hormuz_transits_cadence_d": 7,   # weekly Tuesday publication
     "hormuz_baseline": 85,         # pre-crisis transits/day, SAME PortWatch basis
                                    # (measured 28 Feb 2025 - 27 Feb 2026)
     "hormuz_lloyds": 14,           # Lloyd's List Intelligence, 17-23 Aug
+    "hormuz_lloyds_asof": "2026-08-23",  # dated: the note quoted it undated for a month
     "hormuz_lloyds_dwt": 10000,    # Lloyd's counts only cargo vessels above this
     "hormuz_us_claim": 30,         # US government claim; basis undisclosed
     # Goldman's OWN pair, kept together. Mixing their 15.5 with a 20.0 baseline taken
@@ -558,7 +559,14 @@ MACRO = {
     "asia_fwd_pe": 10.5,
     "asia_eps_2026": 52.5,
     "asia_eps_2027": 27.5,
-    "nikkei": 64011, "kospi": 6910,   # 11 Sep closes
+    "nikkei": 64011, "kospi": 6910,   # 11 Sep closes - the sell-off the Asia note describes
+    # 24 Sep: the Nikkei reopened from the 23 Sep equinox holiday +0.76% at 65,513.94
+    # (TradingKey close). Corroborated by construction: Trading Economics' intraday
+    # +0.99% at 65,665 implies the same prior close (~65,020) - two reports agreeing
+    # on the base they moved from. Korea was shut for Chuseok, so the KOSPI has no
+    # newer print than the one above.
+    "nikkei_latest": 65513.94, "nikkei_latest_chg_pct": 0.76,
+    "nikkei_latest_date": "2026-09-24",
     "ltcma_us_eq": 6.7,
     "ndx_growth_premium": 1.3,     # NDX total return over US large cap in the build-up
     "qiap_capture": 78,            # covered-call upside capture, % of the NDX
@@ -921,11 +929,11 @@ REGIONS = {
     },
     "ASIA": {
         "3M": 5.0, "6M": 5.5, "12M": 6.5, HZ_LABEL: 7.5,
-        "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
+        "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. Japan has since recovered past that level: the Nikkei closed 65,513.94 on 24 Sep, +0.76% on its return from the equinox holiday, while Korea was shut for Chuseok and has no newer print. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has held there: 62.725, flat on 23 Sep after appreciating 5.5 centavos on the 22nd on US-Iran talk optimism, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.27% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% on 18 Sep are what the earlier recovery cost. The PSEi fell a fourth straight session, to 5795.14. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has stayed near it: 62.735 on 24 Sep, a centavo weaker after a flat 23rd, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.29% loss of purchasing power against the dollar this year. The PSEi fell another 1.12% on 24 Sep to 5730.02, extending a losing streak through the whole week. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
     },
 }
 # to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
@@ -1058,11 +1066,12 @@ DRIVERS = [
      "deal after the US midterms, six weeks out, and said that without one he could "
      "annihilate Iran; Iran's terms are the blockade lifted, frozen assets returned "
      "and an end to the war on all fronts. The Strait itself is still closed. "
-     "Read the disruption on VOLUME, not vessel counts. The counts disagree about "
-     "fivefold by what they count - IMF PortWatch 8 transits a day against an 85 "
-     "baseline on its 13 Sep reading, Lloyd's List Intelligence 14 counting only "
-     "cargo over 10000 dwt, the US government around 30 - and none of them is "
-     "supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up "
+     "Read the disruption on VOLUME, not vessel counts. The counts run from 1 to "
+     "30 a day depending on what is counted and when - IMF PortWatch 1 transit "
+     "against an 85 baseline on its 20 Sep reading (8 on the 13th), Lloyd's List "
+     "Intelligence 14 a day in the week to 23 Aug counting only cargo over 10000 "
+     "dwt, the US government around 30 on a basis it does not state - and none of "
+     "them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up "
      "from a 5.5 trough in March, is dated 2026-08-28 and predates both the "
      "pipeline strike and its restart, so it is carried as the last measurement and "
      "nothing more. Aramco loaded ~14mb onto seven VLCCs at Ras Tanura on 20 Sep - "
@@ -1158,8 +1167,17 @@ FUNDS = [
         # unsourced; it is now derived from two published figures.
         "vol_beta": 1.22 * (JEPQ_VOL / NDX_VOL), "fx_exposed": True,
         "macro_tilt": {"rates": -0.10, "energy": -0.10},
-        "dd_k_adj": -0.10, "cash_like": False,
-        "dd_k_why": "Below 1.65: writing calls converts part of the left tail into premium already collected, so realised drawdowns run shallower than the raw volatility implies.",
+        # WAS -0.10 until 2026-09-24, on the reason that "realised drawdowns run
+        # shallower than the raw volatility implies". But k multiplies THIS sleeve's
+        # volatility, which is already JEPQ's own (0.681x the Nasdaq-100) - the
+        # premium's cushion is in sigma, and the premium itself is in the return, so
+        # the cut counted it a third time. The shape argument runs the other way:
+        # capped upside with near-full downside is NEGATIVELY skewed, which if
+        # anything raises drawdown per unit of volatility. Set to the anchor rather
+        # than to a higher figure this model has no measurement for. It mattered
+        # little at 30-50% of the portfolio; at 75% it set the allocation.
+        "dd_k_adj": 0.0, "cash_like": False,
+        "dd_k_why": "At the 1.65 anchor: the premium's cushion is already in this sleeve's volatility (0.681x the Nasdaq-100) and its return; capped upside with full downside is negatively skewed, which argues against a lower k, not for one.",
     },
     {
         "id": "ATRASEQ", "name": "ATRAM Asia Equity Opportunity Feeder Fund",
@@ -1596,6 +1614,28 @@ CAP_COUNTERFACTUAL = {"max_sleeve": CAP_COUNTERFACTUAL_MAX,
                       "cagr": _caps["cagr"], "maxdd": _caps["maxdd"],
                       "ret_per_dd": _caps["ret_per_dd"]}
 
+# WHAT WOULD CHANGE THIS VIEW - computed, not asserted. The page's list said that
+# "Brent below $70 and the Fed cutting" would send Global Technology "back to a full
+# weight"; re-running the optimiser showed the allocation does not move at all. Each
+# counterfactual here is the SAME optimiser on an alternative return column, with
+# the drawdown budget re-derived from the baseline under that column exactly as
+# DD_CAP is, so the only thing that differs is the input named.
+for _f in F:
+    _f["net_novol"] = round(_f["net_macro"] - _f["tilt_vol"], 2)       # flat VIX curve
+    _f["net_neutral"] = round(_f["net_macro"] - _f["tilt_rates"]
+                              - _f["tilt_energy"], 2)                  # drags at neutral
+
+def optimise(key):
+    cap = abs(summarise(BASELINE_W, key)["maxdd"]) - DD_BUDGET_IMPROVEMENT
+    feas = [(w, s) for w, s in enumerate_portfolios(key)
+            if abs(port_dd(w, key)) <= cap + 1e-9 and abs(s["maxdd"]) <= cap + 1e-9]
+    feas.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
+    w, s = feas[0]
+    return {"weights": [round(x * 100) for x in w], "cagr": s["cagr"],
+            "maxdd": s["maxdd"], "dd_cap": round(cap, 2)}
+
+WHAT_IF = {"vol_flat": optimise("net_novol"), "drags_neutral": optimise("net_neutral")}
+
 # Best pure risk-adjusted portfolio, for reference
 BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
 
@@ -1805,8 +1845,11 @@ SOURCES = [
      "https://www.cnbc.com/2026/09/21/us-iran-war-trump-hormuz.html"),
     ("radar.ph", "Peso slips further as PSEi extends decline to a second session, 21 September 2026 - the peso lost 3.1 centavos to P62.78; the PSEi shed 12.12 points (0.21%) to 5,843.79",
      "https://radar.ph/peso-slips-further-as-psei-extends-decline-to-second-session-september-21-2026/"),
-    ("IMF PortWatch", "Strait of Hormuz daily transit calls - 8 transits on 13 September 2026 against a pre-crisis baseline of 85/day (baseline measured 28 Feb 2025 to 27 Feb 2026). Published weekly on Tuesdays, so the reading is structurally a few days behind",
+    ("IMF PortWatch", "Strait of Hormuz daily transit calls - 1 transit on 20 September 2026 (8 on 13 September) against a pre-crisis baseline of 85/day, via the Straits Daily Brief (baseline measured 28 Feb 2025 to 27 Feb 2026). Published weekly on Tuesdays, so the reading is structurally a few days behind",
      "https://portwatch.imf.org/pages/cc317ba850e34c4dadbead6f7b336fb1"),
+    ("TradingKey", "Nikkei 225 closes up 0.76% at 65,513.94 on its return from holiday; "
+     "South Korean markets closed (Chuseok), 24 September 2026",
+     "https://www.tradingkey.com/analysis/stocks/more/262184314-japan-south-korea-stocks-kospi-nikkei-softbank-kioxia-tradingkey"),
     ("Straits Daily Brief", "Strait of Hormuz status, 18-20 September 2026 - AIS-visible vessels holding position away from berth in the Hormuz and Gulf watch box, excluding ships within 25 km of a working port: 369, 357 and 376",
      "https://straits.live/briefs/2026-09-20"),
     ("Bloomberg", "Saudi Arabia seeks to resume half of its key oil pipeline within days, 16 September 2026 - Aramco bypassing the damaged section, targeting full capacity in about six weeks",
@@ -2002,6 +2045,7 @@ def payload():
         "stub": STUB, "tech_gap": TECH_GAP,
         "min_sleeve": MIN_SLEEVE,
         "cap_counterfactual": CAP_COUNTERFACTUAL,
+        "what_if": WHAT_IF,
         "frontier": FRONTIER,
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
@@ -2382,7 +2426,7 @@ def report():
                       ("the 10-year", "ust_10y_date"), ("the 30-year", "ust_30y_date"),
                       ("the 2-year", "ust_2y_date"), ("equities", "equity_date"),
                       ("the peso", "usdphp_date"), ("the PSEi", "psei_date"),
-                      ("the PH 10-year", "ph_10y_date")):
+                      ("the Nikkei", "nikkei_latest_date")):
         _sd = _dt.date.fromisoformat(MACRO[_dk])
         _lag = (_asof - _sd).days
         checks.append((f"{_lbl} is dated and lags the as-of date by {_lag} day(s)",
@@ -2455,6 +2499,13 @@ def report():
     checks.append(("the 23 Sep WTI candidates are all one contract, the one that settled",
                    MACRO["wti_date"] != "2026-09-23"
                    or MACRO["wti_settle"] in MACRO["wti_disputed_23sep"]))
+    # The PSEi had no chain check at all: its move was stated in a comment. Both the
+    # point and the percentage move must reproduce from the published prior close,
+    # at the precision each is published (2dp).
+    checks.append(("the PSEi's point and percent moves reproduce from its prior close",
+                   abs(MACRO["psei_prev"] + MACRO["psei_chg_pts"] - MACRO["psei"]) < 0.005
+                   and abs(MACRO["psei_chg_pts"] / MACRO["psei_prev"] * 100
+                           - MACRO["psei_chg_pct"]) <= 0.005 + 1e-9))
     checks.append(("the Dow's point move reproduces from the two closes",
                    abs((MACRO["dow_close"] - MACRO["dow_prev"])
                        - MACRO["dow_chg_pts"]) < 0.005))
@@ -2526,6 +2577,13 @@ def report():
                    MACRO["petroline_restart"] <= MACRO["yanbu_first_cargo"] <= AS_OF
                    and _ri > 0 and any(f in _geo_note[max(0, _ri - 120):_ri]
                                        for f in _dayforms(MACRO["petroline_restart"]))))
+    # Every vessel count the geopolitics note quotes carries its own date: Lloyd's
+    # 14/day (week to 23 Aug) sat undated for a month beside a 13 Sep PortWatch figure,
+    # and a "fivefold disagreement" between readings a month apart is partly just time.
+    _li = _geo_note.find("Lloyd's")
+    checks.append(("the Lloyd's vessel count is quoted beside its own date",
+                   _li > 0 and any(f in _geo_note[_li:_li + 90]
+                                   for f in _dayforms(MACRO["hormuz_lloyds_asof"]))))
     _mon_note = next(d[3] for d in DRIVERS if d[0].startswith("Monetary"))
     checks.append(("the superseded 10-year peak is older and lower, and quoted as it was",
                    MACRO["ust_10y_peak_prev_date"] < MACRO["ust_10y_peak_date"]
@@ -2758,6 +2816,16 @@ def report():
                    and all(x >= _mn - 1e-9 for x in p["stub"]["best_without"] if x)))
     checks.append(("every frontier point's own drawdown lies in its bucket",
                    all(math.floor(abs(f["dd"])) == f["maxdd"] for f in p["frontier"])))
+    # The what-if helper must BE the optimiser: on the live column it has to return
+    # the published allocation, or its counterfactuals answer a different question.
+    _live = optimise("net_macro")
+    checks.append(("the what-if optimiser reproduces the published allocation on live inputs",
+                   _live["weights"] == p["optimized"]["weights"]
+                   and abs(_live["dd_cap"] - p["optimized"]["dd_cap"]) < 0.005))
+    checks.append(("each what-if column differs from the live one by exactly the tilt it removes",
+                   all(abs(f2["net_macro"] - f2["net_novol"] - f2["tilt_vol"]) < 0.0051
+                       and abs(f2["net_macro"] - f2["net_neutral"] - f2["tilt_rates"]
+                               - f2["tilt_energy"]) < 0.0051 for f2 in p["funds"])))
     # The published 50%-cap counterfactual must BE the best capped point in budget.
     _cc = p["cap_counterfactual"]
     _cbest = max((s["cagr"], [round(x * 100) for x in w]) for w, s in FEASIBLE

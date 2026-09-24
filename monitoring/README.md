@@ -132,6 +132,20 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+39. "WHAT WOULD CHANGE THIS VIEW" IS A COUNTERFACTUAL THE ENGINE CAN RUN - SO RUN IT.
+   The Report said that Brent under $70 and the Fed cutting would send Global
+   Technology "back to a full weight". Re-running the optimiser with the rates and
+   energy drags at neutral left the allocation exactly where it was; the input that
+   actually decides the concentration - the volatility ramp - was listed as a
+   footnote. Every trigger on that list is now an engine counterfactual
+   (`WHAT_IF`), checked to use the live optimiser and re-derived by the audit.
+38. A RISK ADJUSTMENT APPLIES TO THE QUANTITY IT WAS REASONED ABOUT. The income
+   sleeve's drawdown k was cut 1.65 -> 1.55 because its drawdowns "run shallower than
+   the RAW volatility implies" - but k multiplies its own volatility, already 0.681x
+   the raw index, and the option premium is already in its return. One cushion,
+   counted three times. It was harmless at 30% of the portfolio and set the
+   allocation at 75%: an assumption's error grows with the weight riding on it, so
+   when a sleeve becomes dominant, re-read every adjustment attached to it.
 37. A REGISTER CHECK READS THE HEADLINE, AT THE HEADLINE'S OWN PRECISION. The
    CLAIMS check matched ANY number in a row within 0.011. A Brent row still reading
    "$99.25" passed on 2026-09-23 because the same row listed 103.08 as a disputed
