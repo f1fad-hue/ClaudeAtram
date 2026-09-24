@@ -2,7 +2,110 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-24 — Last pass withheld an oil settle over a contract roll, and six of its figures did not survive a second look
+
+Same trading session (AS_OF stays 23 Sep; the US had not reopened), reviewed
+again against post-close reporting. The allocation is unchanged at
+**15 / 50 / 30 / 5**, 7.36% macro-view CAGR, −25.8% drawdown — none of what
+follows feeds the optimiser. That claim was tested rather than asserted: the
+two drivers that transmit into returns were swept across Monetary 1.0–5.5 ×
+Geopolitics 1.0–2.5, and the allocation did not move anywhere on that grid
+(CAGR 7.32%–7.52%). Stated plainly because it cuts both ways: the macro drivers
+move the forecast, and the 50% single-sleeve cap and the drawdown budget set
+the allocation.
+
+### 1. The 23 Sep oil settle was never in dispute
+
+Last pass withheld it because "every WTI leg misses Tuesday's WTI close by
+$2–5". The October WTI contract's last trading day was **22 Sep** (NYMEX: three
+business days before the 25th of the prior month); $94.59 was October's final
+settle, and every Wednesday WTI print was **November**. The "miss" was a
+comparison across contracts. On the Brent side, two of the three candidates
+reproduced their own reported moves off $99.25 (98.44 at −0.82%, 103.08 at
++3.86%), which proves only that each source did its arithmetic. What decides it
+is independent: every post-settlement headline found has oil UP and "snapping a
+five-day losing streak" (CNBC: "rose 3.9% to close at $103.08"; NBC News: "oil
+jumps back above $103"; FXStreet: "WTI snaps five-day losing streak"). 98.44
+matches the morning reporting of a sixth down session, which the settle reversed.
+
+**Published: Brent $103.08, +3.86%; WTI $92.16, +1.81% (November).** November's
+own 22 Sep settle was not found, so the WTI prior ($90.52) is implied by the
+move and flagged as implied.
+
+**Root fix:** front months are now derived from the exchange rules
+(`cl_last_trade`, `brent_last_trade`, `front_contract`), and a chain across a
+roll fails instead of blocking or passing. ICE Brent's November contract expires
+**30 Sep** — this would otherwise have recurred next week.
+
+### 2. Six figures corrected
+
+| Figure | Last pass | Corrected | Why |
+|---|---|---|---|
+| 2-year | 4.947% | **4.889%** | CNBC: "+11bp to 4.889%"; 4.947 does not chain with +11bp off ~4.77 |
+| 30-year | 5.39%, "highest since July 2004" | **5.398%, highest since June 2007** | a 2dp figure in a 3dp series, with a superlative the source does not make |
+| FedWatch one-day move | "from 50.9% to 73% in a day" | **55% → 73%** (+18pp) | 50.9% was the 17th; the week's move was published as the day's |
+| Manufacturing PMI | 56.7 from 53.1 | **57.0 from 53.9** | 56.7/53.1 is the manufacturing *output* index |
+| Brent y/y base | $65.50, implied on 4 Sep and never moved (would read +57.4% at $103.08) | **$66.57 (22 Sep 2025) → +54.84%** | 19 days off its anniversary; now dated, and bounded to a week |
+| Optimised drawdown k (CLAIMS) | 1.626 | **1.618** | the 15/45/35/5 allocation's k, stale for 15 days since the 9 Sep move to 15/50/30/5 |
+
+### 3. Overclaims, now labelled
+
+- **The 10-year's 5.10% is provisional.** It is the 5.104% market-close print
+  rounded to 2dp — exactly the mixing invariant 32 forbids — and CLAIMS credited
+  it to the Treasury par curve and H.15, neither of which was reachable. Now
+  `ust_10y_provisional`: only the latest point may carry it, the page says so,
+  and the next roll fails until it is confirmed.
+- **December's 88.5%** was described as "unchanged since the 17th". It was not
+  re-found on the 23rd; it is now quoted only beside its verification date.
+- **"Two drivers moved on 23 September"** (Report tab): four did.
+
+### 4. Bugs found in the page
+
+- **A historical note bound to live fields.** "Tuesday settled Brent at…" read
+  `m.brent`, `m.brent_prev`, `m.brent_chg_pct`. Rolling Brent to the 23rd would
+  have printed "$103.08 on Wednesday 23 September, down 3.86%" as Tuesday's
+  fall. Brent is now a dated series (`brent_history`), and both oil disputes
+  are narrated in one note that reads points by date.
+- The intraday peak rendered as **5.13%** (`toFixed(2)` on 5.135) in two places.
+- Three dead bindings (`voddspct`, `vwti`, `wtichg`) removed.
+- Two more stale notes the last pass missed: the FOMC catalyst still said
+  "October is close to a coin flip at 50.9%", and the earnings note quoted
+  "$99 oil".
+
+### 5. Harness weaknesses found and fixed
+
+- **Last pass "cited" seven orphaned inputs with a comment naming them** — which
+  satisfies the audit's letter and none of its purpose. Replaced by checks that
+  use them: the dot-plot distribution must reproduce its published median; the
+  Petroline restart date must sit beside the restart in the geopolitics note;
+  the superseded 10-year peak must be older, lower and quoted as it was. The
+  one input with no role (`fed_vote`) was deleted; CLAIMS keeps the record.
+- **Every new check was bite-tested** by re-injecting the error it guards
+  against. One did not bite: the Petroline check passed a mutated 21 Sep
+  restart because the note mentions "the 21st" for another reason. Tightened to
+  a window before "restarted the".
+- **The CLAIMS register check** (scratchpad `audit.py`) matched any number in a
+  row within 0.011, which is how the Brent row still reading $99.25 passed (the
+  row also listed 103.08 as a candidate) and how 1.626 passed against 1.61765.
+  It now reads the bolded headline at its own published precision.
+
+### Harness results
+
+`engine.py` **152/152** (was 136; +16 checks, all bite-tested) · `audit.py`
+**0 failures** of 240, under the tightened register check · `checklist.js`
+**27/27** · `validate.js` `jsErrors: []`, no horizontal overflow · screenshots of
+the rewritten Volatility oil note and Report setup at 412px.
+
 ## 2026-09-23 (second pass) — A Fed-hawkish repricing re-verified the allocation, a peso gap resolved, oil withheld a second time, and a banker's-rounding bug in the tilt math no one had hit until today
+
+> **Corrected on 2026-09-24 — see the entry above.** This entry's oil
+> withholding was a contract-roll artifact (23 Sep has since been published at
+> $103.08); its 2-year (4.947), 30-year (5.39, "since July 2004"), manufacturing
+> PMI (56.7/53.1 — the output index) and "50.9% → 73% in a day" were wrong; the
+> 10-year's 5.10% is a provisional market print, not an official close; **four**
+> driver scores moved, not six; the rounding bug was latent for hours, not eleven
+> days; and checklist.js had four transient failures in that review, not two. The
+> entry is left as written, because the record of an error is part of the record.
 
 ### The macro refresh
 

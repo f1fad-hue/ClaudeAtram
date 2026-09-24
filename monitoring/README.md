@@ -127,6 +127,33 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+37. A REGISTER CHECK READS THE HEADLINE, AT THE HEADLINE'S OWN PRECISION. The
+   CLAIMS check matched ANY number in a row within 0.011. A Brent row still reading
+   "$99.25" passed on 2026-09-23 because the same row listed 103.08 as a disputed
+   candidate, and an optimised drawdown k of "1.626" - the 15/45/35/5 allocation's -
+   passed against the model's 1.61765 for fifteen days, from the 9 Sep move to
+   15/50/30/5. A register figure matches only
+   when the model value rounds to it at the register's published precision, and
+   where a row bolds its headline, only the headline counts.
+36. HISTORY BINDS TO DATED POINTS, NEVER TO ROLLING FIELDS. The page's account of
+   the 21 Sep oil dispute ("Tuesday settled Brent at...") was bound to `brent`,
+   `brent_prev` and `brent_chg_pct` - the LIVE fields. The next roll would have
+   printed Wednesday's +3.86% settle, dated Wednesday, as Tuesday's fall. Any input
+   that a narrative quotes after it has stopped being current belongs in a dated
+   series (`brent_history`, like `vix_history` and `ust_10y_history`) and is read by
+   date. The same goes for a FIXED BASE under a rolling ratio: Brent's "y/y" was
+   measured against a base implied on 4 Sep and never moved, 19 days off its
+   anniversary by the 23rd. A base carries its date, and a check bounds the drift.
+35. A SETTLE CHAINS ONLY TO THE PREVIOUS SETTLE OF THE SAME CONTRACT. On 2026-09-23
+   the October WTI contract expired, and every later WTI print was November; the
+   first pass compared them with October's final settle, found a $2-5 "miss", and
+   withheld a settle that was never in dispute. Front months are set by the exchange
+   calendar (NYMEX CL: 3 business days before the 25th of the prior month; ICE Brent:
+   last business day of the second month prior), so they are DERIVED (invariant 8)
+   and a chain across a roll fails. And a candidate that reproduces its OWN reported
+   percentage proves only that its arithmetic was done - on the 23rd two Brent prints
+   did. What picks between them is independent evidence: the post-settlement
+   direction ("snapped a five-day losing streak").
 34. TWO VERIFIERS THAT ROUND DIFFERENTLY WILL EVENTUALLY DISAGREE ABOUT A NUMBER
    THAT IS OTHERWISE CORRECT. The driver-tilt transmission multiplies a typed
    constant by a scale factor derived from a driver score; on 2026-09-23 that
@@ -134,8 +161,9 @@ truth; the artifact is a rendering of it.
    exactly on a .5-at-the-2dp boundary (0.25*2.5=0.625, -0.05*2.5=-0.125). Python's
    `round()` rounds half-to-even (0.625->0.62); the independent checklist's `r2()`
    rounds half-up (0.625->0.63). Both are "correct" roundings of a correct number,
-   and they silently disagreed by 0.01 at the boundary - invisible for eleven days
-   until a scale factor happened to produce an exact tie. Pick ONE convention
+   and they silently disagreed by 0.01 at the boundary - latent from the moment the
+   transmission was added that morning, and invisible until the afternoon's driver
+   move happened to produce an exact tie. Pick ONE convention
    (round-half-up is the more defensible one for a financial model) and use it
    EVERYWHERE two things must agree bit-for-bit on a rounded value: the engine, the
    independent audit's re-derivation of the same arithmetic, and any verifier that

@@ -4,7 +4,6 @@
   "fed_funds_lower": 3.75,
   "fed_funds_upper": 4.0,
   "fed_funds_prev_upper": 3.75,
-  "fed_vote": "unanimous hike (was 9-3 hold with 3 dissents for a hike in July)",
   "fed_dot_2026": 4.1,
   "fed_dots_one_more": 12,
   "fed_dots_two_more": 4,
@@ -42,6 +41,10 @@
     5.1
    ]
   ],
+  "ust_10y_provisional": [
+   "2026-09-23"
+  ],
+  "ust_10y_market_print": 5.104,
   "ust_10y_withheld": [],
   "ust_10y_disputed": [
    4.99,
@@ -52,15 +55,18 @@
   "ust_10y_peak_date": "2026-09-23",
   "ust_10y_peak_prev": 5.04,
   "ust_10y_peak_prev_date": "2026-09-15",
-  "ust_2y": 4.947,
+  "ust_2y": 4.889,
   "ust_2y_date": "2026-09-23",
-  "ust_30y": 5.39,
+  "ust_30y": 5.398,
   "ust_30y_date": "2026-09-23",
   "ust_curve_basis": "mid-session readings, not closes",
   "fed_hike_odds_oct": 73.0,
-  "fed_hike_odds_oct_prev": 50.9,
-  "fed_hike_odds_oct_prev_date": "2026-09-17",
+  "fed_hike_odds_oct_prev": 55.0,
+  "fed_hike_odds_oct_prev_date": "2026-09-22",
+  "fed_hike_odds_oct_first": 50.9,
+  "fed_hike_odds_oct_first_date": "2026-09-17",
   "fed_hike_odds_dec": 88.5,
+  "fed_hike_odds_dec_date": "2026-09-17",
   "fed_hike_odds_sep_final": 92.0,
   "fed_hike_odds_sep_date": "2026-09-16",
   "ecb_sep_delivered": 2.5,
@@ -73,8 +79,8 @@
   "us_pmi_composite_aug": 56.0,
   "us_pmi_services_sep": 58.7,
   "us_pmi_services_consensus": 56.0,
-  "us_pmi_manufacturing_sep": 56.7,
-  "us_pmi_manufacturing_aug": 53.1,
+  "us_pmi_manufacturing_sep": 57.0,
+  "us_pmi_manufacturing_aug": 53.9,
   "us_5y_auction_size_bn": 70,
   "ecb_depo": 2.5,
   "ecb_depo_prev": 2.25,
@@ -128,12 +134,26 @@
   "ph_tbill_91": 5.138,
   "ph_tbill_182": 5.517,
   "ph_tbill_364": 5.717,
-  "brent": 99.25,
-  "brent_chg_reported": -1,
-  "brent_date": "2026-09-22",
-  "brent_withheld": [
-   "2026-09-23"
+  "brent_history": [
+   [
+    "2026-09-18",
+    103.87
+   ],
+   [
+    "2026-09-21",
+    100.34
+   ],
+   [
+    "2026-09-22",
+    99.25
+   ],
+   [
+    "2026-09-23",
+    103.08
+   ]
   ],
+  "brent_chg_reported": 3.86,
+  "brent_withheld": [],
   "brent_disputed_23sep": [
    98.44,
    101.61,
@@ -152,10 +172,10 @@
   ],
   "brent_high": 108.75,
   "brent_high_date": "2026-09-15",
-  "brent_prev": 100.34,
   "brent_closure": 130.0,
   "brent_mom": 13.24,
-  "brent_yr_ago": 65.5,
+  "brent_yr_ago": 66.57,
+  "brent_yr_ago_date": "2025-09-22",
   "hormuz_transits": 8,
   "hormuz_transits_date": "2026-09-13",
   "hormuz_transits_cadence_d": 7,
@@ -278,10 +298,13 @@
   "spx_prev": 7764.64,
   "nasdaq_prev": 27244.28,
   "dow_prev": 51863.69,
-  "wti_settle": 94.59,
-  "wti_chg_pct": -1.2,
-  "wti_date": "2026-09-22",
-  "wti_prev": 95.78,
+  "wti_settle": 92.16,
+  "wti_chg_pct": 1.81,
+  "wti_date": "2026-09-23",
+  "wti_contract": "2026-11",
+  "wti_prev_date": "2026-09-22",
+  "wti_expired_contract": "2026-10",
+  "wti_expired_settle": 94.59,
   "vix_2026_low": 13.8,
   "vix_aug_low": 14.18,
   "vix_1m_avg": 15.28,
@@ -350,9 +373,17 @@
   "ust_10y_prev_date": "2026-09-22",
   "ust_10y_prev": 4.97,
   "ust_10y_chg_bp": 13.0,
-  "brent_yoy": 51.53,
-  "brent_off_high_pct": 8.74,
-  "brent_chg_pct": -1.09,
+  "brent_date": "2026-09-23",
+  "brent": 103.08,
+  "brent_prev_date": "2026-09-22",
+  "brent_prev": 99.25,
+  "wti_expired_last_trade": "2026-09-22",
+  "wti_prev_implied": true,
+  "wti_prev": 90.52,
+  "brent_yoy": 54.84,
+  "fed_hike_odds_oct_chg_pp": 18.0,
+  "brent_off_high_pct": 5.21,
+  "brent_chg_pct": 3.86,
   "usdphp_ytd_pct": 6.27,
   "usdphp_chg_ctvo": 0.0,
   "hormuz_vessel_drop_pct": 91.0,
@@ -360,7 +391,7 @@
   "hormuz_queue_now": 376,
   "hormuz_queue_lo": 357,
   "hormuz_queue_hi": 376,
-  "hormuz_transits_age_d": 10,
+  "hormuz_transits_age_d": 11,
   "hormuz_flow_drop_pct": 33.0,
   "vix_futs": [
    [
@@ -421,7 +452,7 @@
    "6M": 2.67,
    "12M": 3.0,
    "10Y": 3.44,
-   "why": "Near horizons cut again, ten-year anchor held. Payrolls and PMI both say growth is fine - August payrolls +162k against a 53k consensus, and the September composite PMI hit 58.4, the strongest since July 2021 - but the rate path just repriced harder than at any point since the hike itself. On official closes the 10-year went 4.94% on 17 Sep, 5.01% on the 18th, 4.96% on the 21st, 4.97% on the 22nd and 5.10% on the 23rd - a 13bp jump, the biggest one-day move in this series - after peaking at 5.135% intraday, the highest since July 2007. The 2-year traded near 4.947%, its highest since May 2024; the 30-year near 5.39%, its highest since July 2004. The trigger: Fed Governor Barr said further hikes are 'likely to be needed', a $70bn 5-year auction met weak demand, and CME FedWatch's October odds jumped from 50.9% to 73% in a day. Equities gave up the UN-week gains: the S&P fell 0.75% to 7706.03, the Nasdaq 1.13% to 26936.04 ending its two-session record streak, and the Dow 0.68% to 51511.59. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
+   "why": "Near horizons cut again, ten-year anchor held. Payrolls and PMI both say growth is fine - August payrolls +162k against a 53k consensus, and the September composite PMI hit 58.4, the strongest since July 2021 - but the rate path just repriced harder than at any point since the hike itself. On official closes the 10-year went 4.94% on 17 Sep, 5.01% on the 18th, 4.96% on the 21st and 4.97% on the 22nd, then a provisional 5.10% on the 23rd (the 5.104% market-close print) - a 13bp jump, the biggest one-day move in this series - after peaking at 5.135% intraday, the highest since July 2007. The 2-year read 4.889%, its highest since May 2024; the 30-year 5.398%, its highest since June 2007. The trigger: Fed Governor Barr said further hikes are 'likely to be needed', a $70bn 5-year auction met weak demand, and CME FedWatch's October odds jumped from 55% to 73% in a day. Equities gave up the UN-week gains: the S&P fell 0.75% to 7706.03, the Nasdaq 1.13% to 26936.04 ending its two-session record streak, and the Dow 0.68% to 51511.59. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
    "blend_10": 5.76,
    "3M_10": 4.25,
    "6M_10": 4.75,
@@ -434,7 +465,7 @@
    "6M": 1.89,
    "12M": 2.11,
    "10Y": 2.56,
-   "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +51.5% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
+   "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +54.8% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
    "blend_10": 3.83,
    "3M_10": 2.5,
    "6M_10": 3.0,
@@ -460,7 +491,7 @@
    "6M": 3.0,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth has turned: Brent's last verified settle is $99 after five straight down sessions (23 Sep is disputed and withheld), which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has held there: 62.725, flat on 23 Sep after appreciating 5.5 centavos on the 22nd on US-Iran talk optimism, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.27% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% on 18 Sep are what the earlier recovery cost. The PSEi fell a fourth straight session, to 5795.14. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has held there: 62.725, flat on 23 Sep after appreciating 5.5 centavos on the 22nd on US-Iran talk optimism, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.27% loss of purchasing power against the dollar this year, and PH 10-year yields around 7.50% on 18 Sep are what the earlier recovery cost. The PSEi fell a fourth straight session, to 5795.14. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
    "blend_10": 5.5,
    "3M_10": 5.5,
    "6M_10": 5.5,
@@ -493,7 +524,7 @@
   "vix3m_date": "2026-09-11",
   "vix3m_model": 17.68,
   "vix3m_resid": -4.97,
-  "strip_age_d": 19
+  "strip_age_d": 20
  },
  "drivers": [
   {
@@ -501,28 +532,28 @@
    "weight": 0.2,
    "score": 1.33,
    "score_10": 1.75,
-   "note": "CUT AGAIN - the 'what is priced is absorbed' argument that held this driver at 2.25 for a week broke on 23 September. Three things arrived the same day: the S&P Global composite PMI hit 58.4 (from 56.0), the strongest US private-sector expansion since July 2021, with input costs rising the fastest since October 2022; a $70bn 5-year note auction met weak demand; and Fed Governor Barr - a sitting voting member - said 'in my base case, further policy adjustments are likely to be needed', explicitly citing that inflation risk has risen while labour-market risk has receded. CME FedWatch puts October at 73%, up from 50.9% on the 17th - not a drift, a REPRICING, and the biggest one-day move in Treasuries since April 2025. Cumulative odds of at least one more hike by December stand at 88.5% - unchanged since the 17th, because October alone cannot exceed the cumulative figure that already priced it in. On official closes the 10-year went 4.94% on the 17th, 5.01% on the 18th, 4.96% on the 21st, 4.97% on the 22nd and 5.10% on the 23rd - a 13bp jump that is now the largest single-session move in this series - after peaking at 5.135% intraday, the highest since July 2007 and the figure that superlative now belongs to (the 15 Sep peak of 5.04% is superseded). The 2-year traded near 4.947%, its highest since May 2024, and the 30-year near 5.39%, its highest since July 2004. The ECB finished its own cycle on 10 Sep at 2.50%; BSP is at 5.00% after three hikes; the BoJ joined on 18 Sep at 1.25%. Cut half a point rather than further: the hike itself is not the new information - 16 of 18 dot-plot participants already saw one more this year - what changed is HOW SOON the market now thinks it lands, and October at 73% against 50.9% a week ago is that repricing happening in real time, not a new regime."
+   "note": "CUT AGAIN - the 'what is priced is absorbed' argument that held this driver at 2.25 for a week broke on 23 September. Three things arrived the same day: the S&P Global composite PMI hit 58.4 (from 56.0), the strongest US private-sector expansion since July 2021, with input costs rising the fastest since October 2022; a $70bn 5-year note auction met weak demand; and Fed Governor Barr - a sitting voting member - said 'in my base case, further policy adjustments are likely to be needed', explicitly citing that inflation risk has risen while labour-market risk has receded. CME FedWatch puts October at 73%, from 55% on the 22nd - an 18-point move in one session, on the day the 10-year made its sharpest one-day jump since April 2025. It read 50.9% on the 17th, so most of the week's repricing happened in that single day. Cumulative odds of at least one more hike by December were last verified at 88.5% on the 17th and not re-found on the 23rd; October alone cannot exceed the cumulative figure, so the two are consistent - but consistent is not re-verified. On official closes the 10-year went 4.94% on the 17th, 5.01% on the 18th, 4.96% on the 21st and 4.97% on the 22nd; the 23rd is provisional at 5.10%, the 5.104% market-close print, with the Treasury's own figure not yet confirmed - a 13bp jump, the largest single-session move in this series, after peaking at 5.135% intraday, the highest since July 2007 and the figure that superlative now belongs to (the 15 Sep peak of 5.04% is superseded). The 2-year read 4.889% late in the session, its highest since May 2024, and the 30-year 5.398%, its highest since June 2007. The ECB finished its own cycle on 10 Sep at 2.50%; BSP is at 5.00% after three hikes; the BoJ joined on 18 Sep at 1.25%. Cut half a point rather than further: the hike itself is not the new information - 16 of 18 dot-plot participants already saw one more this year - what changed is HOW SOON the market now thinks it lands, and October at 73% against 50.9% a week ago is that repricing happening in real time, not a new regime."
   },
   {
    "name": "Inflation trajectory",
    "weight": 0.15,
    "score": 1.78,
    "score_10": 2.75,
-   "note": "CUT a quarter point - two-sided is still the right frame, but the forward side just got louder. The core measure improved - August core CPI 2.4% y/y from 2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that progress in real time: core rose 0.3% on the month against a 0.2% consensus, gasoline is +27.4% y/y and fuel oil +52%. What is new is forward-looking, not backward: the S&P Global composite PMI for September, released 23 Sep, reported input costs rising at their steepest pace since October 2022, driven by fuel, freight and wages together - a survey reading of pipeline pressure, months ahead of the CPI print it will eventually show up in. Euro HICP 3.3%. PH eased to 6.1%, a fourth straight deceleration - and Brent at $99, five sessions lower, now works FOR a fifth rather than against it, though 23 Sep's settle is withheld pending a genuine chain."
+   "note": "CUT a quarter point - two-sided is still the right frame, but the forward side just got louder. The core measure improved - August core CPI 2.4% y/y from 2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that progress in real time: core rose 0.3% on the month against a 0.2% consensus, gasoline is +27.4% y/y and fuel oil +52%. What is new is forward-looking, not backward: the S&P Global composite PMI for September, released 23 Sep, reported input costs rising at their steepest pace since October 2022, driven by fuel, freight and wages together - a survey reading of pipeline pressure, months ahead of the CPI print it will eventually show up in. Euro HICP 3.3%. PH eased to 6.1%, a fourth straight deceleration - but Brent is back at $103.08 after a +3.86% day that snapped five straight declines. That is inside the range this score was set against rather than above it, which is why the cut stops at a quarter point."
   },
   {
    "name": "Growth momentum",
    "weight": 0.15,
    "score": 2.44,
    "score_10": 4.25,
-   "note": "RAISED a quarter point on the hardest data point of the week: the S&P Global flash composite PMI for September hit 58.4, from 56.0, the strongest private-sector expansion since July 2021 - services led at 58.7 against a 56 consensus, manufacturing accelerated to 56.7 from 53.1. August payrolls were already strong, +162k against a 53k consensus, unemployment 4.1%. This driver's own lane is whether the growth engine is intact under the shocks, not what the bond market did in reaction to the same print - that belongs to Monetary policy, which absorbed the hit: the PMI beat is exactly why the 10-year jumped 13bp on 23 Sep and equities fell 0.75/1.13/0.68% across the board. Read separately, the PMI print is unambiguous growth evidence; kept here rather than double-counted in the rate driver's cut. Saudi output is still down ~1.9 mb/d after Houthi strikes. The IMF's 3.1% global forecast was written against an oil price nearly forty dollars lower and a 10-year yield nowhere near 5.10%, a second tax on every long-duration cash flow here."
+   "note": "RAISED a quarter point on the hardest data point of the week: the S&P Global flash composite PMI for September hit 58.4, from 56.0, the strongest private-sector expansion since July 2021 - services led at 58.7 against a 56 consensus, and the manufacturing PMI jumped to 57.0 from 53.9, a 52-month high. August payrolls were already strong, +162k against a 53k consensus, unemployment 4.1%. This driver's own lane is whether the growth engine is intact under the shocks, not what the bond market did in reaction to the same print - that belongs to Monetary policy, which absorbed the hit: the PMI beat is exactly why the 10-year jumped 13bp on 23 Sep and equities fell 0.75/1.13/0.68% across the board. Read separately, the PMI print is unambiguous growth evidence; kept here rather than double-counted in the rate driver's cut. Saudi output is still down ~1.9 mb/d after Houthi strikes. The IMF's 3.1% global forecast was written against an oil price nearly forty dollars lower and a 10-year yield nowhere near 5.10%, a second tax on every long-duration cash flow here."
   },
   {
    "name": "Corporate earnings",
    "weight": 0.2,
    "score": 3.67,
    "score_10": 7.0,
-   "note": "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) is unrevised and the AI capex cycle keeps compounding through the semis supply chain. Trimmed because the margin assumption underneath those estimates is harder to hold at $99 oil than at $65.50, where it was a year ago - though the $108.75 peak of 15 Sep has now come off 8.7% over five straight down sessions. The selling has hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."
+   "note": "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) is unrevised and the AI capex cycle keeps compounding through the semis supply chain. Trimmed because the margin assumption underneath those estimates is harder to hold at $103 oil than at $66.57, where it was a year ago - and the five straight down sessions from the $108.75 peak of 15 Sep ended on 23 Sep with a 3.86% rally, leaving Brent 5.21% below that peak. The selling has hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."
   },
   {
    "name": "Valuation support",
@@ -543,7 +574,7 @@
    "weight": 0.1,
    "score": 1.22,
    "score_10": 1.5,
-   "note": "RESTORED to 1.5, where it stood before 14 Sep - and no higher. The cut to 1.25 was made for two named reasons: the Hormuz bypass was shut, and the Oman talks were called off. On 22 Sep BOTH reversed as facts rather than as prices. Saudi Arabia restarted the 1200 km East-West (Petroline) pipeline, which had been carrying roughly 5.0 mb/d to Yanbu specifically to route around the Strait, and a cargo was scheduled to load there for China the same day. And US negotiators met an Iranian delegation for three hours on the sidelines of the UN General Assembly; Trump called it very good, though one account describes the talks as indirect, through mediators. A score cut for two reasons comes back when both reasons are gone. It does not go further, because what is left is still bad. The pipeline is at well below normal throughput - 40% within a couple of days, six to eight weeks to full - and Kpler's Yanbu loss of 2.5 to 2.7 mb/d does not close in a week. Trump put a deal after the US midterms, six weeks out, and said that without one he could annihilate Iran; Iran's terms are the blockade lifted, frozen assets returned and an end to the war on all fronts. The Strait itself is still closed. Read the disruption on VOLUME, not vessel counts. The counts disagree about fivefold by what they count - IMF PortWatch 8 transits a day against an 85 baseline on its 13 Sep reading, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the US government around 30 - and none of them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up from a 5.5 trough in March, is dated 2026-08-28 and predates both the pipeline strike and its restart, so it is carried as the last measurement and nothing more. Aramco loaded ~14mb onto seven VLCCs at Ras Tanura on 20 Sep - a different port, before the pipeline restart - which is the resilience this score has been crediting even while Yanbu stayed dry. The queue off berth is oscillating, not draining: 369, 357 and 376 vessels on 18-20 Sep on one stated basis. Brent's last verified settle is $99.25 on 22 Sep, a fifth straight down session, 8.7% off the $108.75 high of 15 Sep and still +51.5% y/y; 23 Sep is WITHHELD - three incompatible settle pairs were reported and none of them chains against its own WTI partner, so no new settle is asserted here either - see the disputed range published alongside this input. Pezeshkian's UNGA reply on the 23rd was the geopolitical event of the day and it argues against reading too much into the market's optimism: defiant, not conciliatory - he held up images of the war's dead and rejected Trump's own account that a deal is likely after the midterms. Rhetoric does not move this score; the pipeline restart and the meeting on the 22nd were facts, this speech is not one, and nothing about it reverses either fact. Still NOT scored at the floor or near it: the stress table models full closure and Brent above $130, a strictly worse state that is not off the table while the Strait stays shut."
+   "note": "RESTORED to 1.5, where it stood before 14 Sep - and no higher. The cut to 1.25 was made for two named reasons: the Hormuz bypass was shut, and the Oman talks were called off. On 22 Sep BOTH reversed as facts rather than as prices. Saudi Arabia restarted the 1200 km East-West (Petroline) pipeline, which had been carrying roughly 5.0 mb/d to Yanbu specifically to route around the Strait, and a cargo was scheduled to load there for China the same day. And US negotiators met an Iranian delegation for three hours on the sidelines of the UN General Assembly; Trump called it very good, though one account describes the talks as indirect, through mediators. A score cut for two reasons comes back when both reasons are gone. It does not go further, because what is left is still bad. The pipeline is at well below normal throughput - 40% within a couple of days, six to eight weeks to full - and Kpler's Yanbu loss of 2.5 to 2.7 mb/d does not close in a week. Trump put a deal after the US midterms, six weeks out, and said that without one he could annihilate Iran; Iran's terms are the blockade lifted, frozen assets returned and an end to the war on all fronts. The Strait itself is still closed. Read the disruption on VOLUME, not vessel counts. The counts disagree about fivefold by what they count - IMF PortWatch 8 transits a day against an 85 baseline on its 13 Sep reading, Lloyd's List Intelligence 14 counting only cargo over 10000 dwt, the US government around 30 - and none of them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up from a 5.5 trough in March, is dated 2026-08-28 and predates both the pipeline strike and its restart, so it is carried as the last measurement and nothing more. Aramco loaded ~14mb onto seven VLCCs at Ras Tanura on 20 Sep - a different port, before the pipeline restart - which is the resilience this score has been crediting even while Yanbu stayed dry. The queue off berth is oscillating, not draining: 369, 357 and 376 vessels on 18-20 Sep on one stated basis. Brent settled at $103.08 on 23 Sep, up 3.86%, snapping five straight down sessions - still 5.21% below the $108.75 high of 15 Sep, and +54.8% on a year earlier. That session was withheld on this page's first pass and resolved on its second: two Brent candidates each reproduced their own percentage, the post-settlement reporting put oil UP, and the WTI gap that blocked it was a contract roll - the October contract expired on 22 Sep, so every Wednesday WTI print was November. Pezeshkian's UNGA reply on the 23rd is what the market rallied on: defiant, not conciliatory - 'Iran cannot be made to surrender' - he held up images of the war's dead and rejected Trump's own account that a deal is likely after the midterms, and Iran's military said it was ready for 'more crushing' strikes. The price moved; this score does not, for the same reason it did not rise when crude fell on the 21st: rhetoric is not a fact, and nothing said on the 23rd reverses the pipeline restart or the meeting of the 22nd. The fact to watch is Saudi Arabia's reported aim of a meaningful Petroline resumption by Saturday. Still NOT scored at the floor or near it: the stress table models full closure and Brent above $130, a strictly worse state that is not off the table while the Strait stays shut."
   }
  ],
  "driver_scale": {
@@ -862,7 +893,7 @@
   "ppp_now": 2.7
  },
  "vix_quote_date": "2026-09-04",
- "review_date": "2026-09-23",
+ "review_date": "2026-09-24",
  "regional_tilt_per_pt": 0.675,
  "driver_tilt_cal": {
   "monetary": 4.0,
@@ -882,12 +913,12 @@
   {
    "date": "2026-10-06",
    "what": "Philippine September CPI",
-   "why": "The peso sleeve's real-carry argument rests on PH inflation decelerating; August was the fourth consecutive slowdown. Oil has turned from the risk to the help - Brent at $99 after five down sessions - so the thing working against a fifth is now inside the print: rice accelerating to 19.4% from 17.1% while the deceleration came from food falling to 4.6%."
+   "why": "The peso sleeve's real-carry argument rests on PH inflation decelerating; August was the fourth consecutive slowdown. Oil turned from the risk to the help and then partly back - five down sessions took Brent to $99.25 on 22 Sep, and it settled at $103.08 on 23 Sep - so the print has two things working against a fifth: the crude bill, and rice accelerating to 19.4% from 17.1% while the deceleration came from food falling to 4.6%."
   },
   {
    "date": "2026-10-28",
    "what": "FOMC decision",
-   "why": "The September hike is done; October is close to a coin flip at 50.9%, and cumulative odds of at least one further move by December are 88.5%. The dot plot median already has one more this year, so the question is timing, and whether the four participants who see two are right."
+   "why": "The September hike is done; October is priced at 73% after the 23 Sep repricing, and cumulative odds of at least one further move by December were last verified at 88.5% on 17 Sep. The dot plot median already has one more this year, so the question is timing, and whether the four participants who see two are right."
   }
  ],
  "postponed": [
@@ -946,7 +977,7 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $99. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $103. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
     "cagr": 2.31,
     "vol": 23.05,
     "maxdd": -53.0
@@ -1022,7 +1053,7 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $99. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
+    "desc": "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, ~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US forces have since destroyed one Iranian tanker and disabled two more. This row models the tail from here: full Strait closure and Brent to $130+ from $103. Global CPI re-accelerates, Fed forced to hike, multiples compress hardest at the long end.",
     "cagr": 2.86,
     "vol": 21.68,
     "maxdd": -47.6
@@ -1669,7 +1700,7 @@
   },
   {
    "org": "S&P Global",
-   "what": "US Flash Composite PMI, September 2026 - 58.4 from 56.0, strongest since July 2021; services 58.7, manufacturing 56.7; input costs steepest since October 2022",
+   "what": "US Flash Composite PMI, September 2026 - 58.4 from 56.0, strongest since July 2021; services 58.7 (56.0 consensus); manufacturing PMI 57.0 from 53.9, a 52-month high (manufacturing output index 56.7); input prices highest since October 2022",
    "url": "https://www.pmi.spglobal.com/Public/Home/PressRelease/7c2acaf676064c92bab19610524887d3"
   },
   {
@@ -1679,12 +1710,12 @@
   },
   {
    "org": "CNBC",
-   "what": "10-year Treasury yield rockets to 19-year high, 23 September 2026 - closed 5.10% (+13bp), intraday peak 5.135%; October hike odds 73% from 50.9%",
+   "what": "10-year Treasury yield rockets to 19-year high, 23 September 2026 - 10-year +13bp to 5.104% (market print; intraday peak 5.135%), 2-year +11bp to 4.889% (highest since May 2024), 30-year +9bp to 5.398% (highest since June 2007)",
    "url": "https://www.cnbc.com/2026/09/23/treasury-yields-oil-inflation-fed.html"
   },
   {
    "org": "CNBC",
-   "what": "Market sees next Fed hike in October, following Barr comments and hot inflation reading, 23 September 2026 - CME FedWatch October odds 73%",
+   "what": "Market sees next Fed hike in October, following Barr comments and hot inflation reading, 23 September 2026 - CME FedWatch October odds 73%, from 55% on Tuesday",
    "url": "https://www.cnbc.com/2026/09/23/market-sees-next-fed-hike-in-october-following-barr-comments-hot-inflation.html"
   },
   {
@@ -1716,6 +1747,26 @@
    "org": "Reuters / Hydrocarbon Processing",
    "what": "Saudi Arabia's East-West pipeline restart status, 23 September 2026 - targeting 4mb/d of 7mb/d capacity, 40% within days, full restart 6-8 weeks; ~14mb loaded onto 7 VLCCs at Ras Tanura on 20 September",
    "url": "https://www.hydrocarbonprocessing.com/news/2026/09/saudi-arabia-restarts-east-west-oil-pipeline/"
+  },
+  {
+   "org": "CNBC",
+   "what": "Oil prices rise, snap five day losing streak as Iran vows it will not surrender, 23 September 2026 - Brent +3.9% to $103.08, WTI (November) +1.8% to $92.16",
+   "url": "https://www.cnbc.com/2026/09/23/iran-us-talks-crude-oil-un-wti.html"
+  },
+  {
+   "org": "MarketScreener / Dow Jones",
+   "what": "October WTI crude contract closes down $1.19, or 1.2%, settles at $94.59 - the expiring contract's final settle, 22 September 2026",
+   "url": "https://www.marketscreener.com/news/october-wti-crude-oil-contract-closes-down-1-19-or-1-2-settles-at-94-59-per-barrel-november-br-ce785ad8d08af725"
+  },
+  {
+   "org": "NBC News",
+   "what": "Treasury yields surge to near 20-year high as oil jumps back above $103 per barrel, 23 September 2026 - sharpest one-day 10-year jump since 9 April 2025",
+   "url": "https://www.nbcnews.com/business/energy/treasury-yields-oil-stocks-rcna599398"
+  },
+  {
+   "org": "CNBC",
+   "what": "Oil prices dip as Iraq increases exports, 22 September 2025 - Brent settled $66.57, the year-ago base for Brent's y/y change",
+   "url": "https://www.cnbc.com/amp/2025/09/22/oil-is-little-changed-as-russia-mideast-concerns-offset-by-oversupply-worry.html"
   }
  ]
 }
