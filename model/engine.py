@@ -537,7 +537,9 @@ MACRO = {
     # guard added on 14 Sep fires the moment it settles, which is what it was for.
     # The three that remain are still 4 September quotes and still stale; that is
     # disclosed rather than fixed, because no fresher strip has been found in
-    # THIRTEEN consecutive days of looking - 19 days of age against a 30-day bound. Dropping the front contract moves the horizon blend by 0.04
+    # FOURTEEN consecutive days of looking - 20 days of age against a 30-day bound
+    # on 2026-09-24 (Cboe and vixcentral are unreachable from the build host; the
+    # one secondary figure found repeats the 4 Sep levels). Dropping the front contract moves the horizon blend by 0.04
     # and changes no fund's volatility tilt.
     # As of 2026-09-19 the cost of that staleness is MEASURED, not guessed: against
     # VIX3M on 11 Sep, re-anchored to the same spot, this curve reads 4.97% LOW.
@@ -752,27 +754,20 @@ MACRO["vix_fut_dec"] = MACRO["vix_futs"][-1][2]
 # than dropped, because "the thing that was going to resolve this did not happen" is
 # itself information the page should carry. (2026-09-14.)
 POSTPONED = [("Iran-GCC talks on the Strait, in Oman",
-              "Called off on 14 September 'in the interests of consensus' per Oman's "
-              "foreign minister, with no new date. Iran had been due to unveil the "
-              "temporary shipping lane it agreed with Muscat. The Oman meeting "
-              "itself has still not been rescheduled; US and Iranian delegations did "
-              "meet instead, for three hours at the UN on 22 September, and that "
-              "meeting - not this one - is what restored the energy driver.")]
+              "Called off on 14 September with no new date; Iran was to unveil the "
+              "temporary shipping lane agreed with Muscat. US and Iranian delegations "
+              "met at the UN on 22 September instead, and that meeting is what "
+              "restored the energy driver.")]
 
 CATALYSTS = [
     ("2026-10-06", "Philippine September CPI",
-     "The peso sleeve's real-carry argument rests on PH inflation decelerating; "
-     "August was the fourth consecutive slowdown. Oil turned from the risk to the "
-     "help and then partly back - five down sessions took Brent to $99.25 on 22 Sep, "
-     "and it settled at $103.08 on 23 Sep - so the print has two things working "
-     "against a fifth: the crude bill, and rice accelerating to 19.4% from 17.1% "
-     "while the deceleration came from food falling to 4.6%."),
+     "The peso sleeve's real carry needs PH inflation to keep slowing; August "
+     "was the fourth slowdown in a row. Two things work against a fifth: Brent "
+     "back at $103.08 on 23 Sep, and rice inflation up to 19.4% from 17.1%."),
     ("2026-10-28", "FOMC decision",
-     "The September hike is done; October is priced at 73% after the 23 Sep "
-     "repricing, and cumulative odds of at least one further move by December were "
-     "last verified at 88.5% on 17 Sep. The dot "
-     "plot median already has one more this year, so the question is timing, and "
-     "whether the four participants who see two are right."),
+     "October is priced at 73% after the 23 Sep repricing; at least one more "
+     "hike by December was last verified at 88.5% on 17 Sep. The dot-plot median "
+     "already has one more this year, so the question is timing."),
 ]
 
 # ----------------------------------------------------------------------------
@@ -1106,6 +1101,23 @@ DRIVERS = [
      "worse state that is not off the table while the Strait stays shut."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
+
+# ONE-LINE SUMMARIES, shown by default; the full note sits one tap behind each.
+# A check requires every number in a summary to appear in its full note, so a
+# summary cannot drift from the reasoning it abbreviates.
+SUMMARY = {
+    "Monetary policy & liquidity": "Cut to 1.75: a hot PMI, a weak 5-year auction and a hawkish Governor Barr took October hike odds to 73% and the 10-year to its highest since 2007.",
+    "Inflation trajectory": "Trimmed to 2.75: core CPI eased to 2.4%, but gasoline is +27.4% y/y and PMI input costs are rising at their steepest since October 2022.",
+    "Growth momentum": "Raised to 4.25: the September composite PMI hit 58.4, the strongest since July 2021, on top of +162k August payrolls.",
+    "Corporate earnings": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, trimmed only for margins at $103 oil.",
+    "Valuation support": "Raised to 8.25: the 23 Sep selloff cheapened multiples again - the one driver the shock improves.",
+    "Volatility & risk appetite": "Held at 3.0: spot VIX fell to 14.21 on the day yields jumped, while the futures curve still prices a wide ramp above it.",
+    "Geopolitics & energy": "Held at 1.5: the Petroline restart and the US-Iran meeting on 22 Sep stand as facts; the 23 Sep oil rally ran on a speech, and the Strait is still closed.",
+    "US": "Near horizons cut on the rate repricing; the ten-year anchor holds at 6.5 on energy self-sufficiency and a Nasdaq still below its average forward multiple.",
+    "EUROPE": "Ranked last: the ECB hiked to 2.50% into growth of just 0.7%, and Europe is the largest net energy importer facing this oil shock.",
+    "ASIA": "Ranked first over ten years: 10.5x forward against ~52% EPS growth; near horizons cut for a rate shock on top of an energy one.",
+    "PHILIPPINES": "Neutral across the curve: nominal carry is high and rising, but with August inflation at 6.1% the real carry is still not positive.",
+}
 
 
 GAUGE = to5(GAUGE_10)          # headline, 1-5
@@ -1487,10 +1499,8 @@ LOOKTHROUGH = {
         "note": "Top 10 equity positions of the JPMorgan Nasdaq Equity Premium "
                 "Income strategy. Figures are from the US-listed JEPQ factsheet; "
                 "ATRAM's feeder holds the UCITS sister fund (IE000U9J8HX9), which "
-                "runs the same strategy on the same universe. Refreshed to the "
-                "31 July sheet on 2026-09-13: the 30 June list carried here had "
-                "Tesla in the top ten and no Broadcom, which the later sheet "
-                "reverses, and six of the ten weights had moved.",
+                "runs the same strategy on the same universe. The 31 July sheet "
+                "is still the latest JPMorgan has published (checked 2026-09-24).",
         "rows": [["NVIDIA", 6.9], ["Apple", 6.4], ["Alphabet Class C", 5.3],
                  ["Microsoft", 5.0], ["Amazon", 4.3], ["Micron Technology", 4.1],
                  ["Advanced Micro Devices", 3.3], ["Meta Platforms", 2.4],
@@ -1523,12 +1533,10 @@ LOOKTHROUGH = {
         # and the residual line changed from "Managed funds" to "Cash and
         # equivalents". (Audit 2026-09-13.)
         "as_of": "2026-09-13",
-        "note": "Fidelity publishes this fund's sector composition but not a "
-                "current top-10 list at a source reachable from here. Sector "
-                "weights use the Industry Classification Benchmark. The date is "
-                "when these were read from Fidelity's factsheet page, which does "
-                "not publish its own snapshot date there - so they are Fidelity's "
-                "latest month-end, not a 13 September position.",
+        "note": "Fidelity publishes this fund's sector weights (Industry "
+                "Classification Benchmark) but no current top-10 list at a source "
+                "reachable from here. Dated when read: the page shows no snapshot "
+                "date, so these are Fidelity's latest month-end.",
         "rows": [["Technology", 66.45], ["Consumer Discretionary", 11.99],
                  ["Industrials", 10.40], ["Telecommunications", 6.47],
                  ["Real Estate", 2.67], ["Energy", 0.95],
@@ -1723,21 +1731,15 @@ FRONTIER = [{"maxdd": k, "dd": v[1]["maxdd"], "cagr": v[1]["cagr"], "weights": v
 # Each scenario is an additive shock (pp, annualised over 5y) per fund and a
 # vol multiplier, keyed to a live, named risk in the current macro picture.
 SCENARIOS = [
-    ("Hormuz escalation", "NOW PARTLY RUNNING. Two Saudi supertankers hit on 31 Aug, "
-     "~100 US strikes on Iran on 1 Sep, US strikes on Iranian tankers on 2 Sep, and US "
-     "forces have since destroyed one Iranian tanker and disabled two more. This row "
-     f"models the tail from here: full Strait closure and Brent to ${MACRO['brent_closure']:.0f}+ from "
-     f"${MACRO['brent']:.0f}. Global CPI re-accelerates, Fed forced to hike, multiples "
-     "compress hardest at the long end.",
+    ("Hormuz escalation", "Already partly running since the late-August tanker strikes. "
+     f"This row models the tail: full Strait closure and Brent to ${MACRO['brent_closure']:.0f}+ from "
+     f"${MACRO['brent']:.0f}. Global CPI re-accelerates, the Fed is forced to hike, and "
+     "multiples compress hardest at the long end.",
      {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5}, 1.60),
-    ("Hawkish repricing", "The three July dissenters win. NOTE this row is a TAIL, not "
-     "the base case, and what makes it a tail has changed since 9 September. September "
-     f"is no longer the question - it HAPPENED. The Fed hiked 25bp to 3.75-4.00% on "
-     f"16 September, unanimously, and the dot plot now has a median of "
-     f"{MACRO['fed_dot_2026']}% for end-2026, i.e. one more. This row models what is "
-     f"still NOT priced: a SECOND hike on top of that, which {MACRO['fed_dots_two_more']} "
-     f"of {MACRO['fed_dots_participants']} participants already see. "
-     "Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
+    ("Hawkish repricing", "A second hike on top of the one the dot plot already has "
+     f"(median {MACRO['fed_dot_2026']}% for end-2026) - {MACRO['fed_dots_two_more']} of "
+     f"{MACRO['fed_dots_participants']} participants see it. The Fed hikes into a 4.1% "
+     "unemployment rate; duration-heavy growth de-rates.",
      {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
@@ -1965,7 +1967,7 @@ def payload():
         # since the mandate lengthened - a field whose name contradicted its
         # contents is exactly how a correct number gets used wrongly.
         "sp_vol_lt": SP_VOL_LT,
-        "regions": {k: {**v} for k, v in REGIONS.items()},
+        "regions": {k: {**v, "summary": SUMMARY[k]} for k, v in REGIONS.items()},
         "hz_weights": HZ_W,
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
                         "quote_date": VIX_QUOTE_DATE,
@@ -1988,7 +1990,7 @@ def payload():
         # composite of the REPORTED scores is exactly the headline gauge; the check block
         # asserts that rather than assuming it.
         "drivers": [{"name": n, "weight": w,
-                     "score": to5(s), "score_10": s, "note": t}
+                     "score": to5(s), "score_10": s, "note": t, "summary": SUMMARY[n]}
                     for n, w, s, t in DRIVERS],
         "driver_scale": {"research_max": 10, "reported_max": 5,
                          "neutral": NEUTRAL_5, "neutral_10": 5.5},
@@ -2386,6 +2388,15 @@ def report():
                        and abs(-(f2["dd_k"] * f2["vol"] - DD_MU * f2["target_net_macro"])
                                * DD_HORIZON_SCALAR - f2["target_dd_macro"]) < 0.08
                        for f2 in F)))
+    # Every summary number must be stated in the full note it abbreviates.
+    _NUMRE = re.compile(r"\d+(?:\.\d+)?")
+    _full = {**{d[0]: d[3] for d in DRIVERS}, **{k: v["why"] for k, v in REGIONS.items()}}
+    _own = {d[0]: (f"{d[2]}", f"{d[2]:.2f}", f"{d[2]:.1f}") for d in DRIVERS}   # a driver's own score
+    _drift = [(k, n) for k, t in SUMMARY.items() for n in _NUMRE.findall(t)
+              if not re.fullmatch(r"(19|20)\d\d", n) and n not in _full[k]
+              and n not in _own.get(k, ())]
+    checks.append((f"every summary's figures are stated in its full note ({_drift or 'all'})",
+                   not _drift and set(SUMMARY) == set(_full)))
     # PH T-BILLS: each tenor's reported move reproduces from the previous auction,
     # and the auction is no older than two weekly cycles at review.
     _tb = [MACRO["ph_tbill_91"], MACRO["ph_tbill_182"], MACRO["ph_tbill_364"]]

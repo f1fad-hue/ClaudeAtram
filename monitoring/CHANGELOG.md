@@ -2,6 +2,63 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-24 (fifth pass) — Concision, and four sentences that had gone false
+
+### 1. The page, shortened
+
+Visible words by tab, before → after (fold-outs closed):
+
+| Tab | Before | After |
+|---|---:|---:|
+| Macro | 3,371 | 768 |
+| Volatility | 1,417 | 960 |
+| Funds | 1,395 | 1,230 |
+| Portfolios | 1,094 | 879 |
+| Report | 2,420 | 1,595 |
+| **Total** | **9,697** | **5,432** (−44%) |
+
+- Each driver and region now shows a one-line summary; the full note sits under a
+  **Why** fold-out, unchanged. A new check fails if a summary quotes a number its
+  full note does not contain.
+- The Report was rewritten end to end, with every bound id kept; history
+  narration (the oil-withholding story, the 15 Sep dating note, the cap timeline)
+  was cut from the page. It stays here and in CLAIMS.
+- Scenario, catalyst and look-through notes were shortened in the engine. Dead JS
+  bindings (`od1*`, `od2*`, `wtiexpd`, `brdisp`) were removed.
+
+### 2. Errors found while cutting
+
+- **Funds, look-through:** "security-level holdings … are not reproduced here"
+  directly above a JEPQ top-ten table. The sentence now points to the holdings.
+- **Volatility, ramp note:** "spot has since risen toward it, which would narrow
+  the ramp". It was true on 18 Sep. On 23 Sep spot (14.21) is *below* the curve's own
+  spot (14.32). The note now says only what stays true: the ramp changes when the strip
+  is re-quoted.
+- **Volatility, curve age:** "(-0.11 from the latest close)" read as the curve's
+  spot sitting below the latest close; it is 0.11 *above*. It is now worded rather
+  than signed, with an ASCII hyphen where the page uses U+2212.
+- **Report lede:** set a 23 Sep spot against a December future without saying the
+  future is a 4 Sep quote ("still prices"). Both dates are now bound on the line.
+- **Portfolios:** the baseline's "combined 55%" in US tech was typed; it is now
+  derived from the baseline weights.
+- **Conclusion:** "a 17% gain in the thing that actually compounds". A return-to-
+  drawdown ratio does not compound, so the phrase was cut.
+- The first edit reused a helper name from another scope (`dm`), which threw, and
+  the fix's `sed` briefly renamed the other one too. `validate.js`'s JS-error row
+  caught both before anything was published.
+
+### 3. Re-verified, unchanged
+
+- **JEPQ top ten:** JPMorgan's 31 July sheet is still the latest published.
+- **VIX futures strip:** still 4 Sep, 20 days old against a 30-day bound. Cboe and
+  vixcentral are unreachable from the build host, and the one secondary figure found
+  repeats the 4 Sep levels, so it corroborates the strip rather than refreshing it.
+- **US 10-year, 23 Sep:** still provisional at 5.104%. Treasury, FRED and the
+  aggregator are all unreachable. Reporting ("toward 5.1%", intraday above 5.12%)
+  is consistent.
+- Engine 163/163, audit 244/0, checklist 27/27, validate 18/18 on the published
+  copy. Allocation unchanged: **15 / 70 / 10 / 5**, 7.46% / −26.9%.
+
 ## 2026-09-24 (fourth pass) — The requirement validator was checking the wrong panel, and the T-bill curve was 22 days old under today's date
 
 ### 1. Every requirement, validated with a verdict
