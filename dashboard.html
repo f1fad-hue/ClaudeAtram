@@ -571,6 +571,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <p>Index weights are not holdings. Where a target fund publishes its real
       positions, they are shown here with the manager's own as-of date. Where one
       does not, that is recorded as a gap — not filled in with a plausible guess.</p>
+    <p class="note"><strong>No per-stock 10-year forecast is shown, deliberately.</strong>
+      No authoritative source publishes a 10-year return or drawdown forecast for an
+      individual share, and inventing one would break this page's sourcing rule. The
+      forecasts that apply to what you actually hold are the ones on each fund slide:
+      the feeder's, net of both fee layers, and the target fund's own, net of its fee
+      only — built from the index each target tracks, which these shares make up.</p>
     <div class="card" id="stocks"></div>
   </section>
 
@@ -826,8 +832,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         risk-reducing portfolio. It isn't: the drawdown control comes from the
         <em>equity mix</em>, not from hiding in cash, so the cash can be spent on
         return. What justifies keeping 15% is that peso cash is genuinely paid in
-        <em>nominal</em> terms — T-bills at <b class="num">5.14%</b> to
-        <b class="num">5.72%</b> after three BSP hikes to <b class="num">5.00%</b>.
+        <em>nominal</em> terms — T-bills at <b class="num" id="tb91">—</b> to
+        <b class="num" id="tb364">—</b> at the <b id="tbd">—</b> auction, after three
+        BSP hikes to <b class="num">5.00%</b>.
         Against August inflation of <b class="num" id="rycpi">—</b> the real yield still
         runs about <b class="num" id="ry91">—</b> to <b class="num" id="ry364">—</b>, so
         the sleeve is losing purchasing power — slowly. It earns its place on zero
@@ -1092,9 +1099,21 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "psei_chg_pct": -1.12,
   "psei_date": "2026-09-24",
   "psei_prev": 5795.14,
-  "ph_tbill_91": 5.138,
-  "ph_tbill_182": 5.517,
-  "ph_tbill_364": 5.717,
+  "ph_tbill_91": 5.431,
+  "ph_tbill_182": 5.821,
+  "ph_tbill_364": 6.043,
+  "ph_tbill_prev": [
+   5.348,
+   5.781,
+   5.922
+  ],
+  "ph_tbill_chg_bp": [
+   8.3,
+   4.0,
+   12.1
+  ],
+  "ph_tbill_date": "2026-09-21",
+  "ph_tbill_cadence_d": 7,
   "brent_history": [
    [
     "2026-09-18",
@@ -1454,7 +1473,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 3.0,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has stayed near it: 62.735 on 24 Sep, a centavo weaker after a flat 23rd, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.29% loss of purchasing power against the dollar this year. The PSEi fell another 1.12% on 24 Sep to 5730.02, extending a losing streak through the whole week. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 6.04% on the 21 Sep auction, up 12bp in a week as the Fed's hike fed through, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has stayed near it: 62.735 on 24 Sep, a centavo weaker after a flat 23rd, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.29% loss of purchasing power against the dollar this year. The PSEi fell another 1.12% on 24 Sep to 5730.02, extending a losing streak through the whole week. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
    "blend_10": 5.5,
    "3M_10": 5.5,
    "6M_10": 5.5,
@@ -1523,7 +1542,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.1,
    "score": 4.22,
    "score_10": 8.25,
-   "note": "RAISED a quarter point - the one driver the shock improves, and today added to it. The S&P, Nasdaq and Dow all fell together on 23 Sep (-0.75/-1.13/-0.68%) as the 10-year jumped to a post-2007 high, undoing most of the 21-22 Sep bounce and resuming the de-rating a 1.9% Nikkei fall and a month of index declines had already started, against estimates that have not moved. NDX 22.4x forward sits below both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount, Europe 15.4x. A cheaper multiple on the same earnings is better compensation for the same risk."
+   "note": "RAISED a quarter point - the one driver the shock improves, and the 23 Sep session added to it. The S&P, Nasdaq and Dow all fell together on 23 Sep (-0.75/-1.13/-0.68%) as the 10-year jumped to a post-2007 high, undoing most of the 21-22 Sep bounce and resuming the de-rating a 1.9% Nikkei fall and a month of index declines had already started, against estimates that have not moved. NDX 22.4x forward sits below both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount, Europe 15.4x. A cheaper multiple on the same earnings is better compensation for the same risk."
   },
   {
    "name": "Volatility & risk appetite",
@@ -1559,7 +1578,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "target": "Own mandate: outperform PH bank deposits, average portfolio duration <= 1 year",
    "target_verified": true,
    "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
-   "gross_note": "10y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
+   "gross_note": "10y average PH short-rate path. Anchored on the PH bill curve - 91d 5.43%, 182d 5.82%, 364d 6.04% at the 21 Sep auction, higher across the curve than when this assumption was set on 2 Sep - with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. Held at 4.85% and flagged rather than re-fitted: the rise sits in the part of the path that reverts within a few years, which lifts a ten-year average by roughly a tenth of a point - inside this assumption's precision, but a known upward bias until it is re-fitted. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
    "fee_feeder": 0.71,
    "fee_target": 0.0,
    "fee_total": 0.71,
@@ -1580,6 +1599,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
    "dd_base": -0.5,
    "dd_macro": -0.5,
+   "target_net_macro": null,
+   "target_dd_macro": null,
    "net_novol": 4.84,
    "net_neutral": 4.3
   },
@@ -1613,6 +1634,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_k_why": "At the 1.65 anchor: the premium's cushion is already in this sleeve's volatility (0.681x the Nasdaq-100) and its return; capped upside with full downside is negatively skewed, which argues against a lower k, not for one.",
    "dd_base": -32.3,
    "dd_macro": -31.8,
+   "target_net_macro": 9.5,
+   "target_dd_macro": -30.8,
    "net_novol": 7.04,
    "net_neutral": 8.38
   },
@@ -1646,6 +1669,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
    "dd_base": -39.2,
    "dd_macro": -39.2,
+   "target_net_macro": 8.71,
+   "target_dd_macro": -38.4,
    "net_novol": 7.53,
    "net_neutral": 7.93
   },
@@ -1679,6 +1704,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -56.8,
    "dd_macro": -58.0,
+   "target_net_macro": 8.25,
+   "target_dd_macro": -57.2,
    "net_novol": 7.66,
    "net_neutral": 8.3
   }
@@ -1714,20 +1741,20 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "ATRPHMM": {
    "dp": 3,
    "kind": "instruments",
-   "as_of": "2026-09-24",
+   "as_of": "2026-09-21",
    "note": "A money market fund holds paper, not shares. The live PH curve is the honest look-through.",
    "rows": [
     [
      "91-day T-bill",
-     5.138
+     5.431
     ],
     [
      "182-day T-bill",
-     5.517
+     5.821
     ],
     [
      "364-day T-bill",
-     5.717
+     6.043
     ]
    ],
    "unit": "% yield",
@@ -1877,8 +1904,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
  },
  "real_yield": {
   "cpi": 6.1,
-  "t91": -0.96,
-  "t364": -0.38
+  "t91": -0.67,
+  "t364": -0.06
  },
  "catalysts": [
   {
@@ -1926,7 +1953,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "vol": 14.41,
    "maxdd": -29.9,
    "ret_per_dd": 0.238,
-   "sharpe_like": 0.098,
+   "sharpe_like": 0.075,
    "terminal_1m": 1991182,
    "worst_1m_from_open": 701000
   },
@@ -1941,7 +1968,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "vol": 14.41,
    "maxdd": -29.9,
    "ret_per_dd": 0.236,
-   "sharpe_like": 0.093,
+   "sharpe_like": 0.071,
    "terminal_1m": 1978210,
    "worst_1m_from_open": 701000
   },
@@ -2001,7 +2028,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "vol": 13.67,
    "maxdd": -26.9,
    "ret_per_dd": 0.277,
-   "sharpe_like": 0.128,
+   "sharpe_like": 0.104,
    "terminal_1m": 2053375,
    "worst_1m_from_open": 731000
   },
@@ -2016,7 +2043,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "vol": 13.67,
    "maxdd": -27.3,
    "ret_per_dd": 0.255,
-   "sharpe_like": 0.091,
+   "sharpe_like": 0.067,
    "terminal_1m": 1959810,
    "worst_1m_from_open": 727000
   },
@@ -2072,7 +2099,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "vol": 2.76,
   "maxdd": -2.9,
   "ret_per_dd": 1.855,
-  "sharpe_like": -0.122,
+  "sharpe_like": -0.24,
   "terminal_1m": 1688814,
   "worst_1m_from_open": 971000
  },
@@ -2750,7 +2777,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "org": "Bureau of the Treasury PH",
-   "what": "T-bill auction results - 91d 5.138%, 182d 5.517%, 364d 5.717%",
+   "what": "T-bill auction results, 21 September 2026 - 91d 5.431% (+8.3bp), 182d 5.821% (+4.0bp), 364d 6.043% (+12.1bp), as reported by BusinessWorld and BusinessMirror",
    "url": "https://www.treasury.gov.ph/?cat=13"
   },
   {
@@ -3131,6 +3158,10 @@ $("#corrnote").textContent = D.corr_note;
     ? "The weights do not move: those drags lower the forecast, but they are not what sets this allocation."
     : "The weights move, so those drags are part of what sets this allocation.";
   $("#wQiap2").textContent = D.optimized.weights[WIDX.ATRQIAP] + "%";
+  $("#tb91").textContent  = D.macro.ph_tbill_91.toFixed(2) + "%";
+  $("#tb364").textContent = D.macro.ph_tbill_364.toFixed(2) + "%";
+  $("#tbd").textContent = new Date(D.macro.ph_tbill_date + "T00:00:00")
+    .toLocaleDateString("en-GB", { day: "numeric", month: "long" });
   ["#ntotal","#ntotal2","#ntotal3"].forEach(id => { $(id).textContent = D.optimized.n_total; });
   $("#whyalloc").textContent = "Why " + D.optimized.weights.join(" / ");
   const hzTxt = ["3M","6M","12M",HYL]
@@ -3210,11 +3241,8 @@ $("#stubline").innerHTML = (function () {
     if (S.cost < -0.005) return head + ` So the stub is not a cost at all: holding it is
       worth <b class="num">${Math.abs(S.cost).toFixed(2)}pp</b> MORE than the best
       portfolio without it.`;
-    return head + ` <strong>The stub is free.</strong> It cost
-      <b class="num">0.15pp</b> a week ago; the fee corrections of 9 September closed
-      that gap, so the optionality now costs nothing in expected return. This page said
-      the option "is not free" until today — it is, and that is worth stating plainly
-      rather than leaving a stale claim standing.`;
+    return head + ` <strong>The stub is free:</strong> holding it costs nothing in
+      expected return against the best portfolio without it.`;
   })();
 
 /* ---------------- gauge ---------------- */
@@ -3558,6 +3586,9 @@ const NOTE = {
              <span style="font-weight:500;color:var(--ink-3)">(${wB>wA?"+":""}${wB-wA})</span></dd></div>
            <div class="kv" style="display:block"><dt style="display:block;margin-bottom:3px">Own stated target</dt>
              <dd class="wrap" style="text-align:left">${f.target}</dd></div>
+           <div class="kv"><dt>Target fund itself, net of its own fee</dt><dd>${
+             f.target_net_macro === null ? "n/a — no target fund"
+             : pc(f.target_net_macro) + " · DD " + pc1(f.target_dd_macro)}</dd></div>
          </dl>
          <div class="flat" style="background:${FW[i]};border:0;font-size:11.5px;
            line-height:1.5;color:var(--ink)">${NOTE[f.id]}</div>

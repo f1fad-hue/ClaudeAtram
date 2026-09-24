@@ -132,6 +132,18 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+41. A HARNESS THAT PRINTS WITHOUT A VERDICT IS NOT A CHECK. `validate.js` dumped
+   JSON, and five of its fields read `false` for weeks - three because it read
+   `document.body.innerText` after visiting every tab (only the last, visible
+   panel), two because they looked for "5y"/"5Y" labels the 10-year mandate no
+   longer prints. Nothing failed, so nothing was fixed. Every harness states
+   PASS/FAIL per requirement and exits non-zero on failure; and requirement 1 is
+   validated against the PUBLISHED copy, because the host supplies the viewport.
+40. A DATE MUST BELONG TO THE NUMBER IT LABELS. The T-bill look-through was
+   labelled with the page's as-of date on the theory that it was "the live curve";
+   it was never refreshed after 2 Sep, so the label made a 22-day-old curve look
+   current. Date a figure by its own observation (the auction, the fact sheet, the
+   close), bound its age against its own cadence, and never borrow a date.
 39. "WHAT WOULD CHANGE THIS VIEW" IS A COUNTERFACTUAL THE ENGINE CAN RUN - SO RUN IT.
    The Report said that Brent under $70 and the Fed cutting would send Global
    Technology "back to a full weight". Re-running the optimiser with the rates and

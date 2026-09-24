@@ -239,9 +239,17 @@ MACRO = {
     "psei": 5730.02, "psei_chg_pts": -65.12, "psei_chg_pct": -1.12,
     "psei_date": "2026-09-24",   # 5730.02 + 65.12 = 5795.14, the 23 Sep close
     "psei_prev": 5795.14,
-    "ph_tbill_91": 5.138,
-    "ph_tbill_182": 5.517,
-    "ph_tbill_364": 5.717,
+    # PH T-BILLS, 21 Sep auction (BusinessWorld / BusinessMirror). CORRECTED
+    # 2026-09-24: 5.138 / 5.517 / 5.717 had been here since the build on 2 Sep,
+    # never refreshed, and since 13 Sep the look-through stamped them with the
+    # page's own as-of date as "the live curve" - 22 days and ~30bp stale on every
+    # tenor by the time it was caught. The rates now carry their AUCTION date, the
+    # previous auction for the chain, and a bound on age against the weekly cadence.
+    "ph_tbill_91": 5.431, "ph_tbill_182": 5.821, "ph_tbill_364": 6.043,
+    "ph_tbill_prev": [5.348, 5.781, 5.922],       # 14/15 Sep auction
+    "ph_tbill_chg_bp": [8.3, 4.0, 12.1],          # as reported
+    "ph_tbill_date": "2026-09-21",
+    "ph_tbill_cadence_d": 7,                      # BTr auctions T-bills weekly
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -933,7 +941,7 @@ REGIONS = {
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 5.72%, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has stayed near it: 62.735 on 24 Sep, a centavo weaker after a flat 23rd, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.29% loss of purchasing power against the dollar this year. The PSEi fell another 1.12% on 24 Sep to 5730.02, extending a losing streak through the whole week. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 6.04% on the 21 Sep auction, up 12bp in a week as the Fed's hike fed through, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has stayed near it: 62.735 on 24 Sep, a centavo weaker after a flat 23rd, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.29% loss of purchasing power against the dollar this year. The PSEi fell another 1.12% on 24 Sep to 5730.02, extending a losing streak through the whole week. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
     },
 }
 # to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
@@ -1028,8 +1036,8 @@ DRIVERS = [
      "with a 3.86% rally, leaving Brent 5.21% below that peak. "
      "The selling has hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."),
     ("Valuation support", 0.1, 8.25,
-     "RAISED a quarter point - the one driver the shock improves, and today added "
-     "to it. The S&P, Nasdaq and Dow all fell together on 23 Sep (-0.75/-1.13/"
+     "RAISED a quarter point - the one driver the shock improves, and the 23 Sep "
+     "session added to it. The S&P, Nasdaq and Dow all fell together on 23 Sep (-0.75/-1.13/"
      "-0.68%) as the 10-year jumped to a post-2007 high, undoing most of the "
      "21-22 Sep bounce and resuming the de-rating a 1.9% Nikkei fall and a month of "
      "index declines had already started, against estimates that have not moved. "
@@ -1143,7 +1151,7 @@ FUNDS = [
         "fee_feeder": 0.71, "fee_target": 0.00, "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
         "gross_usd": None,                 # PHP asset - no FX translation
         "gross_local": 4.85,
-        "gross_note": "10y average PH short-rate path. Anchored on the live curve (91d 5.14%, 182d 5.52%, 364d 5.72%) with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
+        "gross_note": "10y average PH short-rate path. Anchored on the PH bill curve - 91d 5.43%, 182d 5.82%, 364d 6.04% at the 21 Sep auction, higher across the curve than when this assumption was set on 2 Sep - with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. Held at 4.85% and flagged rather than re-fitted: the rise sits in the part of the path that reverts within a few years, which lifts a ten-year average by roughly a tenth of a point - inside this assumption's precision, but a known upward bias until it is re-fitted. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
         "vol_beta": 0.021, "fx_exposed": False,
         "macro_tilt": {"rates": +0.25, "energy": +0.05},
         "dd_k_adj": 0.0, "cash_like": True,
@@ -1359,6 +1367,13 @@ def build_fund(f):
         "dd_k": round(k, 2), "dd_k_why": f["dd_k_why"],
         "dd_base": round(-dd(base_net), 1),
         "dd_macro": round(-dd(macro_net), 1),
+        # THE TARGET FUND ITSELF (the ETF / SICAV each feeder buys): the same
+        # exposure, in pesos, net of its OWN charge only - i.e. the sleeve's
+        # return with the feeder's fee added back. Derived, not a separate
+        # estimate; the gap to net_macro is exactly what the feeder layer costs.
+        # None for the money market, whose "target" is its own mandate.
+        "target_net_macro": None if f["cash_like"] else round(macro_net + f["fee_feeder"], 2),
+        "target_dd_macro": None if f["cash_like"] else round(-dd(macro_net + f["fee_feeder"]), 1),
     }
 
 F = [build_fund(f) for f in FUNDS]
@@ -1452,12 +1467,11 @@ LOOKTHROUGH = {
     "ATRPHMM": {
         "dp": 3,
         "kind": "instruments",
-        # Dated AS_OF, because these ARE the live curve, not an August snapshot -
-        # the rows were labelled "2026-08" while carrying today's yields. And they
-        # are now DERIVED from the same inputs the rest of the page uses: they were
-        # a hand-typed copy of MACRO's T-bill values with nothing tying the two
-        # together. (Audit 2026-09-13.)
-        "as_of": AS_OF,
+        # Dated by the AUCTION, not by AS_OF. The 2026-09-13 fix replaced a wrong
+        # "2026-08" label with AS_OF on the theory that these were the live curve;
+        # they were not refreshed again, so AS_OF made a 2 Sep curve look current
+        # for eleven days. A date must belong to the number it labels.
+        "as_of": MACRO["ph_tbill_date"],
         "note": "A money market fund holds paper, not shares. The live PH curve "
                 "is the honest look-through.",
         "rows": [["91-day T-bill", MACRO["ph_tbill_91"]],
@@ -1815,7 +1829,7 @@ SOURCES = [
      "https://www.bloomberg.com/news/articles/2026-09-04/economists-see-final-ecb-hike-next-week-in-split-with-markets"),
     ("Wikipedia (chronology, secondary)", "2026-2028 world oil market chronology - Hormuz escalation timeline, cross-checked against the primary reports cited here",
      "https://en.wikipedia.org/wiki/2026%E2%80%932028_world_oil_market_chronology"),
-        ("Bureau of the Treasury PH", "T-bill auction results - 91d 5.138%, 182d 5.517%, 364d 5.717%",
+        ("Bureau of the Treasury PH", "T-bill auction results, 21 September 2026 - 91d 5.431% (+8.3bp), 182d 5.821% (+4.0bp), 364d 6.043% (+12.1bp), as reported by BusinessWorld and BusinessMirror",
      "https://www.treasury.gov.ph/?cat=13"),
     ("IMF", "World Economic Outlook, April 2026 - 'Global Economy in the Shadow of War'",
      "https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026"),
@@ -2362,6 +2376,28 @@ def report():
                        f"({_day})",
                        all(_day in s or f"{_d.day} {_d:%B}" in s for s in _hits)))
 
+    # The target-fund level is the SAME exposure with the feeder's fee added back,
+    # and its drawdown comes out of the same formula - nothing else may differ.
+    checks.append(("every target fund's forecast is its feeder's plus the feeder fee, "
+                   "and its drawdown reproduces from the same k and vol",
+                   all(f2["target_net_macro"] is None if f2["id"] == "ATRPHMM" else
+                       abs(f2["target_net_macro"] - f2["net_macro"] - f2["fee_feeder"]) < 0.0051
+                       and f2["target_dd_macro"] >= f2["dd_macro"]   # the fee deepens the feeder's
+                       and abs(-(f2["dd_k"] * f2["vol"] - DD_MU * f2["target_net_macro"])
+                               * DD_HORIZON_SCALAR - f2["target_dd_macro"]) < 0.08
+                       for f2 in F)))
+    # PH T-BILLS: each tenor's reported move reproduces from the previous auction,
+    # and the auction is no older than two weekly cycles at review.
+    _tb = [MACRO["ph_tbill_91"], MACRO["ph_tbill_182"], MACRO["ph_tbill_364"]]
+    checks.append(("every T-bill tenor's reported move reproduces from the prior auction",
+                   all(abs((_tb[i] - MACRO["ph_tbill_prev"][i]) * 100 - MACRO["ph_tbill_chg_bp"][i])
+                       <= 0.05 + 1e-9 for i in range(3))))
+    _tba = (_revd - _dt.date.fromisoformat(MACRO["ph_tbill_date"])).days
+    checks.append((f"the T-bill auction is within two weekly cycles ({_tba}d of "
+                   f"{2 * MACRO['ph_tbill_cadence_d']}d)",
+                   0 <= _tba <= 2 * MACRO["ph_tbill_cadence_d"]))
+    checks.append(("the T-bill look-through is dated by its auction, not by the page",
+                   LOOKTHROUGH["ATRPHMM"]["as_of"] == MACRO["ph_tbill_date"]))
     # HORMUZ COUNTS. The transit reading sat undated and went fourteen days stale.
     # PortWatch publishes weekly, so one cadence of lag is structural and two means
     # a publication was missed - the bound is derived from the cadence, not chosen.

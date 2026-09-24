@@ -2,6 +2,66 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-24 (fourth pass) — The requirement validator was checking the wrong panel, and the T-bill curve was 22 days old under today's date
+
+### 1. Every requirement, validated with a verdict
+
+`validate.js` (scratchpad) was rewritten as a strict validator: one PASS/FAIL row
+per user requirement with the evidence it was judged on, non-zero exit on failure,
+run against the **published** page (the host supplies the viewport). The old one
+dumped JSON with no verdict, and five fields had read `false` for weeks without
+anyone acting:
+
+- three because it read `document.body.innerText` **after** visiting every tab —
+  only the last, visible panel — so the own-target, correlated-sentiment and
+  volatility-math checks never saw the text they looked for;
+- two because they looked for "Net 5y CAGR" and a "5Y" region key, labels the
+  10-year mandate retired on 8 Sep.
+
+All five were harness faults, not page faults — confirmed on the page itself. The
+new validator's first run also produced three false failures of its own (a
+composite row counted as a driver, holdings rendered as rows not table rows, a
+hidden panel's text losing its CSS uppercase), each traced to the selector and
+fixed rather than loosened.
+
+### 2. Requirement 6 was only partly met: ETF and stocks
+
+"Slides of each fund, ETF and stocks with forecast net 10Y CAGR minus fees and
+expected drawdown": the slides carried the fund level only.
+
+- **Target fund (ETF / SICAV) level** now on every slide: the same exposure net of
+  its own charge only — the feeder's forecast with the feeder fee added back, its
+  drawdown from the same k and volatility. Nasdaq Equity Income 8.00% → target
+  **9.50%** (−30.8%); Asia Equity 7.53% → **8.71%** (−38.4%); Global Technology
+  7.10% → **8.25%** (−57.2%); money market: no target fund. Derived and checked
+  (bite-tested), not a separate estimate.
+- **Stocks**: the look-through holdings stay; the page now states why no per-stock
+  10-year forecast is shown — no authoritative source publishes one, and inventing
+  one would break the sourcing requirement.
+
+### 3. Data: the PH T-bill curve
+
+5.138 / 5.517 / 5.717% had not changed since the dashboard was built on **2 Sep**.
+Since 13 Sep the look-through labelled them with the page's as-of date as "the live
+curve", and CLAIMS called them verified on 5 Sep. The 21 Sep auction: **5.431 /
+5.821 / 6.043%** (+8.3 / +4.0 / +12.1bp on the week, each chained to the prior
+auction in code). Now dated by auction with a two-cycle age bound — reverting the
+label to the page date, or the rates to 2 Sep, both fail (bite-tested). Knock-ons:
+Sharpe-style ratios fall (optimised 0.128 → 0.104); the real 364-day yield is
+**−0.06%**, barely negative; the Report's hard-typed "T-bills at 5.14% to 5.72%" is
+now bound; the money market's 4.85% path assumption is held and flagged as
+carrying a small upward bias rather than silently re-fitted. Allocation unchanged:
+**15 / 70 / 10 / 5**.
+
+### 4. Smaller corrections
+
+- The Valuation note said "today added to it" of the 23 Sep session, a day old.
+- The stub-cost fallback carried typed history ("0.15pp a week ago … until
+  today") that would print false text if the cost returned to zero.
+
+`engine.py` **162/162** · `audit.py` **0 failures** · `checklist.js` **27/27** ·
+`validate.js` **18/18** against the published page.
+
 ## 2026-09-24 (third pass) — The dominant sleeve's drawdown multiplier double-counted its own cushion; the allocation moves to 15 / 70 / 10 / 5
 
 ### 1. An error in the model, found because the cap removal made it load-bearing
