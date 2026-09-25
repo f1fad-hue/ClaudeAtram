@@ -1692,6 +1692,19 @@ FEASIBLE = [(w, s) for w, s in ALL
             and abs(s["maxdd"]) <= DD_CAP + 1e-9]
 FEASIBLE.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
 OPT_W, OPT = FEASIBLE[0]
+
+# PORTFOLIO C - the owner's pinned variant (requested 2026-09-25): Nasdaq Equity
+# Income held at exactly 50%, the other three optimised around it on the same
+# inputs, the same 5% grid and floor, and the same drawdown budget. The objective
+# is the owner's "maximum growth with drawdown controlled to a minimum", made
+# explicit: take the best CAGR the budget allows, then, among portfolios within
+# PIN_TIE_PP of it, the one with the LOWEST drawdown - a return difference smaller
+# than the model's own rounding is not worth more drawdown.
+PIN_FUND, PIN_W, PIN_TIE_PP = 1, 0.50, 0.05
+_pin_feas = [(w, s2) for w, s2 in FEASIBLE if abs(w[PIN_FUND] - PIN_W) < 1e-9]
+_pin_best = max(s2["cagr"] for _, s2 in _pin_feas)
+PIN_W_ALL, PIN = min(((w, s2) for w, s2 in _pin_feas if s2["cagr"] >= _pin_best - PIN_TIE_PP - 1e-9),
+                     key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
 OPT_UNDER_BASE = summarise(OPT_W, "net_base")
 
 # What the former 50% single-sleeve cap would choose under the same objective and
@@ -2159,6 +2172,14 @@ def payload():
                       "dd_cap": round(DD_CAP, 2),
                       "scenarios": run_scenarios(OPT_W, "net_macro"),
                       "n_feasible": len(FEASIBLE), "n_total": len(ALL)},
+        "pinned": {"weights": [round(x*100) for x in PIN_W_ALL], "macro": PIN,
+                   "fund": FUNDS[PIN_FUND]["id"], "pin_pct": round(PIN_W * 100),
+                   "tie_pp": PIN_TIE_PP, "best_cagr": _pin_best,
+                   "n_feasible": len(_pin_feas),
+                   "scenarios": run_scenarios(PIN_W_ALL, "net_macro"),
+                   # the allocation-deciding assumption, applied to both
+                   "cagr_no_rerating": summarise(PIN_W_ALL, "net_asia_norerate")["cagr"],
+                   "opt_cagr_no_rerating": summarise(OPT_W, "net_asia_norerate")["cagr"]},
         "best_ratio": {"weights": [round(x*100) for x in BEST_RATIO_W], **BEST_RATIO},
         "stub": STUB, "tech_gap": TECH_GAP,
         "min_sleeve": MIN_SLEEVE,
@@ -3027,6 +3048,16 @@ def report():
     checks.append(("every frontier point is efficient (no portfolio beats it on both axes)",
                    all(not any(c >= f["cagr"] + 1e-9 and d <= abs(f["dd"]) + 1e-9 for c, d in _allp)
                        for f in p["frontier"])))
+    _pn = p["pinned"]
+    checks.append(("the pinned portfolio holds its fund at exactly the pin, on the grid, inside the budget",
+                   _pn["weights"][PIN_FUND] == _pn["pin_pct"] and sum(_pn["weights"]) == 100
+                   and all(x % 5 == 0 and x >= MIN_SLEEVE * 100 - 1e-9 for x in _pn["weights"])
+                   and abs(_pn["macro"]["maxdd"]) <= DD_CAP + 1e-9))
+    checks.append(("the pinned portfolio follows its stated rule (lowest drawdown within the tie band)",
+                   _pn["macro"]["cagr"] >= _pn["best_cagr"] - _pn["tie_pp"] - 1e-9
+                   and not any(abs(s2["maxdd"]) < abs(_pn["macro"]["maxdd"]) - 1e-9
+                               and s2["cagr"] >= _pn["best_cagr"] - _pn["tie_pp"] - 1e-9
+                               for w2, s2 in FEASIBLE if abs(w2[PIN_FUND] - PIN_W) < 1e-9)))
     checks.append(("the optimised portfolio is a frontier point",
                    any([float(x) for x in f["weights"]] == [float(x) for x in p["optimized"]["weights"]]
                        for f in p["frontier"])))

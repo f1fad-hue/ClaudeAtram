@@ -2,6 +2,23 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-25 (third pass) — Portfolio C: Nasdaq Equity Income pinned at 50%
+
+Added at the owner's request: a third donut on the Portfolios tab with Nasdaq
+Equity Income fixed at 50%. The other three funds are optimised on the same
+inputs, grid, floor and drawdown budget as Portfolio B.
+
+- **Rule, published and checked:** take the best CAGR the budget allows, then the
+  lowest drawdown among portfolios within 0.05pp of it. 11 candidates fit; the best
+  CAGR is 6.47% at 20 / 50 / 20 / 10.
+- **Result:** **20 / 50 / 25 / 5**, 6.46% / −25.7%, return per drawdown 0.251 (the
+  highest of the three). It costs 0.30pp a year against Portfolio B.
+- **Robustness:** without Asia's +1.0% re-rating credit, C returns 6.21% against
+  B's 6.16%, so C is the more robust of the two to the assumption that decides B.
+- **Checks:** the engine asserts the pin, the grid, the budget and the rule (180/180).
+  Headings bind the pin value rather than typing it (checklist G caught a typed
+  "50%" on the first build).
+
 ## 2026-09-25 (second pass) — The dominant sleeve's return was overstated twice; the allocation moves to 25 / 10 / 60 / 5
 
 This pass re-derived the assumptions set on day one instead of only the market prices.

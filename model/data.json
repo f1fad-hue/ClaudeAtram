@@ -1184,6 +1184,73 @@
   "n_feasible": 365,
   "n_total": 969
  },
+ "pinned": {
+  "weights": [
+   20,
+   50,
+   25,
+   5
+  ],
+  "macro": {
+   "weights": [
+    20.0,
+    50.0,
+    25.0,
+    5.0
+   ],
+   "cagr": 6.46,
+   "vol": 12.76,
+   "maxdd": -25.7,
+   "ret_per_dd": 0.251,
+   "sharpe_like": 0.033,
+   "terminal_1m": 1870099,
+   "worst_1m_from_open": 743000
+  },
+  "fund": "ATRQIAP",
+  "pin_pct": 50,
+  "tie_pp": 0.05,
+  "best_cagr": 6.47,
+  "n_feasible": 11,
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $107. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 2.31,
+    "vol": 20.41,
+    "maxdd": -46.7
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
+    "cagr": 4.62,
+    "vol": 16.58,
+    "maxdd": -36.0
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 2.93,
+    "vol": 18.5,
+    "maxdd": -41.8
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 8.63,
+    "vol": 10.2,
+    "maxdd": -18.1
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
+    "cagr": 6.46,
+    "vol": 12.76,
+    "maxdd": -25.7
+   }
+  ],
+  "cagr_no_rerating": 6.21,
+  "opt_cagr_no_rerating": 6.16
+ },
  "best_ratio": {
   "weights": [
    85.0,
