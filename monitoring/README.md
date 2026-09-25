@@ -26,11 +26,11 @@ prior value and mark it stale — never guess.
 3M / 6M / 12M / 10Y, then the gauge. Drivers and regions are researched on 1–10;
 both the headline gauge and the regional rankings are reported on 1–5. The optimised portfolio is built from four
 inputs — the broad gauge, the correlated per-sleeve transmission, the **volatility
-ramp** (horizon-blended implied vol minus spot, same horizon weights as the regional
-blend) and the regional rankings. Two of those are derived rather than judged: the
+gap** (horizon-blended implied vol minus the LONG-RUN 19.5 every base return already
+assumes, same horizon weights as the regional blend) and the regional rankings. Two of those are derived rather than judged: the
 regional tilt is `(score − 3.0) × 0.675` on the reported 1–5 scale (identical to
 the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's volatility tilt is
-`ramp × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
+`gap × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
 of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
 not because you have a view on the market. Never change a score without rewriting
 its rationale to cite the new evidence. Re-run the optimiser; weights stay
@@ -132,6 +132,24 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+44. A PLOT'S BUCKETS ARE NOT ITS CLAIM. The frontier was the best portfolio in each
+   whole-percent drawdown bucket, so a point just over the budget could win the
+   optimum's bucket and draw the "edge" above a portfolio the page says sits on it.
+   Build the chart from the property the prose asserts (here, efficiency), and check
+   that property rather than the construction.
+43. COUNT EACH EFFECT ONCE, AGAINST THE SAME REFERENCE. Every base return here is a
+   long-run return, which already assumes long-run volatility; the volatility tilt was
+   measured from today's spot, so the rise to the long-run level was counted in the
+   base and again in the tilt (+0.96pp to one sleeve, -0.56pp to another). A tilt is
+   a deviation, and it must be a deviation from what the base already contains. The
+   same test, applied to Asia's re-rating credit, is still open (see CLAIMS).
+42. A NUMBER BESIDE ITS OWN RECIPE MUST BE COMPUTED FROM IT. The Nasdaq Equity
+   Income gross return was typed as 7.2% for 23 days beside a note whose arithmetic
+   gives 6.74%. The traceability fix of 12 Sep made the recipe's numbers into inputs
+   so the prose would trace - and never connected them to the calculation. An input
+   nothing consumes is decoration. Every gross return is now computed from named
+   inputs, a check reproduces it, and the dangerous case (the sleeve that decides the
+   allocation) is the one to re-derive first each review, not the market prices.
 41. A HARNESS THAT PRINTS WITHOUT A VERDICT IS NOT A CHECK. `validate.js` dumped
    JSON, and five of its fields read `false` for weeks - three because it read
    `document.body.innerText` after visiting every tab (only the last, visible

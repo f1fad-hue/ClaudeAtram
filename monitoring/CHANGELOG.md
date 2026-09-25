@@ -2,6 +2,80 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-25 (second pass) — The dominant sleeve's return was overstated twice; the allocation moves to 25 / 10 / 60 / 5
+
+This pass re-derived the assumptions set on day one instead of only the market prices.
+Two errors had been in the engine since the first build on 2 Sep, both in the sleeve
+the optimiser put 70% into.
+
+### 1. Errors found and fixed
+
+- **Nasdaq Equity Income's gross return was typed, and wrong.** The engine carried
+  **7.2%** beside a note whose own recipe gives (6.7 + 1.3) × 78% + 0.5 = **6.74%**.
+  - The other two equity funds matched their notes, so spot checks passed.
+  - The 12 Sep traceability fix had made 78% and 1.3% into inputs so the prose would
+    trace, but nothing consumed them.
+  - Every gross return is now computed from named inputs, and a check reproduces it
+    (bite-tested with the old 7.2).
+  - Cross-check: a beta build (JEPQ beta 0.65–0.69, cash 3.0–3.5%, 0.5% premium)
+    gives ~6.75–7.1%. 6.74% sits at its low end; 7.2% sat above it.
+- **The volatility rise was counted twice.** Every base return is a long-run (LTCMA)
+  return, which already assumes long-run volatility, yet the volatility tilt was
+  measured from today's spot:
+  - Nasdaq Equity Income was paid +0.96pp for volatility rising to a level its base
+    already assumed, and its note even credited the same rise ("earned back as
+    implied vol rises 14.1 → 19.4").
+  - Global Technology was charged −0.56pp for it.
+  - The tilt is now the curve's gap to the long-run 19.5: −0.62 points, so −0.13pp
+    and +0.08pp.
+  - Checks require the long-run reference and reject a base note that credits a
+    rise from spot.
+- **The frontier chart drew its edge above the optimum.** It plotted the best
+  portfolio in each whole-percent drawdown bucket. The −27 bucket was won by
+  [25, 5, 65, 5] at −27.8%, over the budget, so the line ran above the optimum the
+  page says sits on it. The chart now plots the efficient set, and checks assert
+  efficiency and that the optimum is on it; the audit rebuilds the set
+  independently.
+- **Asia Equity's target is a Hong Kong unit trust,** not the Luxembourg SICAV the
+  page said (HK ISINs, JPMorgan Funds (Asia) Ltd). The claim that its 1.55% fee
+  estimate "errs high" is withdrawn: HK unit trusts typically add trustee and admin
+  costs, so the true figure is more likely higher.
+- **The Report was written around the old answer.** "One sleeve carries the
+  portfolio", "let that sleeve carry the portfolio" and "cash goes to X%: drawdown
+  control comes from the equity mix" all went false at once. The Report is now
+  generated from the allocation, sentence by sentence, with a dated correction
+  notice.
+
+### 2. Result
+
+| | Before | After |
+|---|---|---|
+| Nasdaq Equity Income net forecast | 8.00% | **6.45%** |
+| Asia Equity / Global Technology | 7.53% / 7.10% | 7.53% / **7.74%** |
+| Optimised | 15 / 70 / 10 / 5, 7.46%, −26.9% | **25 / 10 / 60 / 5, 6.76%, −27.1%** |
+| Baseline | 7.06%, −29.9% | 6.72%, −30.1% |
+
+The return edge over the baseline is now thin (+0.04pp); most of the improvement is
+risk (3.0 points less drawdown).
+
+### 3. Still open, and published as such
+
+- **The Asia +1.0% re-rating credit** overlaps the LTCMA's valuation component and
+  the Valuation driver in the regional tilt. Without it the optimiser holds
+  **40 / 15 / 5 / 40 at 6.32%**, below the baseline. It is kept this pass: removing
+  it consistently means re-deriving Global Technology's −1.2% de-rating and the
+  regional layer, a redesign rather than a fix. The Report names it as the
+  assumption that decides the allocation.
+- **Asia's fee:** +0.25pp keeps the weights and costs 0.15pp (6.61%).
+- **Global Technology's target share class** is unverified (W-Acc-GBP OCF used).
+- **Re-verified this pass:** LTCMA 2026 US large cap 6.7% and EM 7.8%; the ATRAM
+  Nasdaq feeder's 1.5% trust fee.
+- **Unreachable:** ATRAM/Seedbox documents, the LTCMA cash figure, and the JPMorgan
+  HK fact sheet.
+- **No 25 Sep US close:** the only "close" found repeats 24 Sep to the cent.
+- **Harnesses:** engine 178/178, audit 0 failures, checklist 27/27, validate 18/18
+  on the published copy.
+
 ## 2026-09-25 — The VIX series was filed a day late for a week, and the page's volatility story was built on it
 
 ### 1. Errors found and fixed

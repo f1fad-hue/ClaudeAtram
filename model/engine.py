@@ -634,6 +634,19 @@ MACRO = {
     "ltcma_us_eq": 6.7,
     "ndx_growth_premium": 1.3,     # NDX total return over US large cap in the build-up
     "qiap_capture": 78,            # covered-call upside capture, % of the NDX
+    # EVERY COMPONENT OF EVERY GROSS RETURN IS AN INPUT, AND THE GROSS IS COMPUTED
+    # FROM THEM. Until 2026-09-25 the three equity gross returns were typed beside a
+    # note giving their recipe, and nothing checked one against the other. Two
+    # happened to agree. The Nasdaq Equity Income figure did not: its note builds
+    # 8.0% x 78% + 0.5% = 6.74%, and the engine carried 7.2% from the first build
+    # on 2 Sep - 0.46pp of return, in the sleeve the optimiser put 70% into. The
+    # 12 Sep traceability fix had made 78% and 1.3% inputs so the prose would
+    # trace, but never wired them into the calculation: decorative inputs.
+    "qiap_premium_lr": 0.5,        # option premium harvest at LONG-RUN implied vol, %/yr (E)
+    "asia_rerating": 1.0,          # re-rating credit in the Asia base, %/yr (E) - see CLAIMS
+    "asia_div_drag": 0.5,          # dividend tilt's lower growth capture, %/yr (E)
+    "tech_growth_premium": 3.5,    # tech earnings-growth premium over US large cap, %/yr (E)
+    "tech_derating": 1.2,          # tech multiple de-rating drag, %/yr (E)
     "phmm_gross_prev": 5.25,       # the PH short-rate assumption before the mandate lengthened
     "ltcma_em_eq": 7.8,
 }
@@ -939,13 +952,23 @@ HZ_W = {"3M": 0.10, "6M": 0.15, "12M": 0.25, HZ_LABEL: 0.50}
 #     pointing at - using the same horizon weights as the regional blend.
 # ----------------------------------------------------------------------------
 VOL_BLEND = sum(v["implied"] * HZ_W[v["label"]] for v in VOL_TS)
-VOL_RAMP  = VOL_BLEND - MACRO["vix_spot"]
+# MEASURED FROM THE LONG-RUN LEVEL, NOT FROM SPOT. Corrected 2026-09-25. Every
+# fund's base return is a long-run (LTCMA) return, and a long-run return already
+# assumes average volatility - the 19.5 long-run VIX this model's own curve
+# converges to. Measuring the ramp from TODAY's low spot credited the covered-call
+# sleeve (+0.96pp) and charged Global Technology (-0.56pp) for volatility rising to
+# a level both bases already assume: the rise was counted in the base and again in
+# the tilt. The tilt is now the deviation of the horizon-blended curve from the
+# long-run level - what the cycle view adds to, or takes from, a no-view base.
+VOL_RAMP  = VOL_BLEND - MACRO["vix_longrun"]
+VOL_RAMP_REF = "long-run"
 
 # Per-fund sensitivity, in pp of net CAGR per point of vol ramp. These are
 # structural properties of each sleeve, not judgements about the current market:
 #   ATRQIAP  +0.210  writes calls on ~78% of a Nasdaq-100 book whose own vol is
-#                    ~1.22x the market; premium scales with implied vol, so a
-#                    rising ramp is harvested income. The only sleeve paid by it.
+#                    ~1.22x the market; premium scales with implied vol, so a curve
+#                    ABOVE the long-run level its base assumes is extra income, and
+#                    one below it is less.
 #   ATRGTEC  -0.122  highest vol beta (1.30) and the longest-duration equity
 #                    here; a higher vol regime lifts the discount rate on distant
 #                    cash flows and compresses the multiple.
@@ -1092,12 +1115,12 @@ DRIVERS = [
      "late. On the right dates the index made a 21-session low of 14.21 on 22 Sep, "
      "then rose 7% to 15.18 on 23 Sep as the 10-year jumped, and 3.23% to 15.67 on "
      "24 Sep: the ordinary pairing, rates and equity volatility moving together. "
-     "It is still a low level - under the 17.84 close of 10 Sep and well below the "
-     "long-run 19.5 the curve converges to - so it reads as neither complacency "
-     "nor stress. Unchanged is the structural point: this portfolio is paid on the "
-     "CURVE, not spot, and the strip is still the 4 September quote. Spot rising "
-     "toward a fixed strip means a re-quote would more likely NARROW the ramp than "
-     "widen it - the direction the stale strip now errs in."),
+     "It is still a low level - under the 17.84 close of 10 Sep and below the "
+     "long-run 19.5 - so it reads as neither complacency nor stress. What this "
+     "driver does NOT carry is a claim that rising volatility pays the portfolio: "
+     "every fund's base return already assumes long-run volatility, so only the "
+     "curve's distance from 19.5 moves a forecast, and blended across horizons the "
+     "4 September strip sits at 18.88 - just below it."),
     ("Geopolitics & energy", 0.1, 1.5,
      "HELD at 1.5, where it was restored on 22 Sep when both reasons for the cut to "
      "1.25 reversed as facts: Saudi Arabia restarted the 1200 km East-West "
@@ -1139,7 +1162,7 @@ SUMMARY = {
     "Growth momentum": "Raised to 4.25: the September composite PMI hit 58.4, the strongest since July 2021, on top of +162k August payrolls.",
     "Corporate earnings": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, trimmed only for margins at $106.60 oil.",
     "Valuation support": "Raised to 8.25 on 23 Sep: the rate shock cheapened multiples again - the one driver the shock improves.",
-    "Volatility & risk appetite": "Held at 3.0: the VIX rose with yields, to 15.67 on 24 Sep - still low, and still below the futures curve it is paid on.",
+    "Volatility & risk appetite": "Held at 3.0: the VIX rose with yields, to 15.67 on 24 Sep - still low, and the blended curve sits just below its long-run 19.5.",
     "Geopolitics & energy": "Held at 1.5: Houthi missiles at Yanbu were intercepted and Iran offers a conditional reopening, but the Strait is still closed.",
     "US": "Near horizons cut on the rate repricing; the ten-year anchor holds at 6.5 on energy self-sufficiency and a Nasdaq still below its average forward multiple.",
     "EUROPE": "Ranked last: the ECB hiked to 2.50% into growth of just 0.7%, and Europe is the largest net energy importer facing this oil shock.",
@@ -1205,8 +1228,17 @@ FUNDS = [
         "target_verified": True,
         "fee_feeder": 1.50, "fee_target": 0.35,
         "fee_note": "1.50% ATRAM management fee + 0.35% target-fund TER (both verified)",
-        "gross_usd": 7.2,
-        "gross_note": "NDX long-run total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium earned back as implied vol rises 14.3 -> 19.4.",
+        # COMPUTED (was a typed 7.2 that its own recipe did not produce). The premium
+        # is the harvest at LONG-RUN implied vol: the base is a no-view return, and
+        # "earned back as implied vol rises 14.3 -> 19.4" - the old wording - was the
+        # same rise the volatility tilt pays for. It is counted there, once.
+        "gross_usd": round((MACRO["ltcma_us_eq"] + MACRO["ndx_growth_premium"])
+                           * MACRO["qiap_capture"] / 100 + MACRO["qiap_premium_lr"], 2),
+        "gross_note": (f"NDX long-run total return of {MACRO['ltcma_us_eq'] + MACRO['ndx_growth_premium']:.1f}% "
+                       f"(JPM LTCMA US large cap {MACRO['ltcma_us_eq']}% + {MACRO['ndx_growth_premium']}% NDX "
+                       f"growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times "
+                       f"~{MACRO['qiap_capture']}% covered-call upside capture, plus "
+                       f"~{MACRO['qiap_premium_lr']}%/yr of option premium at long-run implied vol."),
         # NDX vol relative to the S&P (1.22, assumption) times the covered-call
         # vol factor, which is no longer a magic number: J.P. Morgan's own fact
         # sheet (31 Jul 2026) puts JEPQ since-inception annualised standard
@@ -1238,15 +1270,20 @@ FUNDS = [
         # this fund, so the ongoing charge cannot be 0.80% - it is at least the
         # management fee. 1.55% = the published 1.50% plus ~0.05% operating costs.
         # Still an ESTIMATE, because the exact OCF for the share class ATRAM's feeder
-        # buys is not published; but it is now anchored on a published figure and
-        # errs HIGH rather than low. This cost Asia Equity 0.75pp of net CAGR and
-        # dropped it from first to third on the sheet.
+        # buys is not published; but it is now anchored on a published figure.
+        # CORRECTED 2026-09-25: this said the estimate "errs HIGH". It cannot know
+        # that. The target is a HONG KONG unit trust (HK ISINs, JPMorgan Funds (Asia)
+        # Ltd), and HK unit trusts typically add trustee and administration costs to
+        # the management fee, so the true OCF is more likely ABOVE 1.55% than below.
         "fee_feeder": 1.18, "fee_target": 1.55,
         "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~1.55% estimated "
                     "target-fund OCF (ESTIMATE, anchored on JPMAM's published 1.50% "
-                    "management fee for this fund; exact share-class OCF not published)",
-        "gross_usd": 8.3,
-        "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
+                    "management fee for this Hong Kong unit trust; exact share-class OCF not "
+                    "published, and trustee/admin costs may put it higher)",
+        "gross_usd": round(MACRO["ltcma_em_eq"] + MACRO["asia_rerating"] - MACRO["asia_div_drag"], 2),
+        "gross_note": (f"JPM LTCMA EM equity {MACRO['ltcma_em_eq']}% + ~{MACRO['asia_rerating']}% "
+                       f"re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less "
+                       f"~{MACRO['asia_div_drag']}% for the dividend tilt's lower growth capture."),
         # ASSUMPTION, not a published figure: Asia Pacific ex-Japan vol at ~1.05x
         # the S&P, times ~0.92 for the dividend tilt's lower beta. Neither leg is
         # sourced to a manager document, and CLAIMS.md records it as an estimate.
@@ -1270,8 +1307,11 @@ FUNDS = [
         "fee_feeder": 1.15, "fee_target": 1.04,
         "fee_note": "1.15% ATRAM management fee (verified) + 1.04% target-fund OCF "
                     "(PUBLISHED by Fidelity for the W-Acc-GBP class, AMC 0.80%)",
-        "gross_usd": 9.0,
-        "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
+        "gross_usd": round(MACRO["ltcma_us_eq"] + MACRO["tech_growth_premium"] - MACRO["tech_derating"], 2),
+        "gross_note": (f"US large cap {MACRO['ltcma_us_eq']}% (JPM LTCMA) + {MACRO['tech_growth_premium']}% "
+                       f"tech earnings-growth premium - {MACRO['tech_derating']}% multiple de-rating drag. "
+                       f"Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned "
+                       f"inside an AI capex boom and is not a forecast."),
         # ASSUMPTION: concentrated global tech at ~1.30x the S&P. Cross-check
         # rather than confirmation - Fidelity publishes a 3-year annualised
         # volatility of 17.23% for this fund (USD I Acc, Jun 2026), which implies
@@ -1684,7 +1724,27 @@ def optimise(key):
     return {"weights": [round(x * 100) for x in w], "cagr": s["cagr"],
             "maxdd": s["maxdd"], "dd_cap": round(cap, 2)}
 
-WHAT_IF = {"vol_flat": optimise("net_novol"), "drags_neutral": optimise("net_neutral")}
+# THE TWO ASSUMPTIONS THE 2026-09-25 CORRECTION LEFT CARRYING THE RESULT, tested
+# the same way: the Asia base's +1.0% re-rating credit (which overlaps both the
+# LTCMA's own valuation component and the Valuation driver in the regional tilt),
+# and its ESTIMATED target-fund charge (a Hong Kong unit trust whose trustee and
+# admin costs may put the OCF above the 1.55% carried). A result that one
+# assumption can overturn is published with that assumption named.
+ASIA_FEE_STRESS = 0.25
+# THE 2026-09-25 CORRECTION, published as a record so the page can say what changed
+# with numbers that trace. These are the values the page carried until that date.
+CORRECTION = {"date": "2026-09-25", "weights_before": [15, 70, 10, 5],
+              "cagr_before": 7.46, "maxdd_before": -26.9,
+              "qiap_gross_usd_before": 7.2, "qiap_net_before": 8.0,
+              "qiap_tilt_vol_before": 0.96, "gtec_tilt_vol_before": -0.56}
+for _f in F:
+    _aseq = _f["id"] == "ATRASEQ"
+    _f["net_asia_norerate"] = round(_f["net_macro"] - (MACRO["asia_rerating"] if _aseq else 0.0), 2)
+    _f["net_asia_fee_hi"] = round(_f["net_macro"] - (ASIA_FEE_STRESS if _aseq else 0.0), 2)
+WHAT_IF = {"vol_flat": optimise("net_novol"), "drags_neutral": optimise("net_neutral"),
+           "asia_no_rerating": optimise("net_asia_norerate"),
+           "asia_fee_hi": optimise("net_asia_fee_hi")}
+WHAT_IF["asia_fee_hi"]["stress_pp"] = ASIA_FEE_STRESS
 
 # Best pure risk-adjusted portfolio, for reference
 BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
@@ -1741,17 +1801,29 @@ _G = next(f for f in F if f["id"] == "ATRGTEC")
 TECH_GAP = round(_G["net_macro"] - _Q["net_macro"], 2)
 
 # Efficient frontier: max CAGR at each 1pp drawdown bucket
-FRONTIER = {}
-for w, s in ALL:
-    b = math.floor(abs(s["maxdd"]))
-    if b not in FRONTIER or s["cagr"] > FRONTIER[b][1]["cagr"]:
-        FRONTIER[b] = (w, s)
+# THE TRUE EFFICIENT SET, NOT WHOLE-PERCENT BUCKETS. Corrected 2026-09-25. The
+# frontier was the best CAGR in each 1pp drawdown bucket, so a bucket could be won by
+# a portfolio just OVER the drawdown budget - [25, 5, 65, 5] at -27.8% took the -27
+# bucket from the optimum at -27.1% - and the plotted line ran above the optimum the
+# page says "sits on that edge". Now: every portfolio no other beats on both CAGR and
+# drawdown, thinned to ~1pp spacing for the chart, with the optimum always kept.
+_pts = sorted(ALL, key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
+PARETO, _best = [], -1e9
+for w, s in _pts:
+    if s["cagr"] > _best + 1e-9:
+        PARETO.append((w, s)); _best = s["cagr"]
+FRONTIER_SPACING = 0.9
+FRONTIER, _last = [], None
+for w, s in PARETO:
+    _is_opt = [round(x * 100) for x in w] == [round(x * 100) for x in OPT_W]
+    if _is_opt or _last is None or abs(s["maxdd"]) >= _last + FRONTIER_SPACING:
+        FRONTIER.append((w, s)); _last = abs(s["maxdd"])
 # "maxdd" is the BUCKET (whole-percent floor); "dd" is the point's own published
 # drawdown. The page plotted and labelled points at the bucket - "-28%" for a
 # -28.7% portfolio, and the optimised marker (at its true -25.4) sat beside its
 # own frontier point (at 25). Both are published so the chart can use the real one.
-FRONTIER = [{"maxdd": k, "dd": v[1]["maxdd"], "cagr": v[1]["cagr"], "weights": v[1]["weights"]}
-            for k, v in sorted(FRONTIER.items())]
+FRONTIER = [{"maxdd": abs(v[1]["maxdd"]), "dd": v[1]["maxdd"], "cagr": v[1]["cagr"],
+             "weights": v[1]["weights"]} for v in FRONTIER]
 
 # ----------------------------------------------------------------------------
 # 7. SCENARIO / STRESS GRID
@@ -1851,7 +1923,7 @@ SOURCES = [
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260723~29f24d99bc.en.html"),
     ("BSP Monetary Policy Report", "February 2026 economic outlook and inflation path",
      "https://www.bsp.gov.ph/Price%20Stability/MonetaryPolicyReport/FullReport-February2026.pdf"),
-    ("CNBC", "VIX hits 14.18 on 17 August, reported at the time as the 2026 low. It was, until 4 September, when the index slid to 13.80 before the payrolls print. The ramp is measured against the curve, not against either low",
+    ("CNBC", "VIX hits 14.18 on 17 August, reported at the time as the 2026 low. It was, until 4 September, when the index slid to 13.80 before the payrolls print. The volatility tilt is measured from the long-run level, not from either low",
      "https://www.cnbc.com/2026/08/17/stock-market-volatility-vix-wall-street.html"),
     ("Reuters (via KFGO)", "ECB to raise a second time on 10 Sep then stop - all 65 economists polled 31 Aug-3 Sep forecast 2.50%, 91% see it held to year end",
      "https://kfgo.com/2026/09/03/ecb-to-raise-rates-a-second-time-in-september-but-then-done-say-economists-reuters-poll/"),
@@ -1997,7 +2069,9 @@ def payload():
         "sp_vol_lt": SP_VOL_LT,
         "regions": {k: {**v, "summary": SUMMARY[k]} for k, v in REGIONS.items()},
         "hz_weights": HZ_W,
+        "correction": CORRECTION,
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
+                        "longrun": MACRO["vix_longrun"], "ramp_ref": VOL_RAMP_REF,
                         "quote_date": VIX_QUOTE_DATE,
                         "latest": MACRO["vix_latest"],
                         "latest_date": MACRO["vix_latest_date"],
@@ -2947,8 +3021,15 @@ def report():
     checks.append(("the stub counterfactual holds every other fund at the minimum",
                    sum(1 for x in p["stub"]["best_without"] if x == 0) == 1
                    and all(x >= _mn - 1e-9 for x in p["stub"]["best_without"] if x)))
-    checks.append(("every frontier point's own drawdown lies in its bucket",
-                   all(math.floor(abs(f["dd"])) == f["maxdd"] for f in p["frontier"])))
+    # Every frontier point is efficient: no enumerated portfolio has at least its
+    # CAGR at no more drawdown. And the optimum is ON it, as the page says.
+    _allp = [(s2["cagr"], abs(s2["maxdd"])) for _, s2 in ALL]
+    checks.append(("every frontier point is efficient (no portfolio beats it on both axes)",
+                   all(not any(c >= f["cagr"] + 1e-9 and d <= abs(f["dd"]) + 1e-9 for c, d in _allp)
+                       for f in p["frontier"])))
+    checks.append(("the optimised portfolio is a frontier point",
+                   any([float(x) for x in f["weights"]] == [float(x) for x in p["optimized"]["weights"]]
+                       for f in p["frontier"])))
     # The what-if helper must BE the optimiser: on the live column it has to return
     # the published allocation, or its counterfactuals answer a different question.
     _live = optimise("net_macro")
@@ -3056,8 +3137,9 @@ def report():
                 and abs(1_000_000 * (1 + m["maxdd"] / 100)
                         - m["worst_1m_from_open"]) < 1.0)
     vc = p["vol_channel"]
-    checks.append(("volatility ramp = horizon-blended implied vol minus spot",
-                   abs(vc["blend"] - vc["spot"] - vc["ramp"]) < 0.011))
+    checks.append(("the volatility tilt's reference is the long-run level every base assumes",
+                   vc["ramp_ref"] == "long-run"
+                   and abs(vc["blend"] - vc["longrun"] - vc["ramp"]) < 0.011))
     checks.append(("every volatility tilt is derived from the ramp, not hand-set",
                    all(abs(f2["tilt_vol"] - round(vc["ramp"] * vc["sens"][f2["id"]], 2)) < 1e-9
                        for f2 in p["funds"])))
@@ -3077,9 +3159,31 @@ def report():
     checks.append(("every fund's tilt column adds up to its published total",
                    all(rnd(f2["tilt_regional"] + f2["tilt_vol"] + f2["tilt_rates"]
                              + f2["tilt_energy"]) == f2["tilt_total"] for f2 in p["funds"])))
-    checks.append(("the covered-call sleeve is the only one paid by a rising ramp",
+    checks.append(("the covered-call sleeve is the one most paid when the curve sits above long-run",
                    max(p["funds"], key=lambda f2: f2["tilt_vol"])["id"] == "ATRQIAP"
                    or vc["ramp"] <= 0))
+    # EVERY GROSS RETURN REPRODUCES FROM ITS NAMED COMPONENTS, and every component
+    # it uses is quoted in its own note. The typed-7.2 defect is exactly the case
+    # this catches: a number that its documented recipe does not produce.
+    _M = MACRO
+    _recipes = {
+        "ATRQIAP": ((_M["ltcma_us_eq"] + _M["ndx_growth_premium"]) * _M["qiap_capture"] / 100
+                    + _M["qiap_premium_lr"],
+                    [_M["qiap_capture"], _M["qiap_premium_lr"], _M["ltcma_us_eq"], _M["ndx_growth_premium"]]),
+        "ATRASEQ": (_M["ltcma_em_eq"] + _M["asia_rerating"] - _M["asia_div_drag"],
+                    [_M["ltcma_em_eq"], _M["asia_rerating"], _M["asia_div_drag"]]),
+        "ATRGTEC": (_M["ltcma_us_eq"] + _M["tech_growth_premium"] - _M["tech_derating"],
+                    [_M["ltcma_us_eq"], _M["tech_growth_premium"], _M["tech_derating"]]),
+    }
+    _fsrc = {f2["id"]: f2 for f2 in FUNDS}
+    checks.append(("every equity gross return reproduces from its named components",
+                   all(abs(_fsrc[k]["gross_usd"] - v) < 0.005 for k, (v, _) in _recipes.items())))
+    checks.append(("every component of a gross return is quoted in that fund's note",
+                   all(all(f"{c}%" in _fsrc[k]["gross_note"] for c in comps)
+                       for k, (_, comps) in _recipes.items())))
+    checks.append(("no base return credits volatility rising from spot (counted once, in the tilt)",
+                   not any(re.search(r"implied vol rises|as vol rises|->\s*19", f2["gross_note"])
+                           for f2 in FUNDS)))
     checks.append(("peso figures reconcile with the displayed CAGR and drawdown",
                    _ties(p["baseline"]["under_macro"]) and _ties(p["optimized"]["macro"])))
     # regression: no feasible portfolio may exceed the stated drawdown budget
