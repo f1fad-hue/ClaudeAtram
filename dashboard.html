@@ -361,13 +361,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 
   <section>
     <p class="eyebrow">Volatility &middot; deep analysis</p>
-    <h2>The curve broke out again — and vol fell anyway</h2>
+    <h2>Spot is low; the curve is not</h2>
     <p class="lede">The VIX closed <b class="num" id="vlatest"></b> on
       <b id="vlatestd"></b>, <b class="num" id="vlatestc"></b> on the day, after peaking at
-      <b class="num" id="vepkhi"></b> on <b id="vepkhid"></b>. It fell on the day the US
-      10-year jumped to <b class="num" id="vust10"></b> (intraday
-      <b class="num" id="vust10pk"></b>) — rates and equity volatility pricing different
-      things. The curve, quoted <b id="vquoted"></b>, still prices
+      <b class="num" id="vepkhi"></b> on <b id="vepkhid"></b>. The US 10-year last closed at
+      <b class="num" id="vust10"></b> on <b id="vust10d"></b> and traded as high as
+      <b class="num" id="vust10pk"></b> on <b id="vust10pkd"></b>. The curve, quoted <b id="vquoted"></b>, still prices
       <b class="num" id="vdec2"></b> by December, <b class="num" id="vspotgap"></b> above
       spot: that ramp is what this portfolio is paid on.</p>
     <p class="note"><strong>The curve's age is measured, not hidden.</strong> It is
@@ -668,11 +667,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
         <b class="num" id="ecbnow"></b> into IMF growth of <b class="num">0.7%</b>; BSP is
         at <b class="num">5.00%</b> after three hikes; the Bank of Japan went to
         <b class="num" id="bojnow"></b> on 18 September. After the Fed's 16 September hike,
-        FedWatch puts <b>October</b> at <b class="num" id="oddsnow"></b>; at least one more
+        FedWatch put <b>October</b> at <b class="num" id="oddsnow"></b> on
+        <b id="oddsnowd"></b>; at least one more
         by December was last verified at <b class="num" id="oddsdec"></b> on
-        <b id="oddsdecd"></b>. The 10-year ended at <b class="num" id="ust10"></b>
-        <span id="ust10prov"></span> after an intraday <b class="num" id="ust10pk"></b> on
-        <b id="ust10pkd"></b>, its highest since 2007. Brent is
+        <b id="oddsdecd"></b>. The 10-year last closed at <b class="num" id="ust10"></b>
+        <span id="ust10prov"></span> on <b id="ust10d"></b>, and traded as high as
+        <b class="num" id="ust10pk"></b> on <b id="ust10pkd"></b>, its highest since 2007. Brent is
         <b class="num" id="brentnow"></b>, <b class="num" id="brentyoy"></b> year on
         year, having run through <b class="num" id="brenthigh"></b> on
         <b id="brenthighd"></b>.</p>
@@ -866,7 +866,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 </div>
 <script id="D" type="application/json">
 {
- "as_of": "2026-09-24",
+ "as_of": "2026-09-25",
  "macro": {
   "fed_funds_lower": 3.75,
   "fed_funds_upper": 4.0,
@@ -918,16 +918,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    5.0,
    5.01
   ],
-  "ust_10y_peak": 5.135,
-  "ust_10y_peak_date": "2026-09-23",
-  "ust_10y_peak_prev": 5.04,
-  "ust_10y_peak_prev_date": "2026-09-15",
-  "ust_2y": 4.889,
-  "ust_2y_date": "2026-09-23",
+  "ust_10y_peak": 5.223,
+  "ust_10y_peak_date": "2026-09-24",
+  "ust_10y_peak_prev": 5.135,
+  "ust_10y_peak_prev_date": "2026-09-23",
+  "ust_2y": 4.941,
+  "ust_2y_date": "2026-09-24",
   "ust_30y": 5.398,
   "ust_30y_date": "2026-09-23",
+  "ust_30y_high": 5.501,
+  "ust_30y_high_date": "2026-09-24",
   "ust_curve_basis": "mid-session readings, not closes",
   "fed_hike_odds_oct": 73.0,
+  "fed_hike_odds_oct_date": "2026-09-23",
   "fed_hike_odds_oct_prev": 55.0,
   "fed_hike_odds_oct_prev_date": "2026-09-22",
   "fed_hike_odds_oct_first": 50.9,
@@ -981,9 +984,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "ph_cpi_jun": 6.4,
   "bsp_infl_2026": 6.1,
   "bsp_infl_2027": 5.4,
-  "usdphp": 62.735,
-  "usdphp_date": "2026-09-24",
-  "usdphp_prev": 62.725,
+  "usdphp": 62.465,
+  "usdphp_date": "2026-09-25",
+  "usdphp_prev": 62.735,
+  "usdphp_prev_date": "2026-09-24",
+  "usdphp_chg": -0.27,
   "usdphp_record": 62.86,
   "usdphp_record_date": "2026-09-14",
   "usdphp_record_intraday": 62.925,
@@ -991,11 +996,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "usdphp_records_asof": "2026-09-11",
   "usdphp_sept_records": 6,
   "usdphp_2025_close": 58.79,
-  "psei": 5730.02,
-  "psei_chg_pts": -65.12,
-  "psei_chg_pct": -1.12,
-  "psei_date": "2026-09-24",
-  "psei_prev": 5795.14,
+  "psei": 5825.97,
+  "psei_chg_pts": 95.95,
+  "psei_chg_pct": 1.67,
+  "psei_date": "2026-09-25",
+  "psei_prev": 5730.02,
   "ph_tbill_91": 5.431,
   "ph_tbill_182": 5.821,
   "ph_tbill_364": 6.043,
@@ -1027,9 +1032,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    [
     "2026-09-23",
     103.08
+   ],
+   [
+    "2026-09-24",
+    106.6
    ]
   ],
-  "brent_chg_reported": 3.86,
+  "brent_chg_reported": 3.4,
+  "brent_session_high": 108.23,
+  "brent_session_high_date": "2026-09-24",
   "brent_withheld": [],
   "brent_disputed_23sep": [
    98.44,
@@ -1141,53 +1152,67 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ],
    [
     "2026-09-16",
-    16.93
+    17.71
    ],
    [
     "2026-09-17",
-    15.42
-   ],
-   [
-    "2026-09-18",
     15.44
    ],
    [
-    "2026-09-21",
+    "2026-09-18",
     14.81
    ],
    [
-    "2026-09-22",
+    "2026-09-21",
     14.87
    ],
    [
-    "2026-09-23",
+    "2026-09-22",
     14.21
+   ],
+   [
+    "2026-09-23",
+    15.18
+   ],
+   [
+    "2026-09-24",
+    15.67
    ]
   ],
+  "vix_reported_moves": {
+   "2026-09-14": 7.95,
+   "2026-09-16": 3,
+   "2026-09-17": -12.8,
+   "2026-09-18": -4.08,
+   "2026-09-21": 0.41,
+   "2026-09-22": -4.44,
+   "2026-09-23": 7,
+   "2026-09-24": 3.23
+  },
   "vix_latest_high": 18.17,
-  "equity_date": "2026-09-23",
-  "spx_close": 7706.03,
-  "spx_chg_pct": -0.75,
-  "nasdaq_close": 26936.04,
-  "nasdaq_chg_pct": -1.13,
-  "dow_close": 51511.59,
-  "dow_chg_pct": -0.68,
-  "dow_chg_pts": -352.1,
-  "spx_prev": 7764.64,
-  "nasdaq_prev": 27244.28,
-  "dow_prev": 51863.69,
-  "wti_settle": 92.16,
-  "wti_chg_pct": 1.81,
-  "wti_date": "2026-09-23",
+  "vix_latest_high_date": "2026-09-10",
+  "equity_date": "2026-09-24",
+  "spx_close": 7704.13,
+  "spx_chg_pct": -0.02,
+  "nasdaq_close": 26939.37,
+  "nasdaq_chg_pct": 0.01,
+  "dow_close": 51349.98,
+  "dow_chg_pct": -0.31,
+  "dow_chg_pts": -161.61,
+  "spx_prev": 7706.03,
+  "nasdaq_prev": 26936.04,
+  "dow_prev": 51511.59,
+  "wti_settle": 94.61,
+  "wti_chg_pct": 2.66,
+  "wti_date": "2026-09-24",
   "wti_contract": "2026-11",
-  "wti_prev_date": "2026-09-22",
+  "wti_prev": 92.16,
+  "wti_prev_date": "2026-09-23",
   "wti_expired_contract": "2026-10",
   "wti_expired_settle": 94.59,
   "vix_2026_low": 13.8,
+  "vix_2026_low_date": "2026-09-04",
   "vix_aug_low": 14.18,
-  "vix_1m_avg": 15.28,
-  "vix_1m_low": 13.8,
-  "vix_1m_high": 16.82,
   "vix_futs_levels": [
    [
     "Oct",
@@ -1230,47 +1255,47 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "asia_eps_2027": 27.5,
   "nikkei": 64011,
   "kospi": 6910,
-  "nikkei_latest": 65513.94,
-  "nikkei_latest_chg_pct": 0.76,
-  "nikkei_latest_date": "2026-09-24",
+  "nikkei_latest": 66364.2,
+  "nikkei_latest_chg_pct": 1.3,
+  "nikkei_latest_date": "2026-09-25",
+  "nikkei_latest_prev": 65513.94,
   "ltcma_us_eq": 6.7,
   "ndx_growth_premium": 1.3,
   "qiap_capture": 78,
   "phmm_gross_prev": 5.25,
   "ltcma_em_eq": 7.8,
-  "vix_latest_date": "2026-09-23",
-  "vix_latest": 14.21,
-  "vix_prev_date": "2026-09-22",
-  "vix_prev_close": 14.87,
-  "vix_latest_chg_pct": -4.44,
+  "vix_latest_date": "2026-09-24",
+  "vix_latest": 15.67,
+  "vix_prev_date": "2026-09-23",
+  "vix_prev_close": 15.18,
+  "vix_latest_chg_pct": 3.23,
   "vix_episode_high": 17.84,
   "vix_episode_low": 14.21,
   "vix_episode_high_date": "2026-09-10",
-  "vix_episode_low_date": "2026-09-23",
+  "vix_episode_low_date": "2026-09-22",
   "ust_10y_date": "2026-09-23",
   "ust_10y": 5.1,
   "ust_10y_prev_date": "2026-09-22",
   "ust_10y_prev": 4.97,
   "ust_10y_chg_bp": 13.0,
-  "brent_date": "2026-09-23",
-  "brent": 103.08,
-  "brent_prev_date": "2026-09-22",
-  "brent_prev": 99.25,
+  "brent_date": "2026-09-24",
+  "brent": 106.6,
+  "brent_prev_date": "2026-09-23",
+  "brent_prev": 103.08,
   "wti_expired_last_trade": "2026-09-22",
-  "wti_prev_implied": true,
-  "wti_prev": 90.52,
-  "brent_yoy": 54.84,
+  "wti_prev_implied": false,
+  "brent_yoy": 60.13,
   "fed_hike_odds_oct_chg_pp": 18.0,
-  "brent_off_high_pct": 5.21,
-  "brent_chg_pct": 3.86,
-  "usdphp_ytd_pct": 6.29,
-  "usdphp_chg_ctvo": 1.0,
+  "brent_off_high_pct": 1.98,
+  "brent_chg_pct": 3.41,
+  "usdphp_ytd_pct": 5.88,
+  "usdphp_chg_ctvo": -27.0,
   "hormuz_vessel_drop_pct": 99.0,
   "hormuz_queue_date": "2026-09-20",
   "hormuz_queue_now": 376,
   "hormuz_queue_lo": 357,
   "hormuz_queue_hi": 376,
-  "hormuz_transits_age_d": 4,
+  "hormuz_transits_age_d": 5,
   "hormuz_flow_drop_pct": 33.0,
   "vix_futs": [
    [
@@ -1331,7 +1356,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 2.67,
    "12M": 3.0,
    "10Y": 3.44,
-   "why": "Near horizons cut again, ten-year anchor held. Payrolls and PMI both say growth is fine - August payrolls +162k against a 53k consensus, and the September composite PMI hit 58.4, the strongest since July 2021 - but the rate path just repriced harder than at any point since the hike itself. On official closes the 10-year went 4.94% on 17 Sep, 5.01% on the 18th, 4.96% on the 21st and 4.97% on the 22nd, then a provisional 5.10% on the 23rd (the 5.104% market-close print) - a 13bp jump, the biggest one-day move in this series - after peaking at 5.135% intraday, the highest since July 2007. The 2-year read 4.889%, its highest since May 2024; the 30-year 5.398%, its highest since June 2007. The trigger: Fed Governor Barr said further hikes are 'likely to be needed', a $70bn 5-year auction met weak demand, and CME FedWatch's October odds jumped from 55% to 73% in a day. Equities gave up the UN-week gains: the S&P fell 0.75% to 7706.03, the Nasdaq 1.13% to 26936.04 ending its two-session record streak, and the Dow 0.68% to 51511.59. August CPI was mixed - core improved to 2.4% y/y, but core rose 0.3% on the month and gasoline is +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, so this shock is a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
+   "why": "Near horizons cut, ten-year anchor held. Growth is fine - August payrolls +162k against a 53k consensus, and the September composite PMI hit 58.4, the strongest since July 2021 - but the rate path has repriced hard. On official closes the 10-year went 4.94% on 17 Sep, 5.01% on the 18th, 4.96% on the 21st and 4.97% on the 22nd, then a provisional 5.10% on the 23rd (the 5.104% market-close print). On 24 Sep it traded as high as 5.223%, the highest since June 2007; the 2-year read 4.941% and the 30-year hit 5.501%, its highest since June 2004. The trigger on the 23rd: Fed Governor Barr said further hikes are 'likely to be needed', a $70bn 5-year auction met weak demand, and CME FedWatch's October odds jumped from 55% to 73% in a day. Equities have stalled rather than broken: after falling together on the 23rd, the S&P closed 24 Sep at 7704.13 (-0.02%), the Nasdaq at 26939.37 (+0.01%) and the Dow at 51349.98 (-0.31%). August CPI was mixed - core 2.4% y/y but +0.3% on the month, gasoline +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
    "blend_10": 5.76,
    "3M_10": 4.25,
    "6M_10": 4.75,
@@ -1345,7 +1370,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 1.89,
    "12M": 2.11,
    "10Y": 2.56,
-   "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +54.8% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
+   "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +60.1% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
    "blend_10": 3.83,
    "3M_10": 2.5,
    "6M_10": 3.0,
@@ -1359,7 +1384,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 3.0,
    "12M": 3.44,
    "10Y": 3.89,
-   "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. Japan has since recovered past that level: the Nikkei closed 65,513.94 on 24 Sep, +0.76% on its return from the equinox holiday, while Korea was shut for Chuseok and has no newer print. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
+   "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. Japan has since recovered well past that level: the Nikkei closed 66,364.20 on 25 Sep, +1.30% for a fifth straight gain. Korea is shut for Chuseok, and this page carries no KOSPI print after 11 Sep. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
    "blend_10": 6.7,
    "3M_10": 5.0,
    "6M_10": 5.5,
@@ -1373,7 +1398,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "6M": 3.0,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 6.04% on the 21 Sep auction, up 12bp in a week as the Fed's hike fed through, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. One of the two things that worked against a fifth turned and then turned back: five straight down sessions took Brent to $99.25 on 22 Sep, and a +3.86% day put it at $103.08 on 23 Sep - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing than a single month of cheaper oil is to bank. The peso came off its record and has stayed near it: 62.735 on 24 Sep, a centavo weaker after a flat 23rd, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is a 6.29% loss of purchasing power against the dollar this year. The PSEi fell another 1.12% on 24 Sep to 5730.02, extending a losing streak through the whole week. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+   "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 6.04% on the 21 Sep auction, up 12bp in a week as the Fed's hike fed through, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. Oil, which had turned from the risk to the help, has turned back: two up days put Brent at $106.60 on 24 Sep, 1.98% below its 15 Sep high - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing. The peso has come off its record: 62.465 on 25 Sep, 27 centavos stronger on the day, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is still a 5.88% loss of purchasing power against the dollar this year. The PSEi rose 1.67% on 25 Sep to 5825.97, a first gain after a run of losses that had taken it to a 10-month low the day before. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
    "blend_10": 5.5,
    "3M_10": 5.5,
    "6M_10": 5.5,
@@ -1393,9 +1418,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "blend": 18.88,
   "spot": 14.32,
   "quote_date": "2026-09-04",
-  "latest": 14.21,
-  "latest_date": "2026-09-23",
-  "latest_gap": -0.11,
+  "latest": 15.67,
+  "latest_date": "2026-09-24",
+  "latest_gap": 1.35,
   "ramp": 4.56,
   "sens": {
    "ATRPHMM": 0.035,
@@ -1407,7 +1432,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "vix3m_date": "2026-09-11",
   "vix3m_model": 17.68,
   "vix3m_resid": -4.97,
-  "strip_age_d": 20
+  "strip_age_d": 21
  },
  "drivers": [
   {
@@ -1415,15 +1440,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.2,
    "score": 1.33,
    "score_10": 1.75,
-   "note": "CUT AGAIN - the 'what is priced is absorbed' argument that held this driver at 2.25 for a week broke on 23 September. Three things arrived the same day: the S&P Global composite PMI hit 58.4 (from 56.0), the strongest US private-sector expansion since July 2021, with input costs rising the fastest since October 2022; a $70bn 5-year note auction met weak demand; and Fed Governor Barr - a sitting voting member - said 'in my base case, further policy adjustments are likely to be needed', explicitly citing that inflation risk has risen while labour-market risk has receded. CME FedWatch puts October at 73%, from 55% on the 22nd - an 18-point move in one session, on the day the 10-year made its sharpest one-day jump since April 2025. It read 50.9% on the 17th, so most of the week's repricing happened in that single day. Cumulative odds of at least one more hike by December were last verified at 88.5% on the 17th and not re-found on the 23rd; October alone cannot exceed the cumulative figure, so the two are consistent - but consistent is not re-verified. On official closes the 10-year went 4.94% on the 17th, 5.01% on the 18th, 4.96% on the 21st and 4.97% on the 22nd; the 23rd is provisional at 5.10%, the 5.104% market-close print, with the Treasury's own figure not yet confirmed - a 13bp jump, the largest single-session move in this series, after peaking at 5.135% intraday, the highest since July 2007 and the figure that superlative now belongs to (the 15 Sep peak of 5.04% is superseded). The 2-year read 4.889% late in the session, its highest since May 2024, and the 30-year 5.398%, its highest since June 2007. The ECB finished its own cycle on 10 Sep at 2.50%; BSP is at 5.00% after three hikes; the BoJ joined on 18 Sep at 1.25%. Cut half a point rather than further: the hike itself is not the new information - 16 of 18 dot-plot participants already saw one more this year - what changed is HOW SOON the market now thinks it lands, and October at 73% against 50.9% a week ago is that repricing happening in real time, not a new regime.",
-   "summary": "Cut to 1.75: a hot PMI, a weak 5-year auction and a hawkish Governor Barr took October hike odds to 73% and the 10-year to its highest since 2007."
+   "note": "HELD at 1.75 after the 23 Sep cut; 24 Sep extended the move without changing the path. What arrived on the 23rd: the S&P Global composite PMI hit 58.4 (from 56.0), the strongest US private-sector expansion since July 2021, with input costs rising the fastest since October 2022; a $70bn 5-year note auction met weak demand; and Fed Governor Barr - a sitting voting member - said 'in my base case, further policy adjustments are likely to be needed'. CME FedWatch put October at 73%, from 55% on the 22nd - an 18-point move in one session. It read 50.9% on the 17th. Cumulative odds of at least one more hike by December were last verified at 88.5% on the 17th; October alone cannot exceed the cumulative figure, so the two are consistent - but consistent is not re-verified. On official closes the 10-year went 4.94% on the 17th, 5.01% on the 18th, 4.96% on the 21st and 4.97% on the 22nd; the 23rd is provisional at 5.10%, the 5.104% market-close print, with the Treasury's own figure not yet confirmed. On 24 Sep the selloff went longer and global: the 10-year traded as high as 5.223%, the highest since June 2007 (the 23 Sep peak of 5.135% is superseded), the 2-year read 4.941%, and the 30-year hit 5.501%, its highest since June 2004. The ECB finished its own cycle on 10 Sep at 2.50%; BSP is at 5.00% after three hikes; the BoJ joined on 18 Sep at 1.25%. Not cut again: the 24th moved the long end, not the October odds, and 16 of 18 dot-plot participants already saw one more hike this year. What changed on the 23rd is HOW SOON, and that is in this score.",
+   "summary": "Held at 1.75: October hike odds are 73% after a hot PMI and a hawkish Governor Barr, and on 24 Sep the 30-year hit its highest since June 2004."
   },
   {
    "name": "Inflation trajectory",
    "weight": 0.15,
    "score": 1.78,
    "score_10": 2.75,
-   "note": "CUT a quarter point - two-sided is still the right frame, but the forward side just got louder. The core measure improved - August core CPI 2.4% y/y from 2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that progress in real time: core rose 0.3% on the month against a 0.2% consensus, gasoline is +27.4% y/y and fuel oil +52%. What is new is forward-looking, not backward: the S&P Global composite PMI for September, released 23 Sep, reported input costs rising at their steepest pace since October 2022, driven by fuel, freight and wages together - a survey reading of pipeline pressure, months ahead of the CPI print it will eventually show up in. Euro HICP 3.3%. PH eased to 6.1%, a fourth straight deceleration - but Brent is back at $103.08 after a +3.86% day that snapped five straight declines. That is inside the range this score was set against rather than above it, which is why the cut stops at a quarter point.",
+   "note": "CUT a quarter point - two-sided is still the right frame, but the forward side just got louder. The core measure improved - August core CPI 2.4% y/y from 2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that progress in real time: core rose 0.3% on the month against a 0.2% consensus, gasoline is +27.4% y/y and fuel oil +52%. What is new is forward-looking, not backward: the S&P Global composite PMI for September, released 23 Sep, reported input costs rising at their steepest pace since October 2022, driven by fuel, freight and wages together - a survey reading of pipeline pressure, months ahead of the CPI print it will eventually show up in. Euro HICP 3.3%. PH eased to 6.1%, a fourth straight deceleration - but Brent is back at $106.60 after two up days. That is still inside the range this score was set against - below the 15 Sep high - which is why the cut stops at a quarter point.",
    "summary": "Trimmed to 2.75: core CPI eased to 2.4%, but gasoline is +27.4% y/y and PMI input costs are rising at their steepest since October 2022."
   },
   {
@@ -1431,7 +1456,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.15,
    "score": 2.44,
    "score_10": 4.25,
-   "note": "RAISED a quarter point on the hardest data point of the week: the S&P Global flash composite PMI for September hit 58.4, from 56.0, the strongest private-sector expansion since July 2021 - services led at 58.7 against a 56 consensus, and the manufacturing PMI jumped to 57.0 from 53.9, a 52-month high. August payrolls were already strong, +162k against a 53k consensus, unemployment 4.1%. This driver's own lane is whether the growth engine is intact under the shocks, not what the bond market did in reaction to the same print - that belongs to Monetary policy, which absorbed the hit: the PMI beat is exactly why the 10-year jumped 13bp on 23 Sep and equities fell 0.75/1.13/0.68% across the board. Read separately, the PMI print is unambiguous growth evidence; kept here rather than double-counted in the rate driver's cut. Saudi output is still down ~1.9 mb/d after Houthi strikes. The IMF's 3.1% global forecast was written against an oil price nearly forty dollars lower and a 10-year yield nowhere near 5.10%, a second tax on every long-duration cash flow here.",
+   "note": "RAISED a quarter point on the hardest data point of the week: the S&P Global flash composite PMI for September hit 58.4, from 56.0, the strongest private-sector expansion since July 2021 - services led at 58.7 against a 56 consensus, and the manufacturing PMI jumped to 57.0 from 53.9, a 52-month high. August payrolls were already strong, +162k against a 53k consensus, unemployment 4.1%. This driver's own lane is whether the growth engine is intact under the shocks, not what the bond market did in reaction to the same print - that belongs to Monetary policy, which absorbed the hit: the PMI beat is exactly why the 10-year jumped 13bp on 23 Sep and equities fell across the board. Read separately, the PMI print is unambiguous growth evidence; kept here rather than double-counted in the rate driver's cut. Saudi output is still down ~1.9 mb/d after Houthi strikes. The IMF's 3.1% global forecast was written against an oil price nearly forty dollars lower and a 10-year yield nowhere near 5.10%, a second tax on every long-duration cash flow here.",
    "summary": "Raised to 4.25: the September composite PMI hit 58.4, the strongest since July 2021, on top of +162k August payrolls."
   },
   {
@@ -1439,32 +1464,32 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.2,
    "score": 3.67,
    "score_10": 7.0,
-   "note": "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) is unrevised and the AI capex cycle keeps compounding through the semis supply chain. Trimmed because the margin assumption underneath those estimates is harder to hold at $103 oil than at $66.57, where it was a year ago - and the five straight down sessions from the $108.75 peak of 15 Sep ended on 23 Sep with a 3.86% rally, leaving Brent 5.21% below that peak. The selling has hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%.",
-   "summary": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, trimmed only for margins at $103 oil."
+   "note": "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) is unrevised and the AI capex cycle keeps compounding through the semis supply chain. Trimmed because the margin assumption underneath those estimates is harder to hold at $106.60 oil than at $66.57, where it was a year ago - Brent is back within 1.98% of its $108.75 peak of 15 Sep. The selling has hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%.",
+   "summary": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, trimmed only for margins at $106.60 oil."
   },
   {
    "name": "Valuation support",
    "weight": 0.1,
    "score": 4.22,
    "score_10": 8.25,
-   "note": "RAISED a quarter point - the one driver the shock improves, and the 23 Sep session added to it. The S&P, Nasdaq and Dow all fell together on 23 Sep (-0.75/-1.13/-0.68%) as the 10-year jumped to a post-2007 high, undoing most of the 21-22 Sep bounce and resuming the de-rating a 1.9% Nikkei fall and a month of index declines had already started, against estimates that have not moved. NDX 22.4x forward sits below both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount, Europe 15.4x. A cheaper multiple on the same earnings is better compensation for the same risk.",
-   "summary": "Raised to 8.25: the 23 Sep selloff cheapened multiples again - the one driver the shock improves."
+   "note": "RAISED a quarter point on 23 Sep - the one driver the shock improves. The S&P, Nasdaq and Dow fell together that day as the 10-year jumped to a post-2007 high, and barely moved on 24 Sep (-0.02/+0.01/-0.31%) as it went higher still, resuming the de-rating a 1.9% Nikkei fall and a month of index declines had already started, against estimates that have not moved. NDX 22.4x forward sits below both its 10y (22.9x) and 5y (24.7x) averages, Asia at 10.5x is a two-decade-wide discount, Europe 15.4x. A cheaper multiple on the same earnings is better compensation for the same risk.",
+   "summary": "Raised to 8.25 on 23 Sep: the rate shock cheapened multiples again - the one driver the shock improves."
   },
   {
    "name": "Volatility & risk appetite",
    "weight": 0.1,
    "score": 1.89,
    "score_10": 3.0,
-   "note": "HELD at 3.0 for a third review, and now on a widening puzzle rather than a resolved one. The VIX closed 14.81 (21 Sep), 14.87 (22nd) and 14.21 (23rd) - the LOWEST of the three on the day the 10-year had its biggest one-day jump in 18 months and the S&P/Nasdaq/Dow fell together for the first time since the Fed hike itself. That pairing - falling vol on a rates-and-equity selloff - is not the calm arriving, it is a real disagreement between two markets about how much this matters, and this driver does not resolve it by picking a side. What is unchanged is the structural point raised on 21 Sep: the thing this portfolio is actually paid on is the CURVE, not spot, and the strip is still the 4 September quote - a falling spot with a stale strip WIDENS the ramp rather than confirming anything about risk appetite. Until the strip re-quotes, a falling VIX is arithmetic, not evidence.",
-   "summary": "Held at 3.0: spot VIX fell to 14.21 on the day yields jumped, while the futures curve still prices a wide ramp above it."
+   "note": "HELD at 3.0 - and the puzzle the last two reviews held it on has dissolved. They read the index as falling through a rates selloff; that was a dating error in this page's own series, which had filed every close from 17 Sep one session late. On the right dates the index made a 21-session low of 14.21 on 22 Sep, then rose 7% to 15.18 on 23 Sep as the 10-year jumped, and 3.23% to 15.67 on 24 Sep: the ordinary pairing, rates and equity volatility moving together. It is still a low level - under the 17.84 close of 10 Sep and well below the long-run 19.5 the curve converges to - so it reads as neither complacency nor stress. Unchanged is the structural point: this portfolio is paid on the CURVE, not spot, and the strip is still the 4 September quote. Spot rising toward a fixed strip means a re-quote would more likely NARROW the ramp than widen it - the direction the stale strip now errs in.",
+   "summary": "Held at 3.0: the VIX rose with yields, to 15.67 on 24 Sep - still low, and still below the futures curve it is paid on."
   },
   {
    "name": "Geopolitics & energy",
    "weight": 0.1,
    "score": 1.22,
    "score_10": 1.5,
-   "note": "RESTORED to 1.5, where it stood before 14 Sep - and no higher. The cut to 1.25 was made for two named reasons: the Hormuz bypass was shut, and the Oman talks were called off. On 22 Sep BOTH reversed as facts rather than as prices. Saudi Arabia restarted the 1200 km East-West (Petroline) pipeline, which had been carrying roughly 5.0 mb/d to Yanbu specifically to route around the Strait, and a cargo was scheduled to load there for China the same day. And US negotiators met an Iranian delegation for three hours on the sidelines of the UN General Assembly; Trump called it very good, though one account describes the talks as indirect, through mediators. A score cut for two reasons comes back when both reasons are gone. It does not go further, because what is left is still bad. The pipeline is at well below normal throughput - 40% within a couple of days, six to eight weeks to full - and Kpler's Yanbu loss of 2.5 to 2.7 mb/d does not close in a week. Trump put a deal after the US midterms, six weeks out, and said that without one he could annihilate Iran; Iran's terms are the blockade lifted, frozen assets returned and an end to the war on all fronts. The Strait itself is still closed. Read the disruption on VOLUME, not vessel counts. The counts run from 1 to 30 a day depending on what is counted and when - IMF PortWatch 1 transit against an 85 baseline on its 20 Sep reading (8 on the 13th), Lloyd's List Intelligence 14 a day in the week to 23 Aug counting only cargo over 10000 dwt, the US government around 30 on a basis it does not state - and none of them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up from a 5.5 trough in March, is dated 2026-08-28 and predates both the pipeline strike and its restart, so it is carried as the last measurement and nothing more. Aramco loaded ~14mb onto seven VLCCs at Ras Tanura on 20 Sep - a different port, before the pipeline restart - which is the resilience this score has been crediting even while Yanbu stayed dry. The queue off berth is oscillating, not draining: 369, 357 and 376 vessels on 18-20 Sep on one stated basis. Brent settled at $103.08 on 23 Sep, up 3.86%, snapping five straight down sessions - still 5.21% below the $108.75 high of 15 Sep, and +54.8% on a year earlier. That session was withheld on this page's first pass and resolved on its second: two Brent candidates each reproduced their own percentage, the post-settlement reporting put oil UP, and the WTI gap that blocked it was a contract roll - the October contract expired on 22 Sep, so every Wednesday WTI print was November. Pezeshkian's UNGA reply on the 23rd is what the market rallied on: defiant, not conciliatory - 'Iran cannot be made to surrender' - he held up images of the war's dead and rejected Trump's own account that a deal is likely after the midterms, and Iran's military said it was ready for 'more crushing' strikes. The price moved; this score does not, for the same reason it did not rise when crude fell on the 21st: rhetoric is not a fact, and nothing said on the 23rd reverses the pipeline restart or the meeting of the 22nd. The fact to watch is Saudi Arabia's reported aim of a meaningful Petroline resumption by Saturday. Still NOT scored at the floor or near it: the stress table models full closure and Brent above $130, a strictly worse state that is not off the table while the Strait stays shut.",
-   "summary": "Held at 1.5: the Petroline restart and the US-Iran meeting on 22 Sep stand as facts; the 23 Sep oil rally ran on a speech, and the Strait is still closed."
+   "note": "HELD at 1.5, where it was restored on 22 Sep when both reasons for the cut to 1.25 reversed as facts: Saudi Arabia restarted the 1200 km East-West (Petroline) pipeline, which had carried roughly 5.0 mb/d to Yanbu around the Strait, and US negotiators met an Iranian delegation for three hours at the UN General Assembly. 24 Sep tested both. The Houthis fired six ballistic missiles at Yanbu and Taif; all were intercepted, with no damage reported, and Brent spiked to $108.23 intraday on 24 Sep before settling at $106.60, up 3.4% - 1.98% below the $108.75 high of 15 Sep and +60.1% on a year earlier. The same day US and Iranian negotiators were reported to be exploring a phased deal - the Strait reopened, the blockade lifted - and on 25 Sep Foreign Minister Araghchi said it could open within seven days 'if certain conditions are met'. None of that is a fact yet: the missiles missed, the offer is conditional, and the Strait is still closed. The pipeline is well below normal throughput - 40% within a couple of days, six to eight weeks to full - and Kpler's Yanbu loss of 2.5 to 2.7 mb/d does not close in a week. Read the disruption on VOLUME, not vessel counts. The counts run from 1 to 30 a day depending on what is counted and when - IMF PortWatch 1 transit against an 85 baseline on its 20 Sep reading (8 on the 13th), Lloyd's List Intelligence 14 a day in the week to 23 Aug counting only cargo over 10000 dwt, the US government around 30 on a basis it does not state - and none of them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up from a 5.5 trough in March, is dated 2026-08-28 and predates both the pipeline strike and its restart, so it is carried as the last measurement and nothing more. The queue off berth is oscillating, not draining: 369, 357 and 376 vessels on 18-20 Sep on one stated basis. Still NOT scored at the floor or near it: the stress table models full closure and Brent above $130, a strictly worse state that is not off the table while the Strait stays shut.",
+   "summary": "Held at 1.5: Houthi missiles at Yanbu were intercepted and Iran offers a conditional reopening, but the Strait is still closed."
   }
  ],
  "driver_scale": {
@@ -1799,7 +1824,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "ppp_now": 2.7
  },
  "vix_quote_date": "2026-09-04",
- "review_date": "2026-09-24",
+ "review_date": "2026-09-25",
  "regional_tilt_per_pt": 0.675,
  "driver_tilt_cal": {
   "monetary": 4.0,
@@ -1819,7 +1844,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "date": "2026-10-06",
    "what": "Philippine September CPI",
-   "why": "The peso sleeve's real carry needs PH inflation to keep slowing; August was the fourth slowdown in a row. Two things work against a fifth: Brent back at $103.08 on 23 Sep, and rice inflation up to 19.4% from 17.1%."
+   "why": "The peso sleeve's real carry needs PH inflation to keep slowing; August was the fourth slowdown in a row. Two things work against a fifth: Brent back at $106.60 on 24 Sep, and rice inflation up to 19.4% from 17.1%."
   },
   {
    "date": "2026-10-28",
@@ -1883,7 +1908,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $103. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $107. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
     "cagr": 2.31,
     "vol": 23.05,
     "maxdd": -54.2
@@ -1959,7 +1984,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $103. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $107. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
     "cagr": 3.36,
     "vol": 21.88,
     "maxdd": -49.1
@@ -3285,11 +3310,20 @@ function tipper(host) {
 /* ---------------- volatility ---------------- */
 (function () {
   const V = D.vol_ts;
+  /* "Spot VIX" printed the CURVE's 4 Sep spot (14.32) for three weeks, and the
+     "30-day range" was a typed 13.80-16.82 that excluded the 10 Sep close of 17.84.
+     Spot is now the latest close, and the range is derived from the dated series. */
+  const VC0 = D.vol_channel, MH = D.macro.vix_history;
+  const dmS = iso => new Date(iso + "T00:00:00")
+    .toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const closes = MH.map(r => r[1]);
   $("#volstats").innerHTML = [
-    ["Spot VIX", D.macro.vix_spot.toFixed(2),
-     "30-day implied · 2026 low " + D.macro.vix_2026_low.toFixed(2)],
-    ["Dec VIX future", D.macro.vix_fut_dec.toFixed(2), "+" + (D.macro.vix_fut_dec - D.macro.vix_spot).toFixed(2) + " vs spot"],
-    ["30-day range", D.macro.vix_1m_low.toFixed(2) + "–" + D.macro.vix_1m_high.toFixed(2), "avg " + D.macro.vix_1m_avg.toFixed(2)],
+    ["Spot VIX", VC0.latest.toFixed(2),
+     dmS(VC0.latest_date) + " close · 2026 low " + D.macro.vix_2026_low.toFixed(2)],
+    ["Dec VIX future", D.macro.vix_fut_dec.toFixed(2),
+     "+" + (D.macro.vix_fut_dec - VC0.latest).toFixed(2) + " vs spot · quoted " + dmS(VC0.quote_date)],
+    ["Closes since " + dmS(MH[0][0]), Math.min(...closes).toFixed(2) + "–" + Math.max(...closes).toFixed(2),
+     "intraday " + D.macro.vix_2026_low.toFixed(2) + "–" + D.macro.vix_latest_high.toFixed(2)],
     ["Brent crude", "$" + D.macro.brent.toFixed(2), "+" + D.macro.brent_yoy.toFixed(1) + "% y/y"],
   ].map(([k,v,d]) => `<div class="stat"><span class="k">${k}</span>
       <span class="v">${v}</span><span class="d">${d}</span></div>`).join("");
@@ -3758,6 +3792,8 @@ function donut(host, w, title, cagr, dd) {
   const set = (id, txt) => { const n = $("#" + id); if (n) n.textContent = txt; };
   set("ecbnow",    m.ecb_depo.toFixed(2) + "%");
   set("oddsnow",   m.fed_hike_odds_oct.toFixed(1) + "%");
+  set("oddsnowd",  new Date(m.fed_hike_odds_oct_date + "T00:00:00")
+    .toLocaleDateString("en-GB", { day: "numeric", month: "long" }));
   set("ust10",     m.ust_10y.toFixed(2) + "%");
   set("brentnow",  "$" + m.brent.toFixed(2));
   set("brentyoy",  "+" + m.brent_yoy.toFixed(1) + "%");
@@ -3778,12 +3814,15 @@ function donut(host, w, title, cagr, dd) {
   set("oddsdecd",  new Date(m.fed_hike_odds_dec_date + "T00:00:00")
     .toLocaleDateString("en-GB", { day: "numeric", month: "long" }));
   set("bojnow",    m.boj_rate.toFixed(2) + "%");
-  /* 3dp: the peak is a 5.135% intraday print, and toFixed(2) showed it as 5.13%. */
+  /* 3dp: the peak is an intraday print (5.135%, now 5.223%); toFixed(2) had shown
+     5.135 as 5.13%. */
   set("ust10pk",   m.ust_10y_peak.toFixed(3) + "%");
   set("ust10prov", m.ust_10y_provisional.includes(m.ust_10y_date)
     ? "(provisional " + m.ust_10y_market_print.toFixed(3)
       + "% market close; Treasury figure pending)"
     : "(official close)");
+  set("ust10d",   new Date(m.ust_10y_date + "T00:00:00")
+                  .toLocaleDateString("en-GB", { day:"numeric", month:"long" }));
   set("ust10pkd", new Date(m.ust_10y_peak_date + "T00:00:00")
                   .toLocaleDateString("en-GB", { day:"numeric", month:"long" }));
   set("brenthighd", new Date(m.brent_high_date + "T00:00:00")
@@ -3836,6 +3875,8 @@ function donut(host, w, title, cagr, dd) {
   set("vgap",     Math.abs(v.latest_gap).toFixed(2)
                   + (v.latest_gap < 0 ? " above" : v.latest_gap > 0 ? " below" : " level with"));
   set("vust10",   m.ust_10y.toFixed(2) + "%");
+  set("vust10d",  fmtd(m.ust_10y_date));
+  set("vust10pkd", fmtd(m.ust_10y_peak_date));
   /* The "highest since 2007" superlative belongs to the intraday PEAK, not to the
      previous close. This read ust_10y_prev until 2026-09-19 - correct only while
      the two coincided, which stopped being true on the 18th. */

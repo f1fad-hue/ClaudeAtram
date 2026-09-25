@@ -2,6 +2,66 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-25 — The VIX series was filed a day late for a week, and the page's volatility story was built on it
+
+### 1. Errors found and fixed
+
+- **VIX series misdated from 16 Sep (the big one).** 16.93 on the 16th was a
+  pre-decision intraday quote; the close was **17.71** ("rose 3%"). From the 17th,
+  every close had been filed one session late. Corrected series: 17.71 (16th) ·
+  15.44 (17th) · 14.81 (18th) · 14.87 (21st) · 14.21 (22nd) · **15.18 (23rd)** ·
+  **15.67 (24th)**. On these dates every reported move reproduces from the previous
+  close. That includes the two 17 Sep descriptors ("nearly 13%", −12.8%) the last
+  review had discarded as "not reconciling": both are the 17th's move off 17.71.
+  - **Knock-on:** "VIX fell on the day yields jumped" was false. On 23 Sep the VIX
+    **rose** 7% with the 10-year's jump, the ordinary pairing. The Volatility
+    heading, intro, driver note and summary were all written on the error, and all
+    are rewritten. The score holds at 3.0.
+  - **New checks:** each session's reported move is now an input
+    (`vix_reported_moves`), and a check requires it to reproduce from the previous
+    close in the series; it fails against the old series (bite-tested). A second
+    check makes any "VIX fell/rose" in the prose agree with the sign of the latest
+    move.
+- **Volatility tiles.** "Spot VIX" showed the curve's 4 Sep spot (14.32) for three
+  weeks. The "30-day range 13.80–16.82, avg 15.28" was typed on about 2 Sep and
+  never rolled, so it excluded the 10 Sep close of 17.84 and the intraday 18.17.
+  Spot is now the latest close; the range is derived from the dated series, and
+  the intraday extremes carry dates plus a check that they bracket the closes.
+  The `vix_1m_*` fields are retired.
+- **Peso misdated.** The 24 Sep review filed Tuesday's 62.725 as Wednesday's
+  close and called the 24th "a centavo weaker after a flat 23rd". BusinessWorld's
+  sequence is 62.725 (22nd) → **62.585 (23rd, a two-week high)** → 62.735 (24th,
+  −15 centavos). The prior is now dated, and the reported centavo move is checked.
+- **Fed odds undated.** The October FedWatch reading's date lived only in a
+  comment, the defect every other series was cured of on 21 Sep. It is now a field
+  with a lag bound.
+- **Peak check enforced a misquote.** It formatted the superseded 10-year peak to
+  2dp, which would have required quoting 5.135% as "5.13%". It now uses the
+  value's own precision.
+- **Report ordering.** "The 10-year ended at 5.10% … after an intraday 5.223% on
+  24 September" read as the close coming after a later high. Both dates are now
+  bound.
+
+### 2. Data: 24 Sep US closes, 25 Sep PH and Japan
+
+| Series | New | Notes |
+|---|---|---|
+| S&P / Nasdaq / Dow | 7,704.13 / 26,939.37 / 51,349.98 | −0.02 / +0.01 / −0.31%, flat; chains |
+| Brent | $106.60 (+3.4%) | session high $108.23 on Houthi missiles at Yanbu (all intercepted); TE's 106.39 also chains but is a feed snapshot |
+| WTI (Nov) | $94.61 (+2.7%) | a true chain this time, no roll |
+| 10-year | peak 5.223% (24 Sep) | 23 Sep close stays provisional at 5.10; two secondary sources say 5.12, still unconfirmed |
+| 2-year / 30-year | 4.941% / high 5.501% | 30-year's highest since June 2004 |
+| PSEi | 5,825.97 (+1.67%) | chains |
+| USD/PHP | 62.465 (+27 centavos) | chains; year-to-date loss 5.88% |
+| Nikkei | 66,364.20 (+1.30%) | the syndicated 66,345.07 was a 14:56 intraday print |
+
+- **Scores and allocation:** no driver score changes. The 24th moved the long end,
+  not the October odds; the Houthi missiles missed; Iran's seven-day Hormuz offer
+  is conditional, and the Strait is still closed. The gauge stays 2.37 and the
+  allocation stays **15 / 70 / 10 / 5**, 7.46% / −26.9%.
+- **Harnesses:** engine 174/174, audit 0 failures, checklist 27/27, validate 18/18
+  on the published copy.
+
 ## 2026-09-24 (fifth pass) — Concision, and four sentences that had gone false
 
 ### 1. The page, shortened
