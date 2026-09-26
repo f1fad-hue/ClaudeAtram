@@ -2,6 +2,86 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-26 — Friday's closes, the 10-year confirmed, and four errors in the checks and prose
+
+Market data now runs to Friday 25 Sep in both markets (no Saturday sessions). The
+allocations do not move: B stays **25 / 10 / 60 / 5** (6.76% / −27.1%) and C stays
+**20 / 50 / 25 / 5** (6.46% / −25.7%). None of Friday's inputs reaches a forecast:
+the VIX spot and the 10-year are context, and the volatility tilt runs off the strip.
+
+### 1. Data refreshed (every move chains off the previous close)
+
+- **Equities:** S&P 7,743.41 (+0.51%), Nasdaq 27,068.72 (+0.48%), Dow 51,828.62
+  (+0.93%, +478.64). The S&P and Dow chain to the cent; the Nasdaq's points land one
+  cent off, the same prior-close rounding as the 24th.
+- **VIX:** 14.85 (−5.24%), falling back as yields steadied.
+- **Brent:** $104.32 (−2.14%) as Iran set out a phased Hormuz reopening. An AP line
+  that Brent "dropped below $98" matches no settle in the week and is not carried.
+- **WTI:** $92.41, November contract (−$2.20, −2.33%). The "−7.87% on the week" in
+  the same reports runs off October's settle, across the roll, and is not quoted.
+- **10-year, official basis:** 23 Sep **5.12%** (was provisional at 5.10), 24 Sep
+  **5.18%**, 25 Sep **5.17%**. 5.01 → 5.17 is +16bp, matching Wolf Street's weekly
+  figure. No point is provisional now.
+- **2-year and 30-year:** 25 Sep session readings, 4.856% and 5.488%. The 30-year's
+  5.501% high of the 24th is kept.
+- **Geopolitics prose:** Araghchi's step-by-step reopening timeline, and France's
+  pledge of air defences for Yanbu. The score is held at 1.5.
+- **Catalysts added:** US August PCE (30 Sep) and September payrolls (2 Oct).
+- **FedWatch:** a secondary 75.8% read on the 25th is recorded. 73.0 stays, since it
+  is not the tool itself.
+
+### 2. Errors found and fixed
+
+- **The 23 Sep 10-year was provisional at 5.10 and is 5.12.**
+  - StreetStats' par-curve row for that date reads 10-year 5.12. Its 2-year (4.90)
+    and 30-year (5.40) match that day's market readings, which pins the row's date.
+  - Forbes also reads 5.12, and Saxo had "closed above 5.11%".
+  - The first pass of this review took CNN's "closed at 5.11%", a press figure, and
+    was corrected before publishing.
+- **My own edit left "5.11% on the 23rd" in the Monetary note** after the series
+  moved to 5.12. The parenthetical beside it was updated; the figure was not.
+  - Nothing tied the note's run of closes to the series.
+  - A new check now does, for the Monetary and US notes. It was bite-tested with
+    5.11 and with a wrong 24th.
+- **The VIX chain check rejected a correct print.**
+  - "−5.24% to 14.85" off 15.67 gives 14.849, which is 14.85. The check compared
+    the reported move with a percentage recomputed from two rounded closes (−5.23%),
+    allowing only half a unit of the move's own precision.
+  - It now tests the implied level with half a cent for the close's rounding.
+  - Bite-tested: a one-session misdating and a 5-cent shift both still fail.
+- **The Volatility lede printed "−5.23%" beside a note saying "−5.24%".** The page
+  now prints the reported move at its reported precision. The recomputed value is
+  published as `vix_latest_chg_pct_calc`.
+
+### 3. Code review of the 25 Sep correction and Portfolio C
+
+- **Portfolio C is re-derived independently in the audit harness** (7 new checks).
+  The pinned feasible count (11), the best pinned CAGR (6.47%), the chosen weights
+  under the stated rule, the published CAGR/drawdown, the budget, and the zero-shock
+  scenario all reproduce.
+- **Report generator edge cases.**
+  - "The most exposed" covered-call sleeve and its "+" sign were typed; both now come
+    from the published sensitivities.
+  - The Global Technology fallback sentence claimed "the deepest drawdown"
+    unconditionally; it is now conditional on the data.
+  - The typed section 4 heading and bullets (highest return, smallest weight, most
+    rate-sensitive, deepest drawdown) are now asserted by an engine check.
+- **Wording.**
+  - "Having run through $108.75" implied Brent went past its high; it now reads
+    "below the $108.75 it reached".
+  - Portfolio C's stress rows now use the stress table's scenario names.
+  - The Valuation note no longer calls Friday's bounce "resuming the de-rating".
+- **Housekeeping.** An orphaned "last completed week" comment, whose fields were
+  retired, has been removed.
+- **Asia re-rating credit.** CLAIMS now records the case for keeping it beside the
+  case against: the LTCMA is priced at its own as-of valuation, a year old. It
+  stays OPEN, with the what-if published.
+
+### 4. Checks
+
+Engine 183/183; independent audit 0 failures; checklist 27/27; validator 18/18 on
+the published copy.
+
 ## 2026-09-25 (third pass) — Portfolio C: Nasdaq Equity Income pinned at 50%
 
 Added at the owner's request: a third donut on the Portfolios tab with Nasdaq

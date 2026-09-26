@@ -132,6 +132,20 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+47. EDITING A SENTENCE IS NOT EDITING ITS NUMBERS. Confirming the 23 Sep 10-year
+   at 5.12 changed the parenthetical beside it and left "5.11% on the 23rd" standing;
+   nothing tied the note's run of closes to the series. Every "X.XX% on the Nth" in
+   the Monetary and US notes is now checked against the series by date, and the
+   Report's typed Global Technology claims are asserted against the payload.
+46. ONE MOVE, ONE NUMBER ON THE PAGE. The Volatility lede recomputed the VIX move
+   from two rounded closes (-5.23%) beside a note quoting the source (-5.24%). Where
+   a reported figure exists the page prints it, at its reported precision; the
+   recomputed one is published under its own name for the audit.
+45. A CHECK'S TOLERANCE MUST INCLUDE THE ROUNDING OF ITS OWN INPUTS. The VIX
+   reported-move check recomputed a percentage from two 2dp closes and held it to
+   the move's own precision, so it rejected a correct "-5.24% to 14.85" (15.67 x
+   0.9476 = 14.849). Test on the implied level, as the index chains do, and allow
+   the carried close's half-cent - a misdated close still misses by dollars.
 44. A PLOT'S BUCKETS ARE NOT ITS CLAIM. The frontier was the best portfolio in each
    whole-percent drawdown bucket, so a point just over the budget could win the
    optimum's bucket and draw the "edge" above a portfolio the page says sits on it.
