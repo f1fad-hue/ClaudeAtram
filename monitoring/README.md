@@ -132,6 +132,20 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+50. A VALUE UPDATE IS NOT A VERIFICATION. The Fed funds row read "raised 25bp on
+   16 Sep" while citing the 29 Jul statement and a 5 Sep verification - both before
+   the event. The IMF rows said "April" for 2½ months after the July update, and
+   July payrolls kept their first print for three weeks after the revision. When a
+   figure changes, its source and date change in the same edit, and a sweep lists
+   every row by age before each review.
+49. A NUMBER THAT TRACES BY COINCIDENCE IS UNTRACED. "Excluding energy 2.2%", "fuel
+   oil +52%", "Samsung -3.5%", "Saudi output down ~1.9 mb/d" and a dozen more passed
+   the trace check because an unrelated input happened to hold the same value. The
+   test is the pairing, not the match: every figure in a note has its own input,
+   and a review lists each prose number beside the input it traced to.
+48. A DRAFTED CALL IS NOT A PUBLISHED ONE. A quarter-point raise to Geopolitics was
+   drafted on the volume data and withdrawn when the weekend's rejection of Iran's
+   plan, and Monday's oil rally, landed. Record the draft and why it did not ship; do not quietly overwrite.
 47. EDITING A SENTENCE IS NOT EDITING ITS NUMBERS. Confirming the 23 Sep 10-year
    at 5.12 changed the parenthetical beside it and left "5.11% on the 23rd" standing;
    nothing tied the note's run of closes to the series. Every "X.XX% on the Nth" in

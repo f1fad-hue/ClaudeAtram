@@ -25,7 +25,7 @@ from itertools import product
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
 AS_OF = "2026-09-25"        # last completed trading session, PH and US both (Friday)
-REVIEW_DATE = "2026-09-26"  # when this review was worked through
+REVIEW_DATE = "2026-09-28"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -59,11 +59,17 @@ MACRO = {
     "fed_dot_one_more_level": 4.125,   # midpoint the 12 project
     "fed_dot_two_more_level": 4.375,   # midpoint the 4 project
     "us_cpi_headline": 3.4,
-    "us_cpi_core": 2.4,        # Aug CPI, released 11 Sep (was 2.5 in July)
-    "us_cpi_core_mom": 0.3,    # 0.1pp above consensus
+    # Every figure the inflation note quotes is an input. Until 2026-09-26 five of
+    # them were not, and "traced" only by coincidence - the July priors (2.5, 3.2)
+    # to the ECB rate and a VIX move, fuel oil's +52% to Asia's EPS growth, the
+    # 0.2% consensus to a VIX future's maturity. July's food rate (3.0%) could not
+    # be re-verified and is no longer quoted.
+    "us_cpi_core": 2.4, "us_cpi_core_prev": 2.5,   # Aug (11 Sep) / Jul (12 Aug)
+    "us_cpi_core_mom": 0.3, "us_cpi_core_mom_consensus": 0.2,
     "us_cpi_headline_mom": 0.4,
-    "us_cpi_shelter": 3.0,     # eased from 3.2
-    "us_cpi_gasoline_yoy": 27.4,
+    "us_cpi_shelter": 3.0, "us_cpi_shelter_prev": 3.2,
+    "us_cpi_food": 2.7,
+    "us_cpi_gasoline_yoy": 27.4, "us_cpi_fuel_oil_yoy": 52,
     "us_pce_12m": 3.7, "us_pce_6m": 4.1,
     # A DATING ERROR THAT WAS PUBLISHED FOR TWO DAYS. 4.94 was carried as the
     # 18 September close and it is the SEVENTEENTH's - the Fed's own H.15 gives
@@ -203,8 +209,13 @@ MACRO = {
     "fed_hike_odds_sep_date": "2026-09-16",
     "ecb_sep_delivered": 2.50,
     "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
-    "us_payrolls_12m_avg": 31_000,
-    "us_payrolls_jul": -23000,
+    # REVISED with the August report (4 Sep): July -23k -> +21k, June +20k -> +31k.
+    # This model carried July's FIRST print for three weeks after the revision.
+    # A "12m average" of 31,000 sat here with no source and no consumer - and
+    # equal to June's REVISED figure, which is how an unsourced number usually
+    # gets its value. Removed rather than carried.
+    "us_payrolls_jul": 21_000, "us_payrolls_jul_first": -23_000,
+    "us_payrolls_jun": 31_000,
     "us_unemployment": 4.1,
     # S&P Global flash PMI, September 2026 (released 23 Sep), vs the August finals.
     "us_pmi_composite_sep": 58.4, "us_pmi_composite_aug": 56.0,
@@ -213,11 +224,18 @@ MACRO = {
     # pass carried 56.7 from 53.1 under this name - that is the Manufacturing
     # OUTPUT index, a different series in the same release.
     "us_pmi_manufacturing_sep": 57.0, "us_pmi_manufacturing_aug": 53.9,
+    "us_pmi_manufacturing_high_months": 52,   # "a 52-month high" (S&P Global)
     "us_5y_auction_size_bn": 70,   # weak-demand 5-year note auction, 23 Sep
     "ecb_depo": 2.50,          # HIKED 10 Sep 2026 (+25bp); MRO 2.65, MLF 2.90, effective 16 Sep
     "ecb_depo_prev": 2.25,
     "ecb_last_move_bp": 25,
-    "ea_hicp_aug": 3.3, "ea_hicp_jul": 2.9, "ea_energy_aug": 14.3,
+    # FINAL, 17 Sep: 3.2%, revised down from the 3.3% flash of 1 Sep that this
+    # model carried for three weeks. Energy 14.3% y/y, contributing +1.29pp. The
+    # note's "excluding energy was 2.2%" had no input behind it - it traced only
+    # because an unrelated 2.2 (SK Hynix -2.2%) sat elsewhere in the prose - and
+    # is replaced by the energy contribution Eurostat actually publishes.
+    "ea_hicp_aug": 3.2, "ea_hicp_aug_flash": 3.3, "ea_hicp_jul": 2.9,
+    "ea_energy_aug": 14.3, "ea_energy_contrib_aug": 1.29,
     "ea_hicp_2026": 3.0,
     "ea_hicp_2028": 2.0,
     # BANK OF JAPAN - hiked 18 Sep, and the yen FELL. This matters to the Asia
@@ -464,13 +482,36 @@ MACRO = {
     "yanbu_first_cargo": "2026-09-22",
     "yanbu_buffer_d_lo": 4, "yanbu_buffer_d_hi": 7,
     "hormuz_dark": 5.0,            # mb/d moving via dark crossings / STS transfers
+    # SAUDI CRUDE EXPORTS, the newest VOLUME reading (2026-09-26). Two trackers,
+    # one direction: Bloomberg tanker-tracking has September heading for 5.28
+    # mb/d, Kpler (via CNBC, 25 Sep) 6.0 - both the highest since the war began,
+    # rerouted through Hormuz on the US-escorted channel off Oman. August was 3.1
+    # (Kpler, via AzerTac) to 3.4 (CNBC). The growth note had carried "Saudi
+    # output is still down ~1.9 mb/d" - August's PRODUCTION drop (6.2 mb/d, -23%
+    # m/m), undated and in the present tense a month on; its 1.9 traced only to an
+    # unrelated Japanese CPI figure.
+    "saudi_exports_sep_lo": 5.3, "saudi_exports_sep_hi": 6.0,
+    "saudi_exports_aug_lo": 3.1, "saudi_exports_aug_hi": 3.4,
+    "saudi_exports_date": "2026-09-25",
+    # MONDAY 28 SEP, INTRADAY ONLY - after Washington rejected Iran's seven-day
+    # plan on the 26th, Brent traded higher, but the snapshots disagree (+1.74% to
+    # $106.14 in one, +4% to ~$108.48 in another) and neither is a settle. So no
+    # level or move from Monday is quoted or carried: the note says only that
+    # Brent traded higher. See CLAIMS.
+    "trump_rejects_hormuz_plan_date": "2026-09-26",
     # THE QUEUE, on a stated basis and as a SERIES. 436 was a 30 August reading on
     # an undisclosed basis and sat here for three weeks. These three are one
     # source, one methodology, one daily snapshot time: AIS-visible vessels holding
     # position away from berth in the Hormuz and Gulf watch box, excluding ships
     # within 25 km of a working port. Three points, because two would have let this
     # note call 369 -> 357 a drawdown; 376 the next day says it is oscillating.
-    "hormuz_queue": [("2026-09-18", 369), ("2026-09-19", 357), ("2026-09-20", 376)],
+    # EXTENDED 2026-09-26 from the same brief: 401 (21st), 443 (22nd), 407 (25th),
+    # 422 (26th). "One daily snapshot time" above was NOT true: the briefs stamp
+    # their counts at different hours (11:49 UTC on the 21st, 02:49 UTC on the
+    # 25th), so these are intraday snapshots and only the RANGE carries meaning.
+    "hormuz_queue": [("2026-09-18", 369), ("2026-09-19", 357), ("2026-09-20", 376),
+                     ("2026-09-21", 401), ("2026-09-22", 443), ("2026-09-25", 407),
+                     ("2026-09-26", 422)],
     # That reading is now OUT OF DATE and was carried too long: through 2026-09-18
     # this comment still said the VIX had "fallen BACK toward the 2026 low", which
     # widened the gap to the futures curve. It did the opposite. Spot ran to 17.20
@@ -540,7 +581,12 @@ MACRO = {
         ("2026-09-22", 14.21),   # -4.44%, a 21-session low
         ("2026-09-23", 15.18),   # +6.83%, with the 10-year's biggest jump since April 2025
         ("2026-09-24", 15.67),   # +3.23%
-        ("2026-09-25", 14.85),   # -5.24%: 15.67 x 0.9476 = 14.85
+        # CORRECTED 2026-09-28 from 14.85 / -5.24%, which came from ONE unattributed
+        # search summary and was published in v41. Three sources give 14.87,
+        # "-0.80, -5.11%", day range 14.68-15.94 (Portfolio Terminal, PC Thematic,
+        # Zacks): 15.67 - 0.80 = 14.87. Both pairs reproduce from 15.67, so the
+        # chain check could not pick; the count and the points descriptor did.
+        ("2026-09-25", 14.87),   # -0.80 / -5.11%
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -552,7 +598,7 @@ MACRO = {
     "vix_reported_moves": {
         "2026-09-14": 7.95, "2026-09-16": 3, "2026-09-17": -12.8,
         "2026-09-18": -4.08, "2026-09-21": 0.41, "2026-09-22": -4.44,
-        "2026-09-23": 7, "2026-09-24": 3.23, "2026-09-25": -5.24,
+        "2026-09-23": 7, "2026-09-24": 3.23, "2026-09-25": -5.11,
     },
     "vix_latest_high": 18.17,  # 10 Sep intraday, the highest print of the episode
     "vix_latest_high_date": "2026-09-10",
@@ -645,14 +691,24 @@ MACRO = {
     "vix_fut_dec": 19.26,
     "vix_longrun": 19.5,
     "variance_risk_premium": 3.5,
-    "imf_global_2026": 3.1,
-    "imf_global_2027": 3.2,
-    "imf_us_2026": 2.4,
-    "imf_us_2027": 2.0,
+    # IMF WEO UPDATE, JULY 2026 (8 Jul). Until 2026-09-26 these were the APRIL
+    # figures, labelled April in CLAIMS and last verified on 5 Sep - two and a half
+    # months after the July update superseded them. Every one moved: global
+    # 3.1/3.2 -> 3.0/3.4, US 2.4/2.0 -> 2.3/2.2, euro area 0.7 -> 0.9 (2027 1.2),
+    # advanced 1.8/1.7 -> 1.7/1.8. The Europe note built "growth of just 0.7%" on
+    # the stale one, and the Report typed it into its HTML where no check could see.
+    "imf_weo_vintage": "2026-07-08",
+    "imf_global_2026": 3.0,
+    "imf_global_2027": 3.4,
+    "imf_us_2026": 2.3,
+    "imf_us_2027": 2.2,
     "imf_ea_2025": 1.1,
-    "imf_ea_2026": 0.7,
-    "imf_ae_2026": 1.8,
-    "imf_ae_2027": 1.7,
+    "imf_ea_2026": 0.9,
+    "imf_ea_2027": 1.2,
+    "imf_ae_2026": 1.7,
+    "imf_ae_2027": 1.8,
+    "imf_emde_2026": 3.8,
+    "imf_emde_2027": 4.5,
     "ndx_fwd_pe": 22.4,
     "ndx_fwd_pe_10y": 22.9,
     "ndx_fwd_pe_5y": 24.7,
@@ -661,7 +717,12 @@ MACRO = {
     "asia_fwd_pe": 10.5,
     "asia_eps_2026": 52.5,
     "asia_eps_2027": 27.5,
-    "nikkei": 64011, "kospi": 6910,   # 11 Sep closes - the sell-off the Asia note describes
+    # 11 Sep closes - the sell-off the Asia note describes. The note also carried
+    # Nikkei -1.9%, KOSPI -1.8%, Samsung -3.5% and SK Hynix -2.2% with no inputs
+    # behind them (they traced to unrelated 1.9 / 2.2 figures); on 2026-09-26 none
+    # could be re-verified, and one source dates the leg down to the 10th, so the
+    # percentages were dropped and the sell-off is dated 10-11 Sep.
+    "nikkei": 64011, "kospi": 6910,
     # 24 Sep: the Nikkei reopened from the 23 Sep equinox holiday +0.76% at 65,513.94
     # (TradingKey close). Corroborated by construction: Trading Economics' intraday
     # +0.99% at 65,665 implies the same prior close (~65,020) - two reports agreeing
@@ -786,8 +847,9 @@ MACRO["vix_prev_date"], MACRO["vix_prev_close"] = _VH[-2]
 # The move the PAGE prints is the REPORTED one, at the precision it was reported.
 # Until 2026-09-26 it was recomputed from the two rounded closes, which is not the
 # same number: on 25 Sep the Volatility lede printed "-5.23%" from 14.85 / 15.67
-# while the driver note beside it, and the source, said -5.24% (the true close was
-# ~14.849). Two figures for one move on one page. The recomputed value is kept,
+# while the driver note beside it, and the source, said -5.24%. Two figures for one
+# move on one page. (That pair was itself wrong - see vix_history: 14.87, -5.11% -
+# but the rule stands whatever the data.) The recomputed value is kept,
 # under its own name, for the audit; the chain check below ties the two together.
 _vrep = MACRO["vix_reported_moves"][MACRO["vix_latest_date"]]
 MACRO["vix_latest_chg_pct_calc"] = round(
@@ -890,6 +952,10 @@ CATALYSTS = [
      "The peso sleeve's real carry needs PH inflation to keep slowing; August "
      "was the fourth slowdown in a row. Two things work against a fifth: Brent "
      "at $104.32 on 25 Sep, and rice inflation up to 19.4% from 17.1%."),
+    ("2026-10-22", "BSP policy decision",
+     "BSP is at 5.00% after three hikes, the last on 27 Aug. A fourth lifts the peso "
+     "sleeve's carry further; a pause with inflation still at 6.1% keeps its real "
+     "yield below zero."),
     ("2026-10-28", "FOMC decision",
      "October is priced at 73% after the 23 Sep repricing; at least one more "
      "hike by December was last verified at 88.5% on 17 Sep. The dot-plot median "
@@ -1064,11 +1130,11 @@ REGIONS = {
     },
     "EUROPE": {
         "3M": 2.5, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
-        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.7%, and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.3% with energy +14.3% y/y, but inflation excluding energy was 2.2%: essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +56.7% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
+        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.9% (the July update, up from 0.7%), and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.2% (final, from a 3.3% flash) with energy +14.3% y/y contributing 1.29 points of it: everything else added up to less than 2%, so essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +56.7% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
     },
     "ASIA": {
         "3M": 5.0, "6M": 5.5, "12M": 6.5, HZ_LABEL: 7.5,
-        "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 11 Sep - Nikkei -1.9% to 64,011, KOSPI -1.8% to 6,910, Samsung -3.5%, SK Hynix -2.2% - and this time it is a rate shock as well as an energy one. Japan has since recovered well past that level: the Nikkei closed 66,364.20 on 25 Sep, +1.30% for a fifth straight gain. Korea is shut for Chuseok, and this page carries no KOSPI print after 11 Sep. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
+        "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 10-11 Sep - the Nikkei to 64,011 and KOSPI to 6,910 by the 11th, Samsung and SK Hynix leading the chip losses - and this time it is a rate shock as well as an energy one. Japan has since recovered well past that level: the Nikkei closed 66,364.20 on 25 Sep, +1.30% for a fifth straight gain. Korea is shut for Chuseok, and this page carries no KOSPI print after 11 Sep. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
@@ -1127,14 +1193,14 @@ DRIVERS = [
     ("Inflation trajectory", 0.15, 2.75,
      "CUT a quarter point - two-sided is still the right frame, but the forward "
      "side just got louder. The core measure improved - August core CPI 2.4% y/y "
-     "from 2.5%, shelter 3.0% from 3.2%, food 2.7% from 3.0%. Energy is eating that "
+     "from 2.5%, shelter 3.0% from 3.2%, food 2.7%. Energy is eating that "
      "progress in real time: core rose 0.3% on the month against a 0.2% consensus, "
      "gasoline is +27.4% y/y and fuel oil +52%. What is new is forward-looking, not "
      "backward: the S&P Global composite PMI for September, released 23 Sep, "
      "reported input costs rising at their steepest pace since October 2022, "
      "driven by fuel, freight and wages together - a survey reading of pipeline "
      "pressure, months ahead of the CPI print it will eventually show up in. Euro "
-     "HICP 3.3%. PH eased to 6.1%, a fourth straight deceleration - but Brent "
+     "HICP 3.2%. PH eased to 6.1%, a fourth straight deceleration - but Brent "
      "settled at $104.32 on 25 Sep, still +56.7% on a year earlier. That is still "
      "inside the range this score "
      "was set against - below the 15 Sep high - which is why the cut stops at a "
@@ -1149,22 +1215,23 @@ DRIVERS = [
      "driver's own lane is whether the growth engine is intact under the shocks, "
      "not what the bond market did in reaction to the same print - that belongs to "
      "Monetary policy, which absorbed the hit: the PMI beat is exactly why the "
-     "10-year jumped 13bp on 23 Sep and equities fell across the board. Read separately, the PMI print is unambiguous growth evidence; kept "
-     "here rather than double-counted in the rate driver's cut. Saudi output is "
-     "still down ~1.9 mb/d after Houthi strikes. The IMF's 3.1% global forecast was "
-     "written against an oil price nearly forty dollars lower and a 10-year yield "
-     "nowhere near 5.17%, a second tax on every long-duration cash flow here."),
+     "10-year jumped 15bp on 23 Sep on official closes and equities fell across the board. Read separately, the PMI print is unambiguous growth evidence; kept "
+     "here rather than double-counted in the rate driver's cut. The IMF's July update already cut "
+     "2026 global growth to 3.0%, and it was written two months before the "
+     "September rate shock took the 10-year to 5.17%, a second tax on every "
+     "long-duration cash flow here."),
     ("Corporate earnings", 0.2, 7.0,
      "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) "
      "is unrevised and the AI capex cycle keeps compounding through the semis supply "
      "chain. Trimmed because the margin assumption underneath those estimates is "
      "harder to hold at $104.32 oil than at $66.57, where it was a year ago - Brent "
      "settled 25 Sep 4.07% below its $108.75 peak of 15 Sep. "
-     "The selling has hit the earnings engines directly - Samsung -3.5%, SK Hynix -2.2%."),
+     "The 10-11 Sep selling hit the earnings engines directly: Samsung and SK Hynix "
+     "led the region's chip losses."),
     ("Valuation support", 0.1, 8.25,
      "RAISED a quarter point on 23 Sep - the one driver the shock improves. The "
      "S&P, Nasdaq and Dow fell together that day as the 10-year jumped to a post-2007 high, "
-     "resuming the de-rating a 1.9% Nikkei fall and a month of index declines had "
+     "resuming the de-rating the 10-11 Sep Asian chip sell-off and a month of index declines had "
      "already started, against estimates that have not moved. They barely moved on "
      "24 Sep as the 10-year went higher still, and rose on 25 Sep (+0.51/+0.48/"
      "+0.93%) with it little changed - a bounce, not a re-rating. NDX 22.4x forward sits below both its 10y (22.9x) and 5y "
@@ -1179,7 +1246,7 @@ DRIVERS = [
      "then rose 7% to 15.18 on 23 Sep as the 10-year jumped, and 3.23% to 15.67 on "
      "24 Sep: the ordinary pairing, rates and equity volatility moving together. "
      "The pairing held on the way back: with the 10-year little changed and stocks "
-     "up on 25 Sep, the index gave up 5.24% to 14.85. "
+     "up on 25 Sep, the index gave up 5.11% to 14.87. "
      "It is still a low level - under the 17.84 close of 10 Sep and below the "
      "long-run 19.5 - so it reads as neither complacency nor stress. What this "
      "driver does NOT carry is a claim that rising volatility pays the portfolio: "
@@ -1187,7 +1254,19 @@ DRIVERS = [
      "curve's distance from 19.5 moves a forecast, and blended across horizons the "
      "4 September strip sits at 18.88 - just below it."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "HELD at 1.5, where it was restored on 22 Sep when both reasons for the cut to "
+     "HELD at 1.5, with two new facts pulling opposite ways. For: volume, the "
+     "measure this note says to read - Saudi crude exports are running at 5.3 to 6.0 "
+     "mb/d in September (Bloomberg; Kpler), the highest since the war began and up "
+     "from 3.1 to 3.4 in August, rerouted through Hormuz along a US-escorted channel "
+     "off Oman while the pipeline is still below capacity. Against: on 26 Sep "
+     "President Trump rejected Iran's seven-day plan to reopen the Strait, saying the "
+     "US has 'total control' of it and that he expects talks this week; Tehran said "
+     "it would not soften its demands, the Wall Street Journal reported he expects "
+     "US strikes to resume after November's midterms, and Brent traded higher on "
+     "the 28th. A quarter-point raise was drafted on the volume alone on "
+     "the 26th and withdrawn before publication when the rejection landed. "
+     "The score had been restored to 1.5 on 22 Sep "
+     "when both reasons for the cut to "
      "1.25 reversed as facts: Saudi Arabia restarted the 1200 km East-West "
      "(Petroline) pipeline, which had carried roughly 5.0 mb/d to Yanbu around the "
      "Strait, and US negotiators met an Iranian delegation for three hours at the "
@@ -1202,8 +1281,10 @@ DRIVERS = [
      "agreed, the Strait reopening on the sixth. France pledged soldiers, radars "
      "and air defences to protect Yanbu. Brent gave back 2.14% to settle at "
      "$104.32 on 25 Sep - 4.07% below the $108.75 high of 15 Sep and +56.71% on a "
-     "year earlier. None of that is a fact yet: the missiles missed, the offer is "
-     "conditional, and the Strait is still closed. The pipeline is well below normal throughput - 40% "
+     "year earlier. None of that became a fact: the missiles missed, and the offer - "
+     "to which President Pezeshkian added nuclear inspections, while Iran's security "
+     "chief said the Strait stays shut until every condition is met - was rejected "
+     "by Washington on the 26th. The Strait is still closed. The pipeline is well below normal throughput - 40% "
      "within a couple of days, six to eight weeks to full - and Kpler's Yanbu loss "
      "of 2.5 to 2.7 mb/d does not close in a week. "
      "Read the disruption on VOLUME, not vessel counts. The counts run from 1 to "
@@ -1214,10 +1295,14 @@ DRIVERS = [
      "them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up "
      "from a 5.5 trough in March, is dated 2026-08-28 and predates both the "
      "pipeline strike and its restart, so it is carried as the last measurement and "
-     "nothing more. The queue off berth is oscillating, not draining: 369, 357 and "
-     "376 vessels on 18-20 Sep on one stated basis. Still NOT scored at the floor "
-     "or near it: the stress table models full closure and Brent above $130, a "
-     "strictly worse state that is not off the table while the Strait stays shut."),
+     "nothing more; Saudi Arabia's own September exports, above, are the newer "
+     "volume reading. The queue off berth is oscillating, not draining: between 357 "
+     "and 443 vessels from 18 to 26 Sep on one stated basis, 422 on the 26th. "
+     "Not raised on the volume alone, and still close to the floor of 1: the price "
+     "has not followed the volume - Brent settled at $104.32 on 25 Sep and traded "
+     "back toward its high on the 28th - the Strait is shut to anything "
+     "the US Navy does not escort, and the stress table's full closure with Brent "
+     "above $130 is a strictly worse state still on the table."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -1230,10 +1315,10 @@ SUMMARY = {
     "Growth momentum": "Raised to 4.25: the September composite PMI hit 58.4, the strongest since July 2021, on top of +162k August payrolls.",
     "Corporate earnings": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, trimmed only for margins at $104.32 oil.",
     "Valuation support": "Raised to 8.25 on 23 Sep: the rate shock cheapened multiples again - the one driver the shock improves.",
-    "Volatility & risk appetite": "Held at 3.0: the VIX fell back to 14.85 on 25 Sep as yields steadied - still low, and the blended curve sits just below its long-run 19.5.",
-    "Geopolitics & energy": "Held at 1.5: Houthi missiles at Yanbu were intercepted and Iran offers a conditional reopening, but the Strait is still closed.",
+    "Volatility & risk appetite": "Held at 3.0: the VIX fell back to 14.87 on 25 Sep as yields steadied - still low, and the blended curve sits just below its long-run 19.5.",
+    "Geopolitics & energy": "Held at 1.5: Saudi exports hit a wartime high under US escort, but Washington rejected Iran's reopening plan on 26 Sep and Brent settled at $104.32 before rising again.",
     "US": "Near horizons cut on the rate repricing; the ten-year anchor holds at 6.5 on energy self-sufficiency and a Nasdaq still below its average forward multiple.",
-    "EUROPE": "Ranked last: the ECB hiked to 2.50% into growth of just 0.7%, and Europe is the largest net energy importer facing this oil shock.",
+    "EUROPE": "Ranked last: the ECB hiked to 2.50% into growth of just 0.9%, and Europe is the largest net energy importer facing this oil shock.",
     "ASIA": "Ranked first over ten years: 10.5x forward against ~52% EPS growth; near horizons cut for a rate shock on top of an energy one.",
     "PHILIPPINES": "Neutral across the curve: nominal carry is high and rising, but with August inflation at 6.1% the real carry is still not positive.",
 }
@@ -2014,8 +2099,10 @@ SOURCES = [
      "https://en.wikipedia.org/wiki/2026%E2%80%932028_world_oil_market_chronology"),
         ("Bureau of the Treasury PH", "T-bill auction results, 21 September 2026 - 91d 5.431% (+8.3bp), 182d 5.821% (+4.0bp), 364d 6.043% (+12.1bp), as reported by BusinessWorld and BusinessMirror",
      "https://www.treasury.gov.ph/?cat=13"),
-    ("IMF", "World Economic Outlook, April 2026 - 'Global Economy in the Shadow of War'",
-     "https://www.imf.org/en/publications/weo/issues/2026/04/14/world-economic-outlook-april-2026"),
+    ("IMF", "World Economic Outlook Update, July 2026 - 'Global Economy in Crosscurrents of War and "
+     "Technology': global 3.0% (2026) / 3.4% (2027), US 2.3% / 2.2%, euro area 0.9% / 1.2%, "
+     "advanced economies 1.7% / 1.8%, EMDEs 3.8% / 4.5%",
+     "https://www.imf.org/en/publications/weo/issues/2026/07/08/world-economic-outlook-update-july-2026"),
     ("Cboe", "VIX index and VIX futures term structure",
      "https://www.cboe.com/tradable-products/vix/"),
     ("US EIA", "Crude oil and petroleum product prices, Q1 2026",
@@ -2156,6 +2243,20 @@ SOURCES = [
     ("CNBC", "Iran offers to reopen Strait of Hormuz within 7 days and restart nuclear "
      "talks, 25 September 2026",
      "https://www.cnbc.com/2026/09/25/us-iran-trump-hormuz-.html"),
+    ("CNBC", "Saudi Arabia crude oil exports hit highest level since Iran war began despite "
+     "pipeline outage, 25 September 2026 - 6 million b/d in September per Kpler, via a "
+     "US-escorted channel along Oman's coast; August 3.4 million b/d",
+     "https://www.cnbc.com/2026/09/25/saudi-arabia-oil-iran-war-pipeline-strait-hormuz-red-sea-houthis.html"),
+    ("Bloomberg", "Saudis' Gulf oil surge drives exports to highest since war began, "
+     "24 September 2026 - September heading for 5.28 million b/d",
+     "https://www.bloomberg.com/news/articles/2026-09-24/saudis-gulf-oil-surge-drives-exports-to-highest-since-war-began"),
+    ("Straits Daily Brief", "Strait of Hormuz status, 21-26 September 2026 - vessels holding "
+     "position away from berth: 401, 443, 407, 422; PortWatch's latest transit reading still "
+     "1 on 20 September",
+     "https://straits.live/briefs/2026-09-26"),
+    ("Eurostat", "Annual inflation up to 3.2% in the euro area, 17 September 2026 - final "
+     "August HICP, revised from the 3.3% flash; energy 14.3%, contributing +1.29pp",
+     "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-17092026-ap"),
     ("Euronews", "Saudi Arabia reports fresh Houthi attacks as France offers military "
      "support to protect Yanbu, 25 September 2026",
      "https://www.euronews.com/2026/09/25/saudi-arabia-reports-fresh-houthi-attacks-as-france-offers-military-support-to-protect-yan"),
@@ -2660,6 +2761,13 @@ def report():
                    f"({_ymid:.2f} vs {_half:.2f} mb/d)", abs(_ymid - _half) <= 0.5))
     # (the review-date-vs-as-of ordering is already asserted below, beside the
     # catalyst checks - not duplicated here)
+    # THE IMF VINTAGE IS A CLOCK. The April WEO sat here for 2.5 months after the
+    # July update superseded it, because nothing knew which edition was carried.
+    # The WEO appears every ~3 months (Jan/Apr/Jul/Oct); 120 days past the carried
+    # edition means a newer one exists and has not been read.
+    _imf_age = (_asof - _dt.date.fromisoformat(MACRO["imf_weo_vintage"])).days
+    checks.append((f"the IMF WEO edition carried is current ({_imf_age}d old, bound 120d)",
+                   0 <= _imf_age <= 120))
     checks.append(("every pending catalyst is dated after the as-of date",
                    all(_dt.date.fromisoformat(d) > _asof for d, _, _ in CATALYSTS)))
     checks.append(("catalysts are listed in date order",
@@ -2887,9 +2995,28 @@ def report():
     # the parenthetical beside it was edited, the figure was not, and nothing tied
     # the sentence to ust_10y_history. Every "X.XX% on the Nth" in this note that
     # names a day in the series must carry that day's close.
-    _uh_by_day = {_dt.date.fromisoformat(d).day: v for d, v in MACRO["ust_10y_history"]}
+    # Day-of-month keys (the prose names days that way); a day number that occurs
+    # twice in the series - it will once the series crosses a month end - is
+    # ambiguous and is dropped rather than guessed. Shared with the bp check below.
+    _days = [_dt.date.fromisoformat(d).day for d, _ in MACRO["ust_10y_history"]]
+    _uniq = {x for x in _days if _days.count(x) == 1}
+    _uh_by_day = {_dt.date.fromisoformat(d).day: v for d, v in MACRO["ust_10y_history"]
+                  if _dt.date.fromisoformat(d).day in _uniq}
     _mon_run = (re.findall(r"(\d\.\d\d)% on the (\d+)(?:st|nd|rd|th)", _mon_note)
                 + re.findall(r"(\d\.\d\d)% on (\d+) Sep", REGIONS["US"]["why"]))
+    # A DAILY BASIS-POINT MOVE IS A DIFFERENCE OF TWO CLOSES IN THE SERIES. The
+    # growth note said the 10-year "jumped 13bp on 23 Sep" - the market-close
+    # basis - while the page's own official series has 4.97 -> 5.12, i.e. 15bp.
+    # Any "Nbp on DD Sep" in a note, for a day the series holds, must be that
+    # day's change on the series' basis.
+    _uh = MACRO["ust_10y_history"]
+    _uh_chg = {_dt.date.fromisoformat(d).day: round((v - pv) * 100)
+               for (_, pv), (d, v) in zip(_uh, _uh[1:])
+               if _dt.date.fromisoformat(d).day in _uniq}
+    _bp_claims = [(int(bp), int(dd)) for t in _notes_all
+                  for bp, dd in re.findall(r"(\d+)bp on (\d+) Sep", t)]
+    checks.append(("every daily 10-year bp move quoted in a note is the series' own change",
+                   all(_uh_chg.get(dd, bp) == bp for bp, dd in _bp_claims)))
     checks.append(("every 10-year close the Monetary and US notes list matches the series on its date",
                    len(_mon_run) >= 3 and all(abs(float(v) - _uh_by_day[int(dd)]) < 1e-9
                                               for v, dd in _mon_run if int(dd) in _uh_by_day)))
@@ -2952,9 +3079,11 @@ def report():
     # ON THE LEVEL, not the percentage - the same form as the index chains above.
     # Both closes are rounded to 2dp, so a percentage recomputed from them carries
     # that rounding too; the first version compared it against the reported move
-    # at the move's own precision alone, and on 2026-09-26 rejected a correct
-    # print: "-5.24% to 14.85" off 15.67 is 14.849, which IS 14.85 - but 14.85 /
-    # 15.67 recomputes to -5.23%. The bound is half a unit of the reported move on
+    # at the move's own precision alone, and on 2026-09-26 rejected an internally
+    # consistent print: "-5.24% to 14.85" off 15.67 is 14.849, which IS 14.85 - but
+    # 14.85 / 15.67 recomputes to -5.23%. (That print later proved to be the wrong
+    # close - 14.87 - which is the point: a chain check tests consistency, not
+    # truth; the source count settles truth.) The bound is half a unit of the reported move on
     # the implied level plus half a cent for the carried close's own rounding. A
     # misdated close still misses by dollars, not fractions of a cent.
     def _vmove_ok(d, pct):

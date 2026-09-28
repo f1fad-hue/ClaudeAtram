@@ -2,6 +2,105 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-28 — Staleness sweep: stale IMF, euro inflation and payrolls, coincidental traces, and the weekend's rejection
+
+The market snapshot is still Friday 25 Sep; this pass swept every claim by age, then
+re-checked the week-old ones. The allocations do not move: B stays **25 / 10 / 60 / 5**
+and C stays **20 / 50 / 25 / 5**.
+
+### 1. Stale inputs found and corrected
+
+- **The 25 Sep VIX close published in v41 was wrong.**
+  - v41 had **14.85 (−5.24%)**, from one unattributed search summary. Three sources
+    give **14.87, −0.80 / −5.11%**, day range 14.68–15.94: Portfolio Terminal,
+    PC Thematic and Zacks.
+  - Both pairs reproduce from Thursday's 15.67, so the chain check could not tell
+    them apart. It tests consistency, not truth. The number of agreeing sources and
+    the points descriptor settled it.
+- **IMF.** The engine, the Europe note and the Report carried the **April** WEO for
+  2½ months after the **July update** superseded it.
+  - Global 3.1 / 3.2 → **3.0 / 3.4**.
+  - US 2.4 / 2.0 → **2.3 / 2.2**.
+  - Euro area 0.7 → **0.9** (2027: 1.2).
+  - Advanced economies 1.8 / 1.7 → **1.7 / 1.8**.
+  - The Report's "0.7%" was typed into the HTML, where no check could see it. It is
+    now bound to the payload.
+- **Euro-area August inflation.** The engine held the 3.3% flash; the final (17 Sep)
+  was **3.2%**. The note's "excluding energy 2.2%" had no input behind it and is
+  replaced by Eurostat's energy contribution (+1.29pp).
+- **US payrolls.**
+  - July's first print (−23k) was kept for three weeks after the 4 Sep revision to
+    **+21k**.
+  - An unsourced "12-month average 31,000", equal to June's revised figure and read
+    by nothing, was removed.
+- **Register rows with impossible provenance.**
+  - The Fed funds row cited the 29 Jul statement and a 5 Sep verification for a
+    16 Sep hike.
+  - The "September FOMC vote" row was stamped verified before the vote.
+  - Both are now sourced to 16 Sep (12–0).
+- **Refreshed with their sources:**
+  - Nasdaq-100 forward P/E, 22.4× as of 25 Sep. A 25× July reading was a different
+    date and basis.
+  - PH core inflation (August, 4.1%).
+  - BSP: no meeting since 27 Aug; the next is 22 Oct, now a catalyst.
+  - Hormuz queue, extended to 26 Sep (357–443, oscillating). The "one daily snapshot
+    time" claim was false: the briefs stamp different hours.
+
+### 2. Figures that traced only by coincidence
+
+The trace check matched a prose number to *any* input with the same value, so a
+dozen figures passed while pairing with unrelated fields:
+
+| Figure in the note | What it matched |
+|---|---|
+| fuel oil +52% | Asia EPS growth |
+| core "from 2.5%" | the ECB rate |
+| shelter "from 3.2%" | a VIX move |
+| 0.2% consensus | a VIX maturity |
+| "52-month high" | Asia EPS growth |
+| Saudi output "down ~1.9 mb/d" | Japan's core CPI |
+| Samsung −3.5%, SK Hynix −2.2%, Nikkei −1.9%, KOSPI −1.8% | unrelated fields |
+
+- **Verified figures** now have their own inputs.
+- **Figures that could not be re-verified were removed:** July food CPI and the
+  11 Sep single-stock moves. One source dates that sell-off to the 10th.
+- **The Saudi "1.9"** was August's production drop, stated in the present tense a
+  month later. September exports are at a wartime high of **5.3–6.0 mb/d**
+  (Bloomberg, Kpler).
+- **The growth note's "10-year jumped 13bp on 23 Sep"** was on the market basis. On
+  the page's official series it is **15bp**. A new check requires every quoted daily
+  bp move to equal the series' own change (bite-tested).
+
+### 3. Geopolitics: a drafted raise withdrawn
+
+- **Drafted Saturday:** a quarter-point raise to 1.75 on the Saudi volume recovery.
+  Allocations were unchanged at 1.5, 1.75 or 2.0.
+- **Withdrawn before publication** once the weekend's news landed:
+  - Trump rejected Iran's seven-day plan on the 26th.
+  - The WSJ reported he expects strikes to resume after the midterms.
+  - Brent traded higher on Monday. Intraday snapshots ranged from +1.7% to +4% with
+    no settle, so no Monday figure is quoted.
+- **Held at 1.5**, with both facts in the note.
+- **A false sentence was corrected:** "not scored at the floor or near it" at 1.5 on
+  a 1–10 scale.
+
+### 4. Code review
+
+- **The two date-keyed checks added on the 26th** keyed on day-of-month. They now
+  drop ambiguous days, so they will not collide when the series crosses into
+  October.
+- **The Report's typed verb "holds"** is now neutral wording, so a changed score
+  cannot make it false.
+- **New staleness guard.** A check now fails once the carried IMF WEO edition is
+  over 120 days old. It is bite-tested: the April edition fails at 164 days.
+- **Two audit failures from this pass's own edits were caught and fixed.** One was
+  an unconsumed input; the other was a register row that bolded the wrong figure.
+
+### 5. Checks
+
+Engine 185/185; independent audit 0 failures; checklist 27/27; validator 18/18 on
+the published copy (v42), whose payload is identical to the local build.
+
 ## 2026-09-26 — Friday's closes, the 10-year confirmed, and four errors in the checks and prose
 
 Market data now runs to Friday 25 Sep in both markets (no Saturday sessions). The
