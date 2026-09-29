@@ -2,6 +2,125 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-09-29 — Roll to Monday 28 Sep, Geopolitics raised on volume, and Portfolio B's optimum found not sharp
+
+The market snapshot rolls to **Monday 28 Sep**; the review date is 29 Sep. The
+allocations do not move:
+
+- B stays **25 / 10 / 60 / 5** (6.76%, −27.1%).
+- C stays **20 / 50 / 25 / 5** (6.46%, −25.7%).
+- The baseline is 6.72%, −30.1%.
+- The gauge is **2.38**.
+
+### 1. Data rolled to 28 Sep, each figure chained to its prior
+
+- **US equities:**
+  - S&P **7,683.69 (−0.77%)**.
+  - Nasdaq **26,820.38 (−0.92%)**.
+  - Dow **51,481.51 (−0.67%, −347.11)**, which chains to the cent.
+- **US yields:**
+  - 10-year **5.24%**. This is the official close but **provisional**: only one
+    par-curve source has it. Only the latest point may be provisional.
+  - The intraday peak moved to **5.25%**; the 24 Sep 5.223% is kept, dated.
+  - 30-year **5.57%**, its highest since 2004. 2-year **4.93%**.
+- **Brent** settled at **$105.28, +0.92%** (+0.96, chained both ways), after trading
+  as high as **$108.83** on the rejection headline. It sits 3.19% below the $108.75
+  settle high and is +58.15% y/y.
+- **WTI** settled at **$92.60, +0.21%**.
+- **Philippines:**
+  - Peso **62.545**, 8 centavos weaker; 6.00% YTD loss.
+  - PSEi **5,788.87, −0.64%**.
+  - T-bills **5.535 / 5.862 / 6.115%**, +10.4 / +4.1 / +7.2bp.
+- **Asia:**
+  - Nikkei **65,877.62, −0.73%**, after touching 67,035.
+  - KOSPI **6,889.74, −2.70%** on its return from Chuseok, with Samsung −5.43% and
+    SK Hynix −5.05%.
+- **Hormuz queue:** **262 and 233** on the 27th and 28th, the lowest in the series.
+  It is published as a range, not scored.
+- **FedWatch:**
+  - Two secondary reads disagree, **64.2% and 72.3%**. They are recorded as a dated
+    range; neither is the tool itself.
+  - The 23 Sep 73.0 is at its five-day bound.
+- **VIX 28 Sep withheld.**
+  - 16.07 (+8.07%) and 16.30 (+9.62%) both reproduce from 14.87, and each has one
+    source. That is the situation that published a wrong close on 25 Sep.
+  - 14.87 (25 Sep) stays the latest carried close. The note says Monday was up
+    either way.
+
+### 2. Geopolitics & energy raised 1.5 → 1.75
+
+The note says to score the Strait on volume. The volume data turned:
+
+- Middle East crude exports hit **12.8 mb/d** in September, the most since the war
+  began (Kpler).
+- Hormuz flows are running toward **7.4 mb/d** under escort.
+- Saudi exports are **5.3–6.0 mb/d**, up from 2.4–3.4 in August.
+- The East–West pipeline resumed exports at **~3.5 mb/d** on 28 Sep.
+
+The 26 Sep draft was withdrawn when Trump rejected Iran's plan. On 28 Sep the market
+tested that headline: Brent traded to $108.83 and settled only +0.92%.
+
+The score stops at 1.75 because:
+
+- regional exports are still ~6 mb/d below February's 18.8;
+- the Strait is escorted, not open;
+- there is no deal.
+
+Both portfolios were re-optimised on the new score, and neither moves.
+
+### 3. Errors found and fixed
+
+- **An untraceable intraday high.** The Geopolitics note's "$108.23 intraday on
+  24 Sep" had no input behind it. The engine carried one "session high" field, which
+  the 28 Sep roll overwrote with $108.83. The audit's trace check caught it.
+  - Session highs are now a dated record, `brent_session_highs`.
+  - A check requires each one to sit on a series date and at or above that day's
+    settle.
+- **Brent's reported moves lived only in prose.** They are now an input,
+  `brent_reported_moves` (23, 24, 25 and 28 Sep).
+  - A check requires every one to reproduce from the previous settle.
+  - A second check requires the latest settle to carry one.
+- **Saudi August exports were overstated.** The range read 3.1–3.4 mb/d, but
+  Kpler's own August figure is **2.446**. It now reads **2.4–3.4**.
+- **The 30-year high check rejected a true reading.** It required the high to be
+  strictly **above** the reading, so it failed the day the reading *was* the high.
+  It is now `>=`, and it still fails a reading above the high.
+- **The KOSPI had no chain check.** Its point and percent moves are now both
+  reproduced from the pre-holiday close.
+- **Stale CLAIMS rows.** Brent, Brent y/y, USD/PHP, the 2-year and the 10-year still
+  read 25 Sep; the audit failed all five. The Asia re-rating row still quoted the
+  what-if as 40/15/5/40 at 6.32%; on the rolled data it is **25/30/25/20 at 6.33%**.
+
+### 4. Finding: Portfolio B's optimum is not sharp, and B and C use different rules
+
+- **B** takes the single best CAGR inside the budget.
+- **C** takes the lowest drawdown within 0.05pp of its best, because a difference
+  smaller than the model's own rounding is not worth more drawdown.
+
+Applied to B's own candidates:
+
+- **five** portfolios sit within 0.05pp of B's 6.76%;
+- C's rule would pick **25 / 15 / 55 / 5 at 6.71% / −26.3%**;
+- that gives up 0.05pp of return for 0.8pp less drawdown.
+
+Every what-if is flat too. Without the Asia re-rating credit, **22** portfolios sit
+within 0.05pp of the optimum.
+
+Both results are true under their stated rules. So this is a design inconsistency,
+not a false statement, and the choice of rule is the owner's. The page now
+publishes the band beside B (Portfolio tab) and beside the Asia what-if (Report). An
+engine check requires the band function to reproduce Portfolio C from C's own
+candidates. **B is not changed** pending that decision.
+
+### 5. Bounds at their edge on the next roll
+
+- **Brent y/y base:** 22 Sep 2025 is six days off the anniversary today. A 29 Sep
+  settle is seven days off, the last that passes; from 30 Sep it fails, so a base
+  nearer 30 Sep–2 Oct 2025 must be sourced first.
+- **FedWatch 73.0:** it is five days old. Re-source it from the tool or retire it.
+- **VIX strip:** it is 25 days old. The hard stop fires at 30, about 4 Oct.
+- **10-year 28 Sep:** provisional, and needs a second par-curve source.
+
 ## 2026-09-28 — Staleness sweep: stale IMF, euro inflation and payrolls, coincidental traces, and the weekend's rejection
 
 The market snapshot is still Friday 25 Sep; this pass swept every claim by age, then

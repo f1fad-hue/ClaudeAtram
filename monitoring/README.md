@@ -132,6 +132,22 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+53. A BOUND THAT PASSES TODAY CAN FAIL ON THE NEXT ROLL. The Brent y/y base passed
+   its one-week bound at six days (two sessions from failing), FedWatch its five-day
+   bound at five (one session), the VIX strip its 30-day stop at 25. A check that passes says nothing about tomorrow, so
+   every review lists the bounds within one roll of failing, with what must be
+   sourced before then.
+52. A HIGH IS A DATED RECORD, AND SO IS EVERY REPORTED MOVE. One "session high"
+   field was overwritten by the next day's roll, which left "$108.23 on 24 Sep"
+   in prose with nothing behind it. Brent's moves lived only in sentences. Both
+   are now dated records, and each entry is checked against the series on its own
+   date: a high at or above that day's settle, a move reproducing from the prior.
+51. A SELECTION RULE IS PART OF THE RESULT. Portfolio C takes the lowest drawdown
+   within 0.05pp of its best return; Portfolio B takes the strict maximum, and five
+   portfolios sit inside that band. When a difference smaller than the model's
+   rounding decides the answer, publish the band beside the answer. And when two
+   answers on one page use different rules, say so and leave the choice to the
+   owner.
 50. A VALUE UPDATE IS NOT A VERIFICATION. The Fed funds row read "raised 25bp on
    16 Sep" while citing the 29 Jul statement and a 5 Sep verification - both before
    the event. The IMF rows said "April" for 2½ months after the July update, and
