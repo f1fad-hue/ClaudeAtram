@@ -132,6 +132,19 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+56. A NUMBER IS SHOWN AT THE PRECISION IT IS SET. Geopolitics was scored 1.75 and the
+   Report printed "1.8"; the driver cards showed 8.25 as 8.3. A rounded score is a
+   different score. Format each value at its own precision, never at the
+   template's.
+55. POSITION IS NOT IDENTITY. `vix_fut_dec` was "the last contract on the strip".
+   That was true for three weeks, then January joined and the page printed
+   January's level as December's. Select by the name the prose uses, never by
+   where the item happens to sit in a list.
+54. A CONTRACT ROLL IS NOT A PRICE MOVE. Brent's front month went November to
+   December on 30 Sep, and December was $5.47 cheaper the same day. A move across
+   a roll is measured from the NEW contract's prior, which is recorded. A
+   comparison across a roll, such as "below the high" or "on the week", is
+   retired, or stated like for like, or the contract is named.
 53. A BOUND THAT PASSES TODAY CAN FAIL ON THE NEXT ROLL. The Brent y/y base passed
    its one-week bound at six days (two sessions from failing), FedWatch its five-day
    bound at five (one session), the VIX strip its 30-day stop at 25. A check that passes says nothing about tomorrow, so

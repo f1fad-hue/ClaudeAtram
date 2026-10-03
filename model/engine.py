@@ -24,8 +24,8 @@ from itertools import product
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-09-28"        # last completed trading session, PH and US both (Monday)
-REVIEW_DATE = "2026-09-29"  # when this review was worked through
+AS_OF = "2026-10-02"        # last completed trading session, PH and US both (Friday)
+REVIEW_DATE = "2026-10-03"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -71,6 +71,15 @@ MACRO = {
     "us_cpi_food": 2.7,
     "us_cpi_gasoline_yoy": 27.4, "us_cpi_fuel_oil_yoy": 52,
     "us_pce_12m": 3.7, "us_pce_6m": 4.1,
+    # AUGUST PCE (BEA, 30 Sep): headline +0.3% m/m and 3.4% y/y against 3.7%
+    # expected, core +0.2% and 3.0% against 0.3% and 3.3%. The July headline was
+    # REVISED DOWN to 3.4% - the 3.7% carried above as us_pce_12m is July's first
+    # print, kept for the record and no longer quoted as current. Part of the
+    # improvement is the BEA's annual methodology overhaul (software, legal
+    # services, portfolio fees), not prices cooling, and the notes say so.
+    "us_pce_aug": 3.4, "us_pce_aug_consensus": 3.7, "us_pce_jul_rev": 3.4,
+    "us_core_pce_aug": 3.0, "us_core_pce_aug_consensus": 3.3,
+    "us_pce_mom_aug": 0.3, "us_core_pce_mom_aug": 0.2,
     # A DATING ERROR THAT WAS PUBLISHED FOR TWO DAYS. 4.94 was carried as the
     # 18 September close and it is the SEVENTEENTH's - the Fed's own H.15 gives
     # 4.94 for 17 Sep, and CNBC has the 10-year falling "more than 7 basis points"
@@ -107,7 +116,10 @@ MACRO = {
         ("2026-09-23", 5.12),    # CONFIRMED 2026-09-26 - see below
         ("2026-09-24", 5.18),    # FRED DGS10; the intraday peak that day was 5.223
         ("2026-09-25", 5.17),    # Treasury par curve (Advisor Perspectives, Wolf Street)
-        ("2026-09-28", 5.24),    # PROVISIONAL - one par-curve source, see below
+        ("2026-09-28", 5.24),    # CONFIRMED 2026-10-03: FRED DGS10 agrees with StreetStats
+        ("2026-09-29", 5.26),    # FRED DGS10; CNBC's 5.253 was mid-session
+        ("2026-09-30", 5.29),    # FRED DGS10; CNBC's 5.298 was mid-session
+        ("2026-10-01", 5.24),    # StreetStats par curve (2-year 4.78, 30-year 5.61)
     ],
     # 23 Sep is the 5.104% market-close print (CNBC, Wolf Street: "+13.7bp to
     # 5.104") rounded to 2dp, NOT a Treasury par-curve / H.15 figure: neither was
@@ -137,10 +149,19 @@ MACRO = {
     # 5.56); Yahoo's close-of-day story also has 5.24. CNBC's market basis had it
     # "roughly 9.5bp to 5.25%", intraday "tops 5.25%" (Seeking Alpha). One par-curve
     # source is one source, so the point is PROVISIONAL until a second confirms it.
-    "ust_10y_provisional": ["2026-09-28"],
+    # CONFIRMED 2026-10-03: FRED DGS10 also has 5.24 for the 28th, so the point is
+    # no longer provisional.
+    # 2 OCT WITHHELD. Two candidates for the official close - 5.27 (Trading
+    # Economics, "+0.03") and 5.28 (a par-curve table: 2-year 4.83 plus a 0.45 spread)
+    # - and neither is the Treasury's own release. CNBC's market basis had the
+    # 10-year "almost 5 basis points" higher at 5.281% after an early fall on the
+    # weak payrolls. The VIX rule: a close two sources disagree on is not carried.
+    "ust_10y_provisional": [],
     "ust_10y_disputed_23sep": [5.10, 5.11, 5.12],
     "ust_10y_market_print": 5.104,   # CNBC / Wolf Street, 23 Sep, 3dp market basis
-    "ust_10y_withheld": [],      # 18 Sep resolved on the official basis, see above
+    "ust_10y_withheld": ["2026-10-02"],
+    "ust_10y_disputed_2oct": [5.27, 5.28],
+    "ust_10y_market_2oct": 5.281,    # CNBC, 2 Oct, 3dp market basis - not a close
     # The three figures that made 18 Sep look disputed, kept as the record of a
     # mixed-basis error rather than deleted: two were intraday market quotes.
     "ust_10y_disputed": [4.99, 5.00, 5.01],
@@ -156,8 +177,15 @@ MACRO = {
     # MOVED AGAIN on 28 Sep: "tops 5.25%" (Seeking Alpha / Helious), CNBC "roughly
     # 9.5bp to 5.25%, the highest since 2007". 5.25 is a floor on the day's high,
     # not its exact print, and the prose says "above 5.25%" accordingly.
-    "ust_10y_peak": 5.25, "ust_10y_peak_date": "2026-09-28",
-    "ust_10y_peak_prev": 5.223, "ust_10y_peak_prev_date": "2026-09-24",
+    # MOVED AGAIN on 1 Oct: CNBC "hit an intraday high of 5.342% to reach its
+    # highest level going back to April 3, 2002, before easing 5 basis points to
+    # 5.243%". The superlative changed with it - 2002, not 2007 - and the prose
+    # says so. The 28 Sep floor of 5.25 is kept as the prior record.
+    "ust_10y_peak": 5.342, "ust_10y_peak_date": "2026-10-01",
+    # The superlative is DATA, not markup: the Report typed "its highest since 2007"
+    # beside a field that moved past the 2007 peak on 1 Oct.
+    "ust_10y_peak_since": "April 2002",
+    "ust_10y_peak_prev": 5.25, "ust_10y_peak_prev_date": "2026-09-28",
     # The 2-year had NO date field and was 12 days stale - 4.63 from 11 Sep, when
     # the actual level had risen 11bp - because the lag check added on 21 Sep
     # listed the 10-year and 30-year and missed it. These two are CNBC session
@@ -184,9 +212,13 @@ MACRO = {
     # 28 Sep (CNBC): 2-year "rose roughly 8bp to 4.93%", 30-year "advanced 8bp to
     # 5.57%, a level not touched since 2004". The 30-year's reading IS the session
     # high as far as any source says, so the high moves with it.
-    "ust_2y": 4.93, "ust_2y_date": "2026-09-28",
-    "ust_30y": 5.57, "ust_30y_date": "2026-09-28",
-    "ust_30y_high": 5.57, "ust_30y_high_date": "2026-09-28",  # "since June 2004"
+    # 2 Oct (CNBC, after the payrolls): 2-year "higher by 5 basis points at
+    # 4.839%", 30-year "added 2 basis points at 5.629%". The 30-year's high is the
+    # 30 Sep reading of 5.632% (CNBC), "around its highest level since 2002"; on
+    # 29 Sep it had "surpassed 5.61%" intraday (5.623% at one point).
+    "ust_2y": 4.839, "ust_2y_date": "2026-10-02",
+    "ust_30y": 5.629, "ust_30y_date": "2026-10-02",
+    "ust_30y_high": 5.632, "ust_30y_high_date": "2026-09-30",  # "since 2002"
     "ust_curve_basis": "mid-session readings, not closes",
 
     # The September meeting is DECIDED, so these now describe the NEXT move rather
@@ -209,14 +241,20 @@ MACRO = {
     # 28 Sep: secondary reads disagree - 72.3% ("CME FedWatch as of 28 Sep", via a
     # tracker) and 64.2% (a weekly note, "from 57.6% a week earlier"). Recorded as a
     # range; neither is the tool, and 73.0 (23 Sep) is at its 5-day bound today.
+    # 2 OCT, AFTER THE PAYROLLS (CNBC citing FedWatch): "only a 17% chance that
+    # the Fed increases rates by a quarter percentage point" in October. The week-
+    # earlier column of the same tool had HOLD at 35.8%, i.e. a hike at 64.2% -
+    # which corroborates the 28 Sep weekly note's 64.2% and settles that disputed
+    # range at its low end. December: 66.2% for a hike by then (FedWatch, 2 Oct).
     "fed_hike_odds_oct_secondary_lo": 64.2, "fed_hike_odds_oct_secondary_hi": 72.3,
     "fed_hike_odds_oct_secondary_date": "2026-09-28",
-    "fed_hike_odds_oct": 73.0,   # CME FedWatch - Barr + hot PMI + weak 5y auction
-    "fed_hike_odds_oct_date": "2026-09-23",
-    "fed_hike_odds_oct_prev": 55.0, "fed_hike_odds_oct_prev_date": "2026-09-22",
+    "fed_hike_odds_oct": 17.0,   # CME FedWatch, after September payrolls
+    "fed_hike_odds_oct_date": "2026-10-02",
+    "fed_hike_odds_oct_prev": 73.0, "fed_hike_odds_oct_prev_date": "2026-09-23",
     "fed_hike_odds_oct_first": 50.9, "fed_hike_odds_oct_first_date": "2026-09-17",
-    "fed_hike_odds_dec": 88.5,   # cumulative, at least one more by December -
-    "fed_hike_odds_dec_date": "2026-09-17",  # LAST VERIFIED here; not re-found on the 23rd
+    "fed_hike_odds_dec": 66.2,   # cumulative, a hike by December (FedWatch)
+    "fed_hike_odds_dec_date": "2026-10-02",
+    "fed_hike_odds_dec_prev": 88.5, "fed_hike_odds_dec_prev_date": "2026-09-17",
     # A settled reading of a DECIDED meeting. Kept for the record, and registered
     # in RESOLVED_ODDS below so prose quoting it has to say which meeting and when:
     # the US regional note said "the hike is 92.0% priced" in the present tense for
@@ -224,6 +262,14 @@ MACRO = {
     "fed_hike_odds_sep_final": 92.0,
     "fed_hike_odds_sep_date": "2026-09-16",
     "ecb_sep_delivered": 2.50,
+    # SEPTEMBER PAYROLLS (BLS, 2 Oct): +29k against an 84k consensus; unemployment
+    # 4.2% from 4.1%. August REVISED to +133k from +162k, July to -10k from +21k
+    # (60k fewer in total). The first prints are kept, named as such.
+    "us_payrolls_sep": 29_000, "us_payrolls_sep_consensus": 84_000,
+    "us_payrolls_aug_rev": 133_000, "us_payrolls_jul_rev2": -10_000,
+    "us_unemployment_prev": 4.1,
+    "us_conf_board_sep": 81.9,   # Conference Board, lowest since 2014 (29 Sep)
+    "us_ism_mfg_sep": 54.5, "us_ism_mfg_consensus": 54.9,   # 1 Oct
     "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
     # REVISED with the August report (4 Sep): July -23k -> +21k, June +20k -> +31k.
     # This model carried July's FIRST print for three weeks after the revision.
@@ -232,7 +278,7 @@ MACRO = {
     # gets its value. Removed rather than carried.
     "us_payrolls_jul": 21_000, "us_payrolls_jul_first": -23_000,
     "us_payrolls_jun": 31_000,
-    "us_unemployment": 4.1,
+    "us_unemployment": 4.2,
     # S&P Global flash PMI, September 2026 (released 23 Sep), vs the August finals.
     "us_pmi_composite_sep": 58.4, "us_pmi_composite_aug": 56.0,
     "us_pmi_services_sep": 58.7, "us_pmi_services_consensus": 56.0,
@@ -250,6 +296,10 @@ MACRO = {
     # note's "excluding energy was 2.2%" had no input behind it - it traced only
     # because an unrelated 2.2 (SK Hynix -2.2%) sat elsewhere in the prose - and
     # is replaced by the energy contribution Eurostat actually publishes.
+    # SEPTEMBER FLASH (Eurostat, 2 Oct): 3.8% against 3.6% expected, the highest
+    # since 2023; energy 18.8% from 14.3%, services 3.2% from 3.0%. A flash, so it
+    # is named as one until the 16 Oct final.
+    "ea_hicp_sep_flash": 3.8, "ea_hicp_sep_consensus": 3.6, "ea_energy_sep_flash": 18.8,
     "ea_hicp_aug": 3.2, "ea_hicp_aug_flash": 3.3, "ea_hicp_jul": 2.9,
     "ea_energy_aug": 14.3, "ea_energy_contrib_aug": 1.29,
     "ea_hicp_2026": 3.0,
@@ -266,6 +316,9 @@ MACRO = {
     "usdjpy": 156.86,          # 18 Sep close, +0.58% - a two-week low for the yen
     "jp_core_cpi": 1.7, "jp_core_cpi_prev": 1.8,   # Aug, released hours before
     "jp_core_core_cpi": 1.9,   # ex fresh food AND fuel - the BoJ's demand gauge
+    # BoJ Tankan, Q3 (1 Oct): large manufacturers +24 from +22 (25 expected), a
+    # sixth straight rise and the highest in eight years, on AI-related demand.
+    "jp_tankan_large_mfg": 24, "jp_tankan_large_mfg_prev": 22,
     "bsp_rrp": 5.0,
     "bsp_last_move_bp": 25,
     "bsp_hikes_since_apr": 3,
@@ -280,6 +333,10 @@ MACRO = {
     "ph_food_cpi_aug": 4.6, "ph_food_cpi_jul": 5.2,
     "ph_cpi_jul": 6.2,
     "ph_cpi_jun": 6.4,
+    # BSP's month-ahead range for SEPTEMBER (30 Sep): 6.4-7.4%, from August's 6.1%
+    # - weather-hit food, pump prices and the weaker peso. A FORECAST; the PSA
+    # print is due 6 Oct, and nothing is scored on it before then.
+    "bsp_sep_cpi_lo": 6.4, "bsp_sep_cpi_hi": 7.4,
     "bsp_infl_2026": 6.1,
     "bsp_infl_2027": 5.4,
     # The peso came OFF its record and this model did not notice for five days.
@@ -308,11 +365,14 @@ MACRO = {
     # chain through all four sessions and it does not, so 62.585 is carried.
     # 28 Sep: "weakened by eight centavos to close at P62.545 ... from P62.465 on
     # Friday" (BAP data via Tribune / headtopics); 62.465 + 0.080 = 62.545.
-    "usdphp": 62.545,          # 28 Sep
-    "usdphp_date": "2026-09-28",
-    "usdphp_prev": 62.465,     # 25 Sep close
-    "usdphp_prev_date": "2026-09-25",
-    "usdphp_chg": 0.080,       # as reported: "weakened by eight centavos"
+    # 29 Sep 62.565 (+2 centavos), 30 Sep 62.64 (+7.5), 1 Oct 62.775 (+13.5, a
+    # fourth straight loss), 2 Oct 62.535 (-24, "snapping its four-session losing
+    # streak") - radar.ph each day; every step chains to the half-centavo.
+    "usdphp": 62.535,          # 2 Oct
+    "usdphp_date": "2026-10-02",
+    "usdphp_prev": 62.775,     # 1 Oct close
+    "usdphp_prev_date": "2026-10-01",
+    "usdphp_chg": -0.240,      # as reported: "strengthened by 24 centavos"
     "usdphp_record": 62.86,        # 14 Sep close - the weakest close on record
     "usdphp_record_date": "2026-09-14",
     "usdphp_record_intraday": 62.925,  # 15 Sep intraday - weakest print on record
@@ -328,9 +388,12 @@ MACRO = {
     # 25 Sep: +95.95 (+1.67%), the first gain after a run of losses that took the
     # index to a 10-month low on the 24th. 5730.02 + 95.95 = 5825.97 exactly.
     # 28 Sep: -37.10 (-0.64%) to 5788.87 (Tribune); 5825.97 - 37.10 = 5788.87.
-    "psei": 5788.87, "psei_chg_pts": -37.10, "psei_chg_pct": -0.64,
-    "psei_date": "2026-09-28",
-    "psei_prev": 5825.97,
+    # 29 Sep 5738.40 (-50.47), 30 Sep 5679.48 (-58.92), 1 Oct 5629.47 (-50.01, a
+    # 2026 low), 2 Oct 5629.03 (-0.44, -0.01%), a fifth straight loss (radar.ph).
+    "psei": 5629.03, "psei_chg_pts": -0.44, "psei_chg_pct": -0.01,
+    "psei_date": "2026-10-02",
+    "psei_prev": 5629.47,
+    "psei_week_ago": 5825.97,
     # PH T-BILLS, 21 Sep auction (BusinessWorld / BusinessMirror). CORRECTED
     # 2026-09-24: 5.138 / 5.517 / 5.717 had been here since the build on 2 Sep,
     # never refreshed, and since 13 Sep the look-through stamped them with the
@@ -385,14 +448,40 @@ MACRO = {
         # $108.83" on Trump's rejection of Iran's plan (Reuters via Rigzone/CNBC;
         # investingLive "settled up 0.9%"). 104.32 + 0.96 = 105.28.
         ("2026-09-28", 105.28),
+        # 29 Sep: "closed down $2.69, or 2.6%, at $102.59" as Saudi Arabia restored
+        # about half the East-West pipeline's flow (Reuters via Rigzone/Yahoo).
+        ("2026-09-29", 102.59),
+        # 30 Sep: NOVEMBER'S LAST TRADING DAY. It "expired at $103.50", +0.9%;
+        # December settled +1.9% at $98.03 the same day, $5.47 below it.
+        ("2026-09-30", 103.50),
+        # FROM 1 OCT THE FRONT MONTH IS DECEMBER. "December Brent settled at $102.31,
+        # up 4.37% or $4.28" after Chinese refiners halted fuel exports and a third
+        # US carrier was reported heading to the region: 98.03 + 4.28 = 102.31. The
+        # move is off DECEMBER's own 30 Sep settle, not November's expiry - see
+        # brent_roll_priors.
+        ("2026-10-01", 102.31),
+        # 2 Oct: "settled at US$102.25, down just US$0.06, or 0.06%" (EnergyNow,
+        # Reuters); Reuters' like-for-like front-month weekly change was +0.11%.
+        ("2026-10-02", 102.25),
     ],
+    # ACROSS A ROLL the reported move is off the NEW contract's prior settle, which
+    # is not in the front-month series. Carried here, dated by the session it is the
+    # prior FOR, so the chain check uses the right base instead of failing or being
+    # waived. (WTI's 22 Sep roll was handled by implying the prior; here a published
+    # December settle exists, so it is typed and checked.)
+    "brent_roll_priors": {"2026-10-01": 98.03},
+    # Reuters' like-for-like front-month weekly change to 2 Oct (December vs
+    # December), the honest week-on-week figure across the roll.
+    "brent_week_lfl_pct": 0.11,
     # EVERY SESSION'S REPORTED MOVE, like the VIX's. A single brent_chg_reported
     # field held only the latest, so the moment it rolled, the notes' historical
     # moves (+3.4% on the 24th, -2.14% on the 25th) lost their input and would have
     # traced only by coincidence. Now each is an input and each must reproduce from
     # the previous settle in the series. (2026-09-29)
     "brent_reported_moves": {"2026-09-23": 3.86, "2026-09-24": 3.4,
-                             "2026-09-25": -2.14, "2026-09-28": 0.92},
+                             "2026-09-25": -2.14, "2026-09-28": 0.92,
+                             "2026-09-29": -2.6, "2026-09-30": 0.9,
+                             "2026-10-01": 4.37, "2026-10-02": -0.06},
     # 28 Sep: $108.83 intraday on the rejection - ABOVE the $108.75 SETTLE high of
     # 15 Sep (verified 2026-09-29: "Brent finished up $3.07 at $108.75 ... highest
     # close since May 19"), so the settle high stands and this is an intraday one.
@@ -440,8 +529,12 @@ MACRO = {
     # "y/y" was measured against a date 19 days off the anniversary, overstating it
     # (+57.4% instead of +54.8%). Now CNBC's verified 22 Sep 2025 settle, one day
     # off, and DATED so a check can bound the drift: a week, then re-anchor.
-    "brent_yr_ago": 66.57,
-    "brent_yr_ago_date": "2025-09-22",
+    # RE-ANCHORED 2026-10-03, before the week bound failed: CNBC's 5 Oct 2025 story
+    # has Brent "closed up 42 cents, or 0.7%, at $64.53" on Friday 3 Oct 2025 - one
+    # day off the anniversary of 2 Oct, and LIKE FOR LIKE: on both dates the front
+    # month was the December contract (November 2025 also expired on 30 Sep).
+    "brent_yr_ago": 64.53,
+    "brent_yr_ago_date": "2025-10-03",
     # HORMUZ. Two different things get measured here and they do not agree, so both
     # are carried. VESSEL COUNTS differ ~5x across sources because they count
     # different things; OIL VOLUME is what actually reaches this portfolio, through
@@ -453,7 +546,7 @@ MACRO = {
     # the 6 September count and was still here on the 19th. Both the reading and
     # its date are inputs now, and a check bounds the gap.
     "hormuz_transits": 1,          # IMF PortWatch, all transits (was 8 on 13 Sep)
-    "hormuz_transits_date": "2026-09-20",
+    "hormuz_transits_date": "2026-09-27",   # Straits Daily Brief, 2 Oct: still 1
     "hormuz_transits_cadence_d": 7,   # weekly Tuesday publication
     "hormuz_baseline": 85,         # pre-crisis transits/day, SAME PortWatch basis
                                    # (measured 28 Feb 2025 - 27 Feb 2026)
@@ -480,6 +573,14 @@ MACRO = {
     # stale in a knowable direction. No post-shutdown flow number has been
     # published, so none is invented here.
     "hormuz_flow_asof": "2026-08-28",
+    # GOLDMAN'S OWN SERIES, RE-READ (29-30 Sep, Bloomberg/gCaptain): Persian Gulf oil
+    # exports, dark flows included, "recovered to 23.3 mb/d over the last week, a
+    # level in line with the 2025 average" - against the 23.0 pre-war baseline their
+    # 28 Aug note implied. JPMorgan, separately: Middle East CRUDE exports 17.5 mb/d,
+    # 98% of pre-war, but PRODUCTS only 58%. Carried as their own fields; the 28 Aug
+    # pair above is the prior reading and stays as the record.
+    "hormuz_flow_new": 23.3, "hormuz_flow_new_asof": "2026-09-29",
+    "me_crude_jpm": 17.5, "me_crude_jpm_pct": 98, "me_products_jpm_pct": 58,
     "petroline_bypass": 5.0,       # mb/d rerouted via the pipeline before the strike
     "petroline_capacity": 7.0,     # mb/d design capacity after expansion
     "petroline_km": 1200,          # east-west across the peninsula to Yanbu
@@ -548,6 +649,23 @@ MACRO = {
     # level or move from Monday is quoted or carried: the note says only that
     # Brent traded higher. See CLAIMS.
     "trump_rejects_hormuz_plan_date": "2026-09-26",
+    # THE WEEK'S ESCALATION, as facts: Rubio told Iran's UN delegation on Monday
+    # 28 Sep to leave New York (it flew to Doha early on the 29th; Iran says it left
+    # on schedule); a tanker was hit by an "unknown projectile" in the Strait on
+    # 2 Oct (UKMTO: small fire, blackout, no casualties), after strikes on 29 Sep and
+    # 1 Oct; a third US carrier group was reported heading to the region (WSJ,
+    # 1 Oct). And the other side: Washington sent a counter-proposal through Qatar,
+    # which Araghchi put to Iran's cabinet.
+    "iran_delegation_out_date": "2026-09-28",
+    "tanker_struck_date": "2026-10-02",
+    # CHINA halted gasoline, diesel and jet fuel exports beyond Hong Kong and Macau
+    # "until further notice" (1 Oct) - a PRODUCTS shock for Asian importers, the
+    # Philippines among them, separate from crude volume.
+    "china_fuel_export_halt_date": "2026-10-01",
+    # US SPR: DOE offered the LAST 40 million barrels of the 172m-barrel release
+    # (bids due 6 Oct; exchange, not sale), leaving the reserve under 284 million
+    # barrels, the lowest since 1982.
+    "spr_final_tranche_mb": 40, "spr_level_mb": 284,
     # THE QUEUE, on a stated basis and as a SERIES. 436 was a 30 August reading on
     # an undisclosed basis and sat here for three weeks. These three are one
     # source, one methodology, one daily snapshot time: AIS-visible vessels holding
@@ -560,7 +678,8 @@ MACRO = {
     # 25th), so these are intraday snapshots and only the RANGE carries meaning.
     "hormuz_queue": [("2026-09-18", 369), ("2026-09-19", 357), ("2026-09-20", 376),
                      ("2026-09-21", 401), ("2026-09-22", 443), ("2026-09-25", 407),
-                     ("2026-09-26", 422), ("2026-09-27", 262), ("2026-09-28", 233)],
+                     ("2026-09-26", 422), ("2026-09-27", 262), ("2026-09-28", 233),
+                     ("2026-10-02", 147)],   # 02:50 UTC (a 1-2 Oct brief: 189 at 14:50)
     # That reading is now OUT OF DATE and was carried too long: through 2026-09-18
     # this comment still said the VIX had "fallen BACK toward the 2026 low", which
     # widened the gap to the futures curve. It did the opposite. Spot ran to 17.20
@@ -573,14 +692,24 @@ MACRO = {
     # stay paired with the futures strip below: the bootstrap integrates forward
     # variance from spot through the strip, so a spot from one date and a strip
     # from another is not a term structure, it is two half-curves glued together.
-    "vix_spot": 14.32,         # 4 Sep close (Friday) - the curve's own spot
+    # RE-QUOTED 2026-10-03, the day before the 4 Sep strip hit its 30-day stop: the
+    # curve is now the 2 Oct close, so its spot is 2 Oct's 15.31 - the same number
+    # as the latest close, legitimately, because the strip and the spot are one
+    # market close again. The check that guarded against silent replacement now
+    # tests the stronger thing: the curve's spot is the close ON its quote date.
+    "vix_spot": 15.31,         # 2 Oct close (Friday) - the curve's own spot
     # AN INDEPENDENT READ ON THE SAME SHAPE. VIX3M is a market-published constant-
     # maturity 3-month implied vol - it is not an input to the bootstrap, so the
     # ratio it implies is a free test of whether the forward-variance integration
     # produces a term structure the market would recognise. Both legs are from one
     # source on one date, and the published IVTS reproduces from them exactly
     # (15.84 / 18.60 = 0.8516), which is why the pair is trusted.
-    "vix3m": 18.60, "vix3m_spot": 15.84, "vix3m_date": "2026-09-11",
+    # RE-READ 2026-10-03: VIX3M 18.58, published with a VIX3M/VIX ratio of 1.13 -
+    # which reproduces from 18.58 / 16.39, the 1 OCT close, not from 2 Oct's 15.31.
+    # The pair is trusted on the same test as the 11 Sep one (18.60 / 15.84, kept
+    # in CLAIMS): its published ratio reproduces from its own two legs. So it is
+    # dated 1 Oct, the date its spot belongs to.
+    "vix3m": 18.58, "vix3m_spot": 16.39, "vix3m_date": "2026-10-01",
     # SPOT HISTORY, newest last. This replaced a sprawl of one-off fields -
     # vix_latest / vix_next_close / vix_prev_close / vix_prev / vix_spike - that had
     # grown around a single two-day episode and did not generalise: adding the
@@ -636,6 +765,17 @@ MACRO = {
         # Zacks): 15.67 - 0.80 = 14.87. Both pairs reproduce from 15.67, so the
         # chain check could not pick; the count and the points descriptor did.
         ("2026-09-25", 14.87),   # -0.80 / -5.11%
+        # 28 SEP RESOLVED 2026-10-03, by the NEXT session: Zacks' 29 Sep recap has the
+        # index "up 8.1% to 16.07", and Tuesday's "down 0.2% to 16.04" chains off 16.07
+        # (16.07 x 0.998 = 16.04) but not off the rival 16.30, from which 16.04 would
+        # be -1.6%. Two sources plus the chain, against one.
+        ("2026-09-28", 16.07),   # +1.20 / +8.07%
+        ("2026-09-29", 16.04),   # -0.2% (Zacks)
+        ("2026-09-30", 16.34),   # +1.9% (Zacks); thetrading.tools 16.3
+        ("2026-10-01", 16.39),   # +0.3% (Zacks)
+        # 2 Oct: "down 6.59% (-1.08)" to 15.31 - 16.39 - 1.08 = 15.31. A substack
+        # brief printed -6.53%, which does not reproduce from 16.39 and is not carried.
+        ("2026-10-02", 15.31),
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -648,13 +788,15 @@ MACRO = {
         "2026-09-14": 7.95, "2026-09-16": 3, "2026-09-17": -12.8,
         "2026-09-18": -4.08, "2026-09-21": 0.41, "2026-09-22": -4.44,
         "2026-09-23": 7, "2026-09-24": 3.23, "2026-09-25": -5.11,
+        "2026-09-28": 8.07, "2026-09-29": -0.2, "2026-09-30": 1.9,
+        "2026-10-01": 0.3, "2026-10-02": -6.59,
     },
     # 28 Sep WITHHELD: two reports, 16.07 ("+1.20, +8.07%") and 16.30 ("+1.43,
     # +9.62%), and BOTH reproduce from 14.87 - the chain cannot choose, and one
     # source each is the situation that published a wrong close on 25 Sep. Up on
     # the day either way; not carried until a third source settles it.
-    "vix_withheld": ["2026-09-28"],
-    "vix_disputed_28sep": [16.07, 16.30],
+    "vix_withheld": [],
+    "vix_disputed_28sep": [16.07, 16.30],   # the record of the resolved dispute
     "vix_latest_high": 18.17,  # 10 Sep intraday, the highest print of the episode
     "vix_latest_high_date": "2026-09-10",
     # Session context. These were accidentally deleted on 2026-09-16 when the VIX
@@ -683,15 +825,27 @@ MACRO = {
     # 28 Sep (CNBC close): Dow -347.11 (-0.67%) to 51481.51, S&P -0.77% to 7683.69,
     # Nasdaq -0.92% to 26820.38 - "weighed down by a jump in Treasury yields". The
     # Dow chains to the cent (51828.62 - 347.11); the other two chain at 2dp.
-    "equity_date": "2026-09-28",
-    "spx_close": 7683.69, "spx_chg_pct": -0.77,
-    "nasdaq_close": 26820.38, "nasdaq_chg_pct": -0.92,
-    "dow_close": 51481.51, "dow_chg_pct": -0.67, "dow_chg_pts": -347.11,
+    # 29 Sep: S&P -12.85 to 7670.84, Nasdaq -22.84 to 26797.54, Dow -131.59 to
+    # 51349.92 - every one to the cent. (Zacks/CNBC printed the S&P at "-0.16%";
+    # 12.85 / 7683.69 is -0.167%, so the points are carried and the move derived.)
+    # 30 Sep (AP): S&P -19.30 to 7651.54, Nasdaq +63.52 to 26861.06, Dow -443.87 to
+    # 50906.05 - each to the cent. 1 Oct: S&P +0.19% to 7666.45, Nasdaq +0.04% to
+    # 26871.60, Dow +20.51 to 50926.56.
+    # 2 Oct (AP): S&P +56.27 to 7722.72, Nasdaq +319.27 to 27190.86 - a RECORD
+    # close - and Dow +250.40 to 51176.96, after the weak payrolls cut the odds of
+    # an October hike. The S&P and Dow chain to the cent; the Nasdaq's points land
+    # a cent off (26871.60 + 319.27 = 27190.87), the prior close's rounding again.
+    # 24/7 Wall St printed the S&P at 7722.57; it does not reproduce AP's points.
+    "equity_date": "2026-10-02",
+    "spx_close": 7722.72, "spx_chg_pct": 0.73,
+    "nasdaq_close": 27190.86, "nasdaq_chg_pct": 1.19,
+    "dow_close": 51176.96, "dow_chg_pct": 0.49, "dow_chg_pts": 250.40,
+    "spx_week_ago": 7743.41,
     # Previous closes, published so the CHAIN is checkable in code rather than
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7743.41, "nasdaq_prev": 27068.72, "dow_prev": 51828.62,
+    "spx_prev": 7666.45, "nasdaq_prev": 26871.60, "dow_prev": 50926.56,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -705,9 +859,13 @@ MACRO = {
     # settle - so it crosses the 22 Sep roll and is not quoted here.
     # 28 Sep: November again, "rose 0.2% to $92.60" (investingLive); 92.60 - 92.41
     # = +0.19, i.e. +0.21% - the 2dp move is derived from the two settles.
-    "wti_settle": 92.60, "wti_chg_pct": 0.21,     # 28 Sep, November contract
-    "wti_date": "2026-09-28", "wti_contract": "2026-11",
-    "wti_prev": 92.41, "wti_prev_date": "2026-09-25",
+    # 29 Sep -3.22 to 89.38; 30 Sep +1.04 to 90.42; 1 Oct "+$2.45, or 2.7%" to
+    # 92.87; 2 Oct "US$91.11 ... falling US$1.76, or 1.90%, from Thursday's $92.87"
+    # as DOE offered the SPR's last 40m barrels. November is still the front month
+    # (last trade 20 Oct), so every step is one contract.
+    "wti_settle": 91.11, "wti_chg_pct": -1.90,    # 2 Oct, November contract
+    "wti_date": "2026-10-02", "wti_contract": "2026-11",
+    "wti_prev": 92.87, "wti_prev_date": "2026-10-01",
     "wti_expired_contract": "2026-10", "wti_expired_settle": 94.59,
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
@@ -745,10 +903,18 @@ MACRO = {
     # drawdowns, are marginally understated rather than overstated. Two checks now
     # bound it: the residual itself, and a hard stop when the strip passes one
     # roll window.
-    "vix_futs_levels": [("Oct", 2026, 10, 18.41),
-                        ("Nov", 2026, 11, 19.08), ("Dec", 2026, 12, 19.26)],
-    "vix_fut_sep": 16.57,
-    "vix_fut_dec": 19.26,
+    # RE-QUOTED 2026-10-03 - the first fresh strip in 29 days of looking: Oct 18.65,
+    # Nov 19.21, Dec 19.35, Jan 20.38 (Investing.com's VIX futures board, "as of
+    # 2 October", via search). ONE source, so it is tested against something it
+    # never saw: re-anchored to the VIX3M date's spot, its 3-month vol reads
+    # within a quarter of a percent of the published VIX3M (see VIX3M_RESID). A
+    # TradingView snapshot of the October contract at 20.40, undated, also lands
+    # inside the 10% band - so VIX3M cannot tell the two apart, and the dated
+    # reading is carried. January joins the strip, so the bootstrap reaches 0.34y.
+    "vix_futs_levels": [("Oct", 2026, 10, 18.65), ("Nov", 2026, 11, 19.21),
+                        ("Dec", 2026, 12, 19.35), ("Jan", 2027, 1, 20.38)],
+    "vix_fut_sep": 18.65,
+    "vix_fut_dec": 19.35,
     "vix_longrun": 19.5,
     "variance_risk_premium": 3.5,
     # IMF WEO UPDATE, JULY 2026 (8 Jul). Until 2026-09-26 these were the APRIL
@@ -764,6 +930,9 @@ MACRO = {
     "imf_us_2027": 2.2,
     "imf_ea_2025": 1.1,
     "imf_ea_2026": 0.9,
+    # The APRIL figure the Europe note says the July update rose from. It traced
+    # only by coincidence (to unrelated 0.7s) until 2026-10-03; now its own input.
+    "imf_ea_2026_apr": 0.7,
     "imf_ea_2027": 1.2,
     "imf_ae_2026": 1.7,
     "imf_ae_2027": 1.8,
@@ -794,16 +963,25 @@ MACRO = {
     # print. 65,513.94 x 1.0130 = 66,365; the close chains to its percentage.
     # 28 Sep: -486.58 (-0.73%) to 65,877.62 after touching 67,035 (News On Japan);
     # 66,364.20 - 486.58 = 65,877.62, which also re-confirms Friday's close.
-    "nikkei_latest": 65877.62, "nikkei_latest_chg_pct": -0.73,
-    "nikkei_latest_date": "2026-09-28",
-    "nikkei_latest_prev": 66364.20,
-    "nikkei_latest_intraday_high": 67035,
+    # 30 Sep: +1.94% (+1,270-odd) to 66,753.72, its highest close since 19 Aug; 1 Oct:
+    # +2,203.00 (+3.30%) to 68,956.72 on Micron's forecast, the highest since 17 Aug;
+    # 2 Oct: -647.26 (-0.94%) to 68,309.46 on profit-taking before the US payrolls
+    # (Xinhua/Kyodo). 66,753.72 + 2,203.00 = 68,956.72 and 68,956.72 - 647.26 =
+    # 68,309.46. A rival 66,866.47 for 30 Sep does not reproduce 1 Oct's points.
+    "nikkei_latest": 68309.46, "nikkei_latest_chg_pct": -0.94,
+    "nikkei_latest_date": "2026-10-02",
+    "nikkei_latest_prev": 68956.72,
+    "nikkei_latest_intraday_high": 67035,     # 28 Sep - a record of that session
     # KOREA REOPENED from Chuseok on 28 Sep: KOSPI -191.18 (-2.70%) to 6,889.74 from
     # 7,080.92 on the 23rd; Samsung Electronics -5.43%, SK Hynix -5.05%; foreigners
     # net sold 3.24tn won (Korea Times, Seoul Economic Daily, IBTimes).
-    "kospi_latest": 6889.74, "kospi_latest_chg_pts": -191.18, "kospi_latest_chg_pct": -2.70,
-    "kospi_latest_date": "2026-09-28", "kospi_latest_prev": 7080.92,
+    # 29 Sep -0.27% to 6,870.81. 2 Oct: +32.39 (+0.46%) to 7,003.74, back above
+    # 7,000 as Samsung (+2.79%) and SK Hynix (+3.21%) rebounded late on Micron's
+    # results (Seoul Economic Daily, SBS).
+    "kospi_latest": 7003.74, "kospi_latest_chg_pts": 32.39, "kospi_latest_chg_pct": 0.46,
+    "kospi_latest_date": "2026-10-02", "kospi_latest_prev": 6971.35,
     "samsung_chg_28sep": -5.43, "hynix_chg_28sep": -5.05,
+    "samsung_chg_2oct": 2.79, "hynix_chg_2oct": 3.21,
     "ltcma_us_eq": 6.7,
     "ndx_growth_premium": 1.3,     # NDX total return over US large cap in the build-up
     "qiap_capture": 78,            # covered-call upside capture, % of the NDX
@@ -889,7 +1067,7 @@ def front_contract(iso, last_trade):
 #     and measuring a 4 Sep curve from a 9 Sep origin would misdate every point.
 # ----------------------------------------------------------------------------
 
-VIX_QUOTE_DATE = "2026-09-04"   # Friday close - the date every VIX level here is from
+VIX_QUOTE_DATE = "2026-10-02"   # Friday close - the date every VIX level here is from
 VIX_FWD_WINDOW_D = 30           # a VIX future pays on 30-day forward implied vol
 
 def _third_friday(y, m):
@@ -953,11 +1131,31 @@ MACRO["wti_prev_implied"] = "wti_prev" not in MACRO
 if MACRO["wti_prev_implied"]:
     MACRO["wti_prev"] = round(MACRO["wti_settle"] / (1 + MACRO["wti_chg_pct"] / 100), 2)
 MACRO["brent_yoy"] = round((MACRO["brent"] / MACRO["brent_yr_ago"] - 1) * 100, 2)
+# "16 of 18 dot-plot participants" - the 16 is the one-more and two-more groups
+# together, derived so the note's count has its own input rather than tracing to
+# whatever else happens to equal 16.
+MACRO["fed_dots_any_more"] = MACRO["fed_dots_one_more"] + MACRO["fed_dots_two_more"]
 MACRO["fed_hike_odds_oct_chg_pp"] = round(MACRO["fed_hike_odds_oct"]
                                           - MACRO["fed_hike_odds_oct_prev"], 1)
 # How far spot sits below the four-month high, and the day's move, both DERIVED so
 # the notes quoting them cannot drift from the levels they come from.
-MACRO["brent_off_high_pct"] = round((1 - MACRO["brent"] / MACRO["brent_high"]) * 100, 2)
+# NOT ACROSS A ROLL. The $108.75 settle high of 15 Sep is November's; December,
+# front month since 1 Oct, traded $5.47 below November on the day it took over.
+# "X% below the high" between two contracts measures the roll, not the market -
+# the same reason WTI's cross-roll weekly change is not quoted. Derived only when
+# the high and the latest settle are the same contract, else None, and the page
+# says which contract the high belongs to.
+MACRO["brent_high_contract"] = front_contract(MACRO["brent_high_date"], brent_last_trade)
+MACRO["brent_contract"] = front_contract(MACRO["brent_date"], brent_last_trade)
+MACRO["brent_off_high_pct"] = (round((1 - MACRO["brent"] / MACRO["brent_high"]) * 100, 2)
+                               if MACRO["brent_high_contract"] == MACRO["brent_contract"] else None)
+# The roll gap the notes quote: the expiring contract's last settle less the new
+# front month's settle on the same day.
+# None when no roll sits inside the carried series.
+_rolls_in = [(d1, v0) for (d0, v0), (d1, _) in zip(MACRO["brent_history"], MACRO["brent_history"][1:])
+             if d1 in MACRO["brent_roll_priors"]]
+MACRO["brent_roll_gap"] = (round(_rolls_in[-1][1] - MACRO["brent_roll_priors"][_rolls_in[-1][0]], 2)
+                           if _rolls_in else None)
 MACRO["brent_chg_pct"] = round((MACRO["brent"] / MACRO["brent_prev"] - 1) * 100, 2)
 MACRO["brent_chg_reported"] = MACRO["brent_reported_moves"][MACRO["brent_date"]]
 MACRO["brent_session_high_date"], MACRO["brent_session_high"] = max(
@@ -991,8 +1189,12 @@ MACRO["hormuz_flow_drop_pct"] = round(
 
 MACRO["vix_futs"] = [(lbl, round(vix_maturity(y, m), 4), lvl)
                      for lbl, y, m, lvl in MACRO["vix_futs_levels"]]
+# BY LABEL, not by position. "vix_fut_dec" was the strip's LAST contract, which
+# was December until January joined on 2026-10-03 - and the page then printed
+# January's 20.38 as "December future" and "prices 20.38 by December". The front
+# contract keeps its historical name (vix_fut_sep) and is still the first.
 MACRO["vix_fut_sep"] = MACRO["vix_futs"][0][2]
-MACRO["vix_fut_dec"] = MACRO["vix_futs"][-1][2]
+MACRO["vix_fut_dec"] = next(lvl for lbl, _, lvl in MACRO["vix_futs"] if lbl == "Dec")
 
 # ----------------------------------------------------------------------------
 # 1c. PENDING CATALYSTS
@@ -1013,25 +1215,28 @@ POSTPONED = [("Iran-GCC talks on the Strait, in Oman",
               "restored the energy driver.")]
 
 CATALYSTS = [
-    ("2026-09-30", "US August PCE inflation",
-     "The Fed's own gauge, and the next hard number before October. July ran "
-     "3.7% over 12 months; a hot August would firm the 73% October hike odds that "
-     "the monetary driver and the near-horizon US scores are set against."),
-    ("2026-10-02", "US September payrolls",
-     "The growth driver was raised on August's +162k against a 53k consensus and "
-     "the 58.4 PMI. A weak print is the quickest way to reverse that raise."),
     ("2026-10-06", "Philippine September CPI",
-     "The peso sleeve's real carry needs PH inflation to keep slowing; August "
-     "was the fourth slowdown in a row. Two things work against a fifth: Brent "
-     "at $105.28 on 28 Sep, and rice inflation up to 19.4% from 17.1%."),
+     "The test the peso sleeve's real carry now faces from the wrong side. August "
+     "was 6.1%, a fourth slowdown in a row; BSP's own month-ahead range for "
+     "September is 6.4% to 7.4%, the top the highest since March 2023, on weather-"
+     "hit food, pump prices and the weaker peso. Rice was already running at 19.4%."),
+    ("2026-10-16", "Euro-area September HICP, final",
+     "The flash said 3.8%, from 3.2%, with energy at 18.8% - above the 3.6% "
+     "expected. A final at or above it tests the ECB's word that its cycle ended "
+     "at 2.50% on 10 Sep, and the Europe ranking with it."),
     ("2026-10-22", "BSP policy decision",
      "BSP is at 5.00% after three hikes, the last on 27 Aug. A fourth lifts the peso "
-     "sleeve's carry further; a pause with inflation still at 6.1% keeps its real "
+     "sleeve's carry further; a pause into a 6.4%-7.4% September keeps its real "
      "yield below zero."),
     ("2026-10-28", "FOMC decision",
-     "October is priced at 73% after the 23 Sep repricing; at least one more "
-     "hike by December was last verified at 88.5% on 17 Sep. The dot-plot median "
-     "already has one more this year, so the question is timing."),
+     "After September's payrolls FedWatch put October at 17%, from 73% on 23 Sep; "
+     "a hike by December still priced at 66.2% on 2 Oct. The dot-plot median has one more "
+     "this year, so the question has moved from 'how soon' back to 'whether'."),
+    ("2026-11-03", "US midterm elections",
+     "The date both sides of the Hormuz talks are working to. Iranian officials "
+     "have said a deal is unlikely before it; the President has called renewed "
+     "strikes after it 'possible'. The stress table's full closure is the state "
+     "this date can bring back."),
 ]
 
 # ----------------------------------------------------------------------------
@@ -1198,19 +1403,19 @@ NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research sc
 REGIONS = {
     "US": {
         "3M": 4.25, "6M": 4.75, "12M": 5.5, HZ_LABEL: 6.5,
-        "why": "Near horizons cut, ten-year anchor held. Growth is fine - August payrolls +162k against a 53k consensus, and the September composite PMI hit 58.4, the strongest since July 2021 - but the rate path has repriced hard. On official closes the 10-year went from 5.01% on 18 Sep to 5.17% on 25 Sep and a provisional 5.24% on 28 Sep, and on the 28th it traded above 5.25%, the highest since 2007; the 30-year read 5.57% that day, its highest since 2004, and the 2-year 4.93%. The trigger on the 23rd: Fed Governor Barr said further hikes are 'likely to be needed', a $70bn 5-year auction met weak demand, and CME FedWatch's October odds jumped from 55% to 73% in a day. Equities have stalled rather than broken: after falling together on the 23rd, going flat on the 24th and bouncing on the 25th, the S&P closed 28 Sep at 7683.69 (-0.77%), the Nasdaq at 26820.38 (-0.92%) and the Dow at 51481.51 (-0.67%) as yields made new highs. August CPI was mixed - core 2.4% y/y but +0.3% on the month, gasoline +27.4% y/y. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
+        "why": "Near horizons held, ten-year anchor held. The rate path eased and the growth evidence weakened in the same week. September payrolls added 29k against 84k and unemployment rose to 4.2%; August was revised to +133k, and consumer confidence fell to 81.9, the lowest since 2014. The ISM manufacturing index still read 54.5, and the September composite PMI 58.4. CME FedWatch's October odds fell to 17% after the payrolls. The long end did not ease with them. On official closes the 10-year went from 5.17% on 25 Sep to 5.29% on 30 Sep and 5.24% on 1 Oct, after an intraday 5.342% that day, the highest since April 2002; the 30-year read 5.632% on 30 Sep, its highest since 2002. Equities held up better than bonds: the S&P closed 2 Oct at 7722.72 (+0.73%), near its record, the Nasdaq at a record 27190.86 (+1.19%) and the Dow at 51176.96 (+0.49%). August core CPI was mixed - 2.4% y/y but +0.3% on the month, gasoline +27.4% y/y - and August PCE came in below forecast at 3.4%. Near horizons are held rather than restored: a softer path is offset by weaker growth and a higher long end. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
     },
     "EUROPE": {
         "3M": 2.5, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
-        "why": "The worst policy/growth mismatch in the world. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.9% (the July update, up from 0.7%), and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.2% (final, from a 3.3% flash) with energy +14.3% y/y contributing 1.29 points of it: everything else added up to less than 2%, so essentially the whole overshoot is the oil price, and Europe is the largest net energy importer in the world facing Brent +58.2% y/y. The offset is real - at 15.4x forward it is the cheapest large market here, and the hiking cycle is now over by the ECB's own guidance.",
+        "why": "The worst policy/growth mismatch in the world, and the week made it worse. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.9% (the July update, up from 0.7%), and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.2% (final, from a 3.3% flash) with energy +14.3% y/y contributing 1.29 points of it. September's flash then jumped to 3.8%, above the 3.6% expected, with energy at 18.8%: the overshoot is the oil price, and it is growing. Europe is the largest net energy importer in the world facing Brent +58.45% y/y, and a final print at the flash on 16 Oct would test the ECB's word that its cycle is over. The offset is real - at 15.4x forward it is the cheapest large market here.",
     },
     "ASIA": {
         "3M": 5.0, "6M": 5.5, "12M": 6.5, HZ_LABEL: 7.5,
-        "why": "Near horizons cut; the early-September bounce did not hold. The region sold off again on 10-11 Sep - the Nikkei to 64,011 and KOSPI to 6,910 by the 11th, Samsung and SK Hynix leading the chip losses - and this time it is a rate shock as well as an energy one. Japan has since recovered well past that level - the Nikkei closed 66,364.20 on 25 Sep after a fifth straight gain, then 65,877.62 on the 28th, -0.73%, after touching 67,035. Korea reopened from Chuseok on 28 Sep with a 2.70% fall to 6,889.74, Samsung -5.43% and SK Hynix -5.05%, as foreign investors sold. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
+        "why": "Near horizons cut; the early-September bounce did not hold, and this week's rally does not yet undo it. The region sold off again on 10-11 Sep - the Nikkei to 64,011 and KOSPI to 6,910 by the 11th, Samsung and SK Hynix leading the chip losses - and this time it is a rate shock as well as an energy one. Japan has since recovered well past that level: the Nikkei closed at 68,956.72 on 1 Oct on Micron's forecast, its highest since 17 Aug, before giving back 0.94% to 68,309.46 on 2 Oct, and the Tankan for large manufacturers rose to 24, an eight-year high. Korea fell as it reopened from Chuseok on 28 Sep - Samsung -5.43%, SK Hynix -5.05% - and was back at 7,003.74 on 2 Oct, Samsung +2.79% and SK Hynix +3.21% that day. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers, and China's halt to fuel exports on 1 Oct hits the products they buy. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
     },
     "PHILIPPINES": {
         "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Neutral across the curve. The nominal carry is intact and improving - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 6.115% on the 28 Sep auction, up 7.2bp in a week and higher for a sixth straight week, with room for one more move - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration and a five-month low, with the year to August averaging 5.2% - though BSP's own 2027 forecast is 5.4%. Oil, which had turned from the risk to the help, has turned back: Brent settled at $105.28 on 28 Sep, 3.19% below its 15 Sep settle high, after trading as high as $108.83 on Washington's rejection of Iran's plan - which matters most in a country that imports essentially all of its crude. The one that has not turned is inside the print: food inflation fell to 4.6% from 5.2%, which is what drove the deceleration, while RICE accelerated to 19.4% from 17.1%. A staple re-accelerating 2.3pp in a month is a harder thing for the headline to keep absorbing. The peso is off its record but slipping again: 62.545 on 28 Sep, 8 centavos weaker on the day, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next. That is still a 6.00% loss of purchasing power against the dollar this year. The PSEi gave back 0.64% on 28 Sep to 5788.87, after Friday's bounce had ended a run of losses to a 10-month low. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+        "why": "Neutral across the curve, and the next print is the test. The nominal carry is intact - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 6.115% on the 28 Sep auction, higher for a sixth straight week, with room for one more move on 22 Oct - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration, with the year to August averaging 5.2%. BSP's own range for September is 6.4% to 7.4%, on weather-hit food, pump prices and the weaker peso; the PSA prints on 6 Oct. Inside August's print, food fell to 4.6% from 5.2% while RICE accelerated to 19.4% from 17.1%. Oil is still the headwind for a country that imports essentially all of its crude, and China's fuel-export halt adds a products squeeze: Brent settled at $102.25 on 2 Oct, +58.45% on a year earlier. The peso had a weak week and a strong Friday: 62.535 on 2 Oct, 24 centavos stronger after four straight losses, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next day. That is still a 5.99% loss of purchasing power against the dollar this year. The PSEi fell five sessions running to 5629.03 on 2 Oct, a 2026 low, from 5825.97 a week earlier. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
     },
 }
 # to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
@@ -1238,156 +1443,134 @@ for r in REGIONS.values():
 # ----------------------------------------------------------------------------
 
 DRIVERS = [
-    ("Monetary policy & liquidity", 0.2, 1.75,
-     "HELD at 1.75 after the 23 Sep cut; the long end has kept going without "
-     "changing the path. What arrived on the 23rd: the S&P Global composite PMI hit 58.4 "
-     "(from 56.0), the strongest US private-sector expansion since July 2021, with "
-     "input costs rising the fastest since October 2022; a $70bn 5-year note "
-     "auction met weak demand; and Fed Governor Barr - a sitting voting member - "
-     "said 'in my base case, further policy adjustments are likely to be needed'. "
-     "CME FedWatch put October at 73%, from 55% on the 22nd - an 18-point move in "
-     "one session. It read 50.9% on the 17th; secondary reads on the 28th run from "
-     "64.2% to 72.3% - no firmer, whatever the long end did. Cumulative odds of at least one more "
-     "hike by December were last verified at 88.5% on the 17th; October alone "
-     "cannot exceed the cumulative figure, so the two are consistent - but "
-     "consistent is not re-verified. On official closes the 10-year went 4.94% on "
-     "the 17th, 5.01% on the 18th, 4.96% on the 21st, 4.97% on the 22nd, 5.12% on "
-     "the 23rd (the 5.104% market-close print, confirmed on the Treasury's par "
-     "curve two basis points higher), 5.18% on the 24th, 5.17% on the 25th and a "
-     "provisional 5.24% on the 28th, one par-curve source so far. On the 28th, "
-     "after Washington rejected Iran's reopening plan and oil spiked, the 10-year "
-     "traded above 5.25%, the highest since 2007 (the 24 Sep peak of 5.223% is "
-     "superseded), the 30-year read 5.57%, its highest since 2004, and the 2-year "
-     "4.93%. The ECB finished its own "
-     "cycle on 10 Sep at 2.50%; BSP is at 5.00% after three hikes; the BoJ joined "
-     "on 18 Sep at 1.25%. Not cut again: the long end has made new highs on "
-     "three of the last four sessions, but the October odds have not risen with it, "
-     "and 16 of 18 dot-plot participants already saw one more hike "
-     "this year. What changed on the 23rd is HOW SOON, and that is in this score; "
-     "August PCE on the 30th and September payrolls on 2 Oct are the next tests."),
+    ("Monetary policy & liquidity", 0.2, 2.0,
+     "RAISED a quarter point to 2.0 on 3 Oct - half of the 23 Sep cut back. That cut "
+     "was about HOW SOON, and both tests this note named came in soft. August PCE on "
+     "30 Sep ran 3.4% headline and 3.0% core, against 3.7% and 3.3% expected - part "
+     "of that is the BEA's annual methodology overhaul, not prices. September "
+     "payrolls on 2 Oct added 29k against 84k, and unemployment rose to 4.2%. CME "
+     "FedWatch put October at 17% after the payrolls, from 73% on 23 Sep; a hike by "
+     "December still priced at 66.2% on 2 Oct, from 88.5% on 17 Sep. Only half comes "
+     "back because the long end did not follow. On official closes the 10-year went "
+     "5.12% on the 23rd, 5.18% on the 24th, 5.17% on the 25th, 5.24% on the 28th, "
+     "5.26% on the 29th, 5.29% on the 30th and 5.24% on the 1st, after trading as "
+     "high as 5.342% on 1 Oct, the highest since April 2002 (the 28 Sep peak of "
+     "5.25% is superseded). The 30-year read 5.632% on 30 Sep, its highest since "
+     "2002. On 2 Oct, after an early fall on the jobs data, the 10-year traded at "
+     "5.281% and the 2-year at 4.839% - market readings; that day's official close "
+     "is withheld between 5.27% and 5.28%. The ECB finished its own cycle on 10 Sep "
+     "at 2.50%; BSP is at 5.00% after three hikes; the BoJ joined on 18 Sep at "
+     "1.25%. 16 of 18 dot-plot participants still saw one more hike this year. The "
+     "question has moved from how soon back to whether, and the cost of money for "
+     "a ten-year cash flow is higher than it was at the cut."),
     ("Inflation trajectory", 0.15, 2.75,
-     "CUT a quarter point - two-sided is still the right frame, but the forward "
-     "side just got louder. The core measure improved - August core CPI 2.4% y/y "
-     "from 2.5%, shelter 3.0% from 3.2%, food 2.7%. Energy is eating that "
-     "progress in real time: core rose 0.3% on the month against a 0.2% consensus, "
-     "gasoline is +27.4% y/y and fuel oil +52%. What is new is forward-looking, not "
-     "backward: the S&P Global composite PMI for September, released 23 Sep, "
-     "reported input costs rising at their steepest pace since October 2022, "
-     "driven by fuel, freight and wages together - a survey reading of pipeline "
-     "pressure, months ahead of the CPI print it will eventually show up in. Euro "
-     "HICP 3.2%. PH eased to 6.1%, a fourth straight deceleration - but Brent "
-     "settled at $105.28 on 28 Sep, still +58.2% on a year earlier. That is still "
-     "inside the range this score "
-     "was set against - below the 15 Sep high - which is why the cut stops at a "
-     "quarter point."),
-    ("Growth momentum", 0.15, 4.25,
-     "RAISED a quarter point on the hardest data point of the week: the S&P Global "
-     "flash composite PMI for September hit 58.4, from 56.0, the strongest private-"
-     "sector expansion since July 2021 - services led at 58.7 against a 56 "
-     "consensus, and the manufacturing PMI jumped to 57.0 from 53.9, a 52-month "
-     "high. August payrolls were "
-     "already strong, +162k against a 53k consensus, unemployment 4.1%. This "
-     "driver's own lane is whether the growth engine is intact under the shocks, "
-     "not what the bond market did in reaction to the same print - that belongs to "
-     "Monetary policy, which absorbed the hit: the PMI beat is exactly why the "
-     "10-year jumped 15bp on 23 Sep on official closes and equities fell across the board. Read separately, the PMI print is unambiguous growth evidence; kept "
-     "here rather than double-counted in the rate driver's cut. The IMF's July update already cut "
-     "2026 global growth to 3.0%, and it was written two months before the "
-     "September rate shock took the 10-year above 5.25%, a second tax on every "
-     "long-duration cash flow here."),
+     "HELD at 2.75 - still two-sided, but the sides swapped places. The US eased: "
+     "August PCE ran 3.4% headline and 3.0% core against 3.7% and 3.3% expected, "
+     "with July's headline revised down to 3.4% - though part of that is the BEA's "
+     "methodology change rather than prices. August core CPI was 2.4% y/y from "
+     "2.5%, but +0.3% on the month against a 0.2% consensus, with gasoline +27.4% "
+     "y/y and fuel oil +52%. Everywhere else got hotter. The euro-area flash for "
+     "September jumped to 3.8% from 3.2%, against 3.6% expected, with energy at "
+     "18.8%. BSP projects Philippine September inflation at 6.4% to 7.4%, from "
+     "6.1%, on food, pump prices and the weaker peso. And on 1 Oct China halted "
+     "fuel exports, a products shock for every Asian importer. The forward signal "
+     "is unchanged: September PMI input costs rose at their steepest pace since "
+     "October 2022. Brent settled at $102.25 on 2 Oct, +58.45% on a year earlier "
+     "on the same December contract. Held rather than cut: the print this score is "
+     "most exposed to - the US - improved, and the Philippine number is a forecast "
+     "until 6 Oct."),
+    ("Growth momentum", 0.15, 4.0,
+     "CUT a quarter point to 4.0, reversing the 23 Sep raise - the reversal this "
+     "page said a weak payrolls print would bring. September payrolls added 29k "
+     "against an 84k consensus, and unemployment rose to 4.2% from 4.1%. August "
+     "was revised to +133k from +162k and July to -10k, so the jobs leg under the "
+     "raise is gone. The Conference Board's consumer confidence fell to 81.9 in "
+     "September, the lowest since 2014. What holds the score at 4.0 rather than "
+     "lower is that output has not turned. The ISM manufacturing index was 54.5 in "
+     "September, still expanding though below a 54.9 consensus. The S&P Global flash "
+     "composite PMI that drove the raise was 58.4, the strongest since July 2021. "
+     "Japan's Tankan for large manufacturers rose to 24 from 22, a sixth straight "
+     "gain and an eight-year high. This driver's lane is whether the growth engine "
+     "is intact under the shocks, not what the bond market does with the same "
+     "print - that belongs to Monetary policy. The IMF's July update had already cut "
+     "2026 global growth to 3.0%, before the September rate shock took the 10-year "
+     "to its highest since 2002."),
     ("Corporate earnings", 0.2, 7.0,
      "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) "
-     "is unrevised and the AI capex cycle keeps compounding through the semis supply "
-     "chain. Trimmed because the margin assumption underneath those estimates is "
-     "harder to hold at $105.28 oil than at $66.57, where it was a year ago - Brent "
-     "settled 28 Sep 3.19% below its $108.75 settle peak of 15 Sep, after trading "
-     "as high as $108.83. The selling is back on the earnings engines: as Korea "
-     "reopened from Chuseok on 28 Sep, Samsung fell 5.43% and SK Hynix 5.05%. The "
-     "estimates have not moved; the prices paid for them have."),
+     "is unrevised, and the week's one hard earnings datapoint went the right way. "
+     "Micron's results and forecast set off a chip rally across Asia: Samsung rose "
+     "2.79% and SK Hynix 3.21% on 2 Oct, a week after falling 5.43% and 5.05% as "
+     "Korea reopened from Chuseok. Trimmed only for margins. Brent at $102.25 on "
+     "2 Oct is still far above the $64.53 of a year earlier, and China's "
+     "fuel-export halt on 1 Oct puts products, not just crude, back in the cost "
+     "line. The estimates have not moved; the prices paid for them have, both "
+     "ways."),
     ("Valuation support", 0.1, 8.25,
-     "RAISED a quarter point on 23 Sep - the one driver the shock improves. The "
-     "S&P, Nasdaq and Dow fell together that day as the 10-year jumped to a post-2007 high, "
-     "resuming the de-rating the 10-11 Sep Asian chip sell-off and a month of index declines had "
-     "already started, against estimates that have not moved. They barely moved on "
-     "24 Sep as the 10-year went higher still, rose on 25 Sep with it little "
-     "changed - a bounce, not a re-rating - and fell again on 28 Sep (-0.77/-0.92/"
-     "-0.67%) as it made another post-2007 high. NDX 22.4x forward sits below both its 10y (22.9x) and 5y "
-     "(24.7x) averages, Asia at 10.5x is a two-decade-wide discount, Europe 15.4x. "
-     "A cheaper multiple on the same earnings is better compensation for the same "
-     "risk."),
+     "HELD at 8.25 - the one driver the rate shock improves, though the week took "
+     "some of that back. The S&P has gone nowhere since the 23 Sep raise: 7722.72 "
+     "on 2 Oct against 7743.41 a week earlier. The Nasdaq closed at a record "
+     "27190.86 on 2 Oct as the weak payrolls cut the odds of an October hike, so "
+     "the de-rating has stalled in tech rather than deepened. NDX 22.4x forward "
+     "still sits below both its 10y (22.9x) and 5y (24.7x) averages. Asia at 10.5x "
+     "is a two-decade-wide discount even after the Nikkei's run to 68,309.46, and "
+     "Europe is at 15.4x. A cheaper multiple on the same earnings is better "
+     "compensation for the same risk. Another week like this one in tech and the "
+     "raise comes off."),
     ("Volatility & risk appetite", 0.1, 3.0,
-     "HELD at 3.0 - and the puzzle the last two reviews held it on has dissolved. "
-     "They read the index as falling through a rates selloff; that was a dating error in "
-     "this page's own series, which had filed every close from 17 Sep one session "
-     "late. On the right dates the index made a 21-session low of 14.21 on 22 Sep, "
-     "then rose 7% to 15.18 on 23 Sep as the 10-year jumped, and 3.23% to 15.67 on "
-     "24 Sep: the ordinary pairing, rates and equity volatility moving together. "
-     "The pairing held on the way back: with the 10-year little changed and stocks "
-     "up on 25 Sep, the index gave up 5.11% to 14.87. Monday's close is withheld: "
-     "two reports put it at 16.07 and 16.30, both reproducing from 14.87 and both "
-     "up on the day as yields made new highs - the same pairing - but a close two "
-     "sources disagree on is not carried. "
-     "It is still a low level - under the 17.84 close of 10 Sep and below the "
-     "long-run 19.5 - so it reads as neither complacency nor stress. What this "
-     "driver does NOT carry is a claim that rising volatility pays the portfolio: "
-     "every fund's base return already assumes long-run volatility, so only the "
-     "curve's distance from 19.5 moves a forecast, and blended across horizons the "
-     "4 September strip sits at 18.88 - just below it."),
+     "HELD at 3.0. The pairing with rates held all week. The index rose 8.07% to "
+     "16.07 on 28 Sep as the 10-year made a new high and edged to 16.04 on the "
+     "29th. It rose to 16.34 on the 30th and 16.39 on 1 Oct as the 10-year "
+     "traded at its highest since 2002. Then it fell 6.59% to 15.31 on 2 Oct, when "
+     "the payrolls cut the odds of an October hike. Monday's close, withheld last "
+     "week between 16.07 and 16.30, is resolved at 16.07: Tuesday's -0.2% chains "
+     "from it and not from the rival. It is still a low level - under the 17.84 "
+     "close of 10 Sep and below the long-run 19.5 - so it reads as neither "
+     "complacency nor stress. The curve is re-quoted at last. The 2 Oct strip "
+     "(October 18.65 to January 20.38) replaces the 4 September one a day before "
+     "it expired, and re-anchored to its own date it reproduces the published "
+     "VIX3M of 18.58 to within a quarter of a percent. What this driver does NOT "
+     "carry is a claim that rising volatility pays the portfolio. Every fund's base "
+     "return already assumes long-run volatility, so only the curve's distance "
+     "from 19.5 moves a forecast. Blended across horizons the new strip sits at "
+     "19.4 - just below it."),
     ("Geopolitics & energy", 0.1, 1.75,
-     "RAISED a quarter point to 1.75 on 29 Sep, on the measure this note says to "
-     "read - volume - once the price stopped arguing with it. Middle East crude "
-     "exports reached 12.8 mb/d in September (Kpler), the most since the war began "
-     "though still well short of February's 18.8; flows through Hormuz are running "
-     "near 7.4 mb/d under US escort; Saudi Arabia is shipping 5.3 to 6.0 mb/d "
-     "(Bloomberg; Kpler), up from 2.4 to 3.4 in August; and on 28 Sep the "
-     "East-West pipeline resumed exports at about 3.5 mb/d. A raise on the Saudi "
-     "figures was drafted on the 26th and withdrawn when President Trump rejected "
-     "Iran's seven-day plan to reopen the Strait - he said the US has 'total "
-     "control' of it, Tehran said it would not soften its demands, and the Wall "
-     "Street Journal reported he expects US strikes to resume after November's "
-     "midterms. Monday tested that: on 28 Sep Brent traded as high as $108.83 on "
-     "the rejection and settled at $105.28, up 0.92%, 3.19% below the $108.75 settle "
-     "high of 15 Sep and +58.15% on a year earlier - the market looked through the "
-     "headline to the barrels. Diplomacy goes on through Qatar: Araghchi met the "
-     "mediators hoping for a final US answer by the 29th, while a US official said "
-     "no deal ends the war unless Iran's nuclear programme is addressed. "
-     "The score had been restored to 1.5 on 22 Sep "
-     "when both reasons for the cut to "
-     "1.25 reversed as facts: Saudi Arabia restarted the 1200 km East-West "
-     "(Petroline) pipeline, which had carried roughly 5.0 mb/d to Yanbu around the "
-     "Strait, and US negotiators met an Iranian delegation for three hours at the "
-     "UN General Assembly. 24 Sep tested both. The Houthis fired six ballistic "
-     "missiles at Yanbu and Taif; all were intercepted, with no damage reported, "
-     "and Brent spiked to $108.23 intraday on 24 Sep before settling at $106.60, up "
-     "3.4%. The same day US and "
-     "Iranian negotiators were reported to be exploring a phased deal - the Strait "
-     "reopened, the blockade lifted - and on 25 Sep Foreign Minister Araghchi said "
-     "it could open within seven days 'if certain conditions are met': four or "
-     "five days for the US to take steps Iran says a June memorandum already "
-     "agreed, the Strait reopening on the sixth. France pledged soldiers, radars "
-     "and air defences to protect Yanbu, and Brent gave back 2.14% to settle at "
-     "$104.32 on 25 Sep. None of that became a fact: the missiles missed, and the offer - "
-     "to which President Pezeshkian added nuclear inspections, while Iran's security "
-     "chief said the Strait stays shut until every condition is met - was rejected "
-     "by Washington on the 26th. The Strait is still closed. The pipeline is back "
-     "to half its 7.0 mb/d capacity, six to eight weeks from full, and Kpler's "
-     "2.5 to 2.7 mb/d Yanbu loss is closing rather than closed. "
-     "Read the disruption on VOLUME, not vessel counts. The counts run from 1 to "
-     "30 a day depending on what is counted and when - IMF PortWatch 1 transit "
-     "against an 85 baseline on its 20 Sep reading (8 on the 13th), Lloyd's List "
+     "HELD at 1.75 - the volume case got stronger and the security case got worse, "
+     "both as facts. Volume first, the measure this note says to read. Goldman's own "
+     "series has Gulf oil exports, dark flows included, back at 23.3 mb/d over the "
+     "week to 29 Sep. That is in line with the 2025 average and above the 23.0 "
+     "pre-war level implied by its 28 Aug note, which read 15.5. JPMorgan has "
+     "Middle East crude at 17.5 mb/d, 98% of pre-war - but products at only 58%, "
+     "and on 1 Oct China halted fuel exports. On 22 Sep Saudi Arabia restarted the "
+     "1200 km East-West (Petroline) pipeline, which had carried roughly 5.0 mb/d to "
+     "Yanbu around the Strait, and it has run at about 3.5 mb/d, half its capacity, "
+     "since 28 Sep. Kpler had "
+     "regional crude exports at a wartime high of 12.8 mb/d for September, against "
+     "18.8 in February; trackers differ on what they count. The queue off berth "
+     "kept draining: 147 vessels on 2 Oct, from 233 on 28 Sep and a range that "
+     "reached 443 on 22 Sep. Against that, the week's facts. Secretary Rubio told "
+     "Iran's UN delegation on 28 Sep to leave New York. Tankers were struck in the "
+     "Strait on 29 Sep, 1 Oct and 2 Oct, the last with a fire and blackout on board. "
+     "A third US carrier group was reported heading to the region. And the "
+     "President called renewed strikes after the 3 November midterms 'possible'. "
+     "Diplomacy is not over - Washington sent a counter-proposal through Qatar, and "
+     "Araghchi has put it to Iran's cabinet - but nothing is agreed. The buffer is "
+     "being spent, not built: the US offered the last 40 million barrels of its "
+     "emergency release, leaving the reserve under 284 million barrels, the lowest "
+     "since 1982. The price says "
+     "the same. Like for like, Brent's December contract ended the week up 0.11%, "
+     "settling at $102.25 on 2 Oct. The published front month fell from $105.28 to "
+     "$102.25 only because November expired on 30 Sep at $103.50 and December, "
+     "$5.47 cheaper, took its place. The score was raised to 1.75 on 29 Sep on the "
+     "first volume data; this week confirms the barrels and adds no reason to move "
+     "either way. Read the disruption on VOLUME, not vessel counts. The counts run "
+     "from 1 to 30 a day depending on what is counted and when - IMF PortWatch 1 "
+     "transit against an 85 baseline on its 27 Sep reading, Lloyd's List "
      "Intelligence 14 a day in the week to 23 Aug counting only cargo over 10000 "
      "dwt, the US government around 30 on a basis it does not state - and none of "
-     "them is supply. Goldman's Gulf export reading of 15.5 mb/d against 23.0 pre-war, up "
-     "from a 5.5 trough in March, is dated 2026-08-28 and predates both the "
-     "pipeline strike and its restart, so it is carried as the last measurement and "
-     "nothing more; Kpler's September figures, above, are the newer volume "
-     "readings. The queue off berth oscillated between 357 and 443 vessels from "
-     "18 to 26 Sep on one stated basis, then fell to 262 and 233 on the 27th and "
-     "28th - the first run of falling readings, and read with the export data "
-     "rather than on its own. Raised no further, and still close to the floor of "
-     "1: the Strait is shut to anything the US Navy does not escort, regional "
-     "exports are still about 6 mb/d below February's, and the stress table's full "
-     "closure with Brent above $130 is a strictly worse state still on the table."),
+     "them is supply. Still close to the floor of 1: the Strait is shut to anything "
+     "the US Navy does not escort, ships in it are still being hit, and the stress "
+     "table's full closure with Brent above $130 is a strictly worse state still on "
+     "the table."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -1395,17 +1578,17 @@ GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 # A check requires every number in a summary to appear in its full note, so a
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
-    "Monetary policy & liquidity": "Held at 1.75: October hike odds are 73% after a hot PMI and a hawkish Governor Barr, and on the 28th the 10-year traded above 5.25%, its highest since 2007.",
-    "Inflation trajectory": "Trimmed to 2.75: core CPI eased to 2.4%, but gasoline is +27.4% y/y and PMI input costs are rising at their steepest since October 2022.",
-    "Growth momentum": "Raised to 4.25: the September composite PMI hit 58.4, the strongest since July 2021, on top of +162k August payrolls.",
-    "Corporate earnings": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, trimmed only for margins at $105.28 oil.",
-    "Valuation support": "Raised to 8.25 on 23 Sep: the rate shock cheapened multiples again - the one driver the shock improves.",
-    "Volatility & risk appetite": "Held at 3.0: the VIX fell back to 14.87 on 25 Sep as yields steadied - still low, and the blended curve sits just below its long-run 19.5.",
-    "Geopolitics & energy": "Raised to 1.75: Middle East exports hit a wartime high of 12.8 mb/d and Brent settled at $105.28 despite Washington's rejection of Iran's plan - but the Strait is still shut to anything unescorted.",
-    "US": "Near horizons cut on the rate repricing; the ten-year anchor holds at 6.5 on energy self-sufficiency and a Nasdaq still below its average forward multiple.",
-    "EUROPE": "Ranked last: the ECB hiked to 2.50% into growth of just 0.9%, and Europe is the largest net energy importer facing this oil shock.",
+    "Monetary policy & liquidity": "Raised to 2.0: October hike odds fell to 17% after 29k September payrolls, but the 10-year touched 5.342% on 1 Oct, so only half the 23 Sep cut comes back.",
+    "Inflation trajectory": "Held at 2.75: US PCE eased to 3.4%, but the euro-area flash jumped to 3.8% and BSP sees Philippine September inflation at 6.4% to 7.4%.",
+    "Growth momentum": "Cut to 4.0: September payrolls added just 29k and unemployment rose to 4.2%, reversing the raise; manufacturing is still expanding at 54.5.",
+    "Corporate earnings": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, and Micron's results lifted Samsung 2.79% and SK Hynix 3.21% on 2 Oct.",
+    "Valuation support": "Held at 8.25: NDX at 22.4x forward is still below its 22.9x average, though the Nasdaq's record close on 2 Oct took some of the discount back.",
+    "Volatility & risk appetite": "Held at 3.0: the VIX fell 6.59% to 15.31 on 2 Oct after the payrolls; the re-quoted curve blends to 19.4, just below its long-run 19.5.",
+    "Geopolitics & energy": "Held at 1.75: Gulf exports are back at 23.3 mb/d on Goldman's count, but tankers are still being hit and Iran's delegation was told to leave New York.",
+    "US": "Near horizons held: the October hike faded on 29k payrolls, but the 10-year hit 5.342% on 1 Oct; the ten-year anchor holds at 6.5 on energy self-sufficiency.",
+    "EUROPE": "Ranked last: the ECB hiked to 2.50% into growth of just 0.9%, and September's flash inflation jumped to 3.8% on 18.8% energy.",
     "ASIA": "Ranked first over ten years: 10.5x forward against ~52% EPS growth; near horizons cut for a rate shock on top of an energy one.",
-    "PHILIPPINES": "Neutral across the curve: nominal carry is high and rising, but with August inflation at 6.1% the real carry is still not positive.",
+    "PHILIPPINES": "Neutral across the curve: nominal carry is high, but BSP sees September inflation at 6.4% to 7.4%, so the real carry is moving the wrong way.",
 }
 
 
@@ -1452,7 +1635,10 @@ FUNDS = [
         "fee_feeder": 0.71, "fee_target": 0.00, "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
         "gross_usd": None,                 # PHP asset - no FX translation
         "gross_local": 4.85,
-        "gross_note": "10y average PH short-rate path. Anchored on the PH bill curve - 91d 5.43%, 182d 5.82%, 364d 6.04% at the 21 Sep auction, higher across the curve than when this assumption was set on 2 Sep - with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. Held at 4.85% and flagged rather than re-fitted: the rise sits in the part of the path that reverts within a few years, which lifts a ten-year average by roughly a tenth of a point - inside this assumption's precision, but a known upward bias until it is re-fitted. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
+        # Bound to the auction inputs 2026-10-03. It quoted the 21 Sep auction a week
+        # after the 28 Sep rates were rolled in - the figures traced, but to the
+        # PREVIOUS auction (ph_tbill_prev), which is the coincidence the trace now lists.
+        "gross_note": f"10y average PH short-rate path. Anchored on the PH bill curve - 91d {MACRO['ph_tbill_91']}%, 182d {MACRO['ph_tbill_182']}%, 364d {MACRO['ph_tbill_364']}% at the {_dt.date.fromisoformat(MACRO['ph_tbill_date']).day} {_dt.date.fromisoformat(MACRO['ph_tbill_date']):%b} auction, higher across the curve than when this assumption was set on 2 Sep - with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. Held at 4.85% and flagged rather than re-fitted: the rise sits in the part of the path that reverts within a few years, which lifts a ten-year average by roughly a tenth of a point - inside this assumption's precision, but a known upward bias until it is re-fitted. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
         "vol_beta": 0.021, "fx_exposed": False,
         "macro_tilt": {"rates": +0.25, "energy": +0.05},
         "dd_k_adj": 0.0, "cash_like": True,
@@ -1801,29 +1987,42 @@ LOOKTHROUGH = {
     "ATRQIAP": {
         "dp": 1,
         "kind": "stocks",
-        "as_of": "2026-07-31",
+        # REFRESHED 2026-10-03 to the 31 August factsheet: the 31 July sheet had
+        # reached 64 days against the 60-day bound. Tesla enters at 2.1% and Lam
+        # Research leaves; Micron moves up to fifth. The sector weight is DROPPED,
+        # not carried over: the July sheet's 47.7% Information Technology was not
+        # re-read for August, and a July figure beside August rows would be a
+        # mixed-date table. (The 2dp "September" list in circulation is the same
+        # data at the same $42.21bn of assets - an August sheet re-labelled - and
+        # is not carried.)
+        "as_of": "2026-08-31",
         "note": "Top 10 equity positions of the JPMorgan Nasdaq Equity Premium "
                 "Income strategy. Figures are from the US-listed JEPQ factsheet; "
                 "ATRAM's feeder holds the UCITS sister fund (IE000U9J8HX9), which "
-                "runs the same strategy on the same universe. The 31 July sheet "
-                "is still the latest JPMorgan has published (checked 2026-09-24).",
-        "rows": [["NVIDIA", 6.9], ["Apple", 6.4], ["Alphabet Class C", 5.3],
-                 ["Microsoft", 5.0], ["Amazon", 4.3], ["Micron Technology", 4.1],
-                 ["Advanced Micro Devices", 3.3], ["Meta Platforms", 2.4],
-                 ["Broadcom", 2.3], ["Lam Research", 2.0]],
+                "runs the same strategy on the same universe. The 31 August sheet "
+                "is the latest JPMorgan has published (checked 2026-10-03).",
+        "rows": [["NVIDIA", 7.3], ["Apple", 6.4], ["Microsoft", 5.3],
+                 ["Alphabet Class C", 4.8], ["Micron Technology", 4.6],
+                 ["Amazon", 4.0], ["Advanced Micro Devices", 3.1],
+                 ["Meta Platforms", 2.4], ["Broadcom", 2.1], ["Tesla", 2.1]],
         "unit": "% of fund",
-        "sectors": [["Information Technology", 47.7]],
-        "source": "J.P. Morgan Asset Management JEPQ factsheet, 31 July 2026",
+        "source": "J.P. Morgan Asset Management JEPQ factsheet, 31 August 2026",
     },
     "ATRASEQ": {
         "dp": 1,
         "kind": "gap",
         "as_of": None,
+        # RETRIED 2026-10-03, and the note was wrong about the gap's size: an
+        # aggregator now shows a 30 April 2026 top 10 (TSMC 9.65%, Samsung pref
+        # 5.32%, Tencent 4.64% ...), not only 2023 data. It is still five months
+        # old - past the 60-day bound every look-through is held to - and not from
+        # JPMorgan itself, so it is described, not shown.
         "note": "The JPMorgan Asia Equity Dividend Fund's current holdings could "
-                "not be verified from a primary source. The most recent published "
-                "holdings reachable were from 2023 and are too stale to show. What "
-                "is verified is the mandate: at least 70% in dividend-paying Asia "
-                "Pacific ex-Japan equities.",
+                "not be verified from a primary source. The newest list reachable "
+                "is an aggregator's, dated 30 April 2026 - five months old, past "
+                "the 60-day limit every look-through here is held to - so it is "
+                "not shown. What is verified is the mandate: at least 70% in "
+                "dividend-paying Asia Pacific ex-Japan equities.",
         "rows": [],
         "unit": None,
         "source": "gap recorded rather than filled - retry at each manual review",
@@ -2106,8 +2305,10 @@ SCENARIOS = [
      {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5}, 1.60),
     ("Hawkish repricing", "A second hike on top of the one the dot plot already has "
      f"(median {MACRO['fed_dot_2026']}% for end-2026) - {MACRO['fed_dots_two_more']} of "
-     f"{MACRO['fed_dots_participants']} participants see it. The Fed hikes into a 4.1% "
-     "unemployment rate; duration-heavy growth de-rates.",
+     # Bound to the input 2026-10-03: "a 4.1% unemployment rate" was typed, and
+     # went stale the day September's report moved it to 4.2%.
+     f"{MACRO['fed_dots_participants']} participants see it. The Fed hikes into a "
+     f"{MACRO['us_unemployment']}% unemployment rate; duration-heavy growth de-rates.",
      {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
@@ -2150,6 +2351,53 @@ def run_scenarios(w, key):
 # 8. SOURCES
 # ----------------------------------------------------------------------------
 SOURCES = [
+    # ---- added 2026-10-03, the 2 Oct roll ----
+    ("CNBC", "September 2026 jobs report - payrolls +29k vs 84k consensus, unemployment 4.2%, August revised to +133k, July to -10k",
+     "https://www.cnbc.com/2026/10/02/jobs-report-september-2026.html"),
+    ("CNBC", "Traders see little chance of an October hike - CME FedWatch 17% after the payrolls, 2 Oct 2026",
+     "https://www.cnbc.com/2026/10/02/fed-rate-hike-odds-decline-after-september-jobs-report.html"),
+    ("CNBC", "Treasury yields fall from multiyear highs - 10-year intraday 5.342%, highest since 3 April 2002, 1 Oct 2026",
+     "https://www.cnbc.com/2026/10/01/us-treasury-bond-yield.html"),
+    ("CNBC", "10-year Treasury yield ticks higher despite weak jobs report - 10-year 5.281%, 2-year 4.839%, 30-year 5.629%, 2 Oct 2026",
+     "https://www.cnbc.com/2026/10/02/treasury-yields-bonds-nonfarm-payrolls.html"),
+    ("CNBC", "10-year yield higher as traders look past inflation data - 30-year 5.632%, 30 Sep 2026",
+     "https://www.cnbc.com/2026/09/30/treasury-yields-bonds-selloff.html"),
+    ("FRED (St. Louis Fed)", "DGS10 - 10-year constant maturity: 5.24 (28 Sep), 5.26 (29 Sep), 5.29 (30 Sep) 2026",
+     "https://fred.stlouisfed.org/series/DGS10"),
+    ("Yahoo Finance / BEA", "August 2026 PCE - headline 3.4% y/y vs 3.7% expected, core 3.0% vs 3.3%",
+     "https://finance.yahoo.com/economy/policy/articles/u-core-pce-inflation-rises-132052964.html"),
+    ("Eurostat", "Euro area annual inflation up to 3.8% - September 2026 flash, energy 18.8%",
+     "https://ec.europa.eu/eurostat/web/products-euro-indicators/w/2-02102026-ap"),
+    ("The Japan Times", "Tankan Q3 2026 - large manufacturers +24 from +22, sixth straight rise",
+     "https://www.japantimes.co.jp/business/2026/10/01/companies/tankan-better-sentiment/"),
+    ("WTOP / Associated Press", "How major US stock indexes fared Friday 10/2/2026 - S&P 7722.72, Nasdaq 27190.86 (record), Dow 51176.96",
+     "https://wtop.com/news/2026/10/how-major-us-stock-indexes-fared-friday-10-2-2026"),
+    ("Yahoo Finance / Zacks", "Stock Market News for Sep 30, 2026 - VIX down 0.2% to 16.04 (29 Sep session)",
+     "https://sg.finance.yahoo.com/news/stock-market-news-sep-30-071000168.html"),
+    ("Investing.com", "S&P 500 VIX futures contracts board - Oct 18.65, Nov 19.21, Dec 19.35, Jan 20.38, 2 Oct 2026",
+     "https://www.investing.com/indices/us-spx-vix-futures-contracts"),
+    ("Yahoo Finance / Reuters", "Oil prices settle down on signs Middle East exports recovering - Brent $102.59, WTI $89.38, 29 Sep 2026",
+     "https://finance.yahoo.com/energy/articles/oil-prices-rise-second-session-003313319.html"),
+    ("Tokenpost / Reuters", "Brent crude settles at $102.31 after 4.4% gain - December contract, 1 Oct 2026",
+     "https://www.tokenpost.com/news/investing/26265"),
+    ("EnergyNow", "Oil ends volatile week mixed - Brent $102.25, WTI $91.11, SPR's final 40m barrels, 2 Oct 2026",
+     "https://energynow.com/2026/10/oil-ends-volatile-week-mixed-as-emergency-reserve-release-knocks-wti-lower-but-brent-holds-above-102/"),
+    ("CNBC", "OPEC+ opts for modest hike - Brent closed $64.53 on 3 Oct 2025, the year-ago base",
+     "https://www.cnbc.com/2025/10/05/opec-raises-oil-production-again-with-modest-a-hike-from-november.html"),
+    ("gCaptain / Bloomberg", "JPMorgan and Goldman see Mideast oil flows near pre-war levels - Goldman 23.3 mb/d, JPM crude 17.5 mb/d (98%), products 58%",
+     "https://gcaptain.com/jpmorgan-and-goldman-see-mideast-oil-flows-near-pre-war-levels/"),
+    ("ABC News / AP", "Rubio orders visiting Iranian UN delegation to leave NYC ahead of schedule, 30 Sep 2026",
+     "https://abcnews.com/US/wireStory/rubio-orders-visiting-iranian-delegation-leave-nyc-ahead-136908428"),
+    ("Straits Daily Brief", "Strait of Hormuz status, 2 Oct 2026 - 147 vessels holding position; PortWatch 1 transit on 27 Sep",
+     "https://straits.live/briefs/2026-10-02"),
+    ("radar.ph", "Peso rebounds sharply as PSEi holds near 5,600 - P62.535, PSEi 5,629.03, 2 Oct 2026",
+     "https://radar.ph/peso-rebounds-sharply-as-psei-holds-near-5600-october-2-2026/"),
+    ("Tribune", "BSP sees September inflation rising to within 6.4 to 7.4%, 30 Sep 2026",
+     "https://tribune.net.ph/2026/09/30/bsp-sees-september-inflation-rising-to-within-64-to-74-2"),
+    ("Seoul Economic Daily", "KOSPI reclaims 7,000 as Samsung Electronics rebounds late - 7,003.74, 2 Oct 2026",
+     "https://en.sedaily.com/finance/2026/10/02/kospi-reclaims-7000-as-samsung-electronics-rebounds-late"),
+    ("Xinhua", "Tokyo stocks end lower on profit-taking - Nikkei 68,309.46, 2 Oct 2026",
+     "https://english.news.cn/asiapacific/20261002/15332f987dcb40cba0dc62de276864ef/c.html"),
     ("Federal Reserve", "FOMC statement, 29 July 2026 - target range 3.50-3.75%",
      "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm"),
     ("US BLS", "Consumer Price Index, July 2026 - headline +3.4% y/y, core +2.5% y/y",
@@ -2252,7 +2500,7 @@ SOURCES = [
      "https://www.cnbc.com/2026/09/17/stock-market-today-live-updates.html"),
     ("CNBC", "Oil prices, 18 September 2026 - Brent settled $103.87 (-0.9%), WTI $100.30 (-1.6%); Brent lost nearly 1% on the week, WTI finished flat",
      "https://www.cnbc.com/2026/09/18/oil-prices-today-brent-wti-saudi-arabia-houthi.html"),
-    ("thetrading.tools", "VIX term structure, 11 September 2026 close - VIX 15.84, VIX3M 18.60, IVTS 0.8516. Used ONLY as an independent check on the bootstrapped curve; it is not an input to it",
+    ("thetrading.tools", "VIX term structure - VIX3M 18.58 with a published VIX3M/VIX of 1.13, which reproduces from the 1 Oct 2026 close of 16.39 (via search summary); the earlier pair was 11 Sep, VIX 15.84 / VIX3M 18.60. Used ONLY as an independent check on the bootstrapped curve; it is not an input to it",
      "https://www.thetrading.tools/vix-term-structure"),
     ("J.P. Morgan Asset Management", "2026 Long-Term Capital Market Assumptions - US equity 6.7%, EM equity 7.8%",
      "https://am.jpmorgan.com/us/en/asset-management/adv/about-us/media/press-releases/jp-morgan-releases-2026-long-term-capital-market-assumptions/"),
@@ -2268,7 +2516,7 @@ SOURCES = [
      "https://bworldonline.com/banking-finance/2026/04/29/746186/atram-launches-nasdaq-income-feeder-fund/"),
     ("Philippine Star", "ATRAM launches Nasdaq feeder fund",
      "https://www.philstar.com/business/2026/04/29/2524247/atram-launches-nasdaq-feeder-fund"),
-    ("J.P. Morgan Asset Management", "JEPQ factsheet, 30 June 2026 - top-10 holdings and sector weights used for the stock-level look-through",
+    ("J.P. Morgan Asset Management", "JEPQ factsheet, 31 August 2026 - top-10 holdings used for the stock-level look-through",
      "https://am.jpmorgan.com/content/dam/jpm-am-aem/americas/us/en/literature/fact-sheet/etfs/FS-JEPQ.PDF"),
     ("Fidelity International", "Global Technology Fund W-Acc-GBP (LU1033663649) portfolio - sector composition",
      "https://www.fidelity.co.uk/factsheet-data/factsheet/LU1033663649-fid-funds-global-tech-fd-w-acc-gbp/portfolio"),
@@ -2881,12 +3129,13 @@ def report():
                    _revd >= _asof))
     _q = _dt.date.fromisoformat(VIX_QUOTE_DATE)
     checks.append(("the VIX quote date is a trading weekday", _q.weekday() < 5))
-    # The latest observed spot is a SEPARATE observation from the curve's spot and
-    # must be newer, on a weekday, and not after the as-of date.
+    # The latest observed spot may be the curve's own close (a same-day strip, as
+    # from 2026-10-03) or newer; never OLDER - a curve quoted after the latest close
+    # would be pricing a session the series has not recorded.
     _vl = _dt.date.fromisoformat(MACRO["vix_latest_date"])
     checks.append(("the latest VIX observation is a weekday", _vl.weekday() < 5))
-    checks.append(("the latest VIX observation is newer than the curve quote",
-                   _vl > _q))
+    checks.append(("the latest VIX observation is not older than the curve quote",
+                   _vl >= _q))
     # The spot series may legitimately lag AS_OF when a session's close cannot be
     # confirmed - on 2026-09-16 the 15 Sep print was withheld because three reported
     # figures for it were mutually inconsistent. A lag is acceptable; a SILENT lag is
@@ -2995,6 +3244,15 @@ def report():
     # on the level, at the move's own precision - the VIX rule, now for Brent.
     _bh = MACRO["brent_history"]
     _bprev = {d: v for (_, v), (d, _) in zip(_bh, _bh[1:])}
+    # Across a roll the move is off the NEW contract's own prior settle. A session
+    # whose front month differs from the previous session's MUST have that prior
+    # recorded, and only such a session may - so a roll can neither be chained
+    # through silently nor used to excuse an ordinary day's mismatch.
+    _brolls = {d for (pd, _), (d, _) in zip(_bh, _bh[1:])
+               if front_contract(pd, brent_last_trade) != front_contract(d, brent_last_trade)}
+    checks.append(("every Brent roll in the series has its new contract's prior, and only rolls do",
+                   set(MACRO["brent_roll_priors"]) == _brolls))
+    _bprev.update({d: v for d, v in MACRO["brent_roll_priors"].items() if d in _bprev})
     _bcur = dict(_bh)
     def _bmove_ok(d, pct):
         _dp = 0 if isinstance(pct, int) else len(repr(pct).split(".")[1])
@@ -3244,9 +3502,13 @@ def report():
     checks.append((f"the bootstrapped 3M vol tracks VIX3M at the same spot "
                    f"({VIX3M_MODEL:.2f} vs {MACRO['vix3m']:.2f}, {VIX3M_RESID:+.2f}%)",
                    abs(VIX3M_RESID) <= 10.0))
-    checks.append(("the curve's spot is NOT silently replaced by the latest spot",
+    # Was "spot != latest", which guarded a 4 Sep curve against having its t=0
+    # swapped for a newer close. With a same-day strip the two are EQUAL by right,
+    # so the test is now the one that was always meant: the curve's spot is the
+    # carried close on the strip's own quote date.
+    checks.append(("the curve's spot is the carried close on the strip's own quote date",
                    VOL_KNOTS[0][1] == MACRO["vix_spot"]
-                   and MACRO["vix_spot"] != MACRO["vix_latest"]))
+                   and dict(MACRO["vix_history"]).get(VIX_QUOTE_DATE) == MACRO["vix_spot"]))
     checks.append(("the VIX quote date is not after the model as-of date",
                    _q <= _dt.date.fromisoformat(AS_OF)))
     # The strip has an EXPIRY, and nothing said so. It has not been re-quoted since

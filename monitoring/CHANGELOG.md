@@ -2,6 +2,169 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-03 — Roll to Friday 2 Oct: fresh VIX curve, Brent across its roll, Monetary up and Growth down, and nine errors fixed
+
+The market snapshot rolls to **Friday 2 Oct**; the review date is 3 Oct. The
+allocations do not move:
+
+- B stays **25 / 10 / 60 / 5** (6.78%, −27.2%).
+- C stays **20 / 50 / 25 / 5** (6.52%, −25.8%).
+- The baseline is 6.76%, −30.3%. The gauge is **2.38**.
+
+### 0. The verification harness was lost and rebuilt
+
+The container was reset between reviews and the scratch harness (independent
+audit, requirement validator, dump tool) went with it. The session transcript had
+been compacted, so the sources could not be recovered. All three were rebuilt
+from scratch:
+
+- **The audit** reads only `model/data.json` and refuses to run if the page's
+  embedded payload differs. It re-derives:
+  - every fund net from its components;
+  - the gauge and the regional blends;
+  - the volatility curve, by re-integration;
+  - every chain;
+  - the full enumeration, feasible set, optimum, near-tie band, Portfolio C, the
+    cap counterfactual, all four what-ifs and the efficient frontier.
+- **It traces every number in every note to an input** and lists the pairings,
+  so a coincidental trace is visible.
+- **It fails on any input added since the last commit that nothing reads.**
+- **It was proven first against the last committed version:** 173 checks, 0
+  failures, matching the old audit's clean result.
+- **On the rolled data it runs 182 checks, 0 failures.** Its one warning is a fee
+  component quoted from the fund documents.
+
+The validator passes 17/18 locally; the 18th, the viewport tag, is added only by
+the host.
+
+### 1. Data rolled to 2 Oct, each figure chained to its prior
+
+- **US equities:**
+  - 2 Oct: S&P **7,722.72 (+0.73%)**, Nasdaq **27,190.86 (+1.19%), a record**,
+    Dow **51,176.96 (+0.49%)**.
+  - The three sessions before are in CLAIMS, every one to the cent.
+- **Yields, official closes:**
+  - 29 Sep **5.26**, 30 Sep **5.29**, 1 Oct **5.24**.
+  - 28 Sep's provisional 5.24 is confirmed by FRED.
+  - **2 Oct is withheld**: the candidates are 5.27 and 5.28, and neither is the
+    Treasury's own figure.
+  - **Intraday peak 5.342% on 1 Oct, the highest since April 2002.**
+  - 30-year high 5.632% (30 Sep).
+- **Fed odds:** after September payrolls (+29k against 84k, unemployment 4.2%),
+  FedWatch has October at **17%**, from 73% on 23 Sep, and December at **66.2%**.
+- **Inflation:**
+  - August PCE: headline **3.4%** and core **3.0%**, against 3.7% and 3.3%
+    expected, partly on a BEA methodology change.
+  - Euro-area September flash: **3.8%**, with energy at 18.8%.
+  - BSP projects Philippine September CPI at **6.4–7.4%**.
+- **VIX:**
+  - 28 Sep is **resolved at 16.07**: the next session's −0.2% chains only from it.
+  - Then 16.04, 16.34, 16.39 and **15.31 (−6.59%)** on 2 Oct.
+- **Brent:**
+  - **The front month rolled on 30 Sep**, November to December.
+  - 2 Oct settle **$102.25** (December); +0.11% on the week, like for like.
+  - **WTI** $91.11.
+- **Philippines:** peso **62.535**; PSEi **5,629.03**, a fifth straight loss and a
+  2026 low.
+- **Asia:**
+  - Nikkei **68,309.46**.
+  - KOSPI **7,003.74**; Samsung +2.79%, SK Hynix +3.21%.
+  - Tankan for large manufacturers **+24**.
+- **Hormuz:**
+  - Goldman's own Gulf export series is back at **23.3 mb/d**, against its 23.0
+    pre-war level.
+  - JPMorgan has crude at 98% of pre-war, products at 58%.
+  - The queue is down to **147** vessels.
+
+### 2. Expiring inputs re-anchored before their bounds failed
+
+- **VIX futures curve.**
+  - Re-quoted: Oct 18.65 · Nov 19.21 · Dec 19.35 · Jan 20.38 (2 Oct). The 4 Sep
+    curve was one day from its 30-day stop.
+  - One source, so it was tested against VIX3M, which it never saw: **18.54
+    against 18.58, −0.22%.**
+  - The blend moves 18.88 → **19.40**, so the vol tilts shrink to −0.02pp
+    (Nasdaq Equity Income) and +0.01pp (Global Technology).
+- **Brent y/y base.** Now **$64.53 (3 Oct 2025)**, one day off the anniversary
+  and like for like: December was the front month on both dates.
+- **FedWatch.** Re-sourced from the tool itself (CNBC citing it, 2 Oct).
+- **JEPQ holdings.**
+  - Refreshed to the **31 August** fact sheet; the July sheet had reached 64
+    days against the 60-day bound.
+  - Tesla in, Lam Research out.
+  - The July sector weight is dropped rather than shown beside August rows.
+
+### 3. Scores
+
+- **Monetary policy 1.75 → 2.0**, half of the 23 Sep cut. Both tests the note
+  named came in soft and October odds fell to 17%. Only half comes back because
+  the long end did not follow.
+- **Growth momentum 4.25 → 4.0.** The 23 Sep raise is reversed, as the catalyst
+  list said a weak payrolls print would do.
+- **Held:** the other five drivers and all four regions.
+  - Geopolitics is held because the volume facts improved and the security facts
+    worsened, in the same week.
+
+The Monetary raise moves the rates scale from ×2.5 to ×2.333 and lifts every
+equity fund's net. **Neither portfolio moves.**
+
+### 4. Errors found and fixed
+
+1. **The page printed January as December.** `vix_fut_dec` was the strip's last
+   contract by position, which became January when January joined. The page
+   printed "December future 20.38" and "prices 20.38 by December". It is now
+   selected by label: 19.35.
+2. **Scores shown at the wrong precision.** The Report printed Geopolitics &
+   energy as "scored 1.8", and the driver cards printed research scores of
+   1.75, 2.75 and 8.25 as 1.8, 2.8 and 8.3. Scores now print at the precision
+   they are set.
+3. **A Brent comparison across a contract roll.** "Below the $108.75 high" set
+   December against November's settle high. `brent_off_high_pct` is now derived
+   only within one contract; otherwise the page names the contract the high
+   belongs to.
+4. **A stale superlative typed into the page.** The Report read "its highest
+   since 2007" while the peak moved to a 2002 high. It is now bound to
+   `ust_10y_peak_since`.
+5. **A mislabelled source.** The sources list called the JEPQ sheet "30 June
+   2026" while the look-through used 31 July.
+6. **A typed figure in a scenario.** "Hawkish repricing" said the Fed "hikes into
+   a 4.1% unemployment rate". It is now bound to the input (4.2%).
+7. **A fund note on the previous auction.** The Peso Money Market gross-return
+   note quoted the **21 Sep** auction a week after the 28 Sep rates were rolled
+   in. It traced only because `ph_tbill_prev` held the old rates. It is now
+   bound to the live auction.
+8. **Coincidental traces.** The Europe note's "up from 0.7%" (April's IMF figure)
+   and the Monetary note's "16 of 18" matched unrelated inputs. Both now have
+   their own input: `imf_ea_2026_apr`, and `fed_dots_any_more`, derived.
+9. **CLAIMS rows stale before this roll:**
+   - worst-case peso values: ₱744k / ₱711k against the page's ₱728k / ₱697k;
+   - horizon vols: the old curve's figures;
+   - the energy scale: ×1.333 since the 29 Sep raise made it ×1.25;
+   - the vessel-count drop: "~93%" where PortWatch's 1 against 85 is 99%;
+   - the Asia fund's gap note said only 2023 holdings were reachable, where an
+     aggregator now shows 30 April 2026. That is still past the 60-day bound,
+     so it stays a gap.
+
+New engine checks:
+
+- every Brent roll must carry the new contract's prior, and only rolls may;
+- the curve's spot must be the carried close on its own quote date;
+- the latest VIX close may equal the curve's date, never precede it.
+
+The engine passes 193/193.
+
+### 5. Open
+
+- **Portfolio B's selection rule is still the owner's call.** Four portfolios sit
+  within 0.05pp of its 6.78%. C's rule would give 25 / 15 / 55 / 5 at 6.73% /
+  −26.5%.
+- **Philippine September CPI on 6 Oct.** BSP's range sits above August's 6.1%.
+  The PH region and the Inflation driver are held until the print.
+- **The 2 Oct 10-year** needs a Treasury figure to resolve between 5.27 and 5.28.
+- **The euro-area flash** is final on 16 Oct.
+- **The harness** lives outside the repo by design. It was lost once; committing
+  it is the owner's choice.
+
 ## 2026-09-29 — Roll to Monday 28 Sep, Geopolitics raised on volume, and Portfolio B's optimum found not sharp
 
 The market snapshot rolls to **Monday 28 Sep**; the review date is 29 Sep. The
