@@ -24,8 +24,8 @@ from itertools import product
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-10-02"        # last completed trading session, PH and US both (Friday)
-REVIEW_DATE = "2026-10-03"  # when this review was worked through
+AS_OF = "2026-10-06"        # last completed trading session, PH and US both (Tuesday)
+REVIEW_DATE = "2026-10-07"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -120,6 +120,11 @@ MACRO = {
         ("2026-09-29", 5.26),    # FRED DGS10; CNBC's 5.253 was mid-session
         ("2026-09-30", 5.29),    # FRED DGS10; CNBC's 5.298 was mid-session
         ("2026-10-01", 5.24),    # StreetStats par curve (2-year 4.78, 30-year 5.61)
+        # 2 OCT RESOLVED 2026-10-07 at 5.28: FRED DGS10 has 5.28, and Monday's 5.31
+        # was reported "+3 basis points", which only 5.28 gives. The rival 5.27 was
+        # Trading Economics' market quote. The dispute record is kept below.
+        ("2026-10-02", 5.28),
+        ("2026-10-05", 5.31),    # FRED DGS10; par curve 2-year 4.84, 30-year 5.66
     ],
     # 23 Sep is the 5.104% market-close print (CNBC, Wolf Street: "+13.7bp to
     # 5.104") rounded to 2dp, NOT a Treasury par-curve / H.15 figure: neither was
@@ -159,7 +164,13 @@ MACRO = {
     "ust_10y_provisional": [],
     "ust_10y_disputed_23sep": [5.10, 5.11, 5.12],
     "ust_10y_market_print": 5.104,   # CNBC / Wolf Street, 23 Sep, 3dp market basis
-    "ust_10y_withheld": ["2026-10-02"],
+    # 6 OCT NOT CARRIED: only market-basis quotes were found - Trading Economics
+    # and the CBOE ^TNX at 5.27, CNBC "down more than 2 basis points at 5.286%"
+    # mid-session - and no Treasury or H.15 figure. Not a dispute, an absence, so
+    # it is neither withheld nor provisional: the series stops at the last close
+    # that has an official source.
+    "ust_10y_withheld": [],
+    "ust_10y_market_6oct": 5.27,
     "ust_10y_disputed_2oct": [5.27, 5.28],
     "ust_10y_market_2oct": 5.281,    # CNBC, 2 Oct, 3dp market basis - not a close
     # The three figures that made 18 Sep look disputed, kept as the record of a
@@ -181,11 +192,13 @@ MACRO = {
     # highest level going back to April 3, 2002, before easing 5 basis points to
     # 5.243%". The superlative changed with it - 2002, not 2007 - and the prose
     # says so. The 28 Sep floor of 5.25 is kept as the prior record.
-    "ust_10y_peak": 5.342, "ust_10y_peak_date": "2026-10-01",
+    # MOVED AGAIN on 5 Oct: "jumped to 5.349%, its highest level since April 3,
+    # 2002" (CNBC), after the ISM services report; 1 Oct's 5.342% is the prior.
+    "ust_10y_peak": 5.349, "ust_10y_peak_date": "2026-10-05",
     # The superlative is DATA, not markup: the Report typed "its highest since 2007"
     # beside a field that moved past the 2007 peak on 1 Oct.
     "ust_10y_peak_since": "April 2002",
-    "ust_10y_peak_prev": 5.25, "ust_10y_peak_prev_date": "2026-09-28",
+    "ust_10y_peak_prev": 5.342, "ust_10y_peak_prev_date": "2026-10-01",
     # The 2-year had NO date field and was 12 days stale - 4.63 from 11 Sep, when
     # the actual level had risen 11bp - because the lag check added on 21 Sep
     # listed the 10-year and 30-year and missed it. These two are CNBC session
@@ -216,9 +229,14 @@ MACRO = {
     # 4.839%", 30-year "added 2 basis points at 5.629%". The 30-year's high is the
     # 30 Sep reading of 5.632% (CNBC), "around its highest level since 2002"; on
     # 29 Sep it had "surpassed 5.61%" intraday (5.623% at one point).
-    "ust_2y": 4.839, "ust_2y_date": "2026-10-02",
-    "ust_30y": 5.629, "ust_30y_date": "2026-10-02",
-    "ust_30y_high": 5.632, "ust_30y_high_date": "2026-09-30",  # "since 2002"
+    # 6 Oct (CNBC, "Treasury yields slide as surge to multiyear highs cools"):
+    # 2-year "down more than 3 basis points at 4.80%", 30-year "down less than 1
+    # basis point at 5.659%". The 30-year's HIGH moved on 5 Oct: it "rose at least
+    # 7 basis points to 5.7%", a level not seen since late May 2002 (Bloomberg),
+    # 5.69% in another report - carried at the 2dp figure, 5.69.
+    "ust_2y": 4.80, "ust_2y_date": "2026-10-06",
+    "ust_30y": 5.659, "ust_30y_date": "2026-10-06",
+    "ust_30y_high": 5.69, "ust_30y_high_date": "2026-10-05",  # "since late May 2002"
     "ust_curve_basis": "mid-session readings, not closes",
 
     # The September meeting is DECIDED, so these now describe the NEXT move rather
@@ -248,13 +266,16 @@ MACRO = {
     # range at its low end. December: 66.2% for a hike by then (FedWatch, 2 Oct).
     "fed_hike_odds_oct_secondary_lo": 64.2, "fed_hike_odds_oct_secondary_hi": 72.3,
     "fed_hike_odds_oct_secondary_date": "2026-09-28",
-    "fed_hike_odds_oct": 17.0,   # CME FedWatch, after September payrolls
-    "fed_hike_odds_oct_date": "2026-10-02",
-    "fed_hike_odds_oct_prev": 73.0, "fed_hike_odds_oct_prev_date": "2026-09-23",
+    # 6 OCT (Benzinga citing CME FedWatch): October 21.6%, December 86.2% - the
+    # December meeting firmed back toward where it stood before the payrolls.
+    "fed_hike_odds_oct": 21.6,
+    "fed_hike_odds_oct_date": "2026-10-06",
+    "fed_hike_odds_oct_prev": 17.0, "fed_hike_odds_oct_prev_date": "2026-10-02",
+    "fed_hike_odds_oct_hi": 73.0, "fed_hike_odds_oct_hi_date": "2026-09-23",
     "fed_hike_odds_oct_first": 50.9, "fed_hike_odds_oct_first_date": "2026-09-17",
-    "fed_hike_odds_dec": 66.2,   # cumulative, a hike by December (FedWatch)
-    "fed_hike_odds_dec_date": "2026-10-02",
-    "fed_hike_odds_dec_prev": 88.5, "fed_hike_odds_dec_prev_date": "2026-09-17",
+    "fed_hike_odds_dec": 86.2,   # a hike by the 9 Dec meeting (FedWatch)
+    "fed_hike_odds_dec_date": "2026-10-06",
+    "fed_hike_odds_dec_prev": 66.2, "fed_hike_odds_dec_prev_date": "2026-10-02",
     # A settled reading of a DECIDED meeting. Kept for the record, and registered
     # in RESOLVED_ODDS below so prose quoting it has to say which meeting and when:
     # the US regional note said "the hike is 92.0% priced" in the present tense for
@@ -270,6 +291,11 @@ MACRO = {
     "us_unemployment_prev": 4.1,
     "us_conf_board_sep": 81.9,   # Conference Board, lowest since 2014 (29 Sep)
     "us_ism_mfg_sep": 54.5, "us_ism_mfg_consensus": 54.9,   # 1 Oct
+    # ISM SERVICES, September (5 Oct): 54.9 from 55.4, a slight miss; prices paid
+    # 74.0 from 72.6, employment 50.1. Consensus is reported as 55.0 and 55.2 in
+    # different places, so no consensus is carried.
+    "us_ism_svc_sep": 54.9, "us_ism_svc_aug": 55.4,
+    "us_ism_svc_prices_sep": 74.0, "us_ism_svc_prices_aug": 72.6,
     "us_payrolls_aug": 162_000, "us_payrolls_aug_consensus": 53_000,
     # REVISED with the August report (4 Sep): July -23k -> +21k, June +20k -> +31k.
     # This model carried July's FIRST print for three weeks after the revision.
@@ -337,6 +363,15 @@ MACRO = {
     # - weather-hit food, pump prices and the weaker peso. A FORECAST; the PSA
     # print is due 6 Oct, and nothing is scored on it before then.
     "bsp_sep_cpi_lo": 6.4, "bsp_sep_cpi_hi": 7.4,
+    # PH SEPTEMBER CPI (PSA, 6 Oct): 7.2%, inside BSP's range and above a 6.7%
+    # poll median - matching April's 7.2%, the three-year high. Core 4.7% from
+    # 4.1%, the highest since October 2023. Food 6.7% from 4.6%, transport 14.6%
+    # from 13.5%, housing and utilities 8.4% from 7.9%; the bottom 30% of
+    # households saw 9.0%.
+    "ph_cpi_sep": 7.2, "ph_cpi_sep_poll": 6.7, "ph_cpi_apr": 7.2,
+    "ph_core_cpi_sep": 4.7, "ph_core_cpi_aug": 4.1,
+    "ph_food_cpi_sep": 6.7, "ph_transport_cpi_sep": 14.6, "ph_transport_cpi_aug": 13.5,
+    "ph_cpi_bottom30_sep": 9.0, "ph_cpi_bottom_hh_pct": 30,   # PSA's bottom-30% series
     "bsp_infl_2026": 6.1,
     "bsp_infl_2027": 5.4,
     # The peso came OFF its record and this model did not notice for five days.
@@ -368,11 +403,15 @@ MACRO = {
     # 29 Sep 62.565 (+2 centavos), 30 Sep 62.64 (+7.5), 1 Oct 62.775 (+13.5, a
     # fourth straight loss), 2 Oct 62.535 (-24, "snapping its four-session losing
     # streak") - radar.ph each day; every step chains to the half-centavo.
-    "usdphp": 62.535,          # 2 Oct
-    "usdphp_date": "2026-10-02",
-    "usdphp_prev": 62.775,     # 1 Oct close
-    "usdphp_prev_date": "2026-10-01",
-    "usdphp_chg": -0.240,      # as reported: "strengthened by 24 centavos"
+    # 5 Oct 62.621 (+8.6 centavos, radar.ph); 6 Oct "slid by 15 centavos to end at
+    # P62.771 ... from its P62.621 finish on Monday" (BusinessWorld, BAP data).
+    # One 6 Oct report repeated Monday's 62.621 as Tuesday's close; BusinessWorld's
+    # chain settles it.
+    "usdphp": 62.771,          # 6 Oct
+    "usdphp_date": "2026-10-06",
+    "usdphp_prev": 62.621,     # 5 Oct close
+    "usdphp_prev_date": "2026-10-05",
+    "usdphp_chg": 0.150,       # as reported: "slid by 15 centavos"
     "usdphp_record": 62.86,        # 14 Sep close - the weakest close on record
     "usdphp_record_date": "2026-09-14",
     "usdphp_record_intraday": 62.925,  # 15 Sep intraday - weakest print on record
@@ -390,10 +429,12 @@ MACRO = {
     # 28 Sep: -37.10 (-0.64%) to 5788.87 (Tribune); 5825.97 - 37.10 = 5788.87.
     # 29 Sep 5738.40 (-50.47), 30 Sep 5679.48 (-58.92), 1 Oct 5629.47 (-50.01, a
     # 2026 low), 2 Oct 5629.03 (-0.44, -0.01%), a fifth straight loss (radar.ph).
-    "psei": 5629.03, "psei_chg_pts": -0.44, "psei_chg_pct": -0.01,
-    "psei_date": "2026-10-02",
-    "psei_prev": 5629.47,
-    "psei_week_ago": 5825.97,
+    # 5 Oct +114.18 (+2.03%) to 5743.21, snapping a five-session slide; 6 Oct
+    # -66.09 (-1.15%) to 5677.12 as September inflation surprised (Inquirer).
+    "psei": 5677.12, "psei_chg_pts": -66.09, "psei_chg_pct": -1.15,
+    "psei_date": "2026-10-06",
+    "psei_prev": 5743.21,
+    "psei_2026_low": 5629.03, "psei_2026_low_date": "2026-10-02",
     # PH T-BILLS, 21 Sep auction (BusinessWorld / BusinessMirror). CORRECTED
     # 2026-09-24: 5.138 / 5.517 / 5.717 had been here since the build on 2 Sep,
     # never refreshed, and since 13 Sep the look-through stamped them with the
@@ -403,10 +444,13 @@ MACRO = {
     # 28 Sep auction (BusinessMirror, Context.ph): 5.535 (+10.4bp), 5.862 (+4.1bp),
     # 6.115 (+7.2bp) - "mostly slightly higher for the sixth straight week"; every
     # move chains off the 21 Sep rates below.
-    "ph_tbill_91": 5.535, "ph_tbill_182": 5.862, "ph_tbill_364": 6.115,
-    "ph_tbill_prev": [5.431, 5.821, 6.043],       # 21 Sep auction
-    "ph_tbill_chg_bp": [10.4, 4.1, 7.2],          # as reported
-    "ph_tbill_date": "2026-09-28",
+    # 5 Oct auction (BusinessMirror): 5.667 (+13.2bp), 5.971 (+10.9bp), 6.214
+    # (+9.9bp) - "investors sought higher returns on inflation bet", a day before
+    # the CPI print. Seventh straight weekly rise in the 364-day.
+    "ph_tbill_91": 5.667, "ph_tbill_182": 5.971, "ph_tbill_364": 6.214,
+    "ph_tbill_prev": [5.535, 5.862, 6.115],       # 28 Sep auction
+    "ph_tbill_chg_bp": [13.2, 10.9, 9.9],         # as reported
+    "ph_tbill_date": "2026-10-05",
     "ph_tbill_cadence_d": 7,                      # BTr auctions T-bills weekly
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
@@ -463,6 +507,14 @@ MACRO = {
         # 2 Oct: "settled at US$102.25, down just US$0.06, or 0.06%" (EnergyNow,
         # Reuters); Reuters' like-for-like front-month weekly change was +0.11%.
         ("2026-10-02", 102.25),
+        # 5 Oct: "Brent for December settlement dipped 1.9% to settle at $100.32" as
+        # Saudi Aramco cut its Asian price to a six-year low (Bloomberg).
+        ("2026-10-05", 100.32),
+        # 6 Oct: RECOVERED, not reported. No settlement story was found; one
+        # summary gives "front-month settle 100.58", and both 7 Oct quotes measure
+        # their moves from it (101.50 "+0.92"; 101.51 "+0.93"). Carried on that
+        # corroboration - see brent_recovered - with no reported move.
+        ("2026-10-06", 100.58),
     ],
     # ACROSS A ROLL the reported move is off the NEW contract's prior settle, which
     # is not in the front-month series. Carried here, dated by the session it is the
@@ -473,6 +525,10 @@ MACRO = {
     # Reuters' like-for-like front-month weekly change to 2 Oct (December vs
     # December), the honest week-on-week figure across the roll.
     "brent_week_lfl_pct": 0.11,
+    # A settle with no reported move of its own, recovered from the NEXT session's
+    # quotes: each [level, points change] must land on it. The 21 Sep settle was
+    # recovered the same way from the 22nd's move; this makes the method a check.
+    "brent_recovered": {"2026-10-06": [[101.50, 0.92], [101.51, 0.93]]},
     # EVERY SESSION'S REPORTED MOVE, like the VIX's. A single brent_chg_reported
     # field held only the latest, so the moment it rolled, the notes' historical
     # moves (+3.4% on the 24th, -2.14% on the 25th) lost their input and would have
@@ -481,7 +537,8 @@ MACRO = {
     "brent_reported_moves": {"2026-09-23": 3.86, "2026-09-24": 3.4,
                              "2026-09-25": -2.14, "2026-09-28": 0.92,
                              "2026-09-29": -2.6, "2026-09-30": 0.9,
-                             "2026-10-01": 4.37, "2026-10-02": -0.06},
+                             "2026-10-01": 4.37, "2026-10-02": -0.06,
+                             "2026-10-05": -1.9},
     # 28 Sep: $108.83 intraday on the rejection - ABOVE the $108.75 SETTLE high of
     # 15 Sep (verified 2026-09-29: "Brent finished up $3.07 at $108.75 ... highest
     # close since May 19"), so the settle high stands and this is an intraday one.
@@ -533,7 +590,7 @@ MACRO = {
     # has Brent "closed up 42 cents, or 0.7%, at $64.53" on Friday 3 Oct 2025 - one
     # day off the anniversary of 2 Oct, and LIKE FOR LIKE: on both dates the front
     # month was the December contract (November 2025 also expired on 30 Sep).
-    "brent_yr_ago": 64.53,
+    "brent_yr_ago": 64.53,   # three days off the 6 Oct anniversary - inside the week
     "brent_yr_ago_date": "2025-10-03",
     # HORMUZ. Two different things get measured here and they do not agree, so both
     # are carried. VESSEL COUNTS differ ~5x across sources because they count
@@ -666,6 +723,20 @@ MACRO = {
     # (bids due 6 Oct; exchange, not sale), leaving the reserve under 284 million
     # barrels, the lowest since 1982.
     "spr_final_tranche_mb": 40, "spr_level_mb": 284,
+    # 5-6 OCT. Saudi Aramco cut November Arab Light to Asia to $5 BELOW the
+    # regional benchmark, from $2 below - a six-year low, where traders expected a
+    # rise: producers racing for market share as Hormuz flows return. The energy
+    # minister put East-West pipeline flows at 5.8 mb/d (6 Oct), from ~3.5 on
+    # 28 Sep. The G7 plans a 100-million-barrel crude-and-diesel release. And
+    # against all of it: UKMTO logged nine attacks in the Strait in October by
+    # the 6th - half September's whole-month total - and on 5 Oct the IRGC
+    # turned a tanker back off Khasab under threat of attack. Qatar is working
+    # with China to restart talks; Iran's president called talks with the US
+    # "meaningless".
+    "saudi_osp_asia_nov": -5.0, "saudi_osp_asia_oct": -2.0,
+    "petroline_flow_6oct": 5.8,
+    "g7_release_mb": 100,
+    "ukmto_attacks_oct": 9, "ukmto_attacks_sep": 18,
     # THE QUEUE, on a stated basis and as a SERIES. 436 was a 30 August reading on
     # an undisclosed basis and sat here for three weeks. These three are one
     # source, one methodology, one daily snapshot time: AIS-visible vessels holding
@@ -679,7 +750,7 @@ MACRO = {
     "hormuz_queue": [("2026-09-18", 369), ("2026-09-19", 357), ("2026-09-20", 376),
                      ("2026-09-21", 401), ("2026-09-22", 443), ("2026-09-25", 407),
                      ("2026-09-26", 422), ("2026-09-27", 262), ("2026-09-28", 233),
-                     ("2026-10-02", 147)],   # 02:50 UTC (a 1-2 Oct brief: 189 at 14:50)
+                     ("2026-10-02", 147), ("2026-10-06", 242)],   # 02:50 UTC each
     # That reading is now OUT OF DATE and was carried too long: through 2026-09-18
     # this comment still said the VIX had "fallen BACK toward the 2026 low", which
     # widened the gap to the futures curve. It did the opposite. Spot ran to 17.20
@@ -776,6 +847,8 @@ MACRO = {
         # 2 Oct: "down 6.59% (-1.08)" to 15.31 - 16.39 - 1.08 = 15.31. A substack
         # brief printed -6.53%, which does not reproduce from 16.39 and is not carried.
         ("2026-10-02", 15.31),
+        ("2026-10-05", 15.52),   # +1.4% (Zacks)
+        ("2026-10-06", 15.01),   # -0.51 / -3.29% (Zacks)
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -790,6 +863,7 @@ MACRO = {
         "2026-09-23": 7, "2026-09-24": 3.23, "2026-09-25": -5.11,
         "2026-09-28": 8.07, "2026-09-29": -0.2, "2026-09-30": 1.9,
         "2026-10-01": 0.3, "2026-10-02": -6.59,
+        "2026-10-05": 1.4, "2026-10-06": -3.29,
     },
     # 28 Sep WITHHELD: two reports, 16.07 ("+1.20, +8.07%") and 16.30 ("+1.43,
     # +9.62%), and BOTH reproduce from 14.87 - the chain cannot choose, and one
@@ -836,16 +910,20 @@ MACRO = {
     # an October hike. The S&P and Dow chain to the cent; the Nasdaq's points land
     # a cent off (26871.60 + 319.27 = 27190.87), the prior close's rounding again.
     # 24/7 Wall St printed the S&P at 7722.57; it does not reproduce AP's points.
-    "equity_date": "2026-10-02",
-    "spx_close": 7722.72, "spx_chg_pct": 0.73,
-    "nasdaq_close": 27190.86, "nasdaq_chg_pct": 1.19,
-    "dow_close": 51176.96, "dow_chg_pct": 0.49, "dow_chg_pts": 250.40,
-    "spx_week_ago": 7743.41,
+    # 5 Oct (AP): S&P +51.23 to 7773.95, its first close above 7,800 intraday
+    # aside; Nasdaq +286.45 to a record 27477.31; Dow +90.94 to 51267.90.
+    # 6 Oct (AP, CNBC): S&P +44.98 (+0.58%) to 7818.93, a RECORD close above its
+    # August high; Nasdaq +122.48 (+0.45%) to a record 27599.79; Dow +253.38
+    # (+0.49%) to 51521.28. Every one chains to the cent.
+    "equity_date": "2026-10-06",
+    "spx_close": 7818.93, "spx_chg_pct": 0.58,
+    "nasdaq_close": 27599.79, "nasdaq_chg_pct": 0.45,
+    "dow_close": 51521.28, "dow_chg_pct": 0.49, "dow_chg_pts": 253.38,
     # Previous closes, published so the CHAIN is checkable in code rather than
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7666.45, "nasdaq_prev": 26871.60, "dow_prev": 50926.56,
+    "spx_prev": 7773.95, "nasdaq_prev": 27477.31, "dow_prev": 51267.90,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -863,9 +941,12 @@ MACRO = {
     # 92.87; 2 Oct "US$91.11 ... falling US$1.76, or 1.90%, from Thursday's $92.87"
     # as DOE offered the SPR's last 40m barrels. November is still the front month
     # (last trade 20 Oct), so every step is one contract.
-    "wti_settle": 91.11, "wti_chg_pct": -1.90,    # 2 Oct, November contract
-    "wti_date": "2026-10-02", "wti_contract": "2026-11",
-    "wti_prev": 92.87, "wti_prev_date": "2026-10-01",
+    # 5 Oct: "Monday's settlement of US$89.43" (EnergyNow), "fell 1.8%"
+    # (Bloomberg); 89.43 / 91.11 = -1.84%. 6 Oct is NOT carried: two 7 Oct quotes
+    # imply 89.44 and 89.43 - flat on the day either way, but a cent apart.
+    "wti_settle": 89.43, "wti_chg_pct": -1.84,    # 5 Oct, November contract
+    "wti_date": "2026-10-05", "wti_contract": "2026-11",
+    "wti_prev": 91.11, "wti_prev_date": "2026-10-02",
     "wti_expired_contract": "2026-10", "wti_expired_settle": 94.59,
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
@@ -968,9 +1049,11 @@ MACRO = {
     # 2 Oct: -647.26 (-0.94%) to 68,309.46 on profit-taking before the US payrolls
     # (Xinhua/Kyodo). 66,753.72 + 2,203.00 = 68,956.72 and 68,956.72 - 647.26 =
     # 68,309.46. A rival 66,866.47 for 30 Sep does not reproduce 1 Oct's points.
-    "nikkei_latest": 68309.46, "nikkei_latest_chg_pct": -0.94,
-    "nikkei_latest_date": "2026-10-02",
-    "nikkei_latest_prev": 68956.72,
+    # 5 Oct +1,637.40 (+2.40%) to 69,946.86; 6 Oct +737.12 (+1.05%) to 70,683.98,
+    # the first close above 70,000 since 1 July (Kyodo / Edge). Both chain.
+    "nikkei_latest": 70683.98, "nikkei_latest_chg_pct": 1.05,
+    "nikkei_latest_date": "2026-10-06",
+    "nikkei_latest_prev": 69946.86,
     "nikkei_latest_intraday_high": 67035,     # 28 Sep - a record of that session
     # KOREA REOPENED from Chuseok on 28 Sep: KOSPI -191.18 (-2.70%) to 6,889.74 from
     # 7,080.92 on the 23rd; Samsung Electronics -5.43%, SK Hynix -5.05%; foreigners
@@ -978,10 +1061,14 @@ MACRO = {
     # 29 Sep -0.27% to 6,870.81. 2 Oct: +32.39 (+0.46%) to 7,003.74, back above
     # 7,000 as Samsung (+2.79%) and SK Hynix (+3.21%) rebounded late on Micron's
     # results (Seoul Economic Daily, SBS).
-    "kospi_latest": 7003.74, "kospi_latest_chg_pts": 32.39, "kospi_latest_chg_pct": 0.46,
-    "kospi_latest_date": "2026-10-02", "kospi_latest_prev": 6971.35,
+    # Korea shut 5 Oct (National Foundation Day, observed). 6 Oct: -62.35 (-0.89%)
+    # to 6,941.39 as foreigners sold chips ahead of earnings; Samsung -1.45%, SK
+    # Hynix -3.69% (Seoul Economic Daily).
+    "kospi_latest": 6941.39, "kospi_latest_chg_pts": -62.35, "kospi_latest_chg_pct": -0.89,
+    "kospi_latest_date": "2026-10-06", "kospi_latest_prev": 7003.74,
     "samsung_chg_28sep": -5.43, "hynix_chg_28sep": -5.05,
     "samsung_chg_2oct": 2.79, "hynix_chg_2oct": 3.21,
+    "samsung_chg_6oct": -1.45, "hynix_chg_6oct": -3.69,
     "ltcma_us_eq": 6.7,
     "ndx_growth_premium": 1.3,     # NDX total return over US large cap in the build-up
     "qiap_capture": 78,            # covered-call upside capture, % of the NDX
@@ -1157,7 +1244,9 @@ _rolls_in = [(d1, v0) for (d0, v0), (d1, _) in zip(MACRO["brent_history"], MACRO
 MACRO["brent_roll_gap"] = (round(_rolls_in[-1][1] - MACRO["brent_roll_priors"][_rolls_in[-1][0]], 2)
                            if _rolls_in else None)
 MACRO["brent_chg_pct"] = round((MACRO["brent"] / MACRO["brent_prev"] - 1) * 100, 2)
-MACRO["brent_chg_reported"] = MACRO["brent_reported_moves"][MACRO["brent_date"]]
+# None when the latest settle was RECOVERED rather than reported (see
+# brent_recovered); the checks then require the recovery instead.
+MACRO["brent_chg_reported"] = MACRO["brent_reported_moves"].get(MACRO["brent_date"])
 MACRO["brent_session_high_date"], MACRO["brent_session_high"] = max(
     MACRO["brent_session_highs"].items())
 # The peso's year-to-date loss of VALUE, which is what a peso holder experiences:
@@ -1215,28 +1304,27 @@ POSTPONED = [("Iran-GCC talks on the Strait, in Oman",
               "restored the energy driver.")]
 
 CATALYSTS = [
-    ("2026-10-06", "Philippine September CPI",
-     "The test the peso sleeve's real carry now faces from the wrong side. August "
-     "was 6.1%, a fourth slowdown in a row; BSP's own month-ahead range for "
-     "September is 6.4% to 7.4%, the top the highest since March 2023, on weather-"
-     "hit food, pump prices and the weaker peso. Rice was already running at 19.4%."),
+    ("2026-10-07", "FOMC September minutes",
+     "The first read on how many of the 16 of 18 dot-plot participants who saw one "
+     "more hike want it soon. October is priced at 21.6% and a December hike at "
+     "86.2% (FedWatch, 6 Oct); the minutes decide which of those moves."),
     ("2026-10-16", "Euro-area September HICP, final",
      "The flash said 3.8%, from 3.2%, with energy at 18.8% - above the 3.6% "
      "expected. A final at or above it tests the ECB's word that its cycle ended "
      "at 2.50% on 10 Sep, and the Europe ranking with it."),
     ("2026-10-22", "BSP policy decision",
-     "BSP is at 5.00% after three hikes, the last on 27 Aug. A fourth lifts the peso "
-     "sleeve's carry further; a pause into a 6.4%-7.4% September keeps its real "
-     "yield below zero."),
+     "BSP is at 5.00% after three hikes, the last on 27 Aug. September inflation "
+     "printed 7.2%, core 4.7%: a hike lifts the peso sleeve's carry toward a "
+     "positive real yield, a pause leaves it deeper below zero."),
     ("2026-10-28", "FOMC decision",
-     "After September's payrolls FedWatch put October at 17%, from 73% on 23 Sep; "
-     "a hike by December still priced at 66.2% on 2 Oct. The dot-plot median has one more "
-     "this year, so the question has moved from 'how soon' back to 'whether'."),
+     "FedWatch has October at 21.6% and a hike by December at 86.2% (6 Oct), "
+     "after 29k September payrolls took October off the table on 2 Oct. The "
+     "dot-plot median has one more this year, so the question is when."),
     ("2026-11-03", "US midterm elections",
      "The date both sides of the Hormuz talks are working to. Iranian officials "
-     "have said a deal is unlikely before it; the President has called renewed "
-     "strikes after it 'possible'. The stress table's full closure is the state "
-     "this date can bring back."),
+     "have said a deal is unlikely before it; the President says the war will end "
+     "around it, and has called renewed strikes after it 'possible'. The stress "
+     "table's full closure is the state this date can bring back."),
 ]
 
 # ----------------------------------------------------------------------------
@@ -1381,6 +1469,7 @@ VOL_RAMP_REF = "long-run"
 VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122}
 
 
+
 def to5(v10):
     """Linear rescale of a 1-10 research score onto 1-5. 1->1, 5.5->3.0, 10->5."""
     return round(1 + (v10 - 1) * 4 / 9, 2)
@@ -1400,22 +1489,171 @@ def rnd(x, ndigits=2):
 
 NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research scale)
 
+# Each equity market's volatility relative to the S&P, used twice: by the fund
+# volatilities below (where each sleeve then applies its own structure factor) and
+# by the trend channel, which measures the MARKET. All three are assumptions, and
+# CLAIMS.md records them as estimates.
+NDX_SP_BETA = 1.22     # Nasdaq-100
+ASIA_SP_BETA = 1.05    # Asia Pacific ex-Japan / Asia ex-Japan
+TECH_SP_BETA = 1.30    # concentrated global technology
+
+# ----------------------------------------------------------------------------
+# 3c. MARKET TREND - 3/6/12-month momentum, the optimiser's trend channel
+#     Added 2026-10-07 at the portfolio owner's instruction: the optimised
+#     portfolios are to be built on market trend analysis as well as macro
+#     sentiment, volatility and the regional rankings, at 3, 6 and 12 months
+#     with the 10-year horizon.
+#
+#     WHAT IS MEASURED. Each equity sleeve's MARKET - the index its target fund
+#     is run against, or the closest liquid proxy for it - over the three
+#     trailing windows ending at the last completed month-end. Not the feeder's
+#     own NAV: the question is which way the market is moving, and a manager's
+#     stock selection is not a market trend.
+#
+#     HOW IT IS SCORED. A raw return means nothing until it is set against what
+#     this model already expects of that market and how much the market moves.
+#     Each window's return becomes a z-score against the sleeve's own long-run
+#     drift and volatility:
+#         z_h = (ln(1 + R_h) - h * ln(1 + mu)) / (sigma * sqrt(h))
+#     so a +28% half-year counts for less in a 24%-vol market than in a 20%-vol
+#     one, and a market that simply did what its long-run return says scores
+#     neutral. It is mapped onto the same 1-5 scale as every other score here:
+#     3 + z, clipped to [1, 5], so two standard deviations either way hits the
+#     bound.
+#
+#     THE 10-YEAR ANCHOR IS NEUTRAL, AND THAT IS THE EVIDENCE, NOT A DEFAULT.
+#     Time-series momentum - a market's own trailing return predicting its next
+#     months - is one of the best-documented effects in finance, and it fades
+#     within about a year and partly reverses after (Moskowitz, Ooi and Pedersen,
+#     2012). Over ten years a trend carries no signal this model can defend, so
+#     the 10Y score is held at 3.0 and the blend uses the same HZ_W weights as
+#     the regional rankings: the three trend horizons get half the vote between
+#     them, the neutral anchor the other half.
+#
+#     HOW MUCH IT IS WORTH. TREND_TILT_PER_PT is an ASSUMPTION, recorded as one.
+#     The highest blend the scheme can produce is 4.0 (all three short horizons
+#     at the 5.0 bound, the anchor at 3.0). That is taken as worth about +3pp of
+#     return over the year momentum lasts - 0.30pp a year across a ten-year
+#     mandate - so 0.30 per point. Under half the regional coefficient on
+#     purpose: it is a one-year effect being priced into a ten-year forecast.
+#     The "trend_off" what-if re-runs the optimiser without it, so its effect on
+#     the allocation is published rather than asserted.
+#
+#     WHAT IT OVERLAPS. The regional rankings include a Valuation driver, and a
+#     rally makes a market dearer: that lowers the regional score while it raises
+#     this one. The two are allowed to pull against each other - that is the
+#     value-against-momentum tension, not a double count.
+#
+#     The peso sleeve has no trend tilt. Its "trend" is the rate path, which the
+#     rates channel already carries.
+# ----------------------------------------------------------------------------
+TREND_END = "2026-09-30"          # the last completed month-end before AS_OF
+TREND_TILT_PER_PT = 0.30
+TREND_ANCHOR = NEUTRAL_5          # the 10Y trend score: neutral, by the evidence above
+TREND_Q = ("2025Q4", "2026Q1", "2026Q2", "2026Q3")      # oldest first
+TREND_H = (("3M", 1, 0.25), ("6M", 2, 0.50), ("12M", 4, 1.00))   # label, quarters, years
+TREND_INPUTS = {
+    "ATRQIAP": {
+        "market": "Nasdaq-100", "proxy": "Invesco QQQ, total return",
+        "mu": MACRO["ltcma_us_eq"] + MACRO["ndx_growth_premium"], "beta": NDX_SP_BETA,
+        # Monthly total returns, compounded to quarters. They reproduce the index
+        # provider's own quarters to within a basis point (the factsheet is a
+        # PRICE index, QQQ a total return net of its fee), and the 2025 months
+        # compound to the 20.77% calendar-year return published beside them.
+        "monthly": {"2025Q4": [4.78, -1.56, -0.67], "2026Q1": [1.23, -2.34, -4.84],
+                    "2026Q2": [15.69, 10.57, -0.15], "2026Q3": [-6.57, 4.18, 3.32]},
+        "cross_check": {"2026Q2": 27.74, "2026Q3": 0.58},
+        "source": "PortfoliosLab, QQQ monthly total returns; Nasdaq-100 factsheet "
+                  "(30 Sep 2026) for the Q2 and Q3 cross-check",
+    },
+    "ATRASEQ": {
+        "market": "MSCI AC Asia ex Japan",
+        "proxy": "the index in USD; the target fund's Asia Pacific ex-Japan benchmark also "
+                 "holds Australia, which no monthly series reachable here isolates",
+        "mu": MACRO["ltcma_em_eq"] + MACRO["asia_rerating"], "beta": ASIA_SP_BETA,
+        # Quarters where a quarterly review states one; Q3 from its months, which
+        # Schroders' Q3 review describes as "a slight decline" - what they compound
+        # to. The September month is from a single source; its sensitivity is
+        # measured below (TREND_ALT) rather than assumed small.
+        "quarterly": {"2025Q4": 4.3, "2026Q1": -1.13, "2026Q2": 27.7},
+        "monthly": {"2026Q3": [-3.18, 3.3, -0.25]},
+        "cross_check": {},
+        "source": "Schroders quarterly markets reviews (Q4 2025 +4.3%, Q2 2026 +27.7%) "
+                  "and monthly reviews (Aug 2026 +3.3%); Shikhara CIO's Desk (Q1 2026 "
+                  "-1.13%, Jul 2026 -3.18%); MSCI index factsheet (Sep 2026 -0.25%)",
+    },
+    "ATRGTEC": {
+        "market": "Global technology, S&P Global 1200 IT",
+        "proxy": "iShares Global Tech ETF (IXN), total return",
+        "mu": MACRO["ltcma_us_eq"] + MACRO["tech_growth_premium"] - MACRO["tech_derating"],
+        "beta": TECH_SP_BETA,
+        # The target fund's benchmark is MSCI ACWI IT; IXN tracks the S&P Global
+        # 1200 IT, the closest proxy with a published monthly series. The Jan-Aug
+        # 2026 months compound to the 28.22% year-to-date published with them.
+        "monthly": {"2025Q4": [7.11, -5.47, 1.39], "2026Q1": [2.03, -0.35, -6.36],
+                    "2026Q2": [20.29, 19.58, 0.60], "2026Q3": [-8.17, 1.35, 4.4]},
+        "cross_check": {},
+        "source": "PortfoliosLab, IXN monthly total returns (September 2026 from a "
+                  "second performance tracker)",
+    },
+}
+# The one input sources disagree on materially: AAXJ, the ETF on the same Asia
+# index, published 25.73% for the quarter Schroders puts at 27.7%. The trend is
+# re-run on the lower figure and the allocation checked against it.
+TREND_ALT = {"ATRASEQ": {"2026Q2": 25.73}}
+
+def _compound(xs):
+    p = 1.0
+    for x in xs:
+        p *= 1 + x / 100
+    return (p - 1) * 100
+
+def trend_build(fid, override=None):
+    """The published trend record for one sleeve, built on the reader's route:
+    every figure from the PRINTED (rounded) figures before it."""
+    t = TREND_INPUTS[fid]
+    q = {}
+    for k in TREND_Q:
+        if k in t.get("monthly", {}):
+            q[k] = round(_compound(t["monthly"][k]), 2)
+        else:
+            q[k] = t["quarterly"][k]
+    for k, v in (override or {}).items():
+        q[k] = v
+    mu, sigma = round(t["mu"], 2), round(t["beta"] * SP_VOL_LT, 2)
+    ret, z, score = {}, {}, {}
+    for lbl, nq, yrs in TREND_H:
+        ret[lbl] = round(_compound([q[k] for k in TREND_Q[-nq:]]), 2)
+        z[lbl] = round((math.log(1 + ret[lbl] / 100) - yrs * math.log(1 + mu / 100))
+                       / (sigma / 100 * math.sqrt(yrs)), 2)
+        score[lbl] = round(min(5.0, max(1.0, 3.0 + z[lbl])), 2)
+    score[HZ_LABEL] = TREND_ANCHOR
+    blend = round(sum(score[h] * w for h, w in HZ_W.items()), 2)
+    return {"market": t["market"], "proxy": t["proxy"], "source": t["source"],
+            "mu": mu, "beta": t["beta"], "sigma": sigma,
+            "quarters": q, "monthly": t.get("monthly", {}), "cross_check": t["cross_check"],
+            "ret": ret, "z": z, "score": score, "blend": blend,
+            "tilt": rnd((blend - TREND_ANCHOR) * TREND_TILT_PER_PT)}
+
+TREND = {fid: trend_build(fid) for fid in TREND_INPUTS}
+TREND_ALT_BUILT = {fid: trend_build(fid, ov) for fid, ov in TREND_ALT.items()}
+
 REGIONS = {
     "US": {
         "3M": 4.25, "6M": 4.75, "12M": 5.5, HZ_LABEL: 6.5,
-        "why": "Near horizons held, ten-year anchor held. The rate path eased and the growth evidence weakened in the same week. September payrolls added 29k against 84k and unemployment rose to 4.2%; August was revised to +133k, and consumer confidence fell to 81.9, the lowest since 2014. The ISM manufacturing index still read 54.5, and the September composite PMI 58.4. CME FedWatch's October odds fell to 17% after the payrolls. The long end did not ease with them. On official closes the 10-year went from 5.17% on 25 Sep to 5.29% on 30 Sep and 5.24% on 1 Oct, after an intraday 5.342% that day, the highest since April 2002; the 30-year read 5.632% on 30 Sep, its highest since 2002. Equities held up better than bonds: the S&P closed 2 Oct at 7722.72 (+0.73%), near its record, the Nasdaq at a record 27190.86 (+1.19%) and the Dow at 51176.96 (+0.49%). August core CPI was mixed - 2.4% y/y but +0.3% on the month, gasoline +27.4% y/y - and August PCE came in below forecast at 3.4%. Near horizons are held rather than restored: a softer path is offset by weaker growth and a higher long end. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind against every other bloc here, and NDX at 22.4x forward still sits below its 10y and 5y averages.",
+        "why": "Near horizons held, ten-year anchor held. Equities and bonds are telling different stories. The S&P closed at a record 7818.93 on 6 Oct (+0.58%), above its August high, the Nasdaq at a record 27599.79 (+0.45%) and the Dow at 51521.28 (+0.49%). The long end kept rising underneath them: on official closes the 10-year went from 5.17% on 25 Sep to 5.29% on 30 Sep and 5.31% on 5 Oct, after an intraday 5.349% that day, the highest since April 2002; the 30-year touched 5.69%, its highest since late May 2002. Growth is cooling at the edges - September payrolls added 29k against 84k, unemployment rose to 4.2%, consumer confidence fell to 81.9 and the ISM services index slipped to 54.9 - while services prices rose to 74.0. CME FedWatch had October at 21.6% and a December hike at 86.2% on 6 Oct. August core CPI was 2.4% y/y but +0.3% on the month, gasoline +27.4% y/y, and August PCE came in below forecast at 3.4%. Near horizons stay where the rate repricing put them: records on a 2002-high discount rate are a valuation risk, not a reason to restore them. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind against every other bloc here, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages.",
     },
     "EUROPE": {
         "3M": 2.5, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
-        "why": "The worst policy/growth mismatch in the world, and the week made it worse. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.9% (the July update, up from 0.7%), and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.2% (final, from a 3.3% flash) with energy +14.3% y/y contributing 1.29 points of it. September's flash then jumped to 3.8%, above the 3.6% expected, with energy at 18.8%: the overshoot is the oil price, and it is growing. Europe is the largest net energy importer in the world facing Brent +58.45% y/y, and a final print at the flash on 16 Oct would test the ECB's word that its cycle is over. The offset is real - at 15.4x forward it is the cheapest large market here.",
+        "why": "The worst policy/growth mismatch in the world, and the inflation side keeps widening it. The ECB hiked to 2.50% on 10 Sep - its second and final move - into IMF growth of just 0.9% (the July update, up from 0.7%), and did it explicitly because the energy shock will hold inflation above target for an extended period. August HICP was 3.2% (final, from a 3.3% flash) with energy +14.3% y/y contributing 1.29 points of it. September's flash then jumped to 3.8%, above the 3.6% expected, with energy at 18.8%: the overshoot is the oil price, and it is growing. Europe is the largest net energy importer in the world facing Brent +55.87% y/y, and a final print at the flash on 16 Oct would test the ECB's word that its cycle is over. The offset is real - at 15.4x forward it is the cheapest large market here.",
     },
     "ASIA": {
         "3M": 5.0, "6M": 5.5, "12M": 6.5, HZ_LABEL: 7.5,
-        "why": "Near horizons cut; the early-September bounce did not hold, and this week's rally does not yet undo it. The region sold off again on 10-11 Sep - the Nikkei to 64,011 and KOSPI to 6,910 by the 11th, Samsung and SK Hynix leading the chip losses - and this time it is a rate shock as well as an energy one. Japan has since recovered well past that level: the Nikkei closed at 68,956.72 on 1 Oct on Micron's forecast, its highest since 17 Aug, before giving back 0.94% to 68,309.46 on 2 Oct, and the Tankan for large manufacturers rose to 24, an eight-year high. Korea fell as it reopened from Chuseok on 28 Sep - Samsung -5.43%, SK Hynix -5.05% - and was back at 7,003.74 on 2 Oct, Samsung +2.79% and SK Hynix +3.21% that day. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers, and China's halt to fuel exports on 1 Oct hits the products they buy. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
+        "why": "Near horizons cut; Japan has run well past the September sell-off, Korea has not. The region sold off on 10-11 Sep - the Nikkei to 64,011 and KOSPI to 6,910 by the 11th, Samsung and SK Hynix leading the chip losses - and this time it is a rate shock as well as an energy one. The Nikkei closed at 69,946.86 on 5 Oct and 70,683.98 on 6 Oct, up 1.05% on the day, and the Tankan for large manufacturers rose to 24, an eight-year high. Korea was shut on 5 Oct and fell 0.89% to 6,941.39 on the 6th as foreigners sold Samsung (-1.45%) and SK Hynix (-3.69%) before their results. Saudi Aramco cut its November price to Asia to a six-year low - the first energy news in weeks that helps the region's importers - though China's halt to fuel exports keeps products tight. The BoJ delivered on 18 Sep, +25bp to 1.25% - the highest since 1995 - and the yen FELL, closing 156.86 per dollar, a two-week low. Read that carefully: a hike that weakens the currency is the market pricing the END of a cycle, not improving carry. The vote was 7-2, Asada and Sato dissenting, and August core CPI had slowed to 1.7% from 1.8% hours earlier, so the board tightened into decelerating headline inflation on the strength of a demand gauge at 1.9%. The gap from the previous move was three months against six before it: faster, and more contested. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block, on a framework that fits this mandate.",
     },
     "PHILIPPINES": {
-        "3M": 5.5, "6M": 5.5, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": "Neutral across the curve, and the next print is the test. The nominal carry is intact - BSP at 5.00% after three consecutive hikes, 364-day T-bills at 6.115% on the 28 Sep auction, higher for a sixth straight week, with room for one more move on 22 Oct - but the real carry is not. August inflation eased to 6.1% from 6.2%, a fourth consecutive deceleration, with the year to August averaging 5.2%. BSP's own range for September is 6.4% to 7.4%, on weather-hit food, pump prices and the weaker peso; the PSA prints on 6 Oct. Inside August's print, food fell to 4.6% from 5.2% while RICE accelerated to 19.4% from 17.1%. Oil is still the headwind for a country that imports essentially all of its crude, and China's fuel-export halt adds a products squeeze: Brent settled at $102.25 on 2 Oct, +58.45% on a year earlier. The peso had a weak week and a strong Friday: 62.535 on 2 Oct, 24 centavos stronger after four straight losses, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next day. That is still a 5.99% loss of purchasing power against the dollar this year. The PSEi fell five sessions running to 5629.03 on 2 Oct, a 2026 low, from 5825.97 a week earlier. This sleeve's job is zero duration risk and high nominal carry; both are unimpaired. Its purchasing power is not.",
+        "3M": 5.0, "6M": 5.0, "12M": 5.5, HZ_LABEL: 5.5,
+        "why": "Near horizons cut, on the print this note named as the test. PSA put September inflation at 7.2% on 6 Oct, from 6.1%, inside BSP's 6.4%-7.4% range but above a 6.7% poll median, and core rose to 4.7% from 4.1%; food was 6.7%, transport 14.6%, and the poorest 30% of households saw 9.0%. The nominal carry is rising to meet it - the 5 Oct auction lifted 91-day bills to 5.667% and 364-day bills to 6.214%, up 9.9bp in a week - and BSP, at 5.00%, meets on 22 Oct with a larger hike now openly discussed. But against 7.2% every tenor's real yield is deeper below zero. The peso weakened to 62.771 on 6 Oct, 15 centavos on the day, against the weakest close on record of 62.86 on 14 Sep and the weakest intraday print of 62.925 the next day - a 6.34% loss of purchasing power against the dollar this year. The PSEi rebounded to 5743.21 on 5 Oct from its 2026 low of 5629.03 on 2 Oct, then fell 1.15% to 5677.12 on 6 Oct on the inflation print. Oil is easing - Brent settled at $100.58 on 6 Oct, +55.87% on a year earlier - but China's halt to fuel exports keeps imported products tight. The 12-month and ten-year horizons stay neutral: a BSP that hikes restores the real carry. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not.",
     },
 }
 # to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
@@ -1444,133 +1682,118 @@ for r in REGIONS.values():
 
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 2.0,
-     "RAISED a quarter point to 2.0 on 3 Oct - half of the 23 Sep cut back. That cut "
-     "was about HOW SOON, and both tests this note named came in soft. August PCE on "
-     "30 Sep ran 3.4% headline and 3.0% core, against 3.7% and 3.3% expected - part "
-     "of that is the BEA's annual methodology overhaul, not prices. September "
-     "payrolls on 2 Oct added 29k against 84k, and unemployment rose to 4.2%. CME "
-     "FedWatch put October at 17% after the payrolls, from 73% on 23 Sep; a hike by "
-     "December still priced at 66.2% on 2 Oct, from 88.5% on 17 Sep. Only half comes "
-     "back because the long end did not follow. On official closes the 10-year went "
-     "5.12% on the 23rd, 5.18% on the 24th, 5.17% on the 25th, 5.24% on the 28th, "
-     "5.26% on the 29th, 5.29% on the 30th and 5.24% on the 1st, after trading as "
-     "high as 5.342% on 1 Oct, the highest since April 2002 (the 28 Sep peak of "
-     "5.25% is superseded). The 30-year read 5.632% on 30 Sep, its highest since "
-     "2002. On 2 Oct, after an early fall on the jobs data, the 10-year traded at "
-     "5.281% and the 2-year at 4.839% - market readings; that day's official close "
-     "is withheld between 5.27% and 5.28%. The ECB finished its own cycle on 10 Sep "
-     "at 2.50%; BSP is at 5.00% after three hikes; the BoJ joined on 18 Sep at "
-     "1.25%. 16 of 18 dot-plot participants still saw one more hike this year. The "
-     "question has moved from how soon back to whether, and the cost of money for "
-     "a ten-year cash flow is higher than it was at the cut."),
-    ("Inflation trajectory", 0.15, 2.75,
-     "HELD at 2.75 - still two-sided, but the sides swapped places. The US eased: "
-     "August PCE ran 3.4% headline and 3.0% core against 3.7% and 3.3% expected, "
-     "with July's headline revised down to 3.4% - though part of that is the BEA's "
-     "methodology change rather than prices. August core CPI was 2.4% y/y from "
-     "2.5%, but +0.3% on the month against a 0.2% consensus, with gasoline +27.4% "
-     "y/y and fuel oil +52%. Everywhere else got hotter. The euro-area flash for "
-     "September jumped to 3.8% from 3.2%, against 3.6% expected, with energy at "
-     "18.8%. BSP projects Philippine September inflation at 6.4% to 7.4%, from "
-     "6.1%, on food, pump prices and the weaker peso. And on 1 Oct China halted "
-     "fuel exports, a products shock for every Asian importer. The forward signal "
-     "is unchanged: September PMI input costs rose at their steepest pace since "
-     "October 2022. Brent settled at $102.25 on 2 Oct, +58.45% on a year earlier "
-     "on the same December contract. Held rather than cut: the print this score is "
-     "most exposed to - the US - improved, and the Philippine number is a forecast "
-     "until 6 Oct."),
+     "HELD at 2.0, the level the 3 Oct raise set - and the week tested it from both "
+     "sides. October stayed off the table: CME FedWatch put it at 21.6% on 6 Oct, "
+     "from 17% after the payrolls on 2 Oct and 73% on 23 Sep. But December firmed "
+     "back to 86.2% on 6 Oct, from 66.2% on 2 Oct, and the long end made new highs. "
+     "On official closes the 10-year went 5.12% on the 23rd, 5.18% on the 24th, "
+     "5.17% on the 25th, 5.24% on the 28th, 5.26% on the 29th, 5.29% on the 30th, "
+     "5.24% on the 1st, 5.28% on the 2nd and 5.31% on the 5th, after trading as "
+     "high as 5.349% on 5 Oct, the highest since April 2002 (the 1 Oct peak of "
+     "5.342% is superseded). On 6 Oct it eased to about 5.27% on market quotes; no "
+     "official close was found for that day. The 30-year touched 5.69% on 5 Oct, "
+     "its highest since late May 2002, and read 5.659% on the 6th; the 2-year "
+     "4.80%. The trigger on the 5th was the ISM services report - activity cooler "
+     "at 54.9, prices paid hotter at 74.0. Held rather than moved: the timing the "
+     "3 Oct raise was about has not reversed, and the level that held it to half "
+     "has not improved. The ECB finished its own cycle on 10 Sep at 2.50%; BSP is "
+     "at 5.00% after three hikes and meets on 22 Oct after a 7.2% CPI; the BoJ "
+     "joined on 18 Sep at 1.25%. 16 of 18 dot-plot participants still saw one more "
+     "hike this year."),
+    ("Inflation trajectory", 0.15, 2.5,
+     "CUT a quarter point to 2.5 - the Philippine print this score was held for "
+     "came in hot, and it was not alone. PSA put September inflation at 7.2% on "
+     "6 Oct, from 6.1%, above a 6.7% poll median and matching April's three-year "
+     "high. Core jumped to 4.7% from 4.1%, the highest since October 2023, so it "
+     "is not only oil and rice: food was 6.7% from 4.6%, transport 14.6% from "
+     "13.5%, and the poorest 30% of households saw 9.0%. US services prices are "
+     "moving the same way: the ISM services prices index rose to 74.0 from 72.6 on "
+     "5 Oct. The euro-area flash for September was 3.8%, with energy at 18.8%. The "
+     "US headline still eased - August PCE ran 3.4% and core 3.0%, against 3.7% "
+     "and 3.3% expected, partly on the BEA's methodology change - and August core "
+     "CPI was 2.4% y/y, +0.3% on the month against a 0.2% consensus, with gasoline "
+     "+27.4% y/y and fuel oil +52%. Not cut further: oil is finally helping. Brent "
+     "settled at $100.58 on 6 Oct, +55.87% on a year earlier, after Saudi Aramco "
+     "cut its Asian price to a six-year low."),
     ("Growth momentum", 0.15, 4.0,
-     "CUT a quarter point to 4.0, reversing the 23 Sep raise - the reversal this "
-     "page said a weak payrolls print would bring. September payrolls added 29k "
-     "against an 84k consensus, and unemployment rose to 4.2% from 4.1%. August "
-     "was revised to +133k from +162k and July to -10k, so the jobs leg under the "
-     "raise is gone. The Conference Board's consumer confidence fell to 81.9 in "
-     "September, the lowest since 2014. What holds the score at 4.0 rather than "
-     "lower is that output has not turned. The ISM manufacturing index was 54.5 in "
-     "September, still expanding though below a 54.9 consensus. The S&P Global flash "
-     "composite PMI that drove the raise was 58.4, the strongest since July 2021. "
-     "Japan's Tankan for large manufacturers rose to 24 from 22, a sixth straight "
-     "gain and an eight-year high. This driver's lane is whether the growth engine "
-     "is intact under the shocks, not what the bond market does with the same "
-     "print - that belongs to Monetary policy. The IMF's July update had already cut "
-     "2026 global growth to 3.0%, before the September rate shock took the 10-year "
-     "to its highest since 2002."),
+     "HELD at 4.0 after the 3 Oct cut reversed the September raise. The new data "
+     "are mixed rather than weak: the ISM services index was 54.9 in September, "
+     "from 55.4 - a slight cooling, still well inside expansion - and manufacturing "
+     "read 54.5. September payrolls added only 29k against 84k, unemployment rose "
+     "to 4.2% and August was revised to +133k; consumer confidence fell to 81.9, "
+     "the lowest since 2014. The S&P Global flash composite PMI was 58.4, the "
+     "strongest since July 2021, and Japan's Tankan for large manufacturers rose "
+     "to 24, an eight-year high. This driver's lane is whether the growth engine is "
+     "intact under the shocks, not what the bond market does with the same print - "
+     "that belongs to Monetary policy. The IMF's July update had already cut 2026 "
+     "global growth to 3.0%, before the September rate shock took the 10-year to "
+     "its highest since 2002."),
     ("Corporate earnings", 0.2, 7.0,
      "Still the strongest pillar. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) "
-     "is unrevised, and the week's one hard earnings datapoint went the right way. "
-     "Micron's results and forecast set off a chip rally across Asia: Samsung rose "
-     "2.79% and SK Hynix 3.21% on 2 Oct, a week after falling 5.43% and 5.05% as "
-     "Korea reopened from Chuseok. Trimmed only for margins. Brent at $102.25 on "
-     "2 Oct is still far above the $64.53 of a year earlier, and China's "
-     "fuel-export halt on 1 Oct puts products, not just crude, back in the cost "
-     "line. The estimates have not moved; the prices paid for them have, both "
-     "ways."),
-    ("Valuation support", 0.1, 8.25,
-     "HELD at 8.25 - the one driver the rate shock improves, though the week took "
-     "some of that back. The S&P has gone nowhere since the 23 Sep raise: 7722.72 "
-     "on 2 Oct against 7743.41 a week earlier. The Nasdaq closed at a record "
-     "27190.86 on 2 Oct as the weak payrolls cut the odds of an October hike, so "
-     "the de-rating has stalled in tech rather than deepened. NDX 22.4x forward "
-     "still sits below both its 10y (22.9x) and 5y (24.7x) averages. Asia at 10.5x "
-     "is a two-decade-wide discount even after the Nikkei's run to 68,309.46, and "
-     "Europe is at 15.4x. A cheaper multiple on the same earnings is better "
-     "compensation for the same risk. Another week like this one in tech and the "
-     "raise comes off."),
+     "is unrevised. The chip trade is nervous before results rather than wrong: "
+     "Samsung fell 1.45% and SK Hynix 3.69% on 6 Oct as foreigners sold ahead of "
+     "earnings, after rising 2.79% and 3.21% on 2 Oct on Micron's results. Trimmed "
+     "only for margins, and the margin picture is improving at the edge. Brent at "
+     "$100.58 on 6 Oct is down from $105.28 on 28 Sep, and Saudi Aramco's Asian "
+     "price cut makes crude cheaper for the region's manufacturers - though it is "
+     "still far above the $64.53 of a year earlier. The estimates have not moved."),
+    ("Valuation support", 0.1, 8.0,
+     "CUT a quarter point to 8.0, taking off the 23 Sep raise - as this note said "
+     "one more week like the last would. The S&P closed at a record 7818.93 on "
+     "6 Oct, above its August high, and the Nasdaq at a record 27599.79, both with "
+     "the 10-year at a 2002 high: the market re-rated through the rate shock "
+     "instead of de-rating on it. That leaves the multiples reasonable rather than "
+     "cheap. NDX at 22.4x forward on its last verified reading sat below its 10y "
+     "(22.9x) and 5y (24.7x) averages; Asia at 10.5x is a two-decade-wide discount "
+     "even with the Nikkei at 70,683.98; Europe is at 15.4x. A cheaper multiple on "
+     "the same earnings is better compensation for the same risk, and this week "
+     "the multiple got dearer."),
     ("Volatility & risk appetite", 0.1, 3.0,
-     "HELD at 3.0. The pairing with rates held all week. The index rose 8.07% to "
-     "16.07 on 28 Sep as the 10-year made a new high and edged to 16.04 on the "
-     "29th. It rose to 16.34 on the 30th and 16.39 on 1 Oct as the 10-year "
-     "traded at its highest since 2002. Then it fell 6.59% to 15.31 on 2 Oct, when "
-     "the payrolls cut the odds of an October hike. Monday's close, withheld last "
-     "week between 16.07 and 16.30, is resolved at 16.07: Tuesday's -0.2% chains "
-     "from it and not from the rival. It is still a low level - under the 17.84 "
-     "close of 10 Sep and below the long-run 19.5 - so it reads as neither "
-     "complacency nor stress. The curve is re-quoted at last. The 2 Oct strip "
-     "(October 18.65 to January 20.38) replaces the 4 September one a day before "
-     "it expired, and re-anchored to its own date it reproduces the published "
-     "VIX3M of 18.58 to within a quarter of a percent. What this driver does NOT "
-     "carry is a claim that rising volatility pays the portfolio. Every fund's base "
-     "return already assumes long-run volatility, so only the curve's distance "
-     "from 19.5 moves a forecast. Blended across horizons the new strip sits at "
-     "19.4 - just below it."),
+     "HELD at 3.0. The pairing with rates held again. The index rose 1.4% to 15.52 "
+     "on 5 Oct as the 10-year made a new 2002 high, and fell 3.29% to 15.01 on "
+     "6 Oct as yields eased and stocks set records. The week before ran 16.07 on "
+     "28 Sep, 16.04, 16.34 and 16.39, then 15.31 on 2 Oct. It is still a low level - "
+     "under the 17.84 close of 10 Sep and below the long-run 19.5 - so it reads as "
+     "neither complacency nor stress. The curve is the 2 Oct strip (October 18.65 "
+     "to January 20.38), five days old, which re-anchored to its own date "
+     "reproduced the published VIX3M of 18.58 to within a quarter of a percent. "
+     "What this driver does NOT carry is a claim that rising volatility pays the "
+     "portfolio. Every fund's base return already assumes long-run volatility, so "
+     "only the curve's distance from 19.5 moves a forecast. Blended across "
+     "horizons the strip sits at 19.4 - just below it."),
     ("Geopolitics & energy", 0.1, 1.75,
-     "HELD at 1.75 - the volume case got stronger and the security case got worse, "
-     "both as facts. Volume first, the measure this note says to read. Goldman's own "
-     "series has Gulf oil exports, dark flows included, back at 23.3 mb/d over the "
-     "week to 29 Sep. That is in line with the 2025 average and above the 23.0 "
-     "pre-war level implied by its 28 Aug note, which read 15.5. JPMorgan has "
-     "Middle East crude at 17.5 mb/d, 98% of pre-war - but products at only 58%, "
-     "and on 1 Oct China halted fuel exports. On 22 Sep Saudi Arabia restarted the "
-     "1200 km East-West (Petroline) pipeline, which had carried roughly 5.0 mb/d to "
-     "Yanbu around the Strait, and it has run at about 3.5 mb/d, half its capacity, "
-     "since 28 Sep. Kpler had "
-     "regional crude exports at a wartime high of 12.8 mb/d for September, against "
-     "18.8 in February; trackers differ on what they count. The queue off berth "
-     "kept draining: 147 vessels on 2 Oct, from 233 on 28 Sep and a range that "
-     "reached 443 on 22 Sep. Against that, the week's facts. Secretary Rubio told "
-     "Iran's UN delegation on 28 Sep to leave New York. Tankers were struck in the "
-     "Strait on 29 Sep, 1 Oct and 2 Oct, the last with a fire and blackout on board. "
-     "A third US carrier group was reported heading to the region. And the "
-     "President called renewed strikes after the 3 November midterms 'possible'. "
-     "Diplomacy is not over - Washington sent a counter-proposal through Qatar, and "
-     "Araghchi has put it to Iran's cabinet - but nothing is agreed. The buffer is "
-     "being spent, not built: the US offered the last 40 million barrels of its "
-     "emergency release, leaving the reserve under 284 million barrels, the lowest "
-     "since 1982. The price says "
-     "the same. Like for like, Brent's December contract ended the week up 0.11%, "
-     "settling at $102.25 on 2 Oct. The published front month fell from $105.28 to "
-     "$102.25 only because November expired on 30 Sep at $103.50 and December, "
-     "$5.47 cheaper, took its place. The score was raised to 1.75 on 29 Sep on the "
-     "first volume data; this week confirms the barrels and adds no reason to move "
-     "either way. Read the disruption on VOLUME, not vessel counts. The counts run "
-     "from 1 to 30 a day depending on what is counted and when - IMF PortWatch 1 "
-     "transit against an 85 baseline on its 27 Sep reading, Lloyd's List "
-     "Intelligence 14 a day in the week to 23 Aug counting only cargo over 10000 "
-     "dwt, the US government around 30 on a basis it does not state - and none of "
-     "them is supply. Still close to the floor of 1: the Strait is shut to anything "
-     "the US Navy does not escort, ships in it are still being hit, and the stress "
-     "table's full closure with Brent above $130 is a strictly worse state still on "
-     "the table."),
+     "HELD at 1.75 for a second week - the energy leg has normalised and the "
+     "security leg has worsened, both as facts. Volume first, the measure this note "
+     "says to read. Goldman's own series had Gulf oil exports, dark flows included, "
+     "at 23.3 mb/d over the week to 29 Sep, in line with the 2025 average and above "
+     "the 23.0 pre-war level implied by its 28 Aug note, which read 15.5. JPMorgan "
+     "had Middle East crude at 17.5 mb/d, 98% of pre-war, though products only "
+     "58%. On 22 Sep Saudi Arabia restarted the 1200 km East-West (Petroline) "
+     "pipeline, which had carried roughly 5.0 mb/d to Yanbu around the Strait; its "
+     "energy minister put the flow at 5.8 mb/d on 6 Oct, from about 3.5 mb/d on "
+     "28 Sep. Producers are now competing for buyers: Saudi Aramco cut November "
+     "Arab Light to Asia to $5 below the benchmark, from $2 below, a six-year low. "
+     "The G7 plans a 100-million-barrel crude-and-diesel release, and the US "
+     "offered the last 40 million barrels of its emergency release, leaving the "
+     "reserve under 284 million barrels, the lowest since 1982. The price followed "
+     "the barrels: Brent settled at $100.32 on 5 Oct and $100.58 on 6 Oct, from "
+     "$102.25 on 2 Oct. Against that, the security facts. UKMTO logged nine attacks "
+     "in the Strait in October by the 6th, half September's total of 18. On 5 Oct "
+     "the IRGC turned a tanker back off Khasab under threat of attack. The queue "
+     "off berth went back up to 242 vessels on 6 Oct, from 147 on 2 Oct, after a "
+     "range that reached 443 on 22 Sep. Iran's president called talks with the US "
+     "'meaningless'; Qatar is working with China to restart them, and the "
+     "President says the war will end around the 3 November midterms. Held, not "
+     "raised: the barrels are flowing, but the ships carrying them are being hit "
+     "at more than twice September's daily pace. Read the disruption on VOLUME, not "
+     "vessel counts. The counts run from 1 to 30 a day depending on what is "
+     "counted and when - IMF PortWatch 1 transit against an 85 baseline on its "
+     "27 Sep reading, Lloyd's List Intelligence 14 a day in the week to 23 Aug "
+     "counting only cargo over 10000 dwt, the US government around 30 on a basis "
+     "it does not state - and none of them is supply. Still close to the floor of "
+     "1: the Strait is shut to anything the US Navy does not escort, and the "
+     "stress table's full closure with Brent above $130 is a strictly worse state "
+     "still on the table."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -1578,17 +1801,17 @@ GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 # A check requires every number in a summary to appear in its full note, so a
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
-    "Monetary policy & liquidity": "Raised to 2.0: October hike odds fell to 17% after 29k September payrolls, but the 10-year touched 5.342% on 1 Oct, so only half the 23 Sep cut comes back.",
-    "Inflation trajectory": "Held at 2.75: US PCE eased to 3.4%, but the euro-area flash jumped to 3.8% and BSP sees Philippine September inflation at 6.4% to 7.4%.",
-    "Growth momentum": "Cut to 4.0: September payrolls added just 29k and unemployment rose to 4.2%, reversing the raise; manufacturing is still expanding at 54.5.",
-    "Corporate earnings": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year, and Micron's results lifted Samsung 2.79% and SK Hynix 3.21% on 2 Oct.",
-    "Valuation support": "Held at 8.25: NDX at 22.4x forward is still below its 22.9x average, though the Nasdaq's record close on 2 Oct took some of the discount back.",
-    "Volatility & risk appetite": "Held at 3.0: the VIX fell 6.59% to 15.31 on 2 Oct after the payrolls; the re-quoted curve blends to 19.4, just below its long-run 19.5.",
-    "Geopolitics & energy": "Held at 1.75: Gulf exports are back at 23.3 mb/d on Goldman's count, but tankers are still being hit and Iran's delegation was told to leave New York.",
-    "US": "Near horizons held: the October hike faded on 29k payrolls, but the 10-year hit 5.342% on 1 Oct; the ten-year anchor holds at 6.5 on energy self-sufficiency.",
+    "Monetary policy & liquidity": "Held at 2.0: October hike odds are still low at 21.6%, but December firmed to 86.2% and the 10-year touched 5.349% on 5 Oct, a 2002 high.",
+    "Inflation trajectory": "Cut to 2.5: Philippine inflation jumped to 7.2% with core at 4.7%, US services prices hit 74.0 and the euro-area flash was 3.8%.",
+    "Growth momentum": "Held at 4.0: services cooled only slightly to 54.9 and manufacturing held 54.5, after 29k payrolls had reversed the September raise.",
+    "Corporate earnings": "Still the strongest pillar: Asia ex-Japan EPS of ~+52% this year; chips sold off before results on 6 Oct, Samsung -1.45% and SK Hynix -3.69%.",
+    "Valuation support": "Cut to 8.0: the S&P and Nasdaq closed at records on 6 Oct, taking back the discount the 23 Sep raise was for.",
+    "Volatility & risk appetite": "Held at 3.0: the VIX fell 3.29% to 15.01 on 6 Oct as stocks set records; the curve blends to 19.4, just below its long-run 19.5.",
+    "Geopolitics & energy": "Held at 1.75: pipeline flows hit 5.8 mb/d and Brent fell to $100.58, but UKMTO logged nine Strait attacks in October's first six days.",
+    "US": "Near horizons held: records on the S&P and Nasdaq with the 10-year at a 2002 high; the ten-year anchor holds at 6.5 on energy self-sufficiency.",
     "EUROPE": "Ranked last: the ECB hiked to 2.50% into growth of just 0.9%, and September's flash inflation jumped to 3.8% on 18.8% energy.",
     "ASIA": "Ranked first over ten years: 10.5x forward against ~52% EPS growth; near horizons cut for a rate shock on top of an energy one.",
-    "PHILIPPINES": "Neutral across the curve: nominal carry is high, but BSP sees September inflation at 6.4% to 7.4%, so the real carry is moving the wrong way.",
+    "PHILIPPINES": "Near horizons cut: September inflation hit 7.2% with core at 4.7%, pushing real T-bill yields further below zero before BSP meets on 22 Oct.",
 }
 
 
@@ -1669,7 +1892,7 @@ FUNDS = [
         # deviation at 13.9% against the Nasdaq-100's 20.4%, i.e. 0.681. The 0.68
         # carried here for months happened to be right to two decimals, but it was
         # unsourced; it is now derived from two published figures.
-        "vol_beta": 1.22 * (JEPQ_VOL / NDX_VOL), "fx_exposed": True,
+        "vol_beta": NDX_SP_BETA * (JEPQ_VOL / NDX_VOL), "fx_exposed": True,
         "macro_tilt": {"rates": -0.10, "energy": -0.10},
         # WAS -0.10 until 2026-09-24, on the reason that "realised drawdowns run
         # shallower than the raw volatility implies". But k multiplies THIS sleeve's
@@ -1713,7 +1936,7 @@ FUNDS = [
         # sourced to a manager document, and CLAIMS.md records it as an estimate.
         # Unlike the covered-call factor next door, no published pair was found to
         # anchor it. (Reviewed 2026-09-13.)
-        "vol_beta": 1.05 * 0.92, "fx_exposed": True,
+        "vol_beta": ASIA_SP_BETA * 0.92, "fx_exposed": True,
         "macro_tilt": {"rates": -0.05, "energy": -0.20},
         "dd_k_adj": +0.05, "cash_like": False,
         "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
@@ -1743,7 +1966,7 @@ FUNDS = [
         # is plausible but unverified here, and the two are not the same quantity:
         # this beta is applied to FORWARD implied vol, not trailing realised.
         # Recorded as an estimate. (Reviewed 2026-09-13.)
-        "vol_beta": 1.30, "fx_exposed": True,
+        "vol_beta": TECH_SP_BETA, "fx_exposed": True,
         "macro_tilt": {"rates": -0.40, "energy": -0.15},
         "dd_k_adj": +0.15, "cash_like": False,
         "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
@@ -1839,7 +2062,8 @@ def build_fund(f):
     vol_tilt = rnd(VOL_RAMP * VOL_SENS[f["id"]])   # derived, not hand-set
     rates_tilt = rnd(t["rates"] * RATES_SCALE)     # derived from the Monetary driver
     energy_tilt = rnd(t["energy"] * ENERGY_SCALE)  # derived from Geopolitics & energy
-    tilt_total = rnd(reg_tilt + vol_tilt + rates_tilt + energy_tilt)
+    trend_tilt = TREND[f["id"]]["tilt"] if f["id"] in TREND else 0.0   # 3/6/12M market trend
+    tilt_total = rnd(reg_tilt + vol_tilt + rates_tilt + energy_tilt + trend_tilt)
     macro_net = base_net + tilt_total
 
     k = DD_K + f["dd_k_adj"]
@@ -1864,6 +2088,7 @@ def build_fund(f):
         "regional_score": round(rs, 2),
         "tilt_regional": round(reg_tilt, 2),
         "tilt_vol": vol_tilt, "tilt_rates": rates_tilt, "tilt_energy": energy_tilt,
+        "tilt_trend": trend_tilt,
         "tilt_rates_cal": t["rates"], "tilt_energy_cal": t["energy"],
         "tilt_total": round(tilt_total, 2),
         "net_macro": round(macro_net, 2),
@@ -2128,44 +2353,51 @@ FEASIBLE = [(w, s) for w, s in ALL
             if abs(port_dd(w, "net_macro")) <= DD_CAP + 1e-9
             and abs(s["maxdd"]) <= DD_CAP + 1e-9]
 FEASIBLE.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
-OPT_W, OPT = FEASIBLE[0]
+
+# ONE SELECTION RULE FOR EVERY PORTFOLIO - unified 2026-10-07 at the owner's
+# instruction ("the best and recommended approach to reach max growth ... while
+# controlling the drawdown to minimum"). Take the best CAGR the drawdown budget
+# allows; among the portfolios within PIN_TIE_PP of it, take the one with the
+# LOWEST drawdown (ties: the higher CAGR). A return difference smaller than the
+# model's own precision is not worth more drawdown.
+# Until this date Portfolio B took the strict maximum and Portfolio C this rule.
+# The 2026-09-29 scrub found B's optimum was not sharp - four portfolios inside
+# 0.05pp of it - so a difference below the model's precision was deciding B, and
+# the two donuts were chosen by different rules. The strict maximum is still
+# published beside B (STRICT_ALT) so the trade stays visible.
+PIN_TIE_PP = 0.05
+
+def pick(feas):
+    """The rule, on any list of feasible (weights, summary) pairs."""
+    best = max(s2["cagr"] for _, s2 in feas)
+    band = [(w, s2) for w, s2 in feas if s2["cagr"] >= best - PIN_TIE_PP - 1e-9]
+    w, s2 = min(band, key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
+    return w, s2, len(band)
+
+def strict_alt(feas):
+    """What the strict maximum would hold instead, and how wide the band is."""
+    w, s2 = max(feas, key=lambda t: (t[1]["cagr"], -abs(t[1]["maxdd"])))
+    n = sum(1 for _, x in feas if x["cagr"] >= s2["cagr"] - PIN_TIE_PP - 1e-9)
+    return {"n": n, "tie_pp": PIN_TIE_PP, "weights": [round(x * 100) for x in w],
+            "cagr": s2["cagr"], "maxdd": s2["maxdd"]}
+
+OPT_W, OPT, OPT_BAND_N = pick(FEASIBLE)
+OPT_STRICT = strict_alt(FEASIBLE)
 
 # PORTFOLIO C - the owner's pinned variant (requested 2026-09-25): Nasdaq Equity
 # Income held at exactly 50%, the other three optimised around it on the same
-# inputs, the same 5% grid and floor, and the same drawdown budget. The objective
-# is the owner's "maximum growth with drawdown controlled to a minimum", made
-# explicit: take the best CAGR the budget allows, then, among portfolios within
-# PIN_TIE_PP of it, the one with the LOWEST drawdown - a return difference smaller
-# than the model's own rounding is not worth more drawdown.
-PIN_FUND, PIN_W, PIN_TIE_PP = 1, 0.50, 0.05
+# inputs, the same 5% grid and floor, the same drawdown budget and the same rule.
+PIN_FUND, PIN_W = 1, 0.50
 _pin_feas = [(w, s2) for w, s2 in FEASIBLE if abs(w[PIN_FUND] - PIN_W) < 1e-9]
 _pin_best = max(s2["cagr"] for _, s2 in _pin_feas)
-PIN_W_ALL, PIN = min(((w, s2) for w, s2 in _pin_feas if s2["cagr"] >= _pin_best - PIN_TIE_PP - 1e-9),
-                     key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
+PIN_W_ALL, PIN, PIN_BAND_N = pick(_pin_feas)
 OPT_UNDER_BASE = summarise(OPT_W, "net_base")
-
-# HOW SHARP IS THE OPTIMUM? Portfolio B takes the single best CAGR; Portfolio C
-# takes the lowest drawdown within PIN_TIE_PP of its best. The 2026-09-29 scrub
-# found B's own optimum is not sharp: several portfolios sit within that band of
-# it, and the lowest-drawdown one differs from B. The two portfolios therefore
-# use different selection rules, and a difference smaller than the model's own
-# rounding decides B. Published, not hidden, so the fragility is visible and the
-# choice of rule stays the owner's.
-def near_tie(feas):
-    """The band of a best-first feasible list within PIN_TIE_PP of its top CAGR,
-    with its lowest-drawdown member (C's rule applied to that list)."""
-    best = feas[0][1]["cagr"]
-    band = [(w, s2) for w, s2 in feas if s2["cagr"] >= best - PIN_TIE_PP - 1e-9]
-    lw, ls = min(band, key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
-    return {"n": len(band), "tie_pp": PIN_TIE_PP,
-            "weights": [round(x * 100) for x in lw], "cagr": ls["cagr"], "maxdd": ls["maxdd"]}
-OPT_NEAR = near_tie(FEASIBLE)
 
 # What the former 50% single-sleeve cap would choose under the same objective and
 # the same drawdown budget - published so the cost and benefit of removing it are
 # computed, not asserted.
 CAP_COUNTERFACTUAL_MAX = 0.50
-_capw, _caps = next((w, s) for w, s in FEASIBLE if max(w) <= CAP_COUNTERFACTUAL_MAX + 1e-9)
+_capw, _caps, _ = pick([(w, s) for w, s in FEASIBLE if max(w) <= CAP_COUNTERFACTUAL_MAX + 1e-9])
 CAP_COUNTERFACTUAL = {"max_sleeve": CAP_COUNTERFACTUAL_MAX,
                       "weights": [round(x * 100) for x in _capw],
                       "cagr": _caps["cagr"], "maxdd": _caps["maxdd"],
@@ -2181,15 +2413,24 @@ for _f in F:
     _f["net_novol"] = round(_f["net_macro"] - _f["tilt_vol"], 2)       # flat VIX curve
     _f["net_neutral"] = round(_f["net_macro"] - _f["tilt_rates"]
                               - _f["tilt_energy"], 2)                  # drags at neutral
+    _f["net_notrend"] = round(_f["net_macro"] - _f["tilt_trend"], 2)   # no trend channel
+    # Asia's trend on the alternative source for its one disputed quarter
+    _f["net_trend_alt"] = round(_f["net_macro"] - _f["tilt_trend"]
+                                + (TREND_ALT_BUILT[_f["id"]]["tilt"] if _f["id"] in TREND_ALT_BUILT
+                                   else _f["tilt_trend"]), 2)
 
 def optimise(key):
+    """Portfolios B and C re-chosen on an alternative return column, by the same
+    rule, with the drawdown budget re-derived from the baseline on that column."""
     cap = abs(summarise(BASELINE_W, key)["maxdd"]) - DD_BUDGET_IMPROVEMENT
     feas = [(w, s) for w, s in enumerate_portfolios(key)
             if abs(port_dd(w, key)) <= cap + 1e-9 and abs(s["maxdd"]) <= cap + 1e-9]
-    feas.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
-    w, s = feas[0]
+    w, s, _ = pick(feas)
+    pw, ps, _ = pick([(w2, s2) for w2, s2 in feas if abs(w2[PIN_FUND] - PIN_W) < 1e-9])
     return {"weights": [round(x * 100) for x in w], "cagr": s["cagr"],
-            "maxdd": s["maxdd"], "dd_cap": round(cap, 2), "near": near_tie(feas)}
+            "maxdd": s["maxdd"], "dd_cap": round(cap, 2), "strict": strict_alt(feas),
+            "pinned": {"weights": [round(x * 100) for x in pw], "cagr": ps["cagr"],
+                       "maxdd": ps["maxdd"]}}
 
 # THE TWO ASSUMPTIONS THE 2026-09-25 CORRECTION LEFT CARRYING THE RESULT, tested
 # the same way: the Asia base's +1.0% re-rating credit (which overlaps both the
@@ -2210,7 +2451,8 @@ for _f in F:
     _f["net_asia_fee_hi"] = round(_f["net_macro"] - (ASIA_FEE_STRESS if _aseq else 0.0), 2)
 WHAT_IF = {"vol_flat": optimise("net_novol"), "drags_neutral": optimise("net_neutral"),
            "asia_no_rerating": optimise("net_asia_norerate"),
-           "asia_fee_hi": optimise("net_asia_fee_hi")}
+           "asia_fee_hi": optimise("net_asia_fee_hi"),
+           "trend_off": optimise("net_notrend"), "trend_alt": optimise("net_trend_alt")}
 WHAT_IF["asia_fee_hi"]["stress_pp"] = ASIA_FEE_STRESS
 
 # Best pure risk-adjusted portfolio, for reference
@@ -2226,7 +2468,7 @@ BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
 # subject to the drawdown cap - over the portfolios the enumeration excludes
 # because they drop a fund entirely.
 def _best_without(idx):
-    best = None
+    cands = []
     step = 5
     for a in range(0, 101, step):
         for b in range(0, 101 - a, step):
@@ -2244,12 +2486,17 @@ def _best_without(idx):
                 if any(i != idx and x < MIN_SLEEVE * 100 - 1e-9 for i, x in enumerate(w)):
                     continue
                 ww = [x / 100 for x in w]
-                if abs(port_dd(ww, "net_macro")) > DD_CAP + 1e-9:
-                    continue
                 sm = summarise(ww, "net_macro")
-                if best is None or sm["cagr"] > best[1]["cagr"]:
-                    best = (w, sm)
-    return best
+                # Both drawdown routes, as FEASIBLE tests them: this tested only the
+                # raw one, so the stub's counterfactual could be a portfolio that
+                # PRINTS over budget. (Found 2026-10-07.)
+                if abs(port_dd(ww, "net_macro")) > DD_CAP + 1e-9 or abs(sm["maxdd"]) > DD_CAP + 1e-9:
+                    continue
+                cands.append((w, sm))
+    # The same rule as every portfolio on the page (2026-10-07): it was the strict
+    # maximum, which compared the stub against a rule B no longer uses.
+    w, sm, _ = pick(cands)
+    return w, sm
 
 _GT_FREE_W, _GT_FREE = _best_without(3)
 STUB = {
@@ -2258,6 +2505,7 @@ STUB = {
     "best_without": _GT_FREE_W,
     "cagr_without": _GT_FREE["cagr"],
     "cagr_with": OPT["cagr"],
+    "maxdd_without": _GT_FREE["maxdd"], "maxdd_with": OPT["maxdd"],
     "cost": round(_GT_FREE["cagr"] - OPT["cagr"], 2),
 }
 
@@ -2351,6 +2599,82 @@ def run_scenarios(w, key):
 # 8. SOURCES
 # ----------------------------------------------------------------------------
 SOURCES = [
+    # ---- added 2026-10-07, the 5-6 Oct roll ----
+    ("Philippine Statistics Authority", "Summary Inflation Report, September 2026 - headline 7.2%, core 4.7%, food 6.7%, transport 14.6%, bottom 30% of households 9.0%",
+     "https://psa.gov.ph/content/summary-inflation-report-consumer-price-index-2018100-september-2026"),
+    ("BusinessWorld", "Philippine inflation heats up to 3-year high - 7.2% in September against a 6.7% poll median, 6 Oct 2026",
+     "https://bworldonline.com/top-stories/2026/10/06/784925/philippine-inflation-heats-up-to-3-year-high/"),
+    ("BusinessWorld", "Peso sinks as euro zone woes, inflation fears dent sentiment - P62.771 from P62.621, 6 Oct 2026",
+     "https://bworldonline.com/banking-finance/2026/10/06/785004/peso-sinks-as-euro-zone-woes-inflation-fears-dent-sentiment/"),
+    ("radar.ph", "Peso resets gains as PSEi gains 114 points - PSEi 5,743.21, peso P62.621, 5 Oct 2026",
+     "https://radar.ph/peso-resets-gains-as-psei-gains-114-points-october-5-2026/"),
+    ("Philippine Daily Inquirer", "Inflation jump drags PSEi down to 5,677 - 5,677.12, -66.09 (-1.15%), 6 Oct 2026",
+     "https://business.inquirer.net/614535/inflation-jump-drags-psei-down-to-5677"),
+    ("BusinessMirror", "Investors sought higher returns on inflation bet - T-bills 5.667% / 5.971% / 6.214%, 5 Oct 2026 auction",
+     "https://businessmirror.com.ph/2026/10/05/investors-sought-higher-returns-on-inflation-bet/"),
+    ("CNBC", "10-year Treasury yield rises to fresh 2002 high to start the week - 5.349%, 5 Oct 2026",
+     "https://www.cnbc.com/2026/10/05/treasury-yields-bonds-fed-rates.html"),
+    ("CNBC", "Treasury yields slide as surge to multiyear highs cools - 2-year 4.80%, 30-year 5.659%, 6 Oct 2026",
+     "https://www.cnbc.com/2026/10/06/treasury-yields-fed-fomc-minutes.html"),
+    ("Bloomberg", "Treasury yields hit 24-year highs as long bonds extend selloff - 30-year near 5.7%, 5 Oct 2026",
+     "https://www.bloomberg.com/news/articles/2026-10-05/treasuries-slump-pushes-long-end-yields-to-fresh-24-year-highs"),
+    ("Benzinga / CME FedWatch", "October Fed hike odds fall to 21.6%; December 86.2%, 6 Oct 2026",
+     "https://www.benzinga.com/markets/economic-data/26/10/62185721/jim-cramer-says-interest-rates-can-fall-too-as-october-fed-hike-odds-fall-to-21-6-heres-what-traders-are-betting-on"),
+    ("ISM via PR Newswire", "Services PMI at 54.9%, September 2026 - prices 74.0%, from 55.4% and 72.6% in August",
+     "https://www.morningstar.com/news/pr-newswire/20261005la62389/services-pmi-at-549-september-2026-ism-services-pmi-report"),
+    ("Mankato Free Press / AP", "How major US stock indexes fared Tuesday 10/6/2026 - S&P 7818.93 (record), Nasdaq 27599.79 (record), Dow 51521.28",
+     "https://www.mankatofreepress.com/news/business/how-major-us-stock-indexes-fared-tuesday-10-6-2026/article_f884ef77-b48c-5fa7-9f66-ff8a954a52cb.html"),
+    ("Yahoo Finance / Zacks", "Stock Market News for Oct 6, 2026 - VIX up 1.4% to 15.52 (5 Oct session)",
+     "https://finance.yahoo.com/markets/stocks/articles/stock-market-news-oct-6-054400913.html"),
+    ("Yahoo Finance / Zacks", "Stock Market News for Oct 7, 2026 - VIX down 3.29% to 15.01 (6 Oct session)",
+     "https://finance.yahoo.com/markets/stocks/articles/stock-market-news-oct-7-074400333.html"),
+    ("Rigzone / Bloomberg", "Oil slides on Saudi price cut - Brent December settled $100.32, -1.9%, 5 Oct 2026",
+     "https://www.rigzone.com/news/oil_slides_on_saudi_price_cut-05-oct-2026-184777-article"),
+    ("Bloomberg", "Saudis cut flagship oil price to Asia to lowest in six years - November Arab Light $5 below, from $2 below",
+     "https://www.bloomberg.com/news/articles/2026-10-05/saudis-cut-flagship-oil-price-to-asia-to-lowest-in-six-years"),
+    ("Fortune", "Current price of oil as of 7 Oct 2026 - Brent $101.51, +93 cents (recovers the 6 Oct settle of $100.58)",
+     "https://fortune.com/article/price-of-oil-10-07-2026/"),
+    ("EnergyNow", "Oil slides more than 2% as recovering Gulf exports and emergency stock release ease supply fears - WTI settled $89.43 on 5 Oct; G7 100m-barrel release",
+     "https://energynow.com/2026/10/oil-slides-more-than-2-as-recovering-gulf-exports-and-emergency-stock-release-ease-supply-fears/"),
+    ("Bloomberg", "Key Saudi pipeline flows at 5.8 million barrels, minister says, 6 Oct 2026",
+     "https://www.bloomberg.com/news/articles/2026-10-06/key-saudi-pipeline-flows-at-5-8-million-barrels-minister-says"),
+    ("Bloomberg", "Iran increases tanker attacks in Hormuz as oil shipments near pre-war levels - UKMTO: nine attacks in October by the 6th, 18 in September",
+     "https://www.bloomberg.com/news/articles/2026-10-06/iran-ramps-up-ship-attacks-in-hormuz-as-oil-and-gas-flows-climb"),
+    ("Gulf News", "Iran's president says talks with the US 'meaningless', 6 Oct 2026",
+     "https://gulfnews.com/world/mena/us-iran-war-tehran-rejects-military-solution-saudi-led-coalition-backs-yemen-offensive-against-houthis-1.500698388"),
+    ("Straits Daily Brief", "Strait of Hormuz status, 6 Oct 2026 - 242 vessels holding position; IRGC turned a tanker back off Khasab on 5 Oct",
+     "https://straits.live/briefs/2026-10-06"),
+    ("Edge Consultancy", "Asia market wrap 6 October 2026 - Nikkei 70,683.98, its first close above 70,000 since 1 July",
+     "https://edgeconsultancykw.com/asia-market-wrap-6-october-2026/"),
+    ("Seoul Economic Daily", "KOSPI closes down 0.89% at 6,941.39 - Samsung -1.45%, SK Hynix -3.69%, 6 Oct 2026",
+     "https://en.sedaily.com/finance/2026/10/06/kospi-closes-down-089-percent-at-694139"),
+    # ---- added 2026-10-07, the market-trend channel ----
+    ("PortfoliosLab", "Invesco QQQ monthly total returns, 2025-2026 (Nasdaq-100 trend; 2025 compounds to 20.77%)",
+     "https://portfolioslab.com/symbol/QQQ"),
+    ("PortfoliosLab", "iShares Global Tech ETF (IXN) monthly total returns, 2025-2026 (global technology trend)",
+     "https://portfolioslab.com/symbol/IXN"),
+    ("Nasdaq", "Nasdaq-100 index factsheet, 30 Sep 2026 - Q2 +27.74%, Q3 +0.58% (trend cross-check)",
+     "https://indexes.nasdaqomx.com/docs/FS_XNDX.pdf"),
+    ("Schroders", "Quarterly markets review Q4 2025 - MSCI AC Asia ex Japan +4.3% in US dollars",
+     "https://www.schroders.com/en/global/individual/insights/quarterly-markets-review---q4-2025/"),
+    ("Schroders", "Quarterly markets review Q2 2026 - MSCI Asia ex Japan +27.7% in US dollars",
+     "https://www.schroders.com/en/global/individual/insights/quarterly-markets-review---q2-2026/"),
+    ("Schroders", "Monthly markets review August 2026 - MSCI AC Asia ex Japan +3.3%",
+     "https://www.schroders.com/en-us/us/institutional/insights/monthly-markets-review---august-2026/"),
+    ("Schroders", "Monthly markets review July 2026 - MSCI AC Asia ex Japan -3.2% in US dollars",
+     "https://www.schroders.com/en/global/individual/insights/monthly-markets-review---july-2026/"),
+    ("Schroders", "Quarterly markets review Q3 2026 - MSCI AC Asia ex Japan 'a slight decline' in the quarter",
+     "https://www.schroders.com/en-gb/uk/intermediary/insights/quarterly-markets-review---q3-2026/"),
+    ("Shikhara", "From the CIO's Desk, Asia Quarterly Q1 2026 - MSCI AC Asia ex Japan -1.13% in USD",
+     "https://shikhara.com/from-the-cios-desk-asia-quarterly-q1-2026/"),
+    ("Shikhara", "From the CIO's Desk, Asia Insights July 2026 - MSCI AC Asia ex Japan -3.18% in USD",
+     "https://shikhara.com/from-the-cios-desk-asia-insights-july-2026/"),
+    ("MSCI", "MSCI AC Asia ex Japan Index factsheet (USD), 30 Sep 2026 - one month -0.25%",
+     "https://www.msci.com/documents/10199/255599/msci-ac-asia-ex-japan-index-usd-net.pdf"),
+    ("BlackRock iShares", "iShares MSCI All Country Asia ex Japan ETF (AAXJ) - 3-month 25.73%, the trend's alternative Asia figure",
+     "https://www.ishares.com/us/products/239601/ishares-msci-all-country-asia-ex-japan-etf"),
+    ("Moskowitz, Ooi and Pedersen", "Time series momentum, Journal of Financial Economics 104(2), 2012 - trends persist about a year, then partly reverse",
+     "https://doi.org/10.1016/j.jfineco.2011.11.003"),
     # ---- added 2026-10-03, the 2 Oct roll ----
     ("CNBC", "September 2026 jobs report - payrolls +29k vs 84k consensus, unemployment 4.2%, August revised to +133k, July to -10k",
      "https://www.cnbc.com/2026/10/02/jobs-report-september-2026.html"),
@@ -2362,7 +2686,7 @@ SOURCES = [
      "https://www.cnbc.com/2026/10/02/treasury-yields-bonds-nonfarm-payrolls.html"),
     ("CNBC", "10-year yield higher as traders look past inflation data - 30-year 5.632%, 30 Sep 2026",
      "https://www.cnbc.com/2026/09/30/treasury-yields-bonds-selloff.html"),
-    ("FRED (St. Louis Fed)", "DGS10 - 10-year constant maturity: 5.24 (28 Sep), 5.26 (29 Sep), 5.29 (30 Sep) 2026",
+    ("FRED (St. Louis Fed)", "DGS10 - 10-year constant maturity: 5.24 (28 Sep), 5.26 (29 Sep), 5.29 (30 Sep), 5.28 (2 Oct), 5.31 (5 Oct) 2026",
      "https://fred.stlouisfed.org/series/DGS10"),
     ("Yahoo Finance / BEA", "August 2026 PCE - headline 3.4% y/y vs 3.7% expected, core 3.0% vs 3.3%",
      "https://finance.yahoo.com/economy/policy/articles/u-core-pce-inflation-rises-132052964.html"),
@@ -2676,16 +3000,26 @@ def payload():
         # and the peso sleeve's real yield were the last two hard-typed figures in the
         # static markup with no payload counterpart. (Audit 2026-09-11.)
         "regional_tilt_per_pt": REGIONAL_TILT_PER_PT,
+        # The market-trend channel: every figure from window returns to tilt, on
+        # the reader's route, plus the one disputed input re-run on its alternative.
+        "trend": {"end": TREND_END, "tilt_per_pt": TREND_TILT_PER_PT,
+                  "anchor": TREND_ANCHOR, "quarters": list(TREND_Q),
+                  "horizons": [{"label": l, "quarters": n, "years": y} for l, n, y in TREND_H],
+                  "sleeves": TREND, "alt": TREND_ALT, "alt_built": TREND_ALT_BUILT},
         # The calibration record for the driver transmission, published so the
         # page-level and independent harnesses can re-derive every rates and energy
         # tilt from the driver scores without importing this file.
         "driver_tilt_cal": {**TILT_CAL, "neutral_10": DRIVER_NEUTRAL_10,
                             "rates_scale": round(RATES_SCALE, 6),
                             "energy_scale": round(ENERGY_SCALE, 6)},
+        # On the LATEST print. It read August's 6.1% for two days after September's
+        # 7.2% was out, and the page typed the month - "against August inflation".
+        # (The PPP differential above stays on August: it needs the US figure for
+        # the same month, and US September CPI is not out.)
         "real_yield": {
-            "cpi": MACRO["ph_cpi_aug"],
-            "t91": round(MACRO["ph_tbill_91"] - MACRO["ph_cpi_aug"], 2),
-            "t364": round(MACRO["ph_tbill_364"] - MACRO["ph_cpi_aug"], 2),
+            "cpi": MACRO["ph_cpi_sep"], "month": "September",
+            "t91": round(MACRO["ph_tbill_91"] - MACRO["ph_cpi_sep"], 2),
+            "t364": round(MACRO["ph_tbill_364"] - MACRO["ph_cpi_sep"], 2),
         },
         "catalysts": [{"date": d, "what": w, "why": y} for d, w, y in CATALYSTS],
         "postponed": [{"what": w, "why": y} for w, y in POSTPONED],
@@ -2722,11 +3056,14 @@ def payload():
                       "dd_cap": round(DD_CAP, 2),
                       "scenarios": run_scenarios(OPT_W, "net_macro"),
                       "n_feasible": len(FEASIBLE), "n_total": len(ALL),
-                      "near": OPT_NEAR},
+                      # the rule every portfolio is chosen by, and what the strict
+                      # maximum would hold instead
+                      "tie_pp": PIN_TIE_PP, "band_n": OPT_BAND_N,
+                      "strict": OPT_STRICT},
         "pinned": {"weights": [round(x*100) for x in PIN_W_ALL], "macro": PIN,
                    "fund": FUNDS[PIN_FUND]["id"], "pin_pct": round(PIN_W * 100),
                    "tie_pp": PIN_TIE_PP, "best_cagr": _pin_best,
-                   "n_feasible": len(_pin_feas),
+                   "n_feasible": len(_pin_feas), "band_n": PIN_BAND_N,
                    "scenarios": run_scenarios(PIN_W_ALL, "net_macro"),
                    # the allocation-deciding assumption, applied to both
                    "cagr_no_rerating": summarise(PIN_W_ALL, "net_asia_norerate")["cagr"],
@@ -2747,7 +3084,7 @@ def report():
     A(f"ATRAM PORTFOLIO ENGINE - audit report  (as of {AS_OF})")
     A("=" * 78)
     A("\n[1] VOLATILITY TERM STRUCTURE (forward-variance integration of the VIX complex)")
-    A(f"    spot VIX {MACRO['vix_spot']}  |  Sep fut {MACRO['vix_fut_sep']}  |  "
+    A(f"    spot VIX {MACRO['vix_spot']}  |  front fut ({MACRO['vix_futs'][0][0]}) {MACRO['vix_fut_sep']}  |  "
       f"Dec fut {MACRO['vix_fut_dec']}  |  long-run anchor {MACRO['vix_longrun']}")
     A(f"    {'H':<5}{'implied':>10}{'realised':>10}{'1sd move':>11}{'2sd move':>11}")
     for v in p["vol_ts"]:
@@ -2757,10 +3094,16 @@ def report():
     A(f"    {'region':<14}{'3M':>6}{'6M':>6}{'12M':>6}{HZ_LABEL:>6}{'blend':>8}")
     for k, v in sorted(p["regions"].items(), key=lambda t: -t[1]["blend"]):
         A(f"    {k:<14}{v['3M']:>6}{v['6M']:>6}{v['12M']:>6}{v[HZ_LABEL]:>6}{v['blend']:>8}")
+    tr = p["trend"]
+    A(f"\n[2b] MARKET TREND (window to {tr['end']}; z vs long-run drift and vol, score 3+z on 1-5, {HZ_LABEL} neutral)")
+    A(f"    {'sleeve':<10}{'3M':>8}{'6M':>8}{'12M':>8}   {'z 3M/6M/12M':<18}{'blend':>7}{'tilt':>7}")
+    for k, v in tr["sleeves"].items():
+        A(f"    {k:<10}{v['ret']['3M']:>7.2f}%{v['ret']['6M']:>7.2f}%{v['ret']['12M']:>7.2f}%   "
+          f"{'/'.join(f'{v[chr(122)][h]:+.2f}' for h in ('3M', '6M', '12M')):<18}{v['blend']:>7.2f}{v['tilt']:>+7.2f}")
     A("\n[3] BROAD MACRO GAUGE (drivers reported 1-5, researched 1-10)")
     for d in p["drivers"]:
         A(f"    {d['name']:<30} w={d['weight']:.2f}  "
-          f"score={d['score']:.2f} / 5   ({d['score_10']:.1f} / 10)")
+          f"score={d['score']:.2f} / 5   ({d['score_10']:g} / 10)")
     A(f"    {'COMPOSITE (research scale)':<30}            {p['gauge_10']} / 10")
     A(f"    {'HEADLINE GAUGE':<30}            {p['gauge']} / 5"
       f"   (neutral {p['gauge_neutral']})")
@@ -2787,6 +3130,16 @@ def report():
     A(f"    DELTA (macro view): CAGR {o['macro']['cagr'] - b['under_macro']['cagr']:+.2f}pp   "
       f"maxDD {o['macro']['maxdd'] - b['under_macro']['maxdd']:+.1f}pp   "
       f"ret/DD {o['macro']['ret_per_dd'] - b['under_macro']['ret_per_dd']:+.3f}")
+    st = o["strict"]
+    A(f"    rule: best CAGR in budget, then lowest DD within {o['tie_pp']:.2f}pp "
+      f"({o['band_n']} in band); strict max would hold {st['weights']} at {st['cagr']}% / {st['maxdd']}%")
+    pn = p["pinned"]
+    A(f"    PINNED C  weights {pn['weights']}   ({pn['fund']} at {pn['pin_pct']}%, {pn['n_feasible']} feasible, "
+      f"{pn['band_n']} in band)")
+    A(f"      macro view     : CAGR {pn['macro']['cagr']}%  vol {pn['macro']['vol']}%  "
+      f"maxDD {pn['macro']['maxdd']}%  ret/DD {pn['macro']['ret_per_dd']}")
+    for k, v in p["what_if"].items():
+        A(f"    what-if {k:<17}: B {v['weights']} {v['cagr']}%   C {v['pinned']['weights']} {v['pinned']['cagr']}%")
     A(f"    best pure ret/DD  : {p['best_ratio']['weights']}  CAGR {p['best_ratio']['cagr']}%  "
       f"maxDD {p['best_ratio']['maxdd']}%  ratio {p['best_ratio']['ret_per_dd']}")
     A("\n[6] SCENARIOS (optimized portfolio)")
@@ -3204,10 +3557,19 @@ def report():
     # 0dp "fell 1%" allows half a percent, a 2dp "+3.86%" half a basis point).
     _bdp = len(repr(MACRO["brent_chg_reported"]).split(".")[1]) \
         if isinstance(MACRO["brent_chg_reported"], float) else 0
-    checks.append(("Brent's reported move reproduces from its own previous settle",
-                   abs(MACRO["brent_prev"] * (1 + MACRO["brent_chg_reported"] / 100)
-                       - MACRO["brent"])
+    checks.append(("Brent's reported move reproduces from its own previous settle "
+                   "(or the settle is recovered)",
+                   MACRO["brent_chg_reported"] is None
+                   or abs(MACRO["brent_prev"] * (1 + MACRO["brent_chg_reported"] / 100)
+                          - MACRO["brent"])
                    <= MACRO["brent_prev"] * 0.5 * 10 ** -_bdp / 100 + 0.01))
+    # A RECOVERED settle earns its place only if EVERY next-session quote lands on
+    # it - level less its own points change - to the cent; one quote is not two.
+    checks.append(("every recovered Brent settle is reproduced by two or more next-session quotes",
+                   all(d in dict(MACRO["brent_history"]) and len(qs) >= 2
+                       and all(abs(lv - pt - dict(MACRO["brent_history"])[d]) <= 0.005 + 1e-9
+                               for lv, pt in qs)
+                       for d, qs in MACRO["brent_recovered"].items())))
     _bd = [d for d, _ in MACRO["brent_history"]]
     checks.append(("the Brent series is weekdays, in date order, no duplicates, "
                    "none after the as-of date",
@@ -3263,8 +3625,9 @@ def report():
     checks.append(("every Brent session high is on a series date and at/above that day's settle",
                    all(d in _bcur and _bcur[d] <= h and d <= AS_OF
                        for d, h in MACRO["brent_session_highs"].items())))
-    checks.append(("the latest Brent settle carries a reported move",
-                   MACRO["brent_date"] in MACRO["brent_reported_moves"]))
+    checks.append(("the latest Brent settle carries a reported move or a recovery",
+                   (MACRO["brent_date"] in MACRO["brent_reported_moves"])
+                   != (MACRO["brent_date"] in MACRO["brent_recovered"])))
     checks.append(("the KOSPI's point and percent moves reproduce from its prior close",
                    abs(MACRO["kospi_latest_prev"] + MACRO["kospi_latest_chg_pts"]
                        - MACRO["kospi_latest"]) < 0.005
@@ -3720,18 +4083,19 @@ def report():
     _live = optimise("net_macro")
     checks.append(("the what-if optimiser reproduces the published allocation on live inputs",
                    _live["weights"] == p["optimized"]["weights"]
+                   and _live["pinned"]["weights"] == p["pinned"]["weights"]
                    and abs(_live["dd_cap"] - p["optimized"]["dd_cap"]) < 0.005))
     checks.append(("each what-if column differs from the live one by exactly the tilt it removes",
                    all(abs(f2["net_macro"] - f2["net_novol"] - f2["tilt_vol"]) < 0.0051
                        and abs(f2["net_macro"] - f2["net_neutral"] - f2["tilt_rates"]
-                               - f2["tilt_energy"]) < 0.0051 for f2 in p["funds"])))
+                               - f2["tilt_energy"]) < 0.0051
+                   and abs(f2["net_macro"] - f2["net_notrend"] - f2["tilt_trend"]) < 0.0051
+                   for f2 in p["funds"])))
     # The published 50%-cap counterfactual must BE the best capped point in budget.
     _cc = p["cap_counterfactual"]
-    _cbest = max((s["cagr"], [round(x * 100) for x in w]) for w, s in FEASIBLE
-                 if max(w) <= _cc["max_sleeve"] + 1e-9)
-    checks.append(("the published 50%-cap counterfactual is the best capped point in budget",
-                   _cc["weights"] == _cbest[1] and abs(_cc["cagr"] - _cbest[0]) < 1e-9
-                   and _cc["cagr"] <= p["optimized"]["macro"]["cagr"] + 1e-9))
+    _cw, _cs, _ = pick([(w, s) for w, s in FEASIBLE if max(w) <= _cc["max_sleeve"] + 1e-9])
+    checks.append(("the published 50%-cap counterfactual is the rule's pick among capped points in budget",
+                   _cc["weights"] == [round(x * 100) for x in _cw] and abs(_cc["cagr"] - _cs["cagr"]) < 1e-9))
     checks.append(("every region is scored at the mandate horizon",
                    all(HZ_LABEL in v for v in p["regions"].values())))
     checks.append(("the drawdown horizon scalar is sqrt(horizon / calibration window)",
@@ -3843,7 +4207,61 @@ def report():
                    all(f2["tilt_energy"] == rnd(f2["tilt_energy_cal"] * _es) for f2 in p["funds"])))
     checks.append(("every fund's tilt column adds up to its published total",
                    all(rnd(f2["tilt_regional"] + f2["tilt_vol"] + f2["tilt_rates"]
-                             + f2["tilt_energy"]) == f2["tilt_total"] for f2 in p["funds"])))
+                             + f2["tilt_energy"] + f2["tilt_trend"]) == f2["tilt_total"]
+                       for f2 in p["funds"])))
+    # ---- the market-trend channel (added 2026-10-07) ----
+    _tr = p["trend"]
+    _end = _dt.date.fromisoformat(_tr["end"])
+    checks.append(("the trend window ends on the last month-end before the as-of date",
+                   (_end + _dt.timedelta(days=1)).day == 1
+                   and _end < _dt.date.fromisoformat(AS_OF)
+                   and (_end + _dt.timedelta(days=1)).month == _dt.date.fromisoformat(AS_OF).month))
+    def _cmp(xs):
+        q_ = 1.0
+        for x in xs: q_ *= 1 + x / 100
+        return (q_ - 1) * 100
+    checks.append(("every trend quarter reproduces from its months, where months are given",
+                   all(abs(v["quarters"][k] - round(_cmp(m), 2)) < 1e-9
+                       for v in _tr["sleeves"].values() for k, m in v["monthly"].items())))
+    checks.append(("every trend quarter is within 0.05pp of the index provider's own figure",
+                   all(abs(v["quarters"][k] - x) <= 0.05
+                       for v in _tr["sleeves"].values() for k, x in v["cross_check"].items())))
+    checks.append(("the QQQ 2025 months compound to the published calendar-year 20.77%",
+                   abs(_cmp([2.16, -2.70, -7.59, 1.40, 9.18, 6.39, 2.42, 0.95, 5.38]
+                            + TREND_INPUTS["ATRQIAP"]["monthly"]["2025Q4"]) - 20.77) < 0.01))
+    checks.append(("the IXN Jan-Aug 2026 months compound to the published 28.22% year-to-date",
+                   abs(_cmp(TREND_INPUTS["ATRGTEC"]["monthly"]["2026Q1"]
+                            + TREND_INPUTS["ATRGTEC"]["monthly"]["2026Q2"]
+                            + TREND_INPUTS["ATRGTEC"]["monthly"]["2026Q3"][:2]) - 28.22) < 0.01))
+    _ok = True
+    for fid, v in _tr["sleeves"].items():
+        for h in _tr["horizons"]:
+            r_ = round(_cmp([v["quarters"][k] for k in _tr["quarters"][-h["quarters"]:]]), 2)
+            z_ = round((math.log(1 + r_ / 100) - h["years"] * math.log(1 + v["mu"] / 100))
+                       / (v["sigma"] / 100 * math.sqrt(h["years"])), 2)
+            sc_ = round(min(5.0, max(1.0, 3.0 + z_)), 2)
+            _ok &= (r_ == v["ret"][h["label"]] and z_ == v["z"][h["label"]]
+                    and sc_ == v["score"][h["label"]])
+        _ok &= v["score"][HZ_LABEL] == _tr["anchor"] == NEUTRAL_5
+        _ok &= v["blend"] == round(sum(v["score"][k] * w for k, w in p["hz_weights"].items()), 2)
+        _ok &= v["tilt"] == rnd((v["blend"] - _tr["anchor"]) * _tr["tilt_per_pt"])
+        _ok &= abs(v["sigma"] - round(v["beta"] * p["sp_vol_lt"], 2)) < 1e-9
+    checks.append(("every trend return, z-score, score, blend and tilt reproduces from the printed figure before it",
+                   _ok))
+    checks.append(("the trend scheme can never move a sleeve by more than its stated full-signal 0.30pp",
+                   all(abs(v["tilt"]) <= 0.30 + 1e-9 for v in _tr["sleeves"].values())))
+    checks.append(("every fund's trend tilt is its sleeve's published trend tilt; cash carries none",
+                   all(f2["tilt_trend"] == (_tr["sleeves"][f2["id"]]["tilt"] if f2["id"] in _tr["sleeves"] else 0.0)
+                       for f2 in p["funds"])
+                   and "ATRPHMM" not in _tr["sleeves"]))
+    checks.append(("each trend market's beta is the one its fund's volatility is built on",
+                   abs(FUNDS[1]["vol_beta"] - TREND_INPUTS["ATRQIAP"]["beta"] * JEPQ_VOL / NDX_VOL) < 1e-12
+                   and abs(FUNDS[2]["vol_beta"] - TREND_INPUTS["ATRASEQ"]["beta"] * 0.92) < 1e-12
+                   and abs(FUNDS[3]["vol_beta"] - TREND_INPUTS["ATRGTEC"]["beta"]) < 1e-12))
+    _ta = p["what_if"]["trend_alt"]
+    checks.append(("Asia's disputed quarter does not move Portfolio B or C",
+                   _ta["weights"] == p["optimized"]["weights"]
+                   and _ta["pinned"]["weights"] == p["pinned"]["weights"]))
     checks.append(("the covered-call sleeve is the one most paid when the curve sits above long-run",
                    max(p["funds"], key=lambda f2: f2["tilt_vol"])["id"] == "ATRQIAP"
                    or vc["ramp"] <= 0))
@@ -3891,23 +4309,30 @@ def report():
                    abs(cap - DD_CAP) < 5e-9))
     checks.append(("the published horizon scalar reproduces the enforced one",
                    abs(p["dd_model"]["horizon_scalar"] - DD_HORIZON_SCALAR) < 5e-9))
-    checks.append(("optimum is the max-CAGR point inside the budget",
-                   all(s2["cagr"] <= p["optimized"]["macro"]["cagr"] + 1e-9
-                       for w2, s2 in FEASIBLE)))
-    # The near-tie disclosure must be C's rule, not a lookalike: the same function
-    # applied to C's own candidates has to return Portfolio C, and B's band has to
-    # contain B and sit wholly inside the budget. (Scrub 2026-09-29.)
-    _nb = p["optimized"]["near"]
-    _pn = near_tie(sorted(_pin_feas, key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"]))))
-    checks.append(("near-tie band is Portfolio C's rule: it reproduces C from C's candidates",
-                   _pn["weights"] == p["pinned"]["weights"]
-                   and _pn["cagr"] == PIN["cagr"] and _pn["maxdd"] == PIN["maxdd"]))
-    checks.append(("B's near-tie pick is feasible, inside the band, and no deeper than B",
-                   _nb["n"] >= 1 and abs(_nb["maxdd"]) <= DD_CAP + 1e-9
-                   and _nb["cagr"] >= o["macro"]["cagr"] - PIN_TIE_PP - 1e-9
-                   and abs(_nb["maxdd"]) <= abs(o["macro"]["maxdd"]) + 1e-9
-                   and _nb["n"] == sum(1 for _, s2 in FEASIBLE
-                                       if s2["cagr"] >= o["macro"]["cagr"] - PIN_TIE_PP - 1e-9)))
+    # ONE RULE (2026-10-07): B within the tie band of the best CAGR in budget, and no
+    # portfolio in that band shallower than B.
+    _top = max(s2["cagr"] for _, s2 in FEASIBLE)
+    checks.append(("Portfolio B is within the tie band of the best CAGR inside the budget",
+                   p["optimized"]["macro"]["cagr"] >= _top - PIN_TIE_PP - 1e-9))
+    checks.append(("no portfolio in B's band has a shallower drawdown than B",
+                   not any(abs(s2["maxdd"]) < abs(p["optimized"]["macro"]["maxdd"]) - 1e-9
+                           for _, s2 in FEASIBLE if s2["cagr"] >= _top - PIN_TIE_PP - 1e-9)))
+    # The strict-maximum disclosure: the best CAGR in budget, the band counted from it,
+    # and B and C both chosen by the SAME function - re-applied here to each one's own
+    # candidates, so a rule that drifts apart for one of them fails.
+    _st = p["optimized"]["strict"]
+    _sw, _ss, _sn = pick(FEASIBLE)
+    _pw, _ps, _pn_ = pick(_pin_feas)
+    checks.append(("the strict-maximum alternative is the best CAGR in budget and the band is counted from it",
+                   _st["cagr"] == _top and _st["n"] == _sn == p["optimized"]["band_n"]
+                   and abs(_st["maxdd"]) <= DD_CAP + 1e-9))
+    checks.append(("B and C are both chosen by the one rule, re-applied to each one's candidates",
+                   [round(x * 100) for x in _sw] == p["optimized"]["weights"]
+                   and [round(x * 100) for x in _pw] == p["pinned"]["weights"]
+                   and _pn_ == p["pinned"]["band_n"]))
+    checks.append(("B gives up no more CAGR to the baseline than the tie band, and cuts its drawdown",
+                   o["macro"]["cagr"] >= b["under_macro"]["cagr"] - PIN_TIE_PP - 1e-9
+                   and abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])))
     checks.append(("portfolio vol < weighted-average vol (diversification works)",
                    o["macro"]["vol"] < sum(w/100*f["vol"] for w, f in zip(o["weights"], p["funds"]))))
     for name, ok in checks:

@@ -2,6 +2,188 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-07 — Roll to Tuesday 6 Oct, a market-trend channel, one selection rule for every portfolio, and fourteen errors fixed
+
+The market snapshot rolls to **Tuesday 6 Oct**; the review date is 7 Oct. The owner
+asked for three portfolios on a ten-year horizon:
+
+- a baseline;
+- an optimised portfolio built on macro sentiment, volatility, **market trend** and
+  regional rankings at 3, 6 and 12 months with the 10-year anchor;
+- a donut with Nasdaq Equity Income at 50%.
+
+All three are to be picked by "the best and recommended approach to reach max growth
+... while controlling the drawdown to minimum". The results:
+
+- **A, baseline**: 20 / 30 / 25 / 25, at 6.84% and −30.2%.
+- **B, optimised**: **25 / 15 / 55 / 5**, at 6.81% and −26.4%. It was
+  25 / 10 / 60 / 5; **the rule change moved it, not the data**.
+- **C**: **20 / 50 / 25 / 5**, at 6.60% and −25.7%, unchanged.
+- The gauge is **2.36**.
+
+### 1. One selection rule for every portfolio (owner's instruction)
+
+The 2026-09-29 finding is closed. B took the strict maximum while C took the
+lowest drawdown within 0.05pp of its best, so a difference below the model's
+precision decided B.
+
+**What changed in the engine.** One function, `pick()`, now chooses every
+portfolio: the best CAGR in budget, then the lowest drawdown within 0.05pp. It
+chooses:
+
+- B and C;
+- the 50%-cap counterfactual;
+- the Global Technology stub's counterfactual;
+- every what-if, each of which now reports C as well as B.
+
+**The strict maximum stays visible.** It is published beside B as
+`optimized.strict`: 25 / 10 / 60 / 5 at 6.86% and −27.1%, so 0.05pp more return
+for 0.7pp more drawdown.
+
+**Consequence, stated on the page.** B now forecasts **0.03pp less than the
+baseline**: 6.81% against 6.84%, inside the tie. Its drawdown is 3.8pp shallower,
+and return per drawdown improves 0.226 → 0.258. Under the strict rule B was 0.02pp
+ahead, so the baseline was never meaningfully behind on return. Four passages typed
+"better on both axes" or assumed a positive edge:
+
+- the improvement card;
+- the "Why not simply maximise return?" paragraph;
+- the rationale lede;
+- the both-lenses note.
+
+Each is now generated from the numbers.
+
+### 2. A market-trend channel at 3 / 6 / 12 months
+
+**What is measured.** For each equity sleeve, its market's trailing returns to
+**30 Sep**:
+
+- the Nasdaq-100, through QQQ;
+- MSCI AC Asia ex Japan;
+- global technology, through IXN.
+
+**How it is scored.** Each window becomes a z-score against the sleeve's own
+long-run drift and volatility. That score maps to 3 + z on 1–5 and is blended
+with the regional weights. **The 10Y score is held at 3.0**, because momentum
+fades within about a year and partly reverses (Moskowitz, Ooi and Pedersen,
+2012). The tilt is (blend − 3) × 0.30, an assumption recorded as one.
+
+**The tilts.** They are +0.10, +0.12 and +0.13pp. **Without the channel neither B
+nor C moves**; it lifts B's forecast by 0.09pp and C's by 0.08pp.
+
+**One input is disputed.** Asia's Q2 is +27.7% in Schroders' figure but 25.73%
+for AAXJ. It is re-run on the lower figure as `trend_alt`, and neither portfolio
+moves.
+
+**Sources are all new.** There are 13 of them. Every quarter is compounded in
+code from its months where they are given. The Nasdaq-100's Q2 and Q3 agree with
+the index factsheet within 0.01pp.
+
+**Shared betas.** The three market betas (1.22 / 1.05 / 1.30) are now named
+constants. The fund volatilities and the trend channel both use them.
+
+**Where it shows.** The page gains a "Market trend" section and a sixth row in
+the transmission table. The rationale report gains a "What would change this
+view" bullet for it.
+
+### 3. Data rolled to 6 Oct, each figure chained to its prior
+
+- **US equities, 6 Oct:**
+  - S&P **7,818.93 (+0.58%), a record** above its August high;
+  - Nasdaq **27,599.79 (+0.45%), a record**;
+  - Dow **51,521.28 (+0.49%)**.
+  - 5 Oct and 6 Oct each chain to the cent.
+- **10-year:**
+  - 5 Oct **5.31%** (FRED DGS10).
+  - **2 Oct resolved at 5.28**: Monday's "+3bp" only fits 5.28.
+  - **6 Oct not carried**, because only market-basis quotes exist.
+  - **Intraday peak 5.349% on 5 Oct, the highest since April 2002.**
+  - The 30-year high moved to 5.69%, also on 5 Oct.
+- **FedWatch (6 Oct):** October **21.6%**, December **86.2%**.
+- **ISM services:** **54.9**, with prices paid **74.0**.
+- **PH CPI (Sep):** **7.2%** against a 6.7% poll; core 4.7%; bottom 30% of
+  households 9.0%.
+- **PH T-bills (5 Oct):** 5.667 / 5.971 / 6.214%.
+- **Peso (6 Oct):** **62.771**, a 6.34% loss this year.
+- **PSEi:** 5,743.21 on 5 Oct, then **5,677.12** on 6 Oct.
+- **Brent:**
+  - **$100.32** (5 Oct, −1.9%).
+  - **$100.58** (6 Oct), *recovered*. No settlement story exists; two 7 Oct
+    quotes both measure from it. A new check requires two witnesses for any
+    recovered settle.
+  - Up 55.87% y/y.
+- **WTI:** $89.43 (5 Oct). 6 Oct is not carried: two implied settles a cent
+  apart.
+- **VIX:** 15.52 (5 Oct, +1.4%), then **15.01** (6 Oct, −3.29%).
+- **Nikkei:** **70,683.98**, the first close above 70,000 since 1 July.
+- **KOSPI:** **6,941.39** (−0.89%).
+- **Energy:**
+  - Saudi November price to Asia **$5 below**, a six-year low.
+  - Petroline at **5.8 mb/d**.
+  - A G7 release of **100m barrels** is planned.
+- **Hormuz security:**
+  - UKMTO: **9 attacks in October by the 6th** against 18 in all of September.
+  - The queue off berth is back up to **242**.
+
+### 4. Scores
+
+- **Inflation trajectory 2.75 → 2.5**, on the Philippine print and US services
+  prices.
+- **Valuation support 8.25 → 8.0**, on records set on a 2002-high discount rate.
+- **Philippines 3M and 6M 5.5 → 5.0**: September CPI was the test this note had
+  named, and it failed.
+- Every other driver and region is held, each with its rationale rewritten to the
+  6 Oct evidence. The gauge goes 2.38 → 2.36.
+
+### 5. Errors found, recorded, fixed
+
+1. **The real yield used August CPI** for two days after September's 7.2% was out,
+   and the page typed the month ("against August inflation"). Fixed: the payload
+   carries the CPI and its month.
+2. **The peso slide** typed "August inflation printed 6.1%, a fourth consecutive
+   slowdown". It is now a template on the payload.
+3. **December FedWatch odds** in the US note had no date. Fixed.
+4. **A coincidental trace.** "The poorest 30% of households" traced to an
+   unrelated 30. It now has its own input, `ph_cpi_bottom_hh_pct`.
+5. **The stub counterfactual tested only the raw drawdown.** FEASIBLE tests both
+   the raw and the published one, so the stub could have been measured against a
+   portfolio that *prints* over budget. Both are tested now.
+6. **The stub counterfactual used the strict maximum.** That compared the stub
+   against a rule B no longer uses. Fixed by the rule change.
+7. **The 6 Oct inputs had no entries in the sources list.** The page's
+   "every number traces to one of these" was false for them. 24 sources are added, and
+   FRED's entry now names 2 and 5 Oct.
+8. **The top-level README's result table** still showed the 2 Sep build: a 5-year
+   horizon, 15 / 45 / 35 / 5, 7.31%. It is replaced with the current three
+   portfolios.
+9. **The engine's report** printed driver research scores at one decimal (1.75
+   showed as "1.8"). This is the defect invariant 56 fixed on the page.
+10. **The improvement card** would have printed "+−0.03pp" under "Better on both
+    axes at once" once B's edge turned negative. The heading, sign and sentence
+    are now conditioned on the data.
+11. **"The winner is the one that beats the baseline on both sides at once"** was
+    typed in markup and false under the new rule. It is now computed.
+12. **The rationale lede** said "a thin return edge" for a negative edge. Now
+    conditioned.
+13. **Two "1-year" figures** from searches (Nasdaq-100 +34.38%, IXN +58.08%) could
+    not be twelve months to 30 Sep on their own monthly series. Not used, and
+    recorded in CLAIMS.
+14. **Fourteen CLAIMS rows** still carried 2 Oct values the payload had moved past;
+    the independent audit flagged each one. All are rolled to 6 Oct with their
+    chains.
+
+### 6. Verification
+
+- **Engine:** 205/205 checks.
+- **Independent audit:** 237 checks, 0 failures. It has a new section, B1,
+  which re-derives every trend figure from the published months. Its section G
+  re-derives the one rule for B, C, the strict alternative, the cap
+  counterfactual, the stub and all six what-ifs (with C).
+- **Mutation tests:** eight deliberate faults, all eight caught.
+- **Validator:** two new requirements, the third donut and the trend analysis, so
+  it now has 20 rows. They pass 19/20 locally; the 20th, the viewport, is added
+  by the host.
+
 ## 2026-10-03 — Roll to Friday 2 Oct: fresh VIX curve, Brent across its roll, Monetary up and Growth down, and nine errors fixed
 
 The market snapshot rolls to **Friday 2 Oct**; the review date is 3 Oct. The

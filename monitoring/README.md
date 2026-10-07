@@ -24,10 +24,19 @@ prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
 3M / 6M / 12M / 10Y, then the gauge. Drivers and regions are researched on 1–10;
-both the headline gauge and the regional rankings are reported on 1–5. The optimised portfolio is built from four
+both the headline gauge and the regional rankings are reported on 1–5. The optimised portfolio is built from five
 inputs — the broad gauge, the correlated per-sleeve transmission, the **volatility
 gap** (horizon-blended implied vol minus the LONG-RUN 19.5 every base return already
-assumes, same horizon weights as the regional blend) and the regional rankings. Two of those are derived rather than judged: the
+assumes, same horizon weights as the regional blend), the regional rankings and,
+since 2026-10-07, the **market trend**: each equity sleeve's market over the
+3/6/12-month windows to the last month-end, z-scored against its own long-run drift
+and volatility, with the 10Y score held neutral. Refresh `TREND_INPUTS` and
+`TREND_END` at each month-end; a check fails once the window is a month stale. Every
+quarter must reproduce from its months where months are given, and a "1-year"
+figure from a search is never used unless the months behind it reproduce it.
+Every portfolio — B, C, the cap counterfactual, the stub and every what-if — is
+chosen by the one function `pick()`: the best CAGR in budget, then the lowest
+drawdown within 0.05pp of it. Three of the inputs are derived rather than judged: the
 regional tilt is `(score − 3.0) × 0.675` on the reported 1–5 scale (identical to
 the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's volatility tilt is
 `gap × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
@@ -132,6 +141,24 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+59. A RETURN IS SCORED AGAINST WHAT WAS ALREADY EXPECTED, AND ONLY FROM ITS
+   OWN PARTS. The trend channel z-scores each window against the sleeve's long-run
+   drift and volatility, so a market that merely did what its base return says
+   scores neutral. Two "1-year" figures surfaced in its research (Nasdaq-100
+   +34.38%, global tech +58.08%) that their own monthly series show cannot be twelve
+   months to the window end. A summary's period label is a claim; compound the
+   months before using the total.
+58. A SETTLE RECOVERED FROM THE NEXT SESSION NEEDS TWO WITNESSES. Brent's 6 Oct
+   settle was never reported; it is carried because two 7 Oct quotes both measure
+   their moves from it. A check now requires two or more next-session quotes for
+   every recovered settle, and the page carries no move for that day. One quote is
+   a guess with arithmetic attached.
+57. ONE OBJECTIVE, ONE RULE. Two portfolios chosen to the same stated objective
+   must be chosen by the same function. Every pick on the page now goes through
+   `pick()`, and both harnesses re-apply it to each portfolio's own candidates. A
+   rule change can move the headline comparison: under it B gives up 0.03pp of
+   forecast return to the baseline, inside the tie, and the page says so in words
+   generated from the numbers rather than "better on both axes" typed in markup.
 56. A NUMBER IS SHOWN AT THE PRECISION IT IS SET. Geopolitics was scored 1.75 and the
    Report printed "1.8"; the driver cards showed 8.25 as 8.3. A rounded score is a
    different score. Format each value at its own precision, never at the
@@ -155,12 +182,12 @@ truth; the artifact is a rendering of it.
    in prose with nothing behind it. Brent's moves lived only in sentences. Both
    are now dated records, and each entry is checked against the series on its own
    date: a high at or above that day's settle, a move reproducing from the prior.
-51. A SELECTION RULE IS PART OF THE RESULT. Portfolio C takes the lowest drawdown
-   within 0.05pp of its best return; Portfolio B takes the strict maximum, and five
-   portfolios sit inside that band. When a difference smaller than the model's
+51. A SELECTION RULE IS PART OF THE RESULT. Portfolio C took the lowest drawdown
+   within 0.05pp of its best return; Portfolio B took the strict maximum, and five
+   portfolios sat inside that band. When a difference smaller than the model's
    rounding decides the answer, publish the band beside the answer. And when two
    answers on one page use different rules, say so and leave the choice to the
-   owner.
+   owner. (The owner chose on 2026-10-07: see 57.)
 50. A VALUE UPDATE IS NOT A VERIFICATION. The Fed funds row read "raised 25bp on
    16 Sep" while citing the 29 Jul statement and a 5 Sep verification - both before
    the event. The IMF rows said "April" for 2½ months after the July update, and
