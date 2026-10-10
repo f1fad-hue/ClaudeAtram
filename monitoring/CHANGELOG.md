@@ -2,6 +2,199 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-10 — Roll to Friday 9 Oct: a mis-dated volatility curve caught and re-quoted, the trend channel put on realised risk, and thirteen errors fixed
+
+The market snapshot rolls to **Friday 9 Oct**; the review date is 10 Oct.
+
+- **A, baseline**: 20 / 30 / 25 / 25, at 6.84% and −30.1%.
+- **B, optimised**: **25 / 15 / 55 / 5**, at 6.81% and −26.3%. It is still 0.03pp
+  below the baseline, inside the tie, with a drawdown 3.8pp shallower.
+- **C, Nasdaq Income at 50%**: **20 / 50 / 25 / 5**, at 6.57% and −25.6%.
+- The gauge is **2.36**; the drivers are unchanged.
+
+Neither allocation moved. The forecasts moved slightly, mostly through the
+re-quoted volatility curve, which lowers every fund's volatility and its
+volatility tilt.
+
+### 1. The volatility curve was wrong for its date
+
+**What the curve was.** Since 3 Oct the curve had been built on a futures board
+labelled "as of 2 October": Oct 18.65, Nov 19.21, Dec 19.35, Jan 20.38.
+
+**What the test found.** It was tested against the market's 3-month index,
+VIX3M, re-anchored to that day's spot:
+
+- on 1 Oct it read −0.3%;
+- on 6 Oct it read **+4.4%**;
+- on 7 Oct it read **+4.16%**.
+
+It fitted the market of the day before its own date.
+
+**Why the old check missed it.** The only VIX3M reading available then was dated
+1 Oct, a day before the strip it was testing.
+
+**What explains it.** The VIX fell 6.6% on 2 Oct. Either the board was a 1 Oct
+snapshot labelled 2 Oct, or the futures fell about a point that day. Either way,
+it priced the wrong market for five days.
+
+**Fixed.**
+
+- **Re-quoted** to the 5 Oct Cboe settlements: Oct 17.46, Nov 18.14, Dec 18.55,
+  Jan 19.33. They read −0.87% against VIX3M on 7 Oct and −0.6% on 6 Oct.
+- **A new check** requires the VIX3M reading to be dated on or after the strip it
+  tests.
+- **The comparison now shifts the curve forward in time**, by the days since its
+  quote date, not only in level. Until now only the spot was moved.
+- **The superseded board is kept** and measured on the same test, so the page
+  states its +4.16% error rather than describing it.
+
+**Effect.** Horizon vols fall to 17.58 / 18.42 / 18.92 / 19.44%. The blend falls
+to 18.97, against the long-run 19.5. The volatility tilts move to −0.11pp for
+Nasdaq Equity Income and +0.06pp for Global Technology.
+
+### 2. The trend channel scored realised returns against implied risk
+
+Each trend z-score divided a trailing return by **implied** volatility. Implied
+vol carries the 3.5-point premium options charge over delivered volatility, so
+every z was shrunk by about 18%.
+
+**Fixed.** The divisor is now the realised-equivalent level the model already
+publishes: 19.44 − 3.5 = 15.94, times each market's beta. The tilts rise to
++0.12 (Nasdaq-100), +0.15 (Asia ex Japan) and +0.16 (global tech). Global tech's
+six-month score now reaches the 5.0 cap.
+
+**Neither portfolio's weights move.** The trend lifts B's forecast by 0.11pp and
+C's by 0.10pp.
+
+### 3. A check asserted what the data no longer supported
+
+The engine checked that Asia's disputed second quarter "does not move Portfolio B
+or C". On the 10 Oct inputs it does move B, to 25 / 15 / 50 / 10 at 6.82%, which
+is 0.01pp from B and inside a five-portfolio band.
+
+Asserting invariance on a flat optimum invites someone to loosen the check. It is
+replaced by a bound: the disputed input may move neither forecast by more than
+the 0.05pp tie. The page now states the move and its size, and the audit
+re-derives both.
+
+### 4. Data rolled to 9 Oct, each figure chained to its prior
+
+- **US equities:**
+  - 7 Oct: S&P 7,801.77, Dow −0.66%.
+  - 8 Oct: S&P 7,765.36; Nasdaq 27,193.34 (−1.25%).
+  - 9 Oct: **S&P 7,811.54, Nasdaq 27,366.17, Dow 51,655.01**.
+  - Every close chains to the cent. The S&P's record close is still 7,818.93
+    (6 Oct).
+- **10-year:**
+  - **6 Oct resolved at 5.27** now that FRED has published it; 7 Oct 5.28;
+    8 Oct 5.22.
+  - **9 Oct 5.24 is provisional** (Treasury par curve; FRED publishes on 13 Oct).
+  - Intraday **5.365% on 7 Oct**, the highest since April 2002 but still short of
+    that year's 5.379%.
+  - The 10-year auction cleared at **5.3%**, the highest since November 2000,
+    with 80.3% to indirect bidders.
+  - The 30-year reached a high of 5.733%.
+- **FOMC minutes:** every participant backed the September hike, and most saw
+  another by year-end as appropriate.
+- **FedWatch:** still carried at 6 Oct (21.6% / 86.2%). The 9 Oct readings
+  (16–18%) came with no dated December figure.
+- **VIX:** 15.08, then 15.41, then **14.84**.
+- **Brent:**
+  - **$104.28** (8 Oct, +4%, on tanker attacks and Hurricane Isaias), then
+    **$104.72** (9 Oct).
+  - **7 Oct withheld:** the reported moves imply about 100.2, against a 101.90
+    print in a daily table.
+  - The year-ago base is re-anchored to the exact anniversary, $65.22, giving
+    **+60.56%**.
+- **WTI:** 88.28, then 91.49, then **91.85**.
+- **Peso:**
+  - A **record-weak close of 62.90 on 8 Oct**, then **62.801** on 9 Oct.
+  - The 62.925 intraday trough of 15 Sep stands.
+  - YTD loss of purchasing power: 6.39%.
+- **PSEi:** a **2026 low of 5,610.39** on 8 Oct, then **5,700.99** on 9 Oct.
+- **Nikkei:** **69,030.92** (9 Oct, −0.02%). A daily table's 68,520.50 for 8 Oct
+  is not carried, because Nikkei's own published move contradicts it.
+- **KOSPI:** **6,625.93** (8 Oct, −2.62%); Korea was shut on 9 Oct.
+- **Samsung's preliminary Q3:** **107.4tn won**, a record, against a 106.1tn
+  consensus. **TSMC's September revenue:** +54.6% y/y.
+- **Michigan sentiment:** **46.3**, near its record low. Five-year inflation
+  expectations rose to **3.5%**.
+- **US September CPI:** due 14 Oct with a **3.7%** consensus; now a catalyst.
+- **Geopolitics:**
+  - At least **12 tankers attacked** in the week to 5 Oct, including one off
+    Qatar with casualties.
+  - The President pledged **no US strike on Iran before the 3 Nov midterms**.
+  - PortWatch counted **4 transits**; the queue was **206**.
+- **France:** the OAT–Bund spread is at **~140bp**.
+
+### 5. Scores
+
+- **Europe 3M cut 2.5 → 2.25.** French fiscal stress (a ~140bp spread, a 5.4%
+  deficit) has joined the energy shock.
+- **Every driver is held**, each with its rationale rewritten to the evidence:
+  - Monetary: the minutes said what the dots had, and yields ended below their
+    peak.
+  - Inflation: expectations worsened, but no print arrived; 14 Oct is the test.
+  - Growth: sentiment is near its record low, while activity is still in
+    expansion.
+  - Earnings: Samsung beat narrowly, and the market sold the news.
+  - Geopolitics: attacks spread inside the Gulf, while a US strike is off the
+    table until 3 Nov.
+- The gauge is unchanged at 2.36.
+
+### 6. Funds and stocks
+
+- **Global Technology look-through, upgraded from sector weights to stocks.** It
+  now uses Fidelity's 31 Aug factsheet: TSMC 9.1, Microsoft 6.9, Apple 5.4 and six
+  more. The note had said no top-10 list was reachable.
+  - The tenth holding, 2.1%, is unnamed in the reachable text and is left out
+    rather than guessed.
+  - The fund is 53.5% US, against its benchmark's 72%. Re-weighting the regional
+    score on it is OPEN, because the full country table is not reachable.
+- **JEPQ:** 31 Aug is still JPMorgan's latest sheet; re-checked on 10 Oct.
+- **The Asia target's holdings:** the newest list is from April, so the gap
+  stays declared.
+
+### 7. Errors found, recorded, fixed
+
+1. **The "2 Oct" VIX strip priced 1 Oct's market** (section 1).
+2. **The VIX3M comparison shifted the curve in level only,** not in time.
+3. **The VIX3M check accepted a reading dated before the strip.**
+4. **Trend z-scores used implied volatility** (section 2).
+5. **The Report's "provisional" label was hard-wired** to the 23 Sep market print
+   (5.104%). It would have printed that beside the 9 Oct close. A provisional
+   point now names its own basis, and a check refuses a basis that is a figure.
+6. **An invariance check could not survive a flat optimum** (section 3).
+7. **The Global Technology look-through note was outdated:** it said no holdings
+   list was reachable, and its sector table was dated by when it was read.
+8. **The JEPQ note's "checked" date was a week stale.**
+9. **"98 positions" would have traced by coincidence** to JPMorgan's 98% crude
+   figure. It now has its own input.
+10. **A check used the literal 1.22** where the named beta constant now exists.
+11. **The trend note's "none of them over the last three" was ambiguous.**
+    Reworded.
+12. **The top-level README's result table had no check.** The audit now compares
+    it with the payload (new section I2).
+13. **The volatility lede quoted a provisional close without saying so.** It now
+    carries the same flag as the Report.
+
+Caught before commit, not shipped:
+
+- a note sentence ("5.60% on the 9th") that the 10-year listing check read as a
+  10-year close;
+- an unverified estimate of my own in CLAIMS, removed.
+
+### 8. Verification
+
+- **Engine:** 208/208 checks.
+- **Independent audit:** 247 checks, 0 failures. It has a new README-drift
+  section, a VIX3M date rule, and the time-shifted VIX3M re-derivation.
+- **Mutation tests:** 11 of 11 caught. Three are new: a VIX3M reading dated
+  before the strip, trend sigma moved back onto implied volatility, and B's CAGR
+  drifting.
+- **Validator:** 19/20 locally; the viewport row passes only on the published
+  copy.
+
 ## 2026-10-07 — Roll to Tuesday 6 Oct, a market-trend channel, one selection rule for every portfolio, and fourteen errors fixed
 
 The market snapshot rolls to **Tuesday 6 Oct**; the review date is 7 Oct. The owner

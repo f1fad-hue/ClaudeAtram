@@ -141,6 +141,24 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+63. A SNAPSHOT OUTSIDE THE ENGINE NEEDS A CHECK OR IT ROTS. The top-level
+   README's result table showed the 2 Sep build for a month before anyone looked.
+   It is now compared with the payload by the review audit on every run.
+62. A LABEL NAMES ITS OWN BASIS, NOT A NEIGHBOUR'S FIGURE. The Report's
+   "provisional" tag printed the 23 Sep market print (5.104%) beside ANY
+   provisional 10-year close - right once, then wrong the next time a point was
+   provisional, which was 9 Oct. A provisional point now carries the basis it is
+   provisional on, and a check refuses a basis that is a number.
+61. A REALISED OUTCOME IS MEASURED AGAINST REALISED RISK. The trend channel's
+   z-scores divided trailing returns by IMPLIED volatility, which carries the
+   3.5-point premium options charge over delivered volatility - shrinking every
+   z by ~18%. The model publishes the realised-equivalent level; that is the one a
+   realised return is compared with.
+60. A TEST MUST NOT PREDATE WHAT IT TESTS. The "2 Oct" VIX futures board was
+   validated against the 1 Oct VIX3M - the only reading available - and matched it
+   to 0.3%, while missing 6-7 Oct by over 4%: it priced the market of the day
+   before its own date. The VIX3M reading must now be dated on or after the strip,
+   and the comparison shifts the curve forward in time, not only in level.
 59. A RETURN IS SCORED AGAINST WHAT WAS ALREADY EXPECTED, AND ONLY FROM ITS
    OWN PARTS. The trend channel z-scores each window against the sleeve's long-run
    drift and volatility, so a market that merely did what its base return says
