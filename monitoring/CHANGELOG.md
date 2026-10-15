@@ -2,6 +2,145 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-15 — Roll to Thursday 15 Oct: a stale Global Technology fee, a hot CPI, Asia's crash, a concise page, and fifteen errors fixed
+
+Asian and Philippine data are Thursday 15 Oct closes; US series carry their latest
+close, Wednesday 14 Oct (the page says so beside the as-of date).
+
+| | Weights | Net 10Y CAGR | Drawdown | Return / DD |
+|---|---|---|---|---|
+| A, baseline | 20 / 30 / 25 / 25 | 6.74% (was 6.84%) | −30.1% | 0.224 |
+| B, optimised | **25 / 15 / 55 / 5** | 6.76% (was 6.81%) | −26.3% | 0.257 |
+| C, Nasdaq Income 50% | **20 / 50 / 25 / 5** | 6.54% (was 6.57%) | −25.6% | 0.255 |
+
+Neither allocation moved. B is now 0.02pp **above** the baseline, inside the tie;
+most of A's fall is the fee correction below (Global Technology is 25% of A, 5% of
+B). The gauge is **2.32** (was 2.36).
+
+### 1. Fees: the Global Technology trust fee was a month stale
+
+ATRAM raised the ATRGTEC trust fee **from 1.15% to 1.50% on 14 Sep 2026** (A unit
+class), with five other feeders moving 1.20% → 1.50%, under an amended Declaration
+of Trust; ATRAM's own fund page lists 1.50%. The model carried 1.15%, marked
+"verified", for a month. Corrected: the fund's all-in fee is 2.54% and its net
+forecast 7.59% (was 7.96% before this roll). Asia Equity Opportunity is not on the
+list; Nasdaq Equity Income was already 1.50%. The fee now carries its previous
+value and effective date, and the Funds tab states the change.
+
+Knock-on: the Report's typed heading "Global Technology: the highest return, the
+smallest weight" became false — Asia Equity (7.64%) now forecasts above it. The
+heading is now "the deepest drawdown, the smallest weight", the rank is computed
+on the page, and the engine check asserts only the claims still typed.
+
+Every other fee re-checked: Nasdaq Equity Income 1.50% + 0.35% TER (ATRAM page,
+DragonFi); Peso Money Market 0.71% all-in (KIIDS); Asia Equity 1.18% + the 1.55%
+estimate (the one estimate left, unchanged); Fidelity W-Acc-GBP OCF 1.04%.
+
+### 2. Data, 12–15 Oct
+
+- **US September CPI (14 Oct)**: 3.7% y/y (+0.6% m/m) against a 3.6% Dow Jones
+  consensus; core 2.6% (+0.3%) against 2.5%. Gasoline +34.2% y/y. The page had
+  quoted a 3.7% consensus — Admiral Markets' preview, not the survey the print
+  was measured against.
+- **Fed odds**: October 31.6% late on 14 Oct (from 22%; ~50% intraday), December
+  89.7%.
+- **10-year**: 9 Oct 5.24% CONFIRMED by FRED; 13 Oct 5.21%; 14 Oct 5.19%
+  provisional (par curve). 12 Oct had no close (Columbus Day). 2-year 4.808%,
+  30-year 5.517% (14 Oct readings).
+- **Equities, 14 Oct**: S&P 7,718.94 (−1.11%, worst since July), Nasdaq 26,692.87
+  (−1.88%), Dow 51,621.48. AP's week-to-date points put 9 Oct's Dow at 51,654.95,
+  six cents below the 51,655.01 carried then.
+- **Asia, 15 Oct**: KOSPI 5,554.22 (−7.57%, circuit breaker), 20.7% below 2 Oct;
+  Nikkei 64,425.95 (−4.9%). TSMC Q3 profit NT$763.06bn, +68.7%, above consensus.
+- **Peso**: record close 63.06 (15 Oct), the first past 63; intraday 63.15. PSEi
+  5,663.17. T-bills 5.845 / 6.171 / 6.351% (12 Oct auction).
+- **Oil**: Brent 106.65 / 105.69 / 106.06 (12–14 Oct), +70.0% y/y on a re-anchored
+  base (62.39, 14 Oct 2025). WTI 95.09.
+- **VIX**: 15.21 / 15.27 / 16.87 (12–14 Oct, +10.48% on the CPI). The 5 Oct strip
+  is still the curve (10 days old; no fresher settlements found).
+- **Hormuz**: a container ship sunk (13 Oct), more than 20 vessels attacked in
+  October, Aramco's Dhahran headquarters hit; Kpler crude through Hormuz 8.5 mb/d
+  (week to 12 Oct); PortWatch 2 transits (11 Oct).
+
+### 3. Scores
+
+Inflation **2.5 → 2.25** (the print it was held for came in hot on both measures).
+Volatility **3.0 → 2.75** (VIX +10.48%, Korean circuit breaker). Geopolitics
+**1.75 → 1.5** (ships sinking, Aramco struck, talks stalled). US 3M **4.25 → 4.0**.
+Asia 3M **5.0 → 4.0**, 6M **5.5 → 5.0**: the buyers left, not the earnings; 12M
+and the ten-year anchor held. Monetary, growth, earnings, valuation, Europe and the
+Philippines held. Every driver and region note was rewritten shorter.
+
+### 4. The page, made concise
+
+Visible words per tab: Macro 1,419 → 871, Volatility 1,000 → 399, Portfolios
+1,273 → 597, Report 1,779 → 1,373, Funds 1,273 → 1,061 (mostly the four slides).
+Page height at 412px falls by 12% (Funds) to 48% (Volatility).
+
+Method detail — the curve construction, the drawdown calibration, the trend
+formula and sources, the strategic lens, the scenario assumptions and "why
+not maximise return" — moved into collapsed "how" panels; nothing was deleted
+that a check reads. Fees moved above the look-through on the Funds tab.
+
+### 5. Errors found and fixed
+
+1. **The peso table printed "+-5,435" in the gain colour** whenever B ended below
+   A: the Δ column hard-coded "+" and green. Now signed by value; the validator has
+   a new row rejecting malformed signs, NaN or "undefined" anywhere on the page with
+   every collapsible open (it fails on the previous commit).
+2. **Global Technology's trust fee**, above.
+3. **The Report's "highest return" heading**, above.
+4. **"~72% US · ~16% Asia · ~12% Europe by index weight"** was typed into the
+   look-through with no source. Replaced by the fund's own published country split;
+   the note's "less American than its benchmark" went with it.
+5. **"Distributes ~9% p.a."** was typed with no model input. Replaced by the TER
+   from the payload.
+6. **Numbers typed into markup** — 10.5×, 52% / 28%, 0.88 (twice), 1.55% / 1.50%,
+   BSP 5.00% — are now bound to the payload.
+7. **The gauge sub-line was typed** ("volatility has stepped back but not stood
+   down") and went false the day volatility was cut. Now named from the scores.
+8. **The volatility chart labelled the curve's 5 Oct spot "spot VIX"** beside a
+   tile showing the 14 Oct close. Now "curve spot 15.52 (5 Oct)".
+9. **The gap column printed a hyphen** ("-0.53") where every other figure uses a
+   minus sign; two tiles hard-coded "+" (latent). All signed by value.
+10. **A check pinned stale prose**: "Hormuz is quoted on oil volume" required
+    Goldman's 28 Aug 15.5 mb/d in the note, seven weeks after newer readings. It now
+    reads the newest dated measure (Kpler, week to 12 Oct); the Report's Hormuz line
+    moved with it.
+11. **The FX drift bracket paired August PH CPI with US headline** after both
+    September prints existed. Now month-matched: 7.2 − 3.7 = 3.5pp.
+12. **The stub sentence said Global Technology "costs nothing in expected
+    return"** while its 5% floor cost 0.4pp of drawdown. It now states both, and
+    that the minimum weight, not the forecast, keeps it in.
+13. **The trend windows end 30 Sep and the page did not say so** while the KOSPI
+    was 20.7% below its 2 Oct close. The page now flags any move after the window.
+14. **The conclusion said B "raises" or "lowers" the CAGR** for differences inside
+    the tie. Inside the tie it now says the forecasts are level.
+15. **The 25 Sep correction note** sat atop the Report three weeks on, with a
+    payload record nothing else used. Retired; the history is here.
+
+### 6. House cleanup
+
+- **98 inputs and 6 derived fields removed** that nothing read — not the engine,
+  not the page, not a note (superseded payrolls, PMIs, August CPI components,
+  chip-stock moves, earlier Hormuz flows). Payload 111.5 KB → 103.7 KB.
+- Dead page code removed (the correction note, a guard for a missing element).
+- Look-through notes shortened.
+- **36 sources added** for this roll (210 in all, every one https and unique); two
+  existing entries (Fed H.15, Investing.com VIX) re-described rather than duplicated.
+
+### 7. Verification
+
+- Engine **208 / 208**. Independent audit **253 checks, 0 failures**, 2 standing
+  warnings. Validator **21 rows**, all passing on the published copy (the viewport
+  row needs the host). No JavaScript errors; no horizontal scroll at 412px.
+- Mutation harness: **11 of 11** caught.
+- B's optimum stays flat: the strict maximum, 25 / 10 / 60 / 5, is 0.05pp higher
+  for 0.7pp more drawdown. With the fee correction alone and no rescoring, that gap
+  rounds to 0.06pp and the rule takes it — the knife-edge is recorded in CLAIMS.
+
+Not personal advice.
+
 ## 2026-10-10 — Roll to Friday 9 Oct: a mis-dated volatility curve caught and re-quoted, the trend channel put on realised risk, and thirteen errors fixed
 
 The market snapshot rolls to **Friday 9 Oct**; the review date is 10 Oct.

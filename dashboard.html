@@ -272,6 +272,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 .cat{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
 .cat:first-child{border-top:0}
 .catwhen{flex:0 0 84px;font-weight:600;font-variant-numeric:tabular-nums;font-size:12px}
+details.how>summary{cursor:pointer;font-weight:600;font-size:13px;color:var(--navy);list-style:none}
+details.how>summary::-webkit-details-marker{display:none}
+details.how>summary::after{content:" ▸";font-size:11px}
+details.how[open]>summary::after{content:" ▾"}
+details.how[open]>summary{margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+details.how p:last-child{margin-bottom:0}
 .discl>summary{cursor:pointer;font-size:13px;color:var(--muted);list-style:none;padding:2px 0}
 .discl>summary::-webkit-details-marker{display:none}
 .discl>summary::after{content:" ▸";font-size:11px}
@@ -299,17 +305,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
          wrong above a live gauge reading 2.39, in the first heading of the page.
          C1 could not see it: 2.7 exists elsewhere in the payload, so it traced. -->
     <h2>A <span id="ghead">—</span> market: strong earnings, hostile policy</h2>
-    <p class="lede">The composite scores seven macro drivers, weighted by how much each
-      one actually moves a peso-based investor holding these four funds. It lands
-      just below neutral — not a market to hide from, and not one to lever into.</p>
+    <p class="lede">Seven macro drivers, weighted by how much each one moves a peso
+      investor in these four funds.</p>
     <div class="card">
       <div class="gaugewrap">
         <div id="gauge"></div>
         <div class="gaugeread">
           <b id="gv">—<i>/5</i></b>
           <div class="verdict" id="gverdict">—</div>
-          <div class="vsub">Earnings are doing all the work. Policy and energy are
-            working against them; volatility has stepped back but not stood down.</div>
+          <div class="vsub" id="gsub">—</div>
         </div>
       </div>
     </div>
@@ -318,19 +322,17 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Broad sentiment &middot; driver breakdown</p>
     <div class="card" id="drivers"></div>
-    <p class="note">Scored 1–5 with <span class="num">3.0</span> neutral (researched on
-      1–10 and rescaled 1&rarr;1, 5.5&rarr;3.0, 10&rarr;5). Gauge =
-      &Sigma;(weight &times; score).</p>
+    <p class="note">Scored 1–5, <span class="num">3.0</span> neutral (researched on 1–10
+      and rescaled). Gauge = &Sigma;(weight &times; score). Tap <em>Why</em> for the
+      evidence.</p>
   </section>
 
   <section>
     <p class="eyebrow">Regional ranking &middot; 3M / 6M / 12M / 10Y</p>
-    <h2>Asia still leads, but the near term narrowed</h2>
-    <p>Each region is scored on the same seven drivers, 1–5 with
-      <span class="num">3.0</span> neutral, and blended with the 10-year mandate's
-      horizon weights: <span class="num" id="hzw1">—</span>. Near-term signals get a
-      vote; they don't get to run the portfolio. Each point above neutral adds
-      <span class="num" id="tiltpp">—</span> a year to a sleeve's forecast.</p>
+    <h2 id="rhead">—</h2>
+    <p>Blended <span class="num" id="hzw1">—</span>; each point above
+      <span class="num">3.0</span> adds <span class="num" id="tiltpp">—</span> a year to
+      a sleeve's forecast.</p>
     <div class="card">
       <div class="tw"><table class="rgrid" id="rtab"></table></div>
       <div id="rwhy"></div>
@@ -343,25 +345,22 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <p id="trendlede">—</p>
     <div class="card">
       <div class="tw"><table class="dt" id="trendtab"></table></div>
-      <p class="note" id="trendmath">—</p>
+      <p class="note" id="trendnote">—</p>
     </div>
-    <div class="card">
-      <h3>What it changes</h3>
-      <p style="margin-bottom:0" id="trendnote">—</p>
+    <details class="card how">
+      <summary>How the trend is scored, and its sources</summary>
+      <p id="trendmath">—</p>
       <p class="note" id="trendsrc">—</p>
-    </div>
+    </details>
   </section>
 
   <section>
     <p class="eyebrow">Correlated sentiment</p>
     <h2>How each driver lands on this portfolio</h2>
-    <p>Broad sentiment is only useful once it is mapped onto what you actually own.
-      This is the transmission path from each macro driver to each of the four sleeves.</p>
     <div class="card">
       <div class="tw"><table class="dt" id="corrtab"></table></div>
-      <p class="note">Cell values are the modelled effect on that fund's 10-year net
-        CAGR, in percentage points. The column sum is the total macro tilt applied
-        in the optimised portfolio.</p>
+      <p class="note">Each cell is the effect on that fund's 10-year net CAGR, in
+        percentage points; the total is the macro tilt the optimiser uses.</p>
     </div>
     <div class="card">
       <h3>The correlation that constrains everything</h3>
@@ -376,24 +375,13 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 
   <section>
     <p class="eyebrow">Volatility &middot; deep analysis</p>
-    <h2>Spot is low; the curve is not</h2>
+    <h2 id="vhead">—</h2>
     <p class="lede">The VIX closed <b class="num" id="vlatest"></b> on
-      <b id="vlatestd"></b>, <b class="num" id="vlatestc"></b> on the day, after peaking at
-      <b class="num" id="vepkhi"></b> on <b id="vepkhid"></b>. The US 10-year last closed at
-      <b class="num" id="vust10"></b><span id="vust10prov"></span> on <b id="vust10d"></b> and traded as high as
-      <b class="num" id="vust10pk"></b> on <b id="vust10pkd"></b>. The curve, quoted <b id="vquoted"></b>, still prices
-      <b class="num" id="vdec2"></b> by December, <b class="num" id="vspotgap"></b> above
-      spot. What moves the forecasts is not that gap but where the blended curve sits
-      against the long-run <b class="num" id="vlr"></b> every fund's base return already
-      assumes: <b class="num" id="vlrgap"></b>.</p>
-    <p class="note"><strong>The curve's age is measured, not hidden.</strong> It is
-      bootstrapped from the <b id="vquoted2"></b> close, <b class="num" id="vstripage"></b>
-      old, with its own spot of <b class="num" id="vcspot"></b>
-      (<span id="vgap"></span> the latest close). Re-anchored to
-      <b id="v3md"></b> it reads <b class="num" id="v3mm"></b> at three months against a
-      published VIX3M of <b class="num" id="v3m"></b> (<b class="num" id="v3mr"></b>)
-      <span id="v3mread"></span>. It stops being used once the strip
-      passes one 30-day roll window.</p>
+      <b id="vlatestd"></b>, <b class="num" id="vlatestc"></b> on the day. The curve,
+      quoted <b id="vquoted"></b>, prices <b class="num" id="vdec2"></b> by December,
+      <b class="num" id="vspotgap"></b> <span id="vspotdir"></span> spot. Only one number
+      moves the forecasts: the blended curve sits <b class="num" id="vlrgap"></b> the
+      long-run <b class="num" id="vlr"></b> every base return already assumes.</p>
     <div class="stats" id="volstats"></div>
   </section>
 
@@ -406,95 +394,74 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
           <span class="lgi"><i class="swatch" style="background:var(--f2)"></i>Implied (option-priced)</span>
           <span class="lgi"><i class="swatch" style="background:var(--f1)"></i>Realised-equivalent</span>
         </div>
-        <figcaption>Annualised volatility for a 0&rarr;T horizon. Tap any point for
-          the exact figures.</figcaption>
+        <figcaption>Annualised volatility for a 0&rarr;T horizon. Tap a point for the
+          figures.</figcaption>
       </figure>
+      <div class="tw"><table class="dt" id="voltab"></table></div>
+      <p class="note">&sigma;(0&rarr;T) = &radic;( <sup>1</sup>&frasl;<sub>T</sub>
+        &int;<sub>0</sub><sup>T</sup> &sigma;<sub>f</sub>(t)&sup2; dt ), integrated from
+        spot plus <b class="num" id="nfuts">—</b> futures and mean-reverting to the
+        long-run <span class="num" id="vlr2">—</span> beyond the last contract.
+        Realised = implied less the <span class="num" id="vrp1">—</span>-point variance
+        risk premium. &plusmn;1&sigma; and &plusmn;2&sigma; are S&amp;P moves over the
+        whole horizon.</p>
     </div>
 
-    <div class="card">
-      <h3>How these numbers are built</h3>
-      <p>Horizon vol is not read off a single quote — it is integrated out of the
-        forward-variance curve, because variance is what adds across time, not
-        volatility:</p>
-      <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
-        font-size:12px;text-align:center;line-height:1.7;color:var(--ink)">
-        &sigma;(0&rarr;T) = &radic;( <sup>1</sup>&frasl;<sub>T</sub> &int;<sub>0</sub><sup>T</sup> &sigma;<sub>f</sub>(t)&sup2; dt )
-      </div>
-      <p style="margin-top:11px">&sigma;<sub>f</sub>(t) is bootstrapped piecewise from
-        <b class="num" id="nknots">—</b> observable points — spot plus
-        <b class="num" id="nfuts">—</b> futures, each placed at the centre of the 30-day
-        window it prices — then mean-reverted beyond the last liquid contract toward the
-        long-run anchor of <b class="num">19.5</b> at
-        <span class="num">&kappa;&nbsp;=&nbsp;1.5</span>/yr. The realised-equivalent line
-        subtracts the <b class="num">3.5</b>-point variance risk premium: options
-        persistently overprice delivered volatility, and a drawdown model fed on implied
+    <details class="card how">
+      <summary>How the curve is built, and how old it is</summary>
+      <p>Horizon vol is integrated out of the forward-variance curve, because variance
+        adds across time and volatility does not. &sigma;<sub>f</sub>(t) is bootstrapped
+        piecewise from <b class="num" id="nknots">—</b> points &mdash; spot plus each
+        future placed at the centre of the 30-day window it prices &mdash; then
+        mean-reverted at <span class="num">&kappa;&nbsp;=&nbsp;1.5</span>/yr. Options
+        persistently overprice delivered volatility, so a drawdown model fed on implied
         vol alone would overstate the damage.</p>
-      <div class="tw"><table class="dt" id="voltab"></table></div>
-      <p class="note">1&sigma; and 2&sigma; are S&amp;P-equivalent moves over the full
-        horizon (&sigma;&radic;T), before any fund's volatility beta is applied.</p>
-    </div>
+      <p style="margin-bottom:0">The strip is the <b id="vquoted2"></b> close,
+        <b class="num" id="vstripage"></b> old, with its own spot of
+        <b class="num" id="vcspot"></b> (<span id="vgap"></span> the latest close).
+        Re-anchored to <b id="v3md"></b> it reads <b class="num" id="v3mm"></b> at three
+        months against a published VIX3M of <b class="num" id="v3m"></b>
+        (<b class="num" id="v3mr"></b>) <span id="v3mread"></span>. It stops being used
+        once it passes one 30-day roll window.</p>
+    </details>
 
     <div class="card">
       <h3>From index vol to fund vol</h3>
-      <p>Each sleeve inherits the 10-year implied level of
-        <b class="num" id="spv">—</b>, scaled by its volatility beta, then combined
-        with unhedged peso exposure. The FX leg is not just added noise — the peso
-        tends to weaken when global risk sells off, and for a peso-based holder of
-        USD assets that <em>cushions</em> the loss. Modelled at
-        <span class="num">&sigma;<sub>FX</sub>&nbsp;6.0%</span>,
-        <span class="num">&rho;&nbsp;=&nbsp;&minus;0.20</span>.</p>
-      <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
-        font-size:11.5px;text-align:center;line-height:1.7;color:var(--ink)">
-        &sigma;<sub>PHP</sub> = &radic;( &sigma;<sub>A</sub>&sup2; + &sigma;<sub>FX</sub>&sup2; + 2&rho;&sigma;<sub>A</sub>&sigma;<sub>FX</sub> )
-      </div>
-      <div class="tw" style="margin-top:11px"><table class="dt" id="fvoltab"></table></div>
+      <p>Each sleeve takes the 10-year implied level of <b class="num" id="spv">—</b>,
+        scaled by its volatility beta and combined with unhedged peso exposure
+        (<span class="num" id="fxv">—</span>). The peso tends to weaken when global
+        risk sells off, which <em>cushions</em> a peso holder's loss on dollar assets.</p>
+      <div class="tw"><table class="dt" id="fvoltab"></table></div>
     </div>
 
     <div class="card">
       <h3>How this curve moves the allocation</h3>
-      <p>The signal is the <strong>gap</strong> between the horizon-blended curve and the
-        long-run level every fund's base return already assumes, on the same
-        <span class="num" id="hzw2">—</span> weights as the regional blend.</p>
       <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
         font-size:12px;text-align:center;line-height:1.7;color:var(--ink)" id="rampline"></div>
-      <p style="margin-top:11px">Each sleeve then earns or pays that gap according to a
-        structural sensitivity — a property of how the fund is built, not a view on the
-        market. The covered-call sleeve gains most when the curve sits above long-run,
-        and loses most when it sits below.</p>
-      <div class="tw"><table class="dt" id="voltilt"></table></div>
-      <p class="note">These tilts are derived from the gap, not hand-set. Until
-        25 September the gap was measured from spot, which paid the covered-call sleeve
-        for volatility rising to a level its base return already assumed.</p>
+      <div class="tw" style="margin-top:11px"><table class="dt" id="voltilt"></table></div>
+      <p class="note">The gap is the curve blended on the regional weights
+        (<span class="num" id="hzw2">—</span>) less the long-run level. Each sleeve's
+        sensitivity is structural: the covered-call sleeve gains most when the curve
+        sits above long-run and loses most below it.</p>
     </div>
 
-    <div class="card">
-      <h3>Turning volatility into a drawdown number</h3>
-      <p>Expected maximum drawdown is modelled as
-        <span class="num">(k&nbsp;&times;&nbsp;&sigma;&nbsp;&minus;&nbsp;0.50&nbsp;&times;&nbsp;&mu;)&nbsp;&times;&nbsp;&radic;(T&nbsp;/&nbsp;5)</span>
-        — volatility sets the depth, drift claws some back, and the horizon decides how
-        much room the path has to find its worst peak-to-trough. The anchor
-        <b class="num">k&nbsp;=&nbsp;1.65</b> is calibrated to reproduce the observed
-        medians over <strong>rolling five-year windows</strong>:
-        <b class="num">&minus;20%</b> for the S&amp;P 500 (&sigma; 15.5%, &mu; 11%) and
-        <b class="num">&minus;33%</b> for the Nasdaq-100 (&sigma; 24%, &mu; 13%).</p>
-      <p><strong>A longer mandate cannot just relabel those anchors.</strong> Expected
-        maximum drawdown grows with the square root of the horizon, so the calibrated
-        quantity is scaled by <b class="num" id="ddscal">—</b> — derived from the
-        five-year calibration rather than re-fitted by eye to ten-year medians this
-        model has not verified.</p>
-      <p><strong>1.65 is not the coefficient every sleeve uses.</strong> Left tails
-        differ across these four funds, so each carries a declared adjustment, and the
-        portfolio coefficient is the weighted average across the equity sleeves. Every
-        drawdown printed here is reproducible from the <span class="num">k</span>
-        beside it.</p>
+    <details class="card how">
+      <summary>Turning volatility into a drawdown number</summary>
+      <p>Expected maximum drawdown =
+        <span class="num">(k&nbsp;&times;&nbsp;&sigma;&nbsp;&minus;&nbsp;0.50&nbsp;&times;&nbsp;&mu;)&nbsp;&times;&nbsp;&radic;(T&nbsp;/&nbsp;5)</span>:
+        volatility sets the depth, drift claws some back. The anchor
+        <b class="num">k&nbsp;=&nbsp;1.65</b> reproduces the median drawdowns over rolling
+        five-year windows &mdash; <b class="num">&minus;20%</b> for the S&amp;P 500
+        (&sigma; 15.5%, &mu; 11%) and <b class="num">&minus;33%</b> for the Nasdaq-100
+        (&sigma; 24%, &mu; 13%) &mdash; and the ten-year mandate scales it by
+        <b class="num" id="ddscal">—</b>. Each sleeve's k carries a declared
+        adjustment for its left tail:</p>
       <div class="tw"><table class="dt" id="ddktab"></table></div>
       <p style="margin-top:11px">The money market sleeve is floored separately at a
-        100bp parallel rate shock on ~0.5y duration — a cash fund cannot be made to
-        behave like an equity fund by a formula. That floor is deliberately
-        <em>not</em> horizon-scaled.</p>
+        100bp rate shock on ~0.5y duration, not horizon-scaled.</p>
       <div class="flat" style="background:var(--surface-2);font-family:var(--mono);
         font-size:11.5px;text-align:center;line-height:1.7;color:var(--ink)" id="ddkport"></div>
-    </div>
+    </details>
   </section>
 </div>
 
@@ -503,9 +470,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Fund slides &middot; swipe</p>
     <h2>Four sleeves, four jobs</h2>
-    <p class="lede">Each fund is judged against <strong>its own stated target</strong>,
-      with its return build-up, full fee stack, 10-year CAGR <em>after</em> fees and
-      expected maximum drawdown.</p>
+    <p class="lede">Each fund against <strong>its own stated target</strong>: return
+      build-up, full fee stack, net 10-year CAGR and expected drawdown.</p>
   </section>
   <div class="rail" id="rail"></div>
   <div class="dots" id="dots"></div>
@@ -514,8 +480,17 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <p class="eyebrow">Side by side</p>
     <div class="card">
       <div class="tw"><table class="dt" id="ftab"></table></div>
-      <p class="note">Net CAGR is after every layer of fees, including the target
-        fund's own charge. Drawdown is the expected 10-year maximum, peak to trough.</p>
+      <p class="note">Net of every fee layer, including the target fund's own charge.
+        Drawdown is the expected 10-year maximum, peak to trough.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Fee transparency</p>
+    <div class="card">
+      <h3>What each layer costs</h3>
+      <div class="tw"><table class="dt" id="feetab"></table></div>
+      <p class="note" id="feenote">—</p>
     </div>
   </section>
 
@@ -523,37 +498,19 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <p class="eyebrow">Look-through</p>
     <div class="card">
       <h3>What you actually own underneath</h3>
-      <p>These are feeder funds: the peso unit sits on a UCITS ETF, a Luxembourg SICAV
-        or a Hong Kong unit trust, which holds the securities. Exposure here is at index level; the
-        managers' published top holdings are under <em>Stock level</em> below.</p>
+      <p>Feeder funds: each peso unit sits on a UCITS ETF, a Luxembourg SICAV or a Hong
+        Kong unit trust that holds the securities.</p>
       <div class="tw"><table class="dt" id="ltab"></table></div>
-      <p class="note">Nasdaq Equity Income holds Nasdaq-100 equities and <em>sells call
-        options against them</em>, capping upside at roughly three-quarters of the index
-        (hence its 75% Nasdaq-100 benchmark) and paying the premium out as income. Rising
-        implied volatility makes those calls worth more, so it is the holding most exposed
-        to where volatility settles against its long-run level.</p>
     </div>
   </section>
 
   <section>
     <p class="eyebrow">Stock level</p>
     <h2>The actual shares underneath</h2>
-    <p>Where a target fund publishes its positions, they are shown with the
-      manager's as-of date; where it does not, the gap is recorded, not guessed.</p>
-    <p class="note"><strong>No per-stock 10-year forecast is shown, deliberately.</strong>
-      No authoritative source publishes one for an individual share. The forecasts
-      that apply are on each fund slide: the feeder's, net of both fee layers, and the
-      target fund's, net of its own fee.</p>
+    <p>Top holdings with the manager's own as-of date; where none is published the gap
+      is recorded, not guessed. No per-stock 10-year forecast is shown: none is
+      published.</p>
     <div class="card" id="stocks"></div>
-  </section>
-
-  <section>
-    <p class="eyebrow">Fee transparency</p>
-    <div class="card">
-      <h3>Where the estimates are, and where they aren't</h3>
-      <p>Feeder fees are from ATRAM's fund documents; target-fund charges from J.P. Morgan (Nasdaq, Asia) and Fidelity (Global Technology). One figure is an estimate, the JPMorgan Asia Equity Dividend ongoing charge, and is labelled wherever it appears.</p>
-      <div class="tw"><table class="dt" id="feetab"></table></div>
-    </div>
   </section>
 </div>
 
@@ -563,19 +520,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Baseline vs optimised</p>
     <h2>Same four funds, two different bets</h2>
-    <p class="lede">The <strong>baseline</strong> is what a 10-year horizon buys you with
-      no view on the cycle: a liquidity buffer and three equity engines held near-equally.
-      The <strong>optimised</strong> portfolio is built from five inputs. The
-      <strong>regional rankings</strong>, the <strong>volatility term
-      structure</strong> and the <strong>market trend</strong> are each blended across
-      3, 6 and 12 months against the 10-year anchor. The <strong>macro drivers</strong>
-      reach each sleeve through the <strong>correlated sentiment</strong> table: the
-      Monetary score moves every fund's rates tilt and the Geopolitics &amp; energy
-      score its energy tilt, each through the sleeve's own sensitivity. Both optimised
-      portfolios &mdash; B, and C below &mdash; are chosen by one rule: the best
-      10-year net CAGR after fees that the drawdown budget allows, then the lowest
-      drawdown among portfolios within <span class="num" id="tiepp1">—</span> of it.
-      Every weight ends in 5 or 0.</p>
+    <p class="lede"><strong>A</strong> is the no-view baseline: a liquidity buffer and
+      three equity engines. <strong>B</strong> is optimised on the regional ranking, the
+      volatility curve and the market trend (each 3/6/12M against the 10-year anchor)
+      and the macro drivers' rates and energy tilts. B and C follow one rule: the best
+      net CAGR the drawdown budget allows, then the lowest drawdown within
+      <span class="num" id="tiepp1">—</span> of it.</p>
     <div class="vsgrid">
       <div class="dwrap">
         <div class="dt2">Portfolio A</div>
@@ -611,67 +561,57 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <p class="eyebrow">Headline forecast</p>
     <div class="card">
       <div class="tw"><table class="dt" id="ptab"></table></div>
-      <p class="note">Both columns are shown under the same macro-adjusted return set,
-        so the comparison isolates the effect of the weights. The strategic (no-view)
-        figures are in the table below.</p>
+      <p class="note">Both columns on the same macro-adjusted returns, so the difference
+        is the weights alone.</p>
     </div>
-    <div class="card">
-      <h3>Both portfolios, both lenses</h3>
-      <div class="tw"><table class="dt" id="ptab2"></table></div>
-      <p class="note"><strong>Strategic</strong> uses pure 10-year return assumptions with
-        no cycle view. <strong>Macro-adjusted</strong> applies the regional ranking, the
-        volatility path, the policy-rate bias, the energy shock and the market trend.
-        <span id="lenswin">—</span></p>
-    </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">The improvement</p>
     <div class="card" id="deltacard"></div>
+    <details class="card how">
+      <summary>Strategic vs macro-adjusted lens</summary>
+      <div class="tw"><table class="dt" id="ptab2"></table></div>
+      <p class="note"><strong>Strategic</strong>: long-run return assumptions, no cycle
+        view. <strong>Macro-adjusted</strong>: plus the regional ranking, the volatility
+        curve, the rates and energy tilts and the market trend.
+        <span id="lenswin">—</span></p>
+    </details>
   </section>
 
   <section>
     <p class="eyebrow">Feasible set</p>
     <h2>Why this point, out of <span id="ntotal3">—</span></h2>
-    <p>Every fully-invested 5%-granular allocation holding all four funds, <strong>each
-      at <span class="num" id="minsleeve">—</span> or more</strong>, was enumerated and
-      scored — <b class="num" id="ntotal">—</b> portfolios. The line
-      below is the upper edge: the highest achievable 10-year net CAGR at each level of
-      expected drawdown. The optimised portfolio sits on that edge.</p>
-    <p class="note" id="capnote">No single-fund cap.</p>
+    <p>Every 5%-step allocation holding each fund at
+      <span class="num" id="minsleeve">—</span> or more &mdash;
+      <b class="num" id="ntotal">—</b> portfolios. The line is the best 10-year net CAGR
+      at each level of drawdown; <b class="num" id="nfeas">—</b> of them fit the
+      budget.</p>
     <div class="card">
       <figure class="rel">
         <div id="frontier"></div>
-        <figcaption>Each point is the best available return for that drawdown budget.
-          Tap to see the allocation behind it.</figcaption>
+        <figcaption>Tap a point for the allocation behind it.</figcaption>
       </figure>
+      <p class="note" id="capnote">No single-fund cap.</p>
     </div>
-    <div class="card">
-      <h3>Why not simply maximise return?</h3>
+    <details class="card how">
+      <summary>Why not simply maximise return?</summary>
       <p id="extremes">Because the answer is degenerate.</p>
-      <p>So the objective is stated explicitly and solved in two steps. First,
-        <strong>the best 10-year net CAGR with expected maximum drawdown below the
-        baseline's by the stated budget, every fund held at
-        <span class="num" id="minsleeve2">—</span> or more</strong> &mdash; that leaves
-        <b class="num" id="nfeas">—</b> feasible portfolios out of
-        <b class="num" id="ntotal2">—</b>. Second, <strong>among the portfolios within
-        <span class="num" id="tiepp2">—</span> of that best, the one with the lowest
-        drawdown</strong>: a difference smaller than the model's own precision is noise,
-        and not worth more drawdown. Portfolio C is chosen the same way with Nasdaq
-        Equity Income fixed at 50%.</p>
-      <p style="margin-bottom:0" id="vsbase">—</p>
-    </div>
+      <p style="margin-bottom:0">So the rule has two steps: the best net CAGR with
+        expected drawdown inside the budget, every fund at
+        <span class="num" id="minsleeve2">—</span> or more (<span class="num"
+        id="ntotal2">—</span> enumerated); then, among portfolios within
+        <span class="num" id="tiepp2">—</span> of that best, the lowest drawdown &mdash;
+        a smaller difference is below the model's precision. <span id="vsbase">—</span></p>
+    </details>
   </section>
 
   <section>
     <p class="eyebrow">Stress test</p>
     <h2>What breaks it</h2>
-    <p>Five named scenarios, each tied to a live risk in the current macro picture,
-      applied as a shock to returns and a multiplier on volatility.</p>
     <div class="card">
       <div class="tw"><table class="dt" id="stab"></table></div>
-      <div id="sdesc"></div>
     </div>
+    <details class="card how">
+      <summary>What each scenario assumes</summary>
+      <div id="sdesc"></div>
+    </details>
   </section>
 
   <section>
@@ -679,10 +619,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <div class="card">
       <h3>&#8369;1,000,000 over ten years</h3>
       <div class="tw"><table class="dt" id="pesotab"></table></div>
-      <p class="note">Terminal value compounds the forecast net CAGR over 10 years. The
-        worst-case row applies the expected maximum drawdown to the <em>opening</em>
-        &#8369;1,000,000, before any growth cushion; a drawdown later in the mandate
-        would start from a higher peak.</p>
+      <p class="note">Value compounds the net CAGR for ten years. The worst case applies
+        the expected drawdown to the <em>opening</em> &#8369;1,000,000.</p>
     </div>
   </section>
 </div>
@@ -694,38 +632,31 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <p class="eyebrow">Rationale report</p>
     <h2 id="whyalloc">Why this allocation</h2>
     <p class="lede" id="rlede">—</p>
-    <p class="note" id="rcorr">—</p>
   </section>
 
   <section>
     <div class="card">
       <h3>1 &middot; The setup</h3>
-      <p>Central banks are leaning hawkish. The ECB ended its cycle on 10 September at
-        <b class="num" id="ecbnow"></b> into IMF growth of <b class="num" id="imfea"></b>; BSP is
-        at <b class="num">5.00%</b> after three hikes; the Bank of Japan went to
-        <b class="num" id="bojnow"></b> on 18 September. After the Fed's 16 September hike,
-        FedWatch put <b>October</b> at <b class="num" id="oddsnow"></b> on
-        <b id="oddsnowd"></b>; at least one more
-        by December was last verified at <b class="num" id="oddsdec"></b> on
-        <b id="oddsdecd"></b>. The 10-year last closed at <b class="num" id="ust10"></b>
-        <span id="ust10prov"></span> on <b id="ust10d"></b>, and traded as high as
-        <b class="num" id="ust10pk"></b> on <b id="ust10pkd"></b>, its highest since
-        <span id="ust10since"></span>. Brent is
-        <b class="num" id="brentnow"></b>, <b class="num" id="brentyoy"></b> year on
-        year<span id="brenthighline"></span>.</p>
-      <p style="margin-bottom:0">Earnings have not moved: Asia ex-Japan EPS growth of
-        <b class="num">52%</b> this year and <b class="num">28%</b> next, on
-        <b class="num">10.5&times;</b> forward. Hostile policy and energy against intact
-        earnings and cheap valuations make a <b class="num" id="gaugenow"></b> gauge.
-        Geopolitics &amp; energy is scored <b class="num" id="dvgeo"></b> and volatility
-        <b class="num" id="dvvol"></b>.</p>
+      <p style="margin-bottom:0">FedWatch had an October hike at <b class="num"
+        id="oddsnow"></b><span id="oddsnowon"> on <b id="oddsnowd"></b></span> and one by
+        December at <b class="num" id="oddsdec"></b> on <b id="oddsdecd"></b>. The 10-year last
+        closed at <b class="num" id="ust10"></b> <span id="ust10prov"></span> on
+        <b id="ust10d"></b>, after <b class="num" id="ust10pk"></b> on <b id="ust10pkd"></b>,
+        its highest since <span id="ust10since"></span>. Brent is
+        <b class="num" id="brentnow"></b>, <b class="num" id="brentyoy"></b> on a
+        year<span id="brenthighline"></span>. BSP is at <b class="num" id="bspnow"></b>,
+        the ECB at <b class="num" id="ecbnow"></b> into growth of <b class="num"
+        id="imfea"></b>, the BoJ at <b class="num" id="bojnow"></b>. Against that,
+        Asia ex-Japan earnings are forecast up <b class="num" id="eps26"></b> this year
+        and <b class="num" id="eps27"></b> next on <b class="num" id="asiape"></b>
+        forward: a <b class="num" id="gaugenow"></b> gauge, with geopolitics at
+        <b class="num" id="dvgeo"></b> and volatility at <b class="num" id="dvvol"></b>
+        on the 1&ndash;10 research scale.</p>
     </div>
 
     <div class="card">
       <h3>2 &middot; Volatility, counted once</h3>
-      <p id="volpara">Integrating the forward-variance curve gives the horizon
-        structure below.</p>
-      <p style="margin-bottom:0" id="rampmath">—</p>
+      <p style="margin-bottom:0"><span id="volpara">—</span> <span id="rampmath">—</span></p>
     </div>
 
     <div class="card">
@@ -735,13 +666,14 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     </div>
 
     <div class="card">
-      <h3>4 &middot; Global Technology: the highest return, the smallest weight</h3>
+      <h3>4 &middot; Global Technology: the deepest drawdown, the smallest weight</h3>
       <ul class="plain">
-        <li><b>It is the same bet, twice.</b> Correlation with Nasdaq Equity Income is
-          <b class="num">0.88</b>: two fee stacks for one exposure to US mega-cap tech.</li>
-        <li><b>It is the most rate-sensitive thing you own:</b>
+        <li><b>The same bet, twice.</b> Correlation with Nasdaq Equity Income is
+          <b class="num" id="gtcorr">—</b>: two fee stacks for one exposure to US
+          mega-cap tech.</li>
+        <li><b>The most rate-sensitive holding:</b>
           <b class="num" id="gtecrates">—</b> a year from rates alone.</li>
-        <li><b>It has the deepest expected drawdown on the sheet,
+        <li><b>The deepest expected drawdown on the sheet,
           <span class="num" id="gtecdd">—</span>.</b></li>
       </ul>
       <p style="margin-bottom:0"><span id="techgap">—</span> <span id="stubline">—</span></p>
@@ -749,12 +681,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 
     <div class="card">
       <h3>5 &middot; Cash</h3>
-      <p style="margin-bottom:0"><span id="rcashwhy">—</span> What it earns is nominal
-        carry — T-bills at <b class="num" id="tb91">—</b> to <b class="num" id="tb364">—</b>
-        at the <b id="tbd">—</b> auction — but against <span id="rymonth">—</span> inflation of
-        <b class="num" id="rycpi">—</b> the real yield is <b class="num" id="ry91">—</b> to
-        <b class="num" id="ry364">—</b>. It is zero-duration dry powder for rebalancing
-        into a drawdown.</p>
+      <p style="margin-bottom:0"><span id="rcashwhy">—</span> It earns nominal carry
+        &mdash; T-bills at <b class="num" id="tb91">—</b> to <b class="num" id="tb364">—</b>
+        at the <b id="tbd">—</b> auction &mdash; but against <span id="rymonth">—</span>
+        inflation of <b class="num" id="rycpi">—</b> the real yield is
+        <b class="num" id="ry91">—</b> to <b class="num" id="ry364">—</b>. It is
+        zero-duration dry powder for rebalancing into a drawdown.</p>
     </div>
 
     <div class="card">
@@ -769,23 +701,20 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
       <ul class="plain">
         <li><b>Asia Equity's own estimates.</b> <span id="wiasia">—</span></li>
         <li><b>The rates and energy drags lifting.</b> With the Monetary and
-          Geopolitics drivers back at neutral, the optimiser holds
+          Geopolitics drivers at neutral the optimiser holds
           <b class="num" id="wi2w">—</b> for <b class="num" id="wi2c">—</b>.
           <span id="wi2note">—</span></li>
-        <li><b>The volatility curve.</b> With the curve at its long-run level, the
-          optimiser holds <b class="num" id="wi1w">—</b> for <b class="num" id="wi1c">—</b>.
+        <li><b>The volatility curve.</b> At its long-run level the optimiser holds
+          <b class="num" id="wi1w">—</b> for <b class="num" id="wi1c">—</b>.
           <span id="wi1note">—</span></li>
         <li><b>The market trend.</b> <span id="wi3">—</span></li>
-        <li><b>Strait of Hormuz closure.</b> Modelled below at
-          <b class="num" id="hormuzdd">—</b> — the scenario in which this portfolio's
-          drawdown control is genuinely tested, and the one now partly under way. Read
-          it on <em>volume</em>, not vessel counts: on Goldman's count Gulf exports were
-          <b class="num" id="hzflow">—</b> in the week to <b id="hzflowd">—</b>, about
-          <b class="num" id="hzrem">—</b> of a <b class="num" id="hzpre">—</b> pre-war
-          level, up from <b class="num" id="hzflowold">—</b> on <b id="hzflowoldd">—</b>,
-          while vessel transits were down <b class="num" id="hzves">—</b> on
-          <b id="hzvesd">—</b>. Those two measure different things and the oil price
-          follows the first.</li>
+        <li><b>Strait of Hormuz closure.</b> Modelled at <b class="num" id="hormuzdd">—</b>
+          for this portfolio &mdash; the scenario that genuinely tests its drawdown
+          control, and one now partly under way. Read it on <em>volume</em>: Kpler had
+          crude through Hormuz at <b class="num" id="hzflow">—</b> in the week to
+          <b id="hzflowd">—</b>, <b class="num" id="hzrem">—</b> below pre-war, while
+          vessel transits were down <b class="num" id="hzves">—</b> on
+          <b id="hzvesd">—</b>. The oil price follows the first.</li>
       </ul>
     </div>
   </section>
@@ -793,15 +722,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Keeping this current</p>
     <h2>Reviewed by hand</h2>
-    <p>Nothing here refreshes itself. Every figure is recomputed from the model engine
-      when the inputs are refreshed by hand, and the header carries the as-of date —
-      treat anything more than a week old as a forecast built on stale inputs. The
-      review procedure, the claim register and the full defect history live in the
-      repository alongside the engine.</p>
+    <p>Nothing refreshes itself: every figure is recomputed from the model engine when
+      the inputs are rolled by hand. Treat anything more than a week past the header
+      date as stale.</p>
     <div class="card">
       <h3>Not in these numbers yet</h3>
-      <p class="note">Scheduled events dated after the market as-of date above.
-        Nothing on this page accounts for them.</p>
+      <p class="note">Scheduled events after the market as-of date.</p>
       <div id="catalysts"></div>
       <div id="postponed"></div>
     </div>
@@ -810,9 +736,6 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   <section>
     <p class="eyebrow">Sources</p>
     <h2>Every number traces to one of these</h2>
-    <p>Central banks, statistical agencies and the fund managers' own documents. Where
-      a figure is an estimate rather than a published number, it is labelled as one
-      where it appears.</p>
     <details class="card discl">
       <summary><b id="srccount">—</b> sources &middot; tap to open</summary>
       <div id="sources"></div>
@@ -824,22 +747,17 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     <div class="card">
       <h3>What this model is, and is not</h3>
       <ul class="plain">
-        <li><b>Forecasts, not facts.</b> The 10-year CAGR figures are modelled
-          expectations built from published capital-market assumptions and current
-          valuations. They are not guarantees, and no fund's realised return will
-          match them exactly.</li>
-        <li><b>One fee estimate left.</b> Every fee here is a published number except
-          the JPMorgan Asia Equity Dividend ongoing charge, taken at
-          <b class="num">1.55%</b> — anchored on J.P. Morgan's published
-          <b class="num">1.50%</b> management fee. The target is a Hong Kong unit trust,
-          whose trustee and admin costs may put the true figure higher.</li>
-        <li><b>Drawdown is expected, not worst-case.</b> The figures describe a
-          drawdown you should plan to experience. The stress scenarios show the tail.</li>
+        <li><b>Forecasts, not facts.</b> The 10-year CAGRs are modelled expectations
+          from published capital-market assumptions and current valuations, not
+          guarantees.</li>
+        <li><b>One fee estimate left.</b> <span id="feeest">—</span></li>
+        <li><b>Drawdown is expected, not worst-case.</b> Plan to experience it; the
+          stress table shows the tail.</li>
         <li><b>Correlations are stable inputs to an unstable world.</b> The
-          <b class="num">0.88</b> between the two US-tech sleeves rises toward 1 in a
-          crisis, which is when diversification is worth most and delivers least.</li>
-        <li><b>Not personal advice.</b> This is portfolio analysis on four named funds.
-          It does not know your tax position, your income needs, or what else you own.</li>
+          <b class="num" id="gtcorr2">—</b> between the two US-tech sleeves rises toward 1
+          in a crisis, when diversification is worth most.</li>
+        <li><b>Not personal advice.</b> This is analysis of four named funds. It does not
+          know your tax position, income needs or other holdings.</li>
       </ul>
     </div>
   </section>
@@ -872,35 +790,37 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
 </div>
 <script id="D" type="application/json">
 {
- "as_of": "2026-10-09",
+ "as_of": "2026-10-15",
  "macro": {
   "fed_funds_lower": 3.75,
   "fed_funds_upper": 4.0,
-  "fed_funds_prev_upper": 3.75,
   "fed_dot_2026": 4.1,
   "fed_dots_one_more": 12,
   "fed_dots_two_more": 4,
   "fed_dots_participants": 18,
   "fed_dot_one_more_level": 4.125,
   "fed_dot_two_more_level": 4.375,
-  "us_cpi_headline": 3.4,
-  "us_cpi_core": 2.4,
-  "us_cpi_core_prev": 2.5,
+  "us_cpi_headline": 3.7,
+  "us_cpi_headline_prev": 3.4,
+  "us_cpi_headline_consensus": 3.6,
+  "us_cpi_core_consensus": 2.5,
+  "us_cpi_core": 2.6,
+  "us_cpi_core_prev": 2.4,
   "us_cpi_core_mom": 0.3,
   "us_cpi_core_mom_consensus": 0.2,
-  "us_cpi_headline_mom": 0.4,
-  "us_cpi_shelter": 3.0,
-  "us_cpi_shelter_prev": 3.2,
-  "us_cpi_food": 2.7,
-  "us_cpi_gasoline_yoy": 27.4,
-  "us_cpi_fuel_oil_yoy": 52,
+  "us_cpi_headline_mom": 0.6,
+  "us_cpi_shelter": 3.2,
+  "us_cpi_shelter_prev": 3.0,
+  "us_cpi_food": 2.5,
+  "us_cpi_energy_yoy": 20.4,
+  "us_cpi_gasoline_yoy": 34.2,
+  "us_cpi_gasoline_mom": 9.1,
+  "us_cpi_airfare_yoy": 22,
   "us_pce_12m": 3.7,
-  "us_pce_6m": 4.1,
   "us_pce_aug": 3.4,
   "us_pce_aug_consensus": 3.7,
   "us_pce_jul_rev": 3.4,
   "us_core_pce_aug": 3.0,
-  "us_core_pce_aug_consensus": 3.3,
   "us_pce_mom_aug": 0.3,
   "us_core_pce_mom_aug": 0.2,
   "ust_10y_basis": "official close: Treasury daily par curve / Fed H.15, 2dp",
@@ -972,10 +892,18 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    [
     "2026-10-09",
     5.24
+   ],
+   [
+    "2026-10-13",
+    5.21
+   ],
+   [
+    "2026-10-14",
+    5.19
    ]
   ],
   "ust_10y_provisional": [
-   "2026-10-09"
+   "2026-10-14"
   ],
   "ust_10y_provisional_basis": "Treasury par curve; FRED H.15 pending",
   "ust_10y_disputed_23sep": [
@@ -983,14 +911,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    5.11,
    5.12
   ],
-  "ust_10y_market_print": 5.104,
   "ust_10y_withheld": [],
-  "ust_10y_market_6oct": 5.27,
   "ust_10y_disputed_2oct": [
    5.27,
    5.28
   ],
-  "ust_10y_market_2oct": 5.281,
   "ust_10y_disputed": [
    4.99,
    5.0,
@@ -998,86 +923,52 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   ],
   "ust_10y_peak": 5.365,
   "ust_10y_peak_date": "2026-10-07",
-  "ust_10y_2002_high": 5.379,
-  "ust_10y_auction_7oct": 5.3,
-  "ust_10y_auction_indirect": 80.3,
   "ust_10y_peak_since": "April 2002",
   "ust_10y_peak_prev": 5.349,
   "ust_10y_peak_prev_date": "2026-10-05",
-  "ust_2y": 4.789,
-  "ust_2y_date": "2026-10-09",
-  "ust_30y": 5.6,
-  "ust_30y_date": "2026-10-09",
+  "ust_2y": 4.808,
+  "ust_2y_date": "2026-10-14",
+  "ust_10y_intraday_14oct": 5.33,
+  "ust_30y": 5.517,
+  "ust_30y_date": "2026-10-14",
   "ust_30y_high": 5.733,
   "ust_30y_high_date": "2026-10-07",
   "ust_curve_basis": "mid-session readings, not closes",
-  "fed_hike_odds_oct_secondary_lo": 64.2,
-  "fed_hike_odds_oct_secondary_hi": 72.3,
-  "fed_hike_odds_oct_secondary_date": "2026-09-28",
-  "fed_hike_odds_oct": 21.6,
-  "fed_hike_odds_oct_date": "2026-10-06",
-  "fed_hike_odds_oct_prev": 17.0,
-  "fed_hike_odds_oct_prev_date": "2026-10-02",
-  "fed_hike_odds_oct_hi": 73.0,
-  "fed_hike_odds_oct_hi_date": "2026-09-23",
-  "fed_hike_odds_oct_first": 50.9,
+  "fed_hike_odds_oct": 31.6,
+  "fed_hike_odds_oct_date": "2026-10-14",
+  "fed_hike_odds_oct_intraday_14oct": 50.0,
+  "fed_hike_odds_oct_prev": 21.6,
+  "fed_hike_odds_oct_prev_date": "2026-10-06",
   "fed_hike_odds_oct_first_date": "2026-09-17",
-  "fed_hike_odds_dec": 86.2,
-  "fed_hike_odds_dec_date": "2026-10-06",
-  "fed_hike_odds_dec_prev": 66.2,
-  "fed_hike_odds_dec_prev_date": "2026-10-02",
+  "fed_hike_odds_dec": 89.7,
+  "fed_hike_odds_dec_date": "2026-10-14",
+  "fed_hike_odds_dec_prev": 86.2,
+  "fed_hike_odds_dec_prev_date": "2026-10-06",
   "fed_hike_odds_sep_final": 92.0,
   "fed_hike_odds_sep_date": "2026-09-16",
   "ecb_sep_delivered": 2.5,
-  "us_payrolls_sep": 29000,
-  "us_payrolls_sep_consensus": 84000,
-  "us_payrolls_aug_rev": 133000,
   "us_payrolls_jul_rev2": -10000,
-  "us_unemployment_prev": 4.1,
-  "us_conf_board_sep": 81.9,
   "us_ism_mfg_sep": 54.5,
   "us_ism_mfg_consensus": 54.9,
   "us_ism_svc_sep": 54.9,
-  "us_ism_svc_aug": 55.4,
   "us_umich_oct": 46.3,
-  "us_umich_sep": 48.1,
-  "us_umich_oct_consensus": 48.0,
   "us_umich_record_low": 44.8,
   "us_umich_infl_1y": 4.7,
-  "us_umich_infl_1y_prev": 4.6,
   "us_umich_infl_5y": 3.5,
   "us_umich_infl_5y_prev": 3.4,
-  "us_cpi_sep_consensus": 3.7,
   "fr_oat_spread_bp": 140,
   "fr_deficit_2026": 5.4,
   "fr_deficit_target": 5.0,
-  "us_ism_svc_prices_sep": 74.0,
-  "us_ism_svc_prices_aug": 72.6,
-  "us_payrolls_aug": 162000,
-  "us_payrolls_aug_consensus": 53000,
-  "us_payrolls_jul": 21000,
-  "us_payrolls_jul_first": -23000,
-  "us_payrolls_jun": 31000,
+  "fr_oat_spread_14oct": 135.5,
   "us_unemployment": 4.2,
-  "us_pmi_composite_sep": 58.4,
-  "us_pmi_composite_aug": 56.0,
-  "us_pmi_services_sep": 58.7,
-  "us_pmi_services_consensus": 56.0,
-  "us_pmi_manufacturing_sep": 57.0,
-  "us_pmi_manufacturing_aug": 53.9,
   "us_pmi_manufacturing_high_months": 52,
   "us_5y_auction_size_bn": 70,
   "ecb_depo": 2.5,
   "ecb_depo_prev": 2.25,
-  "ecb_last_move_bp": 25,
   "ea_hicp_sep_flash": 3.8,
   "ea_hicp_sep_consensus": 3.6,
   "ea_energy_sep_flash": 18.8,
   "ea_hicp_aug": 3.2,
-  "ea_hicp_aug_flash": 3.3,
-  "ea_hicp_jul": 2.9,
-  "ea_energy_aug": 14.3,
-  "ea_energy_contrib_aug": 1.29,
   "ea_hicp_2026": 3.0,
   "ea_hicp_2028": 2.0,
   "boj_rate": 1.25,
@@ -1086,73 +977,55 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "boj_vote_against": 2,
   "boj_gap_months": 3,
   "boj_gap_months_prev": 6,
-  "usdjpy": 156.86,
-  "jp_core_cpi": 1.7,
-  "jp_core_cpi_prev": 1.8,
-  "jp_core_core_cpi": 1.9,
+  "usdjpy": 158.48,
   "jp_tankan_large_mfg": 24,
   "jp_tankan_large_mfg_prev": 22,
   "bsp_rrp": 5.0,
-  "bsp_last_move_bp": 25,
+  "bsp_expected": 5.25,
+  "ph_gdp_h1": 2.6,
   "bsp_hikes_since_apr": 3,
-  "bsp_cum_bp": 75,
-  "ph_cpi_aug": 6.1,
-  "ph_cpi_ytd_avg": 5.2,
-  "ph_rice_cpi_aug": 19.4,
-  "ph_rice_cpi_jul": 17.1,
-  "ph_food_cpi_aug": 4.6,
-  "ph_food_cpi_jul": 5.2,
-  "ph_cpi_jul": 6.2,
-  "ph_cpi_jun": 6.4,
-  "bsp_sep_cpi_lo": 6.4,
-  "bsp_sep_cpi_hi": 7.4,
   "ph_cpi_sep": 7.2,
   "ph_cpi_sep_poll": 6.7,
   "ph_cpi_apr": 7.2,
   "ph_core_cpi_sep": 4.7,
-  "ph_core_cpi_aug": 4.1,
   "ph_food_cpi_sep": 6.7,
-  "ph_transport_cpi_sep": 14.6,
-  "ph_transport_cpi_aug": 13.5,
   "ph_cpi_bottom30_sep": 9.0,
   "ph_cpi_bottom_hh_pct": 30,
-  "bsp_infl_2026": 6.1,
   "bsp_infl_2027": 5.4,
-  "usdphp": 62.801,
-  "usdphp_date": "2026-10-09",
-  "usdphp_prev": 62.9,
-  "usdphp_prev_date": "2026-10-08",
-  "usdphp_chg": -0.099,
-  "usdphp_record": 62.9,
-  "usdphp_record_date": "2026-10-08",
-  "usdphp_record_prev": 62.86,
-  "usdphp_record_prev_date": "2026-09-14",
-  "usdphp_record_intraday": 62.925,
+  "usdphp": 63.06,
+  "usdphp_date": "2026-10-15",
+  "usdphp_prev": 62.87,
+  "usdphp_prev_date": "2026-10-14",
+  "usdphp_chg": 0.19,
+  "usdphp_record": 63.06,
+  "usdphp_record_date": "2026-10-15",
+  "usdphp_record_prev": 62.9,
+  "usdphp_record_prev_date": "2026-10-08",
+  "usdphp_record_intraday": 63.15,
   "usdphp_records_2026": 24,
-  "usdphp_records_asof": "2026-09-11",
   "usdphp_sept_records": 6,
   "usdphp_2025_close": 58.79,
-  "psei": 5700.99,
-  "psei_chg_pts": 90.6,
-  "psei_chg_pct": 1.61,
-  "psei_date": "2026-10-09",
-  "psei_prev": 5610.39,
+  "psei": 5663.17,
+  "psei_chg_pts": 45.94,
+  "psei_chg_pct": 0.82,
+  "psei_date": "2026-10-15",
+  "psei_prev": 5617.23,
   "psei_2026_low": 5610.39,
   "psei_2026_low_date": "2026-10-08",
-  "ph_tbill_91": 5.667,
-  "ph_tbill_182": 5.971,
-  "ph_tbill_364": 6.214,
+  "ph_tbill_91": 5.845,
+  "ph_tbill_182": 6.171,
+  "ph_tbill_364": 6.351,
   "ph_tbill_prev": [
-   5.535,
-   5.862,
-   6.115
+   5.667,
+   5.971,
+   6.214
   ],
   "ph_tbill_chg_bp": [
-   13.2,
-   10.9,
-   9.9
+   17.8,
+   20.0,
+   13.7
   ],
-  "ph_tbill_date": "2026-10-05",
+  "ph_tbill_date": "2026-10-12",
   "ph_tbill_cadence_d": 7,
   "brent_history": [
    [
@@ -1214,12 +1087,23 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    [
     "2026-10-09",
     104.72
+   ],
+   [
+    "2026-10-12",
+    106.65
+   ],
+   [
+    "2026-10-13",
+    105.69
+   ],
+   [
+    "2026-10-14",
+    106.06
    ]
   ],
   "brent_roll_priors": {
    "2026-10-01": 98.03
   },
-  "brent_week_lfl_pct": 0.11,
   "brent_recovered": {
    "2026-10-06": [
     [
@@ -1242,7 +1126,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "2026-10-01": 4.37,
    "2026-10-02": -0.06,
    "2026-10-05": -1.9,
-   "2026-10-09": 0.42
+   "2026-10-09": 0.42,
+   "2026-10-12": 1.8,
+   "2026-10-13": -0.9,
+   "2026-10-14": 0.35
   },
   "brent_session_highs": {
    "2026-09-24": 108.23,
@@ -1275,11 +1162,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "brent_high": 108.75,
   "brent_high_date": "2026-09-15",
   "brent_closure": 130.0,
-  "brent_mom": 13.24,
-  "brent_yr_ago": 65.22,
-  "brent_yr_ago_date": "2025-10-09",
-  "hormuz_transits": 4,
-  "hormuz_transits_date": "2026-10-04",
+  "brent_yr_ago": 62.39,
+  "brent_yr_ago_date": "2025-10-14",
+  "hormuz_transits": 2,
+  "hormuz_transits_date": "2026-10-11",
   "hormuz_transits_cadence_d": 7,
   "hormuz_baseline": 85,
   "hormuz_lloyds": 14,
@@ -1291,22 +1177,16 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "hormuz_flow_prewar": 23.0,
   "hormuz_flow_trough": 5.5,
   "hormuz_flow_asof": "2026-08-28",
-  "hormuz_flow_new": 23.3,
-  "hormuz_flow_new_asof": "2026-09-29",
-  "me_crude_jpm": 17.5,
   "me_crude_jpm_pct": 98,
-  "me_products_jpm_pct": 58,
   "petroline_bypass": 5.0,
   "petroline_capacity": 7.0,
   "petroline_km": 1200,
-  "petroline_shut": "2026-09-11",
   "petroline_struck": "2026-09-10",
   "petroline_struck_disputed": true,
   "petroline_repair_wk_lo": 3,
   "petroline_repair_wk_hi": 5,
   "petroline_full_wk": 6,
   "petroline_target_pct": 50,
-  "yanbu_dry_since": "2026-09-11",
   "yanbu_loss_lo": 2.5,
   "yanbu_loss_hi": 2.7,
   "yanbu_stocks_mb": 15,
@@ -1318,30 +1198,29 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "yanbu_buffer_d_lo": 4,
   "yanbu_buffer_d_hi": 7,
   "hormuz_dark": 5.0,
-  "saudi_exports_sep_lo": 5.3,
   "saudi_exports_sep_hi": 6.0,
   "saudi_exports_aug_lo": 2.4,
   "saudi_exports_aug_hi": 3.4,
-  "saudi_exports_date": "2026-09-28",
-  "me_exports_sep": 12.8,
   "me_exports_feb": 18.8,
-  "hormuz_exports_sep": 7.4,
-  "me_exports_date": "2026-09-28",
   "petroline_flow_28sep": 3.5,
-  "trump_rejects_hormuz_plan_date": "2026-09-26",
-  "iran_delegation_out_date": "2026-09-28",
   "tanker_struck_date": "2026-10-02",
   "china_fuel_export_halt_date": "2026-10-01",
   "spr_final_tranche_mb": 40,
-  "spr_level_mb": 284,
   "saudi_osp_asia_nov": -5.0,
   "saudi_osp_asia_oct": -2.0,
-  "petroline_flow_6oct": 5.8,
-  "g7_release_mb": 100,
   "ukmto_attacks_oct": 9,
   "ukmto_attacks_sep": 18,
   "tankers_attacked_week": 12,
   "tankers_attacked_week_end": "2026-10-05",
+  "vessels_attacked_oct_min": 20,
+  "vessels_attacked_oct_date": "2026-10-14",
+  "container_ship_sunk_date": "2026-10-13",
+  "aramco_hq_struck_date": "2026-10-13",
+  "hormuz_crude_kpler": 8.5,
+  "hormuz_crude_kpler_week": "2026-10-12",
+  "iea_hormuz_sep": 10.9,
+  "iea_hormuz_sep_chg": 3.7,
+  "hormuz_crude_kpler_below_pct": 40,
   "isaias_gulf_shutin_pct": 70,
   "hormuz_queue": [
    [
@@ -1501,6 +1380,18 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    [
     "2026-10-09",
     14.84
+   ],
+   [
+    "2026-10-12",
+    15.21
+   ],
+   [
+    "2026-10-13",
+    15.27
+   ],
+   [
+    "2026-10-14",
+    16.87
    ]
   ],
   "vix_reported_moves": {
@@ -1522,7 +1413,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "2026-10-06": -3.29,
    "2026-10-07": 0.47,
    "2026-10-08": 2.19,
-   "2026-10-09": -3.7
+   "2026-10-09": -3.7,
+   "2026-10-12": 2.49,
+   "2026-10-13": 0.39,
+   "2026-10-14": 10.48
   },
   "vix_withheld": [],
   "vix_disputed_28sep": [
@@ -1531,30 +1425,28 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   ],
   "vix_latest_high": 18.17,
   "vix_latest_high_date": "2026-09-10",
-  "equity_date": "2026-10-09",
-  "spx_close": 7811.54,
-  "spx_chg_pct": 0.59,
-  "nasdaq_close": 27366.17,
-  "nasdaq_chg_pct": 0.64,
-  "dow_close": 51655.01,
-  "dow_chg_pct": 0.83,
-  "dow_chg_pts": 423.37,
+  "equity_date": "2026-10-14",
+  "spx_close": 7718.94,
+  "spx_chg_pct": -1.11,
+  "nasdaq_close": 26692.87,
+  "nasdaq_chg_pct": -1.88,
+  "dow_close": 51621.48,
+  "dow_chg_pct": -0.09,
+  "dow_chg_pts": -48.62,
   "spx_record_close": 7818.93,
   "spx_record_date": "2026-10-06",
-  "spx_prev": 7765.36,
-  "nasdaq_prev": 27193.34,
-  "dow_prev": 51231.64,
-  "wti_settle": 91.85,
-  "wti_chg_pct": 0.39,
-  "wti_date": "2026-10-09",
+  "spx_prev": 7805.45,
+  "nasdaq_prev": 27204.38,
+  "dow_prev": 51670.1,
+  "wti_settle": 95.09,
+  "wti_chg_pct": 1.01,
+  "wti_date": "2026-10-14",
   "wti_contract": "2026-11",
-  "wti_prev": 91.49,
-  "wti_prev_date": "2026-10-08",
+  "wti_prev": 94.14,
+  "wti_prev_date": "2026-10-13",
   "wti_expired_contract": "2026-10",
-  "wti_expired_settle": 94.59,
   "vix_2026_low": 13.8,
   "vix_2026_low_date": "2026-09-04",
-  "vix_aug_low": 14.18,
   "vix_futs_levels": [
    [
     "Oct",
@@ -1615,97 +1507,81 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "imf_weo_vintage": "2026-07-08",
   "imf_global_2026": 3.0,
   "imf_global_2027": 3.4,
-  "imf_us_2026": 2.3,
-  "imf_us_2027": 2.2,
-  "imf_ea_2025": 1.1,
   "imf_ea_2026": 0.9,
-  "imf_ea_2026_apr": 0.7,
   "imf_ea_2027": 1.2,
-  "imf_ae_2026": 1.7,
-  "imf_ae_2027": 1.8,
   "imf_emde_2026": 3.8,
-  "imf_emde_2027": 4.5,
   "ndx_fwd_pe": 22.4,
   "ndx_fwd_pe_10y": 22.9,
   "ndx_fwd_pe_5y": 24.7,
   "sxxp_fwd_pe": 15.37,
-  "sxxp_ytd": 9.5,
   "asia_fwd_pe": 10.5,
   "asia_eps_2026": 52.5,
   "asia_eps_2027": 27.5,
   "nikkei": 64011,
   "kospi": 6910,
-  "nikkei_latest": 69030.92,
-  "nikkei_latest_chg_pct": -0.02,
-  "nikkei_latest_date": "2026-10-09",
-  "nikkei_latest_prev": 69042.11,
-  "nikkei_latest_intraday_high": 67035,
-  "kospi_latest": 6625.93,
-  "kospi_latest_chg_pts": -177.97,
-  "kospi_latest_chg_pct": -2.62,
-  "kospi_latest_date": "2026-10-08",
-  "kospi_latest_prev": 6803.9,
+  "nikkei_latest": 64425.95,
+  "nikkei_latest_chg_pct": -4.9,
+  "nikkei_latest_date": "2026-10-15",
+  "nikkei_latest_prev": 67744.29,
+  "kospi_latest": 5554.22,
+  "kospi_latest_chg_pts": -454.59,
+  "kospi_latest_chg_pct": -7.57,
+  "kospi_latest_date": "2026-10-15",
+  "kospi_latest_prev": 6008.81,
+  "kospi_2oct": 7003.74,
+  "tsmc_q3_ni_bn": 763.06,
+  "tsmc_q3_ni_yoy": 68.7,
+  "tsmc_q3_consensus_bn": 746.34,
   "samsung_q3_op_tn": 107.4,
   "samsung_q3_consensus_tn": 106.1,
-  "tsmc_sep_rev_yoy": 54.6,
-  "samsung_chg_28sep": -5.43,
-  "hynix_chg_28sep": -5.05,
-  "samsung_chg_2oct": 2.79,
-  "hynix_chg_2oct": 3.21,
-  "samsung_chg_6oct": -1.45,
-  "hynix_chg_6oct": -3.69,
   "ltcma_us_eq": 6.7,
   "ndx_growth_premium": 1.3,
   "qiap_capture": 78,
   "qiap_premium_lr": 0.5,
+  "asia_target_mgmt_fee": 1.5,
   "asia_rerating": 1.0,
   "asia_div_drag": 0.5,
   "tech_growth_premium": 3.5,
   "tech_derating": 1.2,
   "phmm_gross_prev": 5.25,
   "ltcma_em_eq": 7.8,
-  "vix_latest_date": "2026-10-09",
-  "vix_latest": 14.84,
-  "vix_prev_date": "2026-10-08",
-  "vix_prev_close": 15.41,
-  "vix_latest_chg_pct_calc": -3.7,
-  "vix_latest_chg_pct": -3.7,
-  "vix_latest_chg_dp": 1,
+  "vix_latest_date": "2026-10-14",
+  "vix_latest": 16.87,
+  "vix_prev_date": "2026-10-13",
+  "vix_prev_close": 15.27,
+  "vix_latest_chg_pct_calc": 10.48,
+  "vix_latest_chg_pct": 10.48,
+  "vix_latest_chg_dp": 2,
   "vix_episode_high": 17.84,
-  "vix_episode_low": 14.21,
   "vix_episode_high_date": "2026-09-10",
   "vix_episode_low_date": "2026-09-22",
-  "ust_10y_date": "2026-10-09",
-  "ust_10y": 5.24,
-  "ust_10y_prev_date": "2026-10-08",
-  "ust_10y_prev": 5.22,
-  "ust_10y_chg_bp": 2.0,
-  "brent_date": "2026-10-09",
-  "brent": 104.72,
-  "brent_prev_date": "2026-10-08",
-  "brent_prev": 104.28,
+  "ust_10y_date": "2026-10-14",
+  "ust_10y": 5.19,
+  "ust_10y_prev_date": "2026-10-13",
+  "ust_10y_prev": 5.21,
+  "ust_10y_chg_bp": -2.0,
+  "brent_date": "2026-10-14",
+  "brent": 106.06,
+  "brent_prev_date": "2026-10-13",
+  "brent_prev": 105.69,
   "wti_expired_last_trade": "2026-09-22",
   "wti_prev_implied": false,
-  "brent_yoy": 60.56,
+  "brent_yoy": 70.0,
   "fed_dots_any_more": 16,
-  "fed_hike_odds_oct_chg_pp": 4.6,
+  "fed_hike_odds_oct_chg_pp": 10.0,
   "brent_high_contract": "2026-11",
   "brent_contract": "2026-12",
   "brent_off_high_pct": null,
-  "brent_roll_gap": 5.47,
-  "brent_chg_pct": 0.42,
-  "brent_chg_reported": 0.42,
+  "brent_chg_pct": 0.35,
+  "brent_chg_reported": 0.35,
   "brent_session_high_date": "2026-09-28",
   "brent_session_high": 108.83,
-  "usdphp_ytd_pct": 6.39,
-  "usdphp_chg_ctvo": -9.9,
-  "hormuz_vessel_drop_pct": 95.0,
+  "usdphp_ytd_pct": 6.77,
+  "usdphp_chg_ctvo": 19.0,
+  "hormuz_vessel_drop_pct": 98.0,
   "hormuz_queue_date": "2026-10-07",
   "hormuz_queue_now": 206,
-  "hormuz_queue_lo": 147,
-  "hormuz_queue_hi": 443,
-  "hormuz_transits_age_d": 6,
-  "hormuz_flow_drop_pct": 33.0,
+  "hormuz_transits_age_d": 4,
   "vix_futs": [
    [
     "Oct",
@@ -1766,60 +1642,60 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
  "sp_vol_lt": 19.44,
  "regions": {
   "US": {
-   "3M": 2.44,
+   "3M": 2.33,
    "6M": 2.67,
    "12M": 3.0,
    "10Y": 3.44,
-   "why": "Near horizons held, ten-year anchor held. The rate shock peaked and the market held. The S&P fell on 7 and 8 Oct as the 10-year touched 5.365%, its highest since April 2002, then rallied 0.59% to 7811.54 on 9 Oct, just under its record close of 7818.93 set on the 6th. The 10-year auction cleared at 5.3%, the highest since November 2000, but with indirect bidders taking 80.3% - demand for duration at these yields is there. The September minutes had most participants seeing another hike by year-end; CME FedWatch had October at 21.6% and December at 86.2% on 6 Oct. The consumer is the weak point: Michigan sentiment fell to 46.3 in October's first read, near May's record low of 44.8, with five-year inflation expectations up to 3.5%. September CPI on 14 Oct carries a 3.7% consensus. Hurricane Isaias shut in more than 70% of Gulf crude output. Near horizons stay where the rate repricing put them. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind against every other bloc here with Brent at $104.72, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages.",
-   "blend_10": 5.76,
-   "3M_10": 4.25,
+   "why": "3M CUT a quarter point to 4.0 on a hot CPI; longer horizons and the anchor held. September CPI was 3.7% against 3.6% expected, core 2.6%, and FedWatch took an October hike to 31.6% from about 22% before the release. The S&P fell 1.11% to 7718.94 on 14 Oct, its worst day since July, and the Nasdaq 1.88% to 26692.87 as chips sold off; the 10-year eased to 5.19% as stocks fell. The consumer is the weak point - Michigan sentiment at 46.3, near its 44.8 record low. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind against every other bloc here with Brent +70.0% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages.",
+   "blend_10": 5.74,
+   "3M_10": 4.0,
    "6M_10": 4.75,
    "12M_10": 5.5,
    "10Y_10": 6.5,
-   "blend": 3.11,
-   "summary": "Near horizons held: the S&P ended the week at 7811.54 near its record after the 10-year touched 5.365%; the anchor holds at 6.5 on energy self-sufficiency."
+   "blend": 3.1,
+   "summary": "3M cut to 4.0: a hot CPI lifted October hike odds to 31.6% and the S&P fell 1.11%; the ten-year anchor holds at 6.5."
   },
   "EUROPE": {
    "3M": 1.56,
    "6M": 1.89,
    "12M": 2.11,
    "10Y": 2.56,
-   "why": "3M CUT a quarter point to 2.25: a fiscal stress has joined the energy one. The 10-year OAT-Bund spread reached about 140bp, a level last seen in the euro debt crisis, as France's 2026 deficit is now expected at 5.4% of GDP against a 5.0% target and its 2027 budget faces a large austerity gap before a presidential election; BusinessWorld cited European fiscal and political concerns for the week's risk-off. The policy/growth mismatch stands: the ECB hiked to 2.50% on 10 Sep into IMF growth of just 0.9%, explicitly because the energy shock will hold inflation above target. August HICP was 3.2% (final), and September's flash jumped to 3.8% against 3.6% expected, with energy at 18.8%. Europe is the largest net energy importer in the world, facing Brent +60.56% y/y; the final print on 16 Oct tests the ECB's word that its cycle is over. 6M and longer held: a spread at crisis levels is a near-term risk premium until it forces a policy answer. The offset is real - at 15.4x forward it is the cheapest large market here.",
+   "why": "Held, 3M at 2.25 after last week's cut. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp, as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. The policy/growth mismatch stands: the ECB hiked to 2.50% on 10 Sep into IMF growth of 0.9%, and September's flash HICP was 3.8% against 3.6% expected, with energy at 18.8%; the final is due on 16 Oct. Europe is the largest net energy importer here, facing Brent +70.0% y/y. 6M and longer held. The offset is real - at 15.4x forward it is the cheapest large market after Asia.",
    "blend_10": 3.8,
    "3M_10": 2.25,
    "6M_10": 3.0,
    "12M_10": 3.5,
    "10Y_10": 4.5,
    "blend": 2.25,
-   "summary": "3M cut to 2.25: the French OAT-Bund spread reached about 140bp on top of an ECB hiking at 2.50% into 0.9% growth and 3.8% flash inflation."
+   "summary": "Held, 3M at 2.25: the OAT-Bund spread eased to 135.5bp as the budget debate opened; the final September HICP is due 16 Oct."
   },
   "ASIA": {
-   "3M": 2.78,
-   "6M": 3.0,
+   "3M": 2.33,
+   "6M": 2.78,
    "12M": 3.44,
    "10Y": 3.89,
-   "why": "Near horizons held after last week's cut; the earnings engine delivered and the market sold it. Samsung's preliminary third-quarter operating profit was a record 107.4tn won on 8 Oct, ahead of a 106.1tn consensus, and TSMC's September revenue was 54.6% above a year earlier - the AI supply chain is still earning. Korea fell anyway: the KOSPI lost 2.62% to 6,625.93 on 8 Oct, from 6,803.90 the day before, a third straight decline on oil and US rate fears, and was shut on the 9th. The Nikkei closed at 69,030.92 on 9 Oct, -0.02%, after recovering most of an early fall as SoftBank slid on doubts over AI revenue. Oil is back against the region's importers - Brent $104.72 - though China resumed refined-fuel exports after its Golden Week halt and Saudi Aramco's November price to Asia is a six-year low. The BoJ is at 1.25% after its 18 Sep hike, the yen weaker on it at 156.86; the Tankan reached 24. Korea, Taiwan and Japan are all large net oil importers. The ten-year anchor stays at 7.5: 10.5x forward against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block.",
-   "blend_10": 6.7,
-   "3M_10": 5.0,
-   "6M_10": 5.5,
+   "why": "3M CUT a point to 4.0 and 6M half a point to 5.0; 12M and the ten-year anchor held. The KOSPI fell 7.57% to 5,554.22 on 15 Oct after a circuit breaker halted trading, its seventh straight loss and 20.7% below the 7003.74 of 2 Oct - a bear market in seven sessions - as foreigners sold and SK Hynix and Samsung each lost about 10% on rate and AI-funding fears and China's CXMT memory push. The Nikkei fell 4.9% to 64,425.95. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a record NT$763.06bn, above consensus, and Samsung's quarter was a record 107.4tn won. The near horizons are cut because the region's buyers are leaving, not because its earnings are; Brent at $106.06 and a yen near 158.48 add to the importers' squeeze. The ten-year anchor stays at 7.5: 10.5x forward before the fall against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount, and JPM LTCMA puts EM equity at 7.8%, the highest of any equity block.",
+   "blend_10": 6.53,
+   "3M_10": 4.0,
+   "6M_10": 5.0,
    "12M_10": 6.5,
    "10Y_10": 7.5,
-   "blend": 3.53,
-   "summary": "Ranked first over ten years: Samsung's profit hit a record 107.4tn won and 10.5x forward stays cheap; near horizons held as the KOSPI fell 2.62%."
+   "blend": 3.46,
+   "summary": "3M cut to 4.0 and 6M to 5.0: the KOSPI fell 7.57% and is 20.7% below its 2 Oct close, but TSMC's profit rose 68.7%."
   },
   "PHILIPPINES": {
    "3M": 2.78,
    "6M": 2.78,
    "12M": 3.0,
    "10Y": 3.0,
-   "why": "Near horizons held after last week's cut; the peso made the test harder. It closed at a record-weak 62.90 on 8 Oct, past the 62.86 of 14 Sep, on risk-off and oil, then recovered to 62.801 on 9 Oct; the 62.925 intraday trough of 15 Sep is still the weakest it has traded. That is a 6.39% loss of purchasing power against the dollar this year. The PSEi fell to a 2026 low of 5610.39 on 8 Oct and recovered 1.61% to 5700.99 on 9 Oct. September inflation was 7.2%, core 4.7%; food 6.7%, transport 14.6%, and the poorest 30% of households saw 9.0%. The nominal carry is rising to meet it - the 5 Oct auction lifted 91-day bills to 5.667% and 364-day bills to 6.214% - and BSP, at 5.00%, meets on 22 Oct with a hike now expected. Against 7.2% every tenor's real yield is still below zero. Oil is a headwind again, Brent at $104.72, though China's resumed fuel exports ease the products squeeze. The 12-month and ten-year horizons stay neutral: a BSP that hikes restores the real carry. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not.",
+   "why": "Near horizons held; the peso broke 63. It closed at a record 63.06 on 15 Oct, past the 62.90 of 8 Oct, after trading as weak as 63.15 - a 6.77% loss of purchasing power against the dollar this year. The PSEi fell to 5617.23 on 14 Oct, just above its 5610.39 low of 8 Oct, then rose 0.82% to 5663.17. September inflation was 7.2%, core 4.7%. The carry is rising to meet it: the 12 Oct auction lifted 91-day bills to 5.845% and 364-day bills to 6.351%, and BSP, at 5.00%, is expected to hike on 22 Oct. Against 7.2% every tenor's real yield is still below zero. The 12-month and ten-year horizons stay neutral: a BSP that hikes restores the real carry. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not.",
    "blend_10": 5.38,
    "3M_10": 5.0,
    "6M_10": 5.0,
    "12M_10": 5.5,
    "10Y_10": 5.5,
    "blend": 2.94,
-   "summary": "Near horizons held: the peso closed at a record 62.90 and the PSEi at a 2026 low of 5610.39 on 8 Oct, with inflation at 7.2% before BSP on 22 Oct."
+   "summary": "Near horizons held: the peso closed at a record 63.06 on 15 Oct; 91-day bills rose to 5.845% before an expected BSP hike on 22 Oct."
   }
  },
  "hz_weights": {
@@ -1828,30 +1704,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "12M": 0.25,
   "10Y": 0.5
  },
- "correction": {
-  "date": "2026-09-25",
-  "weights_before": [
-   15,
-   70,
-   10,
-   5
-  ],
-  "cagr_before": 7.46,
-  "maxdd_before": -26.9,
-  "qiap_gross_usd_before": 7.2,
-  "qiap_net_before": 8.0,
-  "qiap_tilt_vol_before": 0.96,
-  "gtec_tilt_vol_before": -0.56
- },
  "vol_channel": {
   "blend": 18.97,
   "spot": 15.52,
   "longrun": 19.5,
   "ramp_ref": "long-run",
   "quote_date": "2026-10-05",
-  "latest": 14.84,
-  "latest_date": "2026-10-09",
-  "latest_gap": -0.68,
+  "latest": 16.87,
+  "latest_date": "2026-10-14",
+  "latest_gap": 1.35,
   "ramp": -0.53,
   "sens": {
    "ATRPHMM": 0.035,
@@ -1865,7 +1726,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "vix3m_resid": -0.87,
   "vix3m_prev_strip_resid": 4.16,
   "prev_strip_date": "2026-10-02",
-  "strip_age_d": 5
+  "strip_age_d": 10
  },
  "drivers": [
   {
@@ -1873,56 +1734,56 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "weight": 0.2,
    "score": 1.44,
    "score_10": 2.0,
-   "note": "HELD at 2.0. The minutes confirmed the stance and the long end tested it again. Released on 7 Oct, the September minutes showed every participant behind the hike and most judging another by year-end appropriate, with almost all seeing inflation risks to the upside - the 16 of 18 dot-plot participants who saw one more hike, in words. The same day the 10-year traded as high as 5.365%, above the 5 Oct peak of 5.349% and the highest since April 2002 - still short of that year's 5.379% - then eased after the 10-year auction cleared at 5.3%, the highest such auction yield since November 2000, with indirect bidders taking 80.3%. On official closes it went 5.31% on the 5th, 5.27% on the 6th, 5.28% on the 7th and 5.22% on the 8th; the 9th read 5.24% on the Treasury par curve, provisional until FRED confirms it. The 30-year reached 5.733% on 7 Oct, also its highest since 2002, and was 5.60% on Friday; the 2-year 4.789%. CME FedWatch still has October off the table at 21.6% on 6 Oct - from 17% after the payrolls and 73% on 23 Sep - and a hike by December at 86.2%, from 66.2%. Held, not cut: the minutes said what the dots had, and yields ended the week below their peak. The ECB finished its cycle on 10 Sep at 2.50%; BSP is at 5.00% and meets on 22 Oct with the peso at a record low; the BoJ joined on 18 Sep at 1.25%.",
-   "summary": "Held at 2.0: the minutes backed another hike by year-end, and the 10-year touched 5.365% on 7 Oct, a 2002 high, before a 5.3% auction cleared well."
+   "note": "HELD at 2.0. The hot CPI brought the next hike forward without adding one: CME FedWatch put an October hike at 31.6% late on 14 Oct, from 21.6% on 6 Oct and about 50% just after the release, and a hike by December at 89.7% (14 Oct), from 86.2%. The long end went the other way. On official closes the 10-year was 5.24% on the 9th, 5.21% on the 13th and 5.19% on the 14th - the 14th provisional until FRED publishes it - after jumping toward 5.33% within half an hour of the print and reversing as stocks fell. The 7 Oct intraday high of 5.365%, above the 5 Oct peak of 5.349%, is still the highest since April 2002. On the 14th the 2-year read 4.808% and the 30-year 5.517%. Held, not cut: the market is pricing the hike the minutes described sooner, and the curve flattened rather than sold off. BSP is at 5.00% and expected to hike on 22 Oct; the BoJ, at 1.25%, meets on 29-30 Oct.",
+   "summary": "Held at 2.0: a hot CPI pushed October hike odds to 31.6% from 21.6%, but the 10-year eased to 5.19% as stocks fell."
   },
   {
    "name": "Inflation trajectory",
    "weight": 0.15,
-   "score": 1.67,
-   "score_10": 2.5,
-   "note": "HELD at 2.5, with the test dated. No new print this week, but every expectation measure moved the wrong way. Michigan's October survey put year-ahead inflation expectations at 4.7% from 4.6% and five-year expectations at 3.5% from 3.4% - the long horizon is the one a central bank cannot ignore. Oil turned back up: Brent settled at $104.72 on 9 Oct, from $100.58 on 6 Oct, +60.56% on a year earlier against $65.22. September CPI is due on 14 Oct with a 3.7% headline consensus, from 3.4% in August; that print decides whether this score moves. The rest of the picture stands from last week: Philippine inflation 7.2% with core 4.7%, US services prices at 74.0, the euro-area flash at 3.8% with energy at 18.8%. Held, not cut: expectations surveys lead prints but are not prints, and US core was 2.4% in August.",
-   "summary": "Held at 2.5: five-year inflation expectations rose to 3.5% and Brent climbed back to $104.72; September CPI on 14 Oct is the test."
+   "score": 1.56,
+   "score_10": 2.25,
+   "note": "CUT a quarter point to 2.25: the print this score was held for came in hot. US September CPI rose 0.6% on the month and 3.7% on the year, from 3.4%, against a 3.6% consensus; core rose 0.3% (0.2% expected) to 2.6%, from 2.4%. Energy did most of it - gasoline +9.1% on the month and +34.2% on the year, energy +20.4% - but it is reaching other prices: airline fares are up 22% and shelter firmed to 3.2% from 3.0%. Expectations had moved first: Michigan's five-year measure rose to 3.5% from 3.4%. Brent settled at $106.06 on 14 Oct. Philippine inflation is 7.2% with core 4.7%; the euro-area flash was 3.8%. Cut, not slashed: core at 2.6% is not a wage-price spiral, and food eased to 2.5%.",
+   "summary": "Cut to 2.25: September CPI rose to 3.7% against 3.6% expected, core to 2.6%, with gasoline up 34.2% on the year."
   },
   {
    "name": "Growth momentum",
    "weight": 0.15,
    "score": 2.33,
    "score_10": 4.0,
-   "note": "HELD at 4.0. The consumer is weakening; the activity data are not. Michigan sentiment fell to 46.3 in October's first read, from 48.1 and below the 48.0 expected, close to May's record low of 44.8, after the Conference Board's 81.9 in September. Hurricane Isaias shut in more than 70% of US Gulf crude output by 9 Oct - a supply shock with a weeks-long horizon, not a demand one. Against that, the ISM services index was 54.9 and manufacturing 54.5 in September, both inside expansion, and Japan's Tankan for large manufacturers reached 24, an eight-year high. September payrolls (+29k, unemployment 4.2%) already took the September raise back on 3 Oct. This driver's lane is whether the growth engine is intact under the shocks; sentiment at a record low with spending data still in expansion is a warning, not yet a break.",
-   "summary": "Held at 4.0: Michigan sentiment fell to 46.3, near its record low, but services at 54.9 and manufacturing at 54.5 are still expanding."
+   "note": "HELD at 4.0. No new US activity data this week; retail sales and producer prices are due in the session after these closes. What exists still splits: Michigan sentiment fell to 46.3 in October's first read, near May's record low of 44.8, while ISM services (54.9) and manufacturing (54.5) stayed in expansion in September and Japan's Tankan for large manufacturers reached 24. Outside the US it is softer: the IEA now expects world oil demand to fall this year, and Philippine growth was 2.6% in the first half. A record-low consumer with activity still expanding is a warning, not yet a break.",
+   "summary": "Held at 4.0: no new US activity data; Michigan sentiment at 46.3 sits beside services at 54.9 and manufacturing at 54.5, still expanding."
   },
   {
    "name": "Corporate earnings",
    "weight": 0.2,
    "score": 3.67,
    "score_10": 7.0,
-   "note": "Still the strongest pillar, and the quarter's first big number confirmed it. Samsung's preliminary third-quarter operating profit was 107.4tn won on 8 Oct, the first quarter above 100tn and ahead of a 106.1tn consensus, on memory; TSMC's September revenue was up 54.6% on a year earlier. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) stands. The market sold the news anyway - the KOSPI fell 2.62% to 6,625.93 on 8 Oct, a third straight loss, and SoftBank slid on doubts about AI revenue on the 9th - which is a positioning and multiple question, not an earnings one. Held, not raised: the beat was narrow against consensus, and Brent back at $104.72 squeezes the margins of the region's manufacturers. US third-quarter results begin with the banks on 13 Oct.",
-   "summary": "Still the strongest pillar: Samsung's Q3 profit hit a record 107.4tn won and TSMC's September sales rose 54.6%, though chips sold off."
+   "note": "Still the strongest pillar, and the quarter's two biggest Asian numbers both beat. TSMC's third-quarter net income was NT$763.06bn on 15 Oct, +68.7% on a year earlier and above the NT$746.34bn expected, a sixth straight record; Samsung's preliminary operating profit was a record 107.4tn won against a 106.1tn consensus. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) stands. The market priced something else: the KOSPI fell 7.57% to 5,554.22 on 15 Oct as SK Hynix and Samsung each lost about 10% on rate and AI-funding fears and China's CXMT memory push. That is a multiple and financing question, not this quarter's earnings. US results opened with the banks, mixed. Held: the numbers keep beating while the price paid for them falls.",
+   "summary": "Still the strongest pillar: TSMC's Q3 profit rose 68.7% to a record and beat; the market sold Korean chips anyway."
   },
   {
    "name": "Valuation support",
    "weight": 0.1,
    "score": 4.11,
    "score_10": 8.0,
-   "note": "HELD at 8.0 after last week's cut. The S&P closed at 7811.54 on 9 Oct, just under its record close of 7818.93 on 6 Oct, after two down days on the yield spike: the market neither re-rated further nor gave the discount back. NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages; Asia at 10.5x is a two-decade-wide discount, with the Nikkei at 69,030.92; Europe is at 15.4x. A cheaper multiple on the same earnings is better compensation for the same risk, and this week the multiple did not move.",
-   "summary": "Held at 8.0: the S&P ended the week at 7811.54, just under its 7818.93 record, neither re-rating further nor giving the discount back."
+   "note": "HELD at 8.0. The discount widened where it was already widest: Asia was on 10.5x forward before this week's fall and is cheaper now on the same earnings, and the Nikkei fell 4.9% to 64,425.95 on 15 Oct. The S&P closed at 7718.94 on 14 Oct, below its 7818.93 record of 6 Oct; NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages; Europe is at 15.4x. Held, not raised: no multiple has been re-verified since the sell-off, and a lower price after a funding scare is not yet a lower price on settled earnings.",
+   "summary": "Held at 8.0: Asia got cheaper on the same earnings as the Nikkei fell 4.9%; the S&P closed at 7718.94, below its 7818.93 record."
   },
   {
    "name": "Volatility & risk appetite",
    "weight": 0.1,
-   "score": 1.89,
-   "score_10": 3.0,
-   "note": "HELD at 3.0, and the curve under it corrected. The index rose 0.47% to 15.08 on 7 Oct and 2.19% to 15.41 on 8 Oct as the 10-year hit its 2002 high, then fell 3.70% to 14.84 on 9 Oct as stocks rallied - a low level, under the 17.84 close of 10 Sep and below the long-run 19.5, so it reads as neither complacency nor stress. THE CURVE WAS WRONG FOR ITS DATE. The strip carried since 3 Oct (October 18.65 to January 20.38, labelled 2 Oct) read 4.16% high against the published VIX3M of 17.72 on 7 Oct; it had matched only the 1 Oct VIX3M, the one reading the check then had, dated a day before the strip. Re-quoted to the 5 Oct Cboe settlements (October 17.46 to January 19.33), the curve reads 17.57 against that 17.72, -0.87%. What this driver does NOT carry is a claim that rising volatility pays the portfolio: every fund's base return already assumes long-run volatility, so only the curve's distance from 19.5 moves a forecast. Blended across horizons the re-quoted curve sits at 18.97.",
-   "summary": "Held at 3.0: the VIX ended at 14.84; the curve was re-quoted after the old strip read 4.16% high against VIX3M, and now blends to 18.97."
+   "score": 1.78,
+   "score_10": 2.75,
+   "note": "CUT a quarter point to 2.75: the stress came from Asia and the VIX followed. The index rose 2.49% to 15.21 on 12 Oct and 0.39% to 15.27 on 13 Oct, then 10.48% to 16.87 on 14 Oct on the CPI, the largest daily rise in a series that starts on 2 Sep. On 15 Oct the KOSPI tripped a circuit breaker and closed 7.57% lower, and the Nikkei fell 4.9%. The level is still below the long-run 19.5 and the 17.84 close of 10 Sep: a risk-appetite cut, not a new volatility regime. The curve is unchanged - the 5 Oct Cboe settlements (October 17.46 to January 19.33) read 17.57 against the 7 Oct VIX3M of 17.72, -0.87%, and blend to 18.97 across horizons; no fresher strip was found. Every fund's base return already assumes long-run volatility, so only the curve's distance from 19.5 moves a forecast.",
+   "summary": "Cut to 2.75: the VIX rose 10.48% to 16.87 on the CPI and the KOSPI tripped a circuit breaker; the curve still blends to 18.97."
   },
   {
    "name": "Geopolitics & energy",
    "weight": 0.1,
-   "score": 1.33,
-   "score_10": 1.75,
-   "note": "HELD at 1.75 for a third week, on two facts pulling opposite ways. The security leg worsened again: Reuters counted at least 12 tankers attacked in the week to 5 Oct, the most intense week of the war, and the attacks spread inside the Gulf - a chemical tanker hit off Qatar with crew casualties on 7 Oct, another set on fire east of Fujairah on 8 Oct. UKMTO had logged nine attacks in October by the 6th, against 18 in all of September. Brent settled at $104.28 on 8 Oct and $104.72 on 9 Oct, from $100.58 on 6 Oct, with Hurricane Isaias shutting in more than 70% of US Gulf output on top. The escalation tail narrowed: on 8 Oct the President said the US would not strike Iran before the 3 November midterms, after The Atlantic reported the White House had asked for strike options, and on 9 Oct he called talks 'productive', where Iran's president had called them 'meaningless' on the 6th. The energy leg still holds on VOLUME, the measure this note says to read: Goldman had Gulf oil exports, dark flows included, at 23.3 mb/d over the week to 29 Sep, above the 23.0 pre-war level its 28 Aug note implied when it read 15.5; JPMorgan had Middle East crude at 17.5 mb/d, 98% of pre-war, products 58%. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline, which ran at 5.8 mb/d on 6 Oct; Saudi Aramco cut November Arab Light to Asia to $5 below the benchmark from $2 below, and the G7 plans a 100-million-barrel release. Held, not cut: ships are being hit inside the Gulf, but the one escalation that could close it - a US strike - is off the table until 3 Nov. The queue off berth read 206 vessels on 7 Oct, inside a 147-443 range. Read the disruption on VOLUME, not vessel counts: IMF PortWatch counted 4 transits on 4 Oct against an 85 baseline, a 95% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug counting only cargo over 10000 dwt; the US government around 30 on a basis it does not state - and none of them is supply. Still close to the floor of 1: the stress table's full closure with Brent above $130 is a strictly worse state still on the table.",
-   "summary": "Held at 1.75: tanker attacks spread inside the Gulf and Brent rose to $104.72, but a US strike is off the table until the 3 November midterms."
+   "score": 1.22,
+   "score_10": 1.5,
+   "note": "CUT a quarter point to 1.5: the attacks are sinking ships, and they reached Saudi Arabia. The Singapore-flagged container ship GFS Pride sank after a projectile strike on 13 Oct and a sister ship was hit the next day; Reuters counted more than 20 vessels attacked in October by the 14th, after at least 12 tankers in the week to 5 Oct. Houthi missiles struck Saudi Aramco's Dhahran headquarters on the night of 13 Oct. Iran called the US reply to its ceasefire plan 'insufficient' on 11 Oct; the 8 Oct pledge of no US strike before the 3 November midterms is what still narrows the tail. Brent settled at $106.06 on 14 Oct, from $104.72 on 9 Oct. Read it on VOLUME: Kpler had crude through Hormuz at 8.5 mb/d in the week to 12 Oct, nearly 40% below pre-war, and the IEA put September flows at 10.9 mb/d, up 3.7 mb/d. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses the Strait. Vessel counts disagree and are not supply: IMF PortWatch counted 2 transits on 11 Oct against an 85 baseline, a 98% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over 10000 dwt; the US government around 30, on a basis it does not state. Still above the floor of 1: full closure with Brent above $130 is strictly worse and still possible.",
+   "summary": "Cut to 1.5: a container ship sank in Hormuz, Houthi missiles hit Aramco's headquarters and talks stalled; Brent settled at $106.06."
   }
  ],
  "driver_scale": {
@@ -1931,8 +1792,8 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "neutral": 3.0,
   "neutral_10": 5.5
  },
- "gauge": 2.36,
- "gauge_10": 4.05,
+ "gauge": 2.32,
+ "gauge_10": 3.96,
  "gauge_neutral": 3.0,
  "funds": [
   {
@@ -1944,9 +1805,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "target": "Own mandate: outperform PH bank deposits, average portfolio duration <= 1 year",
    "target_verified": true,
    "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
-   "gross_note": "10y average PH short-rate path. Anchored on the PH bill curve - 91d 5.667%, 182d 5.971%, 364d 6.214% at the 5 Oct auction, higher across the curve than when this assumption was set on 2 Sep - with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. Held at 4.85% and flagged rather than re-fitted: the rise sits in the part of the path that reverts within a few years, which lifts a ten-year average by roughly a tenth of a point - inside this assumption's precision, but a known upward bias until it is re-fitted. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
+   "gross_note": "10y average PH short-rate path. Anchored on the PH bill curve - 91d 5.845%, 182d 6.171%, 364d 6.351% at the 12 Oct auction, higher across the curve than when this assumption was set on 2 Sep - with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. Held at 4.85% and flagged rather than re-fitted: the rise sits in the part of the path that reverts within a few years, which lifts a ten-year average by roughly a tenth of a point - inside this assumption's precision, but a known upward bias until it is re-fitted. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
    "fee_feeder": 0.71,
    "fee_target": 0.0,
+   "fee_feeder_prev": null,
+   "fee_feeder_from": null,
    "fee_total": 0.71,
    "gross_php": 4.85,
    "fx_drift": 0.0,
@@ -1955,12 +1818,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "tilt_regional": -0.04,
    "tilt_vol": -0.02,
    "tilt_rates": 0.58,
-   "tilt_energy": 0.06,
+   "tilt_energy": 0.07,
    "tilt_trend": 0.0,
    "tilt_rates_cal": 0.25,
    "tilt_energy_cal": 0.05,
-   "tilt_total": 0.58,
-   "net_macro": 4.72,
+   "tilt_total": 0.59,
+   "net_macro": 4.73,
    "vol": 0.41,
    "dd_k": 1.65,
    "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
@@ -1968,12 +1831,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dd_macro": -0.5,
    "target_net_macro": null,
    "target_dd_macro": null,
-   "net_novol": 4.74,
+   "net_novol": 4.75,
    "net_neutral": 4.08,
-   "net_notrend": 4.72,
-   "net_trend_alt": 4.72,
-   "net_asia_norerate": 4.72,
-   "net_asia_fee_hi": 4.72
+   "net_notrend": 4.73,
+   "net_trend_alt": 4.73,
+   "net_asia_norerate": 4.73,
+   "net_asia_fee_hi": 4.73
   },
   {
    "id": "ATRQIAP",
@@ -1987,11 +1850,13 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "gross_note": "NDX long-run total return of 8.0% (JPM LTCMA US large cap 6.7% + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium at long-run implied vol.",
    "fee_feeder": 1.5,
    "fee_target": 0.35,
+   "fee_feeder_prev": null,
+   "fee_feeder_from": null,
    "fee_total": 1.85,
    "gross_php": 8.74,
    "fx_drift": 2.0,
    "net_base": 6.89,
-   "regional_score": 3.11,
+   "regional_score": 3.1,
    "tilt_regional": 0.07,
    "tilt_vol": -0.11,
    "tilt_rates": -0.23,
@@ -2027,33 +1892,35 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "gross_note": "JPM LTCMA EM equity 7.8% + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
    "fee_feeder": 1.18,
    "fee_target": 1.55,
+   "fee_feeder_prev": null,
+   "fee_feeder_from": null,
    "fee_total": 2.73,
    "gross_php": 10.3,
    "fx_drift": 2.0,
    "net_base": 7.57,
-   "regional_score": 3.53,
-   "tilt_regional": 0.36,
+   "regional_score": 3.46,
+   "tilt_regional": 0.31,
    "tilt_vol": -0.0,
    "tilt_rates": -0.12,
-   "tilt_energy": -0.25,
+   "tilt_energy": -0.27,
    "tilt_trend": 0.15,
    "tilt_rates_cal": -0.05,
    "tilt_energy_cal": -0.2,
-   "tilt_total": 0.14,
-   "net_macro": 7.71,
+   "tilt_total": 0.07,
+   "net_macro": 7.64,
    "vol": 18.54,
    "dd_k": 1.7,
    "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
    "dd_base": -39.2,
-   "dd_macro": -39.1,
-   "target_net_macro": 8.89,
+   "dd_macro": -39.2,
+   "target_net_macro": 8.82,
    "target_dd_macro": -38.3,
-   "net_novol": 7.71,
-   "net_neutral": 8.08,
-   "net_notrend": 7.56,
-   "net_trend_alt": 7.7,
-   "net_asia_norerate": 6.71,
-   "net_asia_fee_hi": 7.46
+   "net_novol": 7.64,
+   "net_neutral": 8.03,
+   "net_notrend": 7.49,
+   "net_trend_alt": 7.63,
+   "net_asia_norerate": 6.64,
+   "net_asia_fee_hi": 7.39
   },
   {
    "id": "ATRGTEC",
@@ -2063,37 +1930,39 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "region": "GLOBAL_TECH",
    "target": "Target fund: Fidelity Funds - Global Technology Fund. Benchmark: MSCI ACWI Information Technology. Target-fund 5y annualised: 15.20% (W GBP class, to 20 Aug 2026).",
    "target_verified": true,
-   "fee_note": "1.15% ATRAM management fee (verified) + 1.04% target-fund OCF (PUBLISHED by Fidelity for the W-Acc-GBP class, AMC 0.80%)",
+   "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.15% (published) + 1.04% target-fund OCF (PUBLISHED by Fidelity for the W-Acc-GBP class, AMC 0.80%)",
    "gross_note": "US large cap 6.7% (JPM LTCMA) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
-   "fee_feeder": 1.15,
+   "fee_feeder": 1.5,
    "fee_target": 1.04,
-   "fee_total": 2.19,
+   "fee_feeder_prev": 1.15,
+   "fee_feeder_from": "2026-09-14",
+   "fee_total": 2.54,
    "gross_php": 11.0,
    "fx_drift": 2.0,
-   "net_base": 8.81,
-   "regional_score": 3.07,
-   "tilt_regional": 0.05,
+   "net_base": 8.46,
+   "regional_score": 3.06,
+   "tilt_regional": 0.04,
    "tilt_vol": 0.06,
    "tilt_rates": -0.93,
-   "tilt_energy": -0.19,
+   "tilt_energy": -0.2,
    "tilt_trend": 0.16,
    "tilt_rates_cal": -0.4,
    "tilt_energy_cal": -0.15,
-   "tilt_total": -0.85,
-   "net_macro": 7.96,
+   "tilt_total": -0.87,
+   "net_macro": 7.59,
    "vol": 24.78,
    "dd_k": 1.8,
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
-   "dd_base": -56.8,
-   "dd_macro": -57.4,
-   "target_net_macro": 9.11,
-   "target_dd_macro": -56.6,
-   "net_novol": 7.9,
-   "net_neutral": 9.08,
-   "net_notrend": 7.8,
-   "net_trend_alt": 7.96,
-   "net_asia_norerate": 7.96,
-   "net_asia_fee_hi": 7.96
+   "dd_base": -57.1,
+   "dd_macro": -57.7,
+   "target_net_macro": 9.09,
+   "target_dd_macro": -56.7,
+   "net_novol": 7.53,
+   "net_neutral": 8.72,
+   "net_notrend": 7.43,
+   "net_trend_alt": 7.59,
+   "net_asia_norerate": 7.59,
+   "net_asia_fee_hi": 7.59
   }
  ],
  "corr": [
@@ -2127,20 +1996,20 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "ATRPHMM": {
    "dp": 3,
    "kind": "instruments",
-   "as_of": "2026-10-05",
-   "note": "A money market fund holds paper, not shares. The live PH curve is the honest look-through.",
+   "as_of": "2026-10-12",
+   "note": "A money market fund holds paper, not shares: the T-bill curve is its look-through.",
    "rows": [
     [
      "91-day T-bill",
-     5.667
+     5.845
     ],
     [
      "182-day T-bill",
-     5.971
+     6.171
     ],
     [
      "364-day T-bill",
-     6.214
+     6.351
     ]
    ],
    "unit": "% yield",
@@ -2150,7 +2019,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dp": 1,
    "kind": "stocks",
    "as_of": "2026-08-31",
-   "note": "Top 10 equity positions of the JPMorgan Nasdaq Equity Premium Income strategy. Figures are from the US-listed JEPQ factsheet; ATRAM's feeder holds the UCITS sister fund (IE000U9J8HX9), which runs the same strategy on the same universe. The 31 August sheet is the latest JPMorgan has published (checked 2026-10-10).",
+   "note": "Top 10 of the strategy, from the US-listed JEPQ factsheet; the feeder holds the UCITS sister fund, which runs the same strategy. Still the latest sheet published (checked 2026-10-15).",
    "rows": [
     [
      "NVIDIA",
@@ -2200,7 +2069,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dp": 1,
    "kind": "gap",
    "as_of": null,
-   "note": "The JPMorgan Asia Equity Dividend Fund's current holdings could not be verified from a primary source. The newest list reachable is an aggregator's, dated 30 April 2026 - five months old, past the 60-day limit every look-through here is held to - so it is not shown. What is verified is the mandate: at least 70% in dividend-paying Asia Pacific ex-Japan equities.",
+   "note": "No current holdings from a primary source. The newest list found is an aggregator's from 30 April 2026, past the 60-day limit, so it is not shown. The mandate is verified: at least 70% in dividend-paying Asia Pacific ex-Japan equities.",
    "rows": [],
    "unit": null,
    "source": "gap recorded rather than filled - retry at each manual review"
@@ -2209,7 +2078,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "dp": 1,
    "kind": "stocks",
    "as_of": "2026-08-31",
-   "note": "Top holdings of the Fidelity Funds - Global Technology Fund from Fidelity's 31 August 2026 factsheet (98 positions). Nine are named here; the sheet's tenth, a 2.1% position, is not named in the text reachable from here, so it is left out rather than guessed. By country the fund is 53.5% USA, 10.8% Taiwan and 8.6% Netherlands - less American than its benchmark.",
+   "note": "From Fidelity's 31 August 2026 factsheet (98 positions). The tenth holding, a 2.1% position, is not named in the text reachable here, so it is left out rather than guessed.",
    "rows": [
     [
      "Taiwan Semiconductor",
@@ -2296,10 +2165,10 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "vol": 6.0,
   "corr": -0.2,
   "ppp_lr": 1.5,
-  "ppp_now": 2.7
+  "ppp_now": 3.5
  },
  "vix_quote_date": "2026-10-05",
- "review_date": "2026-10-10",
+ "review_date": "2026-10-15",
  "regional_tilt_per_pt": 0.675,
  "trend": {
   "end": "2026-09-30",
@@ -2540,20 +2409,15 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   "commit": "918c280",
   "neutral_10": 5.5,
   "rates_scale": 2.333333,
-  "energy_scale": 1.25
+  "energy_scale": 1.333333
  },
  "real_yield": {
   "cpi": 7.2,
   "month": "September",
-  "t91": -1.53,
-  "t364": -0.99
+  "t91": -1.36,
+  "t364": -0.85
  },
  "catalysts": [
-  {
-   "date": "2026-10-14",
-   "what": "US September CPI",
-   "why": "The test the inflation driver is held for. Consensus is 3.7%, from 3.4% in August, with Brent back at $104.72 and five-year inflation expectations up to 3.5%. It is the last CPI before the 28 Oct FOMC."
-  },
   {
    "date": "2026-10-16",
    "what": "Euro-area September HICP, final",
@@ -2562,17 +2426,22 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "date": "2026-10-22",
    "what": "BSP policy decision",
-   "why": "BSP is at 5.00% after three hikes, the last on 27 Aug. September inflation printed 7.2%, core 4.7%, and the peso closed at a record 62.90 on 8 Oct: a hike lifts the peso sleeve's carry toward a positive real yield, a pause leaves it deeper below zero."
+   "why": "BSP is at 5.00% after three hikes; Deutsche Bank and Nomura expect a fourth, to 5.25%. September inflation was 7.2% and the peso closed at a record 63.06 on 15 Oct: a hike lifts the peso sleeve's carry toward a positive real yield, a pause leaves it deeper below zero."
   },
   {
    "date": "2026-10-28",
    "what": "FOMC decision",
-   "why": "FedWatch has October at 21.6% and a hike by December at 86.2% (6 Oct), after 29k September payrolls took October off the table on 2 Oct. The minutes had most participants seeing another hike by year-end, so the question is when."
+   "why": "FedWatch had an October hike at 31.6% and one by December at 89.7% late on 14 Oct, after the hot CPI, from 21.6% and 86.2% on 6 Oct. The question is whether the hike most participants expect comes a week before the midterms."
+  },
+  {
+   "date": "2026-10-30",
+   "what": "Bank of Japan decision",
+   "why": "At 1.25% after the 18 Sep hike. Most expect a hold this month and a move by December; the yen is near 158.48 per dollar."
   },
   {
    "date": "2026-11-03",
    "what": "US midterm elections",
-   "why": "The date both sides of the Hormuz talks are working to. Iranian officials have said a deal is unlikely before it. On 8 Oct the President said the US would not strike Iran before it - and has called renewed strikes after it 'possible'. The stress table's full closure is the state this date can bring back."
+   "why": "The date both sides of the Hormuz talks are working to. On 8 Oct the President said the US would not strike Iran before it; on 11 Oct Iran called the US reply to its ceasefire plan 'insufficient'. The stress table's full closure is the state this date can bring back."
   }
  ],
  "postponed": [
@@ -2605,12 +2474,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     25.0,
     25.0
    ],
-   "cagr": 6.99,
+   "cagr": 6.9,
    "vol": 14.41,
    "maxdd": -30.0,
-   "ret_per_dd": 0.233,
-   "sharpe_like": 0.054,
-   "terminal_1m": 1965314,
+   "ret_per_dd": 0.23,
+   "sharpe_like": 0.038,
+   "terminal_1m": 1948844,
    "worst_1m_from_open": 700000
   },
   "under_macro": {
@@ -2620,47 +2489,47 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     25.0,
     25.0
    ],
-   "cagr": 6.84,
+   "cagr": 6.74,
    "vol": 14.41,
    "maxdd": -30.1,
-   "ret_per_dd": 0.227,
-   "sharpe_like": 0.043,
-   "terminal_1m": 1937933,
+   "ret_per_dd": 0.224,
+   "sharpe_like": 0.027,
+   "terminal_1m": 1919871,
    "worst_1m_from_open": 699000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $105. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 2.09,
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $106. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 1.99,
     "vol": 23.06,
     "maxdd": -54.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.5,
+    "cagr": 4.4,
     "vol": 18.73,
     "maxdd": -42.2
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 2.42,
+    "cagr": 2.31,
     "vol": 20.9,
-    "maxdd": -48.9
+    "maxdd": -49.0
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.41,
+    "cagr": 9.31,
     "vol": 11.53,
     "maxdd": -21.3
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.84,
+    "cagr": 6.74,
     "vol": 14.41,
     "maxdd": -30.1
    }
@@ -2680,12 +2549,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     55.0,
     5.0
    ],
-   "cagr": 6.81,
+   "cagr": 6.76,
    "vol": 12.95,
    "maxdd": -26.3,
-   "ret_per_dd": 0.259,
-   "sharpe_like": 0.046,
-   "terminal_1m": 1932498,
+   "ret_per_dd": 0.257,
+   "sharpe_like": 0.032,
+   "terminal_1m": 1923471,
    "worst_1m_from_open": 737000
   },
   "under_base": {
@@ -2695,58 +2564,58 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     55.0,
     5.0
    ],
-   "cagr": 6.67,
+   "cagr": 6.66,
    "vol": 12.95,
    "maxdd": -26.4,
-   "ret_per_dd": 0.253,
-   "sharpe_like": 0.035,
-   "terminal_1m": 1907317,
+   "ret_per_dd": 0.252,
+   "sharpe_like": 0.024,
+   "terminal_1m": 1905530,
    "worst_1m_from_open": 736000
   },
   "dd_cap": 27.27,
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $105. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 2.31,
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $106. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 2.26,
     "vol": 20.72,
     "maxdd": -48.1
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.29,
+    "cagr": 5.23,
     "vol": 16.84,
     "maxdd": -36.7
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 2.86,
+    "cagr": 2.81,
     "vol": 18.78,
-    "maxdd": -43.0
+    "maxdd": -43.1
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.11,
+    "cagr": 9.06,
     "vol": 10.36,
-    "maxdd": -18.4
+    "maxdd": -18.5
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.81,
+    "cagr": 6.76,
     "vol": 12.95,
     "maxdd": -26.3
    }
   ],
-  "n_feasible": 366,
+  "n_feasible": 364,
   "n_total": 969,
   "tie_pp": 0.05,
-  "band_n": 5,
+  "band_n": 3,
   "strict": {
-   "n": 5,
+   "n": 3,
    "tie_pp": 0.05,
    "weights": [
     25,
@@ -2754,7 +2623,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     60,
     5
    ],
-   "cagr": 6.86,
+   "cagr": 6.81,
    "maxdd": -27.0
   }
  },
@@ -2772,59 +2641,59 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     25.0,
     5.0
    ],
-   "cagr": 6.57,
+   "cagr": 6.54,
    "vol": 12.76,
    "maxdd": -25.6,
-   "ret_per_dd": 0.257,
-   "sharpe_like": 0.028,
-   "terminal_1m": 1889512,
+   "ret_per_dd": 0.255,
+   "sharpe_like": 0.015,
+   "terminal_1m": 1884200,
    "worst_1m_from_open": 744000
   },
   "fund": "ATRQIAP",
   "pin_pct": 50,
   "tie_pp": 0.05,
-  "best_cagr": 6.59,
+  "best_cagr": 6.54,
   "n_feasible": 11,
   "band_n": 2,
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $105. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 2.42,
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $106. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 2.39,
     "vol": 20.41,
-    "maxdd": -46.6
+    "maxdd": -46.7
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.73,
+    "cagr": 4.7,
     "vol": 16.59,
     "maxdd": -36.0
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.05,
+    "cagr": 3.02,
     "vol": 18.5,
     "maxdd": -41.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 8.74,
+    "cagr": 8.71,
     "vol": 10.21,
     "maxdd": -18.0
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.57,
+    "cagr": 6.54,
     "vol": 12.76,
     "maxdd": -25.6
    }
   ],
-  "cagr_no_rerating": 6.32,
-  "opt_cagr_no_rerating": 6.26
+  "cagr_no_rerating": 6.29,
+  "opt_cagr_no_rerating": 6.21
  },
  "best_ratio": {
   "weights": [
@@ -2833,12 +2702,12 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    5.0,
    5.0
   ],
-  "cagr": 5.13,
+  "cagr": 5.11,
   "vol": 2.76,
   "maxdd": -3.1,
-  "ret_per_dd": 1.655,
-  "sharpe_like": -0.393,
-  "terminal_1m": 1649175,
+  "ret_per_dd": 1.648,
+  "sharpe_like": -0.45,
+  "terminal_1m": 1646040,
   "worst_1m_from_open": 969000
  },
  "stub": {
@@ -2850,47 +2719,80 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    60,
    0
   ],
-  "cagr_without": 6.8,
-  "cagr_with": 6.81,
+  "cagr_without": 6.76,
+  "cagr_with": 6.76,
   "maxdd_without": -25.9,
   "maxdd_with": -26.3,
-  "cost": -0.01
+  "cost": 0.0
  },
- "tech_gap": 1.35,
+ "tech_gap": 0.98,
  "min_sleeve": 0.05,
  "cap_counterfactual": {
   "max_sleeve": 0.5,
   "weights": [
+   20,
    30,
-   5,
-   50,
-   15
+   45,
+   5
   ],
-  "cagr": 6.8,
-  "maxdd": -26.5,
-  "ret_per_dd": 0.257
+  "cagr": 6.75,
+  "maxdd": -26.6,
+  "ret_per_dd": 0.254
  },
  "what_if": {
   "vol_flat": {
    "weights": [
-    25,
-    15,
-    55,
+    20,
+    30,
+    45,
     5
    ],
-   "cagr": 6.83,
-   "maxdd": -26.2,
-   "dd_cap": 27.17,
+   "cagr": 6.78,
+   "maxdd": -26.6,
+   "dd_cap": 27.27,
    "strict": {
-    "n": 5,
+    "n": 3,
     "tie_pp": 0.05,
     "weights": [
+     20,
      25,
-     10,
-     60,
+     50,
      5
     ],
-    "cagr": 6.88,
+    "cagr": 6.83,
+    "maxdd": -27.1
+   },
+   "pinned": {
+    "weights": [
+     20,
+     50,
+     25,
+     5
+    ],
+    "cagr": 6.6,
+    "maxdd": -25.6
+   }
+  },
+  "drags_neutral": {
+   "weights": [
+    20,
+    30,
+    45,
+    5
+   ],
+   "cagr": 6.96,
+   "maxdd": -26.5,
+   "dd_cap": 27.07,
+   "strict": {
+    "n": 3,
+    "tie_pp": 0.05,
+    "weights": [
+     20,
+     25,
+     50,
+     5
+    ],
+    "cagr": 7.01,
     "maxdd": -27.0
    },
    "pinned": {
@@ -2900,74 +2802,41 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
      25,
      5
     ],
-    "cagr": 6.63,
+    "cagr": 6.74,
     "maxdd": -25.5
-   }
-  },
-  "drags_neutral": {
-   "weights": [
-    30,
-    5,
-    50,
-    15
-   ],
-   "cagr": 6.97,
-   "maxdd": -26.4,
-   "dd_cap": 26.97,
-   "strict": {
-    "n": 7,
-    "tie_pp": 0.05,
-    "weights": [
-     25,
-     10,
-     60,
-     5
-    ],
-    "cagr": 7.02,
-    "maxdd": -26.9
-   },
-   "pinned": {
-    "weights": [
-     20,
-     50,
-     20,
-     10
-    ],
-    "cagr": 6.83,
-    "maxdd": -26.4
    }
   },
   "asia_no_rerating": {
    "weights": [
-    30,
-    30,
-    15,
-    25
+    20,
+    55,
+    20,
+    5
    ],
-   "cagr": 6.4,
-   "maxdd": -26.6,
-   "dd_cap": 27.37,
+   "cagr": 6.29,
+   "maxdd": -25.7,
+   "dd_cap": 27.47,
    "strict": {
-    "n": 22,
+    "n": 34,
     "tie_pp": 0.05,
-    "weights": [
-     25,
-     35,
-     20,
-     20
-    ],
-    "cagr": 6.43,
-    "maxdd": -27.2
-   },
-   "pinned": {
     "weights": [
      20,
      50,
      20,
      10
     ],
-    "cagr": 6.39,
+    "cagr": 6.34,
     "maxdd": -26.7
+   },
+   "pinned": {
+    "weights": [
+     20,
+     50,
+     25,
+     5
+    ],
+    "cagr": 6.29,
+    "maxdd": -25.8
    }
   },
   "asia_fee_hi": {
@@ -2977,11 +2846,11 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     55,
     5
    ],
-   "cagr": 6.67,
+   "cagr": 6.62,
    "maxdd": -26.4,
-   "dd_cap": 27.27,
+   "dd_cap": 27.37,
    "strict": {
-    "n": 8,
+    "n": 5,
     "tie_pp": 0.05,
     "weights": [
      20,
@@ -2989,7 +2858,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
      50,
      5
     ],
-    "cagr": 6.72,
+    "cagr": 6.67,
     "maxdd": -27.2
    },
    "pinned": {
@@ -2999,7 +2868,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
      25,
      5
     ],
-    "cagr": 6.51,
+    "cagr": 6.48,
     "maxdd": -25.6
    },
    "stress_pp": 0.25
@@ -3011,42 +2880,9 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
     55,
     5
    ],
-   "cagr": 6.7,
-   "maxdd": -26.3,
-   "dd_cap": 27.27,
-   "strict": {
-    "n": 5,
-    "tie_pp": 0.05,
-    "weights": [
-     25,
-     10,
-     60,
-     5
-    ],
-    "cagr": 6.75,
-    "maxdd": -27.1
-   },
-   "pinned": {
-    "weights": [
-     20,
-     50,
-     25,
-     5
-    ],
-    "cagr": 6.47,
-    "maxdd": -25.7
-   }
-  },
-  "trend_alt": {
-   "weights": [
-    25,
-    15,
-    50,
-    10
-   ],
-   "cagr": 6.82,
-   "maxdd": -26.8,
-   "dd_cap": 27.27,
+   "cagr": 6.65,
+   "maxdd": -26.4,
+   "dd_cap": 27.37,
    "strict": {
     "n": 3,
     "tie_pp": 0.05,
@@ -3056,7 +2892,40 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
      60,
      5
     ],
-    "cagr": 6.86,
+    "cagr": 6.7,
+    "maxdd": -27.1
+   },
+   "pinned": {
+    "weights": [
+     20,
+     50,
+     25,
+     5
+    ],
+    "cagr": 6.44,
+    "maxdd": -25.7
+   }
+  },
+  "trend_alt": {
+   "weights": [
+    25,
+    15,
+    55,
+    5
+   ],
+   "cagr": 6.75,
+   "maxdd": -26.3,
+   "dd_cap": 27.27,
+   "strict": {
+    "n": 4,
+    "tie_pp": 0.05,
+    "weights": [
+     25,
+     10,
+     60,
+     5
+    ],
+    "cagr": 6.8,
     "maxdd": -27.0
    },
    "pinned": {
@@ -3066,7 +2935,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
      25,
      5
     ],
-    "cagr": 6.57,
+    "cagr": 6.54,
     "maxdd": -25.6
    }
   }
@@ -3075,7 +2944,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 3.1,
    "dd": -3.1,
-   "cagr": 5.13,
+   "cagr": 5.11,
    "weights": [
     85.0,
     5.0,
@@ -3086,7 +2955,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 4.7,
    "dd": -4.7,
-   "cagr": 5.22,
+   "cagr": 5.21,
    "weights": [
     80.0,
     10.0,
@@ -3095,31 +2964,20 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 6.0,
-   "dd": -6.0,
-   "cagr": 5.29,
-   "weights": [
-    80.0,
-    5.0,
-    5.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 6.9,
-   "dd": -6.9,
-   "cagr": 5.42,
+   "maxdd": 6.5,
+   "dd": -6.5,
+   "cagr": 5.3,
    "weights": [
     75.0,
-    5.0,
     15.0,
+    5.0,
     5.0
    ]
   },
   {
    "maxdd": 8.2,
    "dd": -8.2,
-   "cagr": 5.46,
+   "cagr": 5.45,
    "weights": [
     70.0,
     15.0,
@@ -3128,20 +2986,20 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 9.7,
-   "dd": -9.7,
+   "maxdd": 10.1,
+   "dd": -10.1,
    "cagr": 5.59,
    "weights": [
-    70.0,
-    5.0,
+    65.0,
     15.0,
-    10.0
+    15.0,
+    5.0
    ]
   },
   {
    "maxdd": 11.0,
    "dd": -11.0,
-   "cagr": 5.72,
+   "cagr": 5.69,
    "weights": [
     65.0,
     5.0,
@@ -3152,7 +3010,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 12.0,
    "dd": -12.0,
-   "cagr": 5.76,
+   "cagr": 5.74,
    "weights": [
     60.0,
     15.0,
@@ -3163,7 +3021,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 13.1,
    "dd": -13.1,
-   "cagr": 5.87,
+   "cagr": 5.84,
    "weights": [
     60.0,
     5.0,
@@ -3174,7 +3032,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 14.0,
    "dd": -14.0,
-   "cagr": 5.91,
+   "cagr": 5.88,
    "weights": [
     55.0,
     15.0,
@@ -3185,7 +3043,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 15.2,
    "dd": -15.2,
-   "cagr": 6.02,
+   "cagr": 5.99,
    "weights": [
     55.0,
     5.0,
@@ -3196,7 +3054,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   {
    "maxdd": 16.6,
    "dd": -16.6,
-   "cagr": 6.12,
+   "cagr": 6.08,
    "weights": [
     50.0,
     10.0,
@@ -3205,42 +3063,31 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 17.7,
-   "dd": -17.7,
-   "cagr": 6.18,
-   "weights": [
-    50.0,
-    5.0,
-    35.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 18.6,
-   "dd": -18.6,
-   "cagr": 6.27,
+   "maxdd": 18.0,
+   "dd": -18.0,
+   "cagr": 6.17,
    "weights": [
     45.0,
-    10.0,
-    40.0,
+    15.0,
+    35.0,
     5.0
    ]
   },
   {
-   "maxdd": 19.8,
-   "dd": -19.8,
-   "cagr": 6.33,
+   "maxdd": 19.4,
+   "dd": -19.4,
+   "cagr": 6.28,
    "weights": [
     45.0,
     5.0,
-    40.0,
-    10.0
+    45.0,
+    5.0
    ]
   },
   {
    "maxdd": 20.7,
    "dd": -20.7,
-   "cagr": 6.42,
+   "cagr": 6.37,
    "weights": [
     40.0,
     10.0,
@@ -3249,64 +3096,42 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 21.9,
-   "dd": -21.9,
-   "cagr": 6.48,
+   "maxdd": 22.2,
+   "dd": -22.2,
+   "cagr": 6.46,
    "weights": [
-    40.0,
-    5.0,
+    35.0,
+    15.0,
     45.0,
-    10.0
+    5.0
    ]
   },
   {
-   "maxdd": 22.8,
-   "dd": -22.8,
+   "maxdd": 23.6,
+   "dd": -23.6,
    "cagr": 6.57,
    "weights": [
     35.0,
-    10.0,
-    50.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 24.0,
-   "dd": -24.0,
-   "cagr": 6.63,
-   "weights": [
-    35.0,
     5.0,
-    50.0,
-    10.0
+    55.0,
+    5.0
    ]
   },
   {
    "maxdd": 24.9,
    "dd": -24.9,
-   "cagr": 6.72,
+   "cagr": 6.66,
    "weights": [
     30.0,
     10.0,
     55.0,
     5.0
-   ]
-  },
-  {
-   "maxdd": 26.1,
-   "dd": -26.1,
-   "cagr": 6.78,
-   "weights": [
-    30.0,
-    5.0,
-    55.0,
-    10.0
    ]
   },
   {
    "maxdd": 26.3,
    "dd": -26.3,
-   "cagr": 6.81,
+   "cagr": 6.76,
    "weights": [
     25.0,
     15.0,
@@ -3315,42 +3140,31 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 27.4,
-   "dd": -27.4,
-   "cagr": 6.88,
+   "maxdd": 27.7,
+   "dd": -27.7,
+   "cagr": 6.85,
    "weights": [
-    25.0,
-    10.0,
+    20.0,
+    20.0,
     55.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 28.3,
-   "dd": -28.3,
-   "cagr": 6.96,
-   "weights": [
-    20.0,
-    15.0,
-    60.0,
     5.0
    ]
   },
   {
-   "maxdd": 29.5,
-   "dd": -29.5,
-   "cagr": 7.03,
+   "maxdd": 29.1,
+   "dd": -29.1,
+   "cagr": 6.95,
    "weights": [
     20.0,
     10.0,
-    60.0,
-    10.0
+    65.0,
+    5.0
    ]
   },
   {
-   "maxdd": 30.4,
-   "dd": -30.4,
-   "cagr": 7.11,
+   "maxdd": 30.5,
+   "dd": -30.5,
+   "cagr": 7.05,
    "weights": [
     15.0,
     15.0,
@@ -3359,201 +3173,47 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    ]
   },
   {
-   "maxdd": 31.6,
-   "dd": -31.6,
-   "cagr": 7.18,
-   "weights": [
-    15.0,
-    10.0,
-    65.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 32.5,
-   "dd": -32.5,
-   "cagr": 7.26,
+   "maxdd": 31.9,
+   "dd": -31.9,
+   "cagr": 7.14,
    "weights": [
     10.0,
-    15.0,
-    70.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 33.7,
-   "dd": -33.7,
-   "cagr": 7.33,
-   "weights": [
-    10.0,
-    10.0,
-    70.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 34.6,
-   "dd": -34.6,
-   "cagr": 7.41,
-   "weights": [
-    5.0,
-    15.0,
-    75.0,
-    5.0
-   ]
-  },
-  {
-   "maxdd": 35.8,
-   "dd": -35.8,
-   "cagr": 7.48,
-   "weights": [
-    5.0,
-    10.0,
-    75.0,
-    10.0
-   ]
-  },
-  {
-   "maxdd": 36.9,
-   "dd": -36.9,
-   "cagr": 7.54,
-   "weights": [
-    5.0,
-    5.0,
-    75.0,
-    15.0
-   ]
-  },
-  {
-   "maxdd": 38.0,
-   "dd": -38.0,
-   "cagr": 7.57,
-   "weights": [
-    5.0,
-    5.0,
-    65.0,
-    25.0
-   ]
-  },
-  {
-   "maxdd": 39.4,
-   "dd": -39.4,
-   "cagr": 7.59,
-   "weights": [
-    5.0,
-    5.0,
-    55.0,
-    35.0
-   ]
-  },
-  {
-   "maxdd": 40.3,
-   "dd": -40.3,
-   "cagr": 7.61,
-   "weights": [
-    5.0,
-    5.0,
-    50.0,
-    40.0
-   ]
-  },
-  {
-   "maxdd": 41.2,
-   "dd": -41.2,
-   "cagr": 7.62,
-   "weights": [
-    5.0,
-    5.0,
-    45.0,
-    45.0
-   ]
-  },
-  {
-   "maxdd": 42.2,
-   "dd": -42.2,
-   "cagr": 7.63,
-   "weights": [
-    5.0,
-    5.0,
-    40.0,
-    50.0
-   ]
-  },
-  {
-   "maxdd": 43.4,
-   "dd": -43.4,
-   "cagr": 7.64,
-   "weights": [
-    5.0,
-    5.0,
-    35.0,
-    55.0
-   ]
-  },
-  {
-   "maxdd": 44.5,
-   "dd": -44.5,
-   "cagr": 7.66,
-   "weights": [
-    5.0,
-    5.0,
-    30.0,
-    60.0
-   ]
-  },
-  {
-   "maxdd": 45.7,
-   "dd": -45.7,
-   "cagr": 7.67,
-   "weights": [
-    5.0,
-    5.0,
-    25.0,
-    65.0
-   ]
-  },
-  {
-   "maxdd": 47.0,
-   "dd": -47.0,
-   "cagr": 7.68,
-   "weights": [
-    5.0,
-    5.0,
     20.0,
-    70.0
+    65.0,
+    5.0
    ]
   },
   {
-   "maxdd": 48.4,
-   "dd": -48.4,
-   "cagr": 7.69,
+   "maxdd": 33.3,
+   "dd": -33.3,
+   "cagr": 7.24,
    "weights": [
-    5.0,
+    10.0,
+    10.0,
+    75.0,
+    5.0
+   ]
+  },
+  {
+   "maxdd": 34.7,
+   "dd": -34.7,
+   "cagr": 7.34,
+   "weights": [
     5.0,
     15.0,
-    75.0
+    75.0,
+    5.0
    ]
   },
   {
-   "maxdd": 49.8,
-   "dd": -49.8,
-   "cagr": 7.71,
+   "maxdd": 36.3,
+   "dd": -36.3,
+   "cagr": 7.44,
    "weights": [
     5.0,
     5.0,
-    10.0,
-    80.0
-   ]
-  },
-  {
-   "maxdd": 51.3,
-   "dd": -51.3,
-   "cagr": 7.72,
-   "weights": [
-    5.0,
-    5.0,
-    5.0,
-    85.0
+    85.0,
+    5.0
    ]
   }
  ],
@@ -3705,7 +3365,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "org": "Investing.com",
-   "what": "CBOE Volatility Index historical data - 15.08 (7 Oct, +0.47%), 15.41 (8 Oct, +2.19%), 14.84 (9 Oct, -3.70%)",
+   "what": "CBOE Volatility Index historical data - 15.08 (7 Oct), 15.41 (8 Oct), 14.84 (9 Oct), 15.21 (12 Oct, +2.49%), 16.87 (14 Oct, +10.48%)",
    "url": "https://www.investing.com/indices/volatility-s-p-500-historical-data"
   },
   {
@@ -4145,7 +3805,7 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
   },
   {
    "org": "Federal Reserve",
-   "what": "H.15 Selected Interest Rates (Daily) - the 10-year constant-maturity yield closed 4.94% on 17 September 2026. This model had published 4.94% as the EIGHTEENTH's close",
+   "what": "H.15 Selected Interest Rates (Daily) - the 10-year closed 4.94% on 17 September 2026 (once published here as the EIGHTEENTH's close); 5.24 on 9 Oct and 5.21 on 13 Oct (14 Oct release)",
    "url": "https://www.federalreserve.gov/releases/h15/"
   },
   {
@@ -4427,6 +4087,186 @@ footer{padding:16px 2px 4px;font-size:11px;color:var(--ink-3);line-height:1.6;
    "org": "BEA / BLS",
    "what": "Release schedules - Personal Income and Outlays, August 2026, on 30 September; Employment Situation, September 2026, on 2 October",
    "url": "https://www.bls.gov/schedule/news_release/current_year.asp"
+  },
+  {
+   "org": "CNBC",
+   "what": "CPI inflation report, September 2026 - headline 3.7% y/y (+0.6% m/m) vs 3.6% expected; core 2.6% (+0.3%)",
+   "url": "https://www.cnbc.com/2026/10/14/cpi-inflation-report-september-2026.html"
+  },
+  {
+   "org": "CBS News",
+   "what": "September CPI report shows inflation accelerated to 3.7% as energy costs soared - gasoline +9.1% m/m",
+   "url": "https://www.cbsnews.com/news/september-cpi-report-inflation-energy-costs/"
+  },
+  {
+   "org": "Fox Business",
+   "what": "September CPI: shelter 3.2% y/y, food 2.5%, gasoline +34.2% (BLS release summary)",
+   "url": "https://foxbusiness.com/economy/cpi-inflation-september-2026"
+  },
+  {
+   "org": "ABC News / Associated Press",
+   "what": "How major US stock indexes fared Wednesday 10/14/2026 - S&P 7718.94 (-86.51), Nasdaq 26692.87 (-511.51); week-to-date Dow -33.47",
+   "url": "https://abcnews.com/Business/wireStory/major-us-stock-indexes-fared-wednesday-10142026-137270020"
+  },
+  {
+   "org": "WTOP / Associated Press",
+   "what": "How major US stock indexes fared Monday 10/12/2026 - S&P 7807.24, Nasdaq 27245.90, Dow 51850.55 (+195.60)",
+   "url": "https://wtop.com/national/2026/10/how-major-us-stock-indexes-fared-monday-10-12-2026"
+  },
+  {
+   "org": "KVUE / Associated Press",
+   "what": "How major US stock indexes fared Tuesday 10/13/2026 - S&P 7805.45 (-1.79), Nasdaq 27204.38 (-41.52), Dow 51670.10 (-180.45)",
+   "url": "https://www.kvue.com/article/syndication/associatedpress/how-major-us-stock-indexes-fared-tuesday-10132026/616-79e921f9-f51b-49be-8ffb-40f942bd73c3"
+  },
+  {
+   "org": "CNBC",
+   "what": "Oil, 14 Oct 2026 - Brent settled $106.06 (+37 cents) after the IEA warning and the Houthi strike on Aramco",
+   "url": "https://www.cnbc.com/2026/10/14/oil-rises-amid-growing-tensions-between-saudis-and-iran-backed-houthis.html"
+  },
+  {
+   "org": "FNN (Financial News)",
+   "what": "[Oil prices] Brent settles down 0.9% at $105.69; WTI rises 0.43% to $94.14, 13 Oct 2026",
+   "url": "https://en.fnnews.com/news/202610140452085589"
+  },
+  {
+   "org": "Newsquawk",
+   "what": "Crude wrap: WTI (X6) settles USD 0.95 higher at 95.09/bbl; Brent (Z6) USD 0.37 higher at 106.06/bbl",
+   "url": "https://www.newsquawk.com/headlines/crude-wrap-wti-x6-settles-usd-095-higher-at-9509bbl-brent-z6-settles-usd-037-higher-at-10606bbl"
+  },
+  {
+   "org": "TheStreet",
+   "what": "Stock market today, 12 Oct 2026 - S&P moderates; Brent +1.8% to $106.65",
+   "url": "https://www.thestreet.com/stock-market-today/stock-market-today-oct-12-2026-dow-futures-climb-as-wall-street-gears-up-for-busy-week"
+  },
+  {
+   "org": "TradingView / Dow Jones Newswires",
+   "what": "Data Talk, 15 Oct 2025 - front-month ICE Brent fell 0.77% to settle at $61.91, down $1.41 over two sessions (the y/y base)",
+   "url": "https://it.tradingview.com/news/DJN_DN20251015007406%3A0-front-month-ice-brent-crude-fell-0-77-to-settle-at-61-91-data-talk"
+  },
+  {
+   "org": "FRED",
+   "what": "CBOE Volatility Index: VIXCLS - 15.21 (12 Oct), 15.27 (13 Oct)",
+   "url": "https://fred.stlouisfed.org/series/vixcls"
+  },
+  {
+   "org": "StockMarketWatch",
+   "what": "Treasury par yield curve, 14 Oct 2026 - 10-year 5.19%, -2bp",
+   "url": "https://stockmarketwatch.com/bonds"
+  },
+  {
+   "org": "CNBC",
+   "what": "10-year Treasury yield dips as traders look ahead to Thursday's reports - 2-year 4.808%, 30-year 5.517%, 14 Oct",
+   "url": "https://www.cnbc.com/2026/10/14/us-treasury-yields-cpi-inflation-report.html"
+  },
+  {
+   "org": "FinanceFeeds",
+   "what": "Fed rate hike in October? Odds after the 3.7% CPI - FedWatch 31.6% October, 89.7% December (FXStreet, 7:23pm ET 14 Oct)",
+   "url": "https://financefeeds.com/will-the-fed-hike-on-28-october-what-the-odds-did-after-a-3-7-cpi/"
+  },
+  {
+   "org": "Manila Bulletin",
+   "what": "Peso crashes past P63:$1, hits weakest-ever close of 63.06, 15 Oct 2026",
+   "url": "https://mb.com.ph/2026/10/15/peso-crashes-past-631-hits-weakest-ever-close"
+  },
+  {
+   "org": "BusinessWorld",
+   "what": "Peso extends slide before US consumer inflation data - closes at P62.87, 14 Oct 2026",
+   "url": "https://bworldonline.com/banking-finance/2026/10/14/786942/peso-extends-slide-before-us-consumer-inflation-data/"
+  },
+  {
+   "org": "Manila Bulletin",
+   "what": "PSEi snaps two-day slide after holding 5,600 support: +45.94 to 5,663.17, 15 Oct 2026",
+   "url": "https://mb.com.ph/2026/10/15/psei-snaps-two-day-slide-after-holding-5600-support"
+  },
+  {
+   "org": "BusinessWorld",
+   "what": "PSEi plunges to 5,600 level as sell-off continues: -84.31 to 5,617.23, 14 Oct 2026",
+   "url": "https://bworldonline.com/stock-market/2026/10/14/786880/psei-plunges-to-5600-level-as-sell-off-continues/"
+  },
+  {
+   "org": "BusinessWorld",
+   "what": "BTr partially awards T-bills as yields climb on rate hike bets - 5.845 / 6.171 / 6.351%, 12 Oct 2026",
+   "url": "https://bworldonline.com/banking-finance/2026/10/12/786345/btr-partially-awards-t-bills-as-yields-climb-on-rate-hike-bets/"
+  },
+  {
+   "org": "The Asia Business Daily",
+   "what": "KOSPI closes down more than 7% as circuit breaker is triggered - 5,554.22, 15 Oct 2026",
+   "url": "https://www.asiae.co.kr/en/article/2026101515453239955"
+  },
+  {
+   "org": "Seoul Economic Daily",
+   "what": "KOSPI closes down 0.44% at 6,008.81, 14 Oct 2026",
+   "url": "https://en.sedaily.com/finance/2026/10/14/kospi-closes-down-044-percent-at-600881"
+  },
+  {
+   "org": "The Japan Times",
+   "what": "Nikkei 225 falls 5% on rate and AI concerns - 64,425.95, 15 Oct 2026",
+   "url": "https://www.japantimes.co.jp/business/2026/10/15/nagata-nikkei-decline/"
+  },
+  {
+   "org": "TSMC (SEC Form 6-K)",
+   "what": "Third-quarter 2026 results - net income NT$763.06bn, +68.7% y/y; revenue NT$1,494.24bn",
+   "url": "https://www.sec.gov/Archives/edgar/data/0001046179/000104617926000726/a3q26e_withguidancexfinal.htm"
+  },
+  {
+   "org": "CNBC",
+   "what": "Nvidia, SK Hynix, ASML, SoftBank: global tech rout on AI funding worries, 15 Oct 2026",
+   "url": "https://www.cnbc.com/2026/10/15/sk-hynix-samsung-softbank-stocks-asia-tech-rout-ai-funding-worries.html"
+  },
+  {
+   "org": "gCaptain",
+   "what": "Containership sinks as Hormuz attacks spiral out of control - GFS Pride, 13 Oct 2026",
+   "url": "https://gcaptain.com/containership-sinks-as-hormuz-attacks-spiral-out-of-control/"
+  },
+  {
+   "org": "CNBC",
+   "what": "Container ship sinks in Strait of Hormuz as Iran steps up attacks, 14 Oct 2026",
+   "url": "https://www.cnbc.com/2026/10/14/container-ship-sinks-strait-hormuz-as-iran-war-attacks.html"
+  },
+  {
+   "org": "Investing.com (Reuters)",
+   "what": "Container ship sinks in Strait of Hormuz amid Iran attacks - Kpler: Hormuz crude 8.5 mb/d in the week to 12 Oct",
+   "url": "https://in.investing.com/news/economy-news/container-ship-sinks-in-strait-of-hormuz-amid-iran-attacks-5633558"
+  },
+  {
+   "org": "France 24",
+   "what": "Blasts rock Riyadh as Houthis vow to continue striking Saudi airports, oil facilities - Aramco building hit, 14 Oct 2026",
+   "url": "https://www.france24.com/en/middle-east/20261014-live-saudi-arabia-reports-aramco-building-hit-and-four-wounded-in-houthi-missile-attacks"
+  },
+  {
+   "org": "IEA",
+   "what": "Oil Market Report - October 2026: Hormuz flows +3.7 mb/d to 10.9 mb/d in September",
+   "url": "https://www.iea.org/reports/oil-market-report-october-2026"
+  },
+  {
+   "org": "CBS News",
+   "what": "Iran calls U.S. response 'insufficient' amid stalled talks to end the war",
+   "url": "https://www.cbsnews.com/live-updates/iran-war-trump-us-elections-saudi-arabia-yemen-houthis/"
+  },
+  {
+   "org": "ATRAM Trust Corporation",
+   "what": "ATRAM Global Technology Feeder Fund (A PHP unit class) - trust fee 1.50% p.a.",
+   "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRGTEC"
+  },
+  {
+   "org": "Poor Pinoy Investor",
+   "what": "ATRAM feeder fund fees increasing 14 September 2026 - Global Technology 1.15% to 1.50%; five others 1.20% to 1.50%",
+   "url": "https://poorpinoyinvestor.com/atram-feeder-fund-fee-increase-2026/"
+  },
+  {
+   "org": "Ideal Investisseur",
+   "what": "OAT / Bund spread: 135.5bp as of 14 Oct 2026 (OAT 4.81%, Bund 3.45%)",
+   "url": "https://www.ideal-investisseur.fr/en/markets/oat-bund-spread.html"
+  },
+  {
+   "org": "Inquirer",
+   "what": "Consensus builds for further BSP rate increases - a fourth hike expected on 22 Oct",
+   "url": "https://business.inquirer.net/615592/consensus-builds-for-further-bsp-rate-increases"
+  },
+  {
+   "org": "FXStreet",
+   "what": "Japanese yen: BoJ hawkishness supports JPY against US dollar - MUFG, 15 Oct 2026",
+   "url": "https://www.fxstreet.com/news/japanese-yen-boj-hawkishness-supports-jpy-against-us-dollar-mufg-202610150745"
   }
  ]
 }
@@ -4488,14 +4328,10 @@ $("#nfeas").textContent = D.optimized.n_feasible;
         As = D.baseline.base, d = B.cagr - A.cagr,
         dd = (Math.abs(A.maxdd) - Math.abs(B.maxdd)).toFixed(1);
   $("#vsbase").innerHTML = d >= 0
-    ? `Against the baseline the result is better on both sides: ${pc(B.cagr)} against
-       ${pc(A.cagr)}, and a drawdown ${dd}pp shallower.`
-    : `Against the baseline the result gives up <b class="num">${Math.abs(d).toFixed(2)}pp</b>
-       of forecast return &mdash; ${pc(B.cagr)} against ${pc(A.cagr)}, inside the
-       ${D.optimized.tie_pp.toFixed(2)}pp the rule treats as a tie &mdash; for a drawdown
-       <b class="num">${dd}pp</b> shallower. The baseline is not in the budget; the
-       budget is what makes the optimiser cut its drawdown, and on these inputs almost
-       none of the improvement is return.`;
+    ? `Against the baseline: ${pc(B.cagr)} against ${pc(A.cagr)}, with ${dd}pp less
+       drawdown.`
+    : `Against the baseline it gives up <b class="num">${Math.abs(d).toFixed(2)}pp</b>
+       (${pc(B.cagr)} against ${pc(A.cagr)}), inside the tie, for ${dd}pp less drawdown.`;
   const both = B.ret_per_dd > A.ret_per_dd && Bs.ret_per_dd > As.ret_per_dd;
   $("#lenswin").textContent = both
     ? "The optimised portfolio wins under both lenses on return per unit of drawdown."
@@ -4524,7 +4360,7 @@ $("#corrnote").textContent = D.corr_note;
    sentences went false at once. Each sentence below is conditioned on the data. */
 (function () {
   const A = D.baseline.under_macro, B = D.optimized.macro, VC = D.vol_channel;
-  const W = D.optimized.weights, C = D.correction, M = D.macro;
+  const W = D.optimized.weights, M = D.macro;
   const N = ["Peso Money Market","Nasdaq Equity Income","Asia Equity","Global Technology"];
   const IDS = ["ATRPHMM","ATRQIAP","ATRASEQ","ATRGTEC"];
   const F2 = Object.fromEntries(D.funds.map(f => [f.id, f]));
@@ -4540,51 +4376,33 @@ $("#corrnote").textContent = D.corr_note;
   $("#whyalloc").textContent = "Why " + wj(W);
   const edge = B.cagr - A.cagr;
   $("#rlede").innerHTML =
-    `The optimiser holds the most in <strong>${N[lead]}</strong> (${num(W[lead] + "%")}):
-     at ${num(fund(lead).net_macro.toFixed(2) + "%")} a year after fees and
-     ${num(fund(lead).vol.toFixed(1) + "%")} volatility, it is the return the drawdown
-     budget can afford at size. The portfolio forecasts ${num(pc(B.cagr))} against the
-     baseline's ${num(pc(A.cagr))}, with an expected drawdown of ${num(pc1(B.maxdd))}
-     against ${num(pc1(A.maxdd))} &mdash; ` +
-    (edge < 0 ? `a return ${num(Math.abs(edge).toFixed(2) + "pp")} lower, inside the
-                  ${num(D.optimized.tie_pp.toFixed(2) + "pp")} the selection rule treats as
-                  a tie; the improvement is lower risk.`
-     : edge < 0.25 ? `a thin return edge; most of the improvement is lower risk.`
+    `The most weight goes to <strong>${N[lead]}</strong> (${num(W[lead] + "%")}), at
+     ${num(fund(lead).net_macro.toFixed(2) + "%")} a year after fees. The portfolio
+     forecasts ${num(pc(B.cagr))} against the baseline's ${num(pc(A.cagr))}, with an
+     expected drawdown of ${num(pc1(B.maxdd))} against ${num(pc1(A.maxdd))}: ` +
+    (edge < 0 ? `${num(Math.abs(edge).toFixed(2) + "pp")} less return, inside the
+                  ${num(D.optimized.tie_pp.toFixed(2) + "pp")} tie, so the gain is lower risk.`
+     : edge <= D.optimized.tie_pp ? `the same return at the model's precision, with less risk.`
+     : edge < 0.25 ? `a thin return edge; most of the gain is lower risk.`
                    : `better on both.`);
-  $("#rcorr").innerHTML =
-    `<strong>Corrected ${new Date(C.date + "T00:00:00").toLocaleDateString("en-GB",
-       { day: "numeric", month: "long" })}.</strong> This page held
-     ${num(wj(C.weights_before))} at ${num(pc(C.cagr_before))} until then. Two errors
-     had inflated Nasdaq Equity Income: its base return was typed as
-     ${num(C.qiap_gross_usd_before.toFixed(1) + "%")} where its own recipe gives
-     ${num((fund(1).gross_php - fund(1).fx_drift).toFixed(2) + "%")}, and it was paid
-     ${num(sgn(C.qiap_tilt_vol_before) + "pp")} a year for volatility rising to a level
-     every base return already assumes. Corrected, its forecast is
-     ${num(fund(1).net_macro.toFixed(2) + "%")}, down from
-     ${num(C.qiap_net_before.toFixed(2) + "%")}.`;
 
   const V = D.vol_ts;
   $("#volpara").innerHTML =
-    `The curve is bootstrapped from the <b>${new Date(VC.quote_date + "T00:00:00")
-       .toLocaleDateString("en-GB", { day: "numeric", month: "long" })}</b> close (spot
-     ${num(VC.spot.toFixed(2))}, December future ${num(M.vix_fut_dec.toFixed(2))}).
-     Integrated, it gives ` +
-    V.map(v => `${num(v.implied.toFixed(1) + "%")} at ${v.label.toLowerCase()}`)
-     .join(", ").replace(/, ([^,]*)$/, " and $1") +
-    `, converging on the long-run ${num(VC.longrun.toFixed(1))}.`;
+    `The curve from the <b>${new Date(VC.quote_date + "T00:00:00")
+       .toLocaleDateString("en-GB", { day: "numeric", month: "long" })}</b> close runs from
+     ${num(V[0].implied.toFixed(1) + "%")} at ${V[0].label.toLowerCase()} to
+     ${num(V[V.length - 1].implied.toFixed(1) + "%")} at ${V[V.length - 1].label.toLowerCase()}.`;
   const q = fund(1);
   /* "the most exposed" and the sign were typed; both now come from the
      published sensitivities, so the sentence cannot outlive a change to them. */
   const qMost = Object.values(VC.sens).every(s => Math.abs(s) <= Math.abs(VC.sens.ATRQIAP));
   const s3 = v => (v >= 0 ? "+" : "\u2212") + Math.abs(v).toFixed(3);
   $("#rampmath").innerHTML =
-    `Every fund's base return is a long-run return, so it already assumes the long-run
-     VIX of ${num(VC.longrun.toFixed(1))}. Only the curve's distance from that level
-     moves a forecast: blended across horizons it sits at ${num(VC.blend.toFixed(2))},
-     ${num(Math.abs(VC.ramp).toFixed(2))} points ${VC.ramp >= 0 ? "above" : "below"} it.
-     For the covered-call sleeve, ${qMost ? "the most exposed " : ""}at
-     ${num(s3(VC.sens.ATRQIAP) + "pp")} per point, that is
-     ${num(sgn(q.tilt_vol) + "pp")} a year.`;
+    `Every base return already assumes the long-run VIX of ${num(VC.longrun.toFixed(1))},
+     so only the curve's distance from it moves a forecast: blended, it sits
+     ${num(Math.abs(VC.ramp).toFixed(2))} points ${VC.ramp >= 0 ? "above" : "below"}. For the
+     covered-call sleeve, ${qMost ? "the most exposed " : ""}at
+     ${num(s3(VC.sens.ATRQIAP) + "pp")} per point, that is ${num(sgn(q.tilt_vol) + "pp")} a year.`;
 
   $("#rweights").innerHTML = [0, 1, 2, 3].slice().sort((a, b) => W[b] - W[a]).map(i => {
     const f = fund(i);
@@ -4609,23 +4427,24 @@ $("#corrnote").textContent = D.corr_note;
        and still gets ${W[3] === mW ? "only the floor" : num(W[3] + "%")}: at
        ${num(pc1(g.dd_macro))} its expected drawdown costs more of the budget than its
        extra return buys.`
-    : `Its net forecast is ${num(g.net_macro.toFixed(2) + "%")}, the ${ORD[byNet.indexOf(3)]}
-       of the three, at ` + (D.funds.every(f => f.dd_macro >= g.dd_macro)
-         ? `the deepest expected drawdown on the sheet.`
-         : `an expected drawdown of ${num(pc1(g.dd_macro))}.`);
+    : `Its net forecast, ${num(g.net_macro.toFixed(2) + "%")}, is the ${ORD[byNet.indexOf(3)]}
+       of the three equity funds.`;
 
   const w0 = W[0], b0 = D.baseline.weights[0];
-  $("#wPhmm") && ($("#wPhmm").textContent = w0 + "%");
   $("#rcashwhy").innerHTML = `Cash goes from ${num(b0 + "%")} to ${num(w0 + "%")}` +
     (w0 > b0 ? `: part of the drawdown budget is met by holding more of it.`
      : w0 < b0 ? `: drawdown control comes from the equity mix, not from hiding in cash.`
      : `: unchanged.`);
 
   const gain = Math.round((B.ret_per_dd / A.ret_per_dd - 1) * 100);
+  /* "raises" / "lowers" only outside the tie: a 0.02pp difference is the model's
+     own noise, and the sentence should not read it as a gain or a loss. */
   $("#concl").innerHTML =
     `Moving from the baseline to the optimised allocation ` +
-    (edge >= 0 ? `raises` : `lowers`) + ` forecast ${HYN} net CAGR from ${num(pc(A.cagr))}
-     to ${num(pc(B.cagr))} while cutting expected maximum drawdown from
+    (Math.abs(edge) <= D.optimized.tie_pp + 1e-9 ? `keeps` : edge >= 0 ? `raises` : `lowers`)
+    + ` forecast ${HYN} net CAGR` + (Math.abs(edge) <= D.optimized.tie_pp + 1e-9 ? ` level` : ``)
+    + ` (${num(pc(A.cagr))} to ${num(pc(B.cagr))}) while cutting
+     expected maximum drawdown from
      ${num(pc1(A.maxdd))} to ${num(pc1(B.maxdd))}. Return per unit of drawdown moves
      ${num(A.ret_per_dd.toFixed(3) + " &rarr; " + B.ret_per_dd.toFixed(3))},
      ${num(gain + "%")} better.`;
@@ -4637,45 +4456,37 @@ $("#corrnote").textContent = D.corr_note;
 
   const WI = D.what_if, fa = fund(2);
   $("#wiasia").innerHTML =
-    `It is ${num(W[2] + "%")} of the portfolio, and two of its inputs are estimates.
-     Its target-fund charge is taken at ${num(fa.fee_target.toFixed(2) + "%")}, but the
-     target is a Hong Kong unit trust whose trustee and admin costs may put it higher:
+    `${num(W[2] + "%")} of the portfolio rests on two estimates. Its target-fund charge
+     (${num(fa.fee_target.toFixed(2) + "%")}) may be higher for a Hong Kong unit trust:
      ${num(WI.asia_fee_hi.stress_pp.toFixed(2) + "pp")} more gives
      ${num(wj(WI.asia_fee_hi.weights))} at ${num(pc(WI.asia_fee_hi.cagr))}` +
-    (same(WI.asia_fee_hi.weights, W) ? ` &mdash; the same weights.` : `.`) +
-    ` Its base return also includes a ${num("+" + M.asia_rerating.toFixed(1) + "%")}
-     re-rating credit that overlaps the valuation already inside JPMorgan's
-     ${num(M.ltcma_em_eq.toFixed(1) + "%")} EM figure; without it the optimiser holds
-     ${num(wj(WI.asia_no_rerating.weights))} for ${num(pc(WI.asia_no_rerating.cagr))}` +
+    (same(WI.asia_fee_hi.weights, W) ? `, the same weights.` : `.`) +
+    ` And its base return includes a ${num("+" + M.asia_rerating.toFixed(1) + "%")}
+     re-rating credit; without it B holds ${num(wj(WI.asia_no_rerating.weights))} for
+     ${num(pc(WI.asia_no_rerating.cagr))}` +
     (same(WI.asia_no_rerating.weights, W) ? `.`
-      : `. <strong>This is the assumption that decides the allocation.</strong>`) +
-    (!same(WI.asia_no_rerating.strict.weights, WI.asia_no_rerating.weights)
-      ? ` That optimum is flat, though: ${num(WI.asia_no_rerating.strict.n)} portfolios sit
-         within ${num(WI.asia_no_rerating.strict.tie_pp.toFixed(2) + "pp")} of the best,
-         and the strict maximum among them is ${num(wj(WI.asia_no_rerating.strict.weights))}
-         at ${num(pc(WI.asia_no_rerating.strict.cagr))} and
-         ${num(pc1(WI.asia_no_rerating.strict.maxdd))}.`
-      : ``) +
-    ` Portfolio C on the same assumption holds ${num(wj(WI.asia_no_rerating.pinned.weights))}` +
-    (same(WI.asia_no_rerating.pinned.weights, D.pinned.weights) ? ` &mdash; unchanged.` : `.`);
+      : ` &mdash; <strong>the assumption that decides the allocation</strong>.`) +
+    ` C would hold ${num(wj(WI.asia_no_rerating.pinned.weights))}` +
+    (same(WI.asia_no_rerating.pinned.weights, D.pinned.weights) ? `, unchanged.` : `.`);
   $("#wi2w").textContent = wj(WI.drags_neutral.weights);
   $("#wi2c").textContent = pc(WI.drags_neutral.cagr);
   $("#wi2note").textContent = same(WI.drags_neutral.weights, W)
-    ? "The weights do not move: those drags lower the forecast, but they are not what sets this allocation."
-    : "The weights move, so those drags are part of what sets this allocation.";
+    ? "The weights hold: those drags lower the forecast but do not set the allocation."
+    : "The weights move: those drags help set this allocation.";
   $("#wi1w").textContent = wj(WI.vol_flat.weights);
   $("#wi1c").textContent = pc(WI.vol_flat.cagr);
   $("#wi1note").textContent = same(WI.vol_flat.weights, W)
     ? "The same weights: where volatility sits does not decide this allocation."
-    : "The weights move, so the curve's position is part of what sets this allocation.";
+    : Math.abs(WI.vol_flat.cagr - B.cagr) <= D.optimized.tie_pp + 1e-9
+      ? "The weights move, but inside the tie: B is flat between the two."
+      : "The weights move: the curve's position helps set this allocation.";
   const TO = WI.trend_off;
   $("#wi3").innerHTML =
-    `Without the 3/6/12-month trend channel the optimiser holds ${num(wj(TO.weights))} for
-     ${num(pc(TO.cagr))}, and Portfolio C ${num(wj(TO.pinned.weights))} for
-     ${num(pc(TO.pinned.cagr))}. ` +
+    `Without it B holds ${num(wj(TO.weights))} for ${num(pc(TO.cagr))} and C
+     ${num(wj(TO.pinned.weights))} for ${num(pc(TO.pinned.cagr))}. ` +
     (same(TO.weights, W) && same(TO.pinned.weights, D.pinned.weights)
-      ? `Neither moves: the trend adds to the forecasts but does not set the weights.`
-      : `The weights move, so momentum is part of what sets this allocation.`);
+      ? `Neither moves: the trend adds to the forecasts, not the weights.`
+      : `The weights move: momentum helps set this allocation.`);
 
   const minPc = (D.min_sleeve*100).toFixed(0) + "%";
   ["#minsleeve","#minsleeve2"].forEach(id => { $(id).textContent = minPc; });
@@ -4694,23 +4505,28 @@ $("#corrnote").textContent = D.corr_note;
   $("#hormuzdd").textContent = pc1(
     D.optimized.scenarios.find(x => x.name.indexOf("Hormuz") === 0).maxdd);
   $("#capnote").innerHTML =
-    `<b>No single-fund cap.</b> The ${ccPc} cap was removed on 24 September at the
-     owner's request; with it the optimiser would hold ${num(wj(CC.weights))} at
-     ${num(pc(CC.cagr))} and ${num(pc1(CC.maxdd))}. The drawdown budget limits
-     concentration instead.`;
+    `<b>No single-fund cap.</b> The ${ccPc} cap removed on 24 September at the owner's
+     request would hold ${num(wj(CC.weights))} at ${num(pc(CC.cagr))} and
+     ${num(pc1(CC.maxdd))}; the drawdown budget limits concentration instead.`;
 })();
 $("#stubline").innerHTML = (function () {
     const S = D.stub, N = ["Peso Money Market","Nasdaq Equity Income","Asia Equity","Global Technology"];
     const alt = S.best_without.map((w,i) => w ? `${w}% ${N[i]}` : null).filter(Boolean).join(" / ");
-    const head = `Against the same drawdown budget and minimum weights, the best portfolio
-      without it (${alt}) returns <b class="num">${S.cagr_without.toFixed(2)}%</b> at
-      <b class="num">${pc1(S.maxdd_without)}</b> against this one's
-      <b class="num">${S.cagr_with.toFixed(2)}%</b> at <b class="num">${pc1(S.maxdd_with)}</b>.`;
+    const head = `Without it, the best portfolio in the same budget (${alt}) returns
+      <b class="num">${S.cagr_without.toFixed(2)}%</b> at <b class="num">${pc1(S.maxdd_without)}</b>,
+      against <b class="num">${S.cagr_with.toFixed(2)}%</b> at <b class="num">${pc1(S.maxdd_with)}</b>.`;
+    /* Return AND drawdown: "costs nothing in expected return" was true on 15 Oct
+       while the stub cost 0.4pp of drawdown, which the sentence did not say. */
+    const ddc = Math.abs(S.maxdd_with) - Math.abs(S.maxdd_without);
+    const ddTxt = ddc > 0.05 ? ` and <b class="num">${ddc.toFixed(1)}pp</b> of drawdown` : ``;
     if (S.cost > 0.005) return head + ` The <b class="num">${S.weight}%</b> stub costs
-      <b class="num">${S.cost.toFixed(2)}pp</b> of portfolio CAGR.`;
+      <b class="num">${S.cost.toFixed(2)}pp</b> of return${ddTxt}; the
+      ${(D.min_sleeve * 100).toFixed(0)}% minimum, not the forecast, keeps it in.`;
     if (S.cost < -0.005) return head + ` Holding it is worth
       <b class="num">${Math.abs(S.cost).toFixed(2)}pp</b> more than dropping it.`;
-    return head + ` Holding it costs nothing in expected return.`;
+    return head + (ddTxt ? ` The <b class="num">${S.weight}%</b> stub adds no return and
+      costs${ddTxt.replace(" and", "")}; the ${(D.min_sleeve * 100).toFixed(0)}% minimum, not
+      the forecast, keeps it in.` : ` Holding it costs nothing in expected return.`);
   })();
 /* ---------------- gauge ---------------- */
 (function () {
@@ -4760,7 +4576,7 @@ $("#stubline").innerHTML = (function () {
   // thresholds are the old 1-10 breaks (6.5 / 4.5) carried across by the same map,
   // so the colour a driver gets does not change with the scale it is reported on
   const to5 = v => 1 + (v - 1) * 4 / 9;
-  const GOOD = to5(6.5), WARN = to5(4.5);
+  const GOOD = to5(6.5), WARN = to5(4.5), GOOD2 = GOOD, WARN2 = WARN;
   D.drivers.forEach(d => {
     const k = d.score >= GOOD ? "good" : d.score >= WARN ? "warn" : "bad";
     const col = k === "good" ? "var(--good)" : k === "warn" ? "var(--warn)" : "var(--bad)";
@@ -4778,10 +4594,17 @@ $("#stubline").innerHTML = (function () {
     `<div class="drvhead"><span class="drvname" style="font-weight:700">Weighted composite</span>
       <span class="wt">${D.gauge_10.toFixed(2)} / ${DS.research_max}</span>
       <span class="sc" style="color:var(--navy);font-size:16px">${D.gauge.toFixed(2)}</span></div>
-     <div class="drvnote">The weighted composite of the scores above <em>is</em> the
-       headline gauge — the rescale is affine and the weights sum to 1, so blending then
-       rescaling and rescaling then blending give the same number.
+     <div class="drvnote">The weighted composite is the headline gauge;
        <span class="num">${NEU.toFixed(1)}</span> is neutral.</div>`));
+  /* The sub-line under the gauge was typed ("volatility has stepped back but not stood
+     down") and went false the week the volatility driver was cut. Named from scores. */
+  const nm = d => d.name.split(" ")[0].replace("Corporate", "Earnings").replace("Geopolitics", "Geopolitics")
+    .toLowerCase();
+  const up = D.drivers.filter(d => d.score >= GOOD2).map(nm),
+        dn = D.drivers.filter(d => d.score < WARN2).map(nm);
+  const lst = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+  $("#gsub").textContent = (up.length ? lst(up).replace(/^./, c => c.toUpperCase()) + " carry the score"
+    : "No driver is strong") + (dn.length ? "; " + lst(dn) + " pull against it." : ".");
 })();
 
 /* ---------------- regional ranking ---------------- */
@@ -4807,6 +4630,7 @@ $("#stubline").innerHTML = (function () {
       `<td><span class="cell" style="background:var(--navy);color:#fff">${v.blend.toFixed(2)}</span></td>`));
   });
   t.appendChild(tb);
+  $("#rhead").textContent = `${NAME[order[0][0]]} ranks first, ${NAME[order[1][0]]} second`;
   const w = $("#rwhy");
   order.forEach(([k,v]) => w.appendChild(el("div", { class:"rwhy" },
     `<b>${NAME[k]} &middot; ${v.blend.toFixed(2)}</b>${v.summary}` +
@@ -4827,17 +4651,10 @@ $("#stubline").innerHTML = (function () {
   const short = id => F.find(f => f.id === id).short;
   const hz = T.horizons.map(h => h.label);
   $("#trendlede").innerHTML =
-    `Each equity sleeve's <strong>market</strong> &mdash; the index its target fund is
-     run against, or the closest proxy with a published series &mdash; over the three
-     windows ending ${num(dlong(T.end))}. A return only means something against what the
-     model already expects of that market, so each one is scored as a z-score against
-     the sleeve's own long-run drift and volatility, then mapped to the same 1&ndash;5
-     scale as every other score here: ${num("3 + z")}, held inside 1&ndash;5. The
-     ${HYL} anchor is fixed at ${num(T.anchor.toFixed(1))}: momentum is
-     well documented over months, fades within about a year and partly reverses after,
-     so over ten years it carries no signal. Blended with the same horizon weights as
-     the regional ranking (${hz.concat([HYL]).map(k => `${k} ${(HW[k] * 100).toFixed(0)}%`).join(" / ")}),
-     each point above neutral adds ${num(T.tilt_per_pt.toFixed(2) + "pp")} a year.`;
+    `Each equity sleeve's market over the windows to ${num(dlong(T.end))}, scored
+     ${num("3 + z")} against its own long-run path. The ${HYL} anchor is fixed at
+     ${num(T.anchor.toFixed(1))} &mdash; momentum fades within about a year &mdash; and each
+     point of blend above it adds ${num(T.tilt_per_pt.toFixed(2) + "pp")} a year.`;
   const t = $("#trendtab");
   t.appendChild(el("thead", null, `<tr><th>Market</th>` +
     hz.map(h => `<th>${h}</th>`).join("") + `<th>${HYL}</th><th>Blend</th><th>Tilt</th></tr>`));
@@ -4870,33 +4687,27 @@ $("#stubline").innerHTML = (function () {
   const qs = ids.map(id => S[id]);
   const hi = qs.reduce((a, b) => b.tilt > a.tilt ? b : a), lo = qs.reduce((a, b) => b.tilt < a.tilt ? b : a);
   const alt = T.alt_built.ATRASEQ, altq = T.alt.ATRASEQ["2026Q2"];
+  /* The windows end at a month-end; anything since is not in them, and on
+     2026-10-15 that was a 20% fall in Korea. Say so whenever the as-of date has
+     moved past the window. */
+  const after = D.as_of > T.end;
   $("#trendnote").innerHTML =
-    `The tilts run from ${num(sg(lo.tilt) + "pp")} (${lo.market}) to
-     ${num(sg(hi.tilt) + "pp")} (${hi.market})` +
-    /* described from the z-scores, so the sentence cannot outlive the data */
-    (qs.every(v => v.z["6M"] >= 1) ? `: every market is more than one standard deviation
-       ahead of its long-run path over six months` : ``) +
-    (qs.every(v => v.z["3M"] <= 0) ? `, and none of them ahead of it over the last three months` : ``) +
-    (qs.every(v => v.z["12M"] > 0) ? `; over twelve months all are ahead. ` : `. `) +
+    `Tilts run from ${num(sg(lo.tilt) + "pp")} (${lo.market}) to ${num(sg(hi.tilt) + "pp")}
+     (${hi.market}). ` +
     (same(TO.weights, B.weights) && same(TO.pinned.weights, C.weights)
-      ? `Without the channel the optimiser holds the same weights &mdash;
-         ${num(TO.weights.join(" / "))} for B and ${num(TO.pinned.weights.join(" / "))} for
-         C &mdash; at ${num(pc(TO.cagr))} and ${num(pc(TO.pinned.cagr))}, so the trend lifts
-         B's forecast by ${num((B.macro.cagr - TO.cagr).toFixed(2) + "pp")} and C's by
-         ${num((C.macro.cagr - TO.pinned.cagr).toFixed(2) + "pp")} without moving a weight.`
-      : `Without it the optimiser would hold ${num(TO.weights.join(" / "))} for B and
-         ${num(TO.pinned.weights.join(" / "))} for C, at ${num(pc(TO.cagr))} and
-         ${num(pc(TO.pinned.cagr))}: the trend is part of what sets the weights.`) +
-    ` One input is disputed: Asia's second quarter, ${num(S.ATRASEQ.quarters["2026Q2"].toFixed(2) + "%")}
-     as Schroders reports the index against ${num(altq.toFixed(2) + "%")} for the ETF that
-     tracks it. On the lower figure Asia's tilt is ${num(sg(alt.tilt) + "pp")} and ` +
+      ? `Without them B and C hold the same weights, at ${num(pc(TO.cagr))} and
+         ${num(pc(TO.pinned.cagr))}. `
+      : `Without them B would hold ${num(TO.weights.join(" / "))} and C
+         ${num(TO.pinned.weights.join(" / "))}: the trend helps set the weights. `) +
+    (after ? `<strong>Moves since ${dlong(T.end)} are not in these windows</strong>; they
+       enter at the next month-end. ` : ``) +
+    `One input is disputed (Asia's second quarter, ${num(S.ATRASEQ.quarters["2026Q2"].toFixed(2) + "%")}
+     for the index against ${num(altq.toFixed(2) + "%")} for its ETF); on the lower figure ` +
     (same(TA.weights, B.weights) && same(TA.pinned.weights, C.weights)
       ? `neither portfolio moves.`
-      : `B moves to ${num(TA.weights.join(" / "))} at ${num(pc(TA.cagr))}, against
-         ${num(pc(B.macro.cagr))} &mdash; ${Math.abs(TA.cagr - B.macro.cagr) <= B.tie_pp + 1e-9
-           ? `a difference inside the ${num(B.tie_pp.toFixed(2) + "pp")} the rule treats as a
-              tie, which is how flat B's optimum is` : `outside the tie, so this input matters`}
-         &mdash; and C ` + (same(TA.pinned.weights, C.weights) ? `does not move.`
+      : `B moves to ${num(TA.weights.join(" / "))} at ${num(pc(TA.cagr))}, ` +
+        (Math.abs(TA.cagr - B.macro.cagr) <= B.tie_pp + 1e-9 ? `inside the tie` : `outside the tie`) +
+        `, and C ` + (same(TA.pinned.weights, C.weights) ? `does not move.`
            : `moves to ${num(TA.pinned.weights.join(" / "))}.`));
   $("#trendsrc").innerHTML = "Sources: " + ids.map(id =>
     `<strong>${S[id].market}</strong> (${S[id].proxy}) &mdash; ${S[id].source}`).join("; ") + ".";
@@ -4964,10 +4775,11 @@ function tipper(host) {
     ["Spot VIX", VC0.latest.toFixed(2),
      dmS(VC0.latest_date) + " close · 2026 low " + D.macro.vix_2026_low.toFixed(2)],
     ["Dec VIX future", D.macro.vix_fut_dec.toFixed(2),
-     "+" + (D.macro.vix_fut_dec - VC0.latest).toFixed(2) + " vs spot · quoted " + dmS(VC0.quote_date)],
+     sg(D.macro.vix_fut_dec - VC0.latest) + " vs spot · quoted " + dmS(VC0.quote_date)],
     ["Closes since " + dmS(MH[0][0]), Math.min(...closes).toFixed(2) + "–" + Math.max(...closes).toFixed(2),
      "intraday " + D.macro.vix_2026_low.toFixed(2) + "–" + D.macro.vix_latest_high.toFixed(2)],
-    ["Brent crude", "$" + D.macro.brent.toFixed(2), "+" + D.macro.brent_yoy.toFixed(1) + "% y/y"],
+    ["Brent crude", "$" + D.macro.brent.toFixed(2), (D.macro.brent_yoy >= 0 ? "+" : "−")
+      + Math.abs(D.macro.brent_yoy).toFixed(1) + "% y/y"],
   ].map(([k,v,d]) => `<div class="stat"><span class="k">${k}</span>
       <span class="v">${v}</span><span class="d">${d}</span></div>`).join("");
 
@@ -4990,7 +4802,10 @@ function tipper(host) {
     stroke:"#B02A37", "stroke-width":1.4, "stroke-dasharray":"4 4", opacity:".7" }));
   const sl = sel("text", { x:ml+6, y:Y(D.macro.vix_spot)-6, "text-anchor":"start", fill:"#B02A37",
     "font-family":"IBM Plex Mono, monospace", "font-size":"10", "font-weight":"600" });
-  sl.textContent = "spot VIX " + D.macro.vix_spot.toFixed(2); s.appendChild(sl);
+  /* The CURVE's spot, dated: labelled "spot VIX" it sat beside a "Spot VIX" tile
+     showing a different, later close. */
+  sl.textContent = "curve spot " + D.macro.vix_spot.toFixed(2) + " (" + dmS(VC0.quote_date) + ")";
+  s.appendChild(sl);
 
   const series = [["implied","#3670D6"],["realised","#0E9B80"]];
   series.forEach(([key,col]) => {
@@ -5046,7 +4861,7 @@ function tipper(host) {
   F.forEach((f, i) => vtb.appendChild(el("tr", null,
     `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
      <td>${VC.sens[f.id] >= 0 ? "+" : "−"}${Math.abs(VC.sens[f.id]).toFixed(3)}/pt</td>
-     <td>${VC.ramp.toFixed(2)}</td>
+     <td>${VC.ramp >= 0 ? "+" : "−"}${Math.abs(VC.ramp).toFixed(2)}</td>
      <td class="${cls(f.tilt_vol)}" style="font-weight:600">${f.tilt_vol === 0 ? "–" : sg(f.tilt_vol) + "pp"}</td>`)));
   vtt.appendChild(vtb);
 
@@ -5091,23 +4906,31 @@ const LOOKTHRU = {
   ATRPHMM: ["Philippine T-bills, government &amp; high-grade corporate paper",
     "Average portfolio duration ≤ 1 year",
     `Live curve: 91d ${D.macro.ph_tbill_91.toFixed(2)}% · 182d ${D.macro.ph_tbill_182.toFixed(2)}% · 364d ${D.macro.ph_tbill_364.toFixed(2)}%`],
+  /* Bound 2026-10-15. "Distributes ~9% p.a." had no source anywhere in the model,
+     and the Global Technology row quoted index weights (~72% US) that nothing
+     carried; the fund's own published country split is in the payload. */
   ATRQIAP: ["JPMorgan Nasdaq Equity Premium Income Active UCITS ETF (IE000U9J8HX9)",
     "Nasdaq-100 equities + short call options written against them",
-    "Underlying strategy distributes ~9% p.a.; TER 0.35%"],
+    `Total expense ratio ${F[1].fee_target.toFixed(2)}%`],
   ATRASEQ: ["JPMorgan Asia Equity Dividend Fund (Hong Kong unit trust)",
     "Asia Pacific ex-Japan dividend-paying equities",
     "Korea, Taiwan, China, India, ASEAN — semis and memory are the earnings engine"],
   ATRGTEC: ["Fidelity Funds — Global Technology Fund (Luxembourg SICAV)",
     "Benchmark: MSCI ACWI Information Technology",
-    "~72% US · ~16% Asia · ~12% Europe by index weight"]
+    `By country (fund, ${D.lookthrough.ATRGTEC.as_of}): ` +
+      D.lookthrough.ATRGTEC.geo.map(x => x[0] + " " + x[1] + "%").join(" · ")]
 };
 const NOTE = {
   /* Bound to the payload 2026-10-07: this typed "August inflation printed 6.1%, a
      fourth consecutive slowdown" for a day after September's 7.2% ended the run. */
   ATRPHMM: `High nominal carry and no duration risk, but the real yield is NEGATIVE: BSP is at ${D.macro.bsp_rrp.toFixed(2)}% and ${D.real_yield.month} inflation printed ${D.real_yield.cpi.toFixed(1)}%.`,
-  ATRQIAP: "Sells calls on the Nasdaq-100: about two-thirds of its volatility, and less of its upside.",
-  ATRASEQ: "10.5× forward against ~52%/~28% EPS growth. Still the top-ranked region on the long-horizon anchor.",
-  ATRGTEC: "Highest gross return, highest drawdown, and 0.88 correlated to the Nasdaq income sleeve."
+  ATRQIAP: `Sells calls on the Nasdaq-100: ${(D.cc_vol_factor * 100).toFixed(0)}% of the index's volatility, and less of its upside.`,
+  ATRASEQ: `${D.macro.asia_fwd_pe.toFixed(1)}× forward against ${D.macro.asia_eps_2026.toFixed(1)}% / ${D.macro.asia_eps_2027.toFixed(1)}% EPS growth. ` +
+    (Object.entries(D.regions).every(([k, v]) => k === "ASIA" || v[HYL] <= D.regions.ASIA[HYL])
+      ? "Still the top-ranked region on the long-horizon anchor." : ""),
+  ATRGTEC: (D.funds.every(f => f.gross_php <= D.funds[3].gross_php) ? "Highest gross return, " : "")
+    + (D.funds.every(f => f.dd_macro >= D.funds[3].dd_macro) ? "deepest drawdown, " : "")
+    + `and ${D.corr[1][3].toFixed(2)} correlated to the Nasdaq income sleeve.`
 };
 
 (function () {
@@ -5236,6 +5059,12 @@ const NOTE = {
        <td style="text-align:right">${est ? chip("warn","part est.") : chip("good","published")}</td>`));
   });
   ft.appendChild(fb);
+  const chg = F.filter(f => f.fee_feeder_prev != null);
+  $("#feenote").innerHTML = `Feeder fees from ATRAM's documents; target-fund charges from
+    J.P. Morgan and Fidelity. ` + chg.map(f => `<strong>${f.short}'s trust fee rose to
+    ${f.fee_feeder.toFixed(2)}% from ${f.fee_feeder_prev.toFixed(2)}% on
+    ${new Date(f.fee_feeder_from + "T00:00:00").toLocaleDateString("en-GB",
+      { day: "numeric", month: "long", year: "numeric" })}.</strong>`).join(" ");
 })();
 
 /* ---------------- donuts ---------------- */
@@ -5284,12 +5113,9 @@ function donut(host, w, title, cagr, dd) {
     `<span class="lgi"><i class="swatch" style="background:${FC[i]}"></i>${f.short}
       <b>${C.weights[i]}%</b></span>`).join("");
   $("#pinlede").innerHTML =
-    `With ${CF.short} fixed at <b class="num">${C.pin_pct}%</b>, the other three funds are
-     optimised on the same macro, regional, volatility and market-trend inputs
-     (3M/6M/12M/${HYL}) and the same drawdown budget as Portfolio B, by the same rule:
-     the best return the budget allows, then the lowest drawdown among portfolios
-     within <b class="num">${C.tie_pp.toFixed(2)}pp</b> of it &mdash;
-     ${C.n_feasible} candidates fit the budget, ${C.band_n} of them inside that band.`;
+    `${CF.short} fixed at <b class="num">${C.pin_pct}%</b>; the other three are chosen on
+     the same macro, regional, volatility and market-trend inputs, budget and same rule
+     as B &mdash; ${C.n_feasible} candidates fit, ${C.band_n} inside the tie.`;
   const pt = $("#pintab"), sc = n => x => x.scenarios.find(r => r.name.indexOf(n) === 0);
   pt.appendChild(el("thead", null,
     `<tr><th></th><th>Baseline</th><th>Optimised</th><th>C &middot; ${C.pin_pct}%</th></tr>`));
@@ -5308,21 +5134,17 @@ function donut(host, w, title, cagr, dd) {
   pt.appendChild(pb);
   const cost = B.macro.cagr - C.macro.cagr;
   $("#pinnote").innerHTML =
-    `Fixing the fund at ${C.pin_pct}% costs <b class="num">${cost.toFixed(2)}pp</b> a year
-     against Portfolio B and cuts expected drawdown from ${pc1(B.macro.maxdd)} to
-     ${pc1(C.macro.maxdd)}. Portfolio C also leans less on Asia Equity's +${D.macro.asia_rerating.toFixed(1)}%
-     re-rating credit: without it, C returns <b class="num">${pc(C.cagr_no_rerating)}</b>
-     and B <b class="num">${pc(C.opt_cagr_no_rerating)}</b>.` +
+    `The pin costs <b class="num">${cost.toFixed(2)}pp</b> a year against B; drawdown goes
+     from ${pc1(B.macro.maxdd)} to ${pc1(C.macro.maxdd)}. Without Asia's
+     +${D.macro.asia_rerating.toFixed(1)}% re-rating credit C returns
+     <b class="num">${pc(C.cagr_no_rerating)}</b> and B <b class="num">${pc(C.opt_cagr_no_rerating)}</b>.` +
     /* B and C are chosen by one rule since 7 October. What the strict maximum would
        hold instead is published beside B, so the trade the rule makes is visible. */
     (B.strict.weights.join() !== B.weights.join()
-      ? ` <strong>B's optimum is not sharp:</strong> ${B.strict.n} portfolios sit within
-         ${B.strict.tie_pp.toFixed(2)}pp of the best return in budget. The strict maximum
-         would hold ${B.strict.weights.join(" / ")} for <b class="num">${pc(B.strict.cagr)}</b>
-         and <b class="num">${pc1(B.strict.maxdd)}</b> &mdash;
-         ${(B.strict.cagr - B.macro.cagr).toFixed(2)}pp more return for
-         ${(Math.abs(B.strict.maxdd) - Math.abs(B.macro.maxdd)).toFixed(1)}pp more drawdown,
-         which the rule declines.`
+      ? ` B's strict maximum, ${B.strict.weights.join(" / ")}, would add
+         ${(B.strict.cagr - B.macro.cagr).toFixed(2)}pp for
+         ${(Math.abs(B.strict.maxdd) - Math.abs(B.macro.maxdd)).toFixed(1)}pp more drawdown;
+         the rule declines it.`
       : ``);
   $("#dlegend").innerHTML = F.map((f,i) =>
     `<span class="lgi"><i class="swatch" style="background:${FC[i]}"></i>${f.short}
@@ -5368,14 +5190,11 @@ function donut(host, w, title, cagr, dd) {
   const dc = Math.abs(A.under_macro.maxdd) - Math.abs(B.macro.maxdd);
   const rc = B.macro.cagr - A.under_macro.cagr;
   $("#deltacard").innerHTML =
-    (rc >= 0 ? `<h3>Better on both axes at once</h3>`
-             : `<h3>The same return at the model's precision, far less drawdown</h3>`) +
-    `<p>Re-weighting usually trades return for risk. Here the baseline carries an
-      avoidable inefficiency: two highly correlated US tech sleeves at a combined
-      ${A.weights[1] + A.weights[3]}%, which costs drawdown without buying return.` +
-    (rc < 0 ? ` The optimised portfolio gives up ${Math.abs(rc).toFixed(2)}pp of forecast
-      return &mdash; inside the ${B.tie_pp.toFixed(2)}pp the rule treats as a tie &mdash;
-      for the drawdown below.` : ``) + `</p>
+    (Math.abs(rc) <= B.tie_pp + 1e-9 ? `<h3>The same return at the model's precision, less drawdown</h3>`
+     : rc > 0 ? `<h3>Better on both axes at once</h3>`
+             : `<h3>Slightly less return, far less drawdown</h3>`) +
+    `<p>The baseline holds two highly correlated US tech sleeves at a combined
+      ${A.weights[1] + A.weights[3]}%, which costs drawdown without buying return.</p>
      <div class="stats" style="margin:12px 0 10px">
        <div class="stat"><span class="k">Forecast CAGR</span>
          <span class="v ${rc >= 0 ? "pos" : "neg"}">${sg(rc)}pp</span>
@@ -5468,19 +5287,19 @@ function donut(host, w, title, cagr, dd) {
   t.appendChild(el("thead", null,
     `<tr><th></th><th>Baseline</th><th>Optimised</th><th>Δ</th></tr>`));
   const tb = el("tbody");
+  /* SIGNED (2026-10-15). The delta column hard-coded "+" and green, so when B
+     ended below A it printed "+-5,435" in the colour for a gain. */
+  const dp = v => `<td class="${cls(v)}">${v >= 0 ? "+" : "−"}${peso(Math.abs(v))}</td>`;
   tb.appendChild(el("tr", null,
     `<td>Value after 10 years</td><td>${peso(A.terminal_1m)}</td>
-     <td style="font-weight:600">${peso(B.terminal_1m)}</td>
-     <td class="pos">+${peso(B.terminal_1m-A.terminal_1m).slice(1)}</td>`));
+     <td style="font-weight:600">${peso(B.terminal_1m)}</td>${dp(B.terminal_1m - A.terminal_1m)}`));
   tb.appendChild(el("tr", null,
     `<td>Worst case for money invested today</td>
      <td>${peso(A.worst_1m_from_open)}</td>
-     <td style="font-weight:600">${peso(B.worst_1m_from_open)}</td>
-     <td class="pos">+${peso(B.worst_1m_from_open-A.worst_1m_from_open).slice(1)}</td>`));
+     <td style="font-weight:600">${peso(B.worst_1m_from_open)}</td>${dp(B.worst_1m_from_open - A.worst_1m_from_open)}`));
   tb.appendChild(el("tr", null,
     `<td>Total gain over 10 years</td><td>${peso(A.terminal_1m-1000000)}</td>
-     <td style="font-weight:600">${peso(B.terminal_1m-1000000)}</td>
-     <td class="pos">+${peso(B.terminal_1m-A.terminal_1m).slice(1)}</td>`));
+     <td style="font-weight:600">${peso(B.terminal_1m-1000000)}</td>${dp(B.terminal_1m - A.terminal_1m)}`));
   t.appendChild(tb);
 })();
 
@@ -5497,7 +5316,7 @@ function donut(host, w, title, cagr, dd) {
     .toLocaleDateString("en-GB", { day: "numeric", month: "long" }));
   set("ust10",     m.ust_10y.toFixed(2) + "%");
   set("brentnow",  "$" + m.brent.toFixed(2));
-  set("brentyoy",  "+" + m.brent_yoy.toFixed(1) + "%");
+  set("brentyoy",  (m.brent_yoy >= 0 ? "+" : "\u2212") + Math.abs(m.brent_yoy).toFixed(1) + "%");
   /* 2dp, not 0dp: rounded to "$109" it sat beside spot at "$103.87" looking like
      a different quantity, and "$109" is the exact figure three notes went stale on. */
   /* NOT ACROSS A ROLL (2026-10-03). "Below the $108.75 high" compared December,
@@ -5518,6 +5337,8 @@ function donut(host, w, title, cagr, dd) {
   set("oddsdec",   m.fed_hike_odds_dec.toFixed(1) + "%");
   set("oddsdecd",  new Date(m.fed_hike_odds_dec_date + "T00:00:00")
     .toLocaleDateString("en-GB", { day: "numeric", month: "long" }));
+  /* one date when both readings share it, not "on 14 October ... on 14 October" */
+  if (m.fed_hike_odds_oct_date === m.fed_hike_odds_dec_date) $("#oddsnowon").style.display = "none";
   set("bojnow",    m.boj_rate.toFixed(2) + "%");
   /* 3dp: the peak is an intraday print (5.135%, now 5.223%); toFixed(2) had shown
      5.135 as 5.13%. */
@@ -5544,16 +5365,28 @@ function donut(host, w, title, cagr, dd) {
   set("gtecrates", (gt.tilt_rates < 0 ? "\u2212" : "+") + Math.abs(gt.tilt_rates).toFixed(2) + "pp");
   set("nfuts",     String(m.vix_futs.length));
   set("nknots",    String(m.vix_futs.length + 1));
-  set("hzflow",    m.hormuz_flow_new.toFixed(1) + " mb/d");
-  set("hzpre",     m.hormuz_flow_prewar.toFixed(1) + " mb/d");
-  set("hzrem",     (100 * m.hormuz_flow_new / m.hormuz_flow_prewar).toFixed(0) + "%");
-  set("hzflowold", m.hormuz_flow_now.toFixed(1) + " mb/d");
+  /* On the NEWEST volume reading (2026-10-15): this quoted Goldman's 29 Sep series
+     against its 28 Aug note for two weeks after both had been overtaken. */
+  set("hzflow",    m.hormuz_crude_kpler.toFixed(1) + " mb/d");
+  set("hzrem",     "nearly " + m.hormuz_crude_kpler_below_pct.toFixed(0) + "%");
   set("hzves",     m.hormuz_vessel_drop_pct.toFixed(0) + "%");
   const dm = iso => new Date(iso + "T00:00:00")
     .toLocaleDateString("en-GB", { day: "numeric", month: "long" });
-  set("hzflowd",   dm(m.hormuz_flow_new_asof));
-  set("hzflowoldd", dm(m.hormuz_flow_asof));
+  set("hzflowd",   dm(m.hormuz_crude_kpler_week));
   set("hzvesd",    dm(m.hormuz_transits_date));
+  /* Bound 2026-10-15: these were typed into the markup (5.00%, 52%, 28%, 10.5x,
+     0.88, 1.55% / 1.50%) where no check could see them. */
+  set("bspnow",    m.bsp_rrp.toFixed(2) + "%");
+  set("eps26",     m.asia_eps_2026.toFixed(1) + "%");
+  set("eps27",     m.asia_eps_2027.toFixed(1) + "%");
+  set("asiape",    m.asia_fwd_pe.toFixed(1) + "\u00d7");
+  set("gtcorr",    D.corr[1][3].toFixed(2));
+  set("gtcorr2",   D.corr[1][3].toFixed(2));
+  const fa = D.funds.find(f => f.id === "ATRASEQ");
+  set("feeest",    "Every fee is published except the JPMorgan Asia Equity Dividend "
+    + "ongoing charge, taken at " + fa.fee_target.toFixed(2) + "% on J.P. Morgan's published "
+    + m.asia_target_mgmt_fee.toFixed(2) + "% management fee; Hong Kong trustee and admin "
+    + "costs may put it higher.");
   const RY = D.real_yield, mn = v => (v < 0 ? "\u2212" : "+") + Math.abs(v).toFixed(2) + "pp";
   set("rycpi",     RY.cpi.toFixed(1) + "%");
   set("rymonth",   RY.month);
@@ -5598,7 +5431,14 @@ function donut(host, w, title, cagr, dd) {
   set("vdec2",    m.vix_fut_dec.toFixed(2));
   set("vlr",      v.longrun.toFixed(1));
   set("vlrgap",   Math.abs(v.ramp).toFixed(2) + " points " + (v.ramp >= 0 ? "above" : "below"));
-  set("vspotgap", (m.vix_fut_dec - v.latest).toFixed(2) + " points");
+  set("vspotgap", Math.abs(m.vix_fut_dec - v.latest).toFixed(2) + " points");
+  set("vspotdir", m.vix_fut_dec >= v.latest ? "above" : "below");
+  set("vhead", (v.latest < m.vix_fut_dec ? "Spot below the curve" : "Spot above the curve")
+    + (v.ramp < 0 ? "; the curve below the long run" : "; the curve above the long run"));
+  set("vlr2", v.longrun.toFixed(1));
+  set("vrp1", m.variance_risk_premium.toFixed(1));
+  set("fxv", "\u03c3FX " + D.fx.vol.toFixed(1) + "%, \u03c1 " + (D.fx.corr < 0 ? "\u2212" : "")
+    + Math.abs(D.fx.corr).toFixed(2));
   set("vepkhi",   m.vix_episode_high.toFixed(2));
   set("vepkhid",  fmtd(m.vix_episode_high_date));
 

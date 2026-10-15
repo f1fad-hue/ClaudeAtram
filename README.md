@@ -18,22 +18,22 @@ Each fund is measured against its own target, not a house benchmark.
 
 ## Result
 
-Ten-year horizon, net of every fee layer. Market data as of 9 Oct 2026.
+Ten-year horizon, net of every fee layer. Market data as of 15 Oct 2026 (US closes of 14 Oct).
 
 | | A · Baseline | B · Optimised | C · Nasdaq Income at 50% |
 |---|---|---|---|
 | Allocation (MM / Nasdaq Inc / Asia / Tech) | 20 / 30 / 25 / 25 | **25 / 15 / 55 / 5** | **20 / 50 / 25 / 5** |
-| 10y net CAGR after all fees | 6.84% | **6.81%** | 6.57% |
+| 10y net CAGR after all fees | 6.74% | **6.76%** | 6.54% |
 | Expected max drawdown (10y) | −30.1% | **−26.3%** | −25.6% |
-| Return per unit of drawdown | 0.227 | **0.259** | 0.257 |
+| Return per unit of drawdown | 0.224 | **0.257** | 0.255 |
 
 B and C are chosen by one rule: the best net CAGR the drawdown budget allows
 (the baseline's drawdown less 2.83pp), then the lowest drawdown among portfolios
 within 0.05pp of it. B is built from macro sentiment, the correlated per-sleeve
 transmission, the volatility curve, the regional rankings and the market trend, each
 at 3 / 6 / 12 months against the 10-year anchor. Almost all of B's improvement on the
-baseline is drawdown: it gives up 0.03pp of forecast return, inside the 0.05pp tie,
-for a drawdown 3.8pp shallower. The page states this, and every figure here, from
+baseline is drawdown: the forecasts are level at the model's precision (0.02pp apart,
+inside the 0.05pp tie) and B's drawdown is 3.8pp shallower. The page states this, and every figure here, from
 the engine; this table is a snapshot of it, and the review audit fails if it drifts.
 
 ## Layout

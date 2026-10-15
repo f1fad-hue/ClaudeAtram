@@ -141,6 +141,22 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+68. A NUMBER TYPED INTO MARKUP IS A NUMBER NO CHECK CAN SEE. 10.5x, 52% / 28%,
+   0.88, 1.55% / 1.50%, "~9% p.a." and "~72% US" sat in the page's HTML; two had no
+   source at all. Every figure on the page now comes from the payload.
+67. A TRAILING WINDOW SAYS WHERE IT ENDS. The trend windows end at a month-end;
+   on 15 Oct the KOSPI was 20.7% below its 2 Oct close and nothing said the windows
+   could not see it. The page now flags any move after the window's end.
+66. A DELTA IS SIGNED BY ITS VALUE, NEVER BY ITS EXPECTED DIRECTION. The peso
+   table hard-coded "+" and the gain colour and printed "+-5,435". The validator
+   rejects malformed signs anywhere on the page, with every collapsible open.
+65. A CHECK MUST NOT PIN STALE PROSE. "Hormuz is quoted on oil volume" demanded
+   Goldman's 28 Aug figure in the note, so the note kept quoting it for seven
+   weeks. A check tests the newest dated reading, not the one it was written for.
+64. A FEE IS A DATED FACT. ATRAM repriced the Global Technology trust fee on
+   14 Sep; the model carried the old "verified" 1.15% for a month. Every feeder fee
+   is re-read from the manager's current fund page at each review, and a changed
+   fee carries its previous value and effective date.
 63. A SNAPSHOT OUTSIDE THE ENGINE NEEDS A CHECK OR IT ROTS. The top-level
    README's result table showed the 2 Sep build for a month before anyone looked.
    It is now compared with the payload by the review audit on every run.
