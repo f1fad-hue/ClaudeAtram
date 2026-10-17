@@ -2,6 +2,104 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-17 — Roll to Friday 16 Oct: a VIX spike past the carried curve, hot producer prices, Brent at a five-month high, and seven errors fixed
+
+All markets are Friday 16 Oct closes; the review date is 17 Oct.
+
+| | Weights | Net 10Y CAGR | Drawdown | Return / DD |
+|---|---|---|---|---|
+| A, baseline | 20 / 30 / 25 / 25 | 6.74% | −30.1% | 0.224 |
+| B, optimised | **25 / 15 / 55 / 5** | 6.76% | −26.3% | 0.257 |
+| C, Nasdaq Income 50% | **20 / 50 / 25 / 5** | 6.54% | −25.6% | 0.255 |
+
+No allocation or forecast moved: the two scores that changed (inflation and
+volatility) feed the gauge, not the fund tilts. The gauge is **2.29** (was 2.32).
+
+### 1. Data, 15–16 Oct
+
+- **US producer prices (15 Oct)**: +1.3% m/m in September, the largest since
+  March 2022, 6.3% y/y, against about 0.5% expected; core +0.5% / 5.0%.
+  **Retail sales** +0.8% against 0.3% (August revised to +1.3%; ex-gas +0.2%).
+- **Fed odds** fell anyway: October 14.9% on 16 Oct (from 31.6% after the CPI),
+  December 88.9%. Chair Warsh gave no signal.
+- **10-year**: 14 Oct's 5.19% CONFIRMED by FRED; 15 Oct 5.10%. 16 Oct has only
+  market quotes (5.085%) and is not carried. 2-year 4.715%, 30-year 5.434%.
+- **Equities, 16 Oct**: S&P 7,659.44 (−1.09%), Nasdaq 26,140.03 (−2.14%), Dow
+  52,002.41 — the worst week for the S&P and Nasdaq since June, on AI-debt fears.
+- **VIX**: 16.46 (15 Oct), then **19.99 (+21.45%) on 16 Oct**, intraday 22.31.
+- **Oil**: Brent 105.92 (15 Oct) then **109.86 (+3.7%), the highest settle since
+  19 May**; WTI 97.97 then 101.41. Brent y/y +77.45% on a base moved one day closer
+  to the anniversary (61.91, 15 Oct 2025).
+- **Asia, 16 Oct**: KOSPI 5,668.05 (+2.05%), still 19.1% below 2 Oct; Nikkei
+  65,324.29 (+1.39%). **Peso** 62.985 after a record intraday 63.23; **PSEi**
+  5,782.70 (+2.11%).
+- **Euro area**: September inflation confirmed at 3.8% (core 2.5%). ECB on 29 Oct
+  added to the catalysts; the 16 Oct HICP item retired.
+- **Hormuz**: tankers attacked off Al Jubayl, Saudi Arabia; the IRGC says the
+  Strait is "closed". On volume, Kpler had crude through Hormuz at **9.4 mb/d** in
+  the week to 14 Oct (about 70% of pre-war), up from 8.5.
+- **Funds**: no 30 Sep factsheet from J.P. Morgan (JEPQ) or Fidelity yet; the
+  31 Aug look-throughs stand at 47 days, inside the 60-day bound.
+
+### 2. Scores
+
+Inflation **2.25 → 2.0** (the PPI confirmed the CPI; Brent at a five-month
+high). Volatility **2.75 → 2.5** (VIX above the long-run 19.5 on spot).
+Geopolitics **held at 1.5**: the attacks spread, but the volume measure the note
+goes by improved. Monetary held at 2.0 (a December hike is still ~89% priced).
+Every region held.
+
+### 3. The volatility curve, overtaken
+
+Friday's VIX (19.99) is **28.8% above the 5 Oct strip's own spot** and above its
+December future (18.55). The strip still held on 15 Oct — re-anchored it reads
+17.93 against that day's VIX3M of 18.49 (−3.04%), and Cboe's October future
+settled 17.42 against the strip's 17.46 — but no 16 Oct settlements or VIX3M were
+found. The strip stays in the forecasts, and the page now **flags it as overtaken**
+whenever the latest close is more than 20% from the curve's spot. A re-quoted
+curve near the long run is the Report's "volatility curve" case (B to 20 / 30 /
+45 / 5 at 6.78%, inside the tie).
+
+### 4. Errors found and fixed
+
+1. **A check guarded a market fact, not a defect.** "The December future is above
+   the latest VIX close" failed the moment the VIX spiked. The page's wording had
+   been signed by the data since 15 Oct, so the claim it guarded no longer existed.
+   It is replaced by a check that the strip is flagged when the market has moved
+   more than 20% from it.
+2. **The drawdown calibration was typed into the page and never checked.** k = 1.65,
+   the −20% / −33% anchors and their σ and µ, the 0.50 drift coefficient, the
+   √(T/5) scaling, κ = 1.5 and the cash sleeve's 100bp / 0.5y floor are now engine
+   data the page reads, and a new check confirms k reproduces both anchors (20.1 and
+   33.1 against 20 and 33).
+3. **Two fee notes quoted figures with no input** (Asia Equity's 1.17% trustee and
+   0.01% auditor fees; Fidelity's 0.80% AMC) — the audit's two standing warnings.
+   The components are now fields, the notes are built from them, and a check
+   requires itemised parts to sum to the fee. The audit runs with no warnings.
+4. **The Report would have printed "0.00% below the $109.86 it reached on 16
+   October"** once Brent set a new high. It now says "its highest settle since
+   19 May".
+5. **The settle high moved and had to be re-anchored**: $109.86 (16 Oct) replaces
+   November's $108.75, which is kept as the prior, and a new check requires a moved
+   high to be above an older, lower prior.
+6. **The VIX intraday high (18.17, 10 Sep) no longer bracketed the closes** once
+   the VIX closed at 19.99. Moved to 22.31 (16 Oct).
+7. **Dead page code**: a no-op string replace and two redundant aliases in the
+   gauge sub-line, left by the last roll.
+
+### 5. Verification
+
+- Engine **211 / 211** (three new checks). Independent audit **257 checks, 0
+  failures, 0 warnings**. Validator 21 rows, all passing on the published copy.
+  Mutation harness 11 of 11 caught.
+- **18 sources added** (228 in all, unique, https); one existing entry
+  (thetrading.tools) re-described rather than duplicated.
+- Every reported move reproduces from the previous close: S&P, Nasdaq (a cent
+  off on points, the prior close's rounding), Dow, Brent, WTI, VIX, KOSPI, Nikkei,
+  PSEi, peso. AP's week-to-date points land on 9 Oct for the second time.
+
+Not personal advice.
+
 ## 2026-10-15 — Roll to Thursday 15 Oct: a stale Global Technology fee, a hot CPI, Asia's crash, a concise page, and fifteen errors fixed
 
 Asian and Philippine data are Thursday 15 Oct closes; US series carry their latest

@@ -141,6 +141,17 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+71. A CALIBRATION IS DATA, AND IT MUST REPRODUCE ITS ANCHORS. k = 1.65 and the
+   -20% / -33% medians it is calibrated to sat in the page's HTML for a month; no
+   check asked whether k still produced them. They are engine data now, and a check
+   recomputes both anchors from k on every run.
+70. A FEE THE NOTE ITEMISES IS ITEMISED IN THE DATA. "1.17% trustee + 0.01%
+   auditor" lived only in a sentence. Components are fields, the sentence is built
+   from them, and the parts must sum to the fee.
+69. A CHECK GUARDS A DEFECT, NOT A MARKET STATE. "The December future is above
+   spot" was true for weeks and failed on a 21% VIX spike - a fact, not an error.
+   Where the page's wording follows the data, the check should test the wording's
+   honesty (here: a stale strip is flagged), not demand that the market cooperate.
 68. A NUMBER TYPED INTO MARKUP IS A NUMBER NO CHECK CAN SEE. 10.5x, 52% / 28%,
    0.88, 1.55% / 1.50%, "~9% p.a." and "~72% US" sat in the page's HTML; two had no
    source at all. Every figure on the page now comes from the payload.
