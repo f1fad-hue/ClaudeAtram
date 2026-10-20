@@ -141,6 +141,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+72. A TOLERANCE A SENTENCE QUOTES IS A TOLERANCE THE CHECK OWNS. "Past 20%" was
+   typed into the page beside a check holding its own 0.20, and the VIX3M bound of
+   10% lived only in its check while the page called the gap "a touch" whatever its
+   size. Both bounds are engine constants the page reads, and wording about a gap
+   is banded against its bound, not only signed: -7.19% is not "a touch".
 71. A CALIBRATION IS DATA, AND IT MUST REPRODUCE ITS ANCHORS. k = 1.65 and the
    -20% / -33% medians it is calibrated to sat in the page's HTML for a month; no
    check asked whether k still produced them. They are engine data now, and a check

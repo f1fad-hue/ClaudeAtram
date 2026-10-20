@@ -2,6 +2,115 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-20 — Roll to Tuesday 20 Oct: a record peso, Asia's selling resumes, a volatility curve that now reads low, and five errors fixed
+
+All markets are Tuesday 20 Oct closes, except the VIX (19 Oct; 20 Oct withheld)
+and the 10-year (19 Oct, provisional). The review date is 20 Oct.
+
+| | Weights | Net 10Y CAGR | Drawdown | Return / DD |
+|---|---|---|---|---|
+| A, baseline | 20 / 30 / 25 / 25 | 6.74% | −30.1% | 0.224 |
+| B, optimised | **25 / 15 / 55 / 5** | 6.76% | −26.3% | 0.257 |
+| C, Nasdaq Income 50% | **20 / 50 / 25 / 5** | 6.54% | −25.6% | 0.255 |
+
+Every score held, so no allocation or forecast moved. The gauge is **2.29**.
+
+### 1. Data, 19–20 Oct
+
+- **Equities, 20 Oct**: S&P 7,712.57 (+0.28%), Nasdaq 26,424.82 (−0.02%), Dow
+  52,495.88 (+1.02%) on industrial earnings beats, money rotating from tech into
+  value; on 19 Oct S&P 7,690.73, Nasdaq 26,430.89, Dow 51,966.03.
+- **10-year**: 16 Oct RESOLVED at 5.09% (Fed H.15, FRED). **19 Oct 5.15%,
+  provisional** on the Treasury par curve. 20 Oct has only market quotes (5.12%)
+  and is not carried.
+- **Fed odds**: the 16 Oct FedWatch reading (October 14.9%, December 88.9%) is
+  still the latest dated one. Secondary reads on 19–20 Oct agree on the shape,
+  not the decimals, and are not carried.
+- **VIX**: **18.44 (−7.75%) on 19 Oct**, back below the long-run 19.5. 20 Oct is
+  withheld: one source has 17.60. VIX3M 19.60 on 19 Oct.
+- **Oil**: Brent 109.55 (19 Oct), then **108.79 (−0.7%) on 20 Oct**, off a
+  $111.99 session high, on the Qatar–Pakistan proposal; y/y +75.72%. **November
+  WTI expired on 20 Oct at $101.79**; December, the front month from 21 Oct,
+  settled at $98.28.
+- **Asia**: KOSPI +1.76% to 5,768.01 (19 Oct), then **−3.73% to 5,552.74** (20
+  Oct), the lowest close since 7 April and 20.7% below 2 Oct; Nikkei 64,916.70
+  then 64,075.42 (−1.30%). **China's Q3 GDP grew 4.5%** against 4.4% expected, on
+  exports; September retail sales grew 1.1%.
+- **Philippines**: the **peso closed at a record 63.09 on 19 and 20 Oct** (YTD
+  loss 6.82%); PSEi 5,806.17, a fourth straight gain. The 19 Oct auction lifted
+  bills to **5.992% / 6.229% / 6.444%**, a ninth straight weekly rise; BSP is
+  expected to hike to 5.25% on 22 Oct.
+- **Hormuz**: the IRGC claims a mined supertanker (17 Oct). On 19 Oct the Houthis
+  claimed strikes on Saudi airports and Aramco sites; Riyadh has not confirmed
+  them. Kpler counts at least 18 vessels fired on in two weeks. On 20 Oct a
+  Qatar–Pakistan compromise was reported and disputed. PortWatch has 4 transits on
+  18 Oct. No newer Kpler volume reading than 9.4 mb/d (week to 14 Oct).
+- **Funds and fees**: no change found. No fee notice from ATRAM; JEPQ UCITS ongoing
+  charges still 0.35%. The 31 Aug look-throughs are 50 days old, inside the 60-day
+  bound.
+
+### 2. Scores
+
+Every driver and region held. Volatility stays at **2.5**: the VIX is back under
+the long run, but for one session only, and Asia is still selling. Asia's 3M stays
+at **4.0** after last week's cut, though the KOSPI fell to a new low for the move.
+
+### 3. The volatility curve now reads low
+
+Re-anchored to the 19 Oct spot, the 5 Oct strip gives 18.19 at three months against
+a VIX3M of 19.60: **−7.19%**, inside the ±10% bound but past half of it (−3.04% on
+15 Oct). So the model's implied vol and forecast drawdowns run **shallow**. The
+superseded 2 Oct board now reads −2.51%: the market has risen to where that board
+was. Saxo's 20 Oct brief (October 18.67, November 18.75) points the same way, but
+it is one source and covers two contracts, so it is not carried. The latest close
+is 18.8% above the strip's spot, under the 20% flag.
+
+**The October contract settles on 21 Oct**, and the "no contract on the strip has
+settled" check will fail at the next review by design. That review must re-quote
+the strip or drop October. The 16 Oct FedWatch reading reaches its 5-day bound on
+the 21st too.
+
+### 4. Errors found and fixed
+
+1. **The page typed the overtaken threshold** ("Past 20%") beside a check holding
+   its own 0.20. It is now one engine constant, `STRIP_OVERTAKEN_PCT`, which the
+   check uses and the page reads.
+2. **The page called a −7.19% gap "a touch shallow".** The wording was signed by
+   the residual but not sized. The ±10% bound is now an engine constant
+   (`VIX3M_BOUND_PCT`) that the page reads. Past half the bound, the page now says
+   the drawdowns run shallow and names the bound.
+3. **An unused binding** (`p_vc :=`) in the strip-flag check, left by the last
+   roll. Removed.
+4. **A new input with no reader** (`wti_next_contract`) was caught by the audit's
+   orphan check and removed. The comment already names the contract.
+5. **A draft source description would have printed " - +"**, the malformed sign
+   the validator rejects. The new insertion guard caught it before it reached the
+   page.
+
+Recorded and not carried:
+
+- **KOSPI and Nikkei**: AP's KOSPI 5,539.05 ("−4%") was a pre-close figure, and a
+  KuCoin flash's 5,553.08 misses its own points. Investing.com's Nikkei 64,699.50
+  for 19 Oct was an intraday snapshot.
+- **VIX**: a 17.72 "−2.27" print for 19 Oct was intraday.
+- **Philippines**: Context.ph's "364-day 5.278%" is the 35-day cash-management
+  bill. A PSEi "+14.98" misses 5,782.70.
+- **Brent**: $105.76 is a quote after the news, not a settle.
+- **Misdated source**: CNBC's live page dated 19 Oct describes 20 Oct's session.
+
+### 5. Verification
+
+- Engine **212 / 212** checks; one new check covers the withheld VIX session.
+  Independent audit: **260 checks, 0 failures, 0 warnings**. Validator: 21 rows,
+  all passing on the published copy. Mutation harness: 11 of 11 caught.
+- **25 sources added** (253 in all, unique, https). Three existing entries (FRED
+  VXVCLS, Investing.com VIX history, Fed H.15) were re-described, not duplicated.
+- Every reported move reproduces from the previous close: S&P, Nasdaq (a cent off
+  on 19 Oct's points, the prior close's rounding), Dow, Brent, WTI, VIX, KOSPI,
+  Nikkei, PSEi, peso and T-bills.
+
+Not personal advice.
+
 ## 2026-10-17 — Roll to Friday 16 Oct: a VIX spike past the carried curve, hot producer prices, Brent at a five-month high, and seven errors fixed
 
 All markets are Friday 16 Oct closes; the review date is 17 Oct.

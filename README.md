@@ -18,7 +18,7 @@ Each fund is measured against its own target, not a house benchmark.
 
 ## Result
 
-Ten-year horizon, net of every fee layer. Market data as of 16 Oct 2026.
+Ten-year horizon, net of every fee layer. Market data as of 20 Oct 2026.
 
 | | A · Baseline | B · Optimised | C · Nasdaq Income at 50% |
 |---|---|---|---|
