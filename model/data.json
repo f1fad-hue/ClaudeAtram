@@ -288,6 +288,15 @@
   "pd_review_dd": 21.5,
   "pd_review_worst": 6.91,
   "pd_review_stress_corr": 0.37,
+  "pd_review_max_funds": 5,
+  "pd_review_max_w": 35,
+  "pd_review_min_cash": 5,
+  "pa_review_date": "2026-10-21",
+  "pa_review_cagr": 7.67,
+  "pa_review_dd": 25.4,
+  "pa_review_band_n": 19,
+  "pa_review_worst": 6.87,
+  "pa_review_stress_dd": 27.3,
   "brent_history": [
    [
     "2026-09-18",
@@ -1892,6 +1901,9 @@
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.7125,
   "optimized_k": 1.675,
+  "a_k": 1.70526,
+  "c_k": 1.68125,
+  "d_k": 1.68158,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -2129,6 +2141,105 @@
   "cagr_no_rerating": 6.58,
   "opt_cagr_no_rerating": 6.71
  },
+ "portfolio_a": {
+  "weights": [
+   5,
+   25,
+   0,
+   35,
+   35,
+   0
+  ],
+  "ids": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRASEQ",
+   "ATRGTEC",
+   "ATRLTPB",
+   "ATRGLDV"
+  ],
+  "macro": {
+   "weights": [
+    5.0,
+    25.0,
+    0.0,
+    35.0,
+    35.0,
+    0.0
+   ],
+   "cagr": 7.13,
+   "vol": 12.77,
+   "maxdd": -25.8,
+   "ret_per_dd": 0.276,
+   "sharpe_like": 0.054,
+   "terminal_1m": 1991182,
+   "worst_1m_from_open": 742000
+  },
+  "base": {
+   "weights": [
+    5.0,
+    25.0,
+    0.0,
+    35.0,
+    35.0,
+    0.0
+   ],
+   "cagr": 7.66,
+   "vol": 12.77,
+   "maxdd": -25.4,
+   "ret_per_dd": 0.302,
+   "sharpe_like": 0.095,
+   "terminal_1m": 2091914,
+   "worst_1m_from_open": 746000
+  },
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $109. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 2.88,
+    "vol": 20.43,
+    "maxdd": -47.2
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
+    "cagr": 4.44,
+    "vol": 16.6,
+    "maxdd": -36.9
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 3.56,
+    "vol": 18.52,
+    "maxdd": -42.1
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 9.81,
+    "vol": 10.22,
+    "maxdd": -17.7
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
+    "cagr": 7.13,
+    "vol": 12.77,
+    "maxdd": -25.8
+   }
+  ],
+  "dd_cap": 27.17,
+  "in_budget": true,
+  "review": {
+   "date": "2026-10-21",
+   "cagr": 7.67,
+   "dd": 25.4,
+   "band_n": 19,
+   "worst": 6.87,
+   "stress_dd": 27.3
+  }
+ },
  "portfolio_d": {
   "weights": [
    5,
@@ -2192,7 +2303,13 @@
     "dd_base": -8.8,
     "dd_macro": -9.2,
     "target_net_macro": null,
-    "target_dd_macro": null
+    "target_dd_macro": null,
+    "net_novol": 6.16,
+    "net_neutral": 6.64,
+    "net_notrend": 6.16,
+    "net_trend_alt": 6.16,
+    "net_asia_norerate": 6.16,
+    "net_asia_fee_hi": 6.16
    },
    {
     "id": "ATRGLDV",
@@ -2231,7 +2348,13 @@
     "dd_base": -31.4,
     "dd_macro": -31.8,
     "target_net_macro": 7.72,
-    "target_dd_macro": -30.7
+    "target_dd_macro": -30.7,
+    "net_novol": 6.22,
+    "net_neutral": 6.41,
+    "net_notrend": 6.22,
+    "net_trend_alt": 6.22,
+    "net_asia_norerate": 6.22,
+    "net_asia_fee_hi": 6.22
    }
   ],
   "macro": {
@@ -2366,7 +2489,10 @@
    "cagr": 7.38,
    "dd": 21.5,
    "worst": 6.91,
-   "stress_corr": 0.37
+   "stress_corr": 0.37,
+   "max_funds": 5,
+   "max_w": 35,
+   "min_cash": 5
   }
  },
  "best_ratio": {
@@ -2445,6 +2571,14 @@
     ],
     "cagr": 6.82,
     "maxdd": -26.4
+   },
+   "a": {
+    "cagr": 7.13,
+    "maxdd": -25.8
+   },
+   "d": {
+    "cagr": 6.93,
+    "maxdd": -21.8
    }
   },
   "drags_neutral": {
@@ -2478,6 +2612,14 @@
     ],
     "cagr": 7.08,
     "maxdd": -26.8
+   },
+   "a": {
+    "cagr": 7.75,
+    "maxdd": -25.3
+   },
+   "d": {
+    "cagr": 7.41,
+    "maxdd": -21.4
    }
   },
   "asia_no_rerating": {
@@ -2511,6 +2653,14 @@
     ],
     "cagr": 6.77,
     "maxdd": -27.0
+   },
+   "a": {
+    "cagr": 7.13,
+    "maxdd": -25.8
+   },
+   "d": {
+    "cagr": 6.91,
+    "maxdd": -21.8
    }
   },
   "asia_fee_hi": {
@@ -2545,7 +2695,15 @@
     "cagr": 6.81,
     "maxdd": -27.0
    },
-   "stress_pp": 0.25
+   "stress_pp": 0.25,
+   "a": {
+    "cagr": 7.13,
+    "maxdd": -25.8
+   },
+   "d": {
+    "cagr": 6.91,
+    "maxdd": -21.8
+   }
   },
   "trend_off": {
    "weights": [
@@ -2578,6 +2736,14 @@
     ],
     "cagr": 6.67,
     "maxdd": -26.5
+   },
+   "a": {
+    "cagr": 7.04,
+    "maxdd": -25.8
+   },
+   "d": {
+    "cagr": 6.84,
+    "maxdd": -21.8
    }
   },
   "trend_alt": {
@@ -2611,6 +2777,26 @@
     ],
     "cagr": 6.77,
     "maxdd": -26.4
+   },
+   "a": {
+    "cagr": 7.13,
+    "maxdd": -25.8
+   },
+   "d": {
+    "cagr": 6.91,
+    "maxdd": -21.8
+   }
+  },
+  "bond_weaker": {
+   "gross": 7.0,
+   "vol": 7.5,
+   "a": {
+    "cagr": 6.89,
+    "maxdd": -26.4
+   },
+   "d": {
+    "cagr": 6.67,
+    "maxdd": -22.4
    }
   }
  },

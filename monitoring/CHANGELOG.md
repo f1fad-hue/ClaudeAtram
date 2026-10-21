@@ -2,6 +2,77 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — Portfolio B retired and D in its place; Portfolio A is now the 22-fund review's highest-return pick
+
+Market data unchanged (21 Oct). At the owner's instruction: "Remove portfolio b and
+replace it by portfolio d. Update portfolio A using the 22 fund review pick with max
+10yrs net cagr growth minus the fund fees with minimum drawdown."
+
+| | Weights (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | Net 10Y CAGR | Drawdown | Return / DD |
+|---|---|---|---|---|
+| **A, highest return** (new) | **5 / 25 / 0 / 35 / 35 / 0** | 7.13% | −25.8% | 0.276 |
+| C, Nasdaq Income 50% | 20 / 50 / 20 / 10 / 0 / 0 | 6.78% | −26.4% | 0.257 |
+| **D, best worst case** (in B's place) | 5 / 35 / 0 / 20 / 35 / 5 | 6.91% | −21.8% | 0.317 |
+| *A until today: 20 / 30 / 25 / 25* | | *6.93%* | *−30.0%* | *0.231* |
+| *B until today: 20 / 60 / 10 / 10* | | *6.81%* | *−26.5%* | *0.257* |
+
+### 1. How A was chosen
+
+The 22-fund review's own search, re-run today on the corrected inputs (the Global
+Dividend fee at 1.50%): about a million mixes of up to 5 funds, at most 35% in any
+one, at least 5% peso cash. The rule the owner named: the best base-case 10-year net
+CAGR after fees inside the drawdown budget; then, among the 19 mixes within 0.05pp of
+it, the lowest drawdown. It did not move from the review's first run: **5% Peso Money
+Market / 35% Long Term Peso Bond / 25% Nasdaq Equity Income / 35% Global
+Technology**, 7.67% / −25.4% on the review's basis. Like D it is FIXED here and
+measured on the page's basis: 7.13% / −25.8%, inside the −27.17% budget.
+
+**Disclosed, not hidden:** A goes OVER the budget (−27.3%) in one of the review's six
+stress tests, bonds and tech falling together; D stays inside in all six. A's worst
+case is 6.87% against D's 6.91%.
+
+### 2. What changed on the page
+
+- **Portfolios:** A and D side by side where A and B were, one A / C / D table,
+  C below. Headline forecast, strategic-vs-macro lens, stress table and peso table
+  are A against D. The frontier now marks A, C and D: A and D, from all 22 funds,
+  both sit above the four-fund line.
+- **Report:** rewritten as "Why D", against A. Every what-if now re-measures A and D
+  on its alternative column (they are fixed, so a what-if moves their forecast, not
+  their weights) and re-chooses C. New what-if: **the bond fund's own estimates**
+  (7.0% gross and 7.5% volatility, the review's case) — A 6.89% / −26.4%, D 6.67% /
+  −22.4%. The Global Technology stub and the 50%-cap counterfactual, which described
+  B, are gone from the page.
+- **Funds:** each slide states the fund's weight in A, C and D; the "D only" tag is
+  gone, since A holds the Long Term Peso Bond too.
+- **The drawdown budget does not move.** It is still the original 20 / 30 / 25 / 25
+  baseline's drawdown less 2.83pp (−27.17%); that baseline is kept only as the
+  budget's reference. Measuring the budget from the new A would make it depend on
+  the portfolio it is used to judge. Runbook invariant 77.
+- The engine still derives the four-fund optimum (B) internally: C is chosen by the
+  same rule on the same feasible set, and the checks re-apply it. Nothing on the page
+  shows it.
+
+### 3. Found while doing it
+
+- **D's review pick on corrected inputs.** With the Global Dividend fee at 1.50%, the
+  review's best-worst-case rule now puts D's 5% in Global Health Care instead of
+  Global Dividend (worst case 6.92% against 6.91%, base 7.38% / −21.5% for both —
+  inside the tie). D is kept as approved; the swap is offered to the owner, not made.
+- **The trend note** said what B and C would hold without the trend; it now gives A's
+  and D's re-measured forecasts and C's weights.
+- A first validator draft wrote `\b` as a backspace character into its own regex; the
+  check that "Portfolio B" is gone could never have failed. Caught on its first run.
+
+### 4. Verification
+
+Engine 228/228 (five new: A and D inside the review's limits, A re-derives, A's
+grind-on row, the two picks order as their rules say, every what-if carries A and D).
+Audit 295/295 with a new section re-deriving A, every what-if for A and D, and the
+weaker-bond case. Validator 22/22, its portfolio rows rewritten for A, C and D and
+requiring that no "Portfolio B" remains. Mutation harness 19/19 (two new: A's weights
+drift, a D what-if typed).
+
 ## 2026-10-21 — The Funds tab shows all six funds; three errors in the Global Dividend fund fixed
 
 Market data unchanged (21 Oct). At the owner's request the Funds tab now covers

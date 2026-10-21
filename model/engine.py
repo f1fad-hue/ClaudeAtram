@@ -588,6 +588,18 @@ MACRO = {
     "pd_review_ltcma": 2027,         # the J.P. Morgan edition the review ran on
     "pd_review_cagr": 7.38, "pd_review_dd": 21.5, "pd_review_worst": 6.91,
     "pd_review_stress_corr": 0.37,   # LT Peso Bond vs Global Tech in the review's 2022-style rate shock
+    # The review's search, shared by both picks: at most 5 funds, at most 35% in any
+    # one, at least 5% in peso cash, on the 5% grid.
+    "pd_review_max_funds": 5, "pd_review_max_w": 35, "pd_review_min_cash": 5,
+    # THE SAME REVIEW'S HIGHEST-RETURN PICK - Portfolio A from 2026-10-21, at the
+    # owner's instruction ("the 22 fund review pick with max 10yrs net cagr growth
+    # minus the fund fees with minimum drawdown"): the best base-case net CAGR inside
+    # the budget, then the lowest drawdown among the 19 portfolios within the tie.
+    # Re-run on 2026-10-21 with the Global Dividend fee corrected to 1.50%: it did
+    # not move. Inside the budget in five of the review's six scenarios; OVER it in
+    # the sixth, bonds and tech falling together (-27.3%), where D stays inside.
+    "pa_review_date": "2026-10-21", "pa_review_cagr": 7.67, "pa_review_dd": 25.4,
+    "pa_review_band_n": 19, "pa_review_worst": 6.87, "pa_review_stress_dd": 27.3,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -2905,10 +2917,12 @@ def enumerate_portfolios(key, min_w=MIN_SLEEVE):
                 out.append((w, summarise(w, key)))
     return out
 
-# --- Baseline: pure strategic over the mandate horizon, no macro view -------
-# Horizon-appropriate growth allocation: a 20% liquidity/volatility buffer and
-# the three equity engines held near-equally. This is what you would own if you
-# had the mandate horizon and NO view on the cycle.
+# --- The budget's reference: the original no-view baseline -------------------
+# A 20% liquidity buffer and the three equity engines held near-equally. It was
+# Portfolio A until 2026-10-21, when the owner replaced A with the 22-fund review's
+# highest-return pick (PA_W below). It stays here as the REFERENCE the drawdown
+# budget is measured from, so the budget means what it meant: replacing it with
+# the new A would make the budget depend on the portfolio it is used to judge.
 BASELINE_W = [0.20, 0.30, 0.25, 0.25]
 BASE = summarise(BASELINE_W, "net_base")
 BASE_UNDER_MACRO = summarise(BASELINE_W, "net_macro")
@@ -2996,6 +3010,15 @@ D_W = [0.05, 0.35, 0.00, 0.20, 0.35, 0.05]   # MM, Nasdaq Inc, Asia, Tech, LT Pe
 PD = summarise(D_W, "net_macro", U_D)
 PD_BASE = summarise(D_W, "net_base", U_D)
 
+# PORTFOLIO A - from 2026-10-21 the same review's HIGHEST-RETURN pick (MACRO
+# pa_review_*), at the owner's instruction. Fixed and measured exactly as D is.
+# Portfolio B, the four-fund optimum, was retired from the page the same day ("remove
+# portfolio B and replace it by portfolio D"); OPT above is still derived, because C
+# is chosen by the same rule on the same feasible set and the checks re-apply it.
+PA_W = [0.05, 0.25, 0.00, 0.35, 0.35, 0.00]  # MM, Nasdaq Inc, Asia, Tech, LT Peso Bond, Global Dividend
+PA = summarise(PA_W, "net_macro", U_D)
+PA_BASE = summarise(PA_W, "net_base", U_D)
+
 # What the former 50% single-sleeve cap would choose under the same objective and
 # the same drawdown budget - published so the cost and benefit of removing it are
 # computed, not asserted.
@@ -3012,7 +3035,7 @@ CAP_COUNTERFACTUAL = {"max_sleeve": CAP_COUNTERFACTUAL_MAX,
 # counterfactual here is the SAME optimiser on an alternative return column, with
 # the drawdown budget re-derived from the baseline under that column exactly as
 # DD_CAP is, so the only thing that differs is the input named.
-for _f in F:
+for _f in F + F_D:
     _f["net_novol"] = round(_f["net_macro"] - _f["tilt_vol"], 2)       # flat VIX curve
     _f["net_neutral"] = round(_f["net_macro"] - _f["tilt_rates"]
                               - _f["tilt_energy"], 2)                  # drags at neutral
@@ -3044,7 +3067,7 @@ def optimise(key):
 ASIA_FEE_STRESS = 0.25
 # (The 2026-09-25 correction record that fed a Report note was retired on
 # 2026-10-15 with the note; the correction itself is in monitoring/CHANGELOG.md.)
-for _f in F:
+for _f in F + F_D:
     _aseq = _f["id"] == "ATRASEQ"
     _f["net_asia_norerate"] = round(_f["net_macro"] - (MACRO["asia_rerating"] if _aseq else 0.0), 2)
     _f["net_asia_fee_hi"] = round(_f["net_macro"] - (ASIA_FEE_STRESS if _aseq else 0.0), 2)
@@ -3053,6 +3076,26 @@ WHAT_IF = {"vol_flat": optimise("net_novol"), "drags_neutral": optimise("net_neu
            "asia_fee_hi": optimise("net_asia_fee_hi"),
            "trend_off": optimise("net_notrend"), "trend_alt": optimise("net_trend_alt")}
 WHAT_IF["asia_fee_hi"]["stress_pp"] = ASIA_FEE_STRESS
+# A AND D UNDER THE SAME WHAT-IFS (2026-10-21). Their weights are fixed, so a what-if
+# does not re-choose them: it re-MEASURES them on the alternative column.
+_WI_COL = {"vol_flat": "net_novol", "drags_neutral": "net_neutral",
+           "asia_no_rerating": "net_asia_norerate", "asia_fee_hi": "net_asia_fee_hi",
+           "trend_off": "net_notrend", "trend_alt": "net_trend_alt"}
+for _k, _col in _WI_COL.items():
+    for _lab, _w in (("a", PA_W), ("d", D_W)):
+        _s = summarise(_w, _col, U_D)
+        WHAT_IF[_k][_lab] = {"cagr": _s["cagr"], "maxdd": _s["maxdd"]}
+# THE BOND FUND'S OWN ESTIMATES, the review's "peso bonds weaker" case on this page's
+# basis: 35% of both A and D sits in a fund whose return is read off the curve and
+# whose volatility is estimated. Gross 7.0% (not 7.68%), volatility 7.5% (not 5.8%).
+LTPB_STRESS = {"gross": 7.0, "vol": 7.5}
+_flw = {**F_D[0], "vol": LTPB_STRESS["vol"],
+        "net_macro": round(F_D[0]["net_macro"] - (F_D[0]["gross_php"] - LTPB_STRESS["gross"]), 2)}
+_U_WEAK = (F + [_flw, F_D[1]], U_D[1], CORR_D)
+WHAT_IF["bond_weaker"] = {"gross": LTPB_STRESS["gross"], "vol": LTPB_STRESS["vol"],
+                          **{_lab: {"cagr": summarise(_w, "net_macro", _U_WEAK)["cagr"],
+                                    "maxdd": summarise(_w, "net_macro", _U_WEAK)["maxdd"]}
+                             for _lab, _w in (("a", PA_W), ("d", D_W))}}
 
 # Best pure risk-adjusted portfolio, for reference
 BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
@@ -3931,6 +3974,9 @@ def payload():
                      # formatted; the payload should not throw the precision away.
                      "baseline_k": round(port_k(BASELINE_W), 5),
                      "optimized_k": round(port_k(OPT_W), 5),
+                     # the three portfolios the page shows (2026-10-21)
+                     "a_k": round(port_k(PA_W, U_D), 5), "c_k": round(port_k(PIN_W_ALL), 5),
+                     "d_k": round(port_k(D_W, U_D), 5),
                      "note": "1.65 is the calibration anchor, not the coefficient every sleeve "
                              "uses. Each fund carries a declared adjustment for the shape of its "
                              "own left tail; the portfolio coefficient is the weighted average "
@@ -3964,6 +4010,12 @@ def payload():
                    # the allocation-deciding assumption, applied to both
                    "cagr_no_rerating": summarise(PIN_W_ALL, "net_asia_norerate")["cagr"],
                    "opt_cagr_no_rerating": summarise(OPT_W, "net_asia_norerate")["cagr"]},
+        "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": D_IDS,
+                        "macro": PA, "base": PA_BASE,
+                        "scenarios": run_scenarios(PA_W, "net_macro", U_D),
+                        "dd_cap": round(DD_CAP, 2),
+                        "in_budget": abs(PA["maxdd"]) <= DD_CAP + 1e-9,
+                        "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pa_review_")}},
         "portfolio_d": {"weights": [round(x * 100) for x in D_W], "ids": D_IDS,
                         "shorts": [f["short"] for f in U_D[1]],
                         "funds": F_D, "macro": PD, "base": PD_BASE,
@@ -4042,13 +4094,16 @@ def report():
       f"{pn['band_n']} in band)")
     A(f"      macro view     : CAGR {pn['macro']['cagr']}%  vol {pn['macro']['vol']}%  "
       f"maxDD {pn['macro']['maxdd']}%  ret/DD {pn['macro']['ret_per_dd']}")
-    pdd = p["portfolio_d"]
-    A(f"    PORTFOLIO D weights {pdd['weights']}   (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend; "
-      f"fixed from the {pdd['review']['date']} review)")
-    A(f"      macro view     : CAGR {pdd['macro']['cagr']}%  vol {pdd['macro']['vol']}%  "
-      f"maxDD {pdd['macro']['maxdd']}%  ret/DD {pdd['macro']['ret_per_dd']}")
+    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "highest return"), ("PORTFOLIO D", "portfolio_d", "best worst case")):
+        pq = p[key]
+        A(f"    {lab} weights {pq['weights']}   (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend; "
+          f"the {pq['review']['date']} review's {rule} pick, fixed)")
+        A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
+          f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
+    A("    (B, the four-fund optimum above, is no longer shown on the page; C is chosen by its rule.)")
     for k, v in p["what_if"].items():
-        A(f"    what-if {k:<17}: B {v['weights']} {v['cagr']}%   C {v['pinned']['weights']} {v['pinned']['cagr']}%")
+        A(f"    what-if {k:<17}: " + (f"C {v['pinned']['weights']} {v['pinned']['cagr']}%   " if "pinned" in v else "")
+          + f"A {v['a']['cagr']}% / {v['a']['maxdd']}%   D {v['d']['cagr']}% / {v['d']['maxdd']}%")
     A(f"    best pure ret/DD  : {p['best_ratio']['weights']}  CAGR {p['best_ratio']['cagr']}%  "
       f"maxDD {p['best_ratio']['maxdd']}%  ratio {p['best_ratio']['ret_per_dd']}")
     A("\n[6] SCENARIOS (optimized portfolio)")
@@ -5333,6 +5388,30 @@ def report():
                    "than its base, and its drawdown inside the same budget",
                    MACRO["pd_review_date"] >= AS_OF and MACRO["pd_review_worst"] <= MACRO["pd_review_cagr"]
                    and MACRO["pd_review_dd"] <= DD_CAP + 1e-9))
+    # PORTFOLIO A (2026-10-21): the review's highest-return pick, fixed like D.
+    _pa = p["portfolio_a"]; _aw = _pa["weights"]
+    _cons = lambda w: (len(w) == 6 and sum(w) == 100 and all(x % 5 == 0 for x in w)
+                       and sum(1 for x in w if x) <= MACRO["pd_review_max_funds"]
+                       and max(w) <= MACRO["pd_review_max_w"]
+                       and w[0] >= MACRO["pd_review_min_cash"])
+    checks.append(("Portfolios A and D both obey the review's search: 5% grid, at most "
+                   f"{MACRO['pd_review_max_funds']} funds, {MACRO['pd_review_max_w']}% in any one, "
+                   f"{MACRO['pd_review_min_cash']}% cash", _cons(_aw) and _cons(_dw)))
+    _amu = sum(w / 100 * f["net_macro"] for w, f in zip(_aw, p["funds"] + _pdd["funds"]))
+    checks.append((f"Portfolio A's CAGR re-derives from its funds ({_amu:.2f} vs {_pa['macro']['cagr']})",
+                   abs(_amu - _pa["macro"]["cagr"]) < 0.005))
+    checks.append(("A's grind-on stress row reproduces A itself",
+                   [r for r in _pa["scenarios"] if r["name"].startswith("Grind")][0]["cagr"] == _pa["macro"]["cagr"]))
+    # The two picks are the two ends of one search, so their recorded results must
+    # order the right way: A has the higher base case, D the better worst case.
+    checks.append(("the review's two picks order as their rules say: A the higher base case, D the better worst case",
+                   MACRO["pa_review_date"] == MACRO["pd_review_date"] >= AS_OF
+                   and MACRO["pa_review_cagr"] >= MACRO["pd_review_cagr"]
+                   and MACRO["pa_review_worst"] <= MACRO["pd_review_worst"]
+                   and MACRO["pa_review_dd"] <= DD_CAP + 1e-9 and MACRO["pa_review_band_n"] >= 1
+                   and MACRO["pa_review_stress_dd"] >= MACRO["pa_review_dd"]))
+    checks.append(("every what-if re-measures A and D on its own column",
+                   all("a" in v and "d" in v for v in p["what_if"].values())))
     checks.append(("portfolio vol < weighted-average vol (diversification works)",
                    o["macro"]["vol"] < sum(w/100*f["vol"] for w, f in zip(o["weights"], p["funds"]))))
     for name, ok in checks:

@@ -141,6 +141,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+77. A BUDGET IS NOT MEASURED FROM THE PORTFOLIO IT JUDGES. When the owner replaced
+   Portfolio A with the review's highest-return pick, the drawdown budget - "A's
+   drawdown less 2.83pp" - would have moved with it, and a riskier A would have
+   loosened the budget that judges A. The original 20 / 30 / 25 / 25 baseline stays
+   in the engine as the budget's reference only, and the page says so.
 76. A TILT IS TAKEN FROM THE FIGURE THE PAGE PRINTS. The volatility tilt was taken
    from the unrounded ramp (-0.454) while the page printed -0.45, so Global
    Technology showed +0.06 where the printed figures give +0.05. The ramp is rounded
