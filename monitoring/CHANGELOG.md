@@ -2,6 +2,78 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — Scrub v57: money-market fee corrected, Hormuz volume and the curve rolled, B moves on the tie's edge
+
+A full debug, review and fact-check pass at the owner's request. US markets were still
+open (17:00 UTC), so the roll is to the 20 Oct US close and the 21 Oct Asian close.
+
+**Errors found and fixed**
+- **Money-market fee stale for years (data).** ATRPHMM carried 0.71% "all-in" from a
+  superseded KIIDS (trustee ~0.70%). The current KIIDS has 0.57% trustee + 0.01% other
+  as a share of average daily NAV; uitf.com.ph and GCash list the trust fee at 0.50%
+  p.a. Now 0.58%, carried as components like Asia Equity's. Every portfolio holds 5% of
+  it, so every forecast rises about 0.01pp.
+- **B moved on the tie's edge (consequence, not a defect).** The fee lifted 5 / 25 / 0 /
+  35 / 30 / 5 to 7.138% raw, so the 0.05pp band now starts at 7.088% and v56's B (5 / 20
+  / 0 / 35 / 35 / 5, 7.084%) falls 0.004pp outside it. The rule now picks **5 / 20 / 5 /
+  35 / 35 / 0 — 7.12% / −25.7%**, 5% Asia Equity in place of 5% Global Dividend. A
+  (7.13% / −25.8%) is unchanged; C is unchanged in weights, 7.08% / −25.6%.
+- **An engine check asserted a fact about the inputs (runbook 74, again).** "Both Hormuz
+  measures are published" required a 20-50% volume loss; Kpler's new week puts it at
+  18% and the check failed on a true input. It now requires both measures as fractions
+  of their own baselines, and quoted.
+- **Page text that was true by luck:** the trend note said "none of A, B or C holds
+  Asia Equity" (B now does; the reason is read from the weights); "0.276 → 0.277, 0%
+  better" (a gain under 1% now gets a decimal); "C ... with 0.1pp less drawdown: the
+  price of holding half the portfolio in one fund" (the clause now follows the signs);
+  the US Equity Opportunity sentence used B's 1.50%-fee weight for C; "35% in any one
+  and 5% cash" read the floor as a share (now "at least 5%"); the Report's rule steps
+  read the tie from the retired four-fund key; "The oil price follows the first
+  [volume]" is false now that volume recovered and Brent did not.
+- **CLAIMS misattribution (v56):** the 24-fund row credited US Equity Opportunity's B
+  and C shares to "the engine's six-fund rule"; they come from the review model with
+  the page's tilts, since the engine does not model that fund.
+- **A mutation went silent:** m22 typed B's vol-flat weights as 5 / 25 / 0 / 35 / 35 / 0,
+  which the fee correction made the TRUE answer, so it mutated nothing. It is now
+  derived from the real weights.
+
+**Rolled (cross-checked, two or more sources)**
+- US 2-year **4.79%** and 30-year **5.42%** on the 20 Oct Treasury par curve (were 16 Oct
+  session readings, 4.715% and 5.434%); FRED's T10Y2Y 0.33 agrees. Both now carry the
+  10-year's official-close basis. The 10-year's 20 Oct **5.12%** is confirmed (two
+  par-curve republications, the 23 Sep rule) and no longer provisional.
+- Hormuz on volume: Kpler, week to 18 Oct, **about 14 mb/d through the Strait with Gulf
+  of Oman transfers, 82% of pre-war (preliminary)**; the Gulf's exports by every route
+  above 24 mb/d against 23.3. Not like-for-like with the 9.4 mb/d crude-only week to
+  14 Oct, so no trend is drawn. **Geopolitics held at 1.5**: one preliminary week,
+  Bloomberg has October to date still below pre-war, attacks continue, the deal is
+  stalled, and Brent sits within 1% of its five-month high.
+- BSP: BusinessWorld's poll, 20 of 22 expect +25bp to 5.25% on 22 Oct, two +50bp.
+- The review model re-run with the corrected fee on its own 13-fund pool: A unchanged
+  (7.68%, 14 in the tie). US Equity Opportunity at 1.20%: 30% of A, **30% of B** (was
+  25%), 25% of C; at 1.50%: **15% of A** (was 5%), none of B or C. Searched over all 22
+  with nothing screened, the review model would add 15% Global AI (fee unverified, a
+  near-duplicate of Global Technology), which the review screened out.
+
+**Confirmed unchanged:** Brent $108.79 (20 Oct), VIX 17.31 and VIX3M 18.99, S&P
+7,712.57, peso 63.361 (record), PSEi 5,821.51, Nikkei 64,621.24, KOSPI 5,735.66, PH CPI
+7.2% (core 4.7%), ECB 2.50% and BoJ 1.25% (holds expected), Nasdaq Equity Income 1.50% +
+0.35% (JEPQ UCITS), Global Technology 1.50% + 1.04% (also 1.04% for Y-Acc-USD), Global
+Dividend 1.50%, Long Term Peso Bond 1.00%.
+
+**Not carried, recorded:** the PH 5-year for 20 Oct — Manila Bulletin 7.678%, the
+Treasury's table (as reported) 7.768%, the day's July 2031 bond at 7.830%. The 15 Oct
+curve stays until two sources agree. FedWatch stays at its 16 Oct reading: newer
+figures (December ~90%, October under 20%) come from one secondary source each.
+
+**House cleanup:** the dead "D only" tag code and set, a duplicate of `six_feasible`
+inside the what-if builder, and ~20 engine comments and check names that still said
+"Portfolio D" (the payload was byte-identical before and after). The engine printout now
+lists the six-fund what-ifs.
+
+Verification: engine 231/231, audit 309/309, validator 22/22 on the published copy,
+mutation harness 26/26 (one added: the money-market fee reverting).
+
 ## 2026-10-21 — A, B and C chosen by one rule over six funds; B and C on the macro view
 
 At the owner's instruction: "make portofolio b and c based on macro economics drivers

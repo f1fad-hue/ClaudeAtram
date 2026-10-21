@@ -194,7 +194,10 @@ MACRO = {
     # - and neither is the Treasury's own release. CNBC's market basis had the
     # 10-year "almost 5 basis points" higher at 5.281% after an early fall on the
     # weak payrolls. The VIX rule: a close two sources disagree on is not carried.
-    "ust_10y_provisional": ["2026-10-20"],
+    # 20 OCT CONFIRMED 2026-10-21: two republications of the Treasury par curve
+    # (YourBestSavings and Forbes' Treasury-rates page) both read 5.12, and Mortgage
+    # News Daily's market close was 5.123 - the 23 Sep rule (two par-curve sources).
+    "ust_10y_provisional": [],
     "ust_10y_provisional_basis": "Treasury par curve; FRED H.15 pending",
     "ust_10y_disputed_23sep": [5.10, 5.11, 5.12],
     # 6 Oct was NOT CARRIED on 7 Oct: only market-basis quotes existed (Trading
@@ -278,11 +281,15 @@ MACRO = {
     # 16 Oct (CNBC, "yields waver as traders wrap up volatile week"): 2-year "down
     # more than 3 basis points at 4.715%", 30-year "rose less than 1 basis point to
     # 5.434%"; the 10-year 5.085%. Par curve 15 Oct: 4.77 / 5.10 / 5.43.
-    "ust_2y": 4.715, "ust_2y_date": "2026-10-16",
+    # 20 Oct, TREASURY PAR CURVE (YourBestSavings / Forbes republications, 2026-10-21):
+    # 2-year 4.79%, 30-year 5.42% (-6bp; Trading Economics' OTC quote 5.43%); FRED's
+    # T10Y2Y for the 20th is 0.33, which is 5.12 - 4.79. From here the 2-year and
+    # 30-year are carried on the same official-close basis as the 10-year.
+    "ust_2y": 4.79, "ust_2y_date": "2026-10-20",
     "ust_10y_intraday_14oct": 5.33,   # ~30 minutes after the CPI (Quartz, CNBC)
-    "ust_30y": 5.434, "ust_30y_date": "2026-10-16",
+    "ust_30y": 5.42, "ust_30y_date": "2026-10-20",
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
-    "ust_curve_basis": "mid-session readings, not closes",
+    "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
 
     # The September meeting is DECIDED, so these now describe the NEXT move rather
     # than a meeting that has happened. Carrying a "September odds" field past the
@@ -556,7 +563,7 @@ MACRO = {
     "ph_tbill_chg_bp": [14.7, 5.8, 9.3],          # as reported (364-day derived)
     "ph_tbill_date": "2026-10-19",
     "ph_tbill_cadence_d": 7,                      # BTr auctions T-bills weekly
-    # PORTFOLIO D's TWO ADDED FUNDS (2026-10-21). The PH government curve at the
+    # THE TWO FUNDS BEYOND THE ORIGINAL FOUR (2026-10-21). The PH government curve at the
     # close of 15 Oct (AsianBondsOnline / ADB): 2-year 7.055%, 5-year 7.679%,
     # 10-year 8.016% - the 10-year up 194.4bp this year, its highest since 2018.
     "ph_gs_2y": 7.055, "ph_gs_5y": 7.679, "ph_gs_10y": 8.016, "ph_gs_date": "2026-10-15",
@@ -596,24 +603,29 @@ MACRO = {
     # minus the fund fees with minimum drawdown"): the best base-case net CAGR inside
     # the budget, then the lowest drawdown among the 19 portfolios within the tie.
     # Re-run on 2026-10-21 with the Global Dividend fee corrected to 1.50%: it did
-    # not move. Inside the budget in five of the review's six scenarios; OVER it in
-    # the sixth, bonds and tech falling together (-27.3%), where D stays inside.
-    "pa_review_date": "2026-10-21", "pa_review_cagr": 7.67, "pa_review_dd": 25.4,
-    "pa_review_band_n": 19, "pa_review_worst": 6.87, "pa_review_stress_dd": 27.3,
+    # not move. RE-RUN AGAIN 2026-10-21 with the money market's fee corrected to
+    # 0.58% (was 0.71%), on the review's own pool (the 13 funds it kept after
+    # screening out nine): the same mix, 7.68% (was 7.67%), 14 in the tie (was 19),
+    # worst case unchanged at 6.87%; bonds and tech falling together now -27.2%
+    # (was -27.3%, one step over the page's -27.17% budget in either case).
+    "pa_review_date": "2026-10-21", "pa_review_cagr": 7.68, "pa_review_dd": 25.4,
+    "pa_review_band_n": 14, "pa_review_worst": 6.87, "pa_review_stress_dd": 27.2,
+    "pa_review_pool_n": 13,
     "pa_review_weights": [5, 25, 0, 35, 35, 0],
     # THE LIST IS NOW 24 FUNDS (owner, 2026-10-21): ATRAM US Equity Opportunity and
     # ATRAM US Multi-Asset Income added. Re-run over all 24 on the same search, US
     # Multi-Asset Income makes neither pick. US Equity Opportunity's weight turns on its
     # trust fee, which is not confirmed: uitf.com.ph lists 1.20% on a page about 17
-    # months old, and ATRAM moved Global Technology to 1.50% on 14 Sep. A (long-run
-    # rule): 30% at 1.20%, 5% at 1.50%, none on its target's retail share class (1.81%,
-    # not the 0.85% clean class). B and C (macro-view rule, 2026-10-21): 25% of each at
-    # 1.20%, none at 1.50%. It is HELD OUT, at the owner's choice, until its fact sheet
-    # confirms the fee.
+    # months old, and ATRAM moved Global Technology to 1.50% on 14 Sep. Re-run with the
+    # money market's fee corrected (0.58%, 2026-10-21): A (long-run rule) 30% at 1.20%
+    # and 15% at 1.50% (was 5%); none on its target's retail share class (1.81%, not
+    # the 0.85% clean class). B (macro-view rule) 30% at 1.20% (was 25%), none at
+    # 1.50%; C 25% at 1.20%, none at 1.50%. It is HELD OUT, at the owner's choice,
+    # until its fact sheet confirms the fee.
     "review_list_n": 24, "review_list_date": "2026-10-21",
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
-    "useq_w_a_listed": 30, "useq_w_d_listed": 25, "useq_w_a_peer": 5, "useq_w_d_peer": 0,
+    "useq_w_a_listed": 30, "useq_w_d_listed": 30, "useq_w_a_peer": 15, "useq_w_d_peer": 0,
     "useq_w_c_listed": 25, "useq_w_c_peer": 0,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
@@ -963,9 +975,15 @@ MACRO = {
     # including the bypass pipelines ~14 mb/d, nearly 20% below. Up from 8.5 mb/d
     # (week to 12 Oct, "nearly 40% below"). A "68% cut" in one weekly review could
     # not be traced to any source and is not carried.
-    "hormuz_crude_kpler": 9.4, "hormuz_crude_kpler_week": "2026-10-14",
-    "hormuz_crude_kpler_prev": 8.5,
-    "me_shipments_kpler": 14, "me_shipments_below_pct": 20,
+    # 21 Oct (Kpler via Bloomberg, Seeking Alpha / TradingView, The National, WSJ):
+    # in the week to 18 Oct, oil through Hormuz INCLUDING Gulf of Oman transfers was
+    # about 14 mb/d, 82% of pre-war (preliminary); the Gulf's exports by every route
+    # were above 24 mb/d against 23.3 pre-war. Bloomberg: the October-to-date average
+    # is still below pre-war. NOT like-for-like with the 9.4 mb/d crude-only reading
+    # of the week to 14 Oct, which is kept as the previous point, not a trend.
+    "hormuz_crude_kpler": 14, "hormuz_crude_kpler_week": "2026-10-18",
+    "hormuz_crude_kpler_prev": 9.4, "hormuz_crude_kpler_prev_week": "2026-10-14",
+    "gulf_exports_kpler": 24, "gulf_exports_prewar": 23.3,
     # 16-17 Oct: two tankers attacked 68-78 nm northeast of Al Jubayl, Saudi
     # Arabia (UKMTO; one by an RPG from a small boat); the IRGC says the Strait is
     # "closed" and a supertanker hit a mine, CENTCOM that traffic continues. Iran
@@ -991,7 +1009,11 @@ MACRO = {
     # mine claims false. Brent rose about 1.5% in Asian trading (CNBC, AA).
     "us_iran_stall_date": "2026-10-21",
     "iea_hormuz_sep": 10.9, "iea_hormuz_sep_chg": 3.7,
-    "hormuz_crude_kpler_below_pct": 30,     # "about 70% of" pre-war (Kpler, 14 Oct week)
+    # BusinessWorld poll (20 Oct, "Inflation risks to keep BSP hawkish"): 20 of 22
+    # analysts expect +25bp to 5.25% on 22 Oct, the other two +50bp.
+    "bsp_poll_hike": 20, "bsp_poll_n": 22,
+    "hormuz_kpler_pct_of_prewar": 82,       # Kpler's own figure, week to 18 Oct
+    "hormuz_crude_kpler_below_pct": 18,     # = 100 - 82, the loss the page quotes
     "isaias_gulf_shutin_pct": 70,
     # THE QUEUE, on a stated basis and as a SERIES. 436 was a 30 August reading on
     # an undisclosed basis and sat here for three weeks. These three are one
@@ -1694,8 +1716,9 @@ POSTPONED = []
 
 CATALYSTS = [
     ("2026-10-22", "BSP policy decision",
-     "At 5.00% after three hikes; Deutsche Bank and Nomura expect a fourth, to "
-     "5.25%. Against 7.2% inflation a hike moves the peso sleeve's carry toward a "
+     f"At 5.00% after three hikes; {MACRO['bsp_poll_hike']} of {MACRO['bsp_poll_n']} analysts in "
+     f"BusinessWorld's poll expect a fourth, to 5.25%, and {MACRO['bsp_poll_n'] - MACRO['bsp_poll_hike']} a "
+     "50bp move. Against 7.2% inflation a hike moves the peso sleeve's carry toward a "
      "positive real yield; a pause leaves it deeper below zero."),
     ("2026-10-28", "FOMC decision",
      "FedWatch had a hike at 14.9% for October and 88.9% by December on 16 Oct: a "
@@ -1877,7 +1900,7 @@ VOL_RAMP_REF = "long-run"
 #                    dividend tilt shortens effective duration.
 #   ATRPHMM  +0.035  cash gains marginally as risk-off keeps the front end bid.
 VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122,
-            # Portfolio D's two added funds: no volatility channel is claimed for either
+            # The two added funds: no volatility channel is claimed for either
             "ATRLTPB": 0.000, "ATRGLDV": 0.000}
 
 
@@ -2063,7 +2086,7 @@ REGIONS = {
                 "1.02% on industrial earnings beats, while the Nasdaq slipped 0.02% as money "
                 "rotated from tech into value. The data ran hot - producer prices up 1.3% in "
                 "September, retail sales 0.8% - but the hike moved out: FedWatch had October "
-                "at 14.9% on 16 Oct, and the 10-year eased to 5.12% on 20 Oct, provisionally. "
+                "at 14.9% on 16 Oct, and the 10-year eased to 5.12% on 20 Oct. "
                 "The consumer is the weak point, Michigan sentiment at 46.3. The anchor holds "
                 "at 6.5 on two structural points: the US is a net energy EXPORTER, a relative "
                 "tailwind with Brent +75.7% y/y, and NDX at 22.4x forward on its last verified "
@@ -2146,8 +2169,8 @@ DRIVERS = [
      "at 14.9% on 16 Oct, from 31.6% after the CPI, and one by December at 88.9% "
      "(16 Oct) - still the latest dated reading of the tool; secondary reads on 21 "
      "Oct show the same shape. The long end eased: on official closes the 10-year "
-     "was 5.09% on the 16th, 5.15% on the 19th and 5.12% on the 20th - the 20th "
-     "provisional until FRED publishes it - below the 7 Oct intraday high of 5.365%, "
+     "was 5.09% on the 16th, 5.15% on the 19th and 5.12% on the 20th, with the "
+     "2-year at 4.79% and the 30-year at 5.42% - below the 7 Oct intraday high of 5.365%, "
      "which is above the 5 Oct peak of 5.349% and the highest since April 2002. "
      "Manila is tightening into it: the 19 Oct auction lifted 91-day bills to "
      "5.992%, and BSP, at 5.00%, decides on 22 Oct with a hike to 5.25% expected; "
@@ -2215,8 +2238,8 @@ DRIVERS = [
      f"Raised, not restored: one Asian rebound after a week of selling is not yet a "
      f"calm market."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "HELD at 1.5: the talks stalled and the attack claims were disputed, with no "
-     "change in the volume. On 21 Oct Iran's speaker Ghalibaf said Tehran would not "
+     "HELD at 1.5: the volume recovered in the latest week, but the talks stalled "
+     "and the attack claims are disputed. On 21 Oct Iran's speaker Ghalibaf said Tehran would not "
      "trust Washington until its conditions for reopening the Strait were met, a "
      "day after Qatar and Pakistan put a compromise to both sides; CENTCOM called "
      "Iran's claims that mines had hit tankers, first made on 17 Oct, false. The Houthis' 19 Oct claims of "
@@ -2224,17 +2247,19 @@ DRIVERS = [
      "pledge of no US strike before the 3 November midterms stands. Brent settled "
      "at $108.79 on 20 Oct, off a $111.99 session high, and rose about 1.5% in "
      "Asian trading on the 21st. Read it on VOLUME, the measure this note goes by: "
-     "Kpler had crude through Hormuz at 9.4 mb/d in the week to 14 Oct, about 30% "
-     "below pre-war and up from 8.5 mb/d the week before; Middle East shipments "
-     "including the bypass pipelines were about 14 mb/d, nearly 20% below. On 22 "
+     "Kpler had oil through Hormuz, with Gulf of Oman transfers, at about 14 mb/d in "
+     "the week to 18 Oct, 82% of pre-war on preliminary figures, and the Gulf's "
+     "exports by every route above 24 mb/d against 23.3 pre-war; the week to 14 Oct "
+     "read 9.4 mb/d on a crude-only basis, so the two are not a trend. On 22 "
      "Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses the "
      "Strait. Vessel counts disagree and are not supply: IMF PortWatch counted 4 "
      "transits on 18 Oct against an 85 baseline, a 95% drop; Lloyd's List "
      "Intelligence 14 a day in the week to 23 Aug, counting only cargo over 10000 "
-     "dwt; the US government around 30, on a basis it does not state. Held, not cut "
-     "or raised: the attacks are claims, the deal is stalled, and no newer volume "
-     "reading has been published. Full closure with Brent above $130 is strictly "
-     "worse and still possible."),
+     "dwt; the US government around 30, on a basis it does not state. Held, not "
+     "raised: the volume recovery is one preliminary week, Bloomberg has the October "
+     "average still below pre-war, the attacks go on and the deal is stalled - and "
+     "the price has not followed the barrels back. Full closure with Brent above "
+     "$130 is strictly worse and still possible."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -2242,13 +2267,13 @@ GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 # A check requires every number in a summary to appear in its full note, so a
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
-    "Monetary policy & liquidity": "Held: FedWatch had October at 14.9% and December at 88.9% on 16 Oct; the 10-year eased to 5.12% on the 20th, provisionally.",
+    "Monetary policy & liquidity": "Held: FedWatch had October at 14.9% and December at 88.9% on 16 Oct; the 10-year eased to 5.12% on the 20th.",
     "Inflation trajectory": "Held: no new US price data after September's 1.3% producer-price jump; Brent settled at $108.79, +75.7% y/y.",
     "Growth momentum": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; US retail sales rose 0.8%, mostly gasoline.",
     "Corporate earnings": f"Held, the strongest pillar: TSMC's profit rose 68.7% to a record; the KOSPI rose {MACRO['kospi_latest_chg_pct']}% as chipmakers rallied.",
     "Valuation support": f"Held: the S&P closed at 7712.57, below its 7818.93 record; the KOSPI is still {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
     "Volatility & risk appetite": f"Raised: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']}, a second close below the long run; the re-quoted curve reads {abs(VIX3M_RESID):.2f}% {'below' if VIX3M_RESID < 0 else 'above'} VIX3M.",
-    "Geopolitics & energy": "Held: on 21 Oct Iran said it would not trust Washington and CENTCOM called the mine claims false; Hormuz crude was last 9.4 mb/d.",
+    "Geopolitics & energy": "Held: Kpler had Hormuz flows near 14 mb/d in the week to 18 Oct, 82% of pre-war, but Iran said on 21 Oct it would not trust Washington.",
     "US": "Held: the Dow rose 1.02% on earnings as tech lagged; October hike odds are 14.9%, and the anchor holds.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
     "ASIA": f"Ten-year anchor cut, ending a double count of the base; the KOSPI rose {MACRO['kospi_latest_chg_pct']}% on 21 Oct, still {MACRO['kospi_off_2oct_pct']}% below 2 Oct.",
@@ -2295,7 +2320,14 @@ FUNDS = [
         "short": "Peso Money Market", "ccy": "PHP", "region": "PHILIPPINES",
         "target": "Own mandate: outperform PH bank deposits, average portfolio duration <= 1 year",
         "target_verified": True,
-        "fee_feeder": 0.71, "fee_target": 0.00, "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
+        # CORRECTED 2026-10-21: 0.71% came from a superseded KIIDS (trustee ~0.70%).
+        # The current KIIDS has 0.57% trustee + 0.01% other, as a share of average
+        # daily NAV; uitf.com.ph and GCash list the trust fee at 0.50% p.a. The KIIDS
+        # figure is the higher and is what the fund actually bore, so it is used.
+        "fee_feeder": 0.58, "fee_target": 0.00,
+        "fee_parts": [["trustee", 0.57], ["other", 0.01]],
+        "fee_feeder_prev": 0.71,
+        "fee_note": "{parts} as a share of average daily NAV (KIIDS; the listed trust fee is 0.50% p.a.), was 0.71% on a superseded KIIDS",
         "gross_usd": None,                 # PHP asset - no FX translation
         "gross_local": 4.85,
         # Bound to the auction inputs 2026-10-03. It quoted the 21 Sep auction a week
@@ -2406,7 +2438,7 @@ FUNDS = [
         "target_amc": 0.80,   # Fidelity's annual management charge inside the 1.04% OCF
         "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.15% (published) "
                     "+ 1.04% target-fund OCF (PUBLISHED by Fidelity for the W-Acc-GBP "
-                    "class, AMC {amc:.2f}%)",
+                    "and Y-Acc-USD classes, AMC {amc:.2f}%)",
         "gross_usd": round(MACRO["ltcma_us_eq"] + MACRO["tech_growth_premium"] - MACRO["tech_derating"], 2),
         "gross_note": (f"US large cap {MACRO['ltcma_us_eq']}% (JPM LTCMA {MACRO['ltcma_edition']}; was {MACRO['ltcma_us_eq_prev']}%) + {MACRO['tech_growth_premium']}% "
                        f"tech earnings-growth premium - {MACRO['tech_derating']}% multiple de-rating drag. "
@@ -2435,7 +2467,7 @@ for _f in FUNDS:
 
 # MSCI ACWI IT regional decomposition, used to score the Global Tech sleeve
 ACWI_IT_MIX = {"US": 0.72, "ASIA": 0.16, "EUROPE": 0.12}
-# The Global Dividend sleeve (Portfolio D only), DERIVED 2026-10-21 from the
+# The Global Dividend sleeve, DERIVED 2026-10-21 from the
 # target fund's country weights. It was an ESTIMATE of US 50 / Europe 38 / Asia 12;
 # the fund's 30 Sep 2026 factsheet has Germany 11.2, France 9.6, Switzerland 8.9,
 # Japan 7.4, Spain 5.9, Taiwan 4.0, Netherlands 3.1, South Korea 1.8. Its US and UK
@@ -2595,11 +2627,11 @@ def build_fund(f):
 
 F = [build_fund(f) for f in FUNDS]
 
-# ---- PORTFOLIO D's two added funds (2026-10-21) ------------------------------
+# ---- The two funds beyond the original four (2026-10-21) ---------------------
 # Not part of the four-fund universe A, B and C are chosen from: D is the pick of
-# a separate review of all 22 ATRAM funds, so these two exist for D alone. They
+# a separate review of all 22 ATRAM funds; A, B and C are chosen over all six. They
 # are built by build_fund() - the same fees, FX drift, tilts and drawdown rule as
-# every other sleeve - so D's numbers are on exactly this page's basis.
+# every other sleeve - so the six-fund numbers are on exactly this page's basis.
 _PG = _dt.date.fromisoformat(MACRO["ph_gs_date"])
 D_FUNDS = [
     {
@@ -2667,7 +2699,7 @@ CORR_NOTE = ("Money market is treated as uncorrelated to the equity sleeves. "
              "constraint - both are US mega-cap-tech engines, so holding both "
              "at size buys far less diversification than it appears to.")
 
-# PORTFOLIO D's six-fund matrix: the four-fund block above unchanged, plus the two
+# The six-fund matrix: the four-fund block above unchanged, plus the two
 # added funds. Their pairs come from the 21 Oct review's factor model, whose fit
 # reproduces the 0.88 / 0.66 / 0.74 above exactly - so the new rows are on the same
 # basis as the old ones. Order: MM, Nasdaq Income, Asia, Tech, LT Peso Bond, Global
@@ -2686,7 +2718,7 @@ CORR_D_NOTE = (f"The Long Term Peso Bond barely moves with the equity sleeves "
                f"at {MACRO['pd_review_stress_corr']:.2f}.")
 
 # Every portfolio function takes an optional UNIVERSE - (funds built, fund specs,
-# correlation) - so Portfolio D is computed by the same code as A, B and C. The
+# correlation) - so the six-fund picks are computed by the same code as the four. The
 # default is the four-fund universe, so nothing that calls these without it changes.
 def _univ(u):
     return u if u is not None else (F, FUNDS, CORR)
@@ -2853,7 +2885,7 @@ LOOKTHROUGH = {
         "source": "Fidelity Funds - Global Technology Fund factsheet, 31 August 2026 "
                   "(Fidelity International, Singapore edition)",
     },
-    # ---- the two funds Portfolio D adds (2026-10-21) ----
+    # ---- the two funds beyond the original four (2026-10-21) ----
     "ATRLTPB": {
         "dp": 3,
         "kind": "instruments",
@@ -3161,7 +3193,7 @@ for _k, _col in _WI_COL.items():
         _s = summarise(_w, _col, U_D)
         WHAT_IF[_k][_lab] = {"cagr": _s["cagr"], "maxdd": _s["maxdd"]}
 # THE BOND FUND'S OWN ESTIMATES, the review's "peso bonds weaker" case on this page's
-# basis: 35% of both A and D sits in a fund whose return is read off the curve and
+# basis: 25-35% of A, B and C sits in a fund whose return is read off the curve and
 # whose volatility is estimated. Gross 7.0% (not 7.68%), volatility 7.5% (not 5.8%).
 LTPB_STRESS = {"gross": 7.0, "vol": 7.5}
 _flw = {**F_D[0], "vol": LTPB_STRESS["vol"],
@@ -3171,9 +3203,7 @@ _U_WEAK = (F + [_flw, F_D[1]], U_D[1], CORR_D)
 # column, A re-measured on it (A is chosen on the long-run column, which none of these
 # touches). The bond-fund case is a different universe, so it is re-chosen there too.
 def _six_wi(col, u=U_D):
-    b = pick([(w, s2) for w, s2 in [(w, summarise(w, col, u)) for w in SIX_ALL if six_ok(w)]
-              if abs(port_dd(w, col, u)) <= DD_CAP + 1e-9 and abs(s2["maxdd"]) <= DD_CAP + 1e-9])
-    c = pick(six_feasible(col, PIN_SIX, u))
+    b, c = pick(six_feasible(col, None, u)), pick(six_feasible(col, PIN_SIX, u))
     a = summarise(PA_W, col, u)
     return {"b": {"weights": [round(x * 100) for x in b[0]], "cagr": b[1]["cagr"], "maxdd": b[1]["maxdd"]},
             "c": {"weights": [round(x * 100) for x in c[0]], "cagr": c[1]["cagr"], "maxdd": c[1]["maxdd"]},
@@ -3275,7 +3305,7 @@ FRONTIER = [{"maxdd": abs(v[1]["maxdd"]), "dd": v[1]["maxdd"], "cagr": v[1]["cag
 # ----------------------------------------------------------------------------
 # Each scenario is an additive shock (pp, annualised over 5y) per fund and a
 # vol multiplier, keyed to a live, named risk in the current macro picture.
-# Portfolio D's two added funds carry shocks too (ESTIMATES, 2026-10-21): the bond
+# The two added funds carry shocks too (ESTIMATES, 2026-10-21): the bond
 # fund loses in the inflation and rate rows - the Philippines imports its oil and
 # its yields follow US yields - and gains when disinflation lets yields fall; the
 # dividend sleeve takes about half the Nasdaq sleeve's hit in each equity row.
@@ -3903,7 +3933,7 @@ SOURCES = [
      "https://www.gulftoday.ae/business/2026/10/20/asian-shares-mostly-decline-after-ai-stocks-lead-a-rebound-on-wall-street"),
     ("US News / Reuters", "China's economic growth picks up in the third quarter, beating expectations - 4.5% against 4.4%, 19 Oct 2026",
      "https://money.usnews.com/investing/news/articles/2026-10-18/chinas-economic-growth-picks-up-in-third-quarter-beating-expectations"),
-    # ---- added 2026-10-21, Portfolio D ----
+    # ---- added 2026-10-21, the two funds beyond the original four ----
     ("DragonFi", "ATRAM Long Term Peso Bond Fund: trust fee 1.00% p.a.; PH government debt, up to 20% investment-grade corporates; weighted average portfolio life within 7 years; 1-year return +1.79% to 1 Oct 2026",
      "https://help.dragonfi.ph/hc/en-us/articles/60138066707353-ATRAM-Long-Term-Peso-Bond-Fund"),
     ("AsianBondsOnline (ADB)", "Philippines government bond yields, close of 15 Oct 2026: 2-year 7.055%, 5-year 7.679%, 10-year 8.016% (10-year up 194.4bp year to date)",
@@ -3967,6 +3997,29 @@ SOURCES = [
      "https://file.seedbox.ph/ATRAM%20US%20MULTI-ASSET%20INCOME%20FEEDER%20FUND%20KIIDS_Dec%202020.PDF"),
     ("Finect", "Allianz Income and Growth AM USD: ongoing charges 1.56% (management 1.50%); a third each in equities, high yield and convertibles",
      "https://www.finect.com/fondos-inversion/LU0820561818-Allianz_income_and_growth_am_usd"),
+    # ---- added 2026-10-21, the v57 scrub ----
+    ("Bloomberg", "Middle East oil flows near prewar levels defy Hormuz attacks - Kpler: Gulf crude and condensate a high of 24.6 mb/d in the week to 18 Oct; October to date still below prewar, 21 Oct 2026",
+     "https://www.bloomberg.com/news/articles/2026-10-21/middle-east-oil-flows-near-prewar-levels-defy-hormuz-attacks"),
+    ("Seeking Alpha / TradingView", "Middle East oil flows now surpass levels before the US-Iran war, Kpler says - Hormuz incl. Gulf of Oman transfers ~14 mb/d, 82% of prewar; all routes >24 vs 23.3 mb/d, 21 Oct 2026",
+     "https://www.tradingview.com/news/seekingalpha:313ed4e49094b:0-middle-east-oil-flows-now-surpass-levels-before-u-s-iran-war-kpler-says/"),
+    ("The National", "Non-Iran Middle East oil exports recover to prewar levels with Hormuz alternatives, 21 Oct 2026",
+     "https://www.thenationalnews.com/business/energy/2026/10/21/non-iran-middle-east-oil-exports-recover-to-prewar-levels-with-hormuz-alternatives/"),
+    ("YourBestSavings (US Treasury par curve)", "Treasury yields today, 20 Oct 2026 - 2-year 4.79%, 10-year 5.12%, 30-year 5.42% on the daily par curve",
+     "https://yourbestsavings.com/treasury-yields/"),
+    ("FRED (St. Louis Fed)", "T10Y2Y - 10-year minus 2-year Treasury constant maturity: 0.33 on 20 Oct 2026",
+     "https://fred.stlouisfed.org/series/T10Y2Y"),
+    ("uitf.com.ph", "ATRAM Peso Money Market Fund (A Unit Class) - trust fee structure 0.50% p.a.",
+     "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=203"),
+    ("GCash Help Centre", "GFunds fees - ATRAM Peso Money Market Fund trust fee 0.50%",
+     "https://help.gcash.com/hc/en-us/articles/30841717008025-GFunds-fees"),
+    ("Seedbox / ATRAM Trust", "ATRAM Peso Money Market Fund KIIDS - trustee 0.57%, other 0.01% of average daily NAV",
+     "https://file.seedbox.ph/ATRAM_Peso_Money_Market_Fund_KIIDS.pdf"),
+    ("Fidelity International", "Global Technology Fund Y-Acc-USD factsheet, 30 Jun 2026 - OCF 1.04% (30.04.25), AMC 0.80%",
+     "https://www.fidelityinternational.com/FILPS/Documents/en/current/mf.en.gb.LU1560650563.pdf"),
+    ("BusinessWorld", "Inflation risks to keep BSP hawkish - poll: 20 of 22 analysts expect +25bp to 5.25% on 22 Oct, two +50bp, 20 Oct 2026",
+     "https://bworldonline.com/top-stories/2026/10/20/788200/inflation-risks-to-keep-bsp-hawkish/"),
+    ("Manila Bulletin", "Inflation fears, peso weakness push government borrowing costs higher - July 2031 bond at 7.830%; five-year BVAL quoted 7.678%, 20 Oct 2026",
+     "https://mb.com.ph/2026/10/20/inflation-fears-peso-weakness-push-government-borrowing-costs-higher"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -4229,9 +4282,9 @@ def report():
     A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
       f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
     A("    (OPTIMIZED and PINNED C above are the internal four-fund rule, kept for its checks; the page shows A, B, C.)")
-    for k, v in p["what_if"].items():
-        A(f"    what-if {k:<17}: " + (f"C {v['pinned']['weights']} {v['pinned']['cagr']}%   " if "pinned" in v else "")
-          + f"A {v['a']['cagr']}% / {v['a']['maxdd']}%   D {v['d']['cagr']}% / {v['d']['maxdd']}%")
+    for k, v in p["six"]["what_if"].items():
+        A(f"    what-if {k:<17}: B {v['b']['weights']} {v['b']['cagr']}%   C {v['c']['weights']} {v['c']['cagr']}%   "
+          f"A {v['a']['cagr']}% / {v['a']['maxdd']}%")
     A(f"    best pure ret/DD  : {p['best_ratio']['weights']}  CAGR {p['best_ratio']['cagr']}%  "
       f"maxDD {p['best_ratio']['maxdd']}%  ratio {p['best_ratio']['ret_per_dd']}")
     A("\n[6] SCENARIOS (optimized portfolio)")
@@ -4444,9 +4497,15 @@ def report():
     # the same trap as the $130 counterfactual on 2026-09-10. What is actually
     # required is that both measures are published, so a reader can see how far apart
     # they are, and that the two disagree by enough to be worth stating.
+    # REVISED 2026-10-21: this asserted a 20-50% volume loss - a FACT about the inputs
+    # written as an invariant (runbook 74). Kpler's week to 18 Oct put the loss at 18%
+    # and the check failed on a true input. What it exists to require is that both
+    # measures are published as fractions of their own baselines, and quoted.
     _vessel_loss = 1 - MACRO["hormuz_transits"] / MACRO["hormuz_baseline"]
     checks.append(("both the vessel-count and volume measures are published",
-                   0.2 < _flow_loss < 0.5 and _vessel_loss > 0.8))
+                   0 < _flow_loss < 1 and 0 < _vessel_loss < 1
+                   and MACRO["hormuz_crude_kpler_below_pct"] == 100 - MACRO["hormuz_kpler_pct_of_prewar"]
+                   and f"{100 - MACRO['hormuz_crude_kpler_below_pct']}% of pre-war" in _geo_note))
     checks.append(("the two Hormuz measures are far enough apart to require both",
                    _vessel_loss - _flow_loss > 0.3))
     checks.append(("the Gulf flow baseline is the source's own, not a borrowed one",
@@ -5308,7 +5367,7 @@ def report():
     checks.append(("optimized drawdown is smaller than baseline",
                    abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])))
     lt = p["lookthrough"]
-    checks.append(("look-through recorded for all six funds, D's two included",
+    checks.append(("look-through recorded for all six funds, the two added ones included",
                    set(lt) == {f["id"] for f in FUNDS + D_FUNDS}))
     checks.append(("the Global Dividend mix is the target fund's country weights, renormalised",
                    abs(sum(GDIV_MIX.values()) - 1) < 1e-9
@@ -5483,15 +5542,15 @@ def report():
                    abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])
                    and (o["macro"]["cagr"] >= b["under_macro"]["cagr"] - PIN_TIE_PP - 1e-9
                         or abs(b["under_macro"]["maxdd"]) > DD_CAP)))
-    # PORTFOLIO D (2026-10-21). Fixed weights, so the checks are about measurement:
-    # the grid, the matrix it is measured with, the budget, and that every figure
-    # re-derives from the two added funds' own inputs.
+    # PORTFOLIO B (payload portfolio_d; chosen by the rule since v56). The checks are
+    # about measurement: the grid, the matrix it is measured with, the budget, and
+    # that every figure re-derives from the two added funds' own inputs.
     _pdd = p["portfolio_d"]; _dw = _pdd["weights"]
-    checks.append(("Portfolio D: six weights on the 5% grid summing to 100, every held fund at the minimum",
+    checks.append(("Portfolio B: six weights on the 5% grid summing to 100, every held fund at the minimum",
                    len(_dw) == 6 and sum(_dw) == 100 and all(x % 5 == 0 for x in _dw)
                    and all(x == 0 or x >= MIN_SLEEVE * 100 for x in _dw)))
     _cd = CORR_D
-    checks.append(("D's six-fund correlation extends the four-fund one: same block, symmetric, unit diagonal, positive definite",
+    checks.append(("the six-fund correlation extends the four-fund one: same block, symmetric, unit diagonal, positive definite",
                    all(_cd[i][j] == CORR[i][j] for i in range(4) for j in range(4))
                    and all(_cd[i][j] == _cd[j][i] for i in range(6) for j in range(6))
                    and all(_cd[i][i] == 1.0 for i in range(6)) and _chol_pd(_cd)))
@@ -5500,10 +5559,10 @@ def report():
                    abs(_dmu - _pdd["macro"]["cagr"]) < 0.005))
     checks.append((f"Portfolio B sits inside the drawdown budget ({_pdd['macro']['maxdd']}% vs -{DD_CAP:.2f}%)",
                    _pdd["in_budget"] and abs(_pdd["macro"]["maxdd"]) <= DD_CAP + 1e-9))
-    checks.append(("D's grind-on stress row reproduces D itself",
+    checks.append(("B's grind-on stress row reproduces B itself",
                    [r for r in _pdd["scenarios"] if r["name"].startswith("Grind")][0]["cagr"] == _pdd["macro"]["cagr"]))
     _fl, _fg = _pdd["funds"]
-    checks.append(("D's added funds: the bond fund's fee is its trust fee, the feeder's is trust plus target",
+    checks.append(("the two added funds: the bond fund's fee is its trust fee, the feeder's is trust plus target",
                    _fl["fee_total"] == MACRO["ltpb_trust_fee"]
                    and abs(_fg["fee_total"] - MACRO["gdiv_trust_fee"] - MACRO["gdiv_target_ocf"]) < 1e-9))
     _pgd = _dt.date.fromisoformat(MACRO["ph_gs_date"])
@@ -5512,7 +5571,7 @@ def report():
                    and 0 <= (_dt.date.fromisoformat(AS_OF) - _pgd).days <= 14))
     checks.append(("the bond fund's gross return is the curve's 5-year point, and its vol is the stated estimate",
                    _fl["gross_php"] == round(MACRO["ph_gs_5y"], 2) and abs(_fl["vol"] - MACRO["ltpb_vol"]) < 0.005))
-    checks.append(("D's review is quoted as recorded: dated on/after the as-of date, worst case no better "
+    checks.append(("the review's best-worst-case record is quoted as recorded: dated on/after the as-of date, worst case no better "
                    "than its base, and its drawdown inside the same budget",
                    MACRO["pd_review_date"] >= AS_OF and MACRO["pd_review_worst"] <= MACRO["pd_review_cagr"]
                    and MACRO["pd_review_dd"] <= DD_CAP + 1e-9))
@@ -5547,15 +5606,16 @@ def report():
                    [r for r in _pa["scenarios"] if r["name"].startswith("Grind")][0]["cagr"] == _pa["macro"]["cagr"]))
     # The two picks are the two ends of one search, so their recorded results must
     # order the right way: A has the higher base case, D the better worst case.
-    checks.append(("the review's two picks order as their rules say: A the higher base case, D the better worst case",
+    checks.append(("the review's two picks order as their rules say: A the higher base case, the best-worst-case pick the better worst case",
                    MACRO["pa_review_date"] == MACRO["pd_review_date"] >= AS_OF
                    and MACRO["pa_review_cagr"] >= MACRO["pd_review_cagr"]
                    and MACRO["pa_review_worst"] <= MACRO["pd_review_worst"]
                    and MACRO["pa_review_dd"] <= DD_CAP + 1e-9 and MACRO["pa_review_band_n"] >= 1
-                   and MACRO["pa_review_stress_dd"] >= MACRO["pa_review_dd"]))
+                   and MACRO["pa_review_stress_dd"] >= MACRO["pa_review_dd"]
+                   and 0 < MACRO["pa_review_pool_n"] <= MACRO["pd_review_n_funds"]))
     # The 24-fund re-run is recorded, not applied: the held picks hold none of the new
     # fund, and the recorded weights fall as its assumed fee rises.
-    checks.append(("the 24-fund re-run is recorded consistently and A and D are held without the unconfirmed fund",
+    checks.append(("the 24-fund re-run is recorded consistently and the six funds exclude the unconfirmed one",
                    MACRO["review_list_n"] > MACRO["pd_review_n_funds"]
                    and MACRO["review_list_date"] >= MACRO["pd_review_date"]
                    and MACRO["useq_trust_listed"] < MACRO["useq_trust_peer"]
@@ -5564,7 +5624,7 @@ def report():
                    and MACRO["useq_w_d_listed"] >= MACRO["useq_w_d_peer"] >= 0
                    and MACRO["useq_w_c_listed"] >= MACRO["useq_w_c_peer"] >= 0
                    and "ATRUSEQ" not in p["portfolio_d"]["ids"]))
-    checks.append(("every what-if re-measures A and D on its own column",
+    checks.append(("every four-fund what-if re-measures A and B on its own column",
                    all("a" in v and "d" in v for v in p["what_if"].values())))
     checks.append(("portfolio vol < weighted-average vol (diversification works)",
                    o["macro"]["vol"] < sum(w/100*f["vol"] for w, f in zip(o["weights"], p["funds"]))))

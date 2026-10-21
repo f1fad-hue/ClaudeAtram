@@ -32,30 +32,33 @@ series to 20 Oct).
 
 | | A · Long-run view | B · Macro view | C · Nasdaq Income at 50% |
 |---|---|---|---|
-| Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 25 / 0 / 35 / 35 / 0** | **5 / 20 / 0 / 35 / 35 / 5** | 5 / 50 / 0 / 20 / 25 / 0 |
-| 10y net CAGR after all fees | **7.13%** | 7.08% | 7.07% |
-| Expected max drawdown (10y) | −25.8% | **−25.3%** | −25.6% |
-| Return per unit of drawdown | 0.276 | **0.280** | 0.276 |
+| Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 25 / 0 / 35 / 35 / 0** | **5 / 20 / 5 / 35 / 35 / 0** | 5 / 50 / 0 / 20 / 25 / 0 |
+| 10y net CAGR after all fees | **7.13%** | 7.12% | 7.08% |
+| Expected max drawdown (10y) | −25.8% | −25.7% | **−25.6%** |
+| Return per unit of drawdown | 0.276 | **0.277** | **0.277** |
 
 All three rows are on the macro view. **One rule chooses all three**, over the six
 funds within the review's limits (at most 5 funds, 35% in any one, at least 5% peso
 cash; 8,775 mixes): the best 10-year net CAGR after fees inside the drawdown budget,
 then the lowest drawdown within 0.05pp of it. The engine re-chooses each at every
 update:
-- **A, the long-run view**: the rule on the long-run return assumptions alone (7.66% /
+- **A, the long-run view**: the rule on the long-run return assumptions alone (7.67% /
   −25.4% there), with no cycle view. It is the same mix the 21 Oct review of all 22
-  ATRAM funds found, and the page says so only while that holds.
+  ATRAM funds found over the 13 it kept after screening, and the page says so only
+  while that holds.
 - **B, the macro view**: the rule on the macro-adjusted returns - the regional
   ranking and the market trend, each at 3, 6 and 12 months against the 10-year
   anchor, the volatility curve, and the drivers' rates and energy tilts. On them B
-  returns 0.05pp a year less than A for 0.5pp less drawdown (12 mixes inside the tie).
+  returns 0.01pp a year less than A for 0.1pp less drawdown (9 mixes inside the tie).
+  Its 5% satellite sits on the tie's edge: it was Global Dividend until the money
+  market's fee was corrected on 21 Oct, which moved the band by 0.004pp.
 - **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35%
-  cap): 0.01pp a year below B for 0.3pp more drawdown.
+  cap): 0.04pp a year below B for 0.1pp less drawdown.
 
 The budget, −27.17%, is the original 20 / 30 / 25 / 25 baseline's drawdown less
 2.83pp; that baseline is kept only as the budget's reference. The list is now 24
 funds; US Equity Opportunity is held out until its trust fee is confirmed (at the
-listed 1.20% it would take 30% of A and 25% of B and C). The page states every figure
+listed 1.20% it would take 30% of A and of B and 25% of C). The page states every figure
 here from the engine; this table is a snapshot of it, and the review audit fails if
 it drifts.
 

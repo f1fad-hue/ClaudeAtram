@@ -141,6 +141,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+80. A MUTATION IS DERIVED FROM THE TRUTH, NOT TYPED BESIDE IT. m22 typed a wrong
+   what-if answer; a fee correction then made that typed vector the right answer and
+   the harness reported MISSED for a check that was working. A mutant is the real
+   value moved, so it can never coincide with the real value.
+79. A FEE IS DATED BY ITS DOCUMENT. The money market's 0.71% was "verified" against a
+   KIIDS that had been superseded; the fund's trust fee had since fallen to 0.50%, and
+   the model carried the old figure for years. Every fee names the document it came
+   from, and a scrub re-reads the fund's current listing, not the note.
 78. A PICK IS CHOSEN WHERE IT IS MEASURED. A and B were fixed weights carried over
    from the 22-fund review's own factor model and then measured on this page's basis,
    where the best-worst-case B gave up 0.22pp a year to A for an objective nobody
