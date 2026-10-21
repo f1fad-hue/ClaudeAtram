@@ -58,7 +58,7 @@ Without the bond fund, cash is the only sleeve that does not fall with equities,
 the budget is met by holding 20-30% of it; the forecasts are about 0.35pp a year below
 the bond-fund versions (7.08-7.13%). The budget, −27.17%, is the original 20 / 30 /
 25 / 25 baseline's drawdown less 2.83pp; that baseline is kept only as the budget's
-reference. The list is now 22 funds. Over it, the review's own long-run pick holds
+reference. The list is now 22 funds, down from 24 with the two peso bond funds removed. Over it, the review's own long-run pick holds
 25% Global Health Care, a fund this page does not model, so A differs from it. US
 Equity Opportunity is held out until its trust fee is confirmed (at the listed 1.20%
 it would take 25% of A, 20% of B and 15% of C). The page states every figure here

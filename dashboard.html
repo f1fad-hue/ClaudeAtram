@@ -1098,6 +1098,7 @@ details.how p:last-child{margin-bottom:0}
    ]
   ],
   "review_list_n": 22,
+  "review_list_prev_n": 24,
   "review_list_date": "2026-10-21",
   "review_list_removed": [
    "Long Term Peso Bond",
@@ -6809,8 +6810,8 @@ function donut(host, w, title, cagr, dd) {
      one new fund that would change the picks out until its fee is confirmed. */
   const M_ = D.macro;
   $("#listnote").innerHTML =
-    `<strong>The list is now ${M_.review_list_n} funds</strong>, with the ${M_.review_list_removed.join(" and ")}
-     funds removed. ` + (PA.review_outside.length ? `Over it, the review's own long-run pick holds
+    `<strong>The list is now ${M_.review_list_n} funds</strong>, down from ${M_.review_list_prev_n}: the ATRAM
+     ${M_.review_list_removed.join(" and ")} funds are removed. ` + (PA.review_outside.length ? `Over it, the review's own long-run pick holds
      ${PA.review_outside.map(x => `${x[1]}% ${x[0]}`).join(" and ")} &mdash; a fund this page does not
      model &mdash; so A, chosen over these ${NUW}, differs from it. ` : ``) + `US Multi-Asset Income makes no
      pick. US Equity Opportunity's share turns on a trust fee not yet confirmed: at the listed

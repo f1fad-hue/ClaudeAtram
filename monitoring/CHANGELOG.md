@@ -2,6 +2,14 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — v60: the list count stated as 22 from 24
+
+The owner confirmed the list: 22 funds, down from 24, with the ATRAM Long Term and
+Medium Term Peso Bond funds removed. The page now says "down from 24", and an engine
+check requires the arithmetic (22 + the two removed = 24) instead of the looser
+"more than the original review's 22". No figure moves. Engine 227/227, audit
+304/304, validator 22/22 on the published copy.
+
 ## 2026-10-21 — v59: the peso bond funds removed; nothing left of Portfolio D
 
 At the owner's instruction: "Remove from the lists and portfolio allocations the atram

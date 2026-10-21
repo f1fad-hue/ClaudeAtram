@@ -612,7 +612,7 @@ MACRO = {
     # (long-run rule) 25%, B (macro-view rule) 20%, C 15%. At 1.50%: A none, B 10%,
     # C 5% - the macro view keeps a little of it where the long-run view drops it. It
     # is HELD OUT, at the owner's choice, until its fact sheet confirms the fee.
-    "review_list_n": 22, "review_list_date": "2026-10-21",
+    "review_list_n": 22, "review_list_prev_n": 24, "review_list_date": "2026-10-21",
     "review_list_removed": ["Long Term Peso Bond", "Medium Term Peso Bond"],
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
@@ -5521,7 +5521,7 @@ def report():
     # The 24-fund re-run is recorded, not applied: the held picks hold none of the new
     # fund, and the recorded weights fall as its assumed fee rises.
     checks.append(("the review list's re-run is recorded consistently and the universe excludes the unconfirmed fund",
-                   MACRO["review_list_n"] + len(MACRO["review_list_removed"]) > MACRO["pd_review_n_funds"]
+                   MACRO["review_list_n"] + len(MACRO["review_list_removed"]) == MACRO["review_list_prev_n"]
                    and MACRO["review_list_date"] >= MACRO["pd_review_date"]
                    and MACRO["useq_trust_listed"] < MACRO["useq_trust_peer"]
                    and MACRO["useq_ocf_clean"] < MACRO["useq_ocf_retail"]
