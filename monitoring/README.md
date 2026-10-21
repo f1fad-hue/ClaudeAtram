@@ -141,6 +141,22 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+76. A TILT IS TAKEN FROM THE FIGURE THE PAGE PRINTS. The volatility tilt was taken
+   from the unrounded ramp (-0.454) while the page printed -0.45, so Global
+   Technology showed +0.06 where the printed figures give +0.05. The ramp is rounded
+   to its published precision before any tilt uses it, and the audit now checks the
+   tilt exactly, with no tolerance to hide in.
+75. A TILT MAY NOT CITE THE BASE IT TILTS. Asia's ten-year anchor was justified by
+   J.P. Morgan's EM equity assumption - which IS the Asia fund's base return - so the
+   same number lifted the base and again the regional tilt. When the 2027 edition
+   cut EM to 7.1% the double count showed. A regional score argues from what the
+   base does not already carry: valuation, energy exposure, policy.
+74. A FACT ABOUT THE INPUTS IS NOT AN INVARIANT. "B gives up no more return to the
+   baseline than the tie" held for three weeks because the inputs happened to make it
+   true; on the 2027 roll the budget began to cost B 0.12pp and the check failed on a
+   fact, not a defect. It now states the rule that is actually true - B may trail the
+   baseline past the tie only when the baseline breaks the budget - and the page
+   words "inside the tie" only when it is.
 73. A PORTFOLIO PICKED ELSEWHERE IS MEASURED HERE, NOT RE-CHOSEN. D's weights come
    from a wider review on a different basis. Its two added funds are built by the
    same build_fund(), its risk by the same functions with the six-fund universe passed

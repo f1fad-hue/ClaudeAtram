@@ -2,6 +2,112 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — Roll to Wednesday 21 Oct and the J.P. Morgan 2027 assumptions: the budget now costs B real return, D leads on this page's own basis, and nine errors fixed
+
+Market data as of 21 Oct (Philippine and Asian closes; US series carry Tuesday 20
+Oct, their latest close). Review date 21 Oct. Every fund now runs on J.P. Morgan's
+2027 long-term capital market assumptions.
+
+| | Weights | Net 10Y CAGR | Drawdown | Return / DD |
+|---|---|---|---|---|
+| A, baseline | 20 / 30 / 25 / 25 | 6.93% | −30.0% | 0.231 |
+| B, optimised | **20 / 60 / 10 / 10** (was 25 / 15 / 55 / 5) | 6.81% | −26.5% | 0.257 |
+| C, Nasdaq Income 50% | **20 / 50 / 20 / 10** (was 20 / 50 / 25 / 5) | 6.78% | −26.4% | 0.257 |
+| D, 22-fund review pick | 5 / 35 / 0 / 20 + 35 LT Peso Bond + 5 Global Dividend | 6.93% | −21.8% | 0.318 |
+
+### 1. The 2027 assumptions, applied to every fund together
+
+- US large cap 7.5% (from 6.7%), EM equity 7.1% (from 7.8%), global equity 7.5%
+  (from 7.0%). The edition is an input (`ltcma_edition`), every gross note names it,
+  and the 2026 figures are kept as `_prev`.
+- Effect: Nasdaq Equity Income gross 9.36% (was 8.74%), Global Technology 11.80%
+  (was 11.00%), Asia Equity 9.60% (was 10.30%). Global Technology is now the
+  highest-return sleeve, and the baseline holds 25% of it.
+- **B trails the baseline by 0.12pp, outside the 0.05pp tie**, for a drawdown 3.5pp
+  shallower. The baseline is outside the budget; B is the best the budget allows.
+- **D now returns 6.93% at −21.8%**: 0.12pp above B at 4.7pp less drawdown, level
+  with the baseline at 8.2pp less. Its weights are unchanged; the page now measures
+  them on the same edition the review used, and says so from the data.
+
+### 2. Errors found, recorded before they were fixed
+
+1. **A fact written as an invariant.** The engine check "B gives up no more CAGR to
+   the baseline than the tie band", and the same rule in the audit and validator,
+   failed on the 2027 roll — on a fact, not a defect. All three now state the rule
+   that is true: B may trail past the tie only when the baseline breaks the budget.
+   Runbook invariant 74.
+2. **"Inside the tie" was typed, twice.** `#vsbase` and the Report lede said "inside
+   the tie" whenever B trailed A, at any size. Both are now banded on the tie, and
+   the Headline card no longer says the baseline's tech weight "costs drawdown
+   without buying return" when it buys 0.12pp. The validator reads both sentences.
+3. **The volatility tilt was taken from the unrounded ramp.** −0.454 gave Global
+   Technology +0.06 while the page printed −0.45 × −0.122 = +0.05. The ramp is now
+   rounded to its published 2dp first; the engine check used Python's banker's
+   `round()` where every tilt uses half-up `rnd()`, and the audit allowed 0.011 of
+   slack. Both are now exact. Runbook invariant 76; mutation m14.
+4. **Asia's ten-year anchor counted the base twice.** Its note cited J.P. Morgan's EM
+   assumption "the highest of any equity block" — which IS the Asia fund's base
+   return. Anchor 7.5 → 7.0 on the 1–10 research scale, the reason removed; the US
+   anchor, which never cited it, holds at 6.5 although its base rose 0.8pp. Runbook
+   invariant 75.
+5. **D's correlation note was typed** ("0.05–0.14", "about 0.35"). The review recorded
+   0.37. Both figures are now bound to `CORR_D` and `pd_review_stress_corr`. Mutation m15.
+6. **D's note read the bond fund as `weights[4]`** — position, not identity. It is now
+   found by id.
+7. **D's note typed the edition** ("measured on J.P. Morgan's 2026 assumptions …
+   the 2027 edition the review used is not yet rolled in"), stale the moment this
+   roll landed. It compares `pd_review_ltcma` with `ltcma_edition` and is worded
+   from the comparison.
+8. **"One fee estimate left" and "four named funds" were typed in the markup** after
+   D brought a second estimate (the Global Dividend trust fee) and two more funds.
+   Both are now counted from the payload ("Two fee estimates", "six").
+9. **Small defects:** the Volatility tab printed "The latest close is 0.0% above the
+   curve's own spot" at a fresh quote; the Funds slides printed "(-15)" with a hyphen
+   for a minus; the Report printed "a 11% gain". A −0.0 volatility tilt is now 0.0.
+   D's added funds carry no market-trend tilt, and the page now says so.
+
+### 3. Market roll
+
+- **VIX 20 Oct RESOLVED at 17.31** (−6.13%) by three sources. The single source's
+  17.60 that was withheld on the 20th was wrong.
+- **Volatility curve re-quoted** at the 20 Oct Cboe settlements, Nov 18.49 · Dec
+  18.70; the October contract settled on the 21st. January was not found as a
+  settlement and is not carried. Against the 20 Oct VIX3M of 18.99 the curve reads
+  −3.66% (the 5 Oct strip it replaces: −4.66%). Blended 19.05, 0.45 below the long run.
+- **10-year:** 19 Oct confirmed at 5.15 by two more par-curve sources; 20 Oct 5.12
+  carried as PROVISIONAL.
+- **FedWatch:** still the 16 Oct pair (14.9% October, 88.9% by December), now AT its
+  5-day bound. The next roll fails unless a dated reading of the tool is found.
+- **Peso** a record 63.361 (intraday 63.373); YTD loss of purchasing power 7.21%.
+  **PSEi** 5,821.51, a fifth straight gain.
+- **KOSPI** +3.29% to 5,735.66, 18.1% below 2 Oct; **Nikkei** +0.85% to 64,621.24.
+- **Geopolitics:** on 21 Oct Iran's speaker Ghalibaf said Tehran would not trust
+  Washington until its conditions for reopening the Strait were met; CENTCOM called
+  the mine claims false. Brent rose about 1.5% in Asian trading from the $108.79 settle.
+- Look-throughs: no 30 Sep fact sheet found for JEPQ or Fidelity Global Technology;
+  31 Aug stays (51 days, inside the 60-day bound).
+
+### 4. Scores
+
+- **Volatility & risk appetite 2.5 → 2.75**: the reason for the last cut — the VIX above
+  the long run on spot — has reversed for two closes, on a re-quoted curve.
+- **Asia 10Y anchor 7.5 → 7.0** (error 4). Every other driver and region held.
+- Gauge 2.29 → 2.30.
+
+### 5. House cleanup, a shorter page
+
+- C's own A/B/C table removed: the A–D table in D's section carries every row.
+- Catalysts cut to one or two sentences each; the five-week-old postponed Oman talks
+  retired (the mechanism stays).
+- Driver and region summaries no longer print a 1–10 score beside a 1–5 tile
+  ("Held at 2.0" beside 1.44); the research score stays in each note.
+- Words per tab at 412px: Report 1,379 → 1,278, Portfolios 827 → 779, Macro 870 → 855.
+
+### 6. Verification
+
+- Engine 220/220. Audit 285/285 against the v50 payload, 0 warnings. Validator 22/22
+  on the published copy. Mutation harness 15/15 caught, two new (m14, m15).
+
 ## 2026-10-21 — Add Portfolio D: the 22-fund review pick, measured on this page's basis
 
 Market data unchanged: still the Tuesday 20 Oct closes, review date 20 Oct. This
