@@ -523,6 +523,7 @@ details.how p:last-child{margin-bottom:0}
     <p class="eyebrow">A vs D &middot; two picks from all 22 ATRAM funds</p>
     <h2>Highest return, or best worst case</h2>
     <p class="lede" id="pdlede">—</p>
+    <p class="note" id="listnote">—</p>
     <div class="vsgrid">
       <div class="dwrap">
         <div class="dt2">Portfolio A</div>
@@ -1088,6 +1089,16 @@ details.how p:last-child{margin-bottom:0}
   "pa_review_band_n": 19,
   "pa_review_worst": 6.87,
   "pa_review_stress_dd": 27.3,
+  "review_list_n": 24,
+  "review_list_date": "2026-10-21",
+  "useq_trust_listed": 1.2,
+  "useq_trust_peer": 1.5,
+  "useq_ocf_clean": 0.85,
+  "useq_ocf_retail": 1.81,
+  "useq_w_a_listed": 30,
+  "useq_w_d_listed": 30,
+  "useq_w_a_peer": 5,
+  "useq_w_d_peer": 15,
   "brent_history": [
    [
     "2026-09-18",
@@ -5402,6 +5413,41 @@ details.how p:last-child{margin-bottom:0}
    "org": "Trustnet",
    "what": "Fidelity Global Dividend W Inc (UK OEIC, same manager), factsheet 6 Oct 2026: USA 21.7%, UK 14.1%; holdings at 31 Aug",
    "url": "https://www2.trustnet.com/Factsheets/FundFactsheetPDF.aspx?fundCode=0OF2E&univ=O"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM US Equity Opportunity Feeder Fund (PHP Unit Class): trust fee 1.20% p.a. (page about 17 months old); benchmark MSCI USA Growth; inception 27 May 2025; NAVPU 126.02 on 18 Oct 2026",
+   "url": "https://uitf.com.ph/daily_navpu_details.php?fund_id=550&bank_id=31"
+  },
+  {
+   "org": "Seedbox / ATRAM",
+   "what": "ATRAM US Equity Opportunity Feeder Fund KIIDS, Feb 2021: target fund Franklin Templeton Investment Funds - Franklin U.S. Opportunities Fund",
+   "url": "https://file.seedbox.ph/ATRAM%20US%20EQUITY%20OPPORTUNITY%20FEEDER%20FUND%20KIIDS_Feb_2021.pdf"
+  },
+  {
+   "org": "Finect",
+   "what": "Franklin U.S. Opportunities Fund I(acc)USD: ongoing charges 0.85% (management 0.70%)",
+   "url": "https://www.finect.com/fondos-inversion/LU0195948665-Franklin_us_opportunities_iaccusd"
+  },
+  {
+   "org": "Franklin Templeton",
+   "what": "Franklin U.S. Opportunities Fund C(acc)USD factsheet, 30 Sep 2026: NVIDIA 10.37%, Microsoft 5.30%, Amazon 4.42% (top issuers at 31 Aug)",
+   "url": "https://www.franklintempletonoffshore.com/download/en-os/factsheet/21a1951a-931c-48fc-9d2b-5750d38f3542/Factsheet-FranklinUSOpportunitiesFund-C(acc)USD-4913-F--NRC-en-OS.PDF"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM US Multi-Asset Income Feeder Fund (A USD Unit Class): trust fee 1.50% p.a.; benchmark 50% MSCI USA High Dividend Yield / 25% Bloomberg US HY Very Liquid / 25% Bloomberg US Aggregate",
+   "url": "https://www.uitf.com.ph/home/daily_navpu_details.php?fund_id=624&bank_id=31"
+  },
+  {
+   "org": "Seedbox / ATRAM",
+   "what": "ATRAM US Multi-Asset Income Feeder Fund KIIDS, Dec 2020: target fund Allianz Income and Growth",
+   "url": "https://file.seedbox.ph/ATRAM%20US%20MULTI-ASSET%20INCOME%20FEEDER%20FUND%20KIIDS_Dec%202020.PDF"
+  },
+  {
+   "org": "Finect",
+   "what": "Allianz Income and Growth AM USD: ongoing charges 1.56% (management 1.50%); a third each in equities, high yield and convertibles",
+   "url": "https://www.finect.com/fondos-inversion/LU0820561818-Allianz_income_and_growth_am_usd"
   }
  ]
 }
@@ -6286,6 +6332,16 @@ function donut(host, w, title, cagr, dd) {
     (RA.stress_dd > PA.dd_cap ? `; A goes past the budget when bonds and tech fall together
        (<b class="num">${pc1(-RA.stress_dd)}</b>)` : ``) +
     `. The weights are fixed; this page measures them on its own inputs.`;
+  /* THE 24-FUND LIST (2026-10-21): recorded, not applied. The owner chose to hold A
+     and D until the one new fund that would change them has a confirmed fee. */
+  const M_ = D.macro;
+  $("#listnote").innerHTML =
+    `<strong>The list is now ${M_.review_list_n} funds.</strong> Re-run over all of them, US
+     Multi-Asset Income makes neither pick. US Equity Opportunity's share turns on a trust fee
+     not yet confirmed: ${M_.useq_w_a_listed}% of A and ${M_.useq_w_d_listed}% of D at the listed
+     ${M_.useq_trust_listed.toFixed(2)}%, ${M_.useq_w_a_peer}% and ${M_.useq_w_d_peer}% at
+     ${M_.useq_trust_peer.toFixed(2)}%, where ATRAM moved Global Technology on 14 September. A and D are held until its
+     fact sheet confirms the fee.`;
 
   /* Portfolio C: the owner's pinned variant, chosen by the engine under the rule it
      publishes - never typed here. */

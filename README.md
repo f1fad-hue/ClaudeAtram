@@ -38,7 +38,9 @@ series to 20 Oct).
 | Return per unit of drawdown | 0.276 | 0.257 | **0.317** |
 
 **A and D are the two picks of a 21 Oct review of all 22 ATRAM funds**, on the same
-search (at most 5 funds, 35% in any one, at least 5% peso cash):
+search (at most 5 funds, 35% in any one, at least 5% peso cash). The list is now 24;
+re-run over it, the one new fund that would enter (US Equity Opportunity) moves the picks
+by its unconfirmed trust fee alone, so A and D are held until that fee is confirmed:
 - **A, highest return** (A since 21 Oct, replacing the 20 / 30 / 25 / 25 baseline):
   the best base-case 10-year net CAGR after fees inside the drawdown budget, then
   the lowest drawdown among the 19 mixes within 0.05pp of it. 7.67% / −25.4% in the

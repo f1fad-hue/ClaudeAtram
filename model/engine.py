@@ -600,6 +600,18 @@ MACRO = {
     # the sixth, bonds and tech falling together (-27.3%), where D stays inside.
     "pa_review_date": "2026-10-21", "pa_review_cagr": 7.67, "pa_review_dd": 25.4,
     "pa_review_band_n": 19, "pa_review_worst": 6.87, "pa_review_stress_dd": 27.3,
+    # THE LIST IS NOW 24 FUNDS (owner, 2026-10-21): ATRAM US Equity Opportunity and
+    # ATRAM US Multi-Asset Income added. Re-run over all 24 on the same search, US
+    # Multi-Asset Income makes neither pick. US Equity Opportunity's weight turns on its
+    # trust fee, which is not confirmed: uitf.com.ph lists 1.20% on a page about 17
+    # months old, and ATRAM moved Global Technology to 1.50% on 14 Sep. At 1.20% it takes 30%
+    # of A and of D; at 1.50%, 5% of A and 15% of D; on its target's retail share class
+    # (1.81% charge, not the 0.85% clean class) it leaves A and takes 5% of D at most.
+    # A and D are HELD, at the owner's choice, until its fact sheet confirms the fee.
+    "review_list_n": 24, "review_list_date": "2026-10-21",
+    "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
+    "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
+    "useq_w_a_listed": 30, "useq_w_d_listed": 30, "useq_w_a_peer": 5, "useq_w_d_peer": 15,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -3864,6 +3876,21 @@ SOURCES = [
      "https://dfo.sg/fairsheets/funds/fidelity-funds-global-dividend-fund"),
     ("Trustnet", "Fidelity Global Dividend W Inc (UK OEIC, same manager), factsheet 6 Oct 2026: USA 21.7%, UK 14.1%; holdings at 31 Aug",
      "https://www2.trustnet.com/Factsheets/FundFactsheetPDF.aspx?fundCode=0OF2E&univ=O"),
+    # ---- added 2026-10-21, the 24-fund list ----
+    ("uitf.com.ph", "ATRAM US Equity Opportunity Feeder Fund (PHP Unit Class): trust fee 1.20% p.a. (page about 17 months old); benchmark MSCI USA Growth; inception 27 May 2025; NAVPU 126.02 on 18 Oct 2026",
+     "https://uitf.com.ph/daily_navpu_details.php?fund_id=550&bank_id=31"),
+    ("Seedbox / ATRAM", "ATRAM US Equity Opportunity Feeder Fund KIIDS, Feb 2021: target fund Franklin Templeton Investment Funds - Franklin U.S. Opportunities Fund",
+     "https://file.seedbox.ph/ATRAM%20US%20EQUITY%20OPPORTUNITY%20FEEDER%20FUND%20KIIDS_Feb_2021.pdf"),
+    ("Finect", "Franklin U.S. Opportunities Fund I(acc)USD: ongoing charges 0.85% (management 0.70%)",
+     "https://www.finect.com/fondos-inversion/LU0195948665-Franklin_us_opportunities_iaccusd"),
+    ("Franklin Templeton", "Franklin U.S. Opportunities Fund C(acc)USD factsheet, 30 Sep 2026: NVIDIA 10.37%, Microsoft 5.30%, Amazon 4.42% (top issuers at 31 Aug)",
+     "https://www.franklintempletonoffshore.com/download/en-os/factsheet/21a1951a-931c-48fc-9d2b-5750d38f3542/Factsheet-FranklinUSOpportunitiesFund-C(acc)USD-4913-F--NRC-en-OS.PDF"),
+    ("uitf.com.ph", "ATRAM US Multi-Asset Income Feeder Fund (A USD Unit Class): trust fee 1.50% p.a.; benchmark 50% MSCI USA High Dividend Yield / 25% Bloomberg US HY Very Liquid / 25% Bloomberg US Aggregate",
+     "https://www.uitf.com.ph/home/daily_navpu_details.php?fund_id=624&bank_id=31"),
+    ("Seedbox / ATRAM", "ATRAM US Multi-Asset Income Feeder Fund KIIDS, Dec 2020: target fund Allianz Income and Growth",
+     "https://file.seedbox.ph/ATRAM%20US%20MULTI-ASSET%20INCOME%20FEEDER%20FUND%20KIIDS_Dec%202020.PDF"),
+    ("Finect", "Allianz Income and Growth AM USD: ongoing charges 1.56% (management 1.50%); a third each in equities, high yield and convertibles",
+     "https://www.finect.com/fondos-inversion/LU0820561818-Allianz_income_and_growth_am_usd"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -5410,6 +5437,16 @@ def report():
                    and MACRO["pa_review_worst"] <= MACRO["pd_review_worst"]
                    and MACRO["pa_review_dd"] <= DD_CAP + 1e-9 and MACRO["pa_review_band_n"] >= 1
                    and MACRO["pa_review_stress_dd"] >= MACRO["pa_review_dd"]))
+    # The 24-fund re-run is recorded, not applied: the held picks hold none of the new
+    # fund, and the recorded weights fall as its assumed fee rises.
+    checks.append(("the 24-fund re-run is recorded consistently and A and D are held without the unconfirmed fund",
+                   MACRO["review_list_n"] > MACRO["pd_review_n_funds"]
+                   and MACRO["review_list_date"] >= MACRO["pd_review_date"]
+                   and MACRO["useq_trust_listed"] < MACRO["useq_trust_peer"]
+                   and MACRO["useq_ocf_clean"] < MACRO["useq_ocf_retail"]
+                   and MACRO["useq_w_a_listed"] >= MACRO["useq_w_a_peer"] >= 0
+                   and MACRO["useq_w_d_listed"] >= MACRO["useq_w_d_peer"] >= 0
+                   and "ATRUSEQ" not in p["portfolio_d"]["ids"]))
     checks.append(("every what-if re-measures A and D on its own column",
                    all("a" in v and "d" in v for v in p["what_if"].values())))
     checks.append(("portfolio vol < weighted-average vol (diversification works)",

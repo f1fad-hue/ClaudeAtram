@@ -2,6 +2,33 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — The review list is now 24 funds; A and D held until the one fund that would change them has a confirmed fee
+
+Market data unchanged (21 Oct). The owner sent an updated list of 24 ATRAM funds: the
+22 plus **ATRAM US Equity Opportunity** (target: Franklin U.S. Opportunities) and
+**ATRAM US Multi-Asset Income** (target: Allianz Income and Growth). Both were added to
+the review model and both picks re-run on the same search.
+
+- **US Multi-Asset Income** makes neither pick: 5.64% net after 3.06% of fees.
+- **US Equity Opportunity** enters both, and how far depends on its trust fee:
+
+| Its trust fee / target charge | A | D (worst case) |
+|---|---|---|
+| 1.20% listed / 0.85% clean class | 30% (with 5% Medium Term Peso Bond) | 30% (7.11%) |
+| 1.50%, Global Technology's fee since 14 Sep / 0.85% | 5% | 15% (7.05%) |
+| 1.20% / 1.81% retail class | 0% — A unchanged | 5% (6.96%) |
+| 1.50% / 1.81% | 0% — A unchanged | 0% — a 5% satellite moves inside the tie (6.93%) |
+
+The only fee found, 1.20%, is on a uitf.com.ph page about 17 months old; the share class
+the feeder holds is not published. A pick that moves this much on one unconfirmed fee is
+not a pick to publish. **At the owner's choice, A and D are held** and the page says why
+(a note under the A-vs-D lede, bound to the recorded figures). The engine records the
+re-run (`review_list_n`, `useq_*`) and checks it is consistent and that neither held
+portfolio contains the unconfirmed fund. Seven sources added.
+
+Next step, when the fund's fact sheet confirms the fee: add US Equity Opportunity (and,
+for A at the listed fee, the Medium Term Peso Bond) to the engine and apply the rule.
+
 ## 2026-10-21 — Portfolio B retired and D in its place; Portfolio A is now the 22-fund review's highest-return pick
 
 Market data unchanged (21 Oct). At the owner's instruction: "Remove portfolio b and
