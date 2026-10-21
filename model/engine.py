@@ -2679,7 +2679,7 @@ CORR_D = [r + x for r, x in zip(CORR, ([0.44, 0.00], [0.10, 0.61], [0.05, 0.59],
 _LTPB_EQ = CORR_D[4][1:4]
 CORR_D_NOTE = (f"The Long Term Peso Bond barely moves with the equity sleeves "
                f"({min(_LTPB_EQ):.2f}-{max(_LTPB_EQ):.2f}) in normal markets; in a global "
-               f"rate shock like 2022's that rises, which the review that picked D tested "
+               f"rate shock like 2022's that rises, which the review that picked B tested "
                f"at {MACRO['pd_review_stress_corr']:.2f}.")
 
 # Every portfolio function takes an optional UNIVERSE - (funds built, fund specs,
@@ -4121,13 +4121,15 @@ def report():
       f"{pn['band_n']} in band)")
     A(f"      macro view     : CAGR {pn['macro']['cagr']}%  vol {pn['macro']['vol']}%  "
       f"maxDD {pn['macro']['maxdd']}%  ret/DD {pn['macro']['ret_per_dd']}")
-    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "highest return"), ("PORTFOLIO D", "portfolio_d", "best worst case")):
+    # The best-worst-case pick is LABELLED B on the page since 2026-10-21 (owner: "change
+    # the label of portfolio d to portfolio b"); its payload key stays portfolio_d.
+    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "highest return"), ("PORTFOLIO B", "portfolio_d", "best worst case")):
         pq = p[key]
         A(f"    {lab} weights {pq['weights']}   (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend; "
           f"the {pq['review']['date']} review's {rule} pick, fixed)")
         A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
           f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
-    A("    (B, the four-fund optimum above, is no longer shown on the page; C is chosen by its rule.)")
+    A("    (OPTIMIZED above is the internal four-fund optimum, the old B: not shown on the page; C is chosen by its rule.)")
     for k, v in p["what_if"].items():
         A(f"    what-if {k:<17}: " + (f"C {v['pinned']['weights']} {v['pinned']['cagr']}%   " if "pinned" in v else "")
           + f"A {v['a']['cagr']}% / {v['a']['maxdd']}%   D {v['d']['cagr']}% / {v['d']['maxdd']}%")

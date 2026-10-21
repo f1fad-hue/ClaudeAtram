@@ -2,6 +2,30 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — Portfolio D relabelled Portfolio B
+
+At the owner's instruction ("change the label of portfolio d to portfolio b now"): the
+review's best-worst-case pick, shown as D since it took the retired four-fund B's place,
+is now labelled **B** everywhere on the page. Weights and figures are unchanged:
+5 / 35 / 0 / 20 / 35 / 5 at 6.91% / −21.8%.
+
+- **Page:** the A-vs-B donuts, the A / B / C table (now in that order), the headline,
+  lens, stress and peso tables, the frontier mark, the Report ("Why B"), the trend note,
+  the Volatility tab's portfolio k, and each Funds slide's "Weight in A / B / C".
+- **Engine:** the bond fund's correlation note ("the review that picked B") and the
+  printout; the payload key stays `portfolio_d`, and the internal four-fund optimum
+  stays `optimized`, off the page.
+- **Docs:** README's result table is A / B / C; the claims rows are relabelled.
+- **Checks:** the validator's label row now requires "Portfolio B" and no "Portfolio D".
+  Its first version matched "Portfolio B" case-sensitively, but the page prints the
+  donut eyebrow in capitals, so the check failed on a true page; the same blind spot
+  meant the previous version's "no Portfolio B" test could not have seen "PORTFOLIO B"
+  either. Both directions are case-insensitive now. The audit checks the label in the
+  page source and README.
+
+Verification: engine 229/229, audit 296/296 (the claims check now also reads A's row),
+validator 22/22 on the published copy, mutation harness 19/19.
+
 ## 2026-10-21 — The review list is now 24 funds; A and D held until the one fund that would change them has a confirmed fee
 
 Market data unchanged (21 Oct). The owner sent an updated list of 24 ATRAM funds: the

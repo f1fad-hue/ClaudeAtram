@@ -15,7 +15,7 @@ investment trust funds - the four original funds and two more from a review of a
 | `ATRASEQ` | ATRAM Asia Equity Opportunity Feeder Fund | JPMorgan Asia Equity Dividend Fund |
 | `ATRGTEC` | ATRAM Global Technology Feeder Fund | Fidelity Funds – Global Technology · MSCI ACWI IT |
 
-A and D add two more (A holds the bond fund; D holds both):
+A and B add two more (A holds the bond fund; B holds both):
 
 | Code | Fund | Own stated target |
 |---|---|---|
@@ -30,27 +30,28 @@ Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capita
 market assumptions. Market data as of 21 Oct 2026 (Philippine and Asian closes; US
 series to 20 Oct).
 
-| | A · Highest return | C · Nasdaq Income at 50% | D · Best worst case |
+| | A · Highest return | B · Best worst case | C · Nasdaq Income at 50% |
 |---|---|---|---|
-| Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 25 / 0 / 35 / 35 / 0** | 20 / 50 / 20 / 10 / 0 / 0 | **5 / 35 / 0 / 20 / 35 / 5** |
-| 10y net CAGR after all fees | **7.13%** | 6.78% | 6.91% |
-| Expected max drawdown (10y) | −25.8% | −26.4% | **−21.8%** |
-| Return per unit of drawdown | 0.276 | 0.257 | **0.317** |
+| Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 25 / 0 / 35 / 35 / 0** | **5 / 35 / 0 / 20 / 35 / 5** | 20 / 50 / 20 / 10 / 0 / 0 |
+| 10y net CAGR after all fees | **7.13%** | 6.91% | 6.78% |
+| Expected max drawdown (10y) | −25.8% | **−21.8%** | −26.4% |
+| Return per unit of drawdown | 0.276 | **0.317** | 0.257 |
 
-**A and D are the two picks of a 21 Oct review of all 22 ATRAM funds**, on the same
+**A and B are the two picks of a 21 Oct review of all 22 ATRAM funds**, on the same
 search (at most 5 funds, 35% in any one, at least 5% peso cash). The list is now 24;
 re-run over it, the one new fund that would enter (US Equity Opportunity) moves the picks
-by its unconfirmed trust fee alone, so A and D are held until that fee is confirmed:
+by its unconfirmed trust fee alone, so A and B are held until that fee is confirmed:
 - **A, highest return** (A since 21 Oct, replacing the 20 / 30 / 25 / 25 baseline):
   the best base-case 10-year net CAGR after fees inside the drawdown budget, then
   the lowest drawdown among the 19 mixes within 0.05pp of it. 7.67% / −25.4% in the
   review; over the budget (−27.3%) if bonds and tech fall together.
-- **D, best worst case** (took the place of Portfolio B, retired on 21 Oct): the best
+- **B, best worst case** (added as Portfolio D on 21 Oct, then moved into the place of
+  the retired four-fund B and relabelled B the same day): the best
   worst-case return across six stress tests, inside the budget in every one. 7.38% /
   −21.5% in the review, 6.91% at worst against A's 6.87%.
 
 Both weights are fixed; the page measures them on its own basis with the same fees,
-tilts, drawdown rule and stress table. On it D returns 0.22pp a year less than A for
+tilts, drawdown rule and stress table. On it B returns 0.22pp a year less than A for
 4.0pp less drawdown, and the best return per unit of drawdown of the three.
 
 **C** holds Nasdaq Equity Income at 50% and chooses the other three original funds by
@@ -87,7 +88,7 @@ runbook, `monitoring/CLAIMS.md` the checklist of every figure and its source, an
 
 ## Disclaimer
 
-Portfolio analysis on six named funds (four in A, B and C; two more in D) over a
+Portfolio analysis on six named funds (A and C hold four each, B five) over a
 10-year horizon, not personal financial advice.
 Forecasts are modelled expectations, not guarantees. UITF investments are not
 deposits and are not insured by the PDIC.
