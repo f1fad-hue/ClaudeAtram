@@ -141,6 +141,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+81. A KEY OUTLIVES ITS LABEL. Portfolio D was relabelled B on the page in v55, but the
+   payload key, the variables and the element ids kept saying D for four more
+   versions, until the owner had to say "no more portfolio d". When a label changes,
+   the key changes with it, and a check forbids the old one.
 80. A MUTATION IS DERIVED FROM THE TRUTH, NOT TYPED BESIDE IT. m22 typed a wrong
    what-if answer; a fee correction then made that typed vector the right answer and
    the harness reported MISSED for a check that was working. A mutant is the real

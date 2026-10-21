@@ -2,6 +2,61 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — v59: the peso bond funds removed; nothing left of Portfolio D
+
+At the owner's instruction: "Remove from the lists and portfolio allocations the atram
+long term and medium term peso bond", and "No more portfolio d".
+
+**The universe is five funds**: Peso Money Market, Nasdaq Equity Income, Asia Equity,
+Global Technology and Global Dividend (2,065 mixes within the review's limits). The
+same rule re-chose all three:
+
+| | Weights (MM / NQ Inc / Asia / Tech / Gl Div) | Macro view | With the bond fund (v58) |
+|---|---|---|---|
+| **A** (long-run) | 25 / 30 / 0 / 25 / 20 | 6.72% / −26.4%, 0.255 | 7.13% / −25.8% |
+| **B** (macro) | 30 / 35 / 10 / 25 / 0 | 6.77% / −26.3%, 0.257 | 7.12% / −25.7% |
+| **C** (NQ Inc 50%) | 20 / 50 / 20 / 10 / 0 | 6.80% / −26.4%, 0.258 | 7.08% / −25.6% |
+
+The bond fund earned 6.16% at 5.8% volatility; without it the drawdown budget is met
+with 20-30% cash instead, which costs about 0.35pp a year. C is now the same mix as
+the internal four-fund pin: Global Dividend does not enter it.
+
+- **Engine:** the Long Term Peso Bond's spec, inputs (the PH curve, fee, mandate,
+  volatility estimate), correlation row, volatility sensitivity, stress shocks,
+  look-through, its what-if and its five checks are gone, as is the review's
+  best-worst-case record that held 35% of it. The four-fund what-ifs no longer carry
+  A and D re-measurements (the universe what-ifs do). The Medium Term Peso Bond was
+  never in the engine; it is gone from the review model's list.
+- **No more Portfolio D:** the page had shown only A, B and C since v55, but the payload
+  key was still `portfolio_d` and the code still said D throughout. Now `portfolio_b`,
+  `universe` (was `six`), `b_k` (was `d_k`), `useq_w_b_*` (was `useq_w_d_*`); engine
+  names `PB_W`, `UNIV`, `CORR_U`, `ADD_FUNDS`; page ids `donutB`, `pblede`, `pbnote`,
+  `pbtab`, `addfunds`. The audit fails if the key, a D label or a D id comes back.
+- **The review model, re-run without either bond fund** (its 11 screened funds, money
+  market 0.58%, and the page's −27.17% budget - it had carried −27.27%, a budget from
+  before the 2027 roll): its long-run pick is 15 MM / 35 Nasdaq Inc / 15 Global Tech /
+  10 Global Dividend / 25 **Global Health Care** at 7.06% / −26.3%. Global Health Care
+  is not one of this page's funds, so A cannot match it; the page says so. US Equity
+  Opportunity at 1.20%: 25% of A, 20% of B, 15% of C; at 1.50%: none of A, 10% of B, 5%
+  of C. The list is 22 funds.
+- **Page:** the Report's cash section is now "Cash, the only buffer"; the bond what-if,
+  the bond slide, its role, look-through and build-up row, and the "35% of B sits in
+  one Philippine bond fund" warning are gone; fund counts ("five funds", "2,065
+  portfolios") are read from the payload rather than typed "six". Fixed on the way:
+  Global Dividend's correlations were read from matrix row 5, which no longer exists
+  (now by id); the trend note's Asia clause checked only B's forecast and read "B's 10%
+  and C's 20% ... is"; the US Equity Opportunity sentence could print "none of A and
+  10% of B".
+- **Sources:** four that only supported the bond fund are removed (290 remain).
+- **Checks:** engine 227 (bond checks out; a check that no bond fund is left); audit
+  G2/G4 rewritten for any fund count (304); validator rows 3, 13, 16, 17 and 22 read
+  the fund count from the payload and fail on a bond slide or a D key; mutation
+  harness 28/28 (new: the `portfolio_d` key back, a bond fund back in the ids, the bond
+  what-if back, A claiming the review's mix).
+
+Research since v57: no new closes (US markets still open at 19:00 UTC). Brent traded
+near $110 on the 21st and the 10-year near 5.09% intraday; neither is carried.
+
 ## 2026-10-21 — v58: Nasdaq Equity Income's unit class stated
 
 The owner confirmed the holding is the **A PHP unit class** of ATRAM Nasdaq Equity
