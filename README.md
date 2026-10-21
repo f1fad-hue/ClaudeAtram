@@ -15,7 +15,7 @@ investment trust funds - the four original funds and two more from a review of a
 | `ATRASEQ` | ATRAM Asia Equity Opportunity Feeder Fund | JPMorgan Asia Equity Dividend Fund |
 | `ATRGTEC` | ATRAM Global Technology Feeder Fund | Fidelity Funds – Global Technology · MSCI ACWI IT |
 
-A and B add two more (A holds the bond fund; B holds both):
+Two more from the review complete the six the engine chooses over:
 
 | Code | Fund | Own stated target |
 |---|---|---|
@@ -30,36 +30,34 @@ Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capita
 market assumptions. Market data as of 21 Oct 2026 (Philippine and Asian closes; US
 series to 20 Oct).
 
-| | A · Highest return | B · Best worst case | C · Nasdaq Income at 50% |
+| | A · Long-run view | B · Macro view | C · Nasdaq Income at 50% |
 |---|---|---|---|
-| Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 25 / 0 / 35 / 35 / 0** | **5 / 35 / 0 / 20 / 35 / 5** | 20 / 50 / 20 / 10 / 0 / 0 |
-| 10y net CAGR after all fees | **7.13%** | 6.91% | 6.78% |
-| Expected max drawdown (10y) | −25.8% | **−21.8%** | −26.4% |
-| Return per unit of drawdown | 0.276 | **0.317** | 0.257 |
+| Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 25 / 0 / 35 / 35 / 0** | **5 / 20 / 0 / 35 / 35 / 5** | 5 / 50 / 0 / 20 / 25 / 0 |
+| 10y net CAGR after all fees | **7.13%** | 7.08% | 7.07% |
+| Expected max drawdown (10y) | −25.8% | **−25.3%** | −25.6% |
+| Return per unit of drawdown | 0.276 | **0.280** | 0.276 |
 
-**A and B are the two picks of a 21 Oct review of all 22 ATRAM funds**, on the same
-search (at most 5 funds, 35% in any one, at least 5% peso cash). The list is now 24;
-re-run over it, the one new fund that would enter (US Equity Opportunity) moves the picks
-by its unconfirmed trust fee alone, so A and B are held until that fee is confirmed:
-- **A, highest return** (A since 21 Oct, replacing the 20 / 30 / 25 / 25 baseline):
-  the best base-case 10-year net CAGR after fees inside the drawdown budget, then
-  the lowest drawdown among the 19 mixes within 0.05pp of it. 7.67% / −25.4% in the
-  review; over the budget (−27.3%) if bonds and tech fall together.
-- **B, best worst case** (added as Portfolio D on 21 Oct, then moved into the place of
-  the retired four-fund B and relabelled B the same day): the best
-  worst-case return across six stress tests, inside the budget in every one. 7.38% /
-  −21.5% in the review, 6.91% at worst against A's 6.87%.
+All three rows are on the macro view. **One rule chooses all three**, over the six
+funds within the review's limits (at most 5 funds, 35% in any one, at least 5% peso
+cash; 8,775 mixes): the best 10-year net CAGR after fees inside the drawdown budget,
+then the lowest drawdown within 0.05pp of it. The engine re-chooses each at every
+update:
+- **A, the long-run view**: the rule on the long-run return assumptions alone (7.66% /
+  −25.4% there), with no cycle view. It is the same mix the 21 Oct review of all 22
+  ATRAM funds found, and the page says so only while that holds.
+- **B, the macro view**: the rule on the macro-adjusted returns - the regional
+  ranking and the market trend, each at 3, 6 and 12 months against the 10-year
+  anchor, the volatility curve, and the drivers' rates and energy tilts. On them B
+  returns 0.05pp a year less than A for 0.5pp less drawdown (12 mixes inside the tie).
+- **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35%
+  cap): 0.01pp a year below B for 0.3pp more drawdown.
 
-Both weights are fixed; the page measures them on its own basis with the same fees,
-tilts, drawdown rule and stress table. On it B returns 0.22pp a year less than A for
-4.0pp less drawdown, and the best return per unit of drawdown of the three.
-
-**C** holds Nasdaq Equity Income at 50% and chooses the other three original funds by
-the page's rule: the best net CAGR inside the drawdown budget, then the lowest
-drawdown within 0.05pp. The budget, −27.17%, is the original 20 / 30 / 25 / 25
-baseline's drawdown less 2.83pp; that baseline is kept only as the budget's reference.
-The page states every figure here from the engine; this table is a snapshot of it,
-and the review audit fails if it drifts.
+The budget, −27.17%, is the original 20 / 30 / 25 / 25 baseline's drawdown less
+2.83pp; that baseline is kept only as the budget's reference. The list is now 24
+funds; US Equity Opportunity is held out until its trust fee is confirmed (at the
+listed 1.20% it would take 30% of A and 25% of B and C). The page states every figure
+here from the engine; this table is a snapshot of it, and the review audit fails if
+it drifts.
 
 ## Layout
 

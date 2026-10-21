@@ -2,6 +2,67 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — A, B and C chosen by one rule over six funds; B and C on the macro view
+
+At the owner's instruction: "make portofolio b and c based on macro economics drivers
+deep analysis, market trend deep analysis, volatility deep analysis, regional rankings
+deep analysis of 3, 6, and 12months with horizon of 10yrs. Make the portfolio a, b and c
+to max growth 10yrs net cagr with minimum drawdown."
+
+A and B had been fixed weights carried over from the 22-fund review's own model, and C
+was chosen over the four original funds only. Now the engine chooses all three, by the
+page's one rule (the best 10-year net CAGR after fees inside the −27.17% budget, then
+the lowest drawdown within 0.05pp), over every 5%-step mix of the six funds within the
+review's limits: at most 5 funds, 35% in any one (C's pin exempt), at least 5% peso cash
+(8,775 mixes).
+
+| | Column | Weights (MM / NQ Inc / Asia / Tech / LT Bond / Gl Div) | Macro view | Feasible / in tie |
+|---|---|---|---|---|
+| **A** | long-run (`net_base`) | 5 / 25 / 0 / 35 / 35 / 0 (unchanged; the review's pick) | 7.13% / −25.8%, 0.276 | 7,197 / 4 |
+| **B** | macro (`net_macro`) | **5 / 20 / 0 / 35 / 35 / 5** (was 5 / 35 / 0 / 20 / 35 / 5) | **7.08% / −25.3%**, 0.280 (was 6.91% / −21.8%) | 7,102 / 12 |
+| **C** | macro, Nasdaq Inc at 50% | **5 / 50 / 0 / 20 / 25 / 0** (was 20 / 50 / 20 / 10) | **7.07% / −25.6%**, 0.276 (was 6.78% / −26.4%) | 394 / 3 |
+
+B's macro view is the regional ranking and the market trend, each at 3, 6 and 12 months
+blended against the 10-year anchor, the volatility curve, and the seven drivers' rates
+and energy tilts - the inputs the Macro and Volatility tabs already show. B gives up
+the old pick's stress-test objective (best worst case), which the instruction does not
+ask for, and gains 0.17pp a year at 3.5pp more drawdown, still inside the budget.
+
+- **Engine:** `six_grid`, `six_ok`, `six_feasible` and three `pick` calls replace the
+  fixed weights; new payload `portfolio_c` and `six` (limits, enumeration size, tie,
+  the six-fund macro frontier, and `what_if` with B and C RE-CHOSEN and A re-measured
+  on every alternative column, the weaker-bond case included). `portfolio_a` and
+  `portfolio_d` gain `column`, `band_n` and `n_feasible`; `portfolio_a.is_review_pick`
+  publishes whether A is still the review's mix. C's drawdown coefficient now comes
+  from its six-fund weights (1.68158, was the four-fund pin's 1.68125). Engine checks
+  231 (from 229): the review's-limits check now covers C, and two are new - each pick
+  being the rule's pick on its own column, and every six-fund what-if. The two checks
+  that still named "Portfolio D" now say B.
+- **Page:** "A vs B · one rule, two views"; the lede, rule steps, feasible-set chart
+  (now 8,775 six-fund mixes), C's section, Report what-ifs (now B and C re-chosen,
+  with the weight order stated once), trend note and the Funds tab's weights read the
+  new payload. Fixed on the way: the frontier sentence read "C ... on it" with no
+  verb; the "maximise return alone" corner still described one fund at 35% when the
+  cap makes it a mix; section 4 of the Report still promised "the A–B gap" in Global
+  Technology, which both now hold at 35%; Global Technology's role still read "held
+  small"; the bond note still said "the review that picked B".
+- **Docs:** README result table and text; CLAIMS rows for A, B, C and the selection
+  rule (the review-only row for B is marked superseded); runbook invariant 78.
+- **Checks:** audit section G4 re-derives the enumeration, all three picks (feasible
+  counts and tie bands included), C's figures and k, the six-fund frontier and every
+  six-fund what-if from the payload alone; the CLAIMS check now requires portfolio
+  weights in order, not merely present. Validator rows 16, 17 and 22 test the new
+  meanings. Six new mutations (C typed back to the four-fund pin, B on the wrong
+  column, a six-fund what-if typed, C's k off the old pin, B's band count, a frontier
+  point dropped), all caught.
+
+US Equity Opportunity stays out until its trust fee is confirmed: in this rule it would
+take 30% of A, 25% of B and 25% of C at the listed 1.20%, and 5% of A, none of B or C,
+at 1.50%.
+
+Verification: engine 231/231, audit 309/309, validator 22/22 on the published copy
+(v56, payload identical to the repo), mutation harness 25/25.
+
 ## 2026-10-21 — Portfolio D relabelled Portfolio B
 
 At the owner's instruction ("change the label of portfolio d to portfolio b now"): the

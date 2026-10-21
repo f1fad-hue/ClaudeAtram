@@ -600,18 +600,21 @@ MACRO = {
     # the sixth, bonds and tech falling together (-27.3%), where D stays inside.
     "pa_review_date": "2026-10-21", "pa_review_cagr": 7.67, "pa_review_dd": 25.4,
     "pa_review_band_n": 19, "pa_review_worst": 6.87, "pa_review_stress_dd": 27.3,
+    "pa_review_weights": [5, 25, 0, 35, 35, 0],
     # THE LIST IS NOW 24 FUNDS (owner, 2026-10-21): ATRAM US Equity Opportunity and
     # ATRAM US Multi-Asset Income added. Re-run over all 24 on the same search, US
     # Multi-Asset Income makes neither pick. US Equity Opportunity's weight turns on its
     # trust fee, which is not confirmed: uitf.com.ph lists 1.20% on a page about 17
-    # months old, and ATRAM moved Global Technology to 1.50% on 14 Sep. At 1.20% it takes 30%
-    # of A and of D; at 1.50%, 5% of A and 15% of D; on its target's retail share class
-    # (1.81% charge, not the 0.85% clean class) it leaves A and takes 5% of D at most.
-    # A and D are HELD, at the owner's choice, until its fact sheet confirms the fee.
+    # months old, and ATRAM moved Global Technology to 1.50% on 14 Sep. A (long-run
+    # rule): 30% at 1.20%, 5% at 1.50%, none on its target's retail share class (1.81%,
+    # not the 0.85% clean class). B and C (macro-view rule, 2026-10-21): 25% of each at
+    # 1.20%, none at 1.50%. It is HELD OUT, at the owner's choice, until its fact sheet
+    # confirms the fee.
     "review_list_n": 24, "review_list_date": "2026-10-21",
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
-    "useq_w_a_listed": 30, "useq_w_d_listed": 30, "useq_w_a_peer": 5, "useq_w_d_peer": 15,
+    "useq_w_a_listed": 30, "useq_w_d_listed": 25, "useq_w_a_peer": 5, "useq_w_d_peer": 0,
+    "useq_w_c_listed": 25, "useq_w_c_peer": 0,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -2679,7 +2682,7 @@ CORR_D = [r + x for r, x in zip(CORR, ([0.44, 0.00], [0.10, 0.61], [0.05, 0.59],
 _LTPB_EQ = CORR_D[4][1:4]
 CORR_D_NOTE = (f"The Long Term Peso Bond barely moves with the equity sleeves "
                f"({min(_LTPB_EQ):.2f}-{max(_LTPB_EQ):.2f}) in normal markets; in a global "
-               f"rate shock like 2022's that rises, which the review that picked B tested "
+               f"rate shock like 2022's that rises, which the 22-fund review tested "
                f"at {MACRO['pd_review_stress_corr']:.2f}.")
 
 # Every portfolio function takes an optional UNIVERSE - (funds built, fund specs,
@@ -3010,26 +3013,86 @@ _pin_best = max(s2["cagr"] for _, s2 in _pin_feas)
 PIN_W_ALL, PIN, PIN_BAND_N = pick(_pin_feas)
 OPT_UNDER_BASE = summarise(OPT_W, "net_base")
 
-# PORTFOLIO D - the owner's fourth portfolio (requested 2026-10-21): the pick of the
-# 21 Oct review of all 22 ATRAM funds. Its weights are FIXED here, not re-optimised:
-# they were chosen on the JPM 2027 assumptions over a wider universe and six stress
-# tests (recorded in MACRO["pd_review_*"]). What this page adds is the same
-# measurement as A, B and C - this page's basis, the same fees, tilts, correlation
-# and drawdown rule - so the four can be compared like for like.
+# ONE RULE FOR A, B AND C, OVER SIX FUNDS (2026-10-21, at the owner's instruction:
+# "make the portfolio a, b and c to max growth 10yrs net cagr with minimum drawdown",
+# with B and C "based on macro economics drivers, market trend, volatility, regional
+# rankings ... of 3, 6, and 12 months with horizon of 10yrs"). Every pick is the page's
+# one rule - the best net CAGR the drawdown budget allows, then the lowest drawdown
+# within the tie - over the six funds this page models in full, under the 22-fund
+# review's limits: at most 5 funds, 35% in any one, at least 5% peso cash (C's pin is
+# the one exemption). What differs is the COLUMN the rule reads:
+#   A  net_base   the long-run assumptions alone - no cycle view
+#   B  net_macro  plus the regional ranking and the market trend (each 3/6/12M against
+#                 the 10-year anchor), the volatility curve, and the drivers' rates
+#                 and energy tilts
+#   C  net_macro  as B, with Nasdaq Equity Income held at 50%
+# Until today A and B (shown as D) were FIXED weights from the review; the engine now
+# chooses all three itself, on every roll. The review's 22-fund search found the same
+# A; its macro-view pick differs from B only inside the tie (a 5% satellite).
+# The four-fund optimiser above (OPT, FEASIBLE, the four-fund C) stays for the checks
+# that re-apply the rule to it; nothing on the page shows it.
 U_D = (F + F_D, FUNDS + D_FUNDS, CORR_D)
 D_IDS = [f["id"] for f in U_D[1]]
-D_W = [0.05, 0.35, 0.00, 0.20, 0.35, 0.05]   # MM, Nasdaq Inc, Asia, Tech, LT Peso Bond, Global Dividend
-PD = summarise(D_W, "net_macro", U_D)
-PD_BASE = summarise(D_W, "net_base", U_D)
+FRONTIER_SPACING = 0.9     # a frontier point every 0.9pp of drawdown (both frontiers)
+SIX_MAX_FUNDS = MACRO["pd_review_max_funds"]
+SIX_MAX_W = MACRO["pd_review_max_w"] / 100
+SIX_MIN_CASH = MACRO["pd_review_min_cash"] / 100
+PIN_SIX = (D_IDS.index("ATRQIAP"), PIN_W)          # C: Nasdaq Equity Income at 50%
 
-# PORTFOLIO A - from 2026-10-21 the same review's HIGHEST-RETURN pick (MACRO
-# pa_review_*), at the owner's instruction. Fixed and measured exactly as D is.
-# Portfolio B, the four-fund optimum, was retired from the page the same day ("remove
-# portfolio B and replace it by portfolio D"); OPT above is still derived, because C
-# is chosen by the same rule on the same feasible set and the checks re-apply it.
-PA_W = [0.05, 0.25, 0.00, 0.35, 0.35, 0.00]  # MM, Nasdaq Inc, Asia, Tech, LT Peso Bond, Global Dividend
-PA = summarise(PA_W, "net_macro", U_D)
-PA_BASE = summarise(PA_W, "net_base", U_D)
+def six_grid():
+    n = len(D_IDS)
+    for c in product(range(21), repeat=n - 1):
+        t = sum(c)
+        if t <= 20:
+            yield [x / 20 for x in c] + [(20 - t) / 20]
+
+SIX_ALL = [w for w in six_grid()
+           if w[0] >= SIX_MIN_CASH - 1e-9 and sum(1 for x in w if x > 1e-9) <= SIX_MAX_FUNDS]
+
+def six_ok(w, pin=None):
+    """The review's limits; the pinned fund is exempt from the 35% cap."""
+    if pin is None:
+        return max(w) <= SIX_MAX_W + 1e-9
+    i, x = pin
+    return abs(w[i] - x) < 1e-9 and max(v for j, v in enumerate(w) if j != i) <= SIX_MAX_W + 1e-9
+
+def six_feasible(key, pin=None, u=U_D):
+    """Every limit-respecting six-fund mix inside the budget, as computed AND as shown."""
+    out = []
+    for w in SIX_ALL:
+        if not six_ok(w, pin) or abs(port_dd(w, key, u)) > DD_CAP + 1e-9:
+            continue
+        s2 = summarise(w, key, u)
+        if abs(s2["maxdd"]) <= DD_CAP + 1e-9:
+            out.append((w, s2))
+    return out
+
+SIX_FEAS = {"a": six_feasible("net_base"), "b": six_feasible("net_macro"),
+            "c": six_feasible("net_macro", PIN_SIX)}
+PA_W, _, PA_BAND_N = pick(SIX_FEAS["a"])
+D_W, _, PB_BAND_N = pick(SIX_FEAS["b"])        # Portfolio B (payload key portfolio_d)
+PC_W, _, PC_BAND_N = pick(SIX_FEAS["c"])
+PA, PA_BASE = summarise(PA_W, "net_macro", U_D), summarise(PA_W, "net_base", U_D)
+PD, PD_BASE = summarise(D_W, "net_macro", U_D), summarise(D_W, "net_base", U_D)
+PC, PC_BASE = summarise(PC_W, "net_macro", U_D), summarise(PC_W, "net_base", U_D)
+# Whether the engine's A is the mix the 22-fund review found. Published, not asserted:
+# a later roll may move one and not the other, and the page says so when it does.
+PA_IS_REVIEW = [round(x * 100) for x in PA_W] == MACRO["pa_review_weights"]
+
+# The six-fund macro frontier and the best pure ratio, for the Portfolios chart and
+# the "why not simply maximise return" note - the same set B is chosen from.
+_six_pts = sorted(((w, summarise(w, "net_macro", U_D)) for w in SIX_ALL if six_ok(w)),
+                  key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
+_six_par, _best6 = [], -1e9
+for w, s2 in _six_pts:
+    if s2["cagr"] > _best6 + 1e-9:
+        _six_par.append((w, s2)); _best6 = s2["cagr"]
+SIX_FRONTIER, _last6 = [], None
+for w, s2 in _six_par:
+    if _last6 is None or abs(s2["maxdd"]) >= _last6 + FRONTIER_SPACING or w == D_W:
+        SIX_FRONTIER.append({"maxdd": abs(s2["maxdd"]), "dd": s2["maxdd"], "cagr": s2["cagr"],
+                             "weights": s2["weights"]}); _last6 = abs(s2["maxdd"])
+SIX_BEST_RATIO = max((t for t in _six_pts), key=lambda t: t[1]["ret_per_dd"])
 
 # What the former 50% single-sleeve cap would choose under the same objective and
 # the same drawdown budget - published so the cost and benefit of removing it are
@@ -3104,10 +3167,24 @@ LTPB_STRESS = {"gross": 7.0, "vol": 7.5}
 _flw = {**F_D[0], "vol": LTPB_STRESS["vol"],
         "net_macro": round(F_D[0]["net_macro"] - (F_D[0]["gross_php"] - LTPB_STRESS["gross"]), 2)}
 _U_WEAK = (F + [_flw, F_D[1]], U_D[1], CORR_D)
+# THE SIX-FUND WHAT-IFS (2026-10-21): B and C RE-CHOSEN by the rule on each alternative
+# column, A re-measured on it (A is chosen on the long-run column, which none of these
+# touches). The bond-fund case is a different universe, so it is re-chosen there too.
+def _six_wi(col, u=U_D):
+    b = pick([(w, s2) for w, s2 in [(w, summarise(w, col, u)) for w in SIX_ALL if six_ok(w)]
+              if abs(port_dd(w, col, u)) <= DD_CAP + 1e-9 and abs(s2["maxdd"]) <= DD_CAP + 1e-9])
+    c = pick(six_feasible(col, PIN_SIX, u))
+    a = summarise(PA_W, col, u)
+    return {"b": {"weights": [round(x * 100) for x in b[0]], "cagr": b[1]["cagr"], "maxdd": b[1]["maxdd"]},
+            "c": {"weights": [round(x * 100) for x in c[0]], "cagr": c[1]["cagr"], "maxdd": c[1]["maxdd"]},
+            "a": {"cagr": a["cagr"], "maxdd": a["maxdd"]}}
 WHAT_IF["bond_weaker"] = {"gross": LTPB_STRESS["gross"], "vol": LTPB_STRESS["vol"],
                           **{_lab: {"cagr": summarise(_w, "net_macro", _U_WEAK)["cagr"],
                                     "maxdd": summarise(_w, "net_macro", _U_WEAK)["maxdd"]}
                              for _lab, _w in (("a", PA_W), ("d", D_W))}}
+WHAT_IF_SIX = {k: _six_wi(col) for k, col in _WI_COL.items()}
+WHAT_IF_SIX["bond_weaker"] = {"gross": LTPB_STRESS["gross"], "vol": LTPB_STRESS["vol"],
+                              **_six_wi("net_macro", _U_WEAK)}
 
 # Best pure risk-adjusted portfolio, for reference
 BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
@@ -3181,7 +3258,6 @@ PARETO, _best = [], -1e9
 for w, s in _pts:
     if s["cagr"] > _best + 1e-9:
         PARETO.append((w, s)); _best = s["cagr"]
-FRONTIER_SPACING = 0.9
 FRONTIER, _last = [], None
 for w, s in PARETO:
     _is_opt = [round(x * 100) for x in w] == [round(x * 100) for x in OPT_W]
@@ -4002,7 +4078,7 @@ def payload():
                      "baseline_k": round(port_k(BASELINE_W), 5),
                      "optimized_k": round(port_k(OPT_W), 5),
                      # the three portfolios the page shows (2026-10-21)
-                     "a_k": round(port_k(PA_W, U_D), 5), "c_k": round(port_k(PIN_W_ALL), 5),
+                     "a_k": round(port_k(PA_W, U_D), 5), "c_k": round(port_k(PC_W, U_D), 5),
                      "d_k": round(port_k(D_W, U_D), 5),
                      "note": "1.65 is the calibration anchor, not the coefficient every sleeve "
                              "uses. Each fund carries a declared adjustment for the shape of its "
@@ -4038,12 +4114,30 @@ def payload():
                    "cagr_no_rerating": summarise(PIN_W_ALL, "net_asia_norerate")["cagr"],
                    "opt_cagr_no_rerating": summarise(OPT_W, "net_asia_norerate")["cagr"]},
         "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": D_IDS,
-                        "macro": PA, "base": PA_BASE,
+                        "macro": PA, "base": PA_BASE, "column": "net_base",
+                        "band_n": PA_BAND_N, "n_feasible": len(SIX_FEAS["a"]),
+                        "is_review_pick": PA_IS_REVIEW,
                         "scenarios": run_scenarios(PA_W, "net_macro", U_D),
                         "dd_cap": round(DD_CAP, 2),
                         "in_budget": abs(PA["maxdd"]) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pa_review_")}},
+        "portfolio_c": {"weights": [round(x * 100) for x in PC_W], "ids": D_IDS,
+                        "macro": PC, "base": PC_BASE, "column": "net_macro",
+                        "fund": "ATRQIAP", "pin_pct": round(PIN_W * 100),
+                        "band_n": PC_BAND_N, "n_feasible": len(SIX_FEAS["c"]),
+                        "scenarios": run_scenarios(PC_W, "net_macro", U_D),
+                        "dd_cap": round(DD_CAP, 2),
+                        "in_budget": abs(PC["maxdd"]) <= DD_CAP + 1e-9,
+                        "cagr_no_rerating": summarise(PC_W, "net_asia_norerate", U_D)["cagr"]},
+        "six": {"limits": {"max_funds": SIX_MAX_FUNDS, "max_w": round(SIX_MAX_W * 100),
+                           "min_cash": round(SIX_MIN_CASH * 100)},
+                "n_total": sum(1 for w in SIX_ALL if six_ok(w)),
+                "tie_pp": PIN_TIE_PP, "frontier": SIX_FRONTIER,
+                "best_ratio": {"weights": SIX_BEST_RATIO[1]["weights"], **SIX_BEST_RATIO[1]},
+                "what_if": WHAT_IF_SIX},
         "portfolio_d": {"weights": [round(x * 100) for x in D_W], "ids": D_IDS,
+                        "column": "net_macro", "band_n": PB_BAND_N,
+                        "n_feasible": len(SIX_FEAS["b"]),
                         "shorts": [f["short"] for f in U_D[1]],
                         "funds": F_D, "macro": PD, "base": PD_BASE,
                         "scenarios": run_scenarios(D_W, "net_macro", U_D),
@@ -4123,13 +4217,18 @@ def report():
       f"maxDD {pn['macro']['maxdd']}%  ret/DD {pn['macro']['ret_per_dd']}")
     # The best-worst-case pick is LABELLED B on the page since 2026-10-21 (owner: "change
     # the label of portfolio d to portfolio b"); its payload key stays portfolio_d.
-    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "highest return"), ("PORTFOLIO B", "portfolio_d", "best worst case")):
+    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the long-run column"), ("PORTFOLIO B", "portfolio_d", "the macro view")):
         pq = p[key]
         A(f"    {lab} weights {pq['weights']}   (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend; "
-          f"the {pq['review']['date']} review's {rule} pick, fixed)")
+          f"the rule on {rule}, {pq['band_n']} in band)")
         A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
           f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
-    A("    (OPTIMIZED above is the internal four-fund optimum, the old B: not shown on the page; C is chosen by its rule.)")
+    pq = p["portfolio_c"]
+    A(f"    PORTFOLIO C weights {pq['weights']}   (Nasdaq Equity Income at {pq['pin_pct']}%, the rest by the macro-view rule; "
+      f"{pq['n_feasible']} feasible, {pq['band_n']} in band)")
+    A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
+      f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
+    A("    (OPTIMIZED and PINNED C above are the internal four-fund rule, kept for its checks; the page shows A, B, C.)")
     for k, v in p["what_if"].items():
         A(f"    what-if {k:<17}: " + (f"C {v['pinned']['weights']} {v['pinned']['cagr']}%   " if "pinned" in v else "")
           + f"A {v['a']['cagr']}% / {v['a']['maxdd']}%   D {v['d']['cagr']}% / {v['d']['maxdd']}%")
@@ -5397,9 +5496,9 @@ def report():
                    and all(_cd[i][j] == _cd[j][i] for i in range(6) for j in range(6))
                    and all(_cd[i][i] == 1.0 for i in range(6)) and _chol_pd(_cd)))
     _dmu = sum(w / 100 * f["net_macro"] for w, f in zip(_dw, p["funds"] + _pdd["funds"]))
-    checks.append((f"Portfolio D's CAGR re-derives from its six funds ({_dmu:.2f} vs {_pdd['macro']['cagr']})",
+    checks.append((f"Portfolio B's CAGR (payload portfolio_d) re-derives from its six funds ({_dmu:.2f} vs {_pdd['macro']['cagr']})",
                    abs(_dmu - _pdd["macro"]["cagr"]) < 0.005))
-    checks.append((f"Portfolio D sits inside the drawdown budget ({_pdd['macro']['maxdd']}% vs -{DD_CAP:.2f}%)",
+    checks.append((f"Portfolio B sits inside the drawdown budget ({_pdd['macro']['maxdd']}% vs -{DD_CAP:.2f}%)",
                    _pdd["in_budget"] and abs(_pdd["macro"]["maxdd"]) <= DD_CAP + 1e-9))
     checks.append(("D's grind-on stress row reproduces D itself",
                    [r for r in _pdd["scenarios"] if r["name"].startswith("Grind")][0]["cagr"] == _pdd["macro"]["cagr"]))
@@ -5418,14 +5517,29 @@ def report():
                    MACRO["pd_review_date"] >= AS_OF and MACRO["pd_review_worst"] <= MACRO["pd_review_cagr"]
                    and MACRO["pd_review_dd"] <= DD_CAP + 1e-9))
     # PORTFOLIO A (2026-10-21): the review's highest-return pick, fixed like D.
-    _pa = p["portfolio_a"]; _aw = _pa["weights"]
-    _cons = lambda w: (len(w) == 6 and sum(w) == 100 and all(x % 5 == 0 for x in w)
+    _pa = p["portfolio_a"]; _aw = _pa["weights"]; _pc = p["portfolio_c"]; _cw = _pc["weights"]
+    _cons = lambda w, pin=None: (len(w) == 6 and sum(w) == 100 and all(x % 5 == 0 for x in w)
                        and sum(1 for x in w if x) <= MACRO["pd_review_max_funds"]
-                       and max(w) <= MACRO["pd_review_max_w"]
+                       and max(x for i, x in enumerate(w) if i != pin) <= MACRO["pd_review_max_w"]
                        and w[0] >= MACRO["pd_review_min_cash"])
-    checks.append(("Portfolios A and D both obey the review's search: 5% grid, at most "
-                   f"{MACRO['pd_review_max_funds']} funds, {MACRO['pd_review_max_w']}% in any one, "
-                   f"{MACRO['pd_review_min_cash']}% cash", _cons(_aw) and _cons(_dw)))
+    _ip = D_IDS.index(_pc["fund"])
+    checks.append(("Portfolios A, B and C obey the review's limits: 5% grid, at most "
+                   f"{MACRO['pd_review_max_funds']} funds, {MACRO['pd_review_max_w']}% in any one "
+                   f"(C's pinned fund exempt), {MACRO['pd_review_min_cash']}% cash",
+                   _cons(_aw) and _cons(_dw) and _cons(_cw, _ip) and _cw[_ip] == _pc["pin_pct"]))
+    # THE ONE RULE, RE-CHECKED ON EACH PICK'S OWN SET: nothing feasible beats it by
+    # more than the tie, and nothing inside the tie has a shallower drawdown.
+    def _rule_ok(feas, w):
+        best = max(s2["cagr"] for _, s2 in feas); mine = summarise([x / 100 for x in w],
+            "net_base" if feas is SIX_FEAS["a"] else "net_macro", U_D)
+        return (mine["cagr"] >= best - PIN_TIE_PP - 1e-9
+                and not any(abs(s2["maxdd"]) < abs(mine["maxdd"]) - 1e-9
+                            for _, s2 in feas if s2["cagr"] >= best - PIN_TIE_PP - 1e-9))
+    checks.append(("A, B and C are each the rule's pick on their own column: A long-run, B and C the macro view",
+                   _rule_ok(SIX_FEAS["a"], _aw) and _rule_ok(SIX_FEAS["b"], _dw) and _rule_ok(SIX_FEAS["c"], _cw)))
+    checks.append(("every six-fund what-if re-chooses B and C and re-measures A",
+                   all({"a", "b", "c"} <= set(v) and len(v["b"]["weights"]) == 6 and len(v["c"]["weights"]) == 6
+                       for v in p["six"]["what_if"].values())))
     _amu = sum(w / 100 * f["net_macro"] for w, f in zip(_aw, p["funds"] + _pdd["funds"]))
     checks.append((f"Portfolio A's CAGR re-derives from its funds ({_amu:.2f} vs {_pa['macro']['cagr']})",
                    abs(_amu - _pa["macro"]["cagr"]) < 0.005))
@@ -5448,6 +5562,7 @@ def report():
                    and MACRO["useq_ocf_clean"] < MACRO["useq_ocf_retail"]
                    and MACRO["useq_w_a_listed"] >= MACRO["useq_w_a_peer"] >= 0
                    and MACRO["useq_w_d_listed"] >= MACRO["useq_w_d_peer"] >= 0
+                   and MACRO["useq_w_c_listed"] >= MACRO["useq_w_c_peer"] >= 0
                    and "ATRUSEQ" not in p["portfolio_d"]["ids"]))
     checks.append(("every what-if re-measures A and D on its own column",
                    all("a" in v and "d" in v for v in p["what_if"].values())))

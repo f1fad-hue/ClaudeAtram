@@ -141,6 +141,15 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+78. A PICK IS CHOSEN WHERE IT IS MEASURED. A and B were fixed weights carried over
+   from the 22-fund review's own factor model and then measured on this page's basis,
+   where the best-worst-case B gave up 0.22pp a year to A for an objective nobody
+   had asked this page to pursue. Since v56 the engine chooses A, B and C itself, by
+   one rule over the six funds within the review's limits, each on a NAMED column
+   (`portfolio_*.column`): A on the long-run returns, B and C on the macro view. The
+   review's agreement is published as a flag (`portfolio_a.is_review_pick`), not
+   asserted, and audit G4 re-chooses all three and every six-fund what-if from the
+   payload alone.
 77. A BUDGET IS NOT MEASURED FROM THE PORTFOLIO IT JUDGES. When the owner replaced
    Portfolio A with the review's highest-return pick, the drawdown budget - "A's
    drawdown less 2.83pp" - would have moved with it, and a riskier A would have
