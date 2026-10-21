@@ -19,7 +19,7 @@ Portfolio D adds two more, held in D only:
 | Code | Fund | Own stated target |
 |---|---|---|
 | `ATRLTPB` | ATRAM Long Term Peso Bond Fund | PH government debt (up to 20% IG corporates), average portfolio life ≤ 7 years |
-| `ATRGDIV` | ATRAM Global Dividend Feeder Fund | Fidelity Funds – Global Dividend Fund |
+| `ATRGLDV` | ATRAM Global Dividend Feeder Fund | Fidelity Funds – Global Dividend Fund |
 
 Each fund is measured against its own target, not a house benchmark.
 
@@ -52,15 +52,15 @@ of it, and the review audit fails if it drifts.
 | | D |
 |---|---|
 | D · Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 35 / 0 / 20 / 35 / 5** |
-| D · 10y net CAGR after all fees | 6.93% |
+| D · 10y net CAGR after all fees | 6.91% |
 | D · Expected max drawdown (10y) | −21.8% |
-| D · Return per unit of drawdown | 0.318 |
+| D · Return per unit of drawdown | 0.317 |
 
 D's weights are fixed. They come from a 21 Oct review of all 22 ATRAM funds on
 J.P. Morgan's 2027 assumptions: the best worst-case return across six stress tests,
 inside the drawdown budget in every one (7.38% / −21.5% there, 6.91% at worst).
-Measured here on the page's own basis, the same as A, B and C, it returns 6.93% -
-0.12pp above B, level with the baseline - at a drawdown 4.7pp shallower than B's.
+Measured here on the page's own basis, the same as A, B and C, it returns 6.91% -
+0.10pp above B, level with the baseline - at a drawdown 4.7pp shallower than B's.
 B is the best the four funds allow; D gets past it with two funds B cannot hold.
 
 ## Layout

@@ -569,11 +569,16 @@ MACRO = {
     "ltpb_trust_fee": 1.00, "ltpb_wal_max_y": 7, "ltpb_corp_max_pct": 20,
     "ltpb_1y_ret": 1.79, "ltpb_1y_date": "2026-10-01", "ltpb_vol": 5.8,
     # ATRAM Global Dividend Feeder Fund -> Fidelity Funds - Global Dividend Fund
-    # (KIID; BusinessWorld 21 Jul 2026). Target OCF 1.04%, PUBLISHED by Fidelity for
-    # the Y-Acc-USD class; the class the feeder holds is not published. Trust fee
-    # 1.20% is an ESTIMATE: the fund was not on the 14 Sep 2026 increase list and no
-    # current schedule was found.
-    "gdiv_trust_fee": 1.20, "gdiv_target_ocf": 1.04, "gdiv_div_drag": 0.3,
+    # (KIID; BusinessWorld 21 Jul 2026). ATRAM's own code is ATRGLDV (its fund
+    # page); the model carried a placeholder, ATRGDIV, until 2026-10-21. Target OCF
+    # 1.04%, PUBLISHED by Fidelity for the Y-Acc-USD class; the class the feeder
+    # holds is not published.
+    # TRUST FEE 1.20 -> 1.50 (2026-10-21), PUBLISHED: ATRAM's fund page for the PHP
+    # class lists "Trust Fee (incl Distribution Fee, if any) 1.50% p.a.", and
+    # uitf.com.ph has 1.50% for the USD class. uitf.com.ph's PHP-class page still
+    # shows 1.10%, the level before the feeder increases. The 1.20% carried since
+    # the fund was added was an estimate, made when no schedule had been found.
+    "gdiv_trust_fee": 1.50, "gdiv_target_ocf": 1.04, "gdiv_div_drag": 0.3,
     # JPM LTCMA global equity, 2027 edition (2026 edition: 7.0%).
     "ltcma_global_eq": 7.5, "ltcma_global_eq_prev": 7.0,
     # THE 21 OCT REVIEW THAT PICKED D, recorded as inputs so the page can quote it:
@@ -1846,7 +1851,7 @@ VOL_RAMP_REF = "long-run"
 #   ATRPHMM  +0.035  cash gains marginally as risk-off keeps the front end bid.
 VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122,
             # Portfolio D's two added funds: no volatility channel is claimed for either
-            "ATRLTPB": 0.000, "ATRGDIV": 0.000}
+            "ATRLTPB": 0.000, "ATRGLDV": 0.000}
 
 
 
@@ -2403,9 +2408,22 @@ for _f in FUNDS:
 
 # MSCI ACWI IT regional decomposition, used to score the Global Tech sleeve
 ACWI_IT_MIX = {"US": 0.72, "ASIA": 0.16, "EUROPE": 0.12}
-# The Global Dividend sleeve (Portfolio D only). ESTIMATE: the target fund runs
-# underweight the US against ACWI, with Europe and the UK the large overweights.
-GDIV_MIX = {"US": 0.50, "EUROPE": 0.38, "ASIA": 0.12}
+# The Global Dividend sleeve (Portfolio D only), DERIVED 2026-10-21 from the
+# target fund's country weights. It was an ESTIMATE of US 50 / Europe 38 / Asia 12;
+# the fund's 30 Sep 2026 factsheet has Germany 11.2, France 9.6, Switzerland 8.9,
+# Japan 7.4, Spain 5.9, Taiwan 4.0, Netherlands 3.1, South Korea 1.8. Its US and UK
+# weights are not in the text reachable here; they are taken from an older listing
+# of the same fund (DFO: US 21.16, UK 13.31; the UK OEIC sister, 6 Oct: 21.7 / 14.1).
+# The mix is the identified 86.4% renormalised; Japan joins Asia, as in the ACWI IT
+# mix above.
+GDIV_GEO = {"US": [("USA", 21.16)],
+            "EUROPE": [("Germany", 11.2), ("France", 9.6), ("Switzerland", 8.9),
+                       ("Spain", 5.9), ("Netherlands", 3.1), ("UK", 13.31)],
+            "ASIA": [("Japan", 7.4), ("Taiwan", 4.0), ("South Korea", 1.8)]}
+_GG = {r: sum(v for _, v in xs) for r, xs in GDIV_GEO.items()}
+GDIV_MIX = {"US": round(_GG["US"] / sum(_GG.values()), 3),
+            "EUROPE": round(_GG["EUROPE"] / sum(_GG.values()), 3)}
+GDIV_MIX["ASIA"] = round(1 - GDIV_MIX["US"] - GDIV_MIX["EUROPE"], 3)
 
 REGIONAL_TILT_PER_PT = 0.675    # % of net CAGR per point of 1-5 macro score above neutral
 NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts are unchanged
@@ -2518,6 +2536,9 @@ def build_fund(f):
     return {
         **{q: f[q] for q in ("id", "name", "short", "ccy", "region", "target",
                              "target_verified", "fee_note", "gross_note")},
+        # The code the page prints. It is the id unless the id is only this model's
+        # label - ATRLTPB has no ATRAM code confirmed, so its slide shows Bloomberg's.
+        "code": f.get("code", f["id"]),
         "fee_feeder": f["fee_feeder"], "fee_target": f["fee_target"],
         "fee_feeder_prev": f.get("fee_feeder_prev"), "fee_feeder_from": f.get("fee_feeder_from"),
         "fee_parts": f.get("fee_parts"), "target_amc": f.get("target_amc"),
@@ -2556,6 +2577,7 @@ _PG = _dt.date.fromisoformat(MACRO["ph_gs_date"])
 D_FUNDS = [
     {
         "id": "ATRLTPB", "name": "ATRAM Long Term Peso Bond Fund",
+        "code": "PRUPIBA (Bloomberg)",   # no ATRAM code confirmed; ATRLTPB is this model's label
         "short": "Long Term Peso Bond", "ccy": "PHP", "region": "PHILIPPINES",
         "target": (f"Own mandate: Philippine government debt, up to "
                    f"{MACRO['ltpb_corp_max_pct']}% investment-grade PH corporates; weighted "
@@ -2583,13 +2605,13 @@ D_FUNDS = [
         "dd_k_why": "At the 1.65 anchor: a government bond fund's drawdowns come from duration, which its volatility already carries.",
     },
     {
-        "id": "ATRGDIV", "name": "ATRAM Global Dividend Feeder Fund",
+        "id": "ATRGLDV", "name": "ATRAM Global Dividend Feeder Fund",
         "short": "Global Dividend", "ccy": "PHP (unhedged)", "region": "GLOBAL_DIV",
         "target": "Target fund: Fidelity Funds - Global Dividend Fund.",
         "target_verified": True,
         "fee_feeder": MACRO["gdiv_trust_fee"], "fee_target": MACRO["gdiv_target_ocf"],
-        "fee_note": (f"~{MACRO['gdiv_trust_fee']:.2f}% ATRAM trust fee (ESTIMATE: no current "
-                     f"schedule found) + {MACRO['gdiv_target_ocf']:.2f}% target-fund OCF "
+        "fee_note": (f"{MACRO['gdiv_trust_fee']:.2f}% ATRAM trust fee incl. distribution fee "
+                     f"(PUBLISHED on ATRAM's fund page) + {MACRO['gdiv_target_ocf']:.2f}% target-fund OCF "
                      f"(PUBLISHED by Fidelity for the Y-Acc-USD class; the class the feeder "
                      f"holds is not published)"),
         "gross_usd": round(MACRO["ltcma_global_eq"] - MACRO["gdiv_div_drag"], 2),
@@ -2717,6 +2739,8 @@ def summarise(w, key, u=None):
 #     holdings, that is recorded as a gap rather than filled with a guess.
 # ----------------------------------------------------------------------------
 
+_GDIV_T3 = round(sum(v for _, v in GDIV_GEO["EUROPE"][:3]), 1)
+_GDIV_US = round(GDIV_GEO["US"][0][1], 1)
 LOOKTHROUGH = {
     "ATRPHMM": {
         "dp": 3,
@@ -2800,6 +2824,47 @@ LOOKTHROUGH = {
         "geo": [["USA", 53.5], ["Taiwan", 10.8], ["Netherlands", 8.6]],
         "unnamed_pct": 2.1, "positions": 98,
         "source": "Fidelity Funds - Global Technology Fund factsheet, 31 August 2026 "
+                  "(Fidelity International, Singapore edition)",
+    },
+    # ---- the two funds Portfolio D adds (2026-10-21) ----
+    "ATRLTPB": {
+        "dp": 3,
+        "kind": "instruments",
+        # Dated by the CURVE, as the money market is by its auction. No holdings list
+        # is published (DragonFi and uitf.com.ph give the mandate and the benchmark,
+        # not the bonds), so the curve the fund is priced off is its look-through.
+        "as_of": MACRO["ph_gs_date"],
+        "note": "A government bond fund holds bonds, not shares, and publishes no "
+                "holdings list: the PH government curve it is priced off is its "
+                "look-through. Benchmark: BPI Philippine Government Bond Index.",
+        "rows": [["2-year PH government", MACRO["ph_gs_2y"]],
+                 ["5-year PH government", MACRO["ph_gs_5y"]],
+                 ["10-year PH government", MACRO["ph_gs_10y"]]],
+        "unit": "% yield",
+        "source": "AsianBondsOnline (ADB) PH government bond yields; uitf.com.ph and DragonFi fund pages",
+    },
+    "ATRGLDV": {
+        "dp": 1,
+        "kind": "stocks",
+        # The target fund's 30 Sep 2026 factsheet (Singapore edition). The UK OEIC
+        # run by the same manager shows the same names at 31 Aug (TSMC 3.7, Roche
+        # 3.6, Deutsche Boerse 3.5, Unilever 3.3, Vinci 3.2) - a cross-check, not
+        # the source.
+        "as_of": "2026-09-30",
+        # Bound to GDIV_GEO, not typed: the comparison is computed, published beside
+        # the note so the figure traces, and worded from it.
+        "geo_top3_pct": _GDIV_T3, "geo_us_pct": _GDIV_US,
+        "note": ("Top 10 of Fidelity Funds - Global Dividend Fund (US$21.4bn), the "
+                 "feeder's target. Germany, France and Switzerland together "
+                 f"({_GDIV_T3:.1f}%) {'outweigh' if _GDIV_T3 > _GDIV_US else 'trail'} the US "
+                 f"({_GDIV_US:.1f}%, from an older listing)."),
+        "rows": [["Taiwan Semiconductor", 4.0], ["Deutsche Boerse", 3.4], ["Unilever", 3.4],
+                 ["Roche", 3.4], ["Vinci", 3.1], ["Novartis", 2.8],
+                 ["Texas Instruments", 2.8], ["CME Group", 2.8], ["Legrand", 2.7],
+                 ["Shin-Etsu Chemical", 2.7]],
+        "unit": "% of fund",
+        "geo": [["Germany", 11.2], ["France", 9.6], ["Switzerland", 8.9]],
+        "source": "Fidelity Funds - Global Dividend Fund factsheet, 30 September 2026 "
                   "(Fidelity International, Singapore edition)",
     },
 }
@@ -3089,7 +3154,7 @@ SCENARIOS = [
      f"${MACRO['brent']:.0f}. Global CPI re-accelerates, the Fed is forced to hike, and "
      "multiples compress hardest at the long end.",
      {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5,
-      "ATRLTPB": -1.5, "ATRGDIV": -3.0}, 1.60),
+      "ATRLTPB": -1.5, "ATRGLDV": -3.0}, 1.60),
     ("Hawkish repricing", "A second hike on top of the one the dot plot already has "
      f"(median {MACRO['fed_dot_2026']}% for end-2026) - {MACRO['fed_dots_two_more']} of "
      # Bound to the input 2026-10-03: "a 4.1% unemployment rate" was typed, and
@@ -3097,19 +3162,19 @@ SCENARIOS = [
      f"{MACRO['fed_dots_participants']} participants see it. The Fed hikes into a "
      f"{MACRO['us_unemployment']}% unemployment rate; duration-heavy growth de-rates.",
      {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0,
-      "ATRLTPB": -1.0, "ATRGDIV": -1.5}, 1.30),
+      "ATRLTPB": -1.0, "ATRGLDV": -1.5}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
      {"ATRPHMM": 0.0, "ATRQIAP": -3.5, "ATRASEQ": -5.5, "ATRGTEC": -8.0,
-      "ATRLTPB": +0.3, "ATRGDIV": -1.0}, 1.45),
+      "ATRLTPB": +0.3, "ATRGLDV": -1.0}, 1.45),
     ("Disinflation restart", "Oil mean-reverts to $65, headline CPI falls to 2%, "
      "Fed cuts. The bull case: multiples expand, vol collapses.",
      {"ATRPHMM": -0.9, "ATRQIAP": +2.5, "ATRASEQ": +3.5, "ATRGTEC": +4.5,
-      "ATRLTPB": +1.5, "ATRGDIV": +1.5}, 0.80),
+      "ATRLTPB": +1.5, "ATRGLDV": +1.5}, 0.80),
     ("Grind-on base case", "Vol drifts up to the 19-20 the futures curve already "
      "prices, earnings hold, no policy accident. The modelled path.",
      {"ATRPHMM": 0.0, "ATRQIAP": 0.0, "ATRASEQ": 0.0, "ATRGTEC": 0.0,
-      "ATRLTPB": 0.0, "ATRGDIV": 0.0}, 1.00),
+      "ATRLTPB": 0.0, "ATRGLDV": 0.0}, 1.00),
 ]
 
 def run_scenarios(w, key, u=None):
@@ -3743,6 +3808,19 @@ SOURCES = [
      "https://www.aa.com.tr/en/energy/oil/oil-rises-as-iran-tensions-us-crude-stock-draw-fuel-supply-concerns/60411"),
     ("IBTimes Australia", "Iran says mines set tankers ablaze in the Strait of Hormuz as the US military calls Tehran's claims false, Oct 2026",
      "https://www.ibtimes.com.au/iran-claims-mines-stopped-tankers-strait-hormuz-1877113"),
+    # ---- added 2026-10-21, the two D funds on the Funds tab ----
+    ("ATRAM", "ATRAM Global Dividend Feeder Fund (PHP Unit Class), fund code ATRGLDV: trust fee incl. distribution fee 1.50% p.a.; KIIDS July 2026",
+     "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRGLDV"),
+    ("uitf.com.ph", "ATRAM Global Dividend Feeder Fund (USD Unit Class): trust fee structure 1.50% p.a.",
+     "https://uitf.com.ph/daily_navpu_details.php?fund_id=544&bank_id=31"),
+    ("uitf.com.ph", "ATRAM Long Term Peso Bond Fund (A Unit Class): trust fee 1.00% p.a.; benchmark BPI Philippine Government Bond Index; NAVPU 1.146 on 19 Oct 2026",
+     "https://uitf.com.ph/daily_navpu_details.php?fund_id=498&bank_id=31"),
+    ("Fidelity International", "Fidelity Funds - Global Dividend Fund factsheet, 30 Sep 2026: US$21.4bn; top 10 TSMC 4.0%, Deutsche Boerse 3.4%, Unilever 3.4%, Roche 3.4%, Vinci 3.1% ...; Germany 11.2%, France 9.6%, Switzerland 8.9%, Japan 7.4%",
+     "https://www.fidelityinternational.com/legal/documents/SG-en/hffs.SG-en.SG.G-GDMUS.pdf"),
+    ("DFO Fairsheets", "Fidelity Funds - Global Dividend Fund: U.S.A. 21.16%, United Kingdom 13.31% (older listing)",
+     "https://dfo.sg/fairsheets/funds/fidelity-funds-global-dividend-fund"),
+    ("Trustnet", "Fidelity Global Dividend W Inc (UK OEIC, same manager), factsheet 6 Oct 2026: USA 21.7%, UK 14.1%; holdings at 31 Aug",
+     "https://www2.trustnet.com/Factsheets/FundFactsheetPDF.aspx?fundCode=0OF2E&univ=O"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -5047,7 +5125,12 @@ def report():
     checks.append(("optimized drawdown is smaller than baseline",
                    abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])))
     lt = p["lookthrough"]
-    checks.append(("look-through recorded for all four funds", len(lt) == 4))
+    checks.append(("look-through recorded for all six funds, D's two included",
+                   set(lt) == {f["id"] for f in FUNDS + D_FUNDS}))
+    checks.append(("the Global Dividend mix is the target fund's country weights, renormalised",
+                   abs(sum(GDIV_MIX.values()) - 1) < 1e-9
+                   and all(abs(GDIV_MIX[r] - _GG[r] / sum(_GG.values())) < 0.0015 for r in _GG)
+                   and LOOKTHROUGH["ATRGLDV"]["geo"] == [list(x) for x in GDIV_GEO["EUROPE"][:3]]))
     checks.append(("look-through gaps are declared, not fabricated",
                    all(v["kind"] == "gap" or v["rows"] for v in lt.values())))
     checks.append(("JEPQ top-10 weights are plausible (sum 30-60%)",

@@ -2,6 +2,58 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — The Funds tab shows all six funds; three errors in the Global Dividend fund fixed
+
+Market data unchanged (21 Oct). At the owner's request the Funds tab now covers
+every ATRAM fund a portfolio holds: the four of A, B and C, then the Long Term Peso
+Bond and Global Dividend funds that Portfolio D adds, each marked "D only".
+
+### 1. What the tab gained
+
+- Six fund slides (was four), each with its return build-up, fees, target and
+  Portfolio D weight; the heading and lede count the funds from the payload.
+- The side-by-side, fee, look-through and stock-level sections list all six.
+- **Long Term Peso Bond** look-through: the fund publishes no holdings, so the PH
+  government curve it is priced off is shown (2Y 7.055% · 5Y 7.679% · 10Y 8.016%,
+  15 Oct, ADB), with its benchmark, the BPI Philippine Government Bond Index.
+- **Global Dividend** look-through: the target fund's top 10 at 30 Sep 2026 (TSMC
+  4.0%, Deutsche Boerse, Unilever and Roche 3.4% ...) and its largest countries.
+
+### 2. Errors found, recorded before they were fixed
+
+1. **The fund code was invented.** ATRAM's code for the Global Dividend Feeder Fund
+   is **ATRGLDV** (its fund page); the model carried `ATRGDIV`. Renamed everywhere.
+   The Long Term Peso Bond has no ATRAM code confirmed, so its slide now prints its
+   Bloomberg ticker (PRUPIBA) rather than the model's label `ATRLTPB` as if it
+   were ATRAM's.
+2. **The trust fee was 0.30pp low.** ATRAM's own page lists 1.50% p.a. including
+   distribution fee, and uitf.com.ph has 1.50% for the USD class. The model carried
+   1.20% as an ESTIMATE. Now PUBLISHED 1.50%; uitf.com.ph's PHP-class page still
+   shows 1.10%, the level before the feeder increases. The page's Method & limits
+   now counts one fee estimate, not two.
+3. **The regional mix was a guess, and a wrong one.** US 50 / Europe 38 / Asia 12
+   was typed as an estimate; the target fund's 30 Sep factsheet puts Germany, France
+   and Switzerland alone at 29.7%, and an older listing has the US at 21%. The mix is
+   now DERIVED from the country weights (US 24.5 / Europe 60.2 / Asia 15.3), checked
+   against them, and published.
+
+**Effect:** Global Dividend net 6.64% → 6.22% (fee −0.30, regional tilt −0.12).
+**Portfolio D 6.93% → 6.91%**, drawdown −21.8% unchanged, return per drawdown
+0.318 → 0.317 — still 0.10pp above B at 4.7pp less drawdown. The 21 Oct review's
+own figures (7.38% / −21.5%) were computed on the 1.20% estimate and are quoted as
+recorded.
+
+A first draft of the Global Dividend slide called it "the least US-tech-heavy
+equity on this tab" — false beside an Asia fund with no US tech. It now states the
+correlations (0.69 / 0.61) against Asia Equity's (0.74 / 0.66), compared in the data.
+
+### 3. Verification
+
+Engine 223/223 (three new: all six look-throughs present, the mix reproduces its
+country weights, and the two new look-throughs' freshness). Audit 287/287. Validator
+22/22, its fund row now requiring six slides and six rows in every fund table.
+Mutation harness 17/17 (two new: the mix back to the guess, the fee back to 1.20).
+
 ## 2026-10-21 — Roll to Wednesday 21 Oct and the J.P. Morgan 2027 assumptions: the budget now costs B real return, D leads on this page's own basis, and nine errors fixed
 
 Market data as of 21 Oct (Philippine and Asian closes; US series carry Tuesday 20

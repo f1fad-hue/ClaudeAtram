@@ -16,6 +16,7 @@
      D's ring order (adjacent CVD dE >= 11.2, normal >= 20.5, contrast >= 3:1) */
   --f5:#008300; --f6:#6250D6;
   --f1-w:#DDF3EE; --f2-w:#E2EAFA; --f3-w:#FAE9DE; --f4-w:#F8E2F2;
+  --f5-w:#DEF1DE; --f6-w:#E8E5FA;
 
   /* status - always shipped with an icon + word, never colour alone */
   --good:#177A52; --warn:#B07A18; --bad:#B02A37;
@@ -469,9 +470,11 @@ details.how p:last-child{margin-bottom:0}
 <div class="panel" id="p-funds" role="tabpanel" aria-labelledby="t-funds">
   <section>
     <p class="eyebrow">Fund slides &middot; swipe</p>
-    <h2>Four sleeves, four jobs</h2>
+    <h2 id="fundsh">—</h2>
     <p class="lede">Each fund against <strong>its own stated target</strong>: return
-      build-up, full fee stack, net 10-year CAGR and expected drawdown.</p>
+      build-up, full fee stack, net 10-year CAGR and expected drawdown. The first
+      four make up A, B and C; the last <span id="ndfunds">—</span> are held in
+      Portfolio D only.</p>
   </section>
   <div class="rail" id="rail"></div>
   <div class="dots" id="dots"></div>
@@ -1085,7 +1088,7 @@ details.how p:last-child{margin-bottom:0}
   "ltpb_1y_ret": 1.79,
   "ltpb_1y_date": "2026-10-01",
   "ltpb_vol": 5.8,
-  "gdiv_trust_fee": 1.2,
+  "gdiv_trust_fee": 1.5,
   "gdiv_target_ocf": 1.04,
   "gdiv_div_drag": 0.3,
   "ltcma_global_eq": 7.5,
@@ -1833,7 +1836,7 @@ details.how p:last-child{margin-bottom:0}
    "ATRASEQ": 0.0,
    "ATRGTEC": -0.122,
    "ATRLTPB": 0.0,
-   "ATRGDIV": 0.0
+   "ATRGLDV": 0.0
   },
   "kappa": 1.5,
   "vrp": 3.5,
@@ -1927,6 +1930,7 @@ details.how p:last-child{margin-bottom:0}
    "target_verified": true,
    "fee_note": "0.71% all-in (KIIDS: % of average daily NAV)",
    "gross_note": "10y average PH short-rate path. Anchored on the PH bill curve - 91d 5.992%, 182d 6.229%, 364d 6.444% at the 19 Oct auction, higher across the curve than when this assumption was set on 2 Sep - with BSP at 5.00% after a third consecutive hike, reverting toward a ~4.50% neutral policy rate by year 3-5. Held at 4.85% and flagged rather than re-fitted: the rise sits in the part of the path that reverts within a few years, which lifts a ten-year average by roughly a tenth of a point - inside this assumption's precision, but a known upward bias until it is re-fitted. CUT from 5.25% when the mandate lengthened to 10 years: the elevated front end is a 1-3 year feature, so over a decade far more of the path sits at neutral and the average falls toward it.",
+   "code": "ATRPHMM",
    "fee_feeder": 0.71,
    "fee_target": 0.0,
    "fee_feeder_prev": null,
@@ -1971,6 +1975,7 @@ details.how p:last-child{margin-bottom:0}
    "target_verified": true,
    "fee_note": "1.50% ATRAM management fee + 0.35% target-fund TER (both verified)",
    "gross_note": "NDX long-run total return of 8.8% (JPM LTCMA 2027 US large cap 7.5%, was 6.7%, + 1.3% NDX growth premium, valuation neutral at 22.4x vs 22.9x 10y avg), times ~78% covered-call upside capture, plus ~0.5%/yr of option premium at long-run implied vol.",
+   "code": "ATRQIAP",
    "fee_feeder": 1.5,
    "fee_target": 0.35,
    "fee_feeder_prev": null,
@@ -2015,6 +2020,7 @@ details.how p:last-child{margin-bottom:0}
    "target_verified": true,
    "fee_note": "1.17% trustee + 0.01% auditor (verified KIIDS) + ~1.55% estimated target-fund OCF (ESTIMATE, anchored on JPMAM's published 1.50% management fee for this Hong Kong unit trust; exact share-class OCF not published, and trustee/admin costs may put it higher)",
    "gross_note": "JPM LTCMA 2027 EM equity 7.1% (was 7.8%) + ~1.0% re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less ~0.5% for the dividend tilt's lower growth capture.",
+   "code": "ATRASEQ",
    "fee_feeder": 1.18,
    "fee_target": 1.55,
    "fee_feeder_prev": null,
@@ -2068,6 +2074,7 @@ details.how p:last-child{margin-bottom:0}
    "target_verified": true,
    "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.15% (published) + 1.04% target-fund OCF (PUBLISHED by Fidelity for the W-Acc-GBP class, AMC 0.80%)",
    "gross_note": "US large cap 7.5% (JPM LTCMA 2027; was 6.7%) + 3.5% tech earnings-growth premium - 1.2% multiple de-rating drag. Deliberately well BELOW the target fund's realised 15.20% 5y, which was earned inside an AI capex boom and is not a forecast.",
+   "code": "ATRGTEC",
    "fee_feeder": 1.5,
    "fee_target": 1.04,
    "fee_feeder_prev": 1.15,
@@ -2287,6 +2294,94 @@ details.how p:last-child{margin-bottom:0}
    "unnamed_pct": 2.1,
    "positions": 98,
    "source": "Fidelity Funds - Global Technology Fund factsheet, 31 August 2026 (Fidelity International, Singapore edition)"
+  },
+  "ATRLTPB": {
+   "dp": 3,
+   "kind": "instruments",
+   "as_of": "2026-10-15",
+   "note": "A government bond fund holds bonds, not shares, and publishes no holdings list: the PH government curve it is priced off is its look-through. Benchmark: BPI Philippine Government Bond Index.",
+   "rows": [
+    [
+     "2-year PH government",
+     7.055
+    ],
+    [
+     "5-year PH government",
+     7.679
+    ],
+    [
+     "10-year PH government",
+     8.016
+    ]
+   ],
+   "unit": "% yield",
+   "source": "AsianBondsOnline (ADB) PH government bond yields; uitf.com.ph and DragonFi fund pages"
+  },
+  "ATRGLDV": {
+   "dp": 1,
+   "kind": "stocks",
+   "as_of": "2026-09-30",
+   "geo_top3_pct": 29.7,
+   "geo_us_pct": 21.2,
+   "note": "Top 10 of Fidelity Funds - Global Dividend Fund (US$21.4bn), the feeder's target. Germany, France and Switzerland together (29.7%) outweigh the US (21.2%, from an older listing).",
+   "rows": [
+    [
+     "Taiwan Semiconductor",
+     4.0
+    ],
+    [
+     "Deutsche Boerse",
+     3.4
+    ],
+    [
+     "Unilever",
+     3.4
+    ],
+    [
+     "Roche",
+     3.4
+    ],
+    [
+     "Vinci",
+     3.1
+    ],
+    [
+     "Novartis",
+     2.8
+    ],
+    [
+     "Texas Instruments",
+     2.8
+    ],
+    [
+     "CME Group",
+     2.8
+    ],
+    [
+     "Legrand",
+     2.7
+    ],
+    [
+     "Shin-Etsu Chemical",
+     2.7
+    ]
+   ],
+   "unit": "% of fund",
+   "geo": [
+    [
+     "Germany",
+     11.2
+    ],
+    [
+     "France",
+     9.6
+    ],
+    [
+     "Switzerland",
+     8.9
+    ]
+   ],
+   "source": "Fidelity Funds - Global Dividend Fund factsheet, 30 September 2026 (Fidelity International, Singapore edition)"
   }
  },
  "acwi_it_mix": {
@@ -2295,9 +2390,9 @@ details.how p:last-child{margin-bottom:0}
   "EUROPE": 0.12
  },
  "gdiv_mix": {
-  "US": 0.5,
-  "EUROPE": 0.38,
-  "ASIA": 0.12
+  "US": 0.245,
+  "EUROPE": 0.602,
+  "ASIA": 0.153
  },
  "jepq_vol": 13.9,
  "ndx_vol": 20.4,
@@ -2862,7 +2957,7 @@ details.how p:last-child{margin-bottom:0}
    "ATRASEQ",
    "ATRGTEC",
    "ATRLTPB",
-   "ATRGDIV"
+   "ATRGLDV"
   ],
   "shorts": [
    "Peso Money Market",
@@ -2883,6 +2978,7 @@ details.how p:last-child{margin-bottom:0}
     "target_verified": true,
     "fee_note": "1.00% trust fee (published by DragonFi; in the NAVPU)",
     "gross_note": "The PH government curve's 5-year point, 7.679% at the 15 Oct close (2-year 7.055%, 10-year 8.016%, the 10-year up 194.4bp this year): a fund held within a 7-year average life earns roughly its starting yield over about twice its duration, which is this mandate's ten years. The year's rise in yields is already in its 1.79% one-year return.",
+    "code": "PRUPIBA (Bloomberg)",
     "fee_feeder": 1.0,
     "fee_target": 0.0,
     "fee_feeder_prev": null,
@@ -2912,42 +3008,43 @@ details.how p:last-child{margin-bottom:0}
     "target_dd_macro": null
    },
    {
-    "id": "ATRGDIV",
+    "id": "ATRGLDV",
     "name": "ATRAM Global Dividend Feeder Fund",
     "short": "Global Dividend",
     "ccy": "PHP (unhedged)",
     "region": "GLOBAL_DIV",
     "target": "Target fund: Fidelity Funds - Global Dividend Fund.",
     "target_verified": true,
-    "fee_note": "~1.20% ATRAM trust fee (ESTIMATE: no current schedule found) + 1.04% target-fund OCF (PUBLISHED by Fidelity for the Y-Acc-USD class; the class the feeder holds is not published)",
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (PUBLISHED on ATRAM's fund page) + 1.04% target-fund OCF (PUBLISHED by Fidelity for the Y-Acc-USD class; the class the feeder holds is not published)",
     "gross_note": "JPM LTCMA 2027 global equity 7.5% (was 7.0%) less ~0.3% for the dividend tilt's lower growth capture.",
-    "fee_feeder": 1.2,
+    "code": "ATRGLDV",
+    "fee_feeder": 1.5,
     "fee_target": 1.04,
     "fee_feeder_prev": null,
     "fee_feeder_from": null,
     "fee_parts": null,
     "target_amc": null,
-    "fee_total": 2.24,
+    "fee_total": 2.54,
     "gross_php": 9.2,
     "fx_drift": 2.0,
-    "net_base": 6.96,
-    "regional_score": 2.81,
-    "tilt_regional": -0.13,
+    "net_base": 6.66,
+    "regional_score": 2.63,
+    "tilt_regional": -0.25,
     "tilt_vol": 0.0,
     "tilt_rates": -0.19,
     "tilt_energy": 0.0,
     "tilt_trend": 0.0,
     "tilt_rates_cal": -0.08,
     "tilt_energy_cal": 0.0,
-    "tilt_total": -0.32,
-    "net_macro": 6.64,
+    "tilt_total": -0.44,
+    "net_macro": 6.22,
     "vol": 15.49,
     "dd_k": 1.65,
     "dd_k_why": "At the 1.65 anchor: a diversified dividend portfolio's left tail is the market's.",
-    "dd_base": -31.2,
-    "dd_macro": -31.5,
-    "target_net_macro": 7.84,
-    "target_dd_macro": -30.6
+    "dd_base": -31.4,
+    "dd_macro": -31.8,
+    "target_net_macro": 7.72,
+    "target_dd_macro": -30.7
    }
   ],
   "macro": {
@@ -2959,12 +3056,12 @@ details.how p:last-child{margin-bottom:0}
     35.0,
     5.0
    ],
-   "cagr": 6.93,
+   "cagr": 6.91,
    "vol": 11.22,
    "maxdd": -21.8,
-   "ret_per_dd": 0.318,
-   "sharpe_like": 0.043,
-   "terminal_1m": 1954320,
+   "ret_per_dd": 0.317,
+   "sharpe_like": 0.042,
+   "terminal_1m": 1950668,
    "worst_1m_from_open": 782000
   },
   "base": {
@@ -2976,47 +3073,47 @@ details.how p:last-child{margin-bottom:0}
     35.0,
     5.0
    ],
-   "cagr": 7.37,
+   "cagr": 7.36,
    "vol": 11.22,
    "maxdd": -21.5,
-   "ret_per_dd": 0.343,
-   "sharpe_like": 0.083,
-   "terminal_1m": 2036243,
+   "ret_per_dd": 0.342,
+   "sharpe_like": 0.082,
+   "terminal_1m": 2034347,
    "worst_1m_from_open": 785000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $109. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.21,
+    "cagr": 3.18,
     "vol": 17.95,
     "maxdd": -40.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.67,
+    "cagr": 4.65,
     "vol": 14.58,
     "maxdd": -31.4
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.16,
+    "cagr": 4.14,
     "vol": 16.26,
     "maxdd": -35.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.26,
+    "cagr": 9.24,
     "vol": 8.97,
     "maxdd": -14.8
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.93,
+    "cagr": 6.91,
     "vol": 11.22,
     "maxdd": -21.8
    }
@@ -5111,6 +5208,36 @@ details.how p:last-child{margin-bottom:0}
    "org": "IBTimes Australia",
    "what": "Iran says mines set tankers ablaze in the Strait of Hormuz as the US military calls Tehran's claims false, Oct 2026",
    "url": "https://www.ibtimes.com.au/iran-claims-mines-stopped-tankers-strait-hormuz-1877113"
+  },
+  {
+   "org": "ATRAM",
+   "what": "ATRAM Global Dividend Feeder Fund (PHP Unit Class), fund code ATRGLDV: trust fee incl. distribution fee 1.50% p.a.; KIIDS July 2026",
+   "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRGLDV"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM Global Dividend Feeder Fund (USD Unit Class): trust fee structure 1.50% p.a.",
+   "url": "https://uitf.com.ph/daily_navpu_details.php?fund_id=544&bank_id=31"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM Long Term Peso Bond Fund (A Unit Class): trust fee 1.00% p.a.; benchmark BPI Philippine Government Bond Index; NAVPU 1.146 on 19 Oct 2026",
+   "url": "https://uitf.com.ph/daily_navpu_details.php?fund_id=498&bank_id=31"
+  },
+  {
+   "org": "Fidelity International",
+   "what": "Fidelity Funds - Global Dividend Fund factsheet, 30 Sep 2026: US$21.4bn; top 10 TSMC 4.0%, Deutsche Boerse 3.4%, Unilever 3.4%, Roche 3.4%, Vinci 3.1% ...; Germany 11.2%, France 9.6%, Switzerland 8.9%, Japan 7.4%",
+   "url": "https://www.fidelityinternational.com/legal/documents/SG-en/hffs.SG-en.SG.G-GDMUS.pdf"
+  },
+  {
+   "org": "DFO Fairsheets",
+   "what": "Fidelity Funds - Global Dividend Fund: U.S.A. 21.16%, United Kingdom 13.31% (older listing)",
+   "url": "https://dfo.sg/fairsheets/funds/fidelity-funds-global-dividend-fund"
+  },
+  {
+   "org": "Trustnet",
+   "what": "Fidelity Global Dividend W Inc (UK OEIC, same manager), factsheet 6 Oct 2026: USA 21.7%, UK 14.1%; holdings at 31 Aug",
+   "url": "https://www2.trustnet.com/Factsheets/FundFactsheetPDF.aspx?fundCode=0OF2E&univ=O"
   }
  ]
 }
@@ -5123,7 +5250,7 @@ const el = (t, a, h) => { const n = document.createElement(t);
   if (a) for (const k in a) n.setAttribute(k, a[k]);
   if (h != null) n.innerHTML = h; return n; };
 const FC = ["var(--f1)","var(--f2)","var(--f3)","var(--f4)","var(--f5)","var(--f6)"];
-const FW = ["var(--f1-w)","var(--f2-w)","var(--f3-w)","var(--f4-w)"];
+const FW = ["var(--f1-w)","var(--f2-w)","var(--f3-w)","var(--f4-w)","var(--f5-w)","var(--f6-w)"];
 const HEX = ["#0E9B80","#3670D6","#CB5A22","#B0399B","#008300","#6250D6"];
 const F = D.funds, N = F.length;
 /* The mandate horizon comes from the payload. On 8 Sep it moved 5y -> 10y and
@@ -5758,8 +5885,15 @@ const ROLE = {
   ATRPHMM: "Liquidity anchor &amp; rebalancing ammunition",
   ATRQIAP: "Income engine — tech exposure with the volatility sold",
   ATRASEQ: "Growth engine — cheapest earnings on the sheet",
-  ATRGTEC: "Call option on the AI capex cycle, held small"
+  ATRGTEC: "Call option on the AI capex cycle, held small",
+  ATRLTPB: "Duration buffer — peso bond yield for a fraction of equity risk",
+  ATRGLDV: "Dividend equity — global by mandate, European by weight"
 };
+/* SIX FUNDS ON THIS TAB (2026-10-21): the four of A, B and C, then the two D adds,
+   in D's own order so each keeps its colour slot everywhere on the page. */
+const PD_ = D.portfolio_d, FA = F.concat(PD_.funds), DONLY = new Set(PD_.funds.map(f => f.id));
+/* On its own line, unbroken: inline it split "D / only" across a phone-width cell. */
+const dOnly = f => DONLY.has(f.id) ? `<br><span class="wt" style="white-space:nowrap">D only</span>` : "";
 const LOOKTHRU = {
   ATRPHMM: ["Philippine T-bills, government &amp; high-grade corporate paper",
     "Average portfolio duration ≤ 1 year",
@@ -5776,7 +5910,15 @@ const LOOKTHRU = {
   ATRGTEC: ["Fidelity Funds — Global Technology Fund (Luxembourg SICAV)",
     "Benchmark: MSCI ACWI Information Technology",
     `By country (fund, ${D.lookthrough.ATRGTEC.as_of}): ` +
-      D.lookthrough.ATRGTEC.geo.map(x => x[0] + " " + x[1] + "%").join(" · ")]
+      D.lookthrough.ATRGTEC.geo.map(x => x[0] + " " + x[1] + "%").join(" · ")],
+  ATRLTPB: ["Philippine government securities; up to 20% investment-grade PH corporates",
+    "Weighted average portfolio life within 7 years",
+    `PH curve (${D.lookthrough.ATRLTPB.as_of}): 2Y ${D.macro.ph_gs_2y.toFixed(3)}% · 5Y ${D.macro.ph_gs_5y.toFixed(3)}% · 10Y ${D.macro.ph_gs_10y.toFixed(3)}%`],
+  ATRGLDV: ["Fidelity Funds — Global Dividend Fund (Luxembourg SICAV)",
+    "Dividend-paying global equities, no set country split",
+    `By country (fund, ${D.lookthrough.ATRGLDV.as_of}): ` +
+      D.lookthrough.ATRGLDV.geo.map(x => x[0] + " " + x[1] + "%").join(" · ") +
+      ` · model mix US ${(D.gdiv_mix.US * 100).toFixed(0)}% / Europe ${(D.gdiv_mix.EUROPE * 100).toFixed(0)}% / Asia ${(D.gdiv_mix.ASIA * 100).toFixed(0)}%`]
 };
 const NOTE = {
   /* Bound to the payload 2026-10-07: this typed "August inflation printed 6.1%, a
@@ -5786,21 +5928,39 @@ const NOTE = {
   ATRASEQ: `${D.macro.asia_fwd_pe.toFixed(1)}× forward against ${D.macro.asia_eps_2026.toFixed(1)}% / ${D.macro.asia_eps_2027.toFixed(1)}% EPS growth. ` +
     (Object.entries(D.regions).every(([k, v]) => k === "ASIA" || v[HYL] <= D.regions.ASIA[HYL])
       ? "Still the top-ranked region on the long-horizon anchor." : ""),
-  ATRGTEC: (D.funds.every(f => f.gross_php <= D.funds[3].gross_php) ? "Highest gross return, " : "")
-    + (D.funds.every(f => f.dd_macro >= D.funds[3].dd_macro) ? "deepest drawdown, " : "")
-    + `and ${D.corr[1][3].toFixed(2)} correlated to the Nasdaq income sleeve.`
+  ATRGTEC: (FA.every(f => f.gross_php <= D.funds[3].gross_php) ? "Highest gross return, " : "")
+    + (FA.every(f => f.dd_macro >= D.funds[3].dd_macro) ? "deepest drawdown, " : "")
+    + `and ${D.corr[1][3].toFixed(2)} correlated to the Nasdaq income sleeve.`,
+  /* Both bound to the payload: the bond fund against cash, the dividend fund against
+     the tech sleeve it most resembles in D. */
+  ATRLTPB: (() => { const b = PD_.funds[0], mm = F[0];
+    return `Earns ${(b.net_macro - mm.net_macro).toFixed(2)}pp a year more than the money market
+      after fees, for ${b.vol.toFixed(1)}% volatility and a ${pc1(b.dd_macro)} drawdown. Its
+      ${D.macro.ltpb_1y_ret.toFixed(2)}% one-year return already carries the year's rise in yields.`; })(),
+  /* "The least US-tech-heavy equity on this tab" was the first wording - false
+     beside an Asia fund that holds no US tech at all. The claim is now the
+     correlation, compared with Asia Equity's in the data. */
+  ATRGLDV: `${PD_.corr[5][3].toFixed(2)} correlated to Global Technology and
+    ${PD_.corr[5][1].toFixed(2)} to Nasdaq Equity Income` +
+    (PD_.corr[5][3] < D.corr[2][3] && PD_.corr[5][1] < D.corr[1][2]
+      ? `, below Asia Equity's ${D.corr[2][3].toFixed(2)} and ${D.corr[1][2].toFixed(2)}: the equity fund here least tied to the US tech sleeves`
+      : ``) + `. ${(D.gdiv_mix.EUROPE * 100).toFixed(0)}% of it sits in Europe.`
 };
 
 (function () {
   const rail = $("#rail"), dots = $("#dots");
-  F.forEach((f, i) => {
+  const WORDS = ["Zero","One","Two","Three","Four","Five","Six","Seven","Eight"];
+  $("#fundsh").textContent = `${WORDS[FA.length]} funds, ${WORDS[FA.length].toLowerCase()} jobs`;
+  $("#ndfunds").textContent = WORDS[PD_.funds.length].toLowerCase();
+  FA.forEach((f, i) => {
     const grossUsd = +(f.gross_php - f.fx_drift).toFixed(2);
     const build = [];
     if (f.fx_drift) {
       build.push(["Target-fund expected return (USD)", grossUsd, ""]);
       build.push(["Peso translation (unhedged)", f.fx_drift, "pos"]);
     } else {
-      build.push([HYN + " average PH short-rate path", f.gross_php, ""]);
+      build.push([f.id === "ATRLTPB" ? "PH government 5-year yield" : HYN + " average PH short-rate path",
+                  f.gross_php, ""]);
     }
     build.push(["Feeder / trust fee", -f.fee_feeder, "neg"]);
     if (f.fee_target) build.push(["Target-fund charge", -f.fee_target, "neg"]);
@@ -5808,11 +5968,12 @@ const NOTE = {
     build.push(["Macro tilt", f.tilt_total, f.tilt_total >= 0 ? "pos" : "neg"]);
     build.push([`Net ${HYL} CAGR — macro-adjusted`, f.net_macro, "final"]);
 
-    const wA = D.baseline.weights[i], wB = D.optimized.weights[i];
+    const isD = DONLY.has(f.id), wA = D.baseline.weights[i], wB = D.optimized.weights[i];
+    const wD = PD_.weights[PD_.ids.indexOf(f.id)];
     const s = el("article", { class:"slide" });
     s.innerHTML =
       `<div class="sh" style="background:${HEX[i]}">
-         <div class="code">${f.id} · ${f.ccy}</div>
+         <div class="code">${f.code || f.id} · ${f.ccy}</div>
          <h3>${f.name.replace("ATRAM ", "")}</h3>
          <div class="role">${ROLE[f.id]}</div>
        </div>
@@ -5829,9 +5990,11 @@ const NOTE = {
            <div class="kv"><dt>Volatility σ</dt><dd>${f.vol.toFixed(2)}%</dd></div>
            <div class="kv"><dt>All-in fees</dt><dd>${f.fee_total.toFixed(2)}%</dd></div>
            <div class="kv"><dt>Regional score</dt><dd>${f.regional_score.toFixed(2)} / 5</dd></div>
-           <div class="kv"><dt>Baseline weight</dt><dd>${wA}%</dd></div>
+           ${isD ? `<div class="kv"><dt>Portfolio D weight</dt><dd style="color:${HEX[i]};font-weight:700">${wD}%
+             <span style="font-weight:500;color:var(--ink-3)">(D only)</span></dd></div>`
+           : `<div class="kv"><dt>Baseline weight</dt><dd>${wA}%</dd></div>
            <div class="kv"><dt>Optimised weight</dt><dd style="color:${HEX[i]};font-weight:700">${wB}%
-             <span style="font-weight:500;color:var(--ink-3)">(${wB>wA?"+":wB<wA?"−":""}${Math.abs(wB-wA)})</span></dd></div>
+             <span style="font-weight:500;color:var(--ink-3)">(${wB>wA?"+":wB<wA?"−":""}${Math.abs(wB-wA)})</span></dd></div>`}
            <div class="kv" style="display:block"><dt style="display:block;margin-bottom:3px">Own stated target</dt>
              <dd class="wrap" style="text-align:left">${f.target}</dd></div>
            <div class="kv"><dt>Target fund itself, net of its own fee</dt><dd>${
@@ -5845,7 +6008,7 @@ const NOTE = {
     dots.appendChild(el("i", { class: i === 0 ? "on" : "", style: i === 0 ? "background:" + HEX[0] : "" }));
   });
   rail.addEventListener("scroll", () => {
-    const k = Math.round(rail.scrollLeft / (rail.scrollWidth / N));
+    const k = Math.round(rail.scrollLeft / (rail.scrollWidth / FA.length));
     [...dots.children].forEach((d, j) => { d.classList.toggle("on", j === k);
       d.style.background = j === k ? HEX[k] : ""; });
   }, { passive:true });
@@ -5854,8 +6017,8 @@ const NOTE = {
   t.appendChild(el("thead", null,
     `<tr><th>Fund</th><th>Fees</th><th>Net CAGR</th><th>Max DD</th><th>Vol σ</th></tr>`));
   const tb = el("tbody");
-  F.forEach((f,i) => tb.appendChild(el("tr", null,
-    `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+  FA.forEach((f,i) => tb.appendChild(el("tr", null,
+    `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}${dOnly(f)}</td>
      <td>${f.fee_total.toFixed(2)}%</td>
      <td style="font-weight:600;color:${HEX[i]}">${pc(f.net_macro)}</td>
      <td class="neg">${pc1(f.dd_macro)}</td><td>${f.vol.toFixed(1)}%</td>`)));
@@ -5864,19 +6027,19 @@ const NOTE = {
   const lt = $("#ltab");
   lt.appendChild(el("thead", null, `<tr><th>Sleeve</th><th style="text-align:left">Underlying exposure</th></tr>`));
   const lb = el("tbody");
-  F.forEach((f,i) => lb.appendChild(el("tr", null,
-    `<td style="vertical-align:top;width:33%"><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+  FA.forEach((f,i) => lb.appendChild(el("tr", null,
+    `<td style="vertical-align:top;width:33%"><span class="swatch" style="background:${FC[i]}"></span>${f.short}${dOnly(f)}</td>
      <td style="text-align:left;white-space:normal;font-family:var(--body);font-size:12px;
        line-height:1.5;color:var(--ink-2)">${LOOKTHRU[f.id].map(x=>"• "+x).join("<br>")}</td>`)));
   lt.appendChild(lb);
 
   // stock-level look-through
   const LT = D.lookthrough, sw = $("#stocks");
-  F.forEach((f, i) => {
+  FA.forEach((f, i) => {
     const L = LT[f.id];
     const head = `<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">
         <span class="swatch" style="background:${FC[i]};width:10px;height:10px"></span>
-        <h3 style="margin:0;flex:1">${f.short}</h3>
+        <h3 style="margin:0;flex:1">${f.short}${DONLY.has(f.id) ? ` <span class="wt">D only</span>` : ""}</h3>
         ${L.as_of ? `<span class="wt">as of ${L.as_of}</span>` : chip("warn","not published")}
       </div>`;
     let bodyHtml;
@@ -5896,6 +6059,8 @@ const NOTE = {
           L.sub.map(x => x[0] + " " + x[1] + "%").join(" · ")}</div>` : ""}
         ${L.sectors ? `<div class="note" style="margin-top:8px">Sector tilt: ${
           L.sectors.map(x => x[0] + " " + x[1] + "%").join(" · ")}</div>` : ""}
+        ${L.geo && f.id === "ATRGLDV" ? `<div class="note" style="margin-top:8px">Largest countries: ${
+          L.geo.map(x => x[0] + " " + x[1] + "%").join(" · ")}</div>` : ""}
         <div class="note">${L.note}</div>`;
     }
     sw.appendChild(el("div", { class:"mon", style: i ? "" : "border-top:0;padding-top:2px" },
@@ -5907,17 +6072,17 @@ const NOTE = {
   ft.appendChild(el("thead", null,
     `<tr><th>Fund</th><th>Feeder</th><th>Target</th><th>All-in</th><th>Basis</th></tr>`));
   const fb = el("tbody");
-  F.forEach((f,i) => {
+  FA.forEach((f,i) => {
     const est = f.fee_note.toLowerCase().includes("estimate");
     fb.appendChild(el("tr", null,
-      `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
+      `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}${dOnly(f)}</td>
        <td>${f.fee_feeder.toFixed(2)}%</td>
        <td>${f.fee_target ? f.fee_target.toFixed(2) + "%" : "—"}</td>
        <td style="font-weight:600">${f.fee_total.toFixed(2)}%</td>
        <td style="text-align:right">${est ? chip("warn","part est.") : chip("good","published")}</td>`));
   });
   ft.appendChild(fb);
-  const chg = F.filter(f => f.fee_feeder_prev != null);
+  const chg = FA.filter(f => f.fee_feeder_prev != null);
   $("#feenote").innerHTML = `Feeder fees from ATRAM's documents; target-fund charges from
     J.P. Morgan and Fidelity. ` + chg.map(f => `<strong>${f.short}'s trust fee rose to
     ${f.fee_feeder.toFixed(2)}% from ${f.fee_feeder_prev.toFixed(2)}% on
@@ -6302,7 +6467,7 @@ function donut(host, w, title, cagr, dd) {
   set("gtcorr2",   D.corr[1][3].toFixed(2));
   /* COUNTED, not typed (2026-10-21): "One fee estimate left" stayed in the markup
      when Portfolio D brought a second - the Global Dividend feeder's trust fee. */
-  const fa = D.funds.find(f => f.id === "ATRASEQ"), fg = D.portfolio_d.funds.find(f => f.id === "ATRGDIV");
+  const fa = D.funds.find(f => f.id === "ATRASEQ"), fg = D.portfolio_d.funds.find(f => f.id === "ATRGLDV");
   const allF = D.funds.concat(D.portfolio_d.funds), WORD = ["No", "One", "Two", "Three", "Four"];
   const nEst = allF.filter(f => /ESTIMATE/.test(f.fee_note)).length;
   $("#feeest").innerHTML = `<b>${WORD[nEst]} fee estimate${nEst === 1 ? "" : "s"} left.</b> `
