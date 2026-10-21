@@ -232,7 +232,7 @@ such on the page · **D** = derived by `model/engine.py` from other rows.
 |---|---|---|---|---|
 | ATRPHMM all-in fee | **0.58% of average daily NAV** (0.57% trustee + 0.01% other, KIIDS); listed trust fee **0.50% p.a.** (uitf.com.ph A class; GCash fee table). **CORRECTED 2026-10-21 from 0.71%**, which came from a superseded KIIDS (trustee ~0.70%, as the 2022 GInvest guide also has) | P | ATRAM KIIDS (Seedbox); uitf.com.ph; GCash help centre (verified via search result) | 2026-10-21 |
 | ATRPHMM mandate | duration ≤ 1 year, beat bank deposits | P | ATRAM KIIDS | 2026-09-05 |
-| ATRQIAP management fee | 1.50% p.a. | P | ATRAM / launch coverage | 2026-09-05 |
+| ATRQIAP trust fee — **A PHP unit class, the class held** (owner, 21 Oct) | 1.50% p.a. incl. distribution fee | P | ATRAM fund page; uitf.com.ph (A PHP and A USD 1.50%; the D classes list 0.50% and are not held) (verified via search result) | 2026-10-21 |
 | ATRQIAP target fund | JPM Nasdaq Equity Premium Income Active UCITS ETF, IE000U9J8HX9 | P | ATRAM / JPMAM | 2026-09-05 |
 | ATRQIAP stated benchmark | 75% Nasdaq-100 Index | P | ATRAM / launch coverage | 2026-09-05 |
 | Target-fund TER (JEPQ UCITS) | 0.35% | P | JPMAM factsheet — re-confirmed across justETF, Morningstar and Cbonds | 2026-09-09 |

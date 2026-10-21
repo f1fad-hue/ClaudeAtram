@@ -2346,7 +2346,10 @@ FUNDS = [
                   "(IE000U9J8HX9). Stated benchmark: 75% Nasdaq-100 Index.",
         "target_verified": True,
         "fee_feeder": 1.50, "fee_target": 0.35,
-        "fee_note": "1.50% ATRAM management fee + 0.35% target-fund TER (both verified)",
+        # THE CLASS HELD (owner, 2026-10-21): the A PHP unit class - 1.50% trust fee incl.
+        # distribution fee on ATRAM's fund page and uitf.com.ph. The D classes list 0.50%
+        # and are not what this portfolio holds.
+        "fee_note": "1.50% ATRAM trust fee incl. distribution fee, A PHP unit class (the class held) + 0.35% target-fund TER (both verified)",
         # COMPUTED (was a typed 7.2 that its own recipe did not produce). The premium
         # is the harvest at LONG-RUN implied vol: the base is a no-view return, and
         # "earned back as implied vol rises 14.3 -> 19.4" - the old wording - was the

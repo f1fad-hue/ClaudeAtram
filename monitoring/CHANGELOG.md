@@ -2,6 +2,14 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — v58: Nasdaq Equity Income's unit class stated
+
+The owner confirmed the holding is the **A PHP unit class** of ATRAM Nasdaq Equity
+Income. That is the class the model already priced (1.50% trust fee incl. distribution
+fee + 0.35% target-fund TER), so no figure moves; the fee note and the claims row now
+name the class, and the D classes' 0.50% is recorded as not held. Engine 231/231, audit
+309/309, validator 22/22 on the published copy.
+
 ## 2026-10-21 — Scrub v57: money-market fee corrected, Hormuz volume and the curve rolled, B moves on the tie's edge
 
 A full debug, review and fact-check pass at the owner's request. US markets were still
