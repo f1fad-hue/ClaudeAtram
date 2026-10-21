@@ -545,6 +545,32 @@ MACRO = {
     "ph_tbill_chg_bp": [14.7, 5.8, 9.3],          # as reported (364-day derived)
     "ph_tbill_date": "2026-10-19",
     "ph_tbill_cadence_d": 7,                      # BTr auctions T-bills weekly
+    # PORTFOLIO D's TWO ADDED FUNDS (2026-10-21). The PH government curve at the
+    # close of 15 Oct (AsianBondsOnline / ADB): 2-year 7.055%, 5-year 7.679%,
+    # 10-year 8.016% - the 10-year up 194.4bp this year, its highest since 2018.
+    "ph_gs_2y": 7.055, "ph_gs_5y": 7.679, "ph_gs_10y": 8.016, "ph_gs_date": "2026-10-15",
+    "ph_gs_10y_ytd_bp": 194.4,
+    # ATRAM Long Term Peso Bond Fund (DragonFi): trust fee 1.00% p.a., in the NAVPU;
+    # PH government debt with up to 20% investment-grade PH corporates; weighted
+    # average portfolio life kept within 7 years. One-year return +1.79% to 1 Oct.
+    # Volatility ~5.8% is an ESTIMATE: a ~5-year duration times ~1.15pp of annual
+    # yield volatility.
+    "ltpb_trust_fee": 1.00, "ltpb_wal_max_y": 7, "ltpb_corp_max_pct": 20,
+    "ltpb_1y_ret": 1.79, "ltpb_1y_date": "2026-10-01", "ltpb_vol": 5.8,
+    # ATRAM Global Dividend Feeder Fund -> Fidelity Funds - Global Dividend Fund
+    # (KIID; BusinessWorld 21 Jul 2026). Target OCF 1.04%, PUBLISHED by Fidelity for
+    # the Y-Acc-USD class; the class the feeder holds is not published. Trust fee
+    # 1.20% is an ESTIMATE: the fund was not on the 14 Sep 2026 increase list and no
+    # current schedule was found.
+    "gdiv_trust_fee": 1.20, "gdiv_target_ocf": 1.04, "gdiv_div_drag": 0.3,
+    # JPM LTCMA (2026 edition, the basis of every fund on this page) global equity.
+    # The 2027 edition (19 Oct 2026) has 7.5%; this page has not been rolled to it.
+    "ltcma_global_eq": 7.0, "ltcma_global_eq_2027": 7.5,
+    # THE 21 OCT REVIEW THAT PICKED D, recorded as inputs so the page can quote it:
+    # all 22 ATRAM funds on the JPM 2027 assumptions; the best worst-case CAGR
+    # across six stress tests, inside the drawdown budget in every one.
+    "pd_review_date": "2026-10-21", "pd_review_n_funds": 22, "pd_review_n_scen": 6,
+    "pd_review_cagr": 7.38, "pd_review_dd": 21.5, "pd_review_worst": 6.91,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -1783,7 +1809,9 @@ VOL_RAMP_REF = "long-run"
 #                    at 10.5x forward the multiple is already compressed and the
 #                    dividend tilt shortens effective duration.
 #   ATRPHMM  +0.035  cash gains marginally as risk-off keeps the front end bid.
-VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122}
+VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122,
+            # Portfolio D's two added funds: no volatility channel is claimed for either
+            "ATRLTPB": 0.000, "ATRGDIV": 0.000}
 
 
 
@@ -2301,6 +2329,9 @@ for _f in FUNDS:
 
 # MSCI ACWI IT regional decomposition, used to score the Global Tech sleeve
 ACWI_IT_MIX = {"US": 0.72, "ASIA": 0.16, "EUROPE": 0.12}
+# The Global Dividend sleeve (Portfolio D only). ESTIMATE: the target fund runs
+# underweight the US against ACWI, with Europe and the UK the large overweights.
+GDIV_MIX = {"US": 0.50, "EUROPE": 0.38, "ASIA": 0.12}
 
 REGIONAL_TILT_PER_PT = 0.675    # % of net CAGR per point of 1-5 macro score above neutral
 NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts are unchanged
@@ -2339,6 +2370,8 @@ ENERGY_SCALE = (GEO_NOW - DRIVER_NEUTRAL_10) / (TILT_CAL["geopolitics"] - DRIVER
 def regional_score(region_key):
     if region_key == "GLOBAL_TECH":
         return sum(REGIONS[r]["blend"] * w for r, w in ACWI_IT_MIX.items())
+    if region_key == "GLOBAL_DIV":
+        return sum(REGIONS[r]["blend"] * w for r, w in GDIV_MIX.items())
     return REGIONS[region_key]["blend"]
 
 # ---- Per-fund return, volatility and drawdown -------------------------------
@@ -2440,6 +2473,65 @@ def build_fund(f):
 
 F = [build_fund(f) for f in FUNDS]
 
+# ---- PORTFOLIO D's two added funds (2026-10-21) ------------------------------
+# Not part of the four-fund universe A, B and C are chosen from: D is the pick of
+# a separate review of all 22 ATRAM funds, so these two exist for D alone. They
+# are built by build_fund() - the same fees, FX drift, tilts and drawdown rule as
+# every other sleeve - so D's numbers are on exactly this page's basis.
+_PG = _dt.date.fromisoformat(MACRO["ph_gs_date"])
+D_FUNDS = [
+    {
+        "id": "ATRLTPB", "name": "ATRAM Long Term Peso Bond Fund",
+        "short": "Long Term Peso Bond", "ccy": "PHP", "region": "PHILIPPINES",
+        "target": (f"Own mandate: Philippine government debt, up to "
+                   f"{MACRO['ltpb_corp_max_pct']}% investment-grade PH corporates; weighted "
+                   f"average portfolio life within {MACRO['ltpb_wal_max_y']} years"),
+        "target_verified": True,
+        "fee_feeder": MACRO["ltpb_trust_fee"], "fee_target": 0.00,
+        "fee_note": f"{MACRO['ltpb_trust_fee']:.2f}% trust fee (published by DragonFi; in the NAVPU)",
+        "gross_usd": None,
+        # The curve's 5-year point. A bond fund earns roughly its starting yield over
+        # a horizon about twice its duration, and a <=7-year average life puts the
+        # duration near 5 - so ten years is that horizon.
+        "gross_local": round(MACRO["ph_gs_5y"], 2),
+        "gross_note": (f"The PH government curve's 5-year point, {MACRO['ph_gs_5y']}% at the "
+                       f"{_PG.day} {_PG:%b} close (2-year {MACRO['ph_gs_2y']}%, 10-year "
+                       f"{MACRO['ph_gs_10y']}%, the 10-year up {MACRO['ph_gs_10y_ytd_bp']}bp "
+                       f"this year): a fund held within a {MACRO['ltpb_wal_max_y']}-year "
+                       f"average life earns roughly its starting yield over about twice its "
+                       f"duration, which is this mandate's ten years. The year's rise in "
+                       f"yields is already in its {MACRO['ltpb_1y_ret']}% one-year return."),
+        # Expressed against SP_VOL_LT as the money market is, but DERIVED so the
+        # sleeve's volatility is exactly the estimate whatever the curve does.
+        "vol_beta": MACRO["ltpb_vol"] / SP_VOL_LT, "fx_exposed": False,
+        "macro_tilt": {"rates": -0.15, "energy": -0.10},
+        "dd_k_adj": 0.0, "cash_like": False,
+        "dd_k_why": "At the 1.65 anchor: a government bond fund's drawdowns come from duration, which its volatility already carries.",
+    },
+    {
+        "id": "ATRGDIV", "name": "ATRAM Global Dividend Feeder Fund",
+        "short": "Global Dividend", "ccy": "PHP (unhedged)", "region": "GLOBAL_DIV",
+        "target": "Target fund: Fidelity Funds - Global Dividend Fund.",
+        "target_verified": True,
+        "fee_feeder": MACRO["gdiv_trust_fee"], "fee_target": MACRO["gdiv_target_ocf"],
+        "fee_note": (f"~{MACRO['gdiv_trust_fee']:.2f}% ATRAM trust fee (ESTIMATE: no current "
+                     f"schedule found) + {MACRO['gdiv_target_ocf']:.2f}% target-fund OCF "
+                     f"(PUBLISHED by Fidelity for the Y-Acc-USD class; the class the feeder "
+                     f"holds is not published)"),
+        "gross_usd": round(MACRO["ltcma_global_eq"] - MACRO["gdiv_div_drag"], 2),
+        "gross_note": (f"JPM LTCMA global equity {MACRO['ltcma_global_eq']}% (the 2026 edition "
+                       f"every fund here is on; the 2027 edition has "
+                       f"{MACRO['ltcma_global_eq_2027']}%) less ~{MACRO['gdiv_div_drag']}% for "
+                       f"the dividend tilt's lower growth capture."),
+        "vol_beta": 0.80, "fx_exposed": True,      # ASSUMPTION: quality-dividend equity at ~0.80x the S&P
+        "macro_tilt": {"rates": -0.08, "energy": 0.0},
+        "dd_k_adj": 0.0, "cash_like": False,
+        "dd_k_why": "At the 1.65 anchor: a diversified dividend portfolio's left tail is the market's.",
+    },
+]
+F_D = [build_fund(f) for f in D_FUNDS]
+F_D[0]["target_net_macro"] = F_D[0]["target_dd_macro"] = None   # own mandate, no target fund
+
 # ---- Correlation matrix -----------------------------------------------------
 # Order: ATRPHMM, ATRQIAP, ATRASEQ, ATRGTEC
 CORR = [
@@ -2453,31 +2545,54 @@ CORR_NOTE = ("Money market is treated as uncorrelated to the equity sleeves. "
              "constraint - both are US mega-cap-tech engines, so holding both "
              "at size buys far less diversification than it appears to.")
 
-def port_vol(w):
-    s = [w[i] * F[i]["vol"] for i in range(4)]
+# PORTFOLIO D's six-fund matrix: the four-fund block above unchanged, plus the two
+# added funds. Their pairs come from the 21 Oct review's factor model, whose fit
+# reproduces the 0.88 / 0.66 / 0.74 above exactly - so the new rows are on the same
+# basis as the old ones. Order: MM, Nasdaq Income, Asia, Tech, LT Peso Bond, Global
+# Dividend. The money market's 0.44 with the bond fund is the shared peso-rate
+# factor; on a 0.4% volatility it moves nothing.
+CORR_D = [r + x for r, x in zip(CORR, ([0.44, 0.00], [0.10, 0.61], [0.05, 0.59], [0.14, 0.69]))] + [
+    [0.44, 0.10, 0.05, 0.14, 1.00, 0.09],
+    [0.00, 0.61, 0.59, 0.69, 0.09, 1.00],
+]
+CORR_D_NOTE = ("The Long Term Peso Bond barely moves with the equity sleeves (0.05-0.14) "
+               "in normal markets; in a global rate shock like 2022's that rises, which the "
+               "review that picked D tested at about 0.35.")
+
+# Every portfolio function takes an optional UNIVERSE - (funds built, fund specs,
+# correlation) - so Portfolio D is computed by the same code as A, B and C. The
+# default is the four-fund universe, so nothing that calls these without it changes.
+def _univ(u):
+    return u if u is not None else (F, FUNDS, CORR)
+
+def port_vol(w, u=None):
+    Fs, _, C = _univ(u)
+    s = [w[i] * Fs[i]["vol"] for i in range(len(w))]
     v = 0.0
-    for i in range(4):
-        for j in range(4):
-            v += s[i] * s[j] * CORR[i][j]
+    for i in range(len(w)):
+        for j in range(len(w)):
+            v += s[i] * s[j] * C[i][j]
     return math.sqrt(v)
 
-def port_ret(w, key):
-    return sum(w[i] * F[i][key] for i in range(4))
+def port_ret(w, key, u=None):
+    Fs, _, _ = _univ(u)
+    return sum(w[i] * Fs[i][key] for i in range(len(w)))
 
-def port_k(w):
+def port_k(w, u=None):
     """Weight-averaged drawdown coefficient, ex-cash (cash contributes no equity DD)."""
-    eq = sum(w[i] for i in range(4) if not FUNDS[i]["cash_like"])
+    _, FS, _ = _univ(u)
+    eq = sum(w[i] for i in range(len(w)) if not FS[i]["cash_like"])
     if eq <= 0:
         return DD_K
-    return DD_K + sum(w[i] * FUNDS[i]["dd_k_adj"] for i in range(4)
-                      if not FUNDS[i]["cash_like"]) / eq
+    return DD_K + sum(w[i] * FS[i]["dd_k_adj"] for i in range(len(w))
+                      if not FS[i]["cash_like"]) / eq
 
-def port_dd(w, key):
-    mu = port_ret(w, key)
-    return -max((port_k(w) * port_vol(w) - DD_MU * mu) * DD_HORIZON_SCALAR, 0.0)
+def port_dd(w, key, u=None):
+    mu = port_ret(w, key, u)
+    return -max((port_k(w, u) * port_vol(w, u) - DD_MU * mu) * DD_HORIZON_SCALAR, 0.0)
 
-def summarise(w, key):
-    r, v, d = port_ret(w, key), port_vol(w), port_dd(w, key)
+def summarise(w, key, u=None):
+    r, v, d = port_ret(w, key, u), port_vol(w, u), port_dd(w, key, u)
     # The peso illustration is computed from the ROUNDED figures the page shows,
     # not the raw ones, so a reader who multiplies out the displayed CAGR gets
     # exactly the peso number printed beside it. Using the raw values instead
@@ -2500,7 +2615,7 @@ def summarise(w, key):
     # port_dd() itself is UNCHANGED and still raw - the optimiser's constraint must
     # test the true drawdown, not a display value.  (Audit 2026-09-20.)
     r_d, v_d = round(r, 2), round(v, 2)
-    d_d = round(-max((port_k(w) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0), 1)
+    d_d = round(-max((port_k(w, u) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0), 1)
     return {
         "weights": [round(x * 100, 1) for x in w],
         "cagr": r_d, "vol": v_d, "maxdd": d_d,
@@ -2727,6 +2842,18 @@ _pin_best = max(s2["cagr"] for _, s2 in _pin_feas)
 PIN_W_ALL, PIN, PIN_BAND_N = pick(_pin_feas)
 OPT_UNDER_BASE = summarise(OPT_W, "net_base")
 
+# PORTFOLIO D - the owner's fourth portfolio (requested 2026-10-21): the pick of the
+# 21 Oct review of all 22 ATRAM funds. Its weights are FIXED here, not re-optimised:
+# they were chosen on the JPM 2027 assumptions over a wider universe and six stress
+# tests (recorded in MACRO["pd_review_*"]). What this page adds is the same
+# measurement as A, B and C - this page's basis, the same fees, tilts, correlation
+# and drawdown rule - so the four can be compared like for like.
+U_D = (F + F_D, FUNDS + D_FUNDS, CORR_D)
+D_IDS = [f["id"] for f in U_D[1]]
+D_W = [0.05, 0.35, 0.00, 0.20, 0.35, 0.05]   # MM, Nasdaq Inc, Asia, Tech, LT Peso Bond, Global Dividend
+PD = summarise(D_W, "net_macro", U_D)
+PD_BASE = summarise(D_W, "net_base", U_D)
+
 # What the former 50% single-sleeve cap would choose under the same objective and
 # the same drawdown budget - published so the cost and benefit of removing it are
 # computed, not asserted.
@@ -2875,36 +3002,47 @@ FRONTIER = [{"maxdd": abs(v[1]["maxdd"]), "dd": v[1]["maxdd"], "cagr": v[1]["cag
 # ----------------------------------------------------------------------------
 # Each scenario is an additive shock (pp, annualised over 5y) per fund and a
 # vol multiplier, keyed to a live, named risk in the current macro picture.
+# Portfolio D's two added funds carry shocks too (ESTIMATES, 2026-10-21): the bond
+# fund loses in the inflation and rate rows - the Philippines imports its oil and
+# its yields follow US yields - and gains when disinflation lets yields fall; the
+# dividend sleeve takes about half the Nasdaq sleeve's hit in each equity row.
 SCENARIOS = [
     ("Hormuz escalation", "Already partly running since the late-August tanker strikes. "
      f"This row models the tail: full Strait closure and Brent to ${MACRO['brent_closure']:.0f}+ from "
      f"${MACRO['brent']:.0f}. Global CPI re-accelerates, the Fed is forced to hike, and "
      "multiples compress hardest at the long end.",
-     {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5}, 1.60),
+     {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5,
+      "ATRLTPB": -1.5, "ATRGDIV": -3.0}, 1.60),
     ("Hawkish repricing", "A second hike on top of the one the dot plot already has "
      f"(median {MACRO['fed_dot_2026']}% for end-2026) - {MACRO['fed_dots_two_more']} of "
      # Bound to the input 2026-10-03: "a 4.1% unemployment rate" was typed, and
      # went stale the day September's report moved it to 4.2%.
      f"{MACRO['fed_dots_participants']} participants see it. The Fed hikes into a "
      f"{MACRO['us_unemployment']}% unemployment rate; duration-heavy growth de-rates.",
-     {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0}, 1.30),
+     {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0,
+      "ATRLTPB": -1.0, "ATRGDIV": -1.5}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-     {"ATRPHMM": 0.0, "ATRQIAP": -3.5, "ATRASEQ": -5.5, "ATRGTEC": -8.0}, 1.45),
+     {"ATRPHMM": 0.0, "ATRQIAP": -3.5, "ATRASEQ": -5.5, "ATRGTEC": -8.0,
+      "ATRLTPB": +0.3, "ATRGDIV": -1.0}, 1.45),
     ("Disinflation restart", "Oil mean-reverts to $65, headline CPI falls to 2%, "
      "Fed cuts. The bull case: multiples expand, vol collapses.",
-     {"ATRPHMM": -0.9, "ATRQIAP": +2.5, "ATRASEQ": +3.5, "ATRGTEC": +4.5}, 0.80),
+     {"ATRPHMM": -0.9, "ATRQIAP": +2.5, "ATRASEQ": +3.5, "ATRGTEC": +4.5,
+      "ATRLTPB": +1.5, "ATRGDIV": +1.5}, 0.80),
     ("Grind-on base case", "Vol drifts up to the 19-20 the futures curve already "
      "prices, earnings hold, no policy accident. The modelled path.",
-     {"ATRPHMM": 0.0, "ATRQIAP": 0.0, "ATRASEQ": 0.0, "ATRGTEC": 0.0}, 1.00),
+     {"ATRPHMM": 0.0, "ATRQIAP": 0.0, "ATRASEQ": 0.0, "ATRGTEC": 0.0,
+      "ATRLTPB": 0.0, "ATRGDIV": 0.0}, 1.00),
 ]
 
-def run_scenarios(w, key):
+def run_scenarios(w, key, u=None):
+    Fs, _, C = _univ(u)
+    n = len(w)
     rows = []
     for name, desc, shock, volmul in SCENARIOS:
-        r = sum(w[i] * (F[i][key] + shock[F[i]["id"]]) for i in range(4))
-        s = [w[i] * F[i]["vol"] * volmul for i in range(4)]
-        v = math.sqrt(sum(s[i] * s[j] * CORR[i][j] for i in range(4) for j in range(4)))
+        r = sum(w[i] * (Fs[i][key] + shock[Fs[i]["id"]]) for i in range(n))
+        s = [w[i] * Fs[i]["vol"] * volmul for i in range(n)]
+        v = math.sqrt(sum(s[i] * s[j] * C[i][j] for i in range(n) for j in range(n)))
         # The horizon scalar belongs here exactly as it does in port_dd(). It was
         # MISSING from 2026-09-07, when the mandate moved to 10 years, until the
         # 2026-09-09 audit: every other drawdown on the page was scaled and these
@@ -2920,7 +3058,7 @@ def run_scenarios(w, key):
         # because the fix was applied where it was found rather than everywhere the
         # pattern occurs. (Audit 2026-09-14.)
         r_d, v_d = round(r, 2), round(v, 2)
-        d = -max((port_k(w) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0)
+        d = -max((port_k(w, u) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0)
         rows.append({"name": name, "desc": desc, "cagr": r_d,
                      "vol": v_d, "maxdd": round(d, 1)})
     return rows
@@ -3492,6 +3630,19 @@ SOURCES = [
      "https://www.gulftoday.ae/business/2026/10/20/asian-shares-mostly-decline-after-ai-stocks-lead-a-rebound-on-wall-street"),
     ("US News / Reuters", "China's economic growth picks up in the third quarter, beating expectations - 4.5% against 4.4%, 19 Oct 2026",
      "https://money.usnews.com/investing/news/articles/2026-10-18/chinas-economic-growth-picks-up-in-third-quarter-beating-expectations"),
+    # ---- added 2026-10-21, Portfolio D ----
+    ("DragonFi", "ATRAM Long Term Peso Bond Fund: trust fee 1.00% p.a.; PH government debt, up to 20% investment-grade corporates; weighted average portfolio life within 7 years; 1-year return +1.79% to 1 Oct 2026",
+     "https://help.dragonfi.ph/hc/en-us/articles/60138066707353-ATRAM-Long-Term-Peso-Bond-Fund"),
+    ("AsianBondsOnline (ADB)", "Philippines government bond yields, close of 15 Oct 2026: 2-year 7.055%, 5-year 7.679%, 10-year 8.016% (10-year up 194.4bp year to date)",
+     "https://asianbondsonline.adb.org/philippines/"),
+    ("Fidelity", "Fidelity Funds - Global Dividend Fund Y-Acc-USD: ongoing charge 1.04%",
+     "https://www.fidelity.co.uk/factsheet-data/factsheet/LU0605515963USD-fidelity-funds---global-dividend-fund-y-acc-usd/charges-and-key-documents"),
+    ("Seedbox / ATRAM", "ATRAM Global Dividend Feeder Fund KIIDS: target fund Fidelity Funds - Global Dividend Fund",
+     "https://file.seedbox.ph/ATRAM%20GLOBAL%20DIVIDEND%20FEEDER%20FUND%20KIIDS_Jan_2021.pdf"),
+    ("BusinessWorld", "ATRAM offers global feeder funds via PERA: the Global Dividend feeders invest in the Fidelity Global Dividend Fund, 21 Jul 2026",
+     "https://bworldonline.com/banking-finance/2026/07/21/764648/atram-offers-global-feeder-funds-via-pera/"),
+    ("PR Newswire / J.P. Morgan", "J.P. Morgan 2027 Long-Term Capital Market Assumptions: 60/40 at 7.0%; US large cap 7.5%, global equities 7.5%, emerging markets 7.1%, global aggregate bonds 5.3%, 19 Oct 2026",
+     "https://www.prnewswire.com/news-releases/jp-morgan-releases-2027-longterm-capital-market-assumptions-projecting-7-0-return-for-6040-portfolio-over-10-15-years-302912421.html"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -3549,7 +3700,7 @@ def payload():
         "gauge": GAUGE, "gauge_10": GAUGE_10, "gauge_neutral": GAUGE_NEUTRAL,
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
         "lookthrough": LOOKTHROUGH,
-        "acwi_it_mix": ACWI_IT_MIX,
+        "acwi_it_mix": ACWI_IT_MIX, "gdiv_mix": GDIV_MIX,
         # The covered-call sleeve's vol factor, published so it is auditable rather
         # than a constant folded into vol_beta.
         "jepq_vol": JEPQ_VOL, "ndx_vol": NDX_VOL, "jepq_beta": JEPQ_BETA,
@@ -3635,6 +3786,14 @@ def payload():
                    # the allocation-deciding assumption, applied to both
                    "cagr_no_rerating": summarise(PIN_W_ALL, "net_asia_norerate")["cagr"],
                    "opt_cagr_no_rerating": summarise(OPT_W, "net_asia_norerate")["cagr"]},
+        "portfolio_d": {"weights": [round(x * 100) for x in D_W], "ids": D_IDS,
+                        "shorts": [f["short"] for f in U_D[1]],
+                        "funds": F_D, "macro": PD, "base": PD_BASE,
+                        "scenarios": run_scenarios(D_W, "net_macro", U_D),
+                        "corr": CORR_D, "corr_note": CORR_D_NOTE,
+                        "dd_cap": round(DD_CAP, 2),
+                        "in_budget": abs(PD["maxdd"]) <= DD_CAP + 1e-9,
+                        "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pd_review_")}},
         "best_ratio": {"weights": [round(x*100) for x in BEST_RATIO_W], **BEST_RATIO},
         "stub": STUB, "tech_gap": TECH_GAP,
         "min_sleeve": MIN_SLEEVE,
@@ -3705,6 +3864,11 @@ def report():
       f"{pn['band_n']} in band)")
     A(f"      macro view     : CAGR {pn['macro']['cagr']}%  vol {pn['macro']['vol']}%  "
       f"maxDD {pn['macro']['maxdd']}%  ret/DD {pn['macro']['ret_per_dd']}")
+    pdd = p["portfolio_d"]
+    A(f"    PORTFOLIO D weights {pdd['weights']}   (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend; "
+      f"fixed from the {pdd['review']['date']} review)")
+    A(f"      macro view     : CAGR {pdd['macro']['cagr']}%  vol {pdd['macro']['vol']}%  "
+      f"maxDD {pdd['macro']['maxdd']}%  ret/DD {pdd['macro']['ret_per_dd']}")
     for k, v in p["what_if"].items():
         A(f"    what-if {k:<17}: B {v['weights']} {v['cagr']}%   C {v['pinned']['weights']} {v['pinned']['cagr']}%")
     A(f"    best pure ret/DD  : {p['best_ratio']['weights']}  CAGR {p['best_ratio']['cagr']}%  "
@@ -4947,12 +5111,59 @@ def report():
     checks.append(("B gives up no more CAGR to the baseline than the tie band, and cuts its drawdown",
                    o["macro"]["cagr"] >= b["under_macro"]["cagr"] - PIN_TIE_PP - 1e-9
                    and abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])))
+    # PORTFOLIO D (2026-10-21). Fixed weights, so the checks are about measurement:
+    # the grid, the matrix it is measured with, the budget, and that every figure
+    # re-derives from the two added funds' own inputs.
+    _pdd = p["portfolio_d"]; _dw = _pdd["weights"]
+    checks.append(("Portfolio D: six weights on the 5% grid summing to 100, every held fund at the minimum",
+                   len(_dw) == 6 and sum(_dw) == 100 and all(x % 5 == 0 for x in _dw)
+                   and all(x == 0 or x >= MIN_SLEEVE * 100 for x in _dw)))
+    _cd = CORR_D
+    checks.append(("D's six-fund correlation extends the four-fund one: same block, symmetric, unit diagonal, positive definite",
+                   all(_cd[i][j] == CORR[i][j] for i in range(4) for j in range(4))
+                   and all(_cd[i][j] == _cd[j][i] for i in range(6) for j in range(6))
+                   and all(_cd[i][i] == 1.0 for i in range(6)) and _chol_pd(_cd)))
+    _dmu = sum(w / 100 * f["net_macro"] for w, f in zip(_dw, p["funds"] + _pdd["funds"]))
+    checks.append((f"Portfolio D's CAGR re-derives from its six funds ({_dmu:.2f} vs {_pdd['macro']['cagr']})",
+                   abs(_dmu - _pdd["macro"]["cagr"]) < 0.005))
+    checks.append((f"Portfolio D sits inside the drawdown budget ({_pdd['macro']['maxdd']}% vs -{DD_CAP:.2f}%)",
+                   _pdd["in_budget"] and abs(_pdd["macro"]["maxdd"]) <= DD_CAP + 1e-9))
+    checks.append(("D's grind-on stress row reproduces D itself",
+                   [r for r in _pdd["scenarios"] if r["name"].startswith("Grind")][0]["cagr"] == _pdd["macro"]["cagr"]))
+    _fl, _fg = _pdd["funds"]
+    checks.append(("D's added funds: the bond fund's fee is its trust fee, the feeder's is trust plus target",
+                   _fl["fee_total"] == MACRO["ltpb_trust_fee"]
+                   and abs(_fg["fee_total"] - MACRO["gdiv_trust_fee"] - MACRO["gdiv_target_ocf"]) < 1e-9))
+    _pgd = _dt.date.fromisoformat(MACRO["ph_gs_date"])
+    checks.append(("the PH curve behind the bond fund is upward-sloping, dated at/before the as-of date and within 14 days",
+                   MACRO["ph_gs_2y"] < MACRO["ph_gs_5y"] < MACRO["ph_gs_10y"]
+                   and 0 <= (_dt.date.fromisoformat(AS_OF) - _pgd).days <= 14))
+    checks.append(("the bond fund's gross return is the curve's 5-year point, and its vol is the stated estimate",
+                   _fl["gross_php"] == round(MACRO["ph_gs_5y"], 2) and abs(_fl["vol"] - MACRO["ltpb_vol"]) < 0.005))
+    checks.append(("D's review is quoted as recorded: dated on/after the as-of date, worst case no better "
+                   "than its base, and its drawdown inside the same budget",
+                   MACRO["pd_review_date"] >= AS_OF and MACRO["pd_review_worst"] <= MACRO["pd_review_cagr"]
+                   and MACRO["pd_review_dd"] <= DD_CAP + 1e-9))
     checks.append(("portfolio vol < weighted-average vol (diversification works)",
                    o["macro"]["vol"] < sum(w/100*f["vol"] for w, f in zip(o["weights"], p["funds"]))))
     for name, ok in checks:
         A(f"    [{'PASS' if ok else 'FAIL'}] {name}")
     A(f"\n    {sum(1 for _, ok in checks if ok)}/{len(checks)} checks passed")
     return "\n".join(L), all(ok for _, ok in checks)
+
+def _chol_pd(M):
+    """True if M is positive definite (Cholesky succeeds)."""
+    n = len(M); L = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(i + 1):
+            sm = M[i][j] - sum(L[i][k] * L[j][k] for k in range(j))
+            if i == j:
+                if sm <= 0:
+                    return False
+                L[i][i] = math.sqrt(sm)
+            else:
+                L[i][j] = sm / L[j][j]
+    return True
 
 if __name__ == "__main__":
     if "--json" in sys.argv:

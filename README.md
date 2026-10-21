@@ -14,6 +14,13 @@ ATRAM unit investment trust funds, built for a ten-year horizon.
 | `ATRASEQ` | ATRAM Asia Equity Opportunity Feeder Fund | JPMorgan Asia Equity Dividend Fund |
 | `ATRGTEC` | ATRAM Global Technology Feeder Fund | Fidelity Funds – Global Technology · MSCI ACWI IT |
 
+Portfolio D adds two more, held in D only:
+
+| Code | Fund | Own stated target |
+|---|---|---|
+| `ATRLTPB` | ATRAM Long Term Peso Bond Fund | PH government debt (up to 20% IG corporates), average portfolio life ≤ 7 years |
+| `ATRGDIV` | ATRAM Global Dividend Feeder Fund | Fidelity Funds – Global Dividend Fund |
+
 Each fund is measured against its own target, not a house benchmark.
 
 ## Result
@@ -35,6 +42,21 @@ at 3 / 6 / 12 months against the 10-year anchor. Almost all of B's improvement o
 baseline is drawdown: the forecasts are level at the model's precision (0.02pp apart,
 inside the 0.05pp tie) and B's drawdown is 3.8pp shallower. The page states this, and every figure here, from
 the engine; this table is a snapshot of it, and the review audit fails if it drifts.
+
+### Portfolio D · the 22-fund review pick (added 21 Oct 2026)
+
+| | D |
+|---|---|
+| D · Allocation (MM / Nasdaq Inc / Asia / Tech / LT Peso Bond / Global Dividend) | **5 / 35 / 0 / 20 / 35 / 5** |
+| D · 10y net CAGR after all fees | 6.53% |
+| D · Expected max drawdown (10y) | −22.1% |
+| D · Return per unit of drawdown | 0.295 |
+
+D's weights are fixed. They come from a 21 Oct review of all 22 ATRAM funds on
+J.P. Morgan's 2027 assumptions: the best worst-case return across six stress tests,
+inside the drawdown budget in every one (7.38% / −21.5% there, 6.91% at worst).
+Measured here on the page's own basis, the same as A, B and C, it returns 6.53%
+(level with C) at a drawdown 3.5pp shallower.
 
 ## Layout
 

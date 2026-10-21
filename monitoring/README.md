@@ -141,6 +141,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+73. A PORTFOLIO PICKED ELSEWHERE IS MEASURED HERE, NOT RE-CHOSEN. D's weights come
+   from a wider review on a different basis. Its two added funds are built by the
+   same build_fund(), its risk by the same functions with the six-fund universe passed
+   in, and the page quotes BOTH numbers - the review's and this page's - each with its
+   basis, so neither can stand in for the other.
 72. A TOLERANCE A SENTENCE QUOTES IS A TOLERANCE THE CHECK OWNS. "Past 20%" was
    typed into the page beside a check holding its own 0.20, and the VIX3M bound of
    10% lived only in its check while the page called the gap "a touch" whatever its

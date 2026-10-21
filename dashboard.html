@@ -12,6 +12,9 @@
 
   /* validated categorical (pairs=all PASS): teal / blue / orange / magenta */
   --f1:#0E9B80; --f2:#3670D6; --f3:#CB5A22; --f4:#B0399B;
+  /* slots 5-6, Portfolio D only: green / violet. Validated with the four above on
+     D's ring order (adjacent CVD dE >= 11.2, normal >= 20.5, contrast >= 3:1) */
+  --f5:#008300; --f6:#6250D6;
   --f1-w:#DDF3EE; --f2-w:#E2EAFA; --f3-w:#FAE9DE; --f4-w:#F8E2F2;
 
   /* status - always shipped with an icon + word, never colour alone */
@@ -555,6 +558,27 @@ details.how p:last-child{margin-bottom:0}
   </section>
 
   <section>
+    <p class="eyebrow">Portfolio D &middot; from all 22 ATRAM funds</p>
+    <h2>A peso bond fund carries most of the buffer</h2>
+    <p id="pdlede">—</p>
+    <div class="dwrap" style="max-width:240px;margin:0 auto">
+      <div class="dt2">Portfolio D</div>
+      <div class="dn">22-fund review pick</div>
+      <div id="donutD"></div>
+    </div>
+    <div class="legend" id="pdlegend" style="justify-content:center;margin-top:12px"></div>
+    <div class="card" style="margin-top:12px">
+      <div class="tw"><table class="dt" id="pdtab"></table></div>
+      <p class="note" id="pdnote">—</p>
+    </div>
+    <details class="card how">
+      <summary>The two funds D adds</summary>
+      <div class="tw"><table class="dt" id="pdfunds"></table></div>
+      <p class="note" id="pdfnote">—</p>
+    </details>
+  </section>
+
+  <section>
     <p class="eyebrow">Headline forecast</p>
     <div class="card">
       <div class="tw"><table class="dt" id="ptab"></table></div>
@@ -1049,6 +1073,28 @@ details.how p:last-child{margin-bottom:0}
   ],
   "ph_tbill_date": "2026-10-19",
   "ph_tbill_cadence_d": 7,
+  "ph_gs_2y": 7.055,
+  "ph_gs_5y": 7.679,
+  "ph_gs_10y": 8.016,
+  "ph_gs_date": "2026-10-15",
+  "ph_gs_10y_ytd_bp": 194.4,
+  "ltpb_trust_fee": 1.0,
+  "ltpb_wal_max_y": 7,
+  "ltpb_corp_max_pct": 20,
+  "ltpb_1y_ret": 1.79,
+  "ltpb_1y_date": "2026-10-01",
+  "ltpb_vol": 5.8,
+  "gdiv_trust_fee": 1.2,
+  "gdiv_target_ocf": 1.04,
+  "gdiv_div_drag": 0.3,
+  "ltcma_global_eq": 7.0,
+  "ltcma_global_eq_2027": 7.5,
+  "pd_review_date": "2026-10-21",
+  "pd_review_n_funds": 22,
+  "pd_review_n_scen": 6,
+  "pd_review_cagr": 7.38,
+  "pd_review_dd": 21.5,
+  "pd_review_worst": 6.91,
   "brent_history": [
    [
     "2026-09-18",
@@ -1794,7 +1840,9 @@ details.how p:last-child{margin-bottom:0}
    "ATRPHMM": 0.035,
    "ATRQIAP": 0.21,
    "ATRASEQ": 0.0,
-   "ATRGTEC": -0.122
+   "ATRGTEC": -0.122,
+   "ATRLTPB": 0.0,
+   "ATRGDIV": 0.0
   },
   "kappa": 1.5,
   "vrp": 3.5,
@@ -2254,6 +2302,11 @@ details.how p:last-child{margin-bottom:0}
   "US": 0.72,
   "ASIA": 0.16,
   "EUROPE": 0.12
+ },
+ "gdiv_mix": {
+  "US": 0.5,
+  "EUROPE": 0.38,
+  "ASIA": 0.12
  },
  "jepq_vol": 13.9,
  "ndx_vol": 20.4,
@@ -2807,6 +2860,242 @@ details.how p:last-child{margin-bottom:0}
   ],
   "cagr_no_rerating": 6.29,
   "opt_cagr_no_rerating": 6.21
+ },
+ "portfolio_d": {
+  "weights": [
+   5,
+   35,
+   0,
+   20,
+   35,
+   5
+  ],
+  "ids": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRASEQ",
+   "ATRGTEC",
+   "ATRLTPB",
+   "ATRGDIV"
+  ],
+  "shorts": [
+   "Peso Money Market",
+   "Nasdaq Equity Income",
+   "Asia Equity",
+   "Global Technology",
+   "Long Term Peso Bond",
+   "Global Dividend"
+  ],
+  "funds": [
+   {
+    "id": "ATRLTPB",
+    "name": "ATRAM Long Term Peso Bond Fund",
+    "short": "Long Term Peso Bond",
+    "ccy": "PHP",
+    "region": "PHILIPPINES",
+    "target": "Own mandate: Philippine government debt, up to 20% investment-grade PH corporates; weighted average portfolio life within 7 years",
+    "target_verified": true,
+    "fee_note": "1.00% trust fee (published by DragonFi; in the NAVPU)",
+    "gross_note": "The PH government curve's 5-year point, 7.679% at the 15 Oct close (2-year 7.055%, 10-year 8.016%, the 10-year up 194.4bp this year): a fund held within a 7-year average life earns roughly its starting yield over about twice its duration, which is this mandate's ten years. The year's rise in yields is already in its 1.79% one-year return.",
+    "fee_feeder": 1.0,
+    "fee_target": 0.0,
+    "fee_feeder_prev": null,
+    "fee_feeder_from": null,
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 1.0,
+    "gross_php": 7.68,
+    "fx_drift": 0.0,
+    "net_base": 6.68,
+    "regional_score": 2.94,
+    "tilt_regional": -0.04,
+    "tilt_vol": -0.0,
+    "tilt_rates": -0.35,
+    "tilt_energy": -0.13,
+    "tilt_trend": 0.0,
+    "tilt_rates_cal": -0.15,
+    "tilt_energy_cal": -0.1,
+    "tilt_total": -0.52,
+    "net_macro": 6.16,
+    "vol": 5.8,
+    "dd_k": 1.65,
+    "dd_k_why": "At the 1.65 anchor: a government bond fund's drawdowns come from duration, which its volatility already carries.",
+    "dd_base": -8.8,
+    "dd_macro": -9.2,
+    "target_net_macro": null,
+    "target_dd_macro": null
+   },
+   {
+    "id": "ATRGDIV",
+    "name": "ATRAM Global Dividend Feeder Fund",
+    "short": "Global Dividend",
+    "ccy": "PHP (unhedged)",
+    "region": "GLOBAL_DIV",
+    "target": "Target fund: Fidelity Funds - Global Dividend Fund.",
+    "target_verified": true,
+    "fee_note": "~1.20% ATRAM trust fee (ESTIMATE: no current schedule found) + 1.04% target-fund OCF (PUBLISHED by Fidelity for the Y-Acc-USD class; the class the feeder holds is not published)",
+    "gross_note": "JPM LTCMA global equity 7.0% (the 2026 edition every fund here is on; the 2027 edition has 7.5%) less ~0.3% for the dividend tilt's lower growth capture.",
+    "fee_feeder": 1.2,
+    "fee_target": 1.04,
+    "fee_feeder_prev": null,
+    "fee_feeder_from": null,
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 2.24,
+    "gross_php": 8.7,
+    "fx_drift": 2.0,
+    "net_base": 6.46,
+    "regional_score": 2.82,
+    "tilt_regional": -0.12,
+    "tilt_vol": -0.0,
+    "tilt_rates": -0.19,
+    "tilt_energy": 0.0,
+    "tilt_trend": 0.0,
+    "tilt_rates_cal": -0.08,
+    "tilt_energy_cal": 0.0,
+    "tilt_total": -0.31,
+    "net_macro": 6.15,
+    "vol": 15.51,
+    "dd_k": 1.65,
+    "dd_k_why": "At the 1.65 anchor: a diversified dividend portfolio's left tail is the market's.",
+    "dd_base": -31.6,
+    "dd_macro": -31.8,
+    "target_net_macro": 7.35,
+    "target_dd_macro": -31.0
+   }
+  ],
+  "macro": {
+   "weights": [
+    5.0,
+    35.0,
+    0.0,
+    20.0,
+    35.0,
+    5.0
+   ],
+   "cagr": 6.53,
+   "vol": 11.23,
+   "maxdd": -22.1,
+   "ret_per_dd": 0.295,
+   "sharpe_like": 0.008,
+   "terminal_1m": 1882432,
+   "worst_1m_from_open": 779000
+  },
+  "base": {
+   "weights": [
+    5.0,
+    35.0,
+    0.0,
+    20.0,
+    35.0,
+    5.0
+   ],
+   "cagr": 6.97,
+   "vol": 11.23,
+   "maxdd": -21.8,
+   "ret_per_dd": 0.32,
+   "sharpe_like": 0.047,
+   "terminal_1m": 1961643,
+   "worst_1m_from_open": 782000
+  },
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $109. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 2.81,
+    "vol": 17.96,
+    "maxdd": -40.7
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
+    "cagr": 4.27,
+    "vol": 14.59,
+    "maxdd": -31.7
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 3.76,
+    "vol": 16.28,
+    "maxdd": -36.1
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 8.86,
+    "vol": 8.98,
+    "maxdd": -15.1
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
+    "cagr": 6.53,
+    "vol": 11.23,
+    "maxdd": -22.1
+   }
+  ],
+  "corr": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.44,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.66,
+    0.88,
+    0.1,
+    0.61
+   ],
+   [
+    0.0,
+    0.66,
+    1.0,
+    0.74,
+    0.05,
+    0.59
+   ],
+   [
+    0.0,
+    0.88,
+    0.74,
+    1.0,
+    0.14,
+    0.69
+   ],
+   [
+    0.44,
+    0.1,
+    0.05,
+    0.14,
+    1.0,
+    0.09
+   ],
+   [
+    0.0,
+    0.61,
+    0.59,
+    0.69,
+    0.09,
+    1.0
+   ]
+  ],
+  "corr_note": "The Long Term Peso Bond barely moves with the equity sleeves (0.05-0.14) in normal markets; in a global rate shock like 2022's that rises, which the review that picked D tested at about 0.35.",
+  "dd_cap": 27.27,
+  "in_budget": true,
+  "review": {
+   "date": "2026-10-21",
+   "n_funds": 22,
+   "n_scen": 6,
+   "cagr": 7.38,
+   "dd": 21.5,
+   "worst": 6.91
+  }
  },
  "best_ratio": {
   "weights": [
@@ -4595,6 +4884,36 @@ details.how p:last-child{margin-bottom:0}
    "org": "US News / Reuters",
    "what": "China's economic growth picks up in the third quarter, beating expectations - 4.5% against 4.4%, 19 Oct 2026",
    "url": "https://money.usnews.com/investing/news/articles/2026-10-18/chinas-economic-growth-picks-up-in-third-quarter-beating-expectations"
+  },
+  {
+   "org": "DragonFi",
+   "what": "ATRAM Long Term Peso Bond Fund: trust fee 1.00% p.a.; PH government debt, up to 20% investment-grade corporates; weighted average portfolio life within 7 years; 1-year return +1.79% to 1 Oct 2026",
+   "url": "https://help.dragonfi.ph/hc/en-us/articles/60138066707353-ATRAM-Long-Term-Peso-Bond-Fund"
+  },
+  {
+   "org": "AsianBondsOnline (ADB)",
+   "what": "Philippines government bond yields, close of 15 Oct 2026: 2-year 7.055%, 5-year 7.679%, 10-year 8.016% (10-year up 194.4bp year to date)",
+   "url": "https://asianbondsonline.adb.org/philippines/"
+  },
+  {
+   "org": "Fidelity",
+   "what": "Fidelity Funds - Global Dividend Fund Y-Acc-USD: ongoing charge 1.04%",
+   "url": "https://www.fidelity.co.uk/factsheet-data/factsheet/LU0605515963USD-fidelity-funds---global-dividend-fund-y-acc-usd/charges-and-key-documents"
+  },
+  {
+   "org": "Seedbox / ATRAM",
+   "what": "ATRAM Global Dividend Feeder Fund KIIDS: target fund Fidelity Funds - Global Dividend Fund",
+   "url": "https://file.seedbox.ph/ATRAM%20GLOBAL%20DIVIDEND%20FEEDER%20FUND%20KIIDS_Jan_2021.pdf"
+  },
+  {
+   "org": "BusinessWorld",
+   "what": "ATRAM offers global feeder funds via PERA: the Global Dividend feeders invest in the Fidelity Global Dividend Fund, 21 Jul 2026",
+   "url": "https://bworldonline.com/banking-finance/2026/07/21/764648/atram-offers-global-feeder-funds-via-pera/"
+  },
+  {
+   "org": "PR Newswire / J.P. Morgan",
+   "what": "J.P. Morgan 2027 Long-Term Capital Market Assumptions: 60/40 at 7.0%; US large cap 7.5%, global equities 7.5%, emerging markets 7.1%, global aggregate bonds 5.3%, 19 Oct 2026",
+   "url": "https://www.prnewswire.com/news-releases/jp-morgan-releases-2027-longterm-capital-market-assumptions-projecting-7-0-return-for-6040-portfolio-over-10-15-years-302912421.html"
   }
  ]
 }
@@ -4606,9 +4925,9 @@ const $ = s => document.querySelector(s);
 const el = (t, a, h) => { const n = document.createElement(t);
   if (a) for (const k in a) n.setAttribute(k, a[k]);
   if (h != null) n.innerHTML = h; return n; };
-const FC = ["var(--f1)","var(--f2)","var(--f3)","var(--f4)"];
+const FC = ["var(--f1)","var(--f2)","var(--f3)","var(--f4)","var(--f5)","var(--f6)"];
 const FW = ["var(--f1-w)","var(--f2-w)","var(--f3-w)","var(--f4-w)"];
-const HEX = ["#0E9B80","#3670D6","#CB5A22","#B0399B"];
+const HEX = ["#0E9B80","#3670D6","#CB5A22","#B0399B","#008300","#6250D6"];
 const F = D.funds, N = F.length;
 /* The mandate horizon comes from the payload. On 8 Sep it moved 5y -> 10y and
    every "5-year" typed into this file had to be hunted down; HY/HYN exist so
@@ -5482,6 +5801,65 @@ function donut(host, w, title, cagr, dd) {
          ${(Math.abs(B.strict.maxdd) - Math.abs(B.macro.maxdd)).toFixed(1)}pp more drawdown;
          the rule declines it.`
       : ``);
+  /* Portfolio D: fixed weights from the 21 Oct 22-fund review, measured by the engine
+     on this page's basis with the same functions as A, B and C - never typed here. */
+  (function () {
+    const P = D.portfolio_d, R = P.review;
+    const dshort = iso => new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    donut($("#donutD"), P.weights, "Portfolio D", P.macro.cagr, P.macro.maxdd);
+    $("#pdlegend").innerHTML = P.shorts.map((s, i) => P.weights[i] ?
+      `<span class="lgi"><i class="swatch" style="background:${FC[i]}"></i>${s}
+        <b>${P.weights[i]}%</b></span>` : "").join("");
+    $("#pdlede").innerHTML =
+      `Picked on ${dshort(R.date)} from all ${R.n_funds} ATRAM funds on J.P. Morgan's 2027
+       assumptions: the best worst-case return across ${R.n_scen} stress tests while staying
+       inside the drawdown budget in every one &mdash; <b class="num">${pc(R.cagr)}</b> with a
+       <b class="num">${pc1(-R.dd)}</b> drawdown there, <b class="num">${pc(R.worst)}</b> at
+       worst. The weights are fixed; this page measures them on its own inputs, exactly as it
+       measures A, B and C.`;
+    const t = $("#pdtab"), sc = n => x => x.scenarios.find(r => r.name.indexOf(n) === 0);
+    t.appendChild(el("thead", null,
+      `<tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>`));
+    const tb = el("tbody"), P4 = [A.under_macro, B.macro, C.macro, P.macro], S4 = [A, B, C, P];
+    /* Four columns on a phone: short labels, and the peso row in millions. */
+    [[`Net CAGR`, P4.map(x => pc(x.cagr))],
+     ["Drawdown", P4.map(x => pc1(x.maxdd))],
+     ["Volatility", P4.map(x => pc(x.vol))],
+     ["Return / DD", P4.map(x => x.ret_per_dd.toFixed(3))],
+     ["&#8369;1M after 10y", P4.map(x => "&#8369;" + (x.terminal_1m / 1e6).toFixed(2) + "M")],
+     ["Hormuz · DD", S4.map(x => pc1(sc("Hormuz")(x).maxdd))],
+     ["Hawkish · DD", S4.map(x => pc1(sc("Hawkish")(x).maxdd))],
+    ].forEach(([lab, v]) => tb.appendChild(el("tr", null,
+       `<td>${lab}</td>` + v.map(x => `<td>${x}</td>`).join(""))));
+    t.appendChild(tb);
+    /* Signed by the data: "level with" inside the tie band, above/below outside it. */
+    const dC = P.macro.cagr - C.macro.cagr, ddC = Math.abs(C.macro.maxdd) - Math.abs(P.macro.maxdd);
+    const vs = Math.abs(dC) < B.tie_pp ? `level with C's ${pc(C.macro.cagr)}`
+             : `${Math.abs(dC).toFixed(2)}pp ${dC > 0 ? "above" : "below"} C's ${pc(C.macro.cagr)}`;
+    $("#pdnote").innerHTML =
+      `On this page's inputs D returns <b class="num">${pc(P.macro.cagr)}</b>, ${vs}, with
+       <b class="num">${Math.abs(ddC).toFixed(1)}pp</b> ${ddC >= 0 ? "less" : "more"} drawdown
+       (${pc1(P.macro.maxdd)} against ${pc1(C.macro.maxdd)}), ${P.in_budget ? "inside" : "outside"}
+       the ${pc(-P.dd_cap)} budget. It is measured on J.P. Morgan's 2026 assumptions like the
+       other three; the 2027 edition the review used is not yet rolled into this page.
+       ${P.weights[4]}% sits in one Philippine bond fund &mdash; check its yield and duration on
+       its fact sheet before acting.`;
+    const ft = $("#pdfunds"), FD = P.funds;
+    ft.appendChild(el("thead", null, `<tr><th></th>` + FD.map(f => `<th>${f.short}</th>`).join("") + `</tr>`));
+    const fb = el("tbody");
+    [["Fees, all-in", FD.map(f => pc(f.fee_total))],
+     ["Gross return (pesos)", FD.map(f => pc(f.gross_php))],
+     ["Net, strategic", FD.map(f => pc(f.net_base))],
+     ["Macro tilt", FD.map(f => (f.tilt_total >= 0 ? "+" : "−") + Math.abs(f.tilt_total).toFixed(2))],
+     ["Net, macro view", FD.map(f => pc(f.net_macro))],
+     ["Volatility", FD.map(f => pc(f.vol))],
+     ["Drawdown alone", FD.map(f => pc1(f.dd_macro))],
+    ].forEach(([lab, v]) => fb.appendChild(el("tr", null,
+       `<td>${lab}</td>` + v.map(x => `<td>${x}</td>`).join(""))));
+    ft.appendChild(fb);
+    $("#pdfnote").innerHTML = FD.map(f => `<strong>${f.short}.</strong> ${f.target.replace(/\.$/, "")}. ${f.fee_note}.
+      ${f.gross_note}`).join(" ") + ` ${P.corr_note}`;
+  })();
   $("#dlegend").innerHTML = F.map((f,i) =>
     `<span class="lgi"><i class="swatch" style="background:${FC[i]}"></i>${f.short}
       <b>${A.weights[i]}→${B.weights[i]}%</b></span>`).join("");

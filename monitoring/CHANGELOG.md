@@ -2,6 +2,124 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-21 — Add Portfolio D: the 22-fund review pick, measured on this page's basis
+
+Market data unchanged: still the Tuesday 20 Oct closes, review date 20 Oct. This
+change adds a portfolio; it does not roll the markets.
+
+| | Weights | Net 10Y CAGR | Drawdown | Return / DD |
+|---|---|---|---|---|
+| A, baseline | 20 / 30 / 25 / 25 | 6.74% | −30.1% | 0.224 |
+| B, optimised | 25 / 15 / 55 / 5 | 6.76% | −26.3% | 0.257 |
+| C, Nasdaq Income 50% | 20 / 50 / 25 / 5 | 6.54% | −25.6% | 0.255 |
+| **D, 22-fund review pick** | **5 / 35 / 0 / 20 + 35 LT Peso Bond + 5 Global Dividend** | **6.53%** | **−22.1%** | **0.295** |
+
+D returns the same as C (inside the 0.05pp tie) with a drawdown 3.5pp shallower.
+It also has the best return per unit of drawdown of the four, and the shallowest
+drawdown in every stress row: Hormuz −40.7% against C's −46.7%, Hawkish −31.7%
+against −36.0%.
+
+### 1. What D is
+
+**Where the weights come from:** the owner's 21 Oct review of all 22 ATRAM funds.
+- Basis: J.P. Morgan's 2027 assumptions (published 19 Oct).
+- Rule: the best worst-case CAGR across six stress tests, staying inside the
+  −27.27% drawdown budget in every one.
+- Result: 7.38% / −21.5%, 6.91% at worst.
+
+**The weights are FIXED here, not re-optimised.** The page measures them as it
+measures A, B and C:
+- the same fees, FX drift, tilts, drawdown rule and stress table;
+- the J.P. Morgan 2026 assumptions every other fund here still runs on.
+
+The page quotes both numbers, each with its basis.
+
+**The two added funds are built by `build_fund()`, for D only:**
+- **ATRAM Long Term Peso Bond Fund (35%)**
+  - Fee: 1.00% trust fee (DragonFi).
+  - Mandate: average portfolio life ≤ 7 years.
+  - Gross: 7.68%, the PH curve's 5-year point at the 15 Oct close (ADB).
+  - Volatility: 5.8%, an estimate.
+  - Macro tilt: −0.52. Net 6.16% on the macro view.
+- **ATRAM Global Dividend Feeder Fund (5%)**
+  - Target: Fidelity Funds – Global Dividend.
+  - Fees: 1.04% target OCF (Y-Acc-USD, published) plus 1.20% trust fee (an
+    estimate).
+  - Gross: J.P. Morgan global equity 7.0% − 0.3% dividend drag.
+  - Net 6.15% on the macro view.
+
+### 2. Engine changes
+
+- **Optional universe:** `port_vol / port_ret / port_k / port_dd / summarise /
+  run_scenarios` now take an optional universe, so D is computed by the same code
+  as A, B and C. Called without one, they are unchanged: A, B and C, every
+  what-if and all 211 earlier checks reproduce exactly.
+- **Six-fund correlation matrix `CORR_D`:** the four-fund block is unchanged. The
+  new pairs come from the review's factor model, which reproduces the four-fund
+  pairs (0.88 / 0.66 / 0.74) exactly.
+- **Stress shocks:** the five stress rows carry shocks for the two added funds.
+  These are estimates and are recorded in CLAIMS.
+- **Ten new engine checks (211 → 221):**
+  - D's weights are on the 5% grid.
+  - `CORR_D` extends `CORR`: same block, symmetric, unit diagonal, positive definite.
+  - D's CAGR re-derives from its six funds.
+  - D sits inside the budget.
+  - D's grind-on row reproduces D.
+  - The added funds' fees add up.
+  - The PH curve is upward-sloping and dated within 14 days of the as-of date.
+  - The bond fund's gross is the curve's 5-year point, and its volatility the
+    stated estimate.
+  - The review is quoted as recorded, with its drawdown inside the same budget.
+
+### 3. Errors found while adding it, all fixed
+
+1. **D's table overflowed a phone screen** (four columns with full peso values);
+   D's column was cut off. Shortened to A–D headers and short labels, with peso
+   values in millions. The validator now checks that the table fits its container.
+2. **A missing full stop** between the bond fund's mandate and its fee note.
+3. **The recorded review drawdown was an orphan input:** the page read it through
+   a generic loop. It is now used by a real check: the review's own drawdown must
+   sit inside the same budget.
+
+**The review that picked D first corrected its own model** (all recorded in the
+owner-facing reply):
+- FX coupling did not match this engine.
+- Its three correlations were off (0.85 / 0.70 / 0.62).
+- Bonds and tech had no rate link.
+- The bond fund was priced off the 10-year yield and not its ≤7-year average life.
+- The Global Dividend target fee used the UK fund's class.
+- Drawdowns were tested only on the raw value.
+- The search skipped 9 funds untested.
+- Two macro tilts were typed by hand.
+- The local check ignored the cash limit.
+- One stress matrix was not positive definite.
+
+### 4. Not yet done, and flagged
+
+- **This page is on J.P. Morgan's 2026 assumptions.** The 2027 edition (US large
+  cap 7.5%, EM 7.1%) makes the Asia note's "EM equity at 7.8%, the highest of any
+  equity block" stale. Rolling it in would change B and C, so it is left for the
+  owner's decision.
+- **The October VIX future settles today (21 Oct).** The next market roll must
+  re-quote the strip or drop October.
+- **The 16 Oct FedWatch reading** reaches its 5-day bound with that roll.
+- **Unverified inputs:** the Global Dividend trust fee, and the bond fund's own
+  yield and duration. Check them on the funds' fact sheets.
+
+### 5. Verification
+
+- **Engine:** 221 / 221 checks.
+- **Independent audit:** 278 checks, 0 failures, 0 warnings. A new G2 section
+  re-derives D's funds, matrix and both views from the payload, and README and
+  CLAIMS rows are checked for D.
+- **Validator:** 22 rows; the new row 22 checks D's donut, payload weights, budget
+  and the A–D table's fit.
+- **Mutation harness:** 13 of 13 caught, including D's weights drifting and the
+  bond fund priced off the 10-year.
+- **Sources:** 6 added, 259 in all.
+
+Not personal advice.
+
 ## 2026-10-20 — Roll to Tuesday 20 Oct: a record peso, Asia's selling resumes, a volatility curve that now reads low, and five errors fixed
 
 All markets are Tuesday 20 Oct closes, except the VIX (19 Oct; 20 Oct withheld)
