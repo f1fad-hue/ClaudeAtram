@@ -24,7 +24,7 @@ prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
 3M / 6M / 12M / 10Y, then the gauge. Drivers and regions are researched on 1–10;
-both the headline gauge and the regional rankings are reported on 1–5. The optimised portfolio is built from five
+both the headline gauge and the regional rankings are reported on 1–5. Portfolios B and C are built from five
 inputs — the broad gauge, the correlated per-sleeve transmission, the **volatility
 gap** (horizon-blended implied vol minus the LONG-RUN 19.5 every base return already
 assumes, same horizon weights as the regional blend), the regional rankings and,
@@ -34,7 +34,7 @@ and volatility, with the 10Y score held neutral. Refresh `TREND_INPUTS` and
 `TREND_END` at each month-end; a check fails once the window is a month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
 figure from a search is never used unless the months behind it reproduce it.
-Every portfolio — B, C, the cap counterfactual, the stub and every what-if — is
+Every portfolio — A, B, C and every what-if — is
 chosen by the one function `pick()`: the best CAGR in budget, then the lowest
 drawdown within 0.05pp of it. Three of the inputs are derived rather than judged: the
 regional tilt is `(score − 3.0) × 0.675` on the reported 1–5 scale (identical to
@@ -45,10 +45,13 @@ not because you have a view on the market. Never change a score without rewritin
 its rationale to cite the new evidence. Re-run the engine: it re-chooses A, B and C
 by the one rule over the whole universe (five funds since 2026-10-21) within the
 review's limits - at most 5 funds, at most 35% in any one (C's Nasdaq Equity Income
-pin excepted), at least 5% in the money market - on the 5% grid, each summing to
-100. A fund may be held at 0%. (The internal four-fund optimum, off the page, still
-has no single-fund cap, the owner's decision of 2026-09-24; it is kept only for its
-regression checks.)
+pin excepted), at least 5% in the money market - on the 5% grid, each
+summing to 100. A fund may be held at 0%. Every pick, and every what-if, sits inside ONE
+drawdown budget: the 20/30/25/25 reference baseline's macro drawdown less 2.83pp.
+The baseline stays in the payload, off the page, so the budget can be re-derived;
+do not replace it with a current pick, or the budget would depend on the portfolio
+it judges. (The internal four-fund optimiser that ran beside the picks was retired
+on 2026-10-22, v62.)
 
 **3. Re-verify the claims** in `CLAIMS.md`, marking each VERIFIED / CHANGED /
 STALE / UNREACHABLE with the date. Do not promote a claim from "verified via
@@ -143,6 +146,21 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+85. A COUNTERFACTUAL SAYS WHAT IT HOLDS FIXED. The retired four-fund what-ifs
+   re-derived the drawdown budget on each alternative column; the universe what-ifs
+   the page shows hold it at the live 27.17%, as A is chosen. On 22 Oct the choice
+   decided three of the six B answers (B's band held 21 mixes). Neither is wrong;
+   an unstated one is. The engine comment now names the budget it holds.
+84. A NUMBER CAN TRACE BY COINCIDENCE. The bull-case row's "$65" oil passed the
+   every-number-traces check for weeks because a 65% weight sat in the four-fund
+   frontier in the payload. Retiring the frontier exposed it. An assumed level in
+   prose gets its own named input (`brent_disinflation`), never a lucky match.
+83. CODE THAT NOTHING SHOWS STILL COSTS CHECKS, AND HIDES GAPS. The four-fund
+   optimiser stayed "for its checks" after the page stopped showing it: about 25
+   engine checks, an audit section and four mutations defended an answer no reader
+   saw, while the page's Asia fee sentence read `stress_pp`, which only those hidden
+   what-ifs carried, and fell back to a typed "0.25pp". When the page drops a
+   result, retire the code, and move each check to the thing that is shown.
 82. A DATE BOUND POINTS ONE WAY. "The review is dated on/after the as-of date" was
    true on the day the review ran and false the next morning, when the data rolled
    past it. A recorded analysis may not post-date the data it is read beside; it
@@ -355,7 +373,8 @@ truth; the artifact is a rendering of it.
    energy drags at neutral left the allocation exactly where it was; the input that
    actually decides the concentration - the volatility ramp - was listed as a
    footnote. Every trigger on that list is now an engine counterfactual
-   (`WHAT_IF`), checked to use the live optimiser and re-derived by the audit.
+   (`WHAT_IF_UNIV` since v62), checked to reproduce B and C on the live column and
+   re-derived by the audit.
 38. A RISK ADJUSTMENT APPLIES TO THE QUANTITY IT WAS REASONED ABOUT. The income
    sleeve's drawdown k was cut 1.65 -> 1.55 because its drawdowns "run shallower than
    the RAW volatility implies" - but k multiplies its own volatility, already 0.681x

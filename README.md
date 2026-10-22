@@ -51,8 +51,8 @@ update:
   anchor, the volatility curve, and the drivers' rates and energy tilts. On them B
   returns 0.05pp a year more than A for 0.1pp less drawdown (21 mixes inside the tie).
 - **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35%
-  cap): 0.03pp a year above B for 0.1pp more drawdown. It is the same mix the old
-  four-fund C held: Global Dividend does not enter it.
+  cap): 0.03pp a year above B for 0.1pp more drawdown. Global Dividend does not
+  enter it.
 
 Without the bond fund, cash is the only sleeve that does not fall with equities, so
 the budget is met by holding 20-30% of it; the forecasts are about 0.35pp a year below

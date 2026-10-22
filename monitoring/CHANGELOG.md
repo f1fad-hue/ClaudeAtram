@@ -2,6 +2,73 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-22 — v62: the four-fund optimiser retired
+
+At the owner's instruction ("Retire the four fund optimi[ser]"). The internal
+four-fund optimum, the old Portfolio B, had been off the page since v56, kept "for
+its checks". **Nothing the page shows changes**: A, B and C are 25/30/0/25/20,
+30/35/10/25/0 and 20/50/20/10/0 at 6.72%, 6.77% and 6.80%, as in v61.
+
+**Removed.** From the engine: the four-fund enumeration and its feasible set, the
+four-fund B and pinned C, the strict-maximum disclosure, the 50%-cap
+counterfactual, the Global Technology stub and the tech-sleeve gap, the four-fund
+what-ifs and frontier, the four-fund best ratio, and the 5% per-fund floor that
+only that rule used. From the payload (about 8.7KB): `optimized`, `pinned`,
+`best_ratio`, `stub`, `tech_gap`, `min_sleeve`, `cap_counterfactual`, `what_if`,
+`frontier` and `dd_model.optimized_k`. The engine run takes under a second.
+
+**Kept.** The 20/30/25/25 baseline, off the page, as the budget's reference: the
+−27.17% budget is its macro drawdown less 2.83pp. A new check rebuilds the budget
+from the printed baseline.
+
+**Moved to what the page shows.** The checks on shared machinery now test A, B and
+C instead of the four-fund optimum. These cover the zero-shock scenario row, every
+scenario and headline drawdown rebuilt from its printed row and published k, each
+k as the ex-cash average of its funds, the peso figures, the budget on the column
+each pick was chosen on, the what-if helper rebuilding the live B and C, and
+diversification. New checks:
+- the universe count rebuilt a second way (2,065 mixes);
+- every universe frontier point efficient, and B on it;
+- the best ratio rebuilt;
+- the Asia fee column against its published stress.
+
+The Report's typed Global Technology claims are now tested across all five funds.
+Engine 213/213 (was 227), audit 289/289 (was 306), and the mutation set has 30
+entries. m2, m5, m6 and m8 were replaced by universe equivalents, and m29 and m30
+were added.
+
+**Found on the way**
+- **The page's Asia fee stress was typed.** The What-ifs sentence reads
+  `universe.what_if.asia_fee_hi.stress_pp`, but only the four-fund what-ifs carried
+  it, so the page has shown a typed "0.25pp" fallback since v56. The universe
+  what-if now publishes it, and the audit ties it to the column.
+- **A number that traced by coincidence.** The bull-case row's "$65" oil passed the
+  every-number-traces check only because a 65% weight sat in the four-fund
+  frontier. It is now an input (`brent_disinflation`).
+- **Two what-if conventions.** The retired helper re-derived the budget on each
+  alternative column. The universe what-ifs the page shows hold it at the live
+  27.17%, which is also how A is chosen. On 22 Oct the convention decides three of
+  the six B answers (vol flat, drags neutral, no re-rating), because 21 mixes sit
+  in B's 0.05pp band. The page's convention is kept and now stated in the engine.
+- **A new mutant was a no-op.** The first m5 moved 5pp into cash from "the largest
+  fund other than the pin". On 22 Oct that fund was cash itself, so the harness
+  reported MISSED for a check that works (lesson 80 again). It now never draws from
+  cash or the pin, and asserts the mutant differs.
+- Three checks were dropped, not moved:
+  - "B beats the baseline on return per drawdown" was a fact, not an invariant.
+  - "B trails the baseline past the tie only when the baseline breaks the budget":
+    the baseline always breaks the budget by construction, so it reduced to the
+    budget itself.
+  - The disputed Asia quarter's effect on B and C: the page states it from the
+    data.
+- README: "the same mix the old four-fund C held" dropped. Runbook: step 2 states
+  the one budget; lesson 39 names `WHAT_IF_UNIV`; a "100." that rendered as a list
+  item was re-wrapped; lessons 83-85 added. CLAIMS: the drawdown k, budget,
+  selection rule, floor, cap, frontier and Asia re-rating rows updated. The k row
+  had read "A, C and D".
+
+Not personal advice.
+
 ## 2026-10-22 — v61: rolled to 22 Oct; BSP's jumbo hike; Gulf escalation; allocations unchanged
 
 Rolled to the Philippine and Asian close of Thursday 22 Oct and the US close of

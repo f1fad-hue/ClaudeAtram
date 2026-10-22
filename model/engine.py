@@ -812,6 +812,9 @@ MACRO = {
     "brent_closure": 130.0,    # the Hormuz full-closure level the stress row models;
                                # published so the scenario and the notes citing it
                                # cannot drift apart
+    "brent_disinflation": 65.0,  # the level the bull-case row has oil mean-revert to.
+                                 # Typed in that row's prose until v62, where it "traced"
+                                 # only by coinciding with a 65% four-fund weight.
     # Year-ago base. brent_yoy is DERIVED from it below rather than typed, so the
     # level and the change can never drift apart the way the quoted figures did on
     # 2026-09-10. RE-ANCHORED 2026-09-24: the base had been $65.50, implied by the
@@ -2737,8 +2740,8 @@ CORR_U_NOTE = (f"Global Dividend moves with the other equity sleeves "
                f"only sleeve that does not fall with equities.")
 
 # Every portfolio function takes an optional UNIVERSE - (funds built, fund specs,
-# correlation) - so the universe's picks are computed by the same code as the four. The
-# default is the four-fund universe, so nothing that calls these without it changes.
+# correlation). The default is the four original funds, which the budget's reference
+# baseline is measured on; every pick passes the five-fund UNIV.
 def _univ(u):
     return u if u is not None else (F, FUNDS, CORR)
 
@@ -2935,38 +2938,6 @@ LOOKTHROUGH = {
 # 6. PORTFOLIOS
 # ----------------------------------------------------------------------------
 
-GRID = [x / 100 for x in range(0, 101, 5)]      # every weight ends in 5 or 0
-
-# NO SINGLE-SLEEVE CAP - removed 2026-09-24 at the portfolio owner's instruction.
-# A 50% cap applied from 2026-09-09: it was added when the Asia fee correction
-# sent the optimiser to 75% in one fund, and it bound on Nasdaq Equity Income
-# every day since. Removing it is a stated choice about concentration, not a
-# model finding: on the model's own numbers it buys ~0.12pp of CAGR and a
-# slightly shallower drawdown, and puts three-quarters of the portfolio in one
-# feeder, one manager and one covered-call strategy. The page publishes what the
-# 50% cap would have chosen (CAP_COUNTERFACTUAL) beside what it chooses now, so
-# the trade stays visible. What remains is the 5% floor that keeps all four
-# funds held (invariant 1) - which also bounds any one sleeve at 85% - and the
-# drawdown budget, which is what now stops the concentration.
-MIN_SLEEVE = 0.05
-
-def enumerate_portfolios(key, min_w=MIN_SLEEVE):
-    """All 5%-granular, fully-invested portfolios holding all four funds at the
-    minimum weight or above."""
-    out = []
-    for a in GRID:
-        if a < min_w: continue
-        for b in GRID:
-            if b < min_w: continue
-            for c in GRID:
-                if c < min_w: continue
-                d = round(1 - a - b - c, 10)
-                if d < min_w - 1e-9: continue
-                if round(d * 100) % 5 != 0: continue
-                w = [a, b, c, d]
-                out.append((w, summarise(w, key)))
-    return out
-
 # --- The budget's reference: the original no-view baseline -------------------
 # A 20% liquidity buffer and the three equity engines held near-equally. It was
 # Portfolio A until 2026-10-21, when the owner replaced A with the 22-fund review's
@@ -2977,11 +2948,11 @@ BASELINE_W = [0.20, 0.30, 0.25, 0.25]
 BASE = summarise(BASELINE_W, "net_base")
 BASE_UNDER_MACRO = summarise(BASELINE_W, "net_macro")
 
-# --- Optimised: maximise macro-adjusted CAGR subject to a drawdown budget ----
+# --- The drawdown budget ----------------------------------------------------
 # Objective: the user asked for maximum net CAGR with drawdown held to a
-# minimum. A pure max-return solve just buys 90% Global Tech; a pure min-DD
-# solve just buys cash. The defensible reading is: beat the baseline's return
-# AND cut its drawdown. So we solve for max CAGR subject to
+# minimum. A pure max-return solve just buys the highest-return sleeve; a pure
+# min-DD solve just buys cash. The defensible reading is: cut the reference's
+# drawdown by a hard, stated amount and take the best return inside that:
 #   maxDD <= baseline maxDD - 2.0pp  (a hard, stated improvement)
 # 2.0pp was the stated improvement at the 5-year calibration. Drawdowns are
 # ~41% deeper at a 10-year horizon, so holding the budget at a flat 2.0pp would
@@ -2989,25 +2960,6 @@ BASE_UNDER_MACRO = summarise(BASELINE_W, "net_macro")
 # it constrains, so the constraint means what it meant before.
 DD_BUDGET_IMPROVEMENT = round(2.0 * DD_HORIZON_SCALAR, 2)
 DD_CAP = abs(BASE_UNDER_MACRO["maxdd"]) - DD_BUDGET_IMPROVEMENT
-
-ALL = enumerate_portfolios("net_macro")
-# Test the TRUE drawdown, not the rounded one the page displays. Filtering on
-# round(d, 1) admitted portfolios up to 0.05pp over the stated budget - four of
-# them, at the last audit - because -18.5099 displays as -18.5. The winner was
-# unaffected, but a constraint that says "<= cap" must actually mean it.
-# (Audit 2026-09-03.)
-# BOTH ROUTES, because each alone admits a portfolio the other rejects. Testing
-# only the rounded value admits one up to 0.05pp genuinely over budget (the
-# 2026-09-03 finding above). Testing only the raw value admits one that PRINTS as
-# over budget: [25, 30, 25, 20] came out 26.1477 raw, inside a 26.17 cap, and
-# published -26.2, which a reader comparing against the printed cap reads as a
-# breach. It surfaced on 2026-09-20 when the regional-blend fix moved returns a
-# hundredth and broke the coincidence that had been hiding it. A portfolio is
-# feasible only if it respects the cap as computed AND as shown.
-FEASIBLE = [(w, s) for w, s in ALL
-            if abs(port_dd(w, "net_macro")) <= DD_CAP + 1e-9
-            and abs(s["maxdd"]) <= DD_CAP + 1e-9]
-FEASIBLE.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
 
 # ONE SELECTION RULE FOR EVERY PORTFOLIO - unified 2026-10-07 at the owner's
 # instruction ("the best and recommended approach to reach max growth ... while
@@ -3018,8 +2970,7 @@ FEASIBLE.sort(key=lambda t: (-t[1]["cagr"], abs(t[1]["maxdd"])))
 # Until this date Portfolio B took the strict maximum and Portfolio C this rule.
 # The 2026-09-29 scrub found B's optimum was not sharp - four portfolios inside
 # 0.05pp of it - so a difference below the model's precision was deciding B, and
-# the two donuts were chosen by different rules. The strict maximum is still
-# published beside B (STRICT_ALT) so the trade stays visible.
+# the two donuts were chosen by different rules.
 PIN_TIE_PP = 0.05
 
 def pick(feas):
@@ -3029,24 +2980,9 @@ def pick(feas):
     w, s2 = min(band, key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
     return w, s2, len(band)
 
-def strict_alt(feas):
-    """What the strict maximum would hold instead, and how wide the band is."""
-    w, s2 = max(feas, key=lambda t: (t[1]["cagr"], -abs(t[1]["maxdd"])))
-    n = sum(1 for _, x in feas if x["cagr"] >= s2["cagr"] - PIN_TIE_PP - 1e-9)
-    return {"n": n, "tie_pp": PIN_TIE_PP, "weights": [round(x * 100) for x in w],
-            "cagr": s2["cagr"], "maxdd": s2["maxdd"]}
-
-OPT_W, OPT, OPT_BAND_N = pick(FEASIBLE)
-OPT_STRICT = strict_alt(FEASIBLE)
-
 # PORTFOLIO C - the owner's pinned variant (requested 2026-09-25): Nasdaq Equity
-# Income held at exactly 50%, the other three optimised around it on the same
-# inputs, the same 5% grid and floor, the same drawdown budget and the same rule.
-PIN_FUND, PIN_W = 1, 0.50
-_pin_feas = [(w, s2) for w, s2 in FEASIBLE if abs(w[PIN_FUND] - PIN_W) < 1e-9]
-_pin_best = max(s2["cagr"] for _, s2 in _pin_feas)
-PIN_W_ALL, PIN, PIN_BAND_N = pick(_pin_feas)
-OPT_UNDER_BASE = summarise(OPT_W, "net_base")
+# Income held at exactly 50%, the rest chosen around it by the same rule.
+PIN_W = 0.50
 
 # ONE RULE FOR A, B AND C, OVER ONE UNIVERSE (2026-10-21, at the owner's instruction:
 # "make the portfolio a, b and c to max growth 10yrs net cagr with minimum drawdown",
@@ -3066,11 +3002,11 @@ OPT_UNDER_BASE = summarise(OPT_W, "net_base")
 # three itself, on every roll. Whether A matches the review's own long-run pick is
 # published (portfolio_a.is_review_pick), never assumed: since the bond funds left,
 # the review's pick holds Global Health Care, which this page does not model.
-# The four-fund optimiser above (OPT, FEASIBLE, the four-fund C) stays for the checks
-# that re-apply the rule to it; nothing on the page shows it.
+# The four-fund optimiser that ran beside them off the page, kept only for its own
+# checks, was retired on 2026-10-22 (v62); the baseline above is all that is left of it.
 UNIV = (F + F_ADD, FUNDS + ADD_FUNDS, CORR_U)
 UNIV_IDS = [f["id"] for f in UNIV[1]]
-FRONTIER_SPACING = 0.9     # a frontier point every 0.9pp of drawdown (both frontiers)
+FRONTIER_SPACING = 0.9     # a frontier point every 0.9pp of drawdown
 UNIV_MAX_FUNDS = MACRO["pd_review_max_funds"]
 UNIV_MAX_W = MACRO["pd_review_max_w"] / 100
 UNIV_MIN_CASH = MACRO["pd_review_min_cash"] / 100
@@ -3094,7 +3030,11 @@ def univ_ok(w, pin=None):
     return abs(w[i] - x) < 1e-9 and max(v for j, v in enumerate(w) if j != i) <= UNIV_MAX_W + 1e-9
 
 def univ_feasible(key, pin=None, u=UNIV):
-    """Every limit-respecting mix of the universe inside the budget, as computed AND as shown."""
+    """Every limit-respecting mix of the universe inside the budget, as computed AND as shown.
+    BOTH ROUTES, because each alone admits a mix the other rejects: the raw drawdown
+    alone admits one that PRINTS over the cap ([25, 30, 25, 20] at 26.1477 raw against
+    a 26.17 cap printed -26.2, 2026-09-20); the printed one alone admits one up to
+    0.05pp genuinely over it (2026-09-03)."""
     out = []
     for w in UNIV_ALL:
         if not univ_ok(w, pin) or abs(port_dd(w, key, u)) > DD_CAP + 1e-9:
@@ -3134,22 +3074,11 @@ for w, s2 in _univ_par:
                              "weights": s2["weights"]}); _last_u = abs(s2["maxdd"])
 UNIV_BEST_RATIO = max((t for t in _univ_pts), key=lambda t: t[1]["ret_per_dd"])
 
-# What the former 50% single-sleeve cap would choose under the same objective and
-# the same drawdown budget - published so the cost and benefit of removing it are
-# computed, not asserted.
-CAP_COUNTERFACTUAL_MAX = 0.50
-_capw, _caps, _ = pick([(w, s) for w, s in FEASIBLE if max(w) <= CAP_COUNTERFACTUAL_MAX + 1e-9])
-CAP_COUNTERFACTUAL = {"max_sleeve": CAP_COUNTERFACTUAL_MAX,
-                      "weights": [round(x * 100) for x in _capw],
-                      "cagr": _caps["cagr"], "maxdd": _caps["maxdd"],
-                      "ret_per_dd": _caps["ret_per_dd"]}
-
 # WHAT WOULD CHANGE THIS VIEW - computed, not asserted. The page's list said that
 # "Brent below $70 and the Fed cutting" would send Global Technology "back to a full
 # weight"; re-running the optimiser showed the allocation does not move at all. Each
-# counterfactual here is the SAME optimiser on an alternative return column, with
-# the drawdown budget re-derived from the baseline under that column exactly as
-# DD_CAP is, so the only thing that differs is the input named.
+# counterfactual here is the SAME rule on an alternative return column, inside the
+# SAME drawdown budget (DD_CAP), so the only thing that differs is the input named.
 for _f in F + F_ADD:
     _f["net_novol"] = round(_f["net_macro"] - _f["tilt_vol"], 2)       # flat VIX curve
     _f["net_neutral"] = round(_f["net_macro"] - _f["tilt_rates"]
@@ -3159,19 +3088,6 @@ for _f in F + F_ADD:
     _f["net_trend_alt"] = round(_f["net_macro"] - _f["tilt_trend"]
                                 + (TREND_ALT_BUILT[_f["id"]]["tilt"] if _f["id"] in TREND_ALT_BUILT
                                    else _f["tilt_trend"]), 2)
-
-def optimise(key):
-    """Portfolios B and C re-chosen on an alternative return column, by the same
-    rule, with the drawdown budget re-derived from the baseline on that column."""
-    cap = abs(summarise(BASELINE_W, key)["maxdd"]) - DD_BUDGET_IMPROVEMENT
-    feas = [(w, s) for w, s in enumerate_portfolios(key)
-            if abs(port_dd(w, key)) <= cap + 1e-9 and abs(s["maxdd"]) <= cap + 1e-9]
-    w, s, _ = pick(feas)
-    pw, ps, _ = pick([(w2, s2) for w2, s2 in feas if abs(w2[PIN_FUND] - PIN_W) < 1e-9])
-    return {"weights": [round(x * 100) for x in w], "cagr": s["cagr"],
-            "maxdd": s["maxdd"], "dd_cap": round(cap, 2), "strict": strict_alt(feas),
-            "pinned": {"weights": [round(x * 100) for x in pw], "cagr": ps["cagr"],
-                       "maxdd": ps["maxdd"]}}
 
 # THE TWO ASSUMPTIONS THE 2026-09-25 CORRECTION LEFT CARRYING THE RESULT, tested
 # the same way: the Asia base's +1.0% re-rating credit (which overlaps both the
@@ -3186,11 +3102,6 @@ for _f in F + F_ADD:
     _aseq = _f["id"] == "ATRASEQ"
     _f["net_asia_norerate"] = round(_f["net_macro"] - (MACRO["asia_rerating"] if _aseq else 0.0), 2)
     _f["net_asia_fee_hi"] = round(_f["net_macro"] - (ASIA_FEE_STRESS if _aseq else 0.0), 2)
-WHAT_IF = {"vol_flat": optimise("net_novol"), "drags_neutral": optimise("net_neutral"),
-           "asia_no_rerating": optimise("net_asia_norerate"),
-           "asia_fee_hi": optimise("net_asia_fee_hi"),
-           "trend_off": optimise("net_notrend"), "trend_alt": optimise("net_trend_alt")}
-WHAT_IF["asia_fee_hi"]["stress_pp"] = ASIA_FEE_STRESS
 # The alternative columns the universe what-ifs are run on.
 _WI_COL = {"vol_flat": "net_novol", "drags_neutral": "net_neutral",
            "asia_no_rerating": "net_asia_norerate", "asia_fee_hi": "net_asia_fee_hi",
@@ -3205,90 +3116,9 @@ def _univ_wi(col, u=UNIV):
             "c": {"weights": [round(x * 100) for x in c[0]], "cagr": c[1]["cagr"], "maxdd": c[1]["maxdd"]},
             "a": {"cagr": a["cagr"], "maxdd": a["maxdd"]}}
 WHAT_IF_UNIV = {k: _univ_wi(col) for k, col in _WI_COL.items()}
-
-# Best pure risk-adjusted portfolio, for reference
-BEST_RATIO_W, BEST_RATIO = max(ALL, key=lambda t: t[1]["ret_per_dd"])
-
-
-# ---- What the Global Technology stub actually costs --------------------------
-# The report argues for keeping a 5% Global Technology position rather than
-# cutting it to zero. That argument is only honest if the price of the stub is
-# stated, and stated correctly: until the 2026-09-05 audit the page claimed
-# "roughly 0.03pp", which was never re-derived after the tilts moved. It is now
-# computed here against the SAME objective the optimiser uses - maximise CAGR
-# subject to the drawdown cap - over the portfolios the enumeration excludes
-# because they drop a fund entirely.
-def _best_without(idx):
-    cands = []
-    step = 5
-    for a in range(0, 101, step):
-        for b in range(0, 101 - a, step):
-            for c in range(0, 101 - a - b, step):
-                w = [a, b, c, 100 - a - b - c]
-                if w[idx] != 0:
-                    continue
-                # Every sleeve EXCEPT the excluded one must still be held at the
-                # minimum. Without this the counterfactual could drop a second
-                # fund - [50, 50, 0, 0] was reachable - and the stub's "cost" would
-                # be measured against a two-fund portfolio the objective forbids,
-                # exactly the error the concentration-cap guard below was added to
-                # prevent. It did not bite today ([15, 50, 35, 0] holds all three),
-                # but nothing stopped it. (Audit 2026-09-14.)
-                if any(i != idx and x < MIN_SLEEVE * 100 - 1e-9 for i, x in enumerate(w)):
-                    continue
-                ww = [x / 100 for x in w]
-                sm = summarise(ww, "net_macro")
-                # Both drawdown routes, as FEASIBLE tests them: this tested only the
-                # raw one, so the stub's counterfactual could be a portfolio that
-                # PRINTS over budget. (Found 2026-10-07.)
-                if abs(port_dd(ww, "net_macro")) > DD_CAP + 1e-9 or abs(sm["maxdd"]) > DD_CAP + 1e-9:
-                    continue
-                cands.append((w, sm))
-    # The same rule as every portfolio on the page (2026-10-07): it was the strict
-    # maximum, which compared the stub against a rule B no longer uses.
-    w, sm, _ = pick(cands)
-    return w, sm
-
-_GT_FREE_W, _GT_FREE = _best_without(3)
-STUB = {
-    "fund": "ATRGTEC",
-    "weight": round(OPT_W[3] * 100),
-    "best_without": _GT_FREE_W,
-    "cagr_without": _GT_FREE["cagr"],
-    "cagr_with": OPT["cagr"],
-    "maxdd_without": _GT_FREE["maxdd"], "maxdd_with": OPT["maxdd"],
-    "cost": round(_GT_FREE["cagr"] - OPT["cagr"], 2),
-}
-
-# Gap between the two US-tech sleeves' macro-adjusted net CAGR. Quoted in the
-# report; derived here so it cannot drift from the funds it describes.
-_Q = next(f for f in F if f["id"] == "ATRQIAP")
-_G = next(f for f in F if f["id"] == "ATRGTEC")
-TECH_GAP = round(_G["net_macro"] - _Q["net_macro"], 2)
-
-# Efficient frontier: max CAGR at each 1pp drawdown bucket
-# THE TRUE EFFICIENT SET, NOT WHOLE-PERCENT BUCKETS. Corrected 2026-09-25. The
-# frontier was the best CAGR in each 1pp drawdown bucket, so a bucket could be won by
-# a portfolio just OVER the drawdown budget - [25, 5, 65, 5] at -27.8% took the -27
-# bucket from the optimum at -27.1% - and the plotted line ran above the optimum the
-# page says "sits on that edge". Now: every portfolio no other beats on both CAGR and
-# drawdown, thinned to ~1pp spacing for the chart, with the optimum always kept.
-_pts = sorted(ALL, key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
-PARETO, _best = [], -1e9
-for w, s in _pts:
-    if s["cagr"] > _best + 1e-9:
-        PARETO.append((w, s)); _best = s["cagr"]
-FRONTIER, _last = [], None
-for w, s in PARETO:
-    _is_opt = [round(x * 100) for x in w] == [round(x * 100) for x in OPT_W]
-    if _is_opt or _last is None or abs(s["maxdd"]) >= _last + FRONTIER_SPACING:
-        FRONTIER.append((w, s)); _last = abs(s["maxdd"])
-# "maxdd" is the BUCKET (whole-percent floor); "dd" is the point's own published
-# drawdown. The page plotted and labelled points at the bucket - "-28%" for a
-# -28.7% portfolio, and the optimised marker (at its true -25.4) sat beside its
-# own frontier point (at 25). Both are published so the chart can use the real one.
-FRONTIER = [{"maxdd": abs(v[1]["maxdd"]), "dd": v[1]["maxdd"], "cagr": v[1]["cagr"],
-             "weights": v[1]["weights"]} for v in FRONTIER]
+# The stress size the page quotes. Until v62 only the four-fund what-ifs carried it,
+# so the page's sentence fell back to a typed "0.25pp" that nothing tied to this input.
+WHAT_IF_UNIV["asia_fee_hi"]["stress_pp"] = ASIA_FEE_STRESS
 
 # ----------------------------------------------------------------------------
 # 7. SCENARIO / STRESS GRID
@@ -3313,7 +3143,7 @@ SCENARIOS = [
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
      {"ATRPHMM": 0.0, "ATRQIAP": -3.5, "ATRASEQ": -5.5, "ATRGTEC": -8.0, "ATRGLDV": -1.0}, 1.45),
-    ("Disinflation restart", "Oil mean-reverts to $65, headline CPI falls to 2%, "
+    ("Disinflation restart", f"Oil mean-reverts to ${MACRO['brent_disinflation']:.0f}, headline CPI falls to 2%, "
      "Fed cuts. The bull case: multiples expand, vol collapses.",
      {"ATRPHMM": -0.9, "ATRQIAP": +2.5, "ATRASEQ": +3.5, "ATRGTEC": +4.5, "ATRGLDV": +1.5}, 0.80),
     ("Grind-on base case", "Vol drifts up to the 19-20 the futures curve already "
@@ -4141,7 +3971,6 @@ def payload():
                      # from 1.618, which print as -42.3 and -42.4. The page shows it
                      # formatted; the payload should not throw the precision away.
                      "baseline_k": round(port_k(BASELINE_W), 5),
-                     "optimized_k": round(port_k(OPT_W), 5),
                      # the three portfolios the page shows (2026-10-21)
                      "a_k": round(port_k(PA_W, UNIV), 5), "c_k": round(port_k(PC_W, UNIV), 5),
                      "b_k": round(port_k(PB_W, UNIV), 5),
@@ -4153,31 +3982,11 @@ def payload():
                              "drawdown grows with the square root of the horizon - the -20% and "
                              "-33% anchors are rolling FIVE-year medians and cannot simply be "
                              "relabelled for a longer mandate."},
+        # The drawdown budget's reference (off the page): DD_CAP is its macro drawdown
+        # less DD_BUDGET_IMPROVEMENT, so a reader can re-derive the budget from it.
         "baseline": {"weights": [round(x*100) for x in BASELINE_W],
                      "base": BASE, "under_macro": BASE_UNDER_MACRO,
                      "scenarios": run_scenarios(BASELINE_W, "net_macro")},
-        "optimized": {"weights": [round(x*100) for x in OPT_W],
-                      "macro": OPT, "under_base": OPT_UNDER_BASE,
-                      # Published at the precision it is ENFORCED at. It was
-                      # round(DD_CAP, 1) = 26.0 against an enforced 25.97, so the
-                      # published constraint was looser than the real one and an
-                      # independent re-derivation got 370 feasible portfolios where
-                      # the engine got 368. (Audit 2026-09-08.)
-                      "dd_cap": round(DD_CAP, 2),
-                      "scenarios": run_scenarios(OPT_W, "net_macro"),
-                      "n_feasible": len(FEASIBLE), "n_total": len(ALL),
-                      # the rule every portfolio is chosen by, and what the strict
-                      # maximum would hold instead
-                      "tie_pp": PIN_TIE_PP, "band_n": OPT_BAND_N,
-                      "strict": OPT_STRICT},
-        "pinned": {"weights": [round(x*100) for x in PIN_W_ALL], "macro": PIN,
-                   "fund": FUNDS[PIN_FUND]["id"], "pin_pct": round(PIN_W * 100),
-                   "tie_pp": PIN_TIE_PP, "best_cagr": _pin_best,
-                   "n_feasible": len(_pin_feas), "band_n": PIN_BAND_N,
-                   "scenarios": run_scenarios(PIN_W_ALL, "net_macro"),
-                   # the allocation-deciding assumption, applied to both
-                   "cagr_no_rerating": summarise(PIN_W_ALL, "net_asia_norerate")["cagr"],
-                   "opt_cagr_no_rerating": summarise(OPT_W, "net_asia_norerate")["cagr"]},
         "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": UNIV_IDS,
                         "macro": PA, "base": PA_BASE, "column": "net_base",
                         "band_n": PA_BAND_N, "n_feasible": len(UNIV_FEAS["a"]),
@@ -4210,12 +4019,6 @@ def payload():
                         "dd_cap": round(DD_CAP, 2),
                         "in_budget": abs(PB["maxdd"]) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pd_review_")}},
-        "best_ratio": {"weights": [round(x*100) for x in BEST_RATIO_W], **BEST_RATIO},
-        "stub": STUB, "tech_gap": TECH_GAP,
-        "min_sleeve": MIN_SLEEVE,
-        "cap_counterfactual": CAP_COUNTERFACTUAL,
-        "what_if": WHAT_IF,
-        "frontier": FRONTIER,
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
 
@@ -4256,58 +4059,42 @@ def report():
         A(f"    {f['short']:<22}{f['fee_total']:>6.2f}%{f['gross_php']:>7.2f}%"
           f"{f['net_base']:>7.2f}%{f['tilt_total']:>+7.2f}{f['net_macro']:>7.2f}%"
           f"{f['vol']:>7.2f}%{f['dd_base']:>8.1f}%{f['dd_macro']:>9.1f}%")
-    A("\n[5] PORTFOLIOS   (order: MM / Nasdaq Income / Asia / Global Tech)")
-    b, o = p["baseline"], p["optimized"]
-    A(f"    BASELINE  weights {b['weights']}")
+    A(f"\n[5] PORTFOLIOS   (order: {' / '.join(p['portfolio_b']['shorts'])})")
+    b, o = p["baseline"], p["portfolio_b"]
+    A(f"    BASELINE  weights {b['weights']}   (the budget's reference, four original funds; off the page)")
     A(f"      strategic view : CAGR {b['base']['cagr']}%  vol {b['base']['vol']}%  "
       f"maxDD {b['base']['maxdd']}%  ret/DD {b['base']['ret_per_dd']}")
     A(f"      macro view     : CAGR {b['under_macro']['cagr']}%  vol {b['under_macro']['vol']}%  "
       f"maxDD {b['under_macro']['maxdd']}%  ret/DD {b['under_macro']['ret_per_dd']}")
-    A(f"    OPTIMIZED weights {o['weights']}   (DD cap {o['dd_cap']}%, "
-      f"{o['n_feasible']}/{o['n_total']} feasible)")
-    A(f"      macro view     : CAGR {o['macro']['cagr']}%  vol {o['macro']['vol']}%  "
-      f"maxDD {o['macro']['maxdd']}%  ret/DD {o['macro']['ret_per_dd']}")
-    A(f"      strategic view : CAGR {o['under_base']['cagr']}%  vol {o['under_base']['vol']}%  "
-      f"maxDD {o['under_base']['maxdd']}%  ret/DD {o['under_base']['ret_per_dd']}")
-    A(f"    DELTA (macro view): CAGR {o['macro']['cagr'] - b['under_macro']['cagr']:+.2f}pp   "
-      f"maxDD {o['macro']['maxdd'] - b['under_macro']['maxdd']:+.1f}pp   "
-      f"ret/DD {o['macro']['ret_per_dd'] - b['under_macro']['ret_per_dd']:+.3f}")
-    st = o["strict"]
-    A(f"    rule: best CAGR in budget, then lowest DD within {o['tie_pp']:.2f}pp "
-      f"({o['band_n']} in band); strict max would hold {st['weights']} at {st['cagr']}% / {st['maxdd']}%")
-    pn = p["pinned"]
-    A(f"    PINNED C  weights {pn['weights']}   ({pn['fund']} at {pn['pin_pct']}%, {pn['n_feasible']} feasible, "
-      f"{pn['band_n']} in band)")
-    A(f"      macro view     : CAGR {pn['macro']['cagr']}%  vol {pn['macro']['vol']}%  "
-      f"maxDD {pn['macro']['maxdd']}%  ret/DD {pn['macro']['ret_per_dd']}")
+    A(f"    DD budget {o['dd_cap']}% = |{b['under_macro']['maxdd']}| - {DD_BUDGET_IMPROVEMENT}; "
+      f"rule: best CAGR in budget, then lowest DD within {p['universe']['tie_pp']:.2f}pp; "
+      f"{p['universe']['n_total']} mixes under the limits")
     for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the long-run column"), ("PORTFOLIO B", "portfolio_b", "the macro view")):
         pq = p[key]
-        A(f"    {lab} weights {pq['weights']}   ({' / '.join(p['portfolio_b']['shorts'])}; "
-          f"the rule on {rule}, {pq['band_n']} in band)")
+        A(f"    {lab} weights {pq['weights']}   (the rule on {rule}; {pq['n_feasible']} feasible, {pq['band_n']} in band)")
         A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
           f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
+        A(f"      strategic view : CAGR {pq['base']['cagr']}%  vol {pq['base']['vol']}%  "
+          f"maxDD {pq['base']['maxdd']}%  ret/DD {pq['base']['ret_per_dd']}")
     pq = p["portfolio_c"]
     A(f"    PORTFOLIO C weights {pq['weights']}   (Nasdaq Equity Income at {pq['pin_pct']}%, the rest by the macro-view rule; "
       f"{pq['n_feasible']} feasible, {pq['band_n']} in band)")
     A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
       f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
-    A("    (OPTIMIZED and PINNED C above are the internal four-fund rule, kept for its checks; the page shows A, B, C.)")
     for k, v in p["universe"]["what_if"].items():
         A(f"    what-if {k:<17}: B {v['b']['weights']} {v['b']['cagr']}%   C {v['c']['weights']} {v['c']['cagr']}%   "
           f"A {v['a']['cagr']}% / {v['a']['maxdd']}%")
-    A(f"    best pure ret/DD  : {p['best_ratio']['weights']}  CAGR {p['best_ratio']['cagr']}%  "
-      f"maxDD {p['best_ratio']['maxdd']}%  ratio {p['best_ratio']['ret_per_dd']}")
-    A("\n[6] SCENARIOS (optimized portfolio)")
+    br = p["universe"]["best_ratio"]
+    A(f"    best pure ret/DD  : {br['weights']}  CAGR {br['cagr']}%  "
+      f"maxDD {br['maxdd']}%  ratio {br['ret_per_dd']}")
+    A("\n[6] SCENARIOS (Portfolio B)")
     for s in o["scenarios"]:
         A(f"    {s['name']:<24} CAGR {s['cagr']:>6.2f}%   vol {s['vol']:>5.2f}%   maxDD {s['maxdd']:>6.1f}%")
     A("\n[7] SANITY CHECKS")
     checks = []
-    checks.append(("baseline weights sum to 100", sum(b["weights"]) == 100))
-    checks.append(("optimized weights sum to 100", sum(o["weights"]) == 100))
-    checks.append(("all baseline weights end in 5 or 0", all(x % 5 == 0 for x in b["weights"])))
-    checks.append(("all optimized weights end in 5 or 0", all(x % 5 == 0 for x in o["weights"])))
-    checks.append(("all four funds used in baseline", all(x > 0 for x in b["weights"])))
-    checks.append(("all four funds used in optimized", all(x > 0 for x in o["weights"])))
+    checks.append(("the budget's reference holds the four original funds on the 5% grid, summing to 100",
+                   sum(b["weights"]) == 100 and len(b["weights"]) == 4
+                   and all(x > 0 and x % 5 == 0 for x in b["weights"])))
     # NOTE: horizon vol is NOT necessarily monotone in T. It converges toward the
     # long-run anchor, and when the last liquid future sits ABOVE that anchor the
     # 12M window can average above the 5Y window. The correct invariant is
@@ -4343,7 +4130,7 @@ def report():
     # repricing" row still said two hikes were priced, three days after the
     # monetary-policy driver on the same page was corrected to one.
     _prose = " ".join(x["desc"] for x in
-                      p["optimized"]["scenarios"] + p["baseline"]["scenarios"])
+                      p["portfolio_b"]["scenarios"] + p["baseline"]["scenarios"])
     checks.append(("no scenario asserts a hike count the macro block does not price",
                    "two hikes are priced" not in _prose
                    and "two hikes priced" not in _prose))
@@ -5136,10 +4923,9 @@ def report():
     # 1.0 volatility multiplier is the modelled path, so it must reproduce the
     # headline row of the portfolio it describes - CAGR, vol AND drawdown. Only
     # the drawdown ever disagreed, and nothing was checking it. (Audit 2026-09-09.)
-    for lab, port, scens in (("baseline", p["baseline"]["under_macro"],
-                              p["baseline"]["scenarios"]),
-                             ("optimized", p["optimized"]["macro"],
-                              p["optimized"]["scenarios"])):
+    for lab, port, scens in [("baseline", p["baseline"]["under_macro"], p["baseline"]["scenarios"])] + [
+            (f"Portfolio {x.upper()}", p[f"portfolio_{x}"]["macro"], p[f"portfolio_{x}"]["scenarios"])
+            for x in "abc"]:
         base_row = next((x for x in scens if x["name"].startswith("Grind")), None)
         checks.append((f"{lab} zero-shock scenario reproduces the headline row",
                        base_row is not None
@@ -5160,19 +4946,17 @@ def report():
     # The honest question is not "is the error inside a bound I derived" but "does a
     # reader reconstructing from the published row land on the printed number". That
     # is asserted directly, with no tolerance to get wrong. (Audit 2026-09-14.)
-    _pk = p["dd_model"]["optimized_k"]
-    checks.append(("every scenario drawdown reproduces from its own printed row",
-                   all(round(-max((_pk * x["vol"] - DD_MU * x["cagr"])
+    checks.append(("every scenario drawdown of A, B and C reproduces from its own printed row",
+                   all(round(-max((p["dd_model"][f"{x_}_k"] * x["vol"] - DD_MU * x["cagr"])
                                   * DD_HORIZON_SCALAR, 0.0), 1) == x["maxdd"]
-                       for x in p["optimized"]["scenarios"])))
+                       for x_ in "abc" for x in p[f"portfolio_{x_}"]["scenarios"])))
     # THE SAME QUESTION, asked of the four headline rows. It was only ever asked of
     # the scenarios, and the headline rows reached the reader's answer by luck: the
     # baseline under macro came out -29.0019 raw against -29.0080 by the reader's
     # route, 0.006pp from rounding to different tenths.  (Audit 2026-09-20.)
     _hd_rows = [(p["baseline"]["base"], p["dd_model"]["baseline_k"]),
-                (p["baseline"]["under_macro"], p["dd_model"]["baseline_k"]),
-                (p["optimized"]["under_base"], p["dd_model"]["optimized_k"]),
-                (p["optimized"]["macro"], p["dd_model"]["optimized_k"])]
+                (p["baseline"]["under_macro"], p["dd_model"]["baseline_k"])] + [
+               (p[f"portfolio_{x_}"][r_], p["dd_model"][f"{x_}_k"]) for x_ in "abc" for r_ in ("base", "macro")]
     checks.append(("every headline drawdown reproduces from its own printed row",
                    all(round(-max((_k * x["vol"] - DD_MU * x["cagr"])
                                   * DD_HORIZON_SCALAR, 0.0), 1) == x["maxdd"]
@@ -5232,72 +5016,58 @@ def report():
     checks.append(("no single sub-year bucket outweighs the mandate horizon",
                    all(v <= p["hz_weights"][HZ_LABEL] + 1e-9
                        for k, v in p["hz_weights"].items() if k != HZ_LABEL)))
-    # THE FLOOR, NOT A CAP. The single-sleeve cap was removed on 2026-09-24; the 5%
-    # floor that keeps all four funds held (invariant 1) is what the enumeration
-    # still enforces, and the set must be the COMPLETE grid above it - a cap left
-    # behind in the loop would shrink it silently.
-    _mn = p["min_sleeve"] * 100
-    checks.append(("every portfolio holds all four funds at the minimum weight",
-                   all(x >= _mn - 1e-9 for x in p["baseline"]["weights"]
-                       + p["optimized"]["weights"])
-                   and all(min(w) >= MIN_SLEEVE - 1e-9 for w, _ in ALL)))
-    _units = round((1 - 4 * MIN_SLEEVE) / 0.05)
-    checks.append((f"the enumeration is the complete 5% grid above the floor "
-                   f"({math.comb(_units + 3, 3)} portfolios)",
-                   p["optimized"]["n_total"] == math.comb(_units + 3, 3)))
-    checks.append(("the stub counterfactual holds every other fund at the minimum",
-                   sum(1 for x in p["stub"]["best_without"] if x == 0) == 1
-                   and all(x >= _mn - 1e-9 for x in p["stub"]["best_without"] if x)))
-    # Every frontier point is efficient: no enumerated portfolio has at least its
-    # CAGR at no more drawdown. And the optimum is ON it, as the page says.
-    _allp = [(s2["cagr"], abs(s2["maxdd"])) for _, s2 in ALL]
-    checks.append(("every frontier point is efficient (no portfolio beats it on both axes)",
+    # THE UNIVERSE IS THE COMPLETE GRID UNDER THE LIMITS, counted a second way: each
+    # fund 0..max_w in 5% steps, cash at least min_cash, the units summing to 20. A
+    # limit left behind in the filter, or one dropped from it, changes the count.
+    _lim = p["universe"]["limits"]; _mx = _lim["max_w"] // 5
+    _cnt = sum(1 for u_ in product(range(_mx + 1), repeat=len(UNIV_IDS))
+               if sum(u_) == 20 and u_[0] * 5 >= _lim["min_cash"]
+               and sum(1 for x in u_ if x) <= _lim["max_funds"])
+    checks.append((f"the universe enumeration is the complete 5% grid under the limits ({_cnt} mixes)",
+                   p["universe"]["n_total"] == _cnt))
+    # Every frontier point is efficient: no limit-respecting mix has at least its
+    # CAGR at no more drawdown. And B is ON it, as the chart draws it.
+    _allp = [(s2["cagr"], abs(s2["maxdd"])) for _, s2 in _univ_pts]
+    checks.append(("every universe frontier point is efficient (no mix beats it on both axes)",
                    all(not any(c >= f["cagr"] + 1e-9 and d <= abs(f["dd"]) + 1e-9 for c, d in _allp)
-                       for f in p["frontier"])))
+                       for f in p["universe"]["frontier"])))
+    checks.append(("Portfolio B is a frontier point",
+                   any([round(x) for x in f["weights"]] == p["portfolio_b"]["weights"]
+                       for f in p["universe"]["frontier"])))
+    _br = p["universe"]["best_ratio"]
+    checks.append(("the universe's best pure ratio is the highest ret/DD of any limit-respecting mix",
+                   _br["ret_per_dd"] == max(s2["ret_per_dd"] for _, s2 in _univ_pts)
+                   and abs(_br["maxdd"]) > 0))
     # THE REPORT'S SECTION 4 IS TYPED, so its claims are asserted here: the heading
     # "Global Technology: the deepest drawdown, the smallest weight" and the bullets
     # "the most rate-sensitive holding" and "the deepest expected drawdown on the
     # sheet". "The highest return" was in the heading until 2026-10-15, when the
     # 1.15% -> 1.50% trust-fee correction put Asia Equity's net forecast above it;
     # the page now states the rank from the data instead of typing it.
-    _gt = next(f for f in p["funds"] if f["id"] == "ATRGTEC")
-    _gi = [f["id"] for f in p["funds"]].index("ATRGTEC")
-    checks.append(("the Report's typed Global Technology claims still hold (smallest "
-                   "weight, most rate-sensitive, deepest drawdown)",
-                   all(p["optimized"]["weights"][_gi] <= w for w in p["optimized"]["weights"])
-                   and all(_gt["tilt_rates"] <= f["tilt_rates"] for f in p["funds"])
-                   and all(_gt["dd_macro"] <= f["dd_macro"] for f in p["funds"])))
-    _pn = p["pinned"]
-    checks.append(("the pinned portfolio holds its fund at exactly the pin, on the grid, inside the budget",
-                   _pn["weights"][PIN_FUND] == _pn["pin_pct"] and sum(_pn["weights"]) == 100
-                   and all(x % 5 == 0 and x >= MIN_SLEEVE * 100 - 1e-9 for x in _pn["weights"])
-                   and abs(_pn["macro"]["maxdd"]) <= DD_CAP + 1e-9))
-    checks.append(("the pinned portfolio follows its stated rule (lowest drawdown within the tie band)",
-                   _pn["macro"]["cagr"] >= _pn["best_cagr"] - _pn["tie_pp"] - 1e-9
-                   and not any(abs(s2["maxdd"]) < abs(_pn["macro"]["maxdd"]) - 1e-9
-                               and s2["cagr"] >= _pn["best_cagr"] - _pn["tie_pp"] - 1e-9
-                               for w2, s2 in FEASIBLE if abs(w2[PIN_FUND] - PIN_W) < 1e-9)))
-    checks.append(("the optimised portfolio is a frontier point",
-                   any([float(x) for x in f["weights"]] == [float(x) for x in p["optimized"]["weights"]]
-                       for f in p["frontier"])))
-    # The what-if helper must BE the optimiser: on the live column it has to return
-    # the published allocation, or its counterfactuals answer a different question.
-    _live = optimise("net_macro")
-    checks.append(("the what-if optimiser reproduces the published allocation on live inputs",
-                   _live["weights"] == p["optimized"]["weights"]
-                   and _live["pinned"]["weights"] == p["pinned"]["weights"]
-                   and abs(_live["dd_cap"] - p["optimized"]["dd_cap"]) < 0.005))
+    # (The "smallest weight" claim left the heading with the four-fund optimum it
+    # described; the two that remain are tested across all five funds, v62.)
+    _five = p["funds"] + p["portfolio_b"]["funds"]
+    _gt = next(f for f in _five if f["id"] == "ATRGTEC")
+    checks.append(("the Report's typed Global Technology claims still hold across the five "
+                   "funds (most rate-sensitive, deepest drawdown)",
+                   all(_gt["tilt_rates"] <= f["tilt_rates"] for f in _five)
+                   and all(_gt["dd_macro"] <= f["dd_macro"] for f in _five)))
+    # The what-if helper must BE the rule: on the live column it has to return the
+    # published B and C, or its counterfactuals answer a different question.
+    _live = _univ_wi("net_macro")
+    checks.append(("the what-if helper reproduces the published B and C on live inputs",
+                   _live["b"]["weights"] == p["portfolio_b"]["weights"]
+                   and _live["c"]["weights"] == p["portfolio_c"]["weights"]
+                   and _live["a"]["cagr"] == p["portfolio_a"]["macro"]["cagr"]))
     checks.append(("each what-if column differs from the live one by exactly the tilt it removes",
                    all(abs(f2["net_macro"] - f2["net_novol"] - f2["tilt_vol"]) < 0.0051
                        and abs(f2["net_macro"] - f2["net_neutral"] - f2["tilt_rates"]
                                - f2["tilt_energy"]) < 0.0051
                    and abs(f2["net_macro"] - f2["net_notrend"] - f2["tilt_trend"]) < 0.0051
-                   for f2 in p["funds"])))
-    # The published 50%-cap counterfactual must BE the best capped point in budget.
-    _cc = p["cap_counterfactual"]
-    _cw, _cs, _ = pick([(w, s) for w, s in FEASIBLE if max(w) <= _cc["max_sleeve"] + 1e-9])
-    checks.append(("the published 50%-cap counterfactual is the rule's pick among capped points in budget",
-                   _cc["weights"] == [round(x * 100) for x in _cw] and abs(_cc["cagr"] - _cs["cagr"]) < 1e-9))
+                   and abs(f2["net_macro"] - f2["net_asia_fee_hi"]
+                           - (p["universe"]["what_if"]["asia_fee_hi"]["stress_pp"]
+                              if f2["id"] == "ATRASEQ" else 0.0)) < 0.0051
+                   for f2 in p["funds"] + p["portfolio_b"]["funds"])))
     checks.append(("every region is scored at the mandate horizon",
                    all(HZ_LABEL in v for v in p["regions"].values())))
     checks.append(("the drawdown horizon scalar is sqrt(horizon / calibration window)",
@@ -5306,8 +5076,8 @@ def report():
     checks.append(("the drawdown scalar is >1 for a horizon longer than the calibration",
                    (dm["horizon_scalar"] > 1) == (dm["horizon_y"] > dm["calib_y"])))
     checks.append(("peso terminal value compounds over the mandate horizon",
-                   abs(1_000_000 * (1 + p["optimized"]["macro"]["cagr"] / 100) ** HORIZON_Y
-                       - p["optimized"]["macro"]["terminal_1m"]) < 1.0))
+                   all(abs(1_000_000 * (1 + p[f"portfolio_{x_}"]["macro"]["cagr"] / 100) ** HORIZON_Y
+                           - p[f"portfolio_{x_}"]["macro"]["terminal_1m"]) < 1.0 for x_ in "abc")))
     # The drawdown card publishes a formula. These assert the formula, using the
     # coefficients the page prints, reproduces the drawdowns the page prints -
     # the audit that was missing when 1.65 was shown as if it applied to every
@@ -5330,10 +5100,8 @@ def report():
                        <= dd_tol(fd["dd_k"], p["dd_model"]["mu_coef"])))
     checks.append(("every fund's drawdown coefficient carries a stated reason",
                    all(len(fd.get("dd_k_why", "")) > 30 for fd in p["funds"])))
-    for lab, w, mm, kk in (("baseline", BASELINE_W, p["baseline"]["under_macro"],
-                            p["dd_model"]["baseline_k"]),
-                           ("optimized", OPT_W, p["optimized"]["macro"],
-                            p["dd_model"]["optimized_k"])):
+    for lab, mm, kk in [("baseline", p["baseline"]["under_macro"], p["dd_model"]["baseline_k"])] + [
+            (f"Portfolio {x_.upper()}", p[f"portfolio_{x_}"]["macro"], p["dd_model"][f"{x_}_k"]) for x_ in "abc"]:
         pred = ((kk * mm["vol"] - p["dd_model"]["mu_coef"] * mm["cagr"])
                 * p["dd_model"]["horizon_scalar"])
         # portfolio k is published to 3dp, so it contributes vol * 0.0005
@@ -5341,9 +5109,10 @@ def report():
                        abs(-pred - mm["maxdd"])
                        <= dd_tol(kk, p["dd_model"]["mu_coef"],
                                  k_dp=mm["vol"] * 0.0005)))
-    for lab, w in (("baseline", BASELINE_W), ("optimized", OPT_W)):
-        eq = [(w[i], p["funds"][i]["dd_k"]) for i in range(4)
-              if not FUNDS[i]["cash_like"]]
+    for lab, w, kkey in [("baseline", BASELINE_W, "baseline_k")] + [
+            (f"Portfolio {x_.upper()}", [x / 100 for x in p[f"portfolio_{x_}"]["weights"]], f"{x_}_k") for x_ in "abc"]:
+        eq = [(w[i], _five[i]["dd_k"]) for i in range(len(w))
+              if not UNIV[1][i]["cash_like"]]
         avg = sum(x * kx for x, kx in eq) / sum(x for x, _ in eq)
         # Bound derived from how precisely k is PUBLISHED, which changed on
         # 2026-09-14 from 3dp to 5dp. The 0.006 that stood here was set when the
@@ -5351,31 +5120,12 @@ def report():
         # value it is roughly 1200x looser than the arithmetic warrants, so it would
         # have passed a materially wrong weighted average. A tolerance is only as
         # good as the precision it was derived from, and it must move with it.
-        _k_pub = p["dd_model"][f"{lab}_k"]
+        _k_pub = p["dd_model"][kkey]
         _k_dec = len(repr(float(_k_pub)).split(".")[1].rstrip("0")) if "." in repr(float(_k_pub)) else 0
         checks.append((f"{lab} portfolio k is the ex-cash weighted average of the sleeve k's",
                        abs(avg - _k_pub) <= 0.5 * 10 ** (-_k_dec) + 1e-12))
-    # This check used to also assert cost > 0 - "the stub is genuinely dearer".
-    # That was a contingent fact written in as an invariant, and it stopped being
-    # true on 2026-09-09 when the fee corrections closed the gap: the counterfactual
-    # is drawn from a DIFFERENT feasible set (no Global Tech at all), so its best
-    # point can be better, equal or worse than the chosen one. The cost is an
-    # arithmetic identity; its sign is a finding, not a law. (Same failure mode as
-    # the "vol term structure is monotone rising" invariant, 2026-09-04.)
-    checks.append(("the Global Tech stub cost is the derived difference, whatever its sign",
-                   abs(p["stub"]["cost"]
-                       - (p["stub"]["cagr_without"] - p["stub"]["cagr_with"])) < 0.006))
-    checks.append(("the quoted tech-sleeve CAGR gap matches the two funds",
-                   abs(p["tech_gap"] - (next(f["net_macro"] for f in p["funds"]
-                                             if f["id"] == "ATRGTEC")
-                                        - next(f["net_macro"] for f in p["funds"]
-                                               if f["id"] == "ATRQIAP"))) < 0.006))
     checks.append(("every fund net CAGR is below its gross", 
                    all(f["net_base"] < f["gross_php"] for f in p["funds"])))
-    checks.append(("optimized beats baseline on ret/DD",
-                   o["macro"]["ret_per_dd"] > b["under_macro"]["ret_per_dd"]))
-    checks.append(("optimized drawdown is smaller than baseline",
-                   abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])))
     lt = p["lookthrough"]
     checks.append((f"look-through recorded for all {len(UNIV_IDS)} funds, Global Dividend included",
                    set(lt) == {f["id"] for f in FUNDS + ADD_FUNDS}))
@@ -5465,16 +5215,6 @@ def report():
                    abs(FUNDS[1]["vol_beta"] - TREND_INPUTS["ATRQIAP"]["beta"] * JEPQ_VOL / NDX_VOL) < 1e-12
                    and abs(FUNDS[2]["vol_beta"] - TREND_INPUTS["ATRASEQ"]["beta"] * 0.92) < 1e-12
                    and abs(FUNDS[3]["vol_beta"] - TREND_INPUTS["ATRGTEC"]["beta"]) < 1e-12))
-    # WAS "does not move Portfolio B or C". On 10 Oct inputs it does move B -
-    # 25/15/55/5 to 25/15/50/10, 0.01pp apart inside a five-portfolio band - and a
-    # check that asserts invariance on a flat optimum is a check waiting to be
-    # loosened. What can be asserted is the size of the effect: the disputed input
-    # moves neither forecast by more than the tie the rule already treats as
-    # noise. The page says whether the weights move.
-    _ta = p["what_if"]["trend_alt"]
-    checks.append(("Asia's disputed quarter moves B's and C's forecasts by no more than the tie",
-                   abs(_ta["cagr"] - p["optimized"]["macro"]["cagr"]) <= PIN_TIE_PP + 1e-9
-                   and abs(_ta["pinned"]["cagr"] - p["pinned"]["macro"]["cagr"]) <= PIN_TIE_PP + 1e-9))
     checks.append(("the covered-call sleeve is the one most paid when the curve sits above long-run",
                    max(p["funds"], key=lambda f2: f2["tilt_vol"])["id"] == "ATRQIAP"
                    or vc["ramp"] <= 0))
@@ -5501,11 +5241,16 @@ def report():
                    not any(re.search(r"implied vol rises|as vol rises|->\s*19", f2["gross_note"])
                            for f2 in FUNDS)))
     checks.append(("peso figures reconcile with the displayed CAGR and drawdown",
-                   _ties(p["baseline"]["under_macro"]) and _ties(p["optimized"]["macro"])))
+                   _ties(p["baseline"]["under_macro"])
+                   and all(_ties(p[f"portfolio_{x_}"][r_]) for x_ in "abc" for r_ in ("macro", "base"))))
     # regression: no feasible portfolio may exceed the stated drawdown budget
-    cap = p["optimized"]["dd_cap"]
-    checks.append(("no chosen portfolio exceeds the drawdown budget",
-                   abs(port_dd(OPT_W, "net_macro")) <= DD_CAP + 1e-9))
+    cap = p["portfolio_b"]["dd_cap"]
+    # Each pick on the column it was CHOSEN on, by the raw route: A on the long-run
+    # returns (on the macro view A may sit outside; the page says so from in_budget).
+    checks.append(("no pick exceeds the drawdown budget on the column it was chosen on",
+                   abs(port_dd(PA_W, "net_base", UNIV)) <= DD_CAP + 1e-9
+                   and abs(port_dd(PB_W, "net_macro", UNIV)) <= DD_CAP + 1e-9
+                   and abs(port_dd(PC_W, "net_macro", UNIV)) <= DD_CAP + 1e-9))
     # FEASIBILITY MUST MEAN THE SAME THING ON BOTH ROUTES. The constraint is tested
     # on the true drawdown, deliberately; the page prints the reader-reproducible
     # one. Nothing had been asserting that a portfolio admitted by the first is not
@@ -5514,52 +5259,26 @@ def report():
     # coincidence that let the headline rows reconcile by luck.
     checks.append(("every feasible portfolio respects the cap on the PUBLISHED "
                    "drawdown too",
-                   all(abs(s["maxdd"]) <= DD_CAP + 1e-9 for _, s in FEASIBLE)))
+                   all(abs(s["maxdd"]) <= DD_CAP + 1e-9 for fs in UNIV_FEAS.values() for _, s in fs)))
     # The published cap must BE the enforced cap. Publishing a rounded, looser
     # figure made this very check unable to bite: it read the published 26.0
     # while the optimiser enforced 25.97. (Audit 2026-09-08.)
-    checks.append(("the published drawdown cap is the one actually enforced",
-                   abs(cap - DD_CAP) < 5e-9))
+    checks.append(("the published drawdown cap is the one actually enforced, the same for A, B and C",
+                   abs(cap - DD_CAP) < 5e-9
+                   and p["portfolio_a"]["dd_cap"] == p["portfolio_b"]["dd_cap"] == p["portfolio_c"]["dd_cap"]))
+    # ...and a reader can rebuild it from the reference printed beside it.
+    checks.append(("the published budget is the reference baseline's macro drawdown less the stated improvement",
+                   abs(cap - round(abs(p["baseline"]["under_macro"]["maxdd"]) - DD_BUDGET_IMPROVEMENT, 2)) < 5e-9
+                   and abs(DD_BUDGET_IMPROVEMENT - round(2.0 * p["dd_model"]["horizon_scalar"], 2)) < 5e-9))
     checks.append(("the published horizon scalar reproduces the enforced one",
                    abs(p["dd_model"]["horizon_scalar"] - DD_HORIZON_SCALAR) < 5e-9))
-    # ONE RULE (2026-10-07): B within the tie band of the best CAGR in budget, and no
-    # portfolio in that band shallower than B.
-    _top = max(s2["cagr"] for _, s2 in FEASIBLE)
-    checks.append(("Portfolio B is within the tie band of the best CAGR inside the budget",
-                   p["optimized"]["macro"]["cagr"] >= _top - PIN_TIE_PP - 1e-9))
-    checks.append(("no portfolio in B's band has a shallower drawdown than B",
-                   not any(abs(s2["maxdd"]) < abs(p["optimized"]["macro"]["maxdd"]) - 1e-9
-                           for _, s2 in FEASIBLE if s2["cagr"] >= _top - PIN_TIE_PP - 1e-9)))
-    # The strict-maximum disclosure: the best CAGR in budget, the band counted from it,
-    # and B and C both chosen by the SAME function - re-applied here to each one's own
-    # candidates, so a rule that drifts apart for one of them fails.
-    _st = p["optimized"]["strict"]
-    _sw, _ss, _sn = pick(FEASIBLE)
-    _pw, _ps, _pn_ = pick(_pin_feas)
-    checks.append(("the strict-maximum alternative is the best CAGR in budget and the band is counted from it",
-                   _st["cagr"] == _top and _st["n"] == _sn == p["optimized"]["band_n"]
-                   and abs(_st["maxdd"]) <= DD_CAP + 1e-9))
-    checks.append(("B and C are both chosen by the one rule, re-applied to each one's candidates",
-                   [round(x * 100) for x in _sw] == p["optimized"]["weights"]
-                   and [round(x * 100) for x in _pw] == p["pinned"]["weights"]
-                   and _pn_ == p["pinned"]["band_n"]))
-    # WAS "B gives up no more CAGR to the baseline than the tie band" - a fact about
-    # the inputs written as an invariant. On the J.P. Morgan 2027 roll (2026-10-21)
-    # Global Technology became the highest-return sleeve and the baseline holds 25%
-    # of it, so the budget now costs B real return. That is allowed exactly when the
-    # baseline is OUTSIDE the budget; the page states the cost against the tie.
-    checks.append(("B cuts the baseline's drawdown, and trails it by more than the tie only when the baseline breaks the budget",
-                   abs(o["macro"]["maxdd"]) < abs(b["under_macro"]["maxdd"])
-                   and (o["macro"]["cagr"] >= b["under_macro"]["cagr"] - PIN_TIE_PP - 1e-9
-                        or abs(b["under_macro"]["maxdd"]) > DD_CAP)))
     # PORTFOLIO B (chosen by the rule since v56). The checks are about measurement:
     # the grid, the matrix it is measured with, the budget, and that every figure
     # re-derives from the funds' own inputs.
     _pb = p["portfolio_b"]; _bw = _pb["weights"]
     _nu = len(UNIV_IDS)
-    checks.append((f"Portfolio B: {_nu} weights on the 5% grid summing to 100, every held fund at the minimum",
-                   len(_bw) == _nu and sum(_bw) == 100 and all(x % 5 == 0 for x in _bw)
-                   and all(x == 0 or x >= MIN_SLEEVE * 100 for x in _bw)))
+    checks.append((f"Portfolio B: {_nu} weights on the 5% grid summing to 100",
+                   len(_bw) == _nu and sum(_bw) == 100 and all(x % 5 == 0 for x in _bw)))
     _cd = CORR_U
     checks.append(("the five-fund correlation extends the four-fund one: same block, symmetric, unit diagonal, positive definite",
                    all(_cd[i][j] == CORR[i][j] for i in range(4) for j in range(4))
@@ -5571,8 +5290,6 @@ def report():
                    abs(_bmu - _pb["macro"]["cagr"]) < 0.005))
     checks.append((f"Portfolio B sits inside the drawdown budget ({_pb['macro']['maxdd']}% vs -{DD_CAP:.2f}%)",
                    _pb["in_budget"] and abs(_pb["macro"]["maxdd"]) <= DD_CAP + 1e-9))
-    checks.append(("B's grind-on stress row reproduces B itself",
-                   [r for r in _pb["scenarios"] if r["name"].startswith("Grind")][0]["cagr"] == _pb["macro"]["cagr"]))
     _fg = _pb["funds"][0]
     checks.append(("Global Dividend's fee is its trust fee plus its target fund's",
                    abs(_fg["fee_total"] - MACRO["gdiv_trust_fee"] - MACRO["gdiv_target_ocf"]) < 1e-9))
@@ -5605,8 +5322,6 @@ def report():
     _amu = sum(w / 100 * f["net_macro"] for w, f in zip(_aw, p["funds"] + _pb["funds"]))
     checks.append((f"Portfolio A's CAGR re-derives from its funds ({_amu:.2f} vs {_pa['macro']['cagr']})",
                    abs(_amu - _pa["macro"]["cagr"]) < 0.005))
-    checks.append(("A's grind-on stress row reproduces A itself",
-                   [r for r in _pa["scenarios"] if r["name"].startswith("Grind")][0]["cagr"] == _pa["macro"]["cagr"]))
     # The two picks are the two ends of one search, so their recorded results must
     # order the right way: A has the higher base case, D the better worst case.
     checks.append(("the review's two picks order as their rules say: A the higher base case, the best-worst-case pick the better worst case",
@@ -5627,8 +5342,10 @@ def report():
                    and MACRO["useq_w_c_listed"] >= MACRO["useq_w_c_peer"] >= 0
                    and sum(x[1] for x in MACRO["pa_review_mix"]) == 100
                    and "ATRUSEQ" not in p["portfolio_b"]["ids"]))
-    checks.append(("portfolio vol < weighted-average vol (diversification works)",
-                   o["macro"]["vol"] < sum(w/100*f["vol"] for w, f in zip(o["weights"], p["funds"]))))
+    checks.append(("portfolio vol < weighted-average vol for A, B and C (diversification works)",
+                   all(p[f"portfolio_{x_}"]["macro"]["vol"]
+                       < sum(w / 100 * f["vol"] for w, f in zip(p[f"portfolio_{x_}"]["weights"], _five))
+                       for x_ in "abc")))
     for name, ok in checks:
         A(f"    [{'PASS' if ok else 'FAIL'}] {name}")
     A(f"\n    {sum(1 for _, ok in checks if ok)}/{len(checks)} checks passed")
