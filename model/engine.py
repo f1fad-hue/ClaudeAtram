@@ -14,7 +14,7 @@ Run:  python3 engine.py            -> human-readable audit report
 import datetime as _dt
 import json, math, re, sys
 from decimal import Decimal, ROUND_HALF_UP
-from itertools import combinations, product
+from itertools import combinations
 
 # Two different dates, which this model had been conflating. AS_OF is the market
 # data date - the last trading session every price, yield and level comes from.
@@ -155,9 +155,13 @@ MACRO = {
         # Forbes and Stock Market Watch. CNBC's market basis 5.146%.
         ("2026-10-19", 5.15),
         # 20 Oct: Treasury par curve 5.12, "down 3 basis points" (Forbes' Treasury-
-        # rates page) - chains off 5.15; Investing.com's market close 5.133.
-        # PROVISIONAL until FRED publishes it (its T10Y3M already has the 20th).
+        # rates page) - chains off 5.15; Investing.com's market close 5.133. The Fed's
+        # H.15 now has the 20th at 5.12 (2-year 4.79, 30-year 5.42).
         ("2026-10-20", 5.12),
+        # 21 Oct: 5.13, +1bp (Forbes' Treasury-rates page, the par curve; Trading
+        # Economics 5.13 on the market basis). FRED's T10Y2Y for the 21st is 0.32, which
+        # is 5.13 less the par curve's 4.81 2-year - so the official spread pins it too.
+        ("2026-10-21", 5.13),
     ],
     # 23 Sep is the 5.104% market-close print (CNBC, Wolf Street: "+13.7bp to
     # 5.104") rounded to 2dp, NOT a Treasury par-curve / H.15 figure: neither was
@@ -198,9 +202,8 @@ MACRO = {
     # (YourBestSavings and Forbes' Treasury-rates page) both read 5.12, and Mortgage
     # News Daily's market close was 5.123 - the 23 Sep rule (two par-curve sources).
     "ust_10y_provisional": [],
-    # 21 OCT NOT CARRIED: market quotes only - Trading Economics 5.13% (+0.01),
-    # Investing.com 5.127%, CNBC intraday 5.109% - and no par-curve figure reached.
-    "ust_10y_mkt_21oct": 5.13,
+    # 21 Oct was held back on 22 Oct on market quotes alone (Trading Economics 5.13,
+    # Investing.com 5.127, CNBC intraday 5.109); carried from 2026-10-22 on the par curve.
     "ust_10y_provisional_basis": "Treasury par curve; FRED H.15 pending",
     "ust_10y_disputed_23sep": [5.10, 5.11, 5.12],
     # 6 Oct was NOT CARRIED on 7 Oct: only market-basis quotes existed (Trading
@@ -288,9 +291,10 @@ MACRO = {
     # 2-year 4.79%, 30-year 5.42% (-6bp; Trading Economics' OTC quote 5.43%); FRED's
     # T10Y2Y for the 20th is 0.33, which is 5.12 - 4.79. From here the 2-year and
     # 30-year are carried on the same official-close basis as the 10-year.
-    "ust_2y": 4.79, "ust_2y_date": "2026-10-20",
+    # 21 Oct, par curve (Forbes): 2-year 4.81%, 30-year 5.42%; T10Y2Y 0.32 = 5.13 - 4.81.
+    "ust_2y": 4.81, "ust_2y_date": "2026-10-21",
     "ust_10y_intraday_14oct": 5.33,   # ~30 minutes after the CPI (Quartz, CNBC)
-    "ust_30y": 5.42, "ust_30y_date": "2026-10-20",
+    "ust_30y": 5.42, "ust_30y_date": "2026-10-21",
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
 
@@ -512,26 +516,28 @@ MACRO = {
     # 21 Oct 63.361, 27.1 centavos (0.43%) weaker - a record close - after an
     # intraday 63.373, the weakest print on record, on dollar strength and oil
     # (Tribune, radar.ph). 63.09 + 0.271 = 63.361.
-    "usdphp": 63.361,          # 21 Oct
-    "usdphp_date": "2026-10-21",
-    "usdphp_prev": 63.09,      # 20 Oct close
-    "usdphp_prev_date": "2026-10-20",
-    "usdphp_chg": 0.271,
-    "usdphp_record": 63.361,       # 21 Oct close - the weakest close on record
-    "usdphp_record_date": "2026-10-21",
-    "usdphp_record_prev": 63.09, "usdphp_record_prev_date": "2026-10-19",
-    "usdphp_record_intraday": 63.545,  # 22 Oct intraday (Inquirer) - weakest print on record
+    # 22 Oct 63.52, 15.9 centavos weaker - a record close for a fourth straight
+    # session - after opening at 63.31 and trading 63.30-63.545, on the BSP's 50bp
+    # hike and Gulf risk (BusinessWorld, Manila Bulletin, Manila Times).
+    # 63.361 + 0.159 = 63.52.
+    "usdphp": 63.52,           # 22 Oct
+    "usdphp_date": "2026-10-22",
+    "usdphp_prev": 63.361,     # 21 Oct close
+    "usdphp_prev_date": "2026-10-21",
+    "usdphp_chg": 0.159,
+    "usdphp_record": 63.52,        # 22 Oct close - the weakest close on record
+    "usdphp_record_date": "2026-10-22",
+    "usdphp_record_prev": 63.361, "usdphp_record_prev_date": "2026-10-21",
+    "usdphp_record_intraday": 63.545,  # 22 Oct intraday (Inquirer, Manila Bulletin) - weakest print on record
     "usdphp_record_intraday_date": "2026-10-22",
-    # 22 OCT CLOSE WITHHELD: Tribune has the peso "closed at a third consecutive record
-    # low of P63.52 shortly after the rate hike announcement", Inquirer a record low of
-    # 63.545 on the day; neither is the BAP's stated close. The 21 Oct close stays.
-    "usdphp_withheld_22oct": [63.52, 63.545],
     # 24, not 23. BusinessWorld counted 62.625 (8 Sep) as the 23rd record of 2026
     # and 62.68 (11 Sep) as the 24th; this model had the count attached to the
     # level below it from launch until 2026-09-19. It is carried as-of the 11 Sep
     # print because that is the last record published with a running YTD count.
     # 62.86 is at least one more, but no source states its ordinal and an ordinal
-    # cannot be derived from a price, so it is not asserted.
+    # cannot be derived from a price, so it is not asserted. The 22 Oct close is
+    # BusinessWorld's 35th record of the year and GMA's 30th; the two disagree, so
+    # neither replaces the 11 Sep count.
     "usdphp_records_2026": 24,
     "usdphp_sept_records": 6,      # 14 Sep was the sixth record of the month
     "usdphp_2025_close": 58.79,    # 29 Dec 2025 - the YTD base, move DERIVED below
@@ -2127,27 +2133,31 @@ TREND_INPUTS = {
                  "benchmark is MSCI ACWI Health Care, which no monthly series reachable here gives",
         "mu": MACRO["ltcma_global_eq"], "beta": HC_SP_BETA,
         # The Q4 2025 months compound to +10.6%: BlackRock has global health care up "more
-        # than 10%" in the quarter, leading every sector. AAII has August 2026 at +4.0%.
+        # than 10%" in the quarter, leading every sector. iShares' own NAV returns to 30 Sep
+        # 2026 - September -1.96%, year-to-date 5.93%, one year 16.81% - against these
+        # months' -2.03%, 5.79% and 16.98%: within 0.2pp, the gap between price and NAV.
+        # (AAII's "20.7% year-to-date to 31 Aug" agrees with no other source and is not used.)
         "monthly": {"2025Q4": [2.85, 8.30, -0.73], "2026Q1": [1.41, 2.98, -8.03],
                     "2026Q2": [-0.65, 1.69, 5.03], "2026Q3": [1.91, 3.97, -2.03]},
         "cross_check": {},
-        "source": "PortfoliosLab, IXJ monthly total returns; BlackRock (Q4 2025) and AAII "
-                  "(Aug 2026) as cross-checks",
+        "source": "PortfoliosLab, IXJ monthly total returns; BlackRock (Q4 2025) and iShares' "
+                  "NAV returns to 30 Sep 2026 as cross-checks",
     },
     "M_GEO": {
         "market": "Global equity, MSCI ACWI",
-        "proxy": "the index (Q4 2025, net USD) and iShares MSCI ACWI ETF (2026 quarters); "
-                 "the target fund, Allianz Thematica, is a thematic global equity fund run "
-                 "against MSCI ACWI",
+        "proxy": "the index in USD; the target fund, Allianz Thematica, is a thematic "
+                 "global equity fund run against MSCI ACWI",
         "mu": MACRO["ltcma_global_eq"], "beta": ACWI_SP_BETA,
-        # Q4 2025 from Aristotle Capital's index figure (+3.29%; Maseco +3.4%). The 2026
-        # quarters are ETFreplay's; they compound to 12.92% against iShares' published
-        # 12.90% year-to-date NAV return to 20 October. ETFreplay's table also prints a
-        # Q4 2026 figure that cannot exist yet, so its quarters are used only as checked.
-        "quarterly": {"2025Q4": 3.29, "2026Q1": -2.21, "2026Q2": 14.17, "2026Q3": 1.14},
+        # The index's own quarters, all four (2026-10-22). Aristotle Capital: Q4 2025 +3.29%
+        # (Maseco +3.4%), Q1 2026 -3.20%, Q2 +14.93% with 11.25% for the half - which
+        # -3.20% and +14.93% compound to. Q3 +1.6% and 13.0% for the year to date (Maseco,
+        # Goldstone): 11.25% and 1.6% compound to 13.03%. Until 2026-10-22 the 2026
+        # quarters were the ETF's from ETFreplay (-2.21 / 14.17 / 1.14), one source whose
+        # table also printed a Q4 2026 that cannot exist yet, and up to 1pp off the index.
+        "quarterly": {"2025Q4": 3.29, "2026Q1": -3.20, "2026Q2": 14.93, "2026Q3": 1.6},
         "cross_check": {},
-        "source": "Aristotle Capital 4Q 2025 commentary (MSCI ACWI); ETFreplay ACWI "
-                  "quarterly returns, checked against iShares' YTD NAV return to 20 Oct 2026",
+        "source": "Aristotle Capital quarterly commentaries (Q4 2025 - Q2 2026, MSCI ACWI); "
+                  "Maseco and Goldstone Q3 2026 market reviews",
     },
 }
 # The one input sources disagree on materially: AAXJ, the ETF on the same Asia
@@ -2204,7 +2214,7 @@ REGIONS = {
                 "7757.17, the Nasdaq 1.05% as SpaceX and Tesla led, and the Dow 0.69%. The "
                 "data ran hot - producer prices up 1.3% in September, retail sales 0.8% - "
                 "but the hike moved out: FedWatch had October at 16% on 22 Oct, and the "
-                "10-year closed at 5.12% on 20 Oct. The consumer is the weak point, "
+                "10-year closed at 5.13% on 21 Oct. The consumer is the weak point, "
                 "Michigan sentiment at 46.3. The anchor holds at 6.5 on two structural "
                 "points: the US is a net energy EXPORTER, a relative tailwind with Brent "
                 "+75.8% y/y, and NDX at 22.4x forward on its last verified reading sat "
@@ -2245,11 +2255,11 @@ REGIONS = {
         "3M": 5.0, "6M": 5.0, "12M": 5.5, HZ_LABEL: 5.5,
         "why": ("Near horizons held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, "
                 "twice the 25bp that 20 of 22 analysts expected - its fourth straight hike "
-                "and the first half-point since February 2023. The peso printed a record "
-                "63.545 intraday that day; its close is not carried until the official "
-                f"figure is reached, so the record close stays 63.361 of 21 Oct, a "
-                f"{MACRO['usdphp_ytd_pct']}% loss of purchasing power against the dollar "
-                "this year. The PSEi fell 0.72% to 5779.73, ending a five-session rally, "
+                "and the first half-point since February 2023. The peso still closed at "
+                f"a record {MACRO['usdphp']}, {MACRO['usdphp_chg_ctvo']} centavos weaker, its "
+                f"fourth record close in a row, after a record {MACRO['usdphp_record_intraday']} "
+                f"intraday: a {MACRO['usdphp_ytd_pct']}% loss of purchasing power against the "
+                "dollar this year. The PSEi fell 0.72% to 5779.73, ending a five-session rally, "
                 "still clear of its 5610.39 low of 8 Oct. September inflation was 7.2%, core "
                 "4.7%. The carry is rising to meet it: the 19 Oct auction lifted 91-day "
                 "bills to 5.992% and 364-day bills to 6.444%, a ninth straight weekly rise, "
@@ -2292,10 +2302,9 @@ DRIVERS = [
      "is 5.00-6.00%. Governor Remolona said the hike answered inflation, not the peso, "
      "and left 17 Dec open. The Fed pricing has barely moved: CME FedWatch had an "
      "October hike at 16% on 22 Oct, against 14.9% on 16 Oct and 31.6% after the CPI, "
-     "and one by December at 90%, from 88.9%. The long end is flat: on official closes the 10-year was 5.09% on "
-     "the 16th, 5.15% on the 19th and 5.12% on the 20th, with the 2-year at 4.79% and "
-     "the 30-year at 5.42%; market quotes put the 21st near 5.13%, not carried until "
-     "the par curve publishes. That is below the 7 Oct intraday high of 5.365%, which is "
+     "and one by December at 90%, from 88.9%. The long end is flat: on official closes the 10-year was 5.15% on "
+     "the 19th, 5.12% on the 20th and 5.13% on the 21st, with the 2-year at 4.81% and "
+     "the 30-year at 5.42%. That is below the 7 Oct intraday high of 5.365%, which is "
      "above the 5 Oct peak of 5.349% and the highest since April 2002. The Bank of Korea "
      "paused at 3.00% on 22 Oct; the FOMC decides on 28 Oct, the ECB on 29 Oct and the "
      "BoJ, at 1.25%, on 30 Oct. Held: a December Fed hike is still nine-in-ten priced, "
@@ -2398,7 +2407,7 @@ SUMMARY = {
     "US": "Held: the S&P rose 0.58% to 7757.17, a third straight gain; October hike odds are 16%, and the anchor holds.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
     "ASIA": f"Near horizons held: the KOSPI fell {abs(MACRO['kospi_latest_chg_pct'])}% on 22 Oct as the Bank of Korea paused, {MACRO['kospi_off_2oct_pct']}% below 2 Oct.",
-    "PHILIPPINES": "Near horizons held: BSP hiked 50bp to 5.50% on 22 Oct; the PSEi fell 0.72% and the peso printed a record 63.545 intraday.",
+    "PHILIPPINES": "Near horizons held: BSP hiked 50bp to 5.50% on 22 Oct; the PSEi fell 0.72% and the peso closed at a record 63.52.",
 }
 
 GAUGE = to5(GAUGE_10)          # headline, 1-5
@@ -2760,7 +2769,7 @@ def build_fund(f):
         # independent audit re-derives the score instead of trusting it
         "region_mix": REGION_MIX.get(f["region"]),
         "asia_rerating_share": f.get("asia_rerating_share", 0.0),
-        "role": f.get("role"), "exposure": f.get("exposure"), "slide_note": f.get("slide_note"),
+        "role": f.get("role"), "exposure": f.get("exposure"),
         "tilt_rates_cal": t["rates"], "tilt_energy_cal": t["energy"],
         "tilt_total": round(tilt_total, 2),
         "net_macro": round(macro_net, 2),
@@ -2779,12 +2788,12 @@ def build_fund(f):
 
 F = [build_fund(f) for f in FUNDS]
 
-# ---- The fund beyond the original four (2026-10-21) --------------------------
-# Global Dividend, from the 21 Oct review of the ATRAM list. A, B and C are chosen
-# over all five funds. It is built by build_fund() - the same fees, FX drift, tilts
-# and drawdown rule as every other sleeve - so the five-fund numbers are on exactly
-# this page's basis. The Long Term Peso Bond that sat beside it was removed on
-# 2026-10-21 at the owner's instruction.
+# ---- The funds beyond the original four ----------------------------------------
+# Global Dividend from the 21 Oct review of the ATRAM list, and six more from the
+# owner's 22-fund list (2026-10-22). Every one is built by build_fund() - the same
+# fees, FX drift, tilts and drawdown rule as the original four - so A, B and C are
+# measured on one basis. The Long Term Peso Bond that sat beside Global Dividend was
+# removed on 2026-10-21 at the owner's instruction.
 ADD_FUNDS = [
     {
         "id": "ATRGLDV", "name": "ATRAM Global Dividend Feeder Fund",
@@ -2939,7 +2948,8 @@ ADD_FUNDS = [
         "target_verified": True,
         "fee_feeder": 1.20, "fee_target": 1.13,
         "fee_note": "1.20% ATRAM trust fee (uitf.com.ph PHP and USD classes and the feeder's fact sheet; "
-                    "DragonFi lists 1.50%, and the fund is not among the six repriced on 14 Sep) + "
+                    "DragonFi lists 1.50%, and the fund is not among the six repriced on 14 Sep; at "
+                    "1.50% A, B and C are unchanged, as none holds it) + "
                     "1.13% target-fund TER (PUBLISHED on the feeder's fact sheet)",
         "gross_usd": round(0.6 * MACRO["ltcma_global_eq"] + 0.4 * MACRO["ltcma_global_agg"], 2),
         "gross_note": (f"Three-fifths global equity ({MACRO['ltcma_global_eq']}%) and two-fifths global "
@@ -2971,10 +2981,9 @@ CORR_NOTE = ("Money market is treated as uncorrelated to the equity sleeves. "
              "constraint - both are US mega-cap-tech engines, so holding both "
              "at size buys far less diversification than it appears to.")
 
-# The five-fund matrix: the four-fund block above unchanged, plus Global Dividend.
-# Its pairs come from the 21 Oct review's factor model, whose fit reproduces the
-# 0.88 / 0.66 / 0.74 above exactly - so the new row is on the same basis as the old
-# ones. Order: MM, Nasdaq Income, Asia, Tech, Global Dividend.
+# The typed five-fund block: the four-fund matrix above unchanged, plus Global Dividend,
+# whose pairs came from the 21 Oct review's factor model (its fit reproduces the 0.88 /
+# 0.66 / 0.74 above). Order: MM, Nasdaq Income, Asia, Tech, Global Dividend.
 CORR_5 = [r + [x] for r, x in zip(CORR, (0.00, 0.61, 0.59, 0.69))] + [
     [0.00, 0.61, 0.59, 0.69, 1.00],
 ]
@@ -3040,7 +3049,7 @@ CORR_U_NOTE = (f"Global Dividend moves with the other equity sleeves "
 
 # Every portfolio function takes an optional UNIVERSE - (funds built, fund specs,
 # correlation). The default is the four original funds, which the budget's reference
-# baseline is measured on; every pick passes the five-fund UNIV.
+# baseline is measured on; every pick passes the eleven-fund UNIV.
 def _univ(u):
     return u if u is not None else (F, FUNDS, CORR)
 
@@ -3309,10 +3318,10 @@ PIN_W = 0.50
 # with B and C "based on macro economics drivers, market trend, volatility, regional
 # rankings ... of 3, 6, and 12 months with horizon of 10yrs"). Every pick is the page's
 # one rule - the best net CAGR the drawdown budget allows, then the lowest drawdown
-# within the tie - over the funds this page models in full (five since the peso bond
-# fund was removed on 2026-10-21; six before), under the 22-fund
-# review's limits: at most 5 funds, 35% in any one, at least 5% peso cash (C's pin is
-# the one exemption). What differs is the COLUMN the rule reads:
+# within the tie - over every fund on the owner's 22-fund list whose fees are
+# confirmed (eleven since 2026-10-22; five from 21 Oct, when the peso bond funds left,
+# and six before), under the review's limits: at most 5 funds, 35% in any one, at
+# least 5% peso cash (C's pin is the one exemption). What differs is the COLUMN the rule reads:
 #   A  net_base   the long-run assumptions alone - no cycle view
 #   B  net_macro  plus the regional ranking and the market trend (each 3/6/12M against
 #                 the 10-year anchor), the volatility curve, and the drivers' rates
@@ -3320,8 +3329,8 @@ PIN_W = 0.50
 #   C  net_macro  as B, with Nasdaq Equity Income held at 50%
 # Until v56 A and B were FIXED weights from the review; the engine now chooses all
 # three itself, on every roll. Whether A matches the review's own long-run pick is
-# published (portfolio_a.is_review_pick), never assumed: since the bond funds left,
-# the review's pick holds Global Health Care, which this page does not model.
+# published (portfolio_a.is_review_pick), never assumed: the review's pick (25% Global
+# Health Care) is not the engine's, now with every fund in it modelled.
 # The four-fund optimiser that ran beside them off the page, kept only for its own
 # checks, was retired on 2026-10-22 (v62); the baseline above is all that is left of it.
 UNIV = (F + F_ADD, FUNDS + ADD_FUNDS, CORR_U)
@@ -3330,7 +3339,6 @@ FRONTIER_SPACING = 0.9     # a frontier point every 0.9pp of drawdown
 UNIV_MAX_FUNDS = MACRO["pd_review_max_funds"]
 UNIV_MAX_W = MACRO["pd_review_max_w"] / 100
 UNIV_MIN_CASH = MACRO["pd_review_min_cash"] / 100
-PIN_UNIV = (UNIV_IDS.index("ATRQIAP"), PIN_W)          # C: Nasdaq Equity Income at 50%
 
 # WHAT WOULD CHANGE THIS VIEW - computed, not asserted. The page's list said that
 # "Brent below $70 and the Fed cutting" would send Global Technology "back to a full
@@ -4161,7 +4169,7 @@ SOURCES = [
      "https://www.cnbc.com/2026/10/17/trump-waives-russia-related-sanctions-tariffs-before-they-take-effect-.html"),
     ("Straits Daily Brief", "Strait of Hormuz status, 20 Oct 2026 - IMF PortWatch 4 transits on 18 Oct against an 85/day baseline",
      "https://straits.live/briefs/2026-10-20"),
-    ("Forbes Advisor", "Treasury rates today - 10-year par yield 5.15% on 19 Oct 2026 and 5.12% on 20 Oct, down 3 basis points",
+    ("Forbes Advisor", "Treasury rates today - 10-year par yield 5.15% on 19 Oct 2026, 5.12% on 20 Oct (down 3 basis points) and 5.13% on 21 Oct, with the 2-year 4.81% and 30-year 5.42%",
      "https://www.forbes.com/advisor/investing/treasury-rates/"),
     ("CNBC", "Treasury yields move higher as investors assess the US inflation backdrop - 10-year 5.146%, 19 Oct 2026",
      "https://www.cnbc.com/2026/10/19/bonds-treasurys-us-yields.html"),
@@ -4260,7 +4268,7 @@ SOURCES = [
      "https://www.thenationalnews.com/business/energy/2026/10/21/non-iran-middle-east-oil-exports-recover-to-prewar-levels-with-hormuz-alternatives/"),
     ("YourBestSavings (US Treasury par curve)", "Treasury yields today, 20 Oct 2026 - 2-year 4.79%, 10-year 5.12%, 30-year 5.42% on the daily par curve",
      "https://yourbestsavings.com/treasury-yields/"),
-    ("FRED (St. Louis Fed)", "T10Y2Y - 10-year minus 2-year Treasury constant maturity: 0.33 on 20 Oct 2026",
+    ("FRED (St. Louis Fed)", "T10Y2Y - 10-year minus 2-year Treasury constant maturity: 0.33 on 20 Oct 2026, 0.32 on 21 Oct",
      "https://fred.stlouisfed.org/series/T10Y2Y"),
     ("uitf.com.ph", "ATRAM Peso Money Market Fund (A Unit Class) - trust fee structure 0.50% p.a.",
      "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=203"),
@@ -4293,6 +4301,12 @@ SOURCES = [
      "https://tribune.net.ph/2026/10/22/bsp-delivers-jumbo-50-basis-point-rate-hike"),
     ("Inquirer", "PSEi snaps 5-day rally on profit-taking - -41.78 (-0.72%) to 5779.73; peso record low P63.545, 22 Oct 2026",
      "https://business.inquirer.net/617332/psei-snaps-5-day-rally-on-profit-taking"),
+    ("BusinessWorld", "Peso closes at record low for fourth straight day - P63.52, 15.9 centavos weaker, 22 Oct 2026",
+     "https://bworldonline.com/top-stories/2026/10/22/788742/peso-closes-at-record-low-for-fourth-straight-day/"),
+    ("Manila Bulletin", "Peso falls to historic low of 63.52 despite surprise BSP rate hike - opened 63.31, range 63.30-63.545, 22 Oct 2026",
+     "https://mb.com.ph/2026/10/22/peso-falls-to-historic-low-of-6352-despite-surprise-bsp-rate-hike"),
+    ("Manila Times", "Peso sinks to another record low, P63.52, 22 Oct 2026",
+     "https://www.manilatimes.net/2026/10/22/business/peso-sinks-to-another-record-low-p6352/2451534"),
     ("Aju Press", "KOSPI wipes out prior gains as BOK pauses rate hikes - -201.89 (-3.52%); SK Hynix -5.48%, Samsung -4.02%, 22 Oct 2026",
      "https://www.ajupress.com/view/20261022153542644"),
     ("TradingKey", "Japan and South Korea stocks slump; KOSPI -3.52% to 5533.77, Nikkei -2.65% to 62907.84, 22 Oct 2026",
@@ -4350,10 +4364,16 @@ SOURCES = [
      "https://www.blackrock.com/au/insights/ishares/2026-comeback-year-for-healthcare"),
     ("Aristotle Capital", "4Q 2025 commentary - MSCI ACWI +3.29% (net, USD) in the quarter",
      "https://www.aristotlecap.com/wp-content/uploads/2026/01/GE-Adv-Commentary-2025-12.pdf"),
-    ("ETFreplay", "iShares MSCI ACWI ETF - quarterly returns 2026",
-     "https://www.etfreplay.com/etf/acwi"),
-    ("iShares", "iShares MSCI ACWI ETF - NAV total return YTD 12.90% to 20 Oct 2026",
-     "https://www.ishares.com/us/products/239600/ishares-msci-acwi-etf"),
+    ("Aristotle Capital", "1Q 2026 commentary - MSCI ACWI -3.20% in the quarter",
+     "https://www.aristotlecap.com/wp-content/uploads/2026/04/GE-Adv-Commentary-2026_03.pdf"),
+    ("Aristotle Capital", "2Q 2026 commentary - MSCI ACWI +14.93% in the quarter, 11.25% year to date",
+     "https://www.aristotlecap.com/wp-content/uploads/2026/07/GE-Adv-Commentary-2026_06.pdf"),
+    ("Maseco", "Q3 2026 global market review - MSCI ACWI +1.6% in the quarter, 13.0% year to date",
+     "https://masecoasia.com/q3-2026-global-market-review-and-perspective/"),
+    ("Goldstone Financial Group", "Q3 2026 market recap - MSCI ACWI +1.6% in Q3, +13.0% year to date",
+     "https://www.goldstonefinancialgroup.com/q3-2026-market-review/"),
+    ("iShares", "iShares Global Healthcare ETF (IXJ) - NAV returns to 30 Sep 2026: 1 month -1.96%, YTD 5.93%, 1 year 16.81%",
+     "https://www.ishares.com/us/products/239744/ishares-global-healthcare-etf"),
     ("uitf.com.ph", "ATRAM Global Bond Income Feeder Fund - trust fee 0.90% p.a. (held out: one listing)",
      "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=364"),
     ("uitf.com.ph", "ATRAM US Equity Opportunity Feeder Fund (USD unit class) - trust fee 1.20% p.a. (held out: stale listing)",

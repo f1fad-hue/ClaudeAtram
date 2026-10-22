@@ -157,6 +157,19 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+93. ONE STANDARD MEANS ONE READING OF IT. Global AI was held out because its
+   listings disagree (1.20% and 1.50%); Global Allocation was let in at 1.20% with
+   DragonFi listing 1.50%. Two of three agreeing is not "no disagreement". The
+   resolution here was to measure it - at 1.50% no pick changes - and say so; where a
+   disagreement would move a pick, the fund waits.
+92. A CROSS-CHECK MUST COVER THE SAME PERIOD. ACWI's 2026 quarters "compounded to
+   12.92% against iShares' 12.90% year to date to 20 October" - quarters ending 30 Sep
+   against a figure running to 20 Oct. The match was luck, and it hid a single-source
+   series up to 1pp off the index. Check like against like, or it checks nothing.
+91. ONE SOURCE THAT DISAGREES WITH EVERY OTHER IS NOT A SECOND OPINION. AAII had IXJ
+   up 20.7% to 31 Aug; the monthly series compounds to 8.0% for January-August, and
+   iShares' own NAV has 5.93% to 30 Sep after a -1.96% September - which is where
+   8.0% lands. A cross-check is two sources agreeing, not one source cited.
 90. EVERY FIXED WIDTH IS A UNIVERSE SIZE WRITTEN DOWN. Going from five funds to
    eleven broke, one by one: a CLAIMS check comparing the first six weights, number
    words that stopped at "six" and "eight", a validator expecting exactly three trend

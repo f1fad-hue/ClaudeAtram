@@ -2,6 +2,59 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-22 — v64: review, fact-check and roll; allocations unchanged
+
+At the owner's instruction: debug, code-review and sanity-check; re-research and
+re-verify the data and math, funds, ETFs and fees, net 10-year CAGR and drawdown,
+market trend, macro, volatility, regional rankings and allocations; house cleanup.
+
+**A, B and C are unchanged:** A 7.21% / −26.4% long-run (6.91% / −26.6% macro), B
+6.88% / −26.0%, C 6.95% / −26.8%. Every change below was re-run through the search.
+
+**Errors found and fixed:**
+- **Equity Opportunity's trend (MSCI ACWI) was on one source.** The 2026 quarters were
+  ETFreplay's ETF figures (−2.21 / 14.17 / 1.14), a table that also printed a Q4 2026
+  that cannot exist yet, and up to 1pp off the index. Their cross-check compared
+  quarters ending 30 Sep with an iShares year-to-date figure running to 20 Oct, so it
+  checked nothing. Now the index's own quarters: Q1 −3.20%, Q2 +14.93% (Aristotle
+  Capital; 11.25% for the half), Q3 +1.6% (Maseco, Goldstone; 13.0% year to date, which
+  the four compound to). The audit checks both totals. The trend tilt moves 0.08 →
+  0.09, Global Technology's by +0.01pp through the shared z-scores; B's feasible count
+  is 198,762 (was 198,748).
+- **Health Care's trend cited a cross-check that disagrees with everything else.**
+  AAII's "20.7% to 31 Aug" is replaced by iShares' own NAV returns to 30 Sep (−1.96%
+  September, 5.93% YTD, 16.81% one year); the PortfoliosLab months give −2.03%, 5.79%
+  and 16.98%, within 0.2pp. A new audit check holds them there.
+- **The fee standard was read two ways.** Global AI is held out because its listings
+  disagree; Global Allocation was admitted at 1.20% while DragonFi lists 1.50%. Re-run
+  at 1.50%: A, B and C unchanged, since none holds it at either fee. Recorded in its fee
+  note and CLAIMS row; the fund stays at the 1.20% two listings agree on.
+- **A stale comment** called the 20 Oct 10-year "PROVISIONAL until FRED publishes it"
+  after it had been confirmed; the Fed's H.15 now has it at 5.12.
+
+**Rolled:**
+- **Peso 63.52 (22 Oct)**, 15.9 centavos weaker, a fourth straight record close after a
+  record 63.545 intraday (BusinessWorld, Manila Bulletin, Manila Times). Withheld in v61
+  while only Tribune's "shortly after the announcement" figure existed. YTD loss of
+  purchasing power 7.45% (was 7.21%). The record count stays 24 as of 11 Sep:
+  BusinessWorld calls the 22 Oct close the 35th record of 2026, GMA the 30th.
+- **Treasuries to 21 Oct** on the par curve (Forbes): 10-year 5.13% (+1bp), 2-year
+  4.81%, 30-year 5.42%; FRED's T10Y2Y of 0.32 is 5.13 − 4.81. Held back in v61 on
+  market quotes alone.
+
+**Verified, unchanged:** J.P. Morgan's 2027 US investment-grade 6.1% and global
+aggregate 5.3% (its own press release); the six funds repriced to 1.50% on 14 Sep
+(Global Technology, Equity Opportunity, Infra, Consumer Trends, Financials, Health
+Care); Global Allocation not among them.
+
+**Not carried:** the US session of 22 Oct (still trading when this was built), so the
+S&P, VIX and Brent stay at 21 Oct.
+
+**House cleanup:** the unused `product` import, `PIN_UNIV` and the dead `slide_note`
+payload field removed; stale comments rewritten; the page's `FA` alias replaced by
+`FALL`, the one list of all funds; the `ust_10y_mkt_21oct` and `usdphp_withheld_22oct`
+holding fields retired with the points they held.
+
 ## 2026-10-22 — v63: A, B and C chosen from the 22-fund ATRAM list
 
 At the owner's instruction: "Update portfolio A from 22 atram list and maximum growth
