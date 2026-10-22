@@ -42,13 +42,13 @@ the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's
 `gap × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
 of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
 not because you have a view on the market. Never change a score without rewriting
-its rationale to cite the new evidence. Re-run the optimiser; weights stay
-multiples of 5, sum to 100, and hold all four funds at 5% or more. There is **no
-single-fund cap** since 2026-09-24 (the owner's decision; it was 50% from 9 Sep):
-the drawdown budget is what limits concentration, and the page publishes what the
-old 50% cap would have chosen beside the actual choice. Reinstating a cap means
-a max-weight filter back in `enumerate_portfolios` and `_best_without` in
-`engine.py`, plus the page passages that describe the choice.
+its rationale to cite the new evidence. Re-run the engine: it re-chooses A, B and C
+by the one rule over the whole universe (five funds since 2026-10-21) within the
+review's limits - at most 5 funds, at most 35% in any one (C's Nasdaq Equity Income
+pin excepted), at least 5% in the money market - on the 5% grid, each summing to
+100. A fund may be held at 0%. (The internal four-fund optimum, off the page, still
+has no single-fund cap, the owner's decision of 2026-09-24; it is kept only for its
+regression checks.)
 
 **3. Re-verify the claims** in `CLAIMS.md`, marking each VERIFIED / CHANGED /
 STALE / UNREACHABLE with the date. Do not promote a claim from "verified via
@@ -66,7 +66,9 @@ truth; the artifact is a rendering of it.
 
 ## Invariants — a job must never break these
 
-1. All four funds appear in both portfolios, always. Never drop one.
+1. A, B and C are chosen by the one rule over the whole universe; none is set by
+   hand. A fund at 0% is allowed. A fund removed from the list (the two peso bond
+   funds, 2026-10-21) never comes back without the owner's instruction.
 2. Every allocation weight ends in **5 or 0** and each portfolio sums to **100**.
 3. Every figure on the page comes from `model/engine.py`. If a model OUTPUT is
    typed into `dashboard.html` by hand, it is a bug — move it into the payload and
@@ -141,6 +143,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+82. A DATE BOUND POINTS ONE WAY. "The review is dated on/after the as-of date" was
+   true on the day the review ran and false the next morning, when the data rolled
+   past it. A recorded analysis may not post-date the data it is read beside; it
+   may be older, within a stated age. Write the bound as "not after, and within N".
 81. A KEY OUTLIVES ITS LABEL. Portfolio D was relabelled B on the page in v55, but the
    payload key, the variables and the element ids kept saying D for four more
    versions, until the owner had to say "no more portfolio d". When a label changes,

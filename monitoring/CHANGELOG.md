@@ -2,6 +2,63 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-22 — v61: rolled to 22 Oct; BSP's jumbo hike; Gulf escalation; allocations unchanged
+
+Rolled to the Philippine and Asian close of Thursday 22 Oct and the US close of
+Wednesday 21 Oct. **A, B and C do not move** (25/30/0/25/20, 30/35/10/25/0,
+20/50/20/10/0 at 6.72%, 6.77%, 6.80%): every driver and region score was held, so
+no fund forecast changed.
+
+**Rolled (two or more sources unless noted)**
+- **BSP +50bp to 5.50%** on 22 Oct, a fourth straight hike and the first half-point
+  since February 2023, against a poll in which 20 of 22 expected 25bp; corridor
+  5.00-6.00%; next meeting 17 Dec. The BSP catalyst is replaced by the 26 Oct T-bill
+  auction, the first after the hike. The Bank of Korea held at 3.00%.
+- US, 21 Oct: S&P 7,757.17 (+0.58%, a third straight gain), Nasdaq 26,702.86
+  (+1.05%), Dow 52,856.09 (+0.69%); VIX **16.68** (−3.64%), a third close below the
+  long run; Brent **$108.82** (+3 cents; Investing.com's 110.15 was intraday); WTI
+  **December $97.15** (−0.68%), the front month since November expired at $101.79.
+- Asia, 22 Oct: KOSPI **5,533.77** (−3.52%) as chips sold (SK Hynix −5.48%, Samsung
+  −4.02%); Nikkei **62,907.84** (−2.65%; a Reuters-based headline's −2.40% does not
+  reproduce); PSEi **5,779.73** (−0.72%), ending a five-session rally.
+- FedWatch: October hike **16%**, December **90%** (FXStreet 22 Oct 09:12 GMT citing
+  the tool), replacing the 16 Oct pair as its five-day bound expired.
+- Geopolitics: the US ordered diplomats out of Saudi Arabia after Houthi strikes
+  killed three; the New York Times reports US and Israeli strike plans for after the
+  midterms. **Held at 1.5** (volume still near 14 mb/d; 1.0 kept for full closure).
+  Volatility **held at 2.75** (VIX lower, but Asia sold off and the Gulf escalated).
+
+**Not carried, recorded:** the 22 Oct peso close (63.52 "shortly after the
+announcement" vs a 63.545 record intraday; the 21 Oct 63.361 stays); the 10-year for
+21 Oct (market quotes ~5.13%, no par curve yet); a 21 Oct VIX futures strip (only a
+single-source front-month 18.35), so the vol curve stays at the 20 Oct settlements.
+
+**Errors found and fixed**
+- **A date check pointed the wrong way.** The 22-fund review check required the
+  review to be dated on or after the as-of date, so it failed the moment the data
+  rolled past the day it was run. It now requires the review not to post-date the
+  data and to be within 14 days.
+- **False precision on the page:** the Report printed FedWatch as "16.0%" and "90.0%";
+  odds now print at the reading's own precision.
+- **A December WTI prior was a session price.** The $98.28 carried for December on 20
+  Oct does not chain to the 21 Oct report ("fell 67 cents to $97.15"); the prior is
+  now implied across the roll, as the model's rule says.
+- **Stale runbook rules:** "hold all four funds at 5% or more", "no single-fund cap"
+  and invariant 1 ("all four funds appear in both portfolios") described the
+  pre-v56 model. Rewritten for the one rule over the universe.
+- **The page title counted funds** ("Peso Four-Fund Macro Desk", over five funds). It
+  is now "ATRAM Peso Macro Desk", which does not go stale when the list changes.
+
+**Confirmed:** Global Dividend's Y-Acc-USD OCF of 1.04% (Investing.com, Cbonds,
+Endowus). The money market's interest-rate note is now bound to BSP's rate.
+
+**House cleanup:** the four-fund optimiser (off the page, ~8.6KB of payload, read by
+24 engine checks) is kept for now and flagged; retiring it means re-pointing those
+checks at the universe and is a change of its own.
+
+Verification: engine 227/227, audit 306/306, validator 22/22 on the published copy,
+mutation harness 28/28.
+
 ## 2026-10-21 — v60: the list count stated as 22 from 24
 
 The owner confirmed the list: 22 funds, down from 24, with the ATRAM Long Term and

@@ -1,4 +1,4 @@
-# Peso Four-Fund Macro Desk
+# ATRAM Peso Macro Desk
 
 A mobile-first macro and allocation dashboard for a peso investor in ATRAM unit
 investment trust funds - the four original funds and Global Dividend, from a review of
@@ -6,7 +6,7 @@ the ATRAM list - built for a ten-year horizon.
 
 **Live:** https://claude.ai/code/artifact/307440fd-2952-4b4c-b55c-51725163be31
 
-## The four funds
+## The original four funds
 
 | Code | Fund | Own stated target |
 |---|---|---|
@@ -29,8 +29,8 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 21 Oct 2026 (Philippine and Asian closes; US
-series to 20 Oct).
+market assumptions. Market data as of 22 Oct 2026 (Philippine and Asian closes; US
+series to 21 Oct).
 
 | | A · Long-run view | B · Macro view | C · Nasdaq Income at 50% |
 |---|---|---|---|
