@@ -43,8 +43,8 @@ the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's
 of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
 not because you have a view on the market. Never change a score without rewriting
 its rationale to cite the new evidence. Re-run the engine: it re-chooses A, B and C
-by the one rule over the whole universe (five funds since 2026-10-21) within the
-review's limits - at most 5 funds, at most 35% in any one (C's Nasdaq Equity Income
+by the one rule over the whole universe (eleven funds from the owner's 22-fund list
+since 2026-10-22) within the review's limits - at most 5 funds, at most 35% in any one (C's Nasdaq Equity Income
 pin excepted), at least 5% in the money market - on the 5% grid, each
 summing to 100. A fund may be held at 0%. Every pick, and every what-if, sits inside ONE
 drawdown budget: the 20/30/25/25 reference baseline's macro drawdown less 2.83pp.
@@ -52,6 +52,16 @@ The baseline stays in the payload, off the page, so the budget can be re-derived
 do not replace it with a current pick, or the budget would depend on the portfolio
 it judges. (The internal four-fund optimiser that ran beside the picks was retired
 on 2026-10-22, v62.)
+
+**2b. Re-check the 22-fund list's held-out funds** (`list22_held_out`). A fund enters
+the search once its fees are confirmed - its trust fee on ATRAM's own page or on two
+current listings that agree, and its target fund named with a published charge - and
+not before. When one is confirmed, build it like the others (`ADD_FUNDS`, its factor
+loadings, its vol sensitivity, its shocks in every scenario row, its look-through) and
+remove it from the held-out list; the check that every one of the 22 is searched or
+held out, never both, fails until both are done. Re-run `model/heldout_sens.py` for US Equity
+Opportunity and Global Bond Income when their fees move, and update `useq_w_*` /
+`gbi_w_*`.
 
 **3. Re-verify the claims** in `CLAIMS.md`, marking each VERIFIED / CHANGED /
 STALE / UNREACHABLE with the date. Do not promote a claim from "verified via
@@ -71,7 +81,8 @@ truth; the artifact is a rendering of it.
 
 1. A, B and C are chosen by the one rule over the whole universe; none is set by
    hand. A fund at 0% is allowed. A fund removed from the list (the two peso bond
-   funds, 2026-10-21) never comes back without the owner's instruction.
+   funds, 2026-10-21) never comes back without the owner's instruction. Every fund
+   on the 22-fund list is either searched or held out with its reason (v63).
 2. Every allocation weight ends in **5 or 0** and each portfolio sums to **100**.
 3. Every figure on the page comes from `model/engine.py`. If a model OUTPUT is
    typed into `dashboard.html` by hand, it is a bug — move it into the payload and
@@ -146,6 +157,30 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+90. EVERY FIXED WIDTH IS A UNIVERSE SIZE WRITTEN DOWN. Going from five funds to
+   eleven broke, one by one: a CLAIMS check comparing the first six weights, number
+   words that stopped at "six" and "eight", a validator expecting exactly three trend
+   markets, six colour slots, and a count check that walked 8^11 grid points and hung
+   the engine. None was wrong for five funds. Read a fixed length as an assumption
+   about the universe, and derive it from the universe instead.
+89. NO PREMIUM THE SOURCE DOES NOT PUBLISH. J.P. Morgan's LTCMA gives regions, not
+   sectors, so health care, infrastructure, themes and consumer funds are all built
+   on global equity. That is consistent, not neutral: listed infrastructure on a 7.5%
+   equity return is the assumption most likely to flatter it, and it holds 35% of A.
+   Name the assumption beside the weight it carries.
+88. A NEW FUND CAN FALSIFY AN OLD SUPERLATIVE. "Global Technology: the deepest
+   drawdown" was a heading, true for five funds and false the day Global Consumer
+   Trends joined at -80%. A superlative over a set is a claim about the set; compute
+   it, or it goes stale on the first addition.
+87. ONE STANDARD FOR EVERY FUND. The owner held US Equity Opportunity out until its
+   fee was confirmed; applied to the whole list, the same rule holds out ten more.
+   The fund that would move the picks most (Global Bond Income, 30-35% of A) is held
+   out by it too, and is shown as a sensitivity rather than quietly admitted.
+86. GENERATE WHAT THE LIMITS ALLOW; DO NOT FILTER A GRID. A 21^(n-1) grid filtered
+   down to the limit-respecting mixes is fine at five funds and impossible at eleven
+   (30 million points against 322,725 valid ones). Generate the valid set directly,
+   measure it with the same arithmetic as the published summary, and keep a second,
+   differently written generator in the audit.
 85. A COUNTERFACTUAL SAYS WHAT IT HOLDS FIXED. The retired four-fund what-ifs
    re-derived the drawdown budget on each alternative column; the universe what-ifs
    the page shows hold it at the live 27.17%, as A is chosen. On 22 Oct the choice

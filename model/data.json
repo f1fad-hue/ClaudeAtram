@@ -281,6 +281,54 @@
   "gdiv_div_drag": 0.3,
   "ltcma_global_eq": 7.5,
   "ltcma_global_eq_prev": 7.0,
+  "ltcma_global_agg": 5.3,
+  "ltcma_us_ig": 6.1,
+  "list22_held_out": [
+   [
+    "US Equity Opportunity",
+    "trust fee not confirmed: only uitf.com.ph's 1.20% listing, about 17 months old (owner's hold, 2026-10-21)"
+   ],
+   [
+    "Global Bond Income",
+    "trust fee on one listing only (uitf.com.ph, 0.90%); target named only in a 2020 disclosure (PIMCO GIS Diversified Income), whose charge runs 0.69-1.59% by class"
+   ],
+   [
+    "Global AI",
+    "trust fee listings disagree (1.20% and 1.50%); target fund not named in any document found"
+   ],
+   [
+    "Global Multi-Asset Income",
+    "trust fee listings disagree (1.15%, 1.19%, 1.25%)"
+   ],
+   [
+    "Global Capital Accumulation FoF",
+    "trust fee on one listing only (0.90%, USD class)"
+   ],
+   [
+    "Global Equity High Income",
+    "no fee or target fund found"
+   ],
+   [
+    "Global Natural Resources",
+    "no fee or target fund found"
+   ],
+   [
+    "Global Gold Equity",
+    "launched 2026; target fund not named in any document found"
+   ],
+   [
+    "Global Financials",
+    "current 1.50% trust fee on one secondary source; target and its charge last published in 2020"
+   ],
+   [
+    "US Multi-Asset Income",
+    "trust fee on one listing only (1.50%, USD class)"
+   ],
+   [
+    "Peso Liquid",
+    "no current fee found; the same job as the money market"
+   ]
+  ],
   "pd_review_date": "2026-10-21",
   "pd_review_n_funds": 22,
   "pd_review_n_scen": 6,
@@ -328,12 +376,21 @@
   "useq_trust_peer": 1.5,
   "useq_ocf_clean": 0.85,
   "useq_ocf_retail": 1.81,
-  "useq_w_a_listed": 25,
-  "useq_w_b_listed": 20,
+  "useq_w_a_listed": 10,
+  "useq_w_b_listed": 25,
   "useq_w_a_peer": 0,
-  "useq_w_b_peer": 10,
-  "useq_w_c_listed": 15,
+  "useq_w_b_peer": 5,
+  "useq_w_c_listed": 10,
   "useq_w_c_peer": 5,
+  "gbi_trust_listed": 0.9,
+  "gbi_target_low": 0.69,
+  "gbi_target_high": 1.59,
+  "gbi_w_a_low": 35,
+  "gbi_w_b_low": 25,
+  "gbi_w_c_low": 10,
+  "gbi_w_a_high": 30,
+  "gbi_w_b_high": 0,
+  "gbi_w_c_high": 0,
   "brent_history": [
    [
     "2026-09-18",
@@ -1091,7 +1148,13 @@
    "ATRQIAP": 0.21,
    "ATRASEQ": 0.0,
    "ATRGTEC": -0.122,
-   "ATRGLDV": 0.0
+   "ATRGLDV": 0.0,
+   "ATRGHCP": 0.0,
+   "M_GINF": 0.0,
+   "M_GEO": 0.0,
+   "M_GCT": 0.0,
+   "ATRAMIP": 0.0,
+   "M_GALL": 0.0
   },
   "kappa": 1.5,
   "vrp": 3.5,
@@ -1211,11 +1274,19 @@
    "tilt_rates": 0.58,
    "tilt_energy": 0.07,
    "tilt_trend": 0.0,
+   "equity_share": 1.0,
+   "trend_market": null,
+   "region_mix": null,
+   "asia_rerating_share": 0.0,
+   "role": null,
+   "exposure": null,
+   "slide_note": null,
    "tilt_rates_cal": 0.25,
    "tilt_energy_cal": 0.05,
    "tilt_total": 0.59,
    "net_macro": 4.86,
    "vol": 0.41,
+   "vol_beta": 0.021,
    "dd_k": 1.65,
    "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
    "dd_base": -0.5,
@@ -1256,11 +1327,19 @@
    "tilt_rates": -0.23,
    "tilt_energy": -0.13,
    "tilt_trend": 0.11,
+   "equity_share": 1.0,
+   "trend_market": "ATRQIAP",
+   "region_mix": null,
+   "asia_rerating_share": 0.0,
+   "role": null,
+   "exposure": null,
+   "slide_note": null,
    "tilt_rates_cal": -0.1,
    "tilt_energy_cal": -0.1,
    "tilt_total": -0.27,
    "net_macro": 7.24,
    "vol": 16.06,
+   "vol_beta": 0.8312745098039216,
    "dd_k": 1.65,
    "dd_k_why": "At the 1.65 anchor: the premium's cushion is already in this sleeve's volatility (0.681x the Nasdaq-100) and its return; capped upside with full downside is negatively skewed, which argues against a lower k, not for one.",
    "dd_base": -32.2,
@@ -1310,11 +1389,19 @@
    "tilt_rates": -0.12,
    "tilt_energy": -0.27,
    "tilt_trend": 0.16,
+   "equity_share": 1.0,
+   "trend_market": "ATRASEQ",
+   "region_mix": null,
+   "asia_rerating_share": 1.0,
+   "role": null,
+   "exposure": null,
+   "slide_note": null,
    "tilt_rates_cal": -0.05,
    "tilt_energy_cal": -0.2,
    "tilt_total": 0.0,
    "net_macro": 6.87,
    "vol": 18.52,
+   "vol_beta": 0.9660000000000001,
    "dd_k": 1.7,
    "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
    "dd_base": -39.7,
@@ -1355,11 +1442,23 @@
    "tilt_rates": -0.93,
    "tilt_energy": -0.2,
    "tilt_trend": 0.16,
+   "equity_share": 1.0,
+   "trend_market": "ATRGTEC",
+   "region_mix": {
+    "US": 0.72,
+    "ASIA": 0.16,
+    "EUROPE": 0.12
+   },
+   "asia_rerating_share": 0.0,
+   "role": null,
+   "exposure": null,
+   "slide_note": null,
    "tilt_rates_cal": -0.4,
    "tilt_energy_cal": -0.15,
    "tilt_total": -0.9,
    "net_macro": 8.36,
    "vol": 24.75,
+   "vol_beta": 1.3,
    "dd_k": 1.8,
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -56.5,
@@ -1624,6 +1723,62 @@
     ]
    ],
    "source": "Fidelity Funds - Global Dividend Fund factsheet, 30 September 2026 (Fidelity International, Singapore edition)"
+  },
+  "ATRGHCP": {
+   "kind": "gap",
+   "as_of": "2026-08-31",
+   "top2": [
+    [
+     "Eli Lilly",
+     8.7
+    ],
+    [
+     "AbbVie",
+     7.4
+    ]
+   ],
+   "positions": 41,
+   "note": "Fidelity Funds - Global Healthcare Fund. Its 31 Aug 2026 Singapore factsheet lists Eli Lilly (8.7%) and AbbVie (7.4%) as the largest of 41 positions; the full top 10 was not legible in the text reached.",
+   "source": "Fidelity Funds - Global Healthcare Fund factsheet, 31 August 2026 (Singapore edition), partial"
+  },
+  "M_GINF": {
+   "kind": "gap",
+   "note": "HSBC GIF Global Infrastructure Equity. No holdings table was reachable.",
+   "source": "ATRAM Global Infra Equity Feeder Fund fact sheet (target change, March 2025)"
+  },
+  "M_GEO": {
+   "kind": "gap",
+   "note": "Allianz Thematica. No holdings table was reachable.",
+   "source": "ATRAM Global Equity Opportunity Feeder Fund KIID, 31 March 2026"
+  },
+  "M_GCT": {
+   "kind": "gap",
+   "note": "Invesco Global Consumer Trends Fund. No holdings table was reachable.",
+   "source": "ATRAM Global Consumer Trends Feeder Fund KIID"
+  },
+  "ATRAMIP": {
+   "kind": "gap",
+   "alloc": [
+    [
+     "equities",
+     50.17
+    ],
+    [
+     "bonds",
+     38.85
+    ],
+    [
+     "cash",
+     5.89
+    ]
+   ],
+   "note": "Schroder Asian Asset Income Fund: 50.17% equities, 38.85% bonds and 5.89% cash on an undated aggregator page; no holdings table was reachable.",
+   "source": "Investing.com holdings page (undated); BusinessWorld, 6 Sep 2022 (the target)"
+  },
+  "M_GALL": {
+   "kind": "gap",
+   "note": "BlackRock Global Funds - Global Allocation Fund. No holdings table was reachable.",
+   "source": "ATRAM Global Allocation Feeder Fund fact sheet"
   }
  },
  "acwi_it_mix": {
@@ -1832,6 +1987,95 @@
     },
     "blend": 3.52,
     "tilt": 0.16
+   },
+   "ATRGHCP": {
+    "market": "Global health care, S&P Global 1200 Health Care",
+    "proxy": "iShares Global Healthcare ETF (IXJ), total return; the target fund's benchmark is MSCI ACWI Health Care, which no monthly series reachable here gives",
+    "source": "PortfoliosLab, IXJ monthly total returns; BlackRock (Q4 2025) and AAII (Aug 2026) as cross-checks",
+    "mu": 7.5,
+    "beta": 0.85,
+    "sigma": 13.53,
+    "quarters": {
+     "2025Q4": 10.57,
+     "2026Q1": -3.95,
+     "2026Q2": 6.11,
+     "2026Q3": 3.8
+    },
+    "monthly": {
+     "2025Q4": [
+      2.85,
+      8.3,
+      -0.73
+     ],
+     "2026Q1": [
+      1.41,
+      2.98,
+      -8.03
+     ],
+     "2026Q2": [
+      -0.65,
+      1.69,
+      5.03
+     ],
+     "2026Q3": [
+      1.91,
+      3.97,
+      -2.03
+     ]
+    },
+    "cross_check": {},
+    "ret": {
+     "3M": 3.8,
+     "6M": 10.14,
+     "12M": 16.97
+    },
+    "z": {
+     "3M": 0.28,
+     "6M": 0.63,
+     "12M": 0.62
+    },
+    "score": {
+     "3M": 3.28,
+     "6M": 3.63,
+     "12M": 3.62,
+     "10Y": 3.0
+    },
+    "blend": 3.28,
+    "tilt": 0.08
+   },
+   "M_GEO": {
+    "market": "Global equity, MSCI ACWI",
+    "proxy": "the index (Q4 2025, net USD) and iShares MSCI ACWI ETF (2026 quarters); the target fund, Allianz Thematica, is a thematic global equity fund run against MSCI ACWI",
+    "source": "Aristotle Capital 4Q 2025 commentary (MSCI ACWI); ETFreplay ACWI quarterly returns, checked against iShares' YTD NAV return to 20 Oct 2026",
+    "mu": 7.5,
+    "beta": 1.0,
+    "sigma": 15.92,
+    "quarters": {
+     "2025Q4": 3.29,
+     "2026Q1": -2.21,
+     "2026Q2": 14.17,
+     "2026Q3": 1.14
+    },
+    "monthly": {},
+    "cross_check": {},
+    "ret": {
+     "3M": 1.14,
+     "6M": 15.47,
+     "12M": 16.63
+    },
+    "z": {
+     "3M": -0.08,
+     "6M": 0.96,
+     "12M": 0.51
+    },
+    "score": {
+     "3M": 2.92,
+     "6M": 3.96,
+     "12M": 3.51,
+     "10Y": 3.0
+    },
+    "blend": 3.26,
+    "tilt": 0.08
    }
   },
   "alt": {
@@ -1946,9 +2190,9 @@
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.7125,
-  "a_k": 1.7,
-  "c_k": 1.68125,
-  "b_k": 1.71071,
+  "a_k": 1.65789,
+  "c_k": 1.65526,
+  "b_k": 1.65789,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -2028,96 +2272,115 @@
  },
  "portfolio_a": {
   "weights": [
-   25,
-   30,
+   5,
+   35,
    0,
-   25,
-   20
+   5,
+   0,
+   20,
+   35,
+   0,
+   0,
+   0,
+   0
   ],
   "ids": [
    "ATRPHMM",
    "ATRQIAP",
    "ATRASEQ",
    "ATRGTEC",
-   "ATRGLDV"
+   "ATRGLDV",
+   "ATRGHCP",
+   "M_GINF",
+   "M_GEO",
+   "M_GCT",
+   "ATRAMIP",
+   "M_GALL"
   ],
   "macro": {
    "weights": [
-    25.0,
-    30.0,
+    5.0,
+    35.0,
     0.0,
-    25.0,
-    20.0
+    5.0,
+    0.0,
+    20.0,
+    35.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
    ],
-   "cagr": 6.72,
-   "vol": 12.97,
-   "maxdd": -26.4,
-   "ret_per_dd": 0.255,
-   "sharpe_like": 0.021,
-   "terminal_1m": 1916276,
-   "worst_1m_from_open": 736000
+   "cagr": 6.91,
+   "vol": 13.44,
+   "maxdd": -26.6,
+   "ret_per_dd": 0.26,
+   "sharpe_like": 0.035,
+   "terminal_1m": 1950668,
+   "worst_1m_from_open": 734000
   },
   "base": {
    "weights": [
-    25.0,
-    30.0,
+    5.0,
+    35.0,
     0.0,
-    25.0,
-    20.0
+    5.0,
+    0.0,
+    20.0,
+    35.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
    ],
-   "cagr": 6.97,
-   "vol": 12.97,
-   "maxdd": -26.3,
-   "ret_per_dd": 0.265,
-   "sharpe_like": 0.041,
-   "terminal_1m": 1961643,
-   "worst_1m_from_open": 737000
+   "cagr": 7.21,
+   "vol": 13.44,
+   "maxdd": -26.4,
+   "ret_per_dd": 0.273,
+   "sharpe_like": 0.057,
+   "terminal_1m": 2006102,
+   "worst_1m_from_open": 736000
   },
   "column": "net_base",
-  "band_n": 23,
-  "n_feasible": 1096,
+  "band_n": 29,
+  "n_feasible": 201430,
   "is_review_pick": false,
-  "review_outside": [
-   [
-    "Global Health Care",
-    25
-   ]
-  ],
+  "review_outside": [],
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $109. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.02,
-    "vol": 20.75,
-    "maxdd": -47.8
+    "cagr": 3.89,
+    "vol": 21.51,
+    "maxdd": -47.7
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.62,
-    "vol": 16.86,
-    "maxdd": -37.3
+    "cagr": 4.75,
+    "vol": 17.48,
+    "maxdd": -37.6
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.47,
-    "vol": 18.81,
-    "maxdd": -42.8
+    "cagr": 5.11,
+    "vol": 19.49,
+    "maxdd": -42.1
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 8.67,
-    "vol": 10.38,
-    "maxdd": -18.8
+    "cagr": 8.87,
+    "vol": 10.75,
+    "maxdd": -18.9
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.72,
-    "vol": 12.97,
-    "maxdd": -26.4
+    "cagr": 6.91,
+    "vol": 13.44,
+    "maxdd": -26.6
    }
   ],
   "dd_cap": 27.17,
@@ -2156,10 +2419,16 @@
  },
  "portfolio_c": {
   "weights": [
-   20,
+   5,
    50,
-   20,
    10,
+   0,
+   0,
+   35,
+   0,
+   0,
+   0,
+   0,
    0
   ],
   "ids": [
@@ -2167,85 +2436,103 @@
    "ATRQIAP",
    "ATRASEQ",
    "ATRGTEC",
-   "ATRGLDV"
+   "ATRGLDV",
+   "ATRGHCP",
+   "M_GINF",
+   "M_GEO",
+   "M_GCT",
+   "ATRAMIP",
+   "M_GALL"
   ],
   "macro": {
    "weights": [
-    20.0,
+    5.0,
     50.0,
-    20.0,
     10.0,
+    0.0,
+    0.0,
+    35.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
     0.0
    ],
-   "cagr": 6.8,
-   "vol": 13.12,
-   "maxdd": -26.4,
-   "ret_per_dd": 0.258,
-   "sharpe_like": 0.027,
-   "terminal_1m": 1930690,
-   "worst_1m_from_open": 736000
+   "cagr": 6.95,
+   "vol": 13.55,
+   "maxdd": -26.8,
+   "ret_per_dd": 0.259,
+   "sharpe_like": 0.037,
+   "terminal_1m": 1957978,
+   "worst_1m_from_open": 732000
   },
   "base": {
    "weights": [
-    20.0,
+    5.0,
     50.0,
-    20.0,
     10.0,
+    0.0,
+    0.0,
+    35.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
     0.0
    ],
-   "cagr": 6.91,
-   "vol": 13.12,
-   "maxdd": -26.3,
-   "ret_per_dd": 0.263,
-   "sharpe_like": 0.036,
-   "terminal_1m": 1950668,
-   "worst_1m_from_open": 737000
+   "cagr": 7.09,
+   "vol": 13.55,
+   "maxdd": -26.7,
+   "ret_per_dd": 0.266,
+   "sharpe_like": 0.048,
+   "terminal_1m": 1983760,
+   "worst_1m_from_open": 733000
   },
   "column": "net_macro",
   "fund": "ATRQIAP",
   "pin_pct": 50,
-  "band_n": 9,
-  "n_feasible": 96,
+  "band_n": 10,
+  "n_feasible": 4982,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $109. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 2.6,
-    "vol": 20.99,
-    "maxdd": -48.1
+    "cagr": 3.37,
+    "vol": 21.68,
+    "maxdd": -48.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.81,
-    "vol": 17.06,
-    "maxdd": -37.2
+    "cagr": 5.19,
+    "vol": 17.62,
+    "maxdd": -37.6
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.15,
-    "vol": 19.02,
-    "maxdd": -43.0
+    "cagr": 4.65,
+    "vol": 19.65,
+    "maxdd": -42.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.02,
-    "vol": 10.5,
-    "maxdd": -18.6
+    "cagr": 8.85,
+    "vol": 10.84,
+    "maxdd": -19.1
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.8,
-    "vol": 13.12,
-    "maxdd": -26.4
+    "cagr": 6.95,
+    "vol": 13.55,
+    "maxdd": -26.8
    }
   ],
   "dd_cap": 27.17,
   "in_budget": true,
-  "cagr_no_rerating": 6.6
+  "cagr_no_rerating": 6.85
  },
  "universe": {
   "limits": {
@@ -2253,432 +2540,785 @@
    "max_w": 35,
    "min_cash": 5
   },
-  "n_total": 2065,
+  "n_total": 322725,
+  "n_list": 22,
+  "held_out": [
+   {
+    "short": "US Equity Opportunity",
+    "why": "trust fee not confirmed: only uitf.com.ph's 1.20% listing, about 17 months old (owner's hold, 2026-10-21)"
+   },
+   {
+    "short": "Global Bond Income",
+    "why": "trust fee on one listing only (uitf.com.ph, 0.90%); target named only in a 2020 disclosure (PIMCO GIS Diversified Income), whose charge runs 0.69-1.59% by class"
+   },
+   {
+    "short": "Global AI",
+    "why": "trust fee listings disagree (1.20% and 1.50%); target fund not named in any document found"
+   },
+   {
+    "short": "Global Multi-Asset Income",
+    "why": "trust fee listings disagree (1.15%, 1.19%, 1.25%)"
+   },
+   {
+    "short": "Global Capital Accumulation FoF",
+    "why": "trust fee on one listing only (0.90%, USD class)"
+   },
+   {
+    "short": "Global Equity High Income",
+    "why": "no fee or target fund found"
+   },
+   {
+    "short": "Global Natural Resources",
+    "why": "no fee or target fund found"
+   },
+   {
+    "short": "Global Gold Equity",
+    "why": "launched 2026; target fund not named in any document found"
+   },
+   {
+    "short": "Global Financials",
+    "why": "current 1.50% trust fee on one secondary source; target and its charge last published in 2020"
+   },
+   {
+    "short": "US Multi-Asset Income",
+    "why": "trust fee on one listing only (1.50%, USD class)"
+   },
+   {
+    "short": "Peso Liquid",
+    "why": "no current fee found; the same job as the money market"
+   }
+  ],
   "tie_pp": 0.05,
   "frontier": [
    {
-    "maxdd": 17.1,
-    "dd": -17.1,
-    "cagr": 6.08,
+    "maxdd": 10.5,
+    "dd": -10.5,
+    "cagr": 5.46,
     "weights": [
      35.0,
-     30.0,
-     5.0,
      0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     35.0,
      30.0
     ]
    },
    {
-    "maxdd": 18.3,
-    "dd": -18.3,
-    "cagr": 6.23,
+    "maxdd": 11.4,
+    "dd": -11.4,
+    "cagr": 5.69,
     "weights": [
      35.0,
-     35.0,
-     20.0,
+     10.0,
      0.0,
-     10.0
+     0.0,
+     0.0,
+     10.0,
+     0.0,
+     0.0,
+     0.0,
+     30.0,
+     15.0
     ]
    },
    {
-    "maxdd": 19.2,
-    "dd": -19.2,
-    "cagr": 6.31,
+    "maxdd": 12.3,
+    "dd": -12.3,
+    "cagr": 5.84,
     "weights": [
      35.0,
-     35.0,
-     15.0,
+     20.0,
+     0.0,
+     0.0,
+     0.0,
+     10.0,
      5.0,
-     10.0
+     0.0,
+     0.0,
+     30.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 13.3,
+    "dd": -13.3,
+    "cagr": 5.95,
+    "weights": [
+     35.0,
+     20.0,
+     0.0,
+     0.0,
+     0.0,
+     10.0,
+     15.0,
+     0.0,
+     0.0,
+     20.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 14.3,
+    "dd": -14.3,
+    "cagr": 6.06,
+    "weights": [
+     35.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     10.0,
+     10.0,
+     0.0,
+     0.0,
+     15.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 15.5,
+    "dd": -15.5,
+    "cagr": 6.17,
+    "weights": [
+     35.0,
+     25.0,
+     0.0,
+     0.0,
+     0.0,
+     20.0,
+     15.0,
+     0.0,
+     0.0,
+     5.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 16.4,
+    "dd": -16.4,
+    "cagr": 6.24,
+    "weights": [
+     35.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     15.0,
+     20.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 17.3,
+    "dd": -17.3,
+    "cagr": 6.3,
+    "weights": [
+     30.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
+     15.0,
+     15.0,
+     0.0,
+     0.0,
+     5.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 18.2,
+    "dd": -18.2,
+    "cagr": 6.38,
+    "weights": [
+     30.0,
+     35.0,
+     5.0,
+     0.0,
+     0.0,
+     20.0,
+     10.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 19.1,
+    "dd": -19.1,
+    "cagr": 6.43,
+    "weights": [
+     25.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
+     20.0,
+     15.0,
+     0.0,
+     0.0,
+     0.0,
+     5.0
     ]
    },
    {
     "maxdd": 20.2,
     "dd": -20.2,
-    "cagr": 6.38,
+    "cagr": 6.5,
     "weights": [
+     20.0,
      35.0,
-     35.0,
-     10.0,
-     10.0,
-     10.0
-    ]
-   },
-   {
-    "maxdd": 21.3,
-    "dd": -21.3,
-    "cagr": 6.45,
-    "weights": [
-     35.0,
-     35.0,
+     0.0,
+     0.0,
+     0.0,
+     20.0,
+     20.0,
+     0.0,
+     0.0,
      5.0,
-     15.0,
-     10.0
-    ]
-   },
-   {
-    "maxdd": 22.3,
-    "dd": -22.3,
-    "cagr": 6.52,
-    "weights": [
-     35.0,
-     35.0,
-     15.0,
-     15.0,
      0.0
     ]
    },
    {
-    "maxdd": 23.4,
-    "dd": -23.4,
-    "cagr": 6.59,
+    "maxdd": 21.1,
+    "dd": -21.1,
+    "cagr": 6.57,
     "weights": [
-     35.0,
-     35.0,
-     10.0,
      20.0,
+     35.0,
+     5.0,
+     0.0,
+     0.0,
+     25.0,
+     15.0,
+     0.0,
+     0.0,
+     0.0,
      0.0
     ]
    },
    {
-    "maxdd": 24.6,
-    "dd": -24.6,
-    "cagr": 6.66,
+    "maxdd": 22.0,
+    "dd": -22.0,
+    "cagr": 6.62,
     "weights": [
-     30.0,
-     35.0,
-     10.0,
      20.0,
-     5.0
+     30.0,
+     0.0,
+     5.0,
+     0.0,
+     25.0,
+     20.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
     ]
    },
    {
-    "maxdd": 25.5,
-    "dd": -25.5,
-    "cagr": 6.7,
+    "maxdd": 23.1,
+    "dd": -23.1,
+    "cagr": 6.69,
     "weights": [
+     10.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
      25.0,
+     25.0,
+     0.0,
+     0.0,
+     5.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 24.0,
+    "dd": -24.0,
+    "cagr": 6.76,
+    "weights": [
+     10.0,
      35.0,
      5.0,
+     0.0,
+     0.0,
+     30.0,
      20.0,
-     15.0
+     0.0,
+     0.0,
+     0.0,
+     0.0
     ]
    },
    {
-    "maxdd": 26.3,
-    "dd": -26.3,
-    "cagr": 6.77,
+    "maxdd": 24.9,
+    "dd": -24.9,
+    "cagr": 6.82,
     "weights": [
-     30.0,
+     15.0,
+     35.0,
+     0.0,
+     10.0,
+     0.0,
+     25.0,
+     15.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 26.0,
+    "dd": -26.0,
+    "cagr": 6.88,
+    "weights": [
+     5.0,
+     35.0,
+     15.0,
+     0.0,
+     0.0,
      35.0,
      10.0,
-     25.0,
+     0.0,
+     0.0,
+     0.0,
      0.0
     ]
    },
    {
     "maxdd": 27.2,
     "dd": -27.2,
-    "cagr": 6.81,
+    "cagr": 6.94,
     "weights": [
-     30.0,
-     35.0,
-     0.0,
-     30.0,
-     5.0
-    ]
-   },
-   {
-    "maxdd": 28.4,
-    "dd": -28.4,
-    "cagr": 6.88,
-    "weights": [
+     10.0,
      25.0,
-     35.0,
      0.0,
-     30.0,
-     10.0
-    ]
-   },
-   {
-    "maxdd": 29.7,
-    "dd": -29.7,
-    "cagr": 6.95,
-    "weights": [
-     20.0,
-     35.0,
-     0.0,
-     30.0,
-     15.0
-    ]
-   },
-   {
-    "maxdd": 30.9,
-    "dd": -30.9,
-    "cagr": 7.04,
-    "weights": [
-     20.0,
-     35.0,
      15.0,
-     30.0,
+     0.0,
+     25.0,
+     25.0,
+     0.0,
+     0.0,
+     0.0,
      0.0
     ]
    },
    {
-    "maxdd": 32.1,
-    "dd": -32.1,
+    "maxdd": 28.6,
+    "dd": -28.6,
+    "cagr": 7.03,
+    "weights": [
+     10.0,
+     25.0,
+     0.0,
+     20.0,
+     0.0,
+     30.0,
+     15.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 29.9,
+    "dd": -29.9,
     "cagr": 7.12,
     "weights": [
-     20.0,
-     35.0,
-     10.0,
-     35.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 33.3,
-    "dd": -33.3,
-    "cagr": 7.19,
-    "weights": [
-     15.0,
-     35.0,
-     10.0,
-     35.0,
-     5.0
-    ]
-   },
-   {
-    "maxdd": 34.5,
-    "dd": -34.5,
-    "cagr": 7.25,
-    "weights": [
-     10.0,
-     35.0,
+     5.0,
      25.0,
-     30.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 35.6,
-    "dd": -35.6,
-    "cagr": 7.32,
-    "weights": [
-     10.0,
-     35.0,
+     0.0,
      20.0,
-     35.0,
+     0.0,
+     25.0,
+     25.0,
+     0.0,
+     0.0,
+     0.0,
      0.0
     ]
    },
    {
-    "maxdd": 36.8,
-    "dd": -36.8,
-    "cagr": 7.39,
+    "maxdd": 30.8,
+    "dd": -30.8,
+    "cagr": 7.18,
     "weights": [
      5.0,
      35.0,
+     0.0,
      20.0,
+     0.0,
      35.0,
-     5.0
+     5.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 31.7,
+    "dd": -31.7,
+    "cagr": 7.24,
+    "weights": [
+     5.0,
+     35.0,
+     0.0,
+     25.0,
+     0.0,
+     15.0,
+     20.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 32.8,
+    "dd": -32.8,
+    "cagr": 7.28,
+    "weights": [
+     5.0,
+     25.0,
+     0.0,
+     30.0,
+     0.0,
+     25.0,
+     15.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 33.7,
+    "dd": -33.7,
+    "cagr": 7.34,
+    "weights": [
+     5.0,
+     35.0,
+     0.0,
+     30.0,
+     0.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 34.6,
+    "dd": -34.6,
+    "cagr": 7.38,
+    "weights": [
+     5.0,
+     30.0,
+     0.0,
+     35.0,
+     0.0,
+     20.0,
+     10.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
     ]
    }
   ],
   "best_ratio": {
    "weights": [
     35.0,
-    30.0,
-    5.0,
     0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    35.0,
     30.0
    ],
-   "cagr": 6.08,
-   "vol": 9.16,
-   "maxdd": -17.1,
-   "ret_per_dd": 0.356,
-   "sharpe_like": -0.04,
-   "terminal_1m": 1804410,
-   "worst_1m_from_open": 829000
+   "cagr": 5.46,
+   "vol": 6.17,
+   "maxdd": -10.5,
+   "ret_per_dd": 0.52,
+   "sharpe_like": -0.159,
+   "terminal_1m": 1701679,
+   "worst_1m_from_open": 895000
   },
   "what_if": {
    "vol_flat": {
     "b": {
      "weights": [
-      25,
+      5,
       35,
       15,
-      20,
-      5
+      0,
+      0,
+      35,
+      10,
+      0,
+      0,
+      0,
+      0
      ],
-     "cagr": 6.79,
-     "maxdd": -26.3
+     "cagr": 6.91,
+     "maxdd": -26.0
     },
     "c": {
      "weights": [
-      20,
+      5,
       50,
-      20,
-      10,
+      5,
+      0,
+      0,
+      35,
+      5,
+      0,
+      0,
+      0,
       0
      ],
-     "cagr": 6.85,
+     "cagr": 6.99,
      "maxdd": -26.4
     },
     "a": {
-     "cagr": 6.74,
-     "maxdd": -26.4
+     "cagr": 6.94,
+     "maxdd": -26.6
     }
    },
    "drags_neutral": {
     "b": {
      "weights": [
-      25,
-      35,
+      5,
+      30,
+      0,
+      20,
+      0,
+      0,
+      20,
+      0,
       0,
       25,
-      15
+      0
      ],
-     "cagr": 7.05,
-     "maxdd": -26.6
+     "cagr": 7.31,
+     "maxdd": -26.5
     },
     "c": {
      "weights": [
-      20,
-      50,
       5,
+      50,
+      0,
       15,
-      10
+      0,
+      0,
+      5,
+      0,
+      0,
+      25,
+      0
      ],
-     "cagr": 7.07,
-     "maxdd": -26.3
+     "cagr": 7.29,
+     "maxdd": -26.6
     },
     "a": {
-     "cagr": 6.99,
-     "maxdd": -26.2
+     "cagr": 7.23,
+     "maxdd": -26.4
     }
    },
    "asia_no_rerating": {
     "b": {
      "weights": [
-      35,
+      15,
       35,
       0,
-      30,
+      15,
+      0,
+      15,
+      20,
+      0,
+      0,
+      0,
       0
      ],
-     "cagr": 6.74,
-     "maxdd": -26.0
+     "cagr": 6.89,
+     "maxdd": -26.1
     },
     "c": {
      "weights": [
-      20,
+      5,
       50,
       0,
+      5,
+      0,
+      25,
       15,
-      15
+      0,
+      0,
+      0,
+      0
      ],
-     "cagr": 6.78,
-     "maxdd": -26.2
+     "cagr": 7.0,
+     "maxdd": -27.1
     },
     "a": {
-     "cagr": 6.72,
-     "maxdd": -26.4
+     "cagr": 6.91,
+     "maxdd": -26.6
     }
    },
    "asia_fee_hi": {
     "b": {
      "weights": [
-      35,
+      15,
       35,
       0,
-      30,
+      15,
+      0,
+      15,
+      20,
+      0,
+      0,
+      0,
       0
      ],
-     "cagr": 6.74,
-     "maxdd": -26.0
+     "cagr": 6.89,
+     "maxdd": -26.1
     },
     "c": {
      "weights": [
-      20,
-      50,
       5,
-      15,
-      10
+      50,
+      0,
+      5,
+      0,
+      35,
+      0,
+      0,
+      0,
+      5,
+      0
      ],
-     "cagr": 6.8,
-     "maxdd": -26.5
+     "cagr": 6.96,
+     "maxdd": -27.0
     },
     "a": {
-     "cagr": 6.72,
-     "maxdd": -26.4
+     "cagr": 6.91,
+     "maxdd": -26.6
     },
     "stress_pp": 0.25
    },
    "trend_off": {
     "b": {
      "weights": [
+      10,
+      30,
+      0,
+      10,
+      0,
       25,
-      35,
-      15,
-      20,
-      5
+      25,
+      0,
+      0,
+      0,
+      0
      ],
-     "cagr": 6.67,
-     "maxdd": -26.4
+     "cagr": 6.81,
+     "maxdd": -26.1
     },
     "c": {
      "weights": [
-      25,
+      5,
       50,
       0,
+      5,
+      0,
       20,
-      5
+      20,
+      0,
+      0,
+      0,
+      0
      ],
-     "cagr": 6.73,
-     "maxdd": -26.6
+     "cagr": 6.91,
+     "maxdd": -27.1
     },
     "a": {
-     "cagr": 6.65,
-     "maxdd": -26.5
+     "cagr": 6.85,
+     "maxdd": -26.7
     }
    },
    "trend_alt": {
     "b": {
      "weights": [
-      30,
+      15,
       35,
-      10,
-      25,
+      0,
+      15,
+      0,
+      15,
+      20,
+      0,
+      0,
+      0,
       0
      ],
-     "cagr": 6.77,
-     "maxdd": -26.3
+     "cagr": 6.89,
+     "maxdd": -26.1
     },
     "c": {
      "weights": [
-      20,
+      5,
       50,
-      20,
       10,
+      0,
+      0,
+      35,
+      0,
+      0,
+      0,
+      0,
       0
      ],
-     "cagr": 6.8,
-     "maxdd": -26.4
+     "cagr": 6.95,
+     "maxdd": -26.8
     },
     "a": {
-     "cagr": 6.72,
-     "maxdd": -26.4
+     "cagr": 6.91,
+     "maxdd": -26.6
     }
    }
   }
  },
  "portfolio_b": {
   "weights": [
-   30,
+   5,
+   35,
+   15,
+   0,
+   0,
    35,
    10,
-   25,
+   0,
+   0,
+   0,
    0
   ],
   "ids": [
@@ -2686,17 +3326,29 @@
    "ATRQIAP",
    "ATRASEQ",
    "ATRGTEC",
-   "ATRGLDV"
+   "ATRGLDV",
+   "ATRGHCP",
+   "M_GINF",
+   "M_GEO",
+   "M_GCT",
+   "ATRAMIP",
+   "M_GALL"
   ],
   "column": "net_macro",
-  "band_n": 21,
-  "n_feasible": 1066,
+  "band_n": 71,
+  "n_feasible": 198748,
   "shorts": [
    "Peso Money Market",
    "Nasdaq Equity Income",
    "Asia Equity",
    "Global Technology",
-   "Global Dividend"
+   "Global Dividend",
+   "Global Health Care",
+   "Global Infra Equity",
+   "Global Equity Opportunity",
+   "Global Consumer Trends",
+   "Asian Multi-Asset Income",
+   "Global Allocation"
   ],
   "funds": [
    {
@@ -2726,11 +3378,23 @@
     "tilt_rates": -0.19,
     "tilt_energy": 0.0,
     "tilt_trend": 0.0,
+    "equity_share": 1.0,
+    "trend_market": null,
+    "region_mix": {
+     "US": 0.245,
+     "EUROPE": 0.602,
+     "ASIA": 0.153
+    },
+    "asia_rerating_share": 0.0,
+    "role": null,
+    "exposure": null,
+    "slide_note": null,
     "tilt_rates_cal": -0.08,
     "tilt_energy_cal": 0.0,
     "tilt_total": -0.44,
     "net_macro": 6.22,
     "vol": 15.49,
+    "vol_beta": 0.8,
     "dd_k": 1.65,
     "dd_k_why": "At the 1.65 anchor: a diversified dividend portfolio's left tail is the market's.",
     "dd_base": -31.4,
@@ -2743,75 +3407,449 @@
     "net_trend_alt": 6.22,
     "net_asia_norerate": 6.22,
     "net_asia_fee_hi": 6.22
+   },
+   {
+    "id": "ATRGHCP",
+    "name": "ATRAM Global Health Care Feeder Fund",
+    "short": "Global Health Care",
+    "ccy": "PHP (unhedged)",
+    "region": "GLOBAL_HC",
+    "target": "Target fund: Fidelity Funds - Global Healthcare Fund (the feeder's KIID, target information as of 27 Feb 2026). Benchmark: MSCI ACWI Health Care.",
+    "target_verified": true,
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee from 14 Sep 2026, up from 1.20% (ATRAM's fund page and uitf.com.ph) + 1.05% target-fund TER (PUBLISHED on the feeder's fact sheet; Fidelity's I-Acc class shows 0.89%)",
+    "gross_note": "JPM LTCMA 2027 global equity 7.5%, with no sector premium: the LTCMA publishes regional, not sector, assumptions.",
+    "code": "ATRGHCP",
+    "fee_feeder": 1.5,
+    "fee_target": 1.05,
+    "fee_feeder_prev": 1.2,
+    "fee_feeder_from": "2026-09-14",
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 2.55,
+    "gross_php": 9.5,
+    "fx_drift": 2.0,
+    "net_base": 6.95,
+    "regional_score": 2.91,
+    "tilt_regional": -0.06,
+    "tilt_vol": 0.0,
+    "tilt_rates": -0.12,
+    "tilt_energy": 0.0,
+    "tilt_trend": 0.08,
+    "equity_share": 1.0,
+    "trend_market": "ATRGHCP",
+    "region_mix": {
+     "US": 0.66,
+     "EUROPE": 0.25,
+     "ASIA": 0.09
+    },
+    "asia_rerating_share": 0.0,
+    "role": "Defensive equity \u2014 health care, two-thirds US",
+    "exposure": [
+     "Fidelity Funds \u2014 Global Healthcare Fund (Luxembourg SICAV)",
+     "Benchmark: MSCI ACWI Health Care",
+     "Pharmaceuticals, biotech, devices and insurers; largest holdings Eli Lilly and AbbVie (Aug 2026)"
+    ],
+    "slide_note": null,
+    "tilt_rates_cal": -0.05,
+    "tilt_energy_cal": 0.0,
+    "tilt_total": -0.1,
+    "net_macro": 6.85,
+    "vol": 16.4,
+    "vol_beta": 0.85,
+    "dd_k": 1.65,
+    "dd_k_why": "At the 1.65 anchor: a defensive sector, but a single-sector book; its left tail is taken as the market's.",
+    "dd_base": -33.3,
+    "dd_macro": -33.4,
+    "target_net_macro": 8.35,
+    "target_dd_macro": -32.4,
+    "net_novol": 6.85,
+    "net_neutral": 6.97,
+    "net_notrend": 6.77,
+    "net_trend_alt": 6.85,
+    "net_asia_norerate": 6.85,
+    "net_asia_fee_hi": 6.85
+   },
+   {
+    "id": "M_GINF",
+    "name": "ATRAM Global Infra Equity Feeder Fund",
+    "short": "Global Infra Equity",
+    "ccy": "PHP (unhedged)",
+    "region": "GLOBAL_INFRA",
+    "target": "Target fund: HSBC Global Investment Funds - Global Infrastructure Equity (since March 2025, replacing UBS (Lux) Infrastructure Equity).",
+    "target_verified": true,
+    "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (uitf.com.ph A PHP units; the 14 Sep repricing) + 0.80% target-fund TER (PUBLISHED on the feeder's fact sheet)",
+    "gross_note": "JPM LTCMA 2027 global equity 7.5%, with no sector premium: the LTCMA publishes no listed-infrastructure line.",
+    "code": "code not confirmed",
+    "fee_feeder": 1.5,
+    "fee_target": 0.8,
+    "fee_feeder_prev": 1.2,
+    "fee_feeder_from": "2026-09-14",
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 2.3,
+    "gross_php": 9.5,
+    "fx_drift": 2.0,
+    "net_base": 7.2,
+    "regional_score": 2.86,
+    "tilt_regional": -0.09,
+    "tilt_vol": 0.0,
+    "tilt_rates": -0.47,
+    "tilt_energy": 0.07,
+    "tilt_trend": 0.0,
+    "equity_share": 1.0,
+    "trend_market": null,
+    "region_mix": {
+     "US": 0.5,
+     "EUROPE": 0.33,
+     "ASIA": 0.17
+    },
+    "asia_rerating_share": 0.0,
+    "role": "Real-asset equity \u2014 utilities, pipelines, towers",
+    "exposure": [
+     "HSBC GIF \u2014 Global Infrastructure Equity (Luxembourg SICAV)",
+     "Listed infrastructure: utilities, energy pipelines, transport, communications towers",
+     "Target since March 2025 (was UBS (Lux) Infrastructure Equity)"
+    ],
+    "slide_note": null,
+    "tilt_rates_cal": -0.2,
+    "tilt_energy_cal": 0.05,
+    "tilt_total": -0.49,
+    "net_macro": 6.71,
+    "vol": 16.4,
+    "vol_beta": 0.85,
+    "dd_k": 1.65,
+    "dd_k_why": "At the 1.65 anchor: regulated, contracted cash flows; no fatter tail than the market's is claimed.",
+    "dd_base": -33.2,
+    "dd_macro": -33.5,
+    "target_net_macro": 8.21,
+    "target_dd_macro": -32.5,
+    "net_novol": 6.71,
+    "net_neutral": 7.11,
+    "net_notrend": 6.71,
+    "net_trend_alt": 6.71,
+    "net_asia_norerate": 6.71,
+    "net_asia_fee_hi": 6.71
+   },
+   {
+    "id": "M_GEO",
+    "name": "ATRAM Global Equity Opportunity Feeder Fund",
+    "short": "Global Equity Opportunity",
+    "ccy": "PHP (unhedged)",
+    "region": "GLOBAL_EQ_OPP",
+    "target": "Target fund: Allianz Global Investors Fund - Allianz Thematica (since April 2021). A thematic global equity fund.",
+    "target_verified": true,
+    "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (ATRAM's fund page, uitf.com.ph PHP class) + 1.00% target-fund TER (PUBLISHED in the feeder's KIID, 31 Mar 2026; Allianz's retail AT class lists 1.95%)",
+    "gross_note": "JPM LTCMA 2027 global equity 7.5%, with no theme premium.",
+    "code": "14UF05P",
+    "fee_feeder": 1.5,
+    "fee_target": 1.0,
+    "fee_feeder_prev": 1.2,
+    "fee_feeder_from": "2026-09-14",
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 2.5,
+    "gross_php": 9.5,
+    "fx_drift": 2.0,
+    "net_base": 7.0,
+    "regional_score": 3.03,
+    "tilt_regional": 0.02,
+    "tilt_vol": 0.0,
+    "tilt_rates": -0.47,
+    "tilt_energy": -0.13,
+    "tilt_trend": 0.08,
+    "equity_share": 1.0,
+    "trend_market": "M_GEO",
+    "region_mix": {
+     "US": 0.6,
+     "EUROPE": 0.15,
+     "ASIA": 0.25
+    },
+    "asia_rerating_share": 0.0,
+    "role": "Thematic global equity \u2014 long-run themes",
+    "exposure": [
+     "Allianz Global Investors Fund \u2014 Allianz Thematica (Luxembourg SICAV)",
+     "Global equities picked by structural theme",
+     "Target since April 2021 (was Fidelity Global Thematic Opportunities)"
+    ],
+    "slide_note": null,
+    "tilt_rates_cal": -0.2,
+    "tilt_energy_cal": -0.1,
+    "tilt_total": -0.5,
+    "net_macro": 6.5,
+    "vol": 21.94,
+    "vol_beta": 1.15,
+    "dd_k": 1.7,
+    "dd_k_why": "A little above 1.65: thematic growth with a mid-cap tilt gaps further than the broad market.",
+    "dd_base": -47.8,
+    "dd_macro": -48.1,
+    "target_net_macro": 8.0,
+    "target_dd_macro": -47.1,
+    "net_novol": 6.5,
+    "net_neutral": 7.1,
+    "net_notrend": 6.42,
+    "net_trend_alt": 6.5,
+    "net_asia_norerate": 6.5,
+    "net_asia_fee_hi": 6.5
+   },
+   {
+    "id": "M_GCT",
+    "name": "ATRAM Global Consumer Trends Feeder Fund",
+    "short": "Global Consumer Trends",
+    "ccy": "PHP (unhedged)",
+    "region": "GLOBAL_CONS",
+    "target": "Target fund: Invesco Global Consumer Trends Fund.",
+    "target_verified": true,
+    "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (ATRAM's fund page) + 0.97% target-fund TER (PUBLISHED in the feeder's later KIID; an earlier one had 1.04%)",
+    "gross_note": "JPM LTCMA 2027 global equity 7.5%, with no sector premium.",
+    "code": "20UF19P",
+    "fee_feeder": 1.5,
+    "fee_target": 0.97,
+    "fee_feeder_prev": 1.2,
+    "fee_feeder_from": "2026-09-14",
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 2.47,
+    "gross_php": 9.5,
+    "fx_drift": 2.0,
+    "net_base": 7.03,
+    "regional_score": 3.05,
+    "tilt_regional": 0.03,
+    "tilt_vol": 0.0,
+    "tilt_rates": -0.58,
+    "tilt_energy": -0.2,
+    "tilt_trend": 0.0,
+    "equity_share": 1.0,
+    "trend_market": null,
+    "region_mix": {
+     "US": 0.62,
+     "EUROPE": 0.13,
+     "ASIA": 0.25
+    },
+    "asia_rerating_share": 0.0,
+    "role": "Consumer growth \u2014 the most volatile fund here",
+    "exposure": [
+     "Invesco Global Consumer Trends Fund (Luxembourg SICAV)",
+     "Consumer discretionary, e-commerce and leisure, global",
+     "Concentrated growth book"
+    ],
+    "slide_note": null,
+    "tilt_rates_cal": -0.25,
+    "tilt_energy_cal": -0.15,
+    "tilt_total": -0.75,
+    "net_macro": 6.28,
+    "vol": 33.31,
+    "vol_beta": 1.75,
+    "dd_k": 1.8,
+    "dd_k_why": "Well above 1.65: a concentrated consumer-growth book; its 2022 fall ran far past what 1.65 sigma predicts.",
+    "dd_base": -79.8,
+    "dd_macro": -80.3,
+    "target_net_macro": 7.78,
+    "target_dd_macro": -79.3,
+    "net_novol": 6.28,
+    "net_neutral": 7.06,
+    "net_notrend": 6.28,
+    "net_trend_alt": 6.28,
+    "net_asia_norerate": 6.28,
+    "net_asia_fee_hi": 6.28
+   },
+   {
+    "id": "ATRAMIP",
+    "name": "ATRAM Asian Multi-Asset Income Feeder Fund",
+    "short": "Asian Multi-Asset Income",
+    "ccy": "PHP (unhedged)",
+    "region": "ASIA",
+    "target": "Target fund: Schroder Asian Asset Income Fund (named at launch, Sep 2022). Benchmark: 50% MSCI AC Asia Pacific ex Japan + 50% Bloomberg EM Asia.",
+    "target_verified": true,
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published)",
+    "gross_note": "Half equity, half bonds, as its benchmark: the Asia equity build (JPM LTCMA 2027 EM equity 7.1% + 1.0% re-rating - 0.5% dividend drag) and 6.1% for Asian credit (the LTCMA's US investment-grade figure, a proxy).",
+    "code": "ATRAMIP",
+    "fee_feeder": 1.5,
+    "fee_target": 1.54,
+    "fee_feeder_prev": null,
+    "fee_feeder_from": null,
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 3.04,
+    "gross_php": 8.85,
+    "fx_drift": 2.0,
+    "net_base": 5.81,
+    "regional_score": 3.34,
+    "tilt_regional": 0.11,
+    "tilt_vol": 0.0,
+    "tilt_rates": -0.23,
+    "tilt_energy": -0.2,
+    "tilt_trend": 0.08,
+    "equity_share": 0.5,
+    "trend_market": "ATRASEQ",
+    "region_mix": null,
+    "asia_rerating_share": 0.5,
+    "role": "Asian income \u2014 half equity, half credit",
+    "exposure": [
+     "Schroder Asian Asset Income Fund (Hong Kong unit trust)",
+     "Asia Pacific ex-Japan dividend equities and Asian USD credit, about half each",
+     "Benchmark 50% MSCI AC Asia Pacific ex Japan / 50% Bloomberg EM Asia"
+    ],
+    "slide_note": null,
+    "tilt_rates_cal": -0.1,
+    "tilt_energy_cal": -0.15,
+    "tilt_total": -0.24,
+    "net_macro": 5.57,
+    "vol": 10.03,
+    "vol_beta": 0.48,
+    "dd_k": 1.65,
+    "dd_k_why": "At the 1.65 anchor: the bond half damps the Asian equity tail.",
+    "dd_base": -19.3,
+    "dd_macro": -19.5,
+    "target_net_macro": 7.07,
+    "target_dd_macro": -18.4,
+    "net_novol": 5.57,
+    "net_neutral": 6.0,
+    "net_notrend": 5.49,
+    "net_trend_alt": 5.56,
+    "net_asia_norerate": 5.07,
+    "net_asia_fee_hi": 5.57
+   },
+   {
+    "id": "M_GALL",
+    "name": "ATRAM Global Allocation Feeder Fund",
+    "short": "Global Allocation",
+    "ccy": "PHP (unhedged)",
+    "region": "GLOBAL_ALLOC",
+    "target": "Target fund: BlackRock Global Funds - Global Allocation Fund (A2 USD).",
+    "target_verified": true,
+    "fee_note": "1.20% ATRAM trust fee (uitf.com.ph PHP and USD classes and the feeder's fact sheet; DragonFi lists 1.50%, and the fund is not among the six repriced on 14 Sep) + 1.13% target-fund TER (PUBLISHED on the feeder's fact sheet)",
+    "gross_note": "Three-fifths global equity (7.5%) and two-fifths global bonds (5.3%, JPM LTCMA 2027 global aggregate).",
+    "code": "14UF06",
+    "fee_feeder": 1.2,
+    "fee_target": 1.13,
+    "fee_feeder_prev": null,
+    "fee_feeder_from": null,
+    "fee_parts": null,
+    "target_amc": null,
+    "fee_total": 2.33,
+    "gross_php": 8.62,
+    "fx_drift": 2.0,
+    "net_base": 6.29,
+    "regional_score": 2.98,
+    "tilt_regional": -0.01,
+    "tilt_vol": 0.0,
+    "tilt_rates": -0.23,
+    "tilt_energy": -0.07,
+    "tilt_trend": 0.05,
+    "equity_share": 0.6,
+    "trend_market": "M_GEO",
+    "region_mix": {
+     "US": 0.6,
+     "EUROPE": 0.2,
+     "ASIA": 0.2
+    },
+    "asia_rerating_share": 0.0,
+    "role": "Balanced \u2014 global stocks and bonds, managed",
+    "exposure": [
+     "BlackRock Global Funds \u2014 Global Allocation Fund (Luxembourg SICAV)",
+     "About 60% global equities, 40% bonds and cash, moved by the manager",
+     "The most diversified single fund on the list"
+    ],
+    "slide_note": null,
+    "tilt_rates_cal": -0.1,
+    "tilt_energy_cal": -0.05,
+    "tilt_total": -0.26,
+    "net_macro": 6.03,
+    "vol": 11.16,
+    "vol_beta": 0.55,
+    "dd_k": 1.65,
+    "dd_k_why": "At the 1.65 anchor: a balanced book; its bond share is already in its volatility.",
+    "dd_base": -21.6,
+    "dd_macro": -21.8,
+    "target_net_macro": 7.23,
+    "target_dd_macro": -20.9,
+    "net_novol": 6.03,
+    "net_neutral": 6.33,
+    "net_notrend": 5.98,
+    "net_trend_alt": 6.03,
+    "net_asia_norerate": 6.03,
+    "net_asia_fee_hi": 6.03
    }
   ],
   "macro": {
    "weights": [
-    30.0,
+    5.0,
+    35.0,
+    15.0,
+    0.0,
+    0.0,
     35.0,
     10.0,
-    25.0,
+    0.0,
+    0.0,
+    0.0,
     0.0
    ],
-   "cagr": 6.77,
-   "vol": 12.85,
-   "maxdd": -26.3,
-   "ret_per_dd": 0.257,
-   "sharpe_like": 0.025,
-   "terminal_1m": 1925273,
-   "worst_1m_from_open": 737000
+   "cagr": 6.88,
+   "vol": 13.17,
+   "maxdd": -26.0,
+   "ret_per_dd": 0.265,
+   "sharpe_like": 0.033,
+   "terminal_1m": 1945201,
+   "worst_1m_from_open": 740000
   },
   "base": {
    "weights": [
-    30.0,
+    5.0,
+    35.0,
+    15.0,
+    0.0,
+    0.0,
     35.0,
     10.0,
-    25.0,
+    0.0,
+    0.0,
+    0.0,
     0.0
    ],
-   "cagr": 6.91,
-   "vol": 12.85,
-   "maxdd": -26.2,
-   "ret_per_dd": 0.264,
-   "sharpe_like": 0.036,
-   "terminal_1m": 1950668,
-   "worst_1m_from_open": 738000
+   "cagr": 7.02,
+   "vol": 13.17,
+   "maxdd": -25.9,
+   "ret_per_dd": 0.271,
+   "sharpe_like": 0.044,
+   "terminal_1m": 1970831,
+   "worst_1m_from_open": 741000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $109. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 2.82,
-    "vol": 20.57,
-    "maxdd": -47.8
+    "cagr": 3.45,
+    "vol": 21.07,
+    "maxdd": -47.0
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.68,
-    "vol": 16.71,
-    "maxdd": -37.1
+    "cagr": 5.14,
+    "vol": 17.12,
+    "maxdd": -36.5
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 2.99,
-    "vol": 18.64,
-    "maxdd": -43.0
+    "cagr": 4.78,
+    "vol": 19.09,
+    "maxdd": -41.4
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 8.85,
-    "vol": 10.28,
-    "maxdd": -18.6
+    "cagr": 8.78,
+    "vol": 10.53,
+    "maxdd": -18.5
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.77,
-    "vol": 12.85,
-    "maxdd": -26.3
+    "cagr": 6.88,
+    "vol": 13.17,
+    "maxdd": -26.0
    }
   ],
   "corr": [
@@ -2820,6 +3858,12 @@
     0.0,
     0.0,
     0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
     0.0
    ],
    [
@@ -2827,31 +3871,205 @@
     1.0,
     0.66,
     0.88,
-    0.61
+    0.61,
+    0.57,
+    0.56,
+    0.76,
+    0.59,
+    0.49,
+    0.74
    ],
    [
     0.0,
     0.66,
     1.0,
     0.74,
-    0.59
+    0.59,
+    0.5,
+    0.5,
+    0.67,
+    0.52,
+    0.68,
+    0.62
    ],
    [
     0.0,
     0.88,
     0.74,
     1.0,
-    0.69
+    0.69,
+    0.64,
+    0.63,
+    0.86,
+    0.67,
+    0.51,
+    0.8
    ],
    [
     0.0,
     0.61,
     0.59,
     0.69,
+    1.0,
+    0.65,
+    0.67,
+    0.7,
+    0.46,
+    0.55,
+    0.75
+   ],
+   [
+    0.0,
+    0.57,
+    0.5,
+    0.64,
+    0.65,
+    1.0,
+    0.54,
+    0.6,
+    0.39,
+    0.48,
+    0.66
+   ],
+   [
+    0.0,
+    0.56,
+    0.5,
+    0.63,
+    0.67,
+    0.54,
+    1.0,
+    0.6,
+    0.41,
+    0.49,
+    0.66
+   ],
+   [
+    0.0,
+    0.76,
+    0.67,
+    0.86,
+    0.7,
+    0.6,
+    0.6,
+    1.0,
+    0.59,
+    0.48,
+    0.73
+   ],
+   [
+    0.0,
+    0.59,
+    0.52,
+    0.67,
+    0.46,
+    0.39,
+    0.41,
+    0.59,
+    1.0,
+    0.3,
+    0.5
+   ],
+   [
+    0.0,
+    0.49,
+    0.68,
+    0.51,
+    0.55,
+    0.48,
+    0.49,
+    0.48,
+    0.3,
+    1.0,
+    0.62
+   ],
+   [
+    0.0,
+    0.74,
+    0.62,
+    0.8,
+    0.75,
+    0.66,
+    0.66,
+    0.73,
+    0.5,
+    0.62,
     1.0
    ]
   ],
-  "corr_note": "Global Dividend moves with the other equity sleeves (0.59-0.69): a different style of equity, not a hedge. With the peso bond funds removed, the money market is the only sleeve that does not fall with equities.",
+  "corr_note": "Global Dividend moves with the other equity sleeves (0.59-0.69): a different style of equity, not a hedge. The six added from the 22-fund list run 0.30-0.86 with the other funds, from a factor model fitted to the original block. With the peso bond funds removed, the money market is the only sleeve that does not fall with equities.",
+  "factors": {
+   "names": [
+    "G",
+    "GW",
+    "EM",
+    "CY",
+    "RG",
+    "RP"
+   ],
+   "loadings": {
+    "ATRPHMM": {
+     "RP": 0.2
+    },
+    "ATRQIAP": {
+     "G": 12.0,
+     "GW": 7.5,
+     "RG": 3.0
+    },
+    "ATRASEQ": {
+     "G": 12.9,
+     "GW": 6.1,
+     "EM": 11.3,
+     "CY": 3.0,
+     "RG": 1.0
+    },
+    "ATRGTEC": {
+     "G": 21.7,
+     "GW": 11.9,
+     "RG": 5.0
+    },
+    "ATRGLDV": {
+     "G": 13.5,
+     "GW": -2.0,
+     "CY": 4.0,
+     "RG": 2.0
+    },
+    "ATRGHCP": {
+     "G": 12.0,
+     "RG": 3.0
+    },
+    "M_GINF": {
+     "G": 11.0,
+     "CY": 3.0,
+     "RG": 6.0
+    },
+    "M_GEO": {
+     "G": 18.0,
+     "GW": 7.0,
+     "CY": 3.0,
+     "RG": 3.0
+    },
+    "M_GCT": {
+     "G": 19.0,
+     "GW": 13.0,
+     "CY": 6.0,
+     "RG": 4.0
+    },
+    "ATRAMIP": {
+     "G": 5.5,
+     "EM": 4.5,
+     "RG": 2.5
+    },
+    "M_GALL": {
+     "G": 9.0,
+     "GW": 1.5,
+     "RG": 3.0
+    }
+   },
+   "fx_corr": -0.2,
+   "fx_vol": 6.0,
+   "typed_block": 5
+  },
   "dd_cap": 27.17,
   "in_budget": true,
   "review": {
@@ -4404,6 +5622,126 @@
    "org": "Endowus",
    "what": "Fidelity Global Dividend Fund (LU0605515963, Y-Acc-USD) - fund fees 1.04% p.a.",
    "url": "https://endowus.com/investment-funds-list/fidelity-global-dividend-fund-LU0605515963"
+  },
+  {
+   "org": "ATRAM Trust",
+   "what": "ATRAM Global Health Care Feeder Fund (ATRGHCP) - trust fee incl. distribution fee 1.50% p.a.",
+   "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRGHCP"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM Global Health Care Feeder Fund - daily NAVpu, trust fee 1.50% p.a., benchmark MSCI ACWI Health Care",
+   "url": "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=435"
+  },
+  {
+   "org": "investa.ph / ATRAM",
+   "what": "ATRAM Global Health Care Feeder Fund fact sheet - target Fidelity Funds Global Healthcare, TER 1.05%",
+   "url": "https://storage.investa.ph/files/Fund/52/PDF/52_FundFactSheet_1763395696.pdf"
+  },
+  {
+   "org": "Fidelity International",
+   "what": "Fidelity Funds - Global Healthcare Fund factsheet, 31 Aug 2026 (Singapore) - Eli Lilly 8.7%, AbbVie 7.4%, 41 positions",
+   "url": "https://www.fidelityinternational.com/legal/documents/SG-en/hffs.SG-en.SG.G-HCR.pdf"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM Global Infra Equity Feeder Fund (A PHP units) - trust fee 1.50% p.a.",
+   "url": "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=434"
+  },
+  {
+   "org": "Seedbox / ATRAM",
+   "what": "ATRAM Global Infra Equity Feeder Fund fact sheet - target changed to HSBC GIF Global Infrastructure Equity, March 2025; TER 0.80%",
+   "url": "https://file.seedbox.ph/ATRAM_GLOBAL_INFRA_EQUITY_FEEDER_FUND_KIIDS.pdf"
+  },
+  {
+   "org": "ATRAM Trust",
+   "what": "ATRAM Global Equity Opportunity Feeder Fund (PHP unit class) - trust fee 1.50% p.a.",
+   "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=14UF05P"
+  },
+  {
+   "org": "Seedbox / ATRAM",
+   "what": "ATRAM Global Equity Opportunity Feeder Fund KIID - target Allianz Thematica since April 2021; target TER 1.00% (31 Mar 2026)",
+   "url": "https://file.seedbox.ph/ATRAM_GLOBAL_EQUITY_OPPORTUNITY_FEEDER_FUND_KIIDS.pdf"
+  },
+  {
+   "org": "Citywire",
+   "what": "Allianz Global Investors Fund - Allianz Thematica AT USD - ongoing charge 1.95%",
+   "url": "https://citywire.com/selector/fund/allianz-global-investors-fund-allianz-thematica/c579592"
+  },
+  {
+   "org": "ATRAM Trust",
+   "what": "ATRAM Global Consumer Trends Feeder Fund - trust fee 1.50% p.a.",
+   "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=20UF19P"
+  },
+  {
+   "org": "investa.ph / ATRAM",
+   "what": "ATRAM Global Consumer Trends Feeder Fund fact sheet - target Invesco Global Consumer Trends, TER 0.97%",
+   "url": "https://storage.investa.ph/files/Fund/50/PDF/50_FundFactSheet_1763395688.pdf"
+  },
+  {
+   "org": "ATRAM Trust",
+   "what": "ATRAM Asian Multi-Asset Income Feeder Fund (ATRAMIP) - trust fee 1.50% p.a.; benchmark 50% MSCI AC APxJ / 50% Bloomberg EM Asia",
+   "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRAMIP"
+  },
+  {
+   "org": "BusinessWorld",
+   "what": "ATRAM Trust launches new fund - the Asian multi-asset income feeder, target Schroder Asian Asset Income Fund, Sep 2022",
+   "url": "https://bworldonline.com/banking-finance/2022/09/06/472618/atram-trust-launches-new-fund/"
+  },
+  {
+   "org": "Schroders",
+   "what": "Schroder Asian Asset Income Fund - Product Key Facts (class A USD ongoing charges)",
+   "url": "https://api.schroders.com/document-store/HKUT-Asian-Asset-Income-Fund-PKFSAPAC-HKEN.pdf"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM Global Allocation Feeder Fund (PHP unit class) - trust fee 1.20% p.a.",
+   "url": "https://www.uitf.com.ph/home/daily_navpu_details.php?fund_id=433&bank_id=31"
+  },
+  {
+   "org": "investa.ph / ATRAM",
+   "what": "ATRAM Global Allocation Feeder Fund fact sheet - target BGF Global Allocation A2 USD, TER 1.13%",
+   "url": "https://storage.investa.ph/files/Fund/40/PDF/40_FundFactSheet_1767270656.pdf"
+  },
+  {
+   "org": "J.P. Morgan Asset Management",
+   "what": "2027 Long-Term Capital Market Assumptions press release - global aggregate bonds 5.3%, US investment-grade credit 6.1%, US large cap 7.5%",
+   "url": "https://am.jpmorgan.com/us/en/asset-management/adv/about-us/media/press-releases/jp-morgan-releases-2027-long-term-capital-market-assumptions/"
+  },
+  {
+   "org": "PortfoliosLab",
+   "what": "iShares Global Healthcare ETF (IXJ) - monthly total returns, Oct 2025 - Sep 2026",
+   "url": "https://portfolioslab.com/symbol/IXJ"
+  },
+  {
+   "org": "BlackRock",
+   "what": "Healthcare making a comeback? - global health care up more than 10% in Q4 2025",
+   "url": "https://www.blackrock.com/au/insights/ishares/2026-comeback-year-for-healthcare"
+  },
+  {
+   "org": "Aristotle Capital",
+   "what": "4Q 2025 commentary - MSCI ACWI +3.29% (net, USD) in the quarter",
+   "url": "https://www.aristotlecap.com/wp-content/uploads/2026/01/GE-Adv-Commentary-2025-12.pdf"
+  },
+  {
+   "org": "ETFreplay",
+   "what": "iShares MSCI ACWI ETF - quarterly returns 2026",
+   "url": "https://www.etfreplay.com/etf/acwi"
+  },
+  {
+   "org": "iShares",
+   "what": "iShares MSCI ACWI ETF - NAV total return YTD 12.90% to 20 Oct 2026",
+   "url": "https://www.ishares.com/us/products/239600/ishares-msci-acwi-etf"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM Global Bond Income Feeder Fund - trust fee 0.90% p.a. (held out: one listing)",
+   "url": "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=364"
+  },
+  {
+   "org": "uitf.com.ph",
+   "what": "ATRAM US Equity Opportunity Feeder Fund (USD unit class) - trust fee 1.20% p.a. (held out: stale listing)",
+   "url": "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=260"
   }
  ]
 }

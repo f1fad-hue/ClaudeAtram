@@ -2,6 +2,105 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-22 — v63: A, B and C chosen from the 22-fund ATRAM list
+
+At the owner's instruction: "Update portfolio A from 22 atram list and maximum growth
+10yrs net cagr with minimum drawdown. Update portfolio b and c from 22 atram list based
+on macroeconomic drivers ... market trend ... regional rankings ... volatility ... of 3,
+6, and 12 months with 10yrs horizon." C keeps Nasdaq Equity Income at 50%, and A stays
+on the 10-year long-run returns (owner, the same day).
+
+**The universe, from five funds to eleven.** Every fund on the list is searched once its
+fees are confirmed: its trust fee on ATRAM's own page or on two current listings that
+agree, and its target fund named with a published charge. That is the standard the
+owner set for US Equity Opportunity on 21 Oct, applied to every fund.
+- **Added (six):** Global Health Care, Global Infra Equity, Global Equity Opportunity,
+  Global Consumer Trends, Asian Multi-Asset Income and Global Allocation. All are built
+  by `build_fund()` like the others.
+- **Held out (eleven), each with what is missing (`list22_held_out`):** US Equity
+  Opportunity, Global Bond Income, Global AI, Global Multi-Asset Income, Global Capital
+  Accumulation, Equity High Income, Natural Resources, Gold Equity, Global Financials,
+  US Multi-Asset Income and Peso Liquid.
+
+**The picks** (macro view; A chosen on the long-run view):
+
+| | Mix | Forecast | Was (v62) |
+|---|---|---|---|
+| **A** | 5 MM / 35 Nasdaq Income / 5 Global Tech / 20 Health Care / 35 Infra | 7.21% / −26.4% long-run (6.91% / −26.6% macro) | 6.97% / −26.3% long-run |
+| **B** | 5 MM / 35 Nasdaq Income / 15 Asia / 35 Health Care / 10 Infra | 6.88% / −26.0% | 6.77% / −26.3% |
+| **C** | 5 MM / 50 Nasdaq Income / 10 Asia / 35 Health Care | 6.95% / −26.8% | 6.80% / −26.4% |
+
+Health Care and Infra do the diversifying work: 0.56-0.64 correlated with the two US-tech
+sleeves, against 0.88 between those two. Global Technology falls to 5% of A and none of
+B or C.
+
+**How each added fund is built** (CLAIMS.md has one row per fund):
+- **Fees:** published trust fees and target-fund charges. Asian Multi-Asset Income's
+  target charge is an estimate, Schroders' class A figure.
+- **Gross:** sector and theme funds are built on J.P. Morgan's 2027 global equity
+  figure with no premium, since the LTCMA publishes regions, not sectors. The two
+  multi-asset funds are blended from their legs on the LTCMA's 2027 bond figures
+  (global aggregate 5.3%, US investment-grade 6.1% as a proxy for Asian credit).
+- **Correlations:** from the 21 Oct review's factor model, now in the engine.
+  It reproduces the typed five-fund block within 0.01.
+- **Market trend:** two new series, global health care (IXJ) and global equity (MSCI
+  ACWI). The multi-asset funds carry their equity market's trend, and their regional
+  tilt, at their equity share. Global Infra Equity and Global Consumer Trends have no
+  sourced series and carry none.
+- **Estimates:** volatility betas, rates and energy sensitivities, regional mixes,
+  drawdown-k adjustments and stress shocks, all on the funds' mandates and recorded.
+
+**The search, rewritten.** The old universe was every point of a 21^(n-1) grid,
+filtered. That is fine at five funds and impossible at eleven, about 30 million points.
+- **Engine:** generates the 322,725 limit-respecting mixes directly (the money market
+  plus up to four funds) and measures each with the same arithmetic as `summarise()`.
+  The six what-ifs, the frontier and the best ratio come out of the same single pass.
+  The build takes about 11 seconds.
+- **Tie-break:** the rule's order gained a third key, the lower true drawdown, for
+  mixes that print the same drawdown and CAGR.
+- **Audit:** re-derives everything with its own depth-first search (22 seconds) and
+  rebuilds every added correlation pair from the published factor loadings.
+
+**What the held-out funds would do** (`model/heldout_sens.py`, now in the repo):
+- **US Equity Opportunity at its listed 1.20%:** 10% of A, 25% of B, 10% of C.
+- **US Equity Opportunity at 1.50%:** none of A, 5% of B, 5% of C.
+- **Global Bond Income at its listed 0.90%:** 35% / 25% / 10% if its target charges the
+  0.69% institutional rate; 30% of A and none of B or C at the 1.59% retail rate.
+
+The page shows both.
+
+**Found on the way**
+- **A count check that hung the engine.** v62's second count of the universe walked
+  every grid point; over eleven funds that is 8^11. It is now a dynamic programme.
+- **"Global Technology: the deepest drawdown"** stopped being true when Global Consumer
+  Trends joined at −80.3%. The Report's heading and bullet now state the rank from the
+  data. The engine check now asserts only the claim still typed, "the most
+  rate-sensitive".
+- **Fixed widths everywhere:**
+  - the CLAIMS check compared six weights;
+  - number words stopped at "six" and "eight";
+  - the validator expected three trend markets;
+  - the page had six colours.
+  All are now derived from the universe. The page has eleven colour slots.
+- **Tables that would not fit a phone at eleven columns:** the transmission table and
+  the added-funds table are now a row per fund. The correlation matrix is the full
+  11 × 11, compact.
+- **What-if weights printed as eleven slash-separated numbers** now name the holdings.
+- **A's donut** showed its macro-view figure under a "Long-run view" label. A's own
+  10-year long-run figure is now printed beneath it.
+- **A mutant that would have gone blind.** Global Dividend's regional score is now read
+  from its published mix, so typing `gdiv_mix` wrong would have passed. A check now
+  requires the two copies to agree.
+- **Mutations:** 34, all caught. m20 is now derived from the real weights; m31-m34
+  cover the held-out register, equity shares, factor-model pairs and borrowed trends.
+- **The Asia re-rating what-if:** with eleven funds, B's and C's forecasts rise
+  without the credit (6.89% and 7.00% against 6.88% and 6.95%). The rule takes the
+  shallowest mix inside the tie, and the credit changes which mixes are in it.
+
+Engine 216/216, audit 376/376, validator 22/22 on the published copy, mutations 34/34.
+Runbook: step 2b (re-check the held-out funds); invariant 1 extended; lessons 86-90.
+Not personal advice.
+
 ## 2026-10-22 — v62: the four-fund optimiser retired
 
 At the owner's instruction ("Retire the four fund optimi[ser]"). The internal

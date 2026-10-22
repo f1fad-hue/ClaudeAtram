@@ -14,7 +14,7 @@ Run:  python3 engine.py            -> human-readable audit report
 import datetime as _dt
 import json, math, re, sys
 from decimal import Decimal, ROUND_HALF_UP
-from itertools import product
+from itertools import combinations, product
 
 # Two different dates, which this model had been conflating. AS_OF is the market
 # data date - the last trading session every price, yield and level comes from.
@@ -604,6 +604,30 @@ MACRO = {
     "gdiv_trust_fee": 1.50, "gdiv_target_ocf": 1.04, "gdiv_div_drag": 0.3,
     # JPM LTCMA global equity, 2027 edition (2026 edition: 7.0%).
     "ltcma_global_eq": 7.5, "ltcma_global_eq_prev": 7.0,
+    # JPM LTCMA 2027 fixed income (press release, 19 Oct 2026): global aggregate bonds
+    # 5.3%, "the highest in two decades"; US investment-grade credit 6.1%. The bond legs
+    # of the two multi-asset funds are built on them (2026-10-22). No 2027 figure for
+    # Asian credit was found; US investment grade stands in for it, flagged as a proxy.
+    "ltcma_global_agg": 5.3, "ltcma_us_ig": 6.1,
+    # THE 22-FUND LIST, SEARCHED (owner, 2026-10-22: "Update portfolio A from 22 atram
+    # list"). A fund enters the universe once its fees are confirmed - its trust fee on
+    # ATRAM's own page or on two current listings that agree, and its target fund named
+    # with a published charge - the standard the owner set for US Equity Opportunity on
+    # 2026-10-21. The rest are held out, each with what is missing, and re-checked on
+    # every roll. Eleven in, eleven out.
+    "list22_held_out": [
+        ["US Equity Opportunity", "trust fee not confirmed: only uitf.com.ph's 1.20% listing, about 17 months old (owner's hold, 2026-10-21)"],
+        ["Global Bond Income", "trust fee on one listing only (uitf.com.ph, 0.90%); target named only in a 2020 disclosure (PIMCO GIS Diversified Income), whose charge runs 0.69-1.59% by class"],
+        ["Global AI", "trust fee listings disagree (1.20% and 1.50%); target fund not named in any document found"],
+        ["Global Multi-Asset Income", "trust fee listings disagree (1.15%, 1.19%, 1.25%)"],
+        ["Global Capital Accumulation FoF", "trust fee on one listing only (0.90%, USD class)"],
+        ["Global Equity High Income", "no fee or target fund found"],
+        ["Global Natural Resources", "no fee or target fund found"],
+        ["Global Gold Equity", "launched 2026; target fund not named in any document found"],
+        ["Global Financials", "current 1.50% trust fee on one secondary source; target and its charge last published in 2020"],
+        ["US Multi-Asset Income", "trust fee on one listing only (1.50%, USD class)"],
+        ["Peso Liquid", "no current fee found; the same job as the money market"],
+    ],
     # THE 21 OCT REVIEW of the ATRAM list on the JPM 2027 assumptions. Its best-worst-
     # case pick (the old B, 35% in the Long Term Peso Bond) went with the bond funds;
     # what remains is the review's date, scope and search limits.
@@ -629,19 +653,27 @@ MACRO = {
                       ["Global Health Care", 25]],
     # THE LIST (owner, 2026-10-21): 24 funds with ATRAM US Equity Opportunity and US
     # Multi-Asset Income added, then 22 with the Long Term and Medium Term Peso Bond
-    # funds removed. Re-run without the bond funds (same budget, fee and pool as
-    # above): US Multi-Asset Income makes no pick. US Equity Opportunity's weight turns
-    # on its trust fee, not confirmed: uitf.com.ph lists 1.20% on a page about 17
-    # months old, and ATRAM moved Global Technology to 1.50% on 14 Sep. At 1.20%: A
-    # (long-run rule) 25%, B (macro-view rule) 20%, C 15%. At 1.50%: A none, B 10%,
-    # C 5% - the macro view keeps a little of it where the long-run view drops it. It
-    # is HELD OUT, at the owner's choice, until its fact sheet confirms the fee.
+    # funds removed. US Equity Opportunity's weight turns on its trust fee, not
+    # confirmed: uitf.com.ph lists 1.20% on a page about 17 months old, and ATRAM moved
+    # its sister feeders to 1.50% on 14 Sep. It is HELD OUT at the owner's choice.
+    # RE-RUN 2026-10-22 ON THIS ENGINE (model/heldout_sens.py: the fund built by
+    # build_fund(), its pairs from the factor model, the rule re-run over the eleven
+    # funds plus it): at 1.20%, 10% of A, 25% of B, 10% of C; at 1.50%, none of A, 5% of
+    # B, 5% of C. (On the review model over five funds, 21 Oct: 25 / 20 / 15 and 0 / 10 / 5.)
+    # GLOBAL BOND INCOME, the held-out fund that would move the picks most, the same way:
+    # at its listed 0.90% trust fee with the target's institutional 0.69% charge, 35% of
+    # A, 25% of B and 10% of C; with the retail 1.59%, 30% of A and none of B or C. Its
+    # gross is the LTCMA's investment-grade credit figure - an assumption for a fund whose
+    # target is not confirmed.
     "review_list_n": 22, "review_list_prev_n": 24, "review_list_date": "2026-10-21",
     "review_list_removed": ["Long Term Peso Bond", "Medium Term Peso Bond"],
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
-    "useq_w_a_listed": 25, "useq_w_b_listed": 20, "useq_w_a_peer": 0, "useq_w_b_peer": 10,
-    "useq_w_c_listed": 15, "useq_w_c_peer": 5,
+    "useq_w_a_listed": 10, "useq_w_b_listed": 25, "useq_w_a_peer": 0, "useq_w_b_peer": 5,
+    "useq_w_c_listed": 10, "useq_w_c_peer": 5,
+    "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
+    "gbi_w_a_low": 35, "gbi_w_b_low": 25, "gbi_w_c_low": 10,
+    "gbi_w_a_high": 30, "gbi_w_b_high": 0, "gbi_w_c_high": 0,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -1951,7 +1983,11 @@ VOL_RAMP_REF = "long-run"
 #   ATRPHMM  +0.035  cash gains marginally as risk-off keeps the front end bid.
 VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122,
             # Global Dividend: no volatility channel is claimed
-            "ATRGLDV": 0.000}
+            "ATRGLDV": 0.000,
+            # The six added 2026-10-22: none is built on selling or buying volatility,
+            # and none is claimed - the channel is structural, not a view.
+            "ATRGHCP": 0.000, "M_GINF": 0.000, "M_GEO": 0.000, "M_GCT": 0.000,
+            "ATRAMIP": 0.000, "M_GALL": 0.000}
 
 
 
@@ -1981,6 +2017,9 @@ NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research sc
 NDX_SP_BETA = 1.22     # Nasdaq-100
 ASIA_SP_BETA = 1.05    # Asia Pacific ex-Japan / Asia ex-Japan
 TECH_SP_BETA = 1.30    # concentrated global technology
+# Added 2026-10-22 with the 22-fund universe, ASSUMPTIONS like the three above:
+HC_SP_BETA = 0.85      # global health care (S&P Global 1200 Health Care)
+ACWI_SP_BETA = 1.00    # global equity (MSCI ACWI), a little below the S&P's long-run vol
 
 # ----------------------------------------------------------------------------
 # 3c. MARKET TREND - 3/6/12-month momentum, the optimiser's trend channel
@@ -2080,6 +2119,35 @@ TREND_INPUTS = {
         "cross_check": {},
         "source": "PortfoliosLab, IXN monthly total returns (September 2026 from a "
                   "second performance tracker)",
+    },
+    # ---- added 2026-10-22 with the 22-fund universe ----
+    "ATRGHCP": {
+        "market": "Global health care, S&P Global 1200 Health Care",
+        "proxy": "iShares Global Healthcare ETF (IXJ), total return; the target fund's "
+                 "benchmark is MSCI ACWI Health Care, which no monthly series reachable here gives",
+        "mu": MACRO["ltcma_global_eq"], "beta": HC_SP_BETA,
+        # The Q4 2025 months compound to +10.6%: BlackRock has global health care up "more
+        # than 10%" in the quarter, leading every sector. AAII has August 2026 at +4.0%.
+        "monthly": {"2025Q4": [2.85, 8.30, -0.73], "2026Q1": [1.41, 2.98, -8.03],
+                    "2026Q2": [-0.65, 1.69, 5.03], "2026Q3": [1.91, 3.97, -2.03]},
+        "cross_check": {},
+        "source": "PortfoliosLab, IXJ monthly total returns; BlackRock (Q4 2025) and AAII "
+                  "(Aug 2026) as cross-checks",
+    },
+    "M_GEO": {
+        "market": "Global equity, MSCI ACWI",
+        "proxy": "the index (Q4 2025, net USD) and iShares MSCI ACWI ETF (2026 quarters); "
+                 "the target fund, Allianz Thematica, is a thematic global equity fund run "
+                 "against MSCI ACWI",
+        "mu": MACRO["ltcma_global_eq"], "beta": ACWI_SP_BETA,
+        # Q4 2025 from Aristotle Capital's index figure (+3.29%; Maseco +3.4%). The 2026
+        # quarters are ETFreplay's; they compound to 12.92% against iShares' published
+        # 12.90% year-to-date NAV return to 20 October. ETFreplay's table also prints a
+        # Q4 2026 figure that cannot exist yet, so its quarters are used only as checked.
+        "quarterly": {"2025Q4": 3.29, "2026Q1": -2.21, "2026Q2": 14.17, "2026Q3": 1.14},
+        "cross_check": {},
+        "source": "Aristotle Capital 4Q 2025 commentary (MSCI ACWI); ETFreplay ACWI "
+                  "quarterly returns, checked against iShares' YTD NAV return to 20 Oct 2026",
     },
 }
 # The one input sources disagree on materially: AAXJ, the ETF on the same Asia
@@ -2471,6 +2539,7 @@ FUNDS = [
         # anchor it. (Reviewed 2026-09-13.)
         "vol_beta": ASIA_SP_BETA * 0.92, "fx_exposed": True,
         "macro_tilt": {"rates": -0.05, "energy": -0.20},
+        "asia_rerating_share": 1.0,     # the whole fund carries the re-rating credit
         "dd_k_adj": +0.05, "cash_like": False,
         "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
     },
@@ -2539,6 +2608,19 @@ _GG = {r: sum(v for _, v in xs) for r, xs in GDIV_GEO.items()}
 GDIV_MIX = {"US": round(_GG["US"] / sum(_GG.values()), 3),
             "EUROPE": round(_GG["EUROPE"] / sum(_GG.values()), 3)}
 GDIV_MIX["ASIA"] = round(1 - GDIV_MIX["US"] - GDIV_MIX["EUROPE"], 3)
+# The six funds added 2026-10-22. ESTIMATES: each target's benchmark split by region,
+# rounded (MSCI ACWI Health Care is roughly two-thirds US; listed infrastructure about
+# half; a thematic or consumer global fund about three-fifths), not the funds' own
+# published country weights, which were not reachable for these six. Japan joins
+# Asia, as in the two mixes above. Recorded in CLAIMS.md as estimates.
+REGION_MIX = {
+    "GLOBAL_TECH": ACWI_IT_MIX, "GLOBAL_DIV": GDIV_MIX,
+    "GLOBAL_HC": {"US": 0.66, "EUROPE": 0.25, "ASIA": 0.09},
+    "GLOBAL_INFRA": {"US": 0.50, "EUROPE": 0.33, "ASIA": 0.17},
+    "GLOBAL_EQ_OPP": {"US": 0.60, "EUROPE": 0.15, "ASIA": 0.25},
+    "GLOBAL_CONS": {"US": 0.62, "EUROPE": 0.13, "ASIA": 0.25},
+    "GLOBAL_ALLOC": {"US": 0.60, "EUROPE": 0.20, "ASIA": 0.20},
+}
 
 REGIONAL_TILT_PER_PT = 0.675    # % of net CAGR per point of 1-5 macro score above neutral
 NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts are unchanged
@@ -2575,10 +2657,8 @@ RATES_SCALE = (MON_NOW - DRIVER_NEUTRAL_10) / (TILT_CAL["monetary"] - DRIVER_NEU
 ENERGY_SCALE = (GEO_NOW - DRIVER_NEUTRAL_10) / (TILT_CAL["geopolitics"] - DRIVER_NEUTRAL_10)
 
 def regional_score(region_key):
-    if region_key == "GLOBAL_TECH":
-        return sum(REGIONS[r]["blend"] * w for r, w in ACWI_IT_MIX.items())
-    if region_key == "GLOBAL_DIV":
-        return sum(REGIONS[r]["blend"] * w for r, w in GDIV_MIX.items())
+    if region_key in REGION_MIX:
+        return sum(REGIONS[r]["blend"] * w for r, w in REGION_MIX[region_key].items())
     return REGIONS[region_key]["blend"]
 
 # ---- Per-fund return, volatility and drawdown -------------------------------
@@ -2629,11 +2709,21 @@ def build_fund(f):
     rs = regional_score(f["region"])
     # Every component rounded to the 2dp it is PUBLISHED at, and the total built
     # from those, so the transmission table's column adds up on the page.
-    reg_tilt = rnd((rs - NEUTRAL) * REGIONAL_TILT_PER_PT)
+    # A MULTI-ASSET FUND'S equity share carries the regional and trend tilts, which
+    # score equity markets; its bond leg carries the rates and energy tilts with the
+    # rest of the fund (2026-10-22). 1.0 for every equity fund, which leaves them
+    # exactly as before.
+    share = f.get("equity_share", 1.0)
+    reg_tilt = rnd((rs - NEUTRAL) * REGIONAL_TILT_PER_PT * share if share != 1.0
+                   else (rs - NEUTRAL) * REGIONAL_TILT_PER_PT)
     vol_tilt = rnd(VOL_RAMP * VOL_SENS[f["id"]]) + 0.0   # derived, not hand-set; + 0.0 drops a -0.0
     rates_tilt = rnd(t["rates"] * RATES_SCALE)     # derived from the Monetary driver
     energy_tilt = rnd(t["energy"] * ENERGY_SCALE)  # derived from Geopolitics & energy
-    trend_tilt = TREND[f["id"]]["tilt"] if f["id"] in TREND else 0.0   # 3/6/12M market trend
+    # The market whose 3/6/12M trend the fund carries: its own by default, or another
+    # fund's (a multi-asset fund's equity market); None where no series was sourced.
+    mkt = f.get("trend_market", f["id"])
+    trend_tilt = (rnd(TREND[mkt]["tilt"] * share) + 0.0 if mkt in TREND and share != 1.0
+                  else TREND[mkt]["tilt"] if mkt in TREND else 0.0)   # 3/6/12M market trend
     tilt_total = rnd(reg_tilt + vol_tilt + rates_tilt + energy_tilt + trend_tilt)
     macro_net = base_net + tilt_total
 
@@ -2665,10 +2755,16 @@ def build_fund(f):
         "tilt_regional": round(reg_tilt, 2),
         "tilt_vol": vol_tilt, "tilt_rates": rates_tilt, "tilt_energy": energy_tilt,
         "tilt_trend": trend_tilt,
+        "equity_share": share, "trend_market": mkt if mkt in TREND else None,
+        # the regional mix the score is read from (None for a single-region fund), so the
+        # independent audit re-derives the score instead of trusting it
+        "region_mix": REGION_MIX.get(f["region"]),
+        "asia_rerating_share": f.get("asia_rerating_share", 0.0),
+        "role": f.get("role"), "exposure": f.get("exposure"), "slide_note": f.get("slide_note"),
         "tilt_rates_cal": t["rates"], "tilt_energy_cal": t["energy"],
         "tilt_total": round(tilt_total, 2),
         "net_macro": round(macro_net, 2),
-        "vol": round(sig, 2),
+        "vol": round(sig, 2), "vol_beta": f["vol_beta"],
         "dd_k": round(k, 2), "dd_k_why": f["dd_k_why"],
         "dd_base": round(-dd(base_net), 1),
         "dd_macro": round(-dd(macro_net), 1),
@@ -2709,8 +2805,158 @@ ADD_FUNDS = [
         "dd_k_adj": 0.0, "cash_like": False,
         "dd_k_why": "At the 1.65 anchor: a diversified dividend portfolio's left tail is the market's.",
     },
+    # ---- THE SIX ADDED 2026-10-22, from the owner's 22-fund list ----
+    # Each passed the list's fee standard (MACRO["list22_held_out"] has the eleven that
+    # did not). Built by build_fund() like every other sleeve. What is ESTIMATED is
+    # named in each note and in CLAIMS.md: the volatility betas, the rates and energy
+    # sensitivities, the regional mixes and the drawdown-k adjustments are judgments on
+    # the funds' mandates, as they were for Global Dividend. SECTOR AND THEME FUNDS CARRY
+    # NO SECTOR PREMIUM: J.P. Morgan's LTCMA publishes regional assumptions, not sector
+    # ones, so each is built on global equity and differs from the others through its
+    # fees, volatility, correlations and macro tilts. (Global Technology's premium is
+    # this model's own named input, kept as it was.)
+    {
+        "id": "ATRGHCP", "name": "ATRAM Global Health Care Feeder Fund",
+        "short": "Global Health Care", "ccy": "PHP (unhedged)", "region": "GLOBAL_HC",
+        "target": "Target fund: Fidelity Funds - Global Healthcare Fund (the feeder's KIID, "
+                  "target information as of 27 Feb 2026). Benchmark: MSCI ACWI Health Care.",
+        "target_verified": True,
+        "fee_feeder": 1.50, "fee_target": 1.05,
+        "fee_feeder_prev": 1.20, "fee_feeder_from": "2026-09-14",
+        "fee_note": "1.50% ATRAM trust fee incl. distribution fee from 14 Sep 2026, up from 1.20% "
+                    "(ATRAM's fund page and uitf.com.ph) + 1.05% target-fund TER (PUBLISHED on the "
+                    "feeder's fact sheet; Fidelity's I-Acc class shows 0.89%)",
+        "gross_usd": MACRO["ltcma_global_eq"],
+        "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} global equity {MACRO['ltcma_global_eq']}%, "
+                       f"with no sector premium: the LTCMA publishes regional, not sector, assumptions."),
+        "vol_beta": HC_SP_BETA, "fx_exposed": True,       # ASSUMPTION: health care at ~0.85x the S&P
+        "macro_tilt": {"rates": -0.05, "energy": 0.0},
+        "dd_k_adj": 0.0, "cash_like": False,
+        "dd_k_why": "At the 1.65 anchor: a defensive sector, but a single-sector book; its left tail is taken as the market's.",
+        "role": "Defensive equity — health care, two-thirds US",
+        "exposure": ["Fidelity Funds — Global Healthcare Fund (Luxembourg SICAV)",
+                     "Benchmark: MSCI ACWI Health Care",
+                     "Pharmaceuticals, biotech, devices and insurers; largest holdings Eli Lilly and AbbVie (Aug 2026)"],
+    },
+    {
+        "id": "M_GINF", "code": "code not confirmed", "name": "ATRAM Global Infra Equity Feeder Fund",
+        "short": "Global Infra Equity", "ccy": "PHP (unhedged)", "region": "GLOBAL_INFRA",
+        "target": "Target fund: HSBC Global Investment Funds - Global Infrastructure Equity "
+                  "(since March 2025, replacing UBS (Lux) Infrastructure Equity).",
+        "target_verified": True,
+        "fee_feeder": 1.50, "fee_target": 0.80,
+        "fee_feeder_prev": 1.20, "fee_feeder_from": "2026-09-14",
+        "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (uitf.com.ph A PHP units; "
+                    "the 14 Sep repricing) + 0.80% target-fund TER (PUBLISHED on the feeder's fact sheet)",
+        "gross_usd": MACRO["ltcma_global_eq"],
+        "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} global equity {MACRO['ltcma_global_eq']}%, "
+                       f"with no sector premium: the LTCMA publishes no listed-infrastructure line."),
+        "vol_beta": 0.85, "fx_exposed": True,             # ASSUMPTION: listed infrastructure ~0.85x
+        "macro_tilt": {"rates": -0.20, "energy": +0.05},  # bond-like; pipelines gain from energy
+        "dd_k_adj": 0.0, "cash_like": False,
+        "dd_k_why": "At the 1.65 anchor: regulated, contracted cash flows; no fatter tail than the market's is claimed.",
+        "role": "Real-asset equity — utilities, pipelines, towers",
+        "exposure": ["HSBC GIF — Global Infrastructure Equity (Luxembourg SICAV)",
+                     "Listed infrastructure: utilities, energy pipelines, transport, communications towers",
+                     "Target since March 2025 (was UBS (Lux) Infrastructure Equity)"],
+    },
+    {
+        "id": "M_GEO", "code": "14UF05P", "name": "ATRAM Global Equity Opportunity Feeder Fund",
+        "short": "Global Equity Opportunity", "ccy": "PHP (unhedged)", "region": "GLOBAL_EQ_OPP",
+        "target": "Target fund: Allianz Global Investors Fund - Allianz Thematica (since April 2021). "
+                  "A thematic global equity fund.",
+        "target_verified": True,
+        "fee_feeder": 1.50, "fee_target": 1.00,
+        "fee_feeder_prev": 1.20, "fee_feeder_from": "2026-09-14",
+        "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (ATRAM's fund page, "
+                    "uitf.com.ph PHP class) + 1.00% target-fund TER (PUBLISHED in the feeder's KIID, "
+                    "31 Mar 2026; Allianz's retail AT class lists 1.95%)",
+        "gross_usd": MACRO["ltcma_global_eq"],
+        "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} global equity {MACRO['ltcma_global_eq']}%, "
+                       f"with no theme premium."),
+        "vol_beta": ACWI_SP_BETA * 1.15, "fx_exposed": True,   # ASSUMPTION: thematic, ~1.15x the market
+        "macro_tilt": {"rates": -0.20, "energy": -0.10},
+        "dd_k_adj": +0.05, "cash_like": False,
+        "dd_k_why": "A little above 1.65: thematic growth with a mid-cap tilt gaps further than the broad market.",
+        "role": "Thematic global equity — long-run themes",
+        "exposure": ["Allianz Global Investors Fund — Allianz Thematica (Luxembourg SICAV)",
+                     "Global equities picked by structural theme",
+                     "Target since April 2021 (was Fidelity Global Thematic Opportunities)"],
+    },
+    {
+        "id": "M_GCT", "code": "20UF19P", "name": "ATRAM Global Consumer Trends Feeder Fund",
+        "short": "Global Consumer Trends", "ccy": "PHP (unhedged)", "region": "GLOBAL_CONS",
+        "target": "Target fund: Invesco Global Consumer Trends Fund.",
+        "target_verified": True,
+        "fee_feeder": 1.50, "fee_target": 0.97,
+        "fee_feeder_prev": 1.20, "fee_feeder_from": "2026-09-14",
+        "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (ATRAM's fund page) + "
+                    "0.97% target-fund TER (PUBLISHED in the feeder's later KIID; an earlier one had 1.04%)",
+        "gross_usd": MACRO["ltcma_global_eq"],
+        "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} global equity {MACRO['ltcma_global_eq']}%, "
+                       f"with no sector premium."),
+        "vol_beta": 1.75, "fx_exposed": True,             # ASSUMPTION: concentrated consumer growth
+        "macro_tilt": {"rates": -0.25, "energy": -0.15},
+        "dd_k_adj": +0.15, "cash_like": False,
+        "dd_k_why": "Well above 1.65: a concentrated consumer-growth book; its 2022 fall ran far past what 1.65 sigma predicts.",
+        "role": "Consumer growth — the most volatile fund here",
+        "exposure": ["Invesco Global Consumer Trends Fund (Luxembourg SICAV)",
+                     "Consumer discretionary, e-commerce and leisure, global",
+                     "Concentrated growth book"],
+    },
+    {
+        "id": "ATRAMIP", "name": "ATRAM Asian Multi-Asset Income Feeder Fund",
+        "short": "Asian Multi-Asset Income", "ccy": "PHP (unhedged)", "region": "ASIA",
+        "target": "Target fund: Schroder Asian Asset Income Fund (named at launch, Sep 2022). "
+                  "Benchmark: 50% MSCI AC Asia Pacific ex Japan + 50% Bloomberg EM Asia.",
+        "target_verified": True,
+        "fee_feeder": 1.50, "fee_target": 1.54,
+        "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + "
+                    "~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; "
+                    "the class the feeder holds is not published)",
+        # Half the page's Asia equity sleeve, half Asian credit. No 2027 LTCMA figure for
+        # Asian credit was found, so US investment grade stands in for it.
+        "gross_usd": round(0.5 * (MACRO["ltcma_em_eq"] + MACRO["asia_rerating"] - MACRO["asia_div_drag"])
+                           + 0.5 * MACRO["ltcma_us_ig"], 2),
+        "gross_note": (f"Half equity, half bonds, as its benchmark: the Asia equity build (JPM LTCMA "
+                       f"{MACRO['ltcma_edition']} EM equity {MACRO['ltcma_em_eq']}% + {MACRO['asia_rerating']}% re-rating "
+                       f"- {MACRO['asia_div_drag']}% dividend drag) and {MACRO['ltcma_us_ig']}% for Asian credit "
+                       f"(the LTCMA's US investment-grade figure, a proxy)."),
+        "vol_beta": 0.48, "fx_exposed": True,             # ASSUMPTION: a 50/50 Asian book
+        "macro_tilt": {"rates": -0.10, "energy": -0.15},  # Asia imports its oil
+        "dd_k_adj": 0.0, "cash_like": False,
+        "dd_k_why": "At the 1.65 anchor: the bond half damps the Asian equity tail.",
+        "equity_share": 0.5, "trend_market": "ATRASEQ", "asia_rerating_share": 0.5,
+        "role": "Asian income — half equity, half credit",
+        "exposure": ["Schroder Asian Asset Income Fund (Hong Kong unit trust)",
+                     "Asia Pacific ex-Japan dividend equities and Asian USD credit, about half each",
+                     "Benchmark 50% MSCI AC Asia Pacific ex Japan / 50% Bloomberg EM Asia"],
+    },
+    {
+        "id": "M_GALL", "code": "14UF06", "name": "ATRAM Global Allocation Feeder Fund",
+        "short": "Global Allocation", "ccy": "PHP (unhedged)", "region": "GLOBAL_ALLOC",
+        "target": "Target fund: BlackRock Global Funds - Global Allocation Fund (A2 USD).",
+        "target_verified": True,
+        "fee_feeder": 1.20, "fee_target": 1.13,
+        "fee_note": "1.20% ATRAM trust fee (uitf.com.ph PHP and USD classes and the feeder's fact sheet; "
+                    "DragonFi lists 1.50%, and the fund is not among the six repriced on 14 Sep) + "
+                    "1.13% target-fund TER (PUBLISHED on the feeder's fact sheet)",
+        "gross_usd": round(0.6 * MACRO["ltcma_global_eq"] + 0.4 * MACRO["ltcma_global_agg"], 2),
+        "gross_note": (f"Three-fifths global equity ({MACRO['ltcma_global_eq']}%) and two-fifths global "
+                       f"bonds ({MACRO['ltcma_global_agg']}%, JPM LTCMA {MACRO['ltcma_edition']} global aggregate)."),
+        "vol_beta": 0.55, "fx_exposed": True,             # ASSUMPTION: a 60/40 global book
+        "macro_tilt": {"rates": -0.10, "energy": -0.05},
+        "dd_k_adj": 0.0, "cash_like": False,
+        "dd_k_why": "At the 1.65 anchor: a balanced book; its bond share is already in its volatility.",
+        "equity_share": 0.6, "trend_market": "M_GEO",
+        "role": "Balanced — global stocks and bonds, managed",
+        "exposure": ["BlackRock Global Funds — Global Allocation Fund (Luxembourg SICAV)",
+                     "About 60% global equities, 40% bonds and cash, moved by the manager",
+                     "The most diversified single fund on the list"],
+    },
 ]
 F_ADD = [build_fund(f) for f in ADD_FUNDS]
+_ADD_IX = {f["id"]: i for i, f in enumerate(ADD_FUNDS)}
 
 # ---- Correlation matrix -----------------------------------------------------
 # Order: ATRPHMM, ATRQIAP, ATRASEQ, ATRGTEC
@@ -2729,15 +2975,68 @@ CORR_NOTE = ("Money market is treated as uncorrelated to the equity sleeves. "
 # Its pairs come from the 21 Oct review's factor model, whose fit reproduces the
 # 0.88 / 0.66 / 0.74 above exactly - so the new row is on the same basis as the old
 # ones. Order: MM, Nasdaq Income, Asia, Tech, Global Dividend.
-CORR_U = [r + [x] for r, x in zip(CORR, (0.00, 0.61, 0.59, 0.69))] + [
+CORR_5 = [r + [x] for r, x in zip(CORR, (0.00, 0.61, 0.59, 0.69))] + [
     [0.00, 0.61, 0.59, 0.69, 1.00],
 ]
-# BOUND to the matrix: the range is read from it, never typed.
-_GDIV_EQ = CORR_U[-1][1:4]      # Global Dividend is the last row
+
+# THE FACTOR MODEL BEHIND EVERY PAIR OUTSIDE THAT BLOCK (2026-10-22). Eleven funds make
+# 55 pairs; typing them would be 55 numbers nobody could check. They come instead from
+# the 21 Oct review's factor model, whose fit reproduces the typed block above to two
+# decimals (a check below holds it to that): each fund's USD return loads on six factors
+# - G global equity, GW growth, EM emerging markets, CY cyclicals and commodities, RG
+# global rates (duration), RP peso rates - plus its own idiosyncratic part, so that its
+# volatility is exactly the one build_fund() gives it; every unhedged fund then carries
+# the same peso coupling (FX_CORR with its own return) that combine_fx() applies. The
+# loadings are ESTIMATES, recorded in CLAIMS.md. The typed block is kept as published.
+FACTORS = ("G", "GW", "EM", "CY", "RG", "RP")
+FACTOR_LOADINGS = {
+    "ATRPHMM": {"RP": 0.2},
+    "ATRQIAP": {"G": 12.0, "GW": 7.5, "RG": 3.0},
+    "ATRASEQ": {"G": 12.9, "GW": 6.1, "EM": 11.3, "CY": 3.0, "RG": 1.0},
+    "ATRGTEC": {"G": 21.7, "GW": 11.9, "RG": 5.0},
+    "ATRGLDV": {"G": 13.5, "GW": -2.0, "CY": 4.0, "RG": 2.0},
+    "ATRGHCP": {"G": 12.0, "RG": 3.0},
+    "M_GINF": {"G": 11.0, "CY": 3.0, "RG": 6.0},
+    "M_GEO": {"G": 18.0, "GW": 7.0, "CY": 3.0, "RG": 3.0},
+    "M_GCT": {"G": 19.0, "GW": 13.0, "CY": 6.0, "RG": 4.0},
+    "ATRAMIP": {"G": 5.5, "EM": 4.5, "RG": 2.5},
+    "M_GALL": {"G": 9.0, "GW": 1.5, "RG": 3.0},
+}
+
+def factor_corr(specs):
+    """Peso-terms correlations from the factor model, for the specs given."""
+    rows = []
+    for f in specs:
+        s = f["vol_beta"] * SP_VOL_LT                      # the asset's own volatility
+        L = [FACTOR_LOADINGS[f["id"]].get(k, 0.0) for k in FACTORS]
+        sq = sum(x * x for x in L)
+        if sq > s * s:                                     # factors may not exceed the total
+            k_ = math.sqrt((s * s - 1e-6) / sq); L = [x * k_ for x in L]; sq = s * s - 1e-6
+        u = 1.0 if f["fx_exposed"] else 0.0
+        rows.append((L, s * s - sq, u, FX_CORR * FX_VOL * s * u))
+    n = len(rows)
+    cov = [[sum(a * b for a, b in zip(rows[i][0], rows[j][0])) + (rows[i][1] if i == j else 0.0)
+            + rows[j][2] * rows[i][3] + rows[i][2] * rows[j][3] + rows[i][2] * rows[j][2] * FX_VOL ** 2
+            for j in range(n)] for i in range(n)]
+    sd = [math.sqrt(cov[i][i]) for i in range(n)]
+    return [[cov[i][j] / (sd[i] * sd[j]) for j in range(n)] for i in range(n)]
+
+_ALL_SPECS = FUNDS + ADD_FUNDS
+_FC = factor_corr(_ALL_SPECS)
+_NU = len(_ALL_SPECS)
+# Published at two decimals, like the typed block; the typed block wins inside itself.
+CORR_U = [[(CORR_5[i][j] if i < 5 and j < 5 else (1.0 if i == j else round(_FC[i][j], 2)))
+           for j in range(_NU)] for i in range(_NU)]
+# BOUND to the matrix: the ranges are read from it, never typed.
+_IDX = {f["id"]: i for i, f in enumerate(_ALL_SPECS)}
+_GDIV_EQ = CORR_U[_IDX["ATRGLDV"]][1:4]
+_ADD_EQ = [CORR_U[i][j] for i in range(5, _NU) for j in range(1, _NU) if j != i]
 CORR_U_NOTE = (f"Global Dividend moves with the other equity sleeves "
                f"({min(_GDIV_EQ):.2f}-{max(_GDIV_EQ):.2f}): a different style of equity, "
-               f"not a hedge. With the peso bond funds removed, the money market is the "
-               f"only sleeve that does not fall with equities.")
+               f"not a hedge. The six added from the 22-fund list run "
+               f"{min(_ADD_EQ):.2f}-{max(_ADD_EQ):.2f} with the other funds, from a factor model "
+               f"fitted to the original block. With the peso bond funds removed, the money "
+               f"market is the only sleeve that does not fall with equities.")
 
 # Every portfolio function takes an optional UNIVERSE - (funds built, fund specs,
 # correlation). The default is the four original funds, which the budget's reference
@@ -2932,6 +3231,32 @@ LOOKTHROUGH = {
         "source": "Fidelity Funds - Global Dividend Fund factsheet, 30 September 2026 "
                   "(Fidelity International, Singapore edition)",
     },
+    # ---- the six added from the 22-fund list (2026-10-22): declared gaps ----
+    # Each target is named and its charge sourced, but no current top-10 table was
+    # reachable for any of them, so none is typed from memory.
+    "ATRGHCP": {"kind": "gap", "as_of": "2026-08-31",
+                "top2": [["Eli Lilly", 8.7], ["AbbVie", 7.4]], "positions": 41,
+                "note": "Fidelity Funds - Global Healthcare Fund. Its 31 Aug 2026 Singapore factsheet "
+                        "lists Eli Lilly (8.7%) and AbbVie (7.4%) as the largest of 41 positions; the "
+                        "full top 10 was not legible in the text reached.",
+                "source": "Fidelity Funds - Global Healthcare Fund factsheet, 31 August 2026 (Singapore edition), partial"},
+    "M_GINF": {"kind": "gap",
+               "note": "HSBC GIF Global Infrastructure Equity. No holdings table was reachable.",
+               "source": "ATRAM Global Infra Equity Feeder Fund fact sheet (target change, March 2025)"},
+    "M_GEO": {"kind": "gap",
+              "note": "Allianz Thematica. No holdings table was reachable.",
+              "source": "ATRAM Global Equity Opportunity Feeder Fund KIID, 31 March 2026"},
+    "M_GCT": {"kind": "gap",
+              "note": "Invesco Global Consumer Trends Fund. No holdings table was reachable.",
+              "source": "ATRAM Global Consumer Trends Feeder Fund KIID"},
+    "ATRAMIP": {"kind": "gap",
+                "alloc": [["equities", 50.17], ["bonds", 38.85], ["cash", 5.89]],
+                "note": "Schroder Asian Asset Income Fund: 50.17% equities, 38.85% bonds and 5.89% cash "
+                        "on an undated aggregator page; no holdings table was reachable.",
+                "source": "Investing.com holdings page (undated); BusinessWorld, 6 Sep 2022 (the target)"},
+    "M_GALL": {"kind": "gap",
+               "note": "BlackRock Global Funds - Global Allocation Fund. No holdings table was reachable.",
+               "source": "ATRAM Global Allocation Feeder Fund fact sheet"},
 }
 
 # ----------------------------------------------------------------------------
@@ -2973,12 +3298,7 @@ DD_CAP = abs(BASE_UNDER_MACRO["maxdd"]) - DD_BUDGET_IMPROVEMENT
 # the two donuts were chosen by different rules.
 PIN_TIE_PP = 0.05
 
-def pick(feas):
-    """The rule, on any list of feasible (weights, summary) pairs."""
-    best = max(s2["cagr"] for _, s2 in feas)
-    band = [(w, s2) for w, s2 in feas if s2["cagr"] >= best - PIN_TIE_PP - 1e-9]
-    w, s2 = min(band, key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
-    return w, s2, len(band)
+# The rule itself is _Pick, below with the search: it streams every mix once.
 
 # PORTFOLIO C - the owner's pinned variant (requested 2026-09-25): Nasdaq Equity
 # Income held at exactly 50%, the rest chosen around it by the same rule.
@@ -3012,68 +3332,6 @@ UNIV_MAX_W = MACRO["pd_review_max_w"] / 100
 UNIV_MIN_CASH = MACRO["pd_review_min_cash"] / 100
 PIN_UNIV = (UNIV_IDS.index("ATRQIAP"), PIN_W)          # C: Nasdaq Equity Income at 50%
 
-def univ_grid():
-    n = len(UNIV_IDS)
-    for c in product(range(21), repeat=n - 1):
-        t = sum(c)
-        if t <= 20:
-            yield [x / 20 for x in c] + [(20 - t) / 20]
-
-UNIV_ALL = [w for w in univ_grid()
-           if w[0] >= UNIV_MIN_CASH - 1e-9 and sum(1 for x in w if x > 1e-9) <= UNIV_MAX_FUNDS]
-
-def univ_ok(w, pin=None):
-    """The review's limits; the pinned fund is exempt from the 35% cap."""
-    if pin is None:
-        return max(w) <= UNIV_MAX_W + 1e-9
-    i, x = pin
-    return abs(w[i] - x) < 1e-9 and max(v for j, v in enumerate(w) if j != i) <= UNIV_MAX_W + 1e-9
-
-def univ_feasible(key, pin=None, u=UNIV):
-    """Every limit-respecting mix of the universe inside the budget, as computed AND as shown.
-    BOTH ROUTES, because each alone admits a mix the other rejects: the raw drawdown
-    alone admits one that PRINTS over the cap ([25, 30, 25, 20] at 26.1477 raw against
-    a 26.17 cap printed -26.2, 2026-09-20); the printed one alone admits one up to
-    0.05pp genuinely over it (2026-09-03)."""
-    out = []
-    for w in UNIV_ALL:
-        if not univ_ok(w, pin) or abs(port_dd(w, key, u)) > DD_CAP + 1e-9:
-            continue
-        s2 = summarise(w, key, u)
-        if abs(s2["maxdd"]) <= DD_CAP + 1e-9:
-            out.append((w, s2))
-    return out
-
-UNIV_FEAS = {"a": univ_feasible("net_base"), "b": univ_feasible("net_macro"),
-            "c": univ_feasible("net_macro", PIN_UNIV)}
-PA_W, _, PA_BAND_N = pick(UNIV_FEAS["a"])
-PB_W, _, PB_BAND_N = pick(UNIV_FEAS["b"])        # Portfolio B
-PC_W, _, PC_BAND_N = pick(UNIV_FEAS["c"])
-PA, PA_BASE = summarise(PA_W, "net_macro", UNIV), summarise(PA_W, "net_base", UNIV)
-PB, PB_BASE = summarise(PB_W, "net_macro", UNIV), summarise(PB_W, "net_base", UNIV)
-PC, PC_BASE = summarise(PC_W, "net_macro", UNIV), summarise(PC_W, "net_base", UNIV)
-# Whether the engine's A is the mix the 22-fund review found. Published, not asserted:
-# a later roll may move one and not the other, and the page says so when it does.
-PA_IS_REVIEW = (dict(MACRO["pa_review_mix"])
-                == {f["short"]: round(w * 100) for f, w in zip(UNIV[1], PA_W) if round(w * 100)})
-# The review's holdings in funds this page does not model, if any.
-PA_REVIEW_OUTSIDE = [x for x in MACRO["pa_review_mix"] if x[0] not in [f["short"] for f in UNIV[1]]]
-
-# The universe's macro frontier and the best pure ratio, for the Portfolios chart and
-# the "why not simply maximise return" note - the same set B is chosen from.
-_univ_pts = sorted(((w, summarise(w, "net_macro", UNIV)) for w in UNIV_ALL if univ_ok(w)),
-                  key=lambda t: (abs(t[1]["maxdd"]), -t[1]["cagr"]))
-_univ_par, _best_u = [], -1e9
-for w, s2 in _univ_pts:
-    if s2["cagr"] > _best_u + 1e-9:
-        _univ_par.append((w, s2)); _best_u = s2["cagr"]
-UNIV_FRONTIER, _last_u = [], None
-for w, s2 in _univ_par:
-    if _last_u is None or abs(s2["maxdd"]) >= _last_u + FRONTIER_SPACING or w == PB_W:
-        UNIV_FRONTIER.append({"maxdd": abs(s2["maxdd"]), "dd": s2["maxdd"], "cagr": s2["cagr"],
-                             "weights": s2["weights"]}); _last_u = abs(s2["maxdd"])
-UNIV_BEST_RATIO = max((t for t in _univ_pts), key=lambda t: t[1]["ret_per_dd"])
-
 # WHAT WOULD CHANGE THIS VIEW - computed, not asserted. The page's list said that
 # "Brent below $70 and the Fed cutting" would send Global Technology "back to a full
 # weight"; re-running the optimiser showed the allocation does not move at all. Each
@@ -3084,10 +3342,13 @@ for _f in F + F_ADD:
     _f["net_neutral"] = round(_f["net_macro"] - _f["tilt_rates"]
                               - _f["tilt_energy"], 2)                  # drags at neutral
     _f["net_notrend"] = round(_f["net_macro"] - _f["tilt_trend"], 2)   # no trend channel
-    # Asia's trend on the alternative source for its one disputed quarter
+    # Asia's trend on the alternative source for its one disputed quarter, for every fund
+    # that carries Asia's trend (a multi-asset fund at its equity share)
+    _m = _f["trend_market"]
     _f["net_trend_alt"] = round(_f["net_macro"] - _f["tilt_trend"]
-                                + (TREND_ALT_BUILT[_f["id"]]["tilt"] if _f["id"] in TREND_ALT_BUILT
-                                   else _f["tilt_trend"]), 2)
+                                + ((TREND_ALT_BUILT[_m]["tilt"] if _f["equity_share"] == 1.0
+                                    else rnd(TREND_ALT_BUILT[_m]["tilt"] * _f["equity_share"]) + 0.0)
+                                   if _m in TREND_ALT_BUILT else _f["tilt_trend"]), 2)
 
 # THE TWO ASSUMPTIONS THE 2026-09-25 CORRECTION LEFT CARRYING THE RESULT, tested
 # the same way: the Asia base's +1.0% re-rating credit (which overlaps both the
@@ -3100,22 +3361,203 @@ ASIA_FEE_STRESS = 0.25
 # 2026-10-15 with the note; the correction itself is in monitoring/CHANGELOG.md.)
 for _f in F + F_ADD:
     _aseq = _f["id"] == "ATRASEQ"
-    _f["net_asia_norerate"] = round(_f["net_macro"] - (MACRO["asia_rerating"] if _aseq else 0.0), 2)
+    # Every fund that carries the credit loses it, at its share (2026-10-22: the Asian
+    # multi-asset fund's equity half carries it too).
+    _f["net_asia_norerate"] = round(_f["net_macro"] - MACRO["asia_rerating"] * _f["asia_rerating_share"], 2)
     _f["net_asia_fee_hi"] = round(_f["net_macro"] - (ASIA_FEE_STRESS if _aseq else 0.0), 2)
 # The alternative columns the universe what-ifs are run on.
 _WI_COL = {"vol_flat": "net_novol", "drags_neutral": "net_neutral",
            "asia_no_rerating": "net_asia_norerate", "asia_fee_hi": "net_asia_fee_hi",
            "trend_off": "net_notrend", "trend_alt": "net_trend_alt"}
+
+# ---- THE SEARCH (rewritten 2026-10-22 for the eleven-fund universe) ----------
+# Until v62 the universe was every point of a 21^(n-1) grid, filtered - fine for five
+# funds, impossible for eleven. The limit-respecting mixes are generated directly
+# instead: the money market (5-35%) plus up to four other funds, each 5-35%, on the 5%
+# grid, summing to 100 - the same set, in a fixed order. C's set holds Nasdaq Equity
+# Income at exactly 50% (exempt from the 35% cap) and the rest under the same limits.
+# Each mix is measured by the SAME ARITHMETIC as port_ret / port_vol / port_k /
+# summarise(), term for term in index order, so a pick re-measured by summarise()
+# lands on exactly the figures the search saw. Feasible means inside the budget as
+# computed AND as shown: the raw drawdown alone admits a mix that PRINTS over the cap
+# ([25, 30, 25, 20] at 26.1477 raw against a 26.17 cap printed -26.2, 2026-09-20); the
+# printed one alone admits one up to 0.05pp genuinely over it (2026-09-03).
+# THE RULE'S ORDER, now total: the lowest published drawdown, then the higher published
+# CAGR, then the lower TRUE drawdown, then the mix generated first. The third key was
+# added with the search: two mixes can print the same drawdown and CAGR, and the one
+# that is genuinely shallower should win, not whichever the loop met first.
+_UN = len(UNIV_IDS)
+_UF, _US, _UC = UNIV
+_VOL = [f["vol"] for f in _UF]
+_ADJ = [f["dd_k_adj"] for f in _US]
+_CASH = [f["cash_like"] for f in _US]
+_IQ = UNIV_IDS.index("ATRQIAP")
+_MAXU, _CASHU, _PINU = round(UNIV_MAX_W * 20), round(UNIV_MIN_CASH * 20), round(PIN_W * 20)
+
+def _comps(total, parts, lo, hi):
+    """Every way to split `total` units into `parts` ordered parts, each in [lo, hi]."""
+    if parts == 1:
+        if lo <= total <= hi:
+            yield (total,)
+        return
+    for x in range(lo, min(hi, total - lo * (parts - 1)) + 1):
+        for rest in _comps(total - x, parts - 1, lo, hi):
+            yield (x,) + rest
+
+def univ_mixes(pinned=False):
+    """Every limit-respecting mix as (indices, units) - units of 5%, indices ascending."""
+    others = [i for i in range(1, _UN) if not (pinned and i == _IQ)]
+    free = UNIV_MAX_FUNDS - 1 - (1 if pinned else 0)          # funds beside cash (and the pin)
+    for k in range(0, free + 1):
+        for sup in combinations(others, k):
+            idx = tuple(sorted((0,) + sup + ((_IQ,) if pinned else ())))
+            rest = 20 - (_PINU if pinned else 0)
+            for comp in _comps(rest, k + 1, 1, _MAXU):
+                if comp[0] < _CASHU:
+                    continue
+                it = iter(comp)
+                yield idx, tuple(_PINU if (pinned and i == _IQ) else next(it) for i in idx)
+
+def _measure(idx, units, cols):
+    """Raw and published figures for one mix on each column, by summarise()'s arithmetic."""
+    w = [u / 20 for u in units]
+    sv = [w[a] * _VOL[i] for a, i in enumerate(idx)]
+    v = 0.0
+    for a, i in enumerate(idx):
+        for b, j in enumerate(idx):
+            v += sv[a] * sv[b] * _UC[i][j]
+    v = math.sqrt(v)
+    eq = 0
+    for a, i in enumerate(idx):
+        if not _CASH[i]:
+            eq += w[a]
+    if eq <= 0:
+        k = DD_K
+    else:
+        ka = 0
+        for a, i in enumerate(idx):
+            if not _CASH[i]:
+                ka += w[a] * _ADJ[i]
+        k = DD_K + ka / eq
+    v_d = round(v, 2)
+    out = []
+    for col in cols:
+        mu = 0
+        for a, i in enumerate(idx):
+            mu += w[a] * _UF[i][col]
+        raw = -max((k * v - DD_MU * mu) * DD_HORIZON_SCALAR, 0.0)
+        r_d = round(mu, 2)
+        d_d = round(-max((k * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0), 1)
+        out.append((r_d, d_d, raw))
+    return out
+
+def _key(m):
+    """The rule's total order on a measured mix (r_d, d_d, raw, seq, idx, units)."""
+    return (abs(m[1]), -m[0], abs(m[2]), m[3])
+
+class _Pick:
+    """The rule, streamed: the best feasible CAGR, and every feasible mix within the tie."""
+    def __init__(self):
+        self.best, self.band, self.n = -1e9, [], 0
+    def add(self, m):
+        r_d, d_d, raw = m[0], m[1], m[2]
+        if abs(raw) > DD_CAP + 1e-9 or abs(d_d) > DD_CAP + 1e-9:
+            return
+        self.n += 1
+        if r_d > self.best:
+            self.best = r_d
+            self.band = [x for x in self.band if x[0] >= r_d - PIN_TIE_PP - 1e-9]
+        if r_d >= self.best - PIN_TIE_PP - 1e-9:
+            self.band.append(m)
+    def result(self):
+        band = [x for x in self.band if x[0] >= self.best - PIN_TIE_PP - 1e-9]
+        win = min(band, key=_key)
+        return [u / 20 for u in _full_units(win[4], win[5])], band, win
+
+def _full_units(idx, units):
+    """The mix as a full weight-unit vector over the universe."""
+    u = [0] * _UN
+    for i, x in zip(idx, units):
+        u[i] = x
+    return u
+
+_WI_KEYS = list(_WI_COL)
+# "live" is the macro column again, sent down the what-if path: a check requires it to
+# return the published B and C, so the what-ifs are proved to answer the same question.
+_WI_COL["live"] = "net_macro"; _WI_KEYS.append("live")
+_COLS_U = ["net_base", "net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
+_COLS_P = ["net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
+_PK = {"a": _Pick(), "b": _Pick(), "c": _Pick()}
+_PK.update({("b", k): _Pick() for k in _WI_KEYS})
+_PK.update({("c", k): _Pick() for k in _WI_KEYS})
+_FRONT_BUCKET, _BEST_RATIO_M, UNIV_N_TOTAL = {}, None, 0
+for _seq, (_idx, _u) in enumerate(univ_mixes()):
+    _ms = _measure(_idx, _u, _COLS_U)
+    UNIV_N_TOTAL += 1
+    _a = _ms[0] + (_seq, _idx, _u); _b = _ms[1] + (_seq, _idx, _u)
+    _PK["a"].add(_a); _PK["b"].add(_b)
+    for _k, _m in zip(_WI_KEYS, _ms[2:]):
+        _PK[("b", _k)].add(_m + (_seq, _idx, _u))
+    # the macro frontier and the best pure ratio, over every limit-respecting mix
+    _cur = _FRONT_BUCKET.get(abs(_b[1]))
+    if _cur is None or _key(_b) < _key(_cur):
+        _FRONT_BUCKET[abs(_b[1])] = _b
+    if _b[1]:
+        _rt = round(_b[0] / abs(_b[1]), 3)
+        if (_BEST_RATIO_M is None or _rt > _BEST_RATIO_M[0]
+                or (_rt == _BEST_RATIO_M[0] and _key(_b) < _key(_BEST_RATIO_M[1]))):
+            _BEST_RATIO_M = (_rt, _b)
+for _seq, (_idx, _u) in enumerate(univ_mixes(pinned=True)):
+    _ms = _measure(_idx, _u, _COLS_P)
+    _PK["c"].add(_ms[0] + (_seq, _idx, _u))
+    for _k, _m in zip(_WI_KEYS, _ms[1:]):
+        _PK[("c", _k)].add(_m + (_seq, _idx, _u))
+
+PA_W, PA_BAND, _ = _PK["a"].result()
+PB_W, PB_BAND, _ = _PK["b"].result()        # Portfolio B
+PC_W, PC_BAND, _ = _PK["c"].result()
+PA_BAND_N, PB_BAND_N, PC_BAND_N = len(PA_BAND), len(PB_BAND), len(PC_BAND)
+UNIV_N_FEAS = {x: _PK[x].n for x in "abc"}
+UNIV_BEST = {x: _PK[x].best for x in "abc"}
+PA, PA_BASE = summarise(PA_W, "net_macro", UNIV), summarise(PA_W, "net_base", UNIV)
+PB, PB_BASE = summarise(PB_W, "net_macro", UNIV), summarise(PB_W, "net_base", UNIV)
+PC, PC_BASE = summarise(PC_W, "net_macro", UNIV), summarise(PC_W, "net_base", UNIV)
+# Whether the engine's A is the mix the 22-fund review found. Published, not asserted:
+# a later roll may move one and not the other, and the page says so when it does.
+PA_IS_REVIEW = (dict(MACRO["pa_review_mix"])
+                == {f["short"]: round(w * 100) for f, w in zip(UNIV[1], PA_W) if round(w * 100)})
+# The review's holdings in funds this page does not model, if any.
+PA_REVIEW_OUTSIDE = [x for x in MACRO["pa_review_mix"] if x[0] not in [f["short"] for f in UNIV[1]]]
+
+# The universe's macro frontier and the best pure ratio, for the Portfolios chart and
+# the "why not simply maximise return" note - the same set B is chosen from. The
+# frontier is every bucket's best mix (by the rule's order) that beats every shallower
+# bucket on CAGR, thinned to FRONTIER_SPACING with B always kept.
+_univ_par, _best_u = [], -1e9
+for _dd in sorted(_FRONT_BUCKET):
+    _m = _FRONT_BUCKET[_dd]
+    if _m[0] > _best_u + 1e-9:
+        _univ_par.append(_m); _best_u = _m[0]
+UNIV_FRONTIER, _last_u = [], None
+_PBU = [round(x * 20) for x in PB_W]
+for _m in _univ_par:
+    _w = _full_units(_m[4], _m[5])
+    if _last_u is None or abs(_m[1]) >= _last_u + FRONTIER_SPACING or _w == _PBU:
+        UNIV_FRONTIER.append({"maxdd": abs(_m[1]), "dd": _m[1], "cagr": _m[0],
+                              "weights": [x * 5.0 for x in _w]}); _last_u = abs(_m[1])
+_brw = [x / 20 for x in _full_units(_BEST_RATIO_M[1][4], _BEST_RATIO_M[1][5])]
+UNIV_BEST_RATIO = (_brw, summarise(_brw, "net_macro", UNIV))
+
 # THE UNIVERSE WHAT-IFS (2026-10-21): B and C RE-CHOSEN by the rule on each alternative
 # column, A re-measured on it (A is chosen on the long-run column, which none of these
-# touches).
-def _univ_wi(col, u=UNIV):
-    b, c = pick(univ_feasible(col, None, u)), pick(univ_feasible(col, PIN_UNIV, u))
-    a = summarise(PA_W, col, u)
-    return {"b": {"weights": [round(x * 100) for x in b[0]], "cagr": b[1]["cagr"], "maxdd": b[1]["maxdd"]},
-            "c": {"weights": [round(x * 100) for x in c[0]], "cagr": c[1]["cagr"], "maxdd": c[1]["maxdd"]},
+# touches). All six come out of the one search above.
+def _wi_entry(k):
+    b = _PK[("b", k)].result(); c = _PK[("c", k)].result()
+    a = summarise(PA_W, _WI_COL[k], UNIV)
+    return {"b": {"weights": [round(x * 100) for x in b[0]], "cagr": b[2][0], "maxdd": b[2][1]},
+            "c": {"weights": [round(x * 100) for x in c[0]], "cagr": c[2][0], "maxdd": c[2][1]},
             "a": {"cagr": a["cagr"], "maxdd": a["maxdd"]}}
-WHAT_IF_UNIV = {k: _univ_wi(col) for k, col in _WI_COL.items()}
+WHAT_IF_UNIV = {k: _wi_entry(k) for k in _WI_KEYS if k != "live"}
 # The stress size the page quotes. Until v62 only the four-fund what-ifs carried it,
 # so the page's sentence fell back to a typed "0.25pp" that nothing tied to this input.
 WHAT_IF_UNIV["asia_fee_hi"]["stress_pp"] = ASIA_FEE_STRESS
@@ -3132,23 +3574,28 @@ SCENARIOS = [
      f"This row models the tail: full Strait closure and Brent to ${MACRO['brent_closure']:.0f}+ from "
      f"${MACRO['brent']:.0f}. Global CPI re-accelerates, the Fed is forced to hike, and "
      "multiples compress hardest at the long end.",
-     {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5, "ATRGLDV": -3.0}, 1.60),
+     {"ATRPHMM": +0.5, "ATRQIAP": -4.5, "ATRASEQ": -6.5, "ATRGTEC": -7.5, "ATRGLDV": -3.0,
+     "ATRGHCP": -2.0, "M_GINF": -2.0, "M_GEO": -5.0, "M_GCT": -6.5, "ATRAMIP": -3.0, "M_GALL": -2.5}, 1.60),
     ("Hawkish repricing", "A second hike on top of the one the dot plot already has "
      f"(median {MACRO['fed_dot_2026']}% for end-2026) - {MACRO['fed_dots_two_more']} of "
      # Bound to the input 2026-10-03: "a 4.1% unemployment rate" was typed, and
      # went stale the day September's report moved it to 4.2%.
      f"{MACRO['fed_dots_participants']} participants see it. The Fed hikes into a "
      f"{MACRO['us_unemployment']}% unemployment rate; duration-heavy growth de-rates.",
-     {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0, "ATRGLDV": -1.5}, 1.30),
+     {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0, "ATRGLDV": -1.5,
+     "ATRGHCP": -1.0, "M_GINF": -2.5, "M_GEO": -3.5, "M_GCT": -4.5, "ATRAMIP": -1.5, "M_GALL": -2.0}, 1.30),
     ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-     {"ATRPHMM": 0.0, "ATRQIAP": -3.5, "ATRASEQ": -5.5, "ATRGTEC": -8.0, "ATRGLDV": -1.0}, 1.45),
+     {"ATRPHMM": 0.0, "ATRQIAP": -3.5, "ATRASEQ": -5.5, "ATRGTEC": -8.0, "ATRGLDV": -1.0,
+     "ATRGHCP": 0.0, "M_GINF": -0.5, "M_GEO": -3.5, "M_GCT": -3.0, "ATRAMIP": -2.5, "M_GALL": -1.5}, 1.45),
     ("Disinflation restart", f"Oil mean-reverts to ${MACRO['brent_disinflation']:.0f}, headline CPI falls to 2%, "
      "Fed cuts. The bull case: multiples expand, vol collapses.",
-     {"ATRPHMM": -0.9, "ATRQIAP": +2.5, "ATRASEQ": +3.5, "ATRGTEC": +4.5, "ATRGLDV": +1.5}, 0.80),
+     {"ATRPHMM": -0.9, "ATRQIAP": +2.5, "ATRASEQ": +3.5, "ATRGTEC": +4.5, "ATRGLDV": +1.5,
+     "ATRGHCP": +1.0, "M_GINF": +2.0, "M_GEO": +3.5, "M_GCT": +4.5, "ATRAMIP": +2.0, "M_GALL": +2.0}, 0.80),
     ("Grind-on base case", "Vol drifts up to the 19-20 the futures curve already "
      "prices, earnings hold, no policy accident. The modelled path.",
-     {"ATRPHMM": 0.0, "ATRQIAP": 0.0, "ATRASEQ": 0.0, "ATRGTEC": 0.0, "ATRGLDV": 0.0}, 1.00),
+     {"ATRPHMM": 0.0, "ATRQIAP": 0.0, "ATRASEQ": 0.0, "ATRGTEC": 0.0, "ATRGLDV": 0.0,
+     "ATRGHCP": 0.0, "M_GINF": 0.0, "M_GEO": 0.0, "M_GCT": 0.0, "ATRAMIP": 0.0, "M_GALL": 0.0}, 1.00),
 ]
 
 def run_scenarios(w, key, u=None):
@@ -3862,6 +4309,55 @@ SOURCES = [
      "https://www.nationthailand.com/news/world/40072588"),
     ("Endowus", "Fidelity Global Dividend Fund (LU0605515963, Y-Acc-USD) - fund fees 1.04% p.a.",
      "https://endowus.com/investment-funds-list/fidelity-global-dividend-fund-LU0605515963"),
+    # ---- added 2026-10-22, the 22-fund list searched (v63) ----
+    ("ATRAM Trust", "ATRAM Global Health Care Feeder Fund (ATRGHCP) - trust fee incl. distribution fee 1.50% p.a.",
+     "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRGHCP"),
+    ("uitf.com.ph", "ATRAM Global Health Care Feeder Fund - daily NAVpu, trust fee 1.50% p.a., benchmark MSCI ACWI Health Care",
+     "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=435"),
+    ("investa.ph / ATRAM", "ATRAM Global Health Care Feeder Fund fact sheet - target Fidelity Funds Global Healthcare, TER 1.05%",
+     "https://storage.investa.ph/files/Fund/52/PDF/52_FundFactSheet_1763395696.pdf"),
+    ("Fidelity International", "Fidelity Funds - Global Healthcare Fund factsheet, 31 Aug 2026 (Singapore) - Eli Lilly 8.7%, AbbVie 7.4%, 41 positions",
+     "https://www.fidelityinternational.com/legal/documents/SG-en/hffs.SG-en.SG.G-HCR.pdf"),
+    ("uitf.com.ph", "ATRAM Global Infra Equity Feeder Fund (A PHP units) - trust fee 1.50% p.a.",
+     "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=434"),
+    ("Seedbox / ATRAM", "ATRAM Global Infra Equity Feeder Fund fact sheet - target changed to HSBC GIF Global Infrastructure Equity, March 2025; TER 0.80%",
+     "https://file.seedbox.ph/ATRAM_GLOBAL_INFRA_EQUITY_FEEDER_FUND_KIIDS.pdf"),
+    ("ATRAM Trust", "ATRAM Global Equity Opportunity Feeder Fund (PHP unit class) - trust fee 1.50% p.a.",
+     "https://www.atram.com.ph/funds/uitf-funds/details?fund=14UF05P"),
+    ("Seedbox / ATRAM", "ATRAM Global Equity Opportunity Feeder Fund KIID - target Allianz Thematica since April 2021; target TER 1.00% (31 Mar 2026)",
+     "https://file.seedbox.ph/ATRAM_GLOBAL_EQUITY_OPPORTUNITY_FEEDER_FUND_KIIDS.pdf"),
+    ("Citywire", "Allianz Global Investors Fund - Allianz Thematica AT USD - ongoing charge 1.95%",
+     "https://citywire.com/selector/fund/allianz-global-investors-fund-allianz-thematica/c579592"),
+    ("ATRAM Trust", "ATRAM Global Consumer Trends Feeder Fund - trust fee 1.50% p.a.",
+     "https://www.atram.com.ph/funds/uitf-funds/details?fund=20UF19P"),
+    ("investa.ph / ATRAM", "ATRAM Global Consumer Trends Feeder Fund fact sheet - target Invesco Global Consumer Trends, TER 0.97%",
+     "https://storage.investa.ph/files/Fund/50/PDF/50_FundFactSheet_1763395688.pdf"),
+    ("ATRAM Trust", "ATRAM Asian Multi-Asset Income Feeder Fund (ATRAMIP) - trust fee 1.50% p.a.; benchmark 50% MSCI AC APxJ / 50% Bloomberg EM Asia",
+     "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRAMIP"),
+    ("BusinessWorld", "ATRAM Trust launches new fund - the Asian multi-asset income feeder, target Schroder Asian Asset Income Fund, Sep 2022",
+     "https://bworldonline.com/banking-finance/2022/09/06/472618/atram-trust-launches-new-fund/"),
+    ("Schroders", "Schroder Asian Asset Income Fund - Product Key Facts (class A USD ongoing charges)",
+     "https://api.schroders.com/document-store/HKUT-Asian-Asset-Income-Fund-PKFSAPAC-HKEN.pdf"),
+    ("uitf.com.ph", "ATRAM Global Allocation Feeder Fund (PHP unit class) - trust fee 1.20% p.a.",
+     "https://www.uitf.com.ph/home/daily_navpu_details.php?fund_id=433&bank_id=31"),
+    ("investa.ph / ATRAM", "ATRAM Global Allocation Feeder Fund fact sheet - target BGF Global Allocation A2 USD, TER 1.13%",
+     "https://storage.investa.ph/files/Fund/40/PDF/40_FundFactSheet_1767270656.pdf"),
+    ("J.P. Morgan Asset Management", "2027 Long-Term Capital Market Assumptions press release - global aggregate bonds 5.3%, US investment-grade credit 6.1%, US large cap 7.5%",
+     "https://am.jpmorgan.com/us/en/asset-management/adv/about-us/media/press-releases/jp-morgan-releases-2027-long-term-capital-market-assumptions/"),
+    ("PortfoliosLab", "iShares Global Healthcare ETF (IXJ) - monthly total returns, Oct 2025 - Sep 2026",
+     "https://portfolioslab.com/symbol/IXJ"),
+    ("BlackRock", "Healthcare making a comeback? - global health care up more than 10% in Q4 2025",
+     "https://www.blackrock.com/au/insights/ishares/2026-comeback-year-for-healthcare"),
+    ("Aristotle Capital", "4Q 2025 commentary - MSCI ACWI +3.29% (net, USD) in the quarter",
+     "https://www.aristotlecap.com/wp-content/uploads/2026/01/GE-Adv-Commentary-2025-12.pdf"),
+    ("ETFreplay", "iShares MSCI ACWI ETF - quarterly returns 2026",
+     "https://www.etfreplay.com/etf/acwi"),
+    ("iShares", "iShares MSCI ACWI ETF - NAV total return YTD 12.90% to 20 Oct 2026",
+     "https://www.ishares.com/us/products/239600/ishares-msci-acwi-etf"),
+    ("uitf.com.ph", "ATRAM Global Bond Income Feeder Fund - trust fee 0.90% p.a. (held out: one listing)",
+     "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=364"),
+    ("uitf.com.ph", "ATRAM US Equity Opportunity Feeder Fund (USD unit class) - trust fee 1.20% p.a. (held out: stale listing)",
+     "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=260"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -3989,7 +4485,7 @@ def payload():
                      "scenarios": run_scenarios(BASELINE_W, "net_macro")},
         "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": UNIV_IDS,
                         "macro": PA, "base": PA_BASE, "column": "net_base",
-                        "band_n": PA_BAND_N, "n_feasible": len(UNIV_FEAS["a"]),
+                        "band_n": PA_BAND_N, "n_feasible": UNIV_N_FEAS["a"],
                         "is_review_pick": PA_IS_REVIEW, "review_outside": PA_REVIEW_OUTSIDE,
                         "scenarios": run_scenarios(PA_W, "net_macro", UNIV),
                         "dd_cap": round(DD_CAP, 2),
@@ -3998,24 +4494,30 @@ def payload():
         "portfolio_c": {"weights": [round(x * 100) for x in PC_W], "ids": UNIV_IDS,
                         "macro": PC, "base": PC_BASE, "column": "net_macro",
                         "fund": "ATRQIAP", "pin_pct": round(PIN_W * 100),
-                        "band_n": PC_BAND_N, "n_feasible": len(UNIV_FEAS["c"]),
+                        "band_n": PC_BAND_N, "n_feasible": UNIV_N_FEAS["c"],
                         "scenarios": run_scenarios(PC_W, "net_macro", UNIV),
                         "dd_cap": round(DD_CAP, 2),
                         "in_budget": abs(PC["maxdd"]) <= DD_CAP + 1e-9,
                         "cagr_no_rerating": summarise(PC_W, "net_asia_norerate", UNIV)["cagr"]},
         "universe": {"limits": {"max_funds": UNIV_MAX_FUNDS, "max_w": round(UNIV_MAX_W * 100),
                            "min_cash": round(UNIV_MIN_CASH * 100)},
-                "n_total": sum(1 for w in UNIV_ALL if univ_ok(w)),
+                "n_total": UNIV_N_TOTAL,
+                "n_list": len(UNIV_IDS) + len(MACRO["list22_held_out"]),
+                "held_out": [{"short": a, "why": b} for a, b in MACRO["list22_held_out"]],
                 "tie_pp": PIN_TIE_PP, "frontier": UNIV_FRONTIER,
                 "best_ratio": {"weights": UNIV_BEST_RATIO[1]["weights"], **UNIV_BEST_RATIO[1]},
                 "what_if": WHAT_IF_UNIV},
         "portfolio_b": {"weights": [round(x * 100) for x in PB_W], "ids": UNIV_IDS,
                         "column": "net_macro", "band_n": PB_BAND_N,
-                        "n_feasible": len(UNIV_FEAS["b"]),
+                        "n_feasible": UNIV_N_FEAS["b"],
                         "shorts": [f["short"] for f in UNIV[1]],
                         "funds": F_ADD, "macro": PB, "base": PB_BASE,
                         "scenarios": run_scenarios(PB_W, "net_macro", UNIV),
                         "corr": CORR_U, "corr_note": CORR_U_NOTE,
+                        # the factor model behind every pair outside the typed block, so the
+                        # audit rebuilds those pairs rather than reading them
+                        "factors": {"names": list(FACTORS), "loadings": FACTOR_LOADINGS,
+                                    "fx_corr": FX_CORR, "fx_vol": FX_VOL, "typed_block": 5},
                         "dd_cap": round(DD_CAP, 2),
                         "in_budget": abs(PB["maxdd"]) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pd_review_")}},
@@ -4055,7 +4557,7 @@ def report():
     A(f"\n[4] FUNDS - net {HZ_LABEL} CAGR after ALL fees, and expected max drawdown")
     A(f"    {'fund':<22}{'fee':>7}{'gross':>8}{'base':>8}{'tilt':>7}{'macro':>8}"
       f"{'vol':>8}{'DD base':>9}{'DD macro':>10}")
-    for f in p["funds"]:
+    for f in p["funds"] + p["portfolio_b"]["funds"]:
         A(f"    {f['short']:<22}{f['fee_total']:>6.2f}%{f['gross_php']:>7.2f}%"
           f"{f['net_base']:>7.2f}%{f['tilt_total']:>+7.2f}{f['net_macro']:>7.2f}%"
           f"{f['vol']:>7.2f}%{f['dd_base']:>8.1f}%{f['dd_macro']:>9.1f}%")
@@ -5019,15 +5521,28 @@ def report():
     # THE UNIVERSE IS THE COMPLETE GRID UNDER THE LIMITS, counted a second way: each
     # fund 0..max_w in 5% steps, cash at least min_cash, the units summing to 20. A
     # limit left behind in the filter, or one dropped from it, changes the count.
+    # Counted by dynamic programme over (units used, funds held), fund by fund - not by
+    # walking the grid, which over eleven funds is 8^11 points (it hung the first run
+    # of v63, 2026-10-22).
     _lim = p["universe"]["limits"]; _mx = _lim["max_w"] // 5
-    _cnt = sum(1 for u_ in product(range(_mx + 1), repeat=len(UNIV_IDS))
-               if sum(u_) == 20 and u_[0] * 5 >= _lim["min_cash"]
-               and sum(1 for x in u_ if x) <= _lim["max_funds"])
+    _dp = {(0, 0): 1}
+    for _i in range(len(UNIV_IDS)):
+        _lo = _lim["min_cash"] // 5 if _i == 0 else 0
+        _nx = {}
+        for (_t, _h), _c in _dp.items():
+            for _x in range(_lo, _mx + 1):
+                if _t + _x <= 20 and _h + (1 if _x else 0) <= _lim["max_funds"]:
+                    _key_ = (_t + _x, _h + (1 if _x else 0))
+                    _nx[_key_] = _nx.get(_key_, 0) + _c
+        _dp = _nx
+    _cnt = sum(_c for (_t, _h), _c in _dp.items() if _t == 20)
     checks.append((f"the universe enumeration is the complete 5% grid under the limits ({_cnt} mixes)",
                    p["universe"]["n_total"] == _cnt))
     # Every frontier point is efficient: no limit-respecting mix has at least its
     # CAGR at no more drawdown. And B is ON it, as the chart draws it.
-    _allp = [(s2["cagr"], abs(s2["maxdd"])) for _, s2 in _univ_pts]
+    # (each drawdown bucket's best CAGR dominates every mix in it, so the buckets stand
+    # in for all 322,000-odd mixes)
+    _allp = [(m[0], abs(m[1])) for m in _FRONT_BUCKET.values()]
     checks.append(("every universe frontier point is efficient (no mix beats it on both axes)",
                    all(not any(c >= f["cagr"] + 1e-9 and d <= abs(f["dd"]) + 1e-9 for c, d in _allp)
                        for f in p["universe"]["frontier"])))
@@ -5036,8 +5551,9 @@ def report():
                        for f in p["universe"]["frontier"])))
     _br = p["universe"]["best_ratio"]
     checks.append(("the universe's best pure ratio is the highest ret/DD of any limit-respecting mix",
-                   _br["ret_per_dd"] == max(s2["ret_per_dd"] for _, s2 in _univ_pts)
-                   and abs(_br["maxdd"]) > 0))
+                   _br["ret_per_dd"] == _BEST_RATIO_M[0]
+                   and _br["ret_per_dd"] == round(_br["cagr"] / abs(_br["maxdd"]), 3)
+                   and all(m[0] / abs(m[1]) <= _br["ret_per_dd"] + 0.0005 for m in _FRONT_BUCKET.values() if m[1])))
     # THE REPORT'S SECTION 4 IS TYPED, so its claims are asserted here: the heading
     # "Global Technology: the deepest drawdown, the smallest weight" and the bullets
     # "the most rate-sensitive holding" and "the deepest expected drawdown on the
@@ -5045,16 +5561,17 @@ def report():
     # 1.15% -> 1.50% trust-fee correction put Asia Equity's net forecast above it;
     # the page now states the rank from the data instead of typing it.
     # (The "smallest weight" claim left the heading with the four-fund optimum it
-    # described; the two that remain are tested across all five funds, v62.)
+    # described, v62. "The deepest drawdown" left it on 2026-10-22, when Global Consumer
+    # Trends joined the universe deeper still: the page now states the rank from the
+    # data. The claim still typed - the most rate-sensitive - is tested across all funds.)
     _five = p["funds"] + p["portfolio_b"]["funds"]
     _gt = next(f for f in _five if f["id"] == "ATRGTEC")
-    checks.append(("the Report's typed Global Technology claims still hold across the five "
-                   "funds (most rate-sensitive, deepest drawdown)",
-                   all(_gt["tilt_rates"] <= f["tilt_rates"] for f in _five)
-                   and all(_gt["dd_macro"] <= f["dd_macro"] for f in _five)))
+    checks.append(("the Report's typed Global Technology claim still holds across every fund "
+                   "(the most rate-sensitive)",
+                   all(_gt["tilt_rates"] <= f["tilt_rates"] for f in _five)))
     # The what-if helper must BE the rule: on the live column it has to return the
     # published B and C, or its counterfactuals answer a different question.
-    _live = _univ_wi("net_macro")
+    _live = _wi_entry("live")
     checks.append(("the what-if helper reproduces the published B and C on live inputs",
                    _live["b"]["weights"] == p["portfolio_b"]["weights"]
                    and _live["c"]["weights"] == p["portfolio_c"]["weights"]
@@ -5207,14 +5724,22 @@ def report():
                    _ok))
     checks.append(("the trend scheme can never move a sleeve by more than its stated full-signal 0.30pp",
                    all(abs(v["tilt"]) <= 0.30 + 1e-9 for v in _tr["sleeves"].values())))
-    checks.append(("every fund's trend tilt is its sleeve's published trend tilt; cash carries none",
-                   all(f2["tilt_trend"] == (_tr["sleeves"][f2["id"]]["tilt"] if f2["id"] in _tr["sleeves"] else 0.0)
-                       for f2 in p["funds"])
-                   and "ATRPHMM" not in _tr["sleeves"]))
+    # Every fund, all eleven (2026-10-22): its trend market's tilt, at its equity share;
+    # none where no series is sourced, and none for cash.
+    _all11 = p["funds"] + p["portfolio_b"]["funds"]
+    checks.append(("every fund's trend tilt is its market's published tilt at its equity share; cash carries none",
+                   all(f2["tilt_trend"] == ((_tr["sleeves"][f2["trend_market"]]["tilt"] if f2["equity_share"] == 1.0
+                                             else rnd(_tr["sleeves"][f2["trend_market"]]["tilt"] * f2["equity_share"]) + 0.0)
+                                            if f2["trend_market"] else 0.0)
+                       for f2 in _all11)
+                   and "ATRPHMM" not in _tr["sleeves"]
+                   and all(f2["trend_market"] in (None, *_tr["sleeves"]) for f2 in _all11)))
     checks.append(("each trend market's beta is the one its fund's volatility is built on",
                    abs(FUNDS[1]["vol_beta"] - TREND_INPUTS["ATRQIAP"]["beta"] * JEPQ_VOL / NDX_VOL) < 1e-12
                    and abs(FUNDS[2]["vol_beta"] - TREND_INPUTS["ATRASEQ"]["beta"] * 0.92) < 1e-12
-                   and abs(FUNDS[3]["vol_beta"] - TREND_INPUTS["ATRGTEC"]["beta"]) < 1e-12))
+                   and abs(FUNDS[3]["vol_beta"] - TREND_INPUTS["ATRGTEC"]["beta"]) < 1e-12
+                   and abs(ADD_FUNDS[_ADD_IX["ATRGHCP"]]["vol_beta"] - TREND_INPUTS["ATRGHCP"]["beta"]) < 1e-12
+                   and abs(ADD_FUNDS[_ADD_IX["M_GEO"]]["vol_beta"] - TREND_INPUTS["M_GEO"]["beta"] * 1.15) < 1e-12))
     checks.append(("the covered-call sleeve is the one most paid when the curve sits above long-run",
                    max(p["funds"], key=lambda f2: f2["tilt_vol"])["id"] == "ATRQIAP"
                    or vc["ramp"] <= 0))
@@ -5230,8 +5755,15 @@ def report():
                     [_M["ltcma_em_eq"], _M["asia_rerating"], _M["asia_div_drag"]]),
         "ATRGTEC": (_M["ltcma_us_eq"] + _M["tech_growth_premium"] - _M["tech_derating"],
                     [_M["ltcma_us_eq"], _M["tech_growth_premium"], _M["tech_derating"]]),
+        # the six added 2026-10-22: global equity with no sector premium, and the two
+        # multi-asset blends from their legs
+        **{k: (_M["ltcma_global_eq"], [_M["ltcma_global_eq"]]) for k in ("ATRGHCP", "M_GINF", "M_GEO", "M_GCT")},
+        "ATRAMIP": (0.5 * (_M["ltcma_em_eq"] + _M["asia_rerating"] - _M["asia_div_drag"]) + 0.5 * _M["ltcma_us_ig"],
+                    [_M["ltcma_em_eq"], _M["asia_rerating"], _M["asia_div_drag"], _M["ltcma_us_ig"]]),
+        "M_GALL": (0.6 * _M["ltcma_global_eq"] + 0.4 * _M["ltcma_global_agg"],
+                   [_M["ltcma_global_eq"], _M["ltcma_global_agg"]]),
     }
-    _fsrc = {f2["id"]: f2 for f2 in FUNDS}
+    _fsrc = {f2["id"]: f2 for f2 in FUNDS + ADD_FUNDS}
     checks.append(("every equity gross return reproduces from its named components",
                    all(abs(_fsrc[k]["gross_usd"] - v) < 0.005 for k, (v, _) in _recipes.items())))
     checks.append(("every component of a gross return is quoted in that fund's note",
@@ -5259,7 +5791,8 @@ def report():
     # coincidence that let the headline rows reconcile by luck.
     checks.append(("every feasible portfolio respects the cap on the PUBLISHED "
                    "drawdown too",
-                   all(abs(s["maxdd"]) <= DD_CAP + 1e-9 for fs in UNIV_FEAS.values() for _, s in fs)))
+                   all(abs(m[1]) <= DD_CAP + 1e-9 and abs(m[2]) <= DD_CAP + 1e-9
+                       for x in _PK for m in _PK[x].band)))
     # The published cap must BE the enforced cap. Publishing a rounded, looser
     # figure made this very check unable to bite: it read the published 26.0
     # while the optimiser enforced 25.97. (Audit 2026-09-08.)
@@ -5280,7 +5813,7 @@ def report():
     checks.append((f"Portfolio B: {_nu} weights on the 5% grid summing to 100",
                    len(_bw) == _nu and sum(_bw) == 100 and all(x % 5 == 0 for x in _bw)))
     _cd = CORR_U
-    checks.append(("the five-fund correlation extends the four-fund one: same block, symmetric, unit diagonal, positive definite",
+    checks.append((f"the {_nu}-fund correlation extends the four-fund one: same block, symmetric, unit diagonal, positive definite",
                    all(_cd[i][j] == CORR[i][j] for i in range(4) for j in range(4))
                    and len(_cd) == _nu and all(len(r) == _nu for r in _cd)
                    and all(_cd[i][j] == _cd[j][i] for i in range(_nu) for j in range(_nu))
@@ -5295,6 +5828,18 @@ def report():
                    abs(_fg["fee_total"] - MACRO["gdiv_trust_fee"] - MACRO["gdiv_target_ocf"]) < 1e-9))
     checks.append(("no peso bond fund is left in the universe (removed 2026-10-21)",
                    not any("Bond" in f["name"] for f in UNIV[1])))
+    # THE 22-FUND LIST (2026-10-22): every fund either searched or held out with its
+    # reason, none both; and the factor model behind the added pairs reproduces the
+    # typed block it was fitted to, to the two decimals both are published at.
+    _ho = [x["short"] for x in p["universe"]["held_out"]]
+    checks.append(("the 22-fund list is fully accounted for: searched or held out with a reason, never both",
+                   p["universe"]["n_list"] == MACRO["review_list_n"] == 22
+                   and not set(_ho) & set(p["portfolio_b"]["shorts"])
+                   and len(set(_ho)) == len(_ho)
+                   and all(len(x["why"]) > 20 for x in p["universe"]["held_out"])
+                   and "US Equity Opportunity" in _ho))
+    checks.append(("the factor model reproduces the typed five-fund block within 0.01",
+                   all(abs(_FC[i][j] - CORR_5[i][j]) <= 0.01 + 1e-9 for i in range(5) for j in range(5))))
     # PORTFOLIO A (2026-10-21): the review's highest-return pick, fixed like D.
     _pa = p["portfolio_a"]; _aw = _pa["weights"]; _pc = p["portfolio_c"]; _cw = _pc["weights"]
     _cons = lambda w, pin=None: (len(w) == _nu and sum(w) == 100 and all(x % 5 == 0 for x in w)
@@ -5308,14 +5853,17 @@ def report():
                    _cons(_aw) and _cons(_bw) and _cons(_cw, _ip) and _cw[_ip] == _pc["pin_pct"]))
     # THE ONE RULE, RE-CHECKED ON EACH PICK'S OWN SET: nothing feasible beats it by
     # more than the tie, and nothing inside the tie has a shallower drawdown.
-    def _rule_ok(feas, w):
-        best = max(s2["cagr"] for _, s2 in feas); mine = summarise([x / 100 for x in w],
-            "net_base" if feas is UNIV_FEAS["a"] else "net_macro", UNIV)
-        return (mine["cagr"] >= best - PIN_TIE_PP - 1e-9
-                and not any(abs(s2["maxdd"]) < abs(mine["maxdd"]) - 1e-9
-                            for _, s2 in feas if s2["cagr"] >= best - PIN_TIE_PP - 1e-9))
+    # The pick re-measured by summarise() must land on the figures the search saw.
+    def _rule_ok(x, w):
+        best = _PK[x].best; mine = summarise([v / 100 for v in w],
+            "net_base" if x == "a" else "net_macro", UNIV)
+        band = [m for m in _PK[x].band if m[0] >= best - PIN_TIE_PP - 1e-9]
+        return (mine["cagr"] >= best - PIN_TIE_PP - 1e-9 and abs(mine["maxdd"]) <= DD_CAP + 1e-9
+                and not any(abs(m[1]) < abs(mine["maxdd"]) - 1e-9 for m in band)
+                and any(_full_units(m[4], m[5]) == [v // 5 for v in w] and m[0] == mine["cagr"]
+                        and m[1] == mine["maxdd"] for m in band))
     checks.append(("A, B and C are each the rule's pick on their own column: A long-run, B and C the macro view",
-                   _rule_ok(UNIV_FEAS["a"], _aw) and _rule_ok(UNIV_FEAS["b"], _bw) and _rule_ok(UNIV_FEAS["c"], _cw)))
+                   _rule_ok("a", _aw) and _rule_ok("b", _bw) and _rule_ok("c", _cw)))
     checks.append(("every universe what-if re-chooses B and C and re-measures A",
                    all({"a", "b", "c"} <= set(v) and len(v["b"]["weights"]) == _nu and len(v["c"]["weights"]) == _nu
                        for v in p["universe"]["what_if"].values())))
@@ -5340,6 +5888,8 @@ def report():
                    and MACRO["useq_w_a_listed"] >= MACRO["useq_w_a_peer"] >= 0
                    and MACRO["useq_w_b_listed"] >= MACRO["useq_w_b_peer"] >= 0
                    and MACRO["useq_w_c_listed"] >= MACRO["useq_w_c_peer"] >= 0
+                   and MACRO["gbi_target_low"] < MACRO["gbi_target_high"]
+                   and all(MACRO[f"gbi_w_{x}_low"] >= MACRO[f"gbi_w_{x}_high"] >= 0 for x in "abc")
                    and sum(x[1] for x in MACRO["pa_review_mix"]) == 100
                    and "ATRUSEQ" not in p["portfolio_b"]["ids"]))
     checks.append(("portfolio vol < weighted-average vol for A, B and C (diversification works)",
