@@ -1,12 +1,14 @@
-"""What two held-out funds would do if admitted (2026-10-22), on the engine's own basis.
+"""What two held-out funds would do if admitted (2026-10-22), on the engine's own basis,
+and what a disputed fee on an admitted fund would do (2026-10-23).
 
-Run: python3 model/heldout_sens.py (about 30 seconds after the engine's own build).
-Its results are recorded in engine.py as useq_w_* and gbi_w_*; re-run it when either
-fund's fees, or the universe, change.
+Run: python3 model/heldout_sens.py (about 40 seconds after the engine's own build).
+Its results are recorded in engine.py as useq_w_* and gbi_w_*, and in Global
+Allocation's fee note; re-run it when any of those fees, or the universe, change.
 
 Imports the engine, builds the held-out fund with build_fund() and the factor model,
 re-binds the search's globals to the eleven funds plus that one, and re-runs the rule
-for A (long-run), B (macro) and C (macro, Nasdaq Equity Income at 50%)."""
+for A (long-run), B (macro) and C (macro, Nasdaq Equity Income at 50%). For the
+disputed fee it rebuilds the admitted fund in place and re-runs the same three."""
 import json, math, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import engine as E
@@ -51,6 +53,28 @@ def run(spec):
         out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "new_w": round(w[-1] * 100)}
     return fb, out
 
+def run_refee(fid, trust):
+    """Re-run A, B and C with an admitted fund rebuilt at a different trust fee."""
+    ix = E.UNIV_IDS.index(fid)
+    spec = dict(E.UNIV[1][ix], fee_feeder=trust)
+    fb = E.build_fund(spec)
+    E._UF = E.UNIV[0][:ix] + [fb] + E.UNIV[0][ix + 1:]
+    E._US, E._UC, E._UN = E.UNIV[1], E.UNIV[2], len(E.UNIV[1])
+    E._VOL = [f["vol"] for f in E._UF]; E._ADJ = [f["dd_k_adj"] for f in E._US]
+    E._CASH = [f["cash_like"] for f in E._US]
+    pk = {"a": E._Pick(), "b": E._Pick(), "c": E._Pick()}
+    for seq, (idx, u) in enumerate(E.univ_mixes()):
+        ms = E._measure(idx, u, ["net_base", "net_macro"])
+        pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
+    for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
+        pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
+    out = {}
+    for k in "abc":
+        w, band, win = pk[k].result()
+        out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "fund_w": round(w[ix] * 100)}
+    E._UF = E.UNIV[0]
+    return fb, out
+
 if __name__ == "__main__":
     shorts = [f["short"] for f in E.FUNDS + E.ADD_FUNDS]
     res = {}
@@ -61,3 +85,9 @@ if __name__ == "__main__":
         for k, v in out.items():
             mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts + [fb["short"]]) if x)
             print(f"   {k.upper()}: {v['new_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
+    # Global Allocation: 1.20% on two listings, 1.50% on DragonFi (2026-10-22).
+    t = time.time(); fb, out = run_refee("M_GALL", 1.50)
+    print(f"gall_150     fund net base {fb['net_base']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
+    for k, v in out.items():
+        mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
+        print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")

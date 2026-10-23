@@ -2,6 +2,63 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-23 — v65: the AI sell-off rolled in; volatility cut to 2.5; allocations unchanged
+
+At the owner's instruction: debug, code-review and sanity-check; re-research and
+re-verify the data and math, funds and fees, net 10-year CAGR and drawdown, market
+trend, macro, volatility, regional rankings and the selections from the 22-fund list;
+house cleanup.
+
+**A, B and C are unchanged:** A 7.21% / −26.4% long-run (6.91% / −26.6% macro), B
+6.88% / −26.0%, C 6.95% / −26.8%. Nothing that moves fund returns changed: the
+monetary and geopolitics scores, the two that feed the rates and energy tilts, are
+held, and the trend windows end at 30 Sep. The held-out sensitivities re-run to the
+same weights.
+
+**Errors found and fixed:**
+- **The peso's streak count was disputed.** v64 called 22 Oct "its fourth record close
+  in a row" (BusinessWorld); Tribune counts the third, because 20 Oct's 63.09 tied the
+  19th's. The page now gives no count.
+- **"The Fed pricing has barely moved"** was true of the 22 Oct morning read and false by
+  that evening: after the Treasury rally, December read 76-80% against the 90% carried.
+  The note now says when the 90% was read and records the later range as not carried.
+- **A claim with no guard.** Global Allocation's fee note says "none holds it" - true
+  today, false the day a roll put it in a pick. A new engine check (217) holds it to the
+  picks, and the 1.50% re-run behind it is now in `model/heldout_sens.py`, not only in a
+  scratch script.
+- **An orphaned input and a stale toll.** The 22 Oct Asian-session Brent move (+1.7%)
+  lost its last quote when the settle was carried and is removed. The Dammam airport
+  toll was 1 dead; the civil aviation authority raised it to 2 (four dead, ten injured
+  across the two sites).
+
+**Rolled to 22 Oct (US):**
+- **S&P 7,663.43 (−1.21%), its worst day since July; Nasdaq 26,008.86 (−2.60%); Dow
+  52,867.98 (+0.02%)** - Meta's spending plans and Lam Research's guidance sent chip
+  stocks down more than 6%. All three chain to the cent.
+- **VIX 19.03 (+14.09%)**, intraday 20.30 (Cboe, Yahoo, Volatility Therapy; 16.68 + 2.35).
+  Investing.com's 18.84 is not carried: its same-day table has the 10-year at 5.065%.
+- **Brent $113.17 (+$4.35, +4.0%)**, the highest close since 4 May, as Aramco evacuated
+  Dhahran. WTI $99.47 (+2.39%), a chain within December, so its
+  prior is now typed. Brent +82.8% y/y; its 15 Oct 2025 base is at the one-week bound and
+  must be re-anchored next roll (DTN implies 22 Oct 2025 at $62.59, one source).
+- **Gulf:** four dead and ten injured in Saudi Arabia on 22 Oct; Aramco's first full
+  Dhahran evacuation since July.
+
+**Scores:** Volatility & risk appetite **cut 2.75 → 2.5**, undoing the 21 Oct raise,
+which rested on a VIX that has since jumped 14%; not lower, as it is still under its
+19.5 long run and its 22.31 high of 16 Oct. Gauge 2.30 → 2.29. Every other driver and
+region held; their notes now carry the sell-off, the oil break and the Gulf strikes.
+
+**Verified, unchanged:** held-out fees (US Equity Opportunity, Global AI, Global Bond
+Income: no new confirmed fee); Nasdaq Equity Income's look-through (31 Aug, still the
+latest JPMorgan sheet); Global Technology's (a 30 Sep sheet is listed, but two reads
+disagree on its date and country table, so the 31 Aug sheet stays, valid to 30 Oct).
+
+**Not carried:** the 10-year for 22 Oct (market quotes near 4.96%, about −17bp, the
+biggest one-day fall since March 2023; no par curve yet); FedWatch on the 23rd (after
+the as-of date); the 23 Oct PH, Korea and Japan closes (not published when this was
+built).
+
 ## 2026-10-22 — v64: review, fact-check and roll; allocations unchanged
 
 At the owner's instruction: debug, code-review and sanity-check; re-research and

@@ -157,6 +157,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+95. A TIMESTAMP IS PART OF A PROBABILITY. "FedWatch had December at 90% on 22 Oct" was
+   the 09:12 GMT read; by the close the Treasury rally had it near 76-80%. A quote
+   that moves inside a day carries its hour, or the prose built on it ("has barely
+   moved") goes false the same afternoon.
+94. A CLAIM ABOUT THE PICKS NEEDS A CHECK ON THE PICKS. "None holds it" in a fee note
+   is true only until the next roll changes A, B or C. Every sentence that describes
+   the selection gets a check against the selection, or it is a guess with a date.
 93. ONE STANDARD MEANS ONE READING OF IT. Global AI was held out because its
    listings disagree (1.20% and 1.50%); Global Allocation was let in at 1.20% with
    DragonFi listing 1.50%. Two of three agreeing is not "no disagreement". The
