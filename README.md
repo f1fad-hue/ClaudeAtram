@@ -49,14 +49,14 @@ Asia Equity / Global Technology / Global Dividend / Global Health Care / Global 
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · Long-run view | B · Macro view | C · Nasdaq Income at 50% |
-|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 5 / 0 / 20 / 35 / 0 / 0 / 0 / 0 | **5 / 35 / 15 / 0 / 0 / 35 / 10 / 0 / 0 / 0 / 0** | 5 / 50 / 10 / 0 / 0 / 35 / 0 / 0 / 0 / 0 / 0 |
-| 10y net CAGR after all fees | 6.91% | 6.88% | **6.95%** |
-| Expected max drawdown (10y) | −26.6% | **−26.0%** | −26.8% |
-| Return per unit of drawdown | 0.260 | **0.265** | 0.259 |
+| | A · Long-run view | B · Macro view | C · Nasdaq Income at 50% | D · Four funds, Nasdaq Income at 50% |
+|---|---|---|---|---|
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 5 / 0 / 20 / 35 / 0 / 0 / 0 / 0 | **5 / 35 / 15 / 0 / 0 / 35 / 10 / 0 / 0 / 0 / 0** | 5 / 50 / 10 / 0 / 0 / 35 / 0 / 0 / 0 / 0 / 0 | 20 / 50 / 20 / 10 / 0 / 0 / 0 / 0 / 0 / 0 / 0 |
+| 10y net CAGR after all fees | 6.91% | 6.88% | **6.95%** | 6.80% |
+| Expected max drawdown (10y) | −26.6% | **−26.0%** | −26.8% | −26.4% |
+| Return per unit of drawdown | 0.260 | **0.265** | 0.259 | 0.258 |
 
-All three rows are on the macro view. **One rule chooses all three**, over the eleven
+All four rows are on the macro view. **One rule chooses all four**, over the eleven
 funds within the review's limits (at most 5 funds, 35% in any one, at least 5% peso
 cash; 322,725 mixes): the best 10-year net CAGR after fees inside the drawdown budget,
 then the lowest drawdown within 0.05pp of it. The engine re-chooses each at every
@@ -71,6 +71,10 @@ update:
   (71 mixes inside the tie).
 - **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35%
   cap): 0.07pp a year above B for 0.8pp more drawdown.
+- **D** is C on four funds only - Nasdaq Equity Income at 50% with the Peso Money
+  Market, Asia Equity and Global Technology (owner, 2026-10-23): 20 / 50 / 20 / 10,
+  0.15pp a year below C for 0.4pp less drawdown, the price of leaving out Global
+  Health Care. Its tie also holds 25 / 50 / 5 / 20 at 6.85% / −27.0%.
 
 Global Health Care and Global Infra Equity, both new to the search, do the diversifying
 work: their correlations with the two US-tech sleeves run 0.56-0.64. The budget, −27.17%,

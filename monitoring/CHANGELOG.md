@@ -2,6 +2,47 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-23 — v66: Portfolio D (four funds), and all four portfolios head to head
+
+At the owner's instruction: "Make a portfolio D compose 50% atram nasdaq equity income
+with atram global tech, atram asia equity and atram peso money market based [on the]
+macroeconomics drivers ..., regional rankings ..., volatility ... and market trend
+analysis of 3, 6, and 12 months with 10yrs horizon", and then: "Make all portfolios
+to be versus".
+
+**Portfolio D: 20 Money Market / 50 Nasdaq Equity Income / 20 Asia / 10 Global
+Technology, 6.80% / −26.4%** (long-run 6.91%; vol 13.12%; ret/DD 0.258). C's pin,
+C's rule and C's macro inputs, over those four funds only: 43 mixes under the limits,
+18 inside the budget, 2 in the tie - the other is 25 / 50 / 5 / 20 at 6.85% / −27.0%,
+and D is the shallower. It is the mix C held from v59 to v62, before Global Health Care
+joined the search. Against C: 0.15pp a year less for 0.4pp less drawdown. D's search
+is C's loop restricted to the four funds, so nothing is measured twice and D can never
+beat C (a check holds both).
+
+How D holds up: unchanged under a flat volatility view and the lower Asia trend figure;
+with the rates and oil tilts off, Asia's fee higher or the market trend off, it moves to
+25 / 50 / 5 / 20; without Asia's re-rating, to 30 / 50 / 0 / 20 (6.75%). Its worst
+shortfall against the best four-fund mix under any one alternative is 0.20pp (no Asia
+re-rating).
+
+**All four, versus.** The Portfolios tab now opens on A vs B vs C vs D: four donuts in
+two rows, one table of who holds what, and a head-to-head table with the best figure in
+each row marked - net CAGR, long-run CAGR, drawdown, volatility, return per drawdown,
+P1M after ten years and the three stress drawdowns. A "who wins where" card names the
+leader on each measure and sets every pair against every other. The strategic-vs-macro
+lens covers all four. C and D keep their own sections, without repeating their donuts.
+
+**Checks:** engine 223 (D's limits, its four funds, its rule pick, its re-derivation,
+its what-ifs, subset of C); audit 389 (an independent walk over D's four funds rebuilds
+D, its tie and its six what-ifs; the README table has a D column; D's CLAIMS row);
+validator 23 (four donuts in two rows; the A-B-C-D tables fit a phone; D's own row);
+mutations 36 (D holding a fifth fund, D's weights drifting, a D what-if typed).
+
+**Retired with it:** the audit and validator checks that required "nothing left of
+Portfolio D" - written for the old review-pick D (retired in v59), now replaced by
+checks that the new D is what it claims and that nothing of the old one returned; the
+A-to-B legend and the A-vs-B-only headline table and delta card.
+
 ## 2026-10-23 — v65: the AI sell-off rolled in; volatility cut to 2.5; allocations unchanged
 
 At the owner's instruction: debug, code-review and sanity-check; re-research and

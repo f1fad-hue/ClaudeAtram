@@ -157,6 +157,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+96. A NAME THAT COMES BACK NEEDS ITS OLD GUARDS REWRITTEN, NOT DELETED. "Nothing left of
+   Portfolio D" guarded against the retired review pick for four versions; the owner's new
+   four-fund D tripped it on day one. The guard was right about the old D and wrong about
+   the name: it now checks that the new D is what it claims, and that the old one's fields
+   have not come back with it.
 95. A TIMESTAMP IS PART OF A PROBABILITY. "FedWatch had December at 90% on 22 Oct" was
    the 09:12 GMT read; by the close the Treasury rally had it near 76-80%. A quote
    that moves inside a day carries its hour, or the prose built on it ("has barely

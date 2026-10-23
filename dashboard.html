@@ -292,6 +292,8 @@ details.how p:last-child{margin-bottom:0}
 /* eleven columns of correlations (2026-10-22): tighter cells, the name column kept readable */
 #cmat th, #cmat td { padding: 6px 3px; font-size: 11px; }
 #cmat td:first-child { min-width: 96px; }
+/* four portfolio columns (A-D, 2026-10-23): tighter cells so D fits a phone */
+#ptab td, #vswt td { padding-left: 6px; }
 </style>
 
 <div id="app">
@@ -524,9 +526,9 @@ details.how p:last-child{margin-bottom:0}
 <!-- ================= 4. PORTFOLIOS ================= -->
 <div class="panel" id="p-port" role="tabpanel" aria-labelledby="t-port">
 
-  <section>
-    <p class="eyebrow">A vs B &middot; one rule, two views</p>
-    <h2>The long-run view, or the macro view</h2>
+  <section id="vssec">
+    <p class="eyebrow">A vs B vs C vs D &middot; one rule, four answers</p>
+    <h2>Four portfolios, head to head</h2>
     <p class="lede" id="pblede">—</p>
     <div class="note" id="listnote">—</div>
     <div class="vsgrid">
@@ -541,10 +543,19 @@ details.how p:last-child{margin-bottom:0}
         <div class="dn">Macro view</div>
         <div id="donutB"></div>
       </div>
+      <div class="dwrap">
+        <div class="dt2">Portfolio C</div>
+        <div class="dn">Nasdaq Income at <span id="pindn">—</span></div>
+        <div id="donutC"></div>
+      </div>
+      <div class="dwrap">
+        <div class="dt2">Portfolio D</div>
+        <div class="dn" id="pddn">—</div>
+        <div id="donutD"></div>
+      </div>
     </div>
-    <div class="legend" id="dlegend" style="justify-content:center;margin-top:12px"></div>
     <div class="card" style="margin-top:12px">
-      <div class="tw"><table class="dt" id="pbtab"></table></div>
+      <div class="tw"><table class="dt" id="vswt"></table></div>
       <p class="note" id="pbnote">—</p>
     </div>
     <details class="card how">
@@ -558,21 +569,28 @@ details.how p:last-child{margin-bottom:0}
     <p class="eyebrow">Portfolio C &middot; your pinned variant</p>
     <h2>Nasdaq Equity Income held at <span id="pinh">—</span></h2>
     <p id="pinlede">—</p>
-    <div class="dwrap" style="max-width:240px;margin:0 auto">
-      <div class="dt2">Portfolio C</div>
-      <div class="dn">Nasdaq Income at <span id="pindn">—</span></div>
-      <div id="donutC"></div>
-    </div>
-    <div class="legend" id="clegend" style="justify-content:center;margin-top:12px"></div>
     <p class="note" id="pinnote" style="margin-top:12px">—</p>
   </section>
 
-  <section>
-    <p class="eyebrow">Headline forecast</p>
+  <section id="pdsec">
+    <p class="eyebrow">Portfolio D &middot; your four-fund variant</p>
+    <h2 id="pdh">—</h2>
+    <p id="pdlede">—</p>
+    <p class="note" id="pdnote" style="margin-top:12px">—</p>
+    <details class="card how">
+      <summary>D if one assumption is wrong</summary>
+      <div class="tw"><table class="dt" id="pdwi"></table></div>
+      <p class="note" id="pdwinote">—</p>
+    </details>
+  </section>
+
+  <section id="hlsec">
+    <p class="eyebrow">Headline forecast &middot; A vs B vs C vs D</p>
     <div class="card">
       <div class="tw"><table class="dt" id="ptab"></table></div>
-      <p class="note">Both columns on the same macro-adjusted returns and the same funds,
-        so the difference is the weights alone.</p>
+      <p class="note">All four on the same macro-adjusted returns, the same fund forecasts and
+        the same drawdown budget, so the differences are the weights alone. The best figure in
+        each row is marked.</p>
     </div>
     <div class="card" id="deltacard"></div>
     <details class="card how">
@@ -3008,6 +3026,7 @@ details.how p:last-child{margin-bottom:0}
   "a_k": 1.65789,
   "c_k": 1.65526,
   "b_k": 1.65789,
+  "d_k": 1.68125,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -3348,6 +3367,165 @@ details.how p:last-child{margin-bottom:0}
   "dd_cap": 27.17,
   "in_budget": true,
   "cagr_no_rerating": 6.85
+ },
+ "portfolio_d": {
+  "weights": [
+   20,
+   50,
+   20,
+   10,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "ids": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRASEQ",
+   "ATRGTEC",
+   "ATRGLDV",
+   "ATRGHCP",
+   "M_GINF",
+   "M_GEO",
+   "M_GCT",
+   "ATRAMIP",
+   "M_GALL"
+  ],
+  "funds_allowed": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRASEQ",
+   "ATRGTEC"
+  ],
+  "macro": {
+   "weights": [
+    20.0,
+    50.0,
+    20.0,
+    10.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "cagr": 6.8,
+   "vol": 13.12,
+   "maxdd": -26.4,
+   "ret_per_dd": 0.258,
+   "sharpe_like": 0.027,
+   "terminal_1m": 1930690,
+   "worst_1m_from_open": 736000
+  },
+  "base": {
+   "weights": [
+    20.0,
+    50.0,
+    20.0,
+    10.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "cagr": 6.91,
+   "vol": 13.12,
+   "maxdd": -26.3,
+   "ret_per_dd": 0.263,
+   "sharpe_like": 0.036,
+   "terminal_1m": 1950668,
+   "worst_1m_from_open": 737000
+  },
+  "column": "net_macro",
+  "fund": "ATRQIAP",
+  "pin_pct": 50,
+  "band_n": 2,
+  "n_feasible": 18,
+  "band": [
+   {
+    "weights": [
+     20,
+     50,
+     20,
+     10,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.8,
+    "maxdd": -26.4
+   },
+   {
+    "weights": [
+     25,
+     50,
+     5,
+     20,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.85,
+    "maxdd": -27.0
+   }
+  ],
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $113. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 2.6,
+    "vol": 20.99,
+    "maxdd": -48.1
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
+    "cagr": 4.81,
+    "vol": 17.06,
+    "maxdd": -37.2
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 3.15,
+    "vol": 19.02,
+    "maxdd": -43.0
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 9.02,
+    "vol": 10.5,
+    "maxdd": -18.6
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
+    "cagr": 6.8,
+    "vol": 13.12,
+    "maxdd": -26.4
+   }
+  ],
+  "dd_cap": 27.17,
+  "in_budget": true,
+  "cagr_no_rerating": 6.6
  },
  "universe": {
   "limits": {
@@ -3914,6 +4092,23 @@ details.how p:last-child{margin-bottom:0}
      "cagr": 6.99,
      "maxdd": -26.4
     },
+    "d": {
+     "weights": [
+      20,
+      50,
+      20,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.85,
+     "maxdd": -26.4
+    },
     "a": {
      "cagr": 6.94,
      "maxdd": -26.6
@@ -3953,6 +4148,23 @@ details.how p:last-child{margin-bottom:0}
      ],
      "cagr": 7.29,
      "maxdd": -26.6
+    },
+    "d": {
+     "weights": [
+      25,
+      50,
+      5,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.11,
+     "maxdd": -26.8
     },
     "a": {
      "cagr": 7.23,
@@ -3994,6 +4206,23 @@ details.how p:last-child{margin-bottom:0}
      "cagr": 7.0,
      "maxdd": -27.1
     },
+    "d": {
+     "weights": [
+      30,
+      50,
+      0,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.75,
+     "maxdd": -25.4
+    },
     "a": {
      "cagr": 6.91,
      "maxdd": -26.6
@@ -4032,6 +4261,23 @@ details.how p:last-child{margin-bottom:0}
       0
      ],
      "cagr": 6.96,
+     "maxdd": -27.0
+    },
+    "d": {
+     "weights": [
+      25,
+      50,
+      5,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.84,
      "maxdd": -27.0
     },
     "a": {
@@ -4075,6 +4321,23 @@ details.how p:last-child{margin-bottom:0}
      "cagr": 6.91,
      "maxdd": -27.1
     },
+    "d": {
+     "weights": [
+      25,
+      50,
+      5,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.76,
+     "maxdd": -27.0
+    },
     "a": {
      "cagr": 6.85,
      "maxdd": -26.7
@@ -4114,6 +4377,23 @@ details.how p:last-child{margin-bottom:0}
      ],
      "cagr": 6.95,
      "maxdd": -26.8
+    },
+    "d": {
+     "weights": [
+      20,
+      50,
+      20,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.8,
+     "maxdd": -26.4
     },
     "a": {
      "cagr": 6.91,
@@ -7478,11 +7758,18 @@ function donut(host, w, title, cagr, dd) {
   const NUW = WN[PB.ids.length];
   donut($("#donutA"), PA.weights, "Portfolio A", A.cagr, A.maxdd);
   donut($("#donutB"), PB.weights, "Portfolio B", Bm.cagr, Bm.maxdd);
-  $("#dlegend").innerHTML = SH.map((s, i) => (PA.weights[i] || PB.weights[i]) ?
-    `<span class="lgi"><i class="swatch" style="background:${FC[i]}"></i>${s}
-      <b>${PA.weights[i]}→${PB.weights[i]}%</b></span>` : "").join("");
+  /* WHO HOLDS WHAT, A vs B vs C vs D (owner, 2026-10-23: "make all portfolios to be
+     versus"). A row for every fund any of the four holds, a column per portfolio. */
+  const P4 = [PA, PB, PC, D.portfolio_d], P4L = ["A", "B", "C", "D"];
+  const vw = $("#vswt");
+  vw.appendChild(el("thead", null, `<tr><th>Fund</th>` + P4L.map(x => `<th>${x}</th>`).join("") + `</tr>`));
+  const vwb = el("tbody");
+  SH.forEach((s, i) => { if (P4.some(q => q.weights[i])) vwb.appendChild(el("tr", null,
+    `<td><span class="swatch" style="background:${FC[i]}"></span>${s}</td>` +
+    P4.map(q => `<td>${q.weights[i] ? q.weights[i] + "%" : "&ndash;"}</td>`).join(""))); });
+  vw.appendChild(vwb);
   $("#pblede").innerHTML =
-    `One rule for all three: the best ${HYN} net CAGR after fees inside the drawdown budget,
+    `One rule for all four: the best ${HYN} net CAGR after fees inside the drawdown budget,
      then the lowest drawdown within ${tie.toFixed(2)}pp of it, over the ${NUW} funds this page
      models in full, with at most ${L6.max_funds} funds, ${L6.max_w}% in any one and
      at least ${L6.min_cash}% cash. <strong>A</strong> reads the long-run returns alone:
@@ -7492,8 +7779,10 @@ function donut(host, w, title, cagr, dd) {
     `. <strong>B</strong> reads the macro view &mdash; the regional ranking and the market
      trend at 3, 6 and 12 months against the 10-year anchor, the volatility curve, and the
      drivers' rates and energy tilts: <b class="num">${pc(Bm.cagr)}</b> at
-     <b class="num">${pc1(Bm.maxdd)}</b>, ${PB.band_n} mixes inside the tie. The engine
-     re-chooses all three at every update.`;
+     <b class="num">${pc1(Bm.maxdd)}</b>, ${PB.band_n} mixes inside the tie. <strong>C</strong> holds
+     ${CF.short} at ${PC.pin_pct}% and chooses the rest the same way; <strong>D</strong> does too, from
+     ${D.portfolio_d.funds_allowed.filter(id => id !== PC.fund).map(id => SH[PB.ids.indexOf(id)]).join(", ").replace(/, ([^,]*)$/, " and $1")}
+     only. The engine re-chooses all four at every update.`;
   /* THE 22-FUND LIST, SEARCHED (2026-10-22): every fund whose fees are confirmed is in
      the search; the rest are held out, each with what is missing. */
   const M_ = D.macro, HO = D.universe.held_out;
@@ -7520,9 +7809,7 @@ function donut(host, w, title, cagr, dd) {
      Income at 50%, over the same funds as A and B since 2026-10-21. */
   $("#pinh").textContent = C.pin_pct + "%"; $("#pindn").textContent = C.pin_pct + "%";
   donut($("#donutC"), C.weights, "Portfolio C", C.macro.cagr, C.macro.maxdd);
-  $("#clegend").innerHTML = SH.map((s, i) => C.weights[i] ?
-    `<span class="lgi"><i class="swatch" style="background:${FC[i]}"></i>${s}
-      <b>${C.weights[i]}%</b></span>` : "").join("");
+  /* C's weights are in the versus table above, beside A, B and D. */
   $("#pinlede").innerHTML =
     `${CF.short} fixed at <b class="num">${C.pin_pct}%</b>; the rest are chosen from the same
      ${NUW} funds as A and B, on B's macro, regional, volatility and market-trend inputs and
@@ -7538,19 +7825,48 @@ function donut(host, w, title, cagr, dd) {
     (C.weights[iAsia] ? ` Without Asia's +${D.macro.asia_rerating.toFixed(1)}% re-rating credit C
        returns <b class="num">${pc(C.cagr_no_rerating)}</b>.` : ``);
 
-  const t = $("#pbtab"), sc = n => x => x.scenarios.find(r => r.name.indexOf(n) === 0);
-  t.appendChild(el("thead", null, `<tr><th></th><th>A</th><th>B</th><th>C</th></tr>`));
-  const tb = el("tbody"), P3 = [A, Bm, C.macro], S3 = [PA, PB, C];   // C: portfolio_c
-  [[`Net CAGR`, P3.map(x => pc(x.cagr))],
-   ["Drawdown", P3.map(x => pc1(x.maxdd))],
-   ["Volatility", P3.map(x => pc(x.vol))],
-   ["Return / DD", P3.map(x => x.ret_per_dd.toFixed(3))],
-   ["&#8369;1M after 10y", P3.map(x => "&#8369;" + (x.terminal_1m / 1e6).toFixed(2) + "M")],
-   ["Hormuz · DD", S3.map(x => pc1(sc("Hormuz")(x).maxdd))],
-   ["Hawkish · DD", S3.map(x => pc1(sc("Hawkish")(x).maxdd))],
-  ].forEach(([lab, v]) => tb.appendChild(el("tr", null,
-     `<td>${lab}</td>` + v.map(x => `<td>${x}</td>`).join(""))));
-  t.appendChild(tb);
+  /* Portfolio D (owner, 2026-10-23): C's pin, C's rule and inputs, over the owner's
+     four funds only. Everything below is read from the payload: which funds D may
+     hold, what C holds that D may not, the runner-up in its tie, and its what-ifs. */
+  const PD = D.portfolio_d, DM = PD.macro, DA = PD.funds_allowed.map(id => PB.ids.indexOf(id));
+  const dOthers = DA.filter(i => PB.ids[i] !== PD.fund).map(i => SH[i]);
+  const lst = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+  $("#pdh").innerHTML = `${CF.short} at ${PD.pin_pct}%, with ${lst(dOthers)}`;
+  $("#pddn").textContent = `${WN[DA.length]} funds only`;
+  donut($("#donutD"), PD.weights, "Portfolio D", DM.cagr, DM.maxdd);
+
+  $("#pdlede").innerHTML =
+    `${CF.short} fixed at <b class="num">${PD.pin_pct}%</b>; the rest chosen from ${lst(dOthers)} only,
+     on the same macro, regional, volatility and market-trend inputs and budget as B and C, by the
+     same rule &mdash; ${PD.n_feasible.toLocaleString("en-US")} candidates fit, ${PD.band_n} inside the tie.
+     <b class="num">${pc(DM.cagr)}</b> at <b class="num">${pc1(DM.maxdd)}</b>; on the long-run
+     returns alone ${pc(PD.base.cagr)}.`;
+  const dC = DM.cagr - C.macro.cagr, dCD = Math.abs(DM.maxdd) - Math.abs(C.macro.maxdd);
+  const cOnly = SH.filter((s, i) => C.weights[i] && !DA.includes(i));
+  const runner = PD.band.find(m => m.weights.join() !== PD.weights.join());
+  $("#pdnote").innerHTML =
+    `D returns <b class="num">${Math.abs(dC).toFixed(2)}pp</b> a year ${dC >= 0 ? "more" : "less"} than C,
+     with <b class="num">${Math.abs(dCD).toFixed(1)}pp</b> ${dCD >= 0 ? "more" : "less"} drawdown` +
+    (cOnly.length ? `: C also holds ${lst(cOnly)}, which D leaves out.` : `.`) +
+    (runner ? ` The tie also holds ${MIXN(runner.weights)} at ${pc(runner.cagr)} / ${pc1(runner.maxdd)};
+       D is the shallower of the two.` : ``) +
+    (PD.weights[iAsia] ? ` Without Asia's +${D.macro.asia_rerating.toFixed(1)}% re-rating credit D
+       returns <b class="num">${pc(PD.cagr_no_rerating)}</b>.` : ``);
+  const WI_ = D.universe.what_if, WIL = {vol_flat: "Volatility view flat", drags_neutral: "No rates or oil tilt",
+    asia_no_rerating: "No Asia re-rating", asia_fee_hi: "Asia fee higher", trend_off: "No market trend",
+    trend_alt: "Lower Asia trend figure"};
+  const wt = $("#pdwi");
+  wt.appendChild(el("thead", null, `<tr><th>If&hellip;</th><th>D becomes</th><th>CAGR</th></tr>`));
+  const wb = el("tbody");
+  Object.keys(WI_).forEach(k => wb.appendChild(el("tr", null,
+    `<td>${WIL[k] || k}</td><td>${WI_[k].d.weights.join() === PD.weights.join() ? "unchanged" : MIXN(WI_[k].d.weights)}</td>
+     <td>${pc(WI_[k].d.cagr)}</td>`)));
+  wt.appendChild(wb);
+  const nSame = Object.keys(WI_).filter(k => WI_[k].d.weights.join() === PD.weights.join()).length;
+  $("#pdwinote").innerHTML = `D is re-chosen by the same rule on each alternative input and comes out
+    unchanged in ${WN[nSame].toLowerCase()} of ${WN[Object.keys(WI_).length].toLowerCase()}.`;
+
+  const sc = n => x => x.scenarios.find(r => r.name.indexOf(n) === 0);
   /* D against A. Signed by the data: "level with" inside the tie, above/below outside
      it. The fund that carries the gap is the one whose weight difference times its
      forecast is largest, found here, not named in advance. */
@@ -7588,70 +7904,64 @@ function donut(host, w, title, cagr, dd) {
     (noT.length ? ` ${noT.length < 2 ? noT[0].short : noT.slice(0, -1).map(f => f.short).join(", ") + " and " + noT[noT.length - 1].short} ${noT.length > 1 ? "carry" : "carries"} no
       market-trend tilt: no trailing-return series is sourced for ${noT.length > 1 ? "them" : "it"}.` : ``);
 
-  // headline comparison, A against D
+  /* HEAD TO HEAD (owner, 2026-10-23: "make all portfolios to be versus"). All four on
+     one table, the best in each row marked - the highest return, the shallowest
+     drawdown, the lowest volatility - every tie marked, none named in advance. */
+  const PDp = D.portfolio_d, PS = [PA, PB, PC, PDp], PM = [A, Bm, C.macro, PDp.macro];
+  const hi = v => Math.max(...v), lo = v => Math.min(...v),
+        shallow = v => v.reduce((a, b) => Math.abs(b) < Math.abs(a) ? b : a);
   const ht = $("#ptab");
-  ht.appendChild(el("thead", null,
-    `<tr><th>Macro-adjusted</th><th>A</th><th>B</th><th>Δ</th></tr>`));
-  const rows = [
-    [`${HYL} net CAGR (after fees)`, A.cagr, Bm.cagr, "pc", 1],
-    ["Expected max drawdown", A.maxdd, Bm.maxdd, "pc1", -1],
-    ["Portfolio volatility σ", A.vol, Bm.vol, "pc", -1],
-    ["Return per unit of drawdown", A.ret_per_dd, Bm.ret_per_dd, "r", 1],
-  ];
+  ht.appendChild(el("thead", null, `<tr><th>Macro-adjusted</th>` + P4L.map(x => `<th>${x}</th>`).join("") + `</tr>`));
   const hb = el("tbody");
-  rows.forEach(([lab, a, b, fmt, dir]) => {
-    const fm = v => fmt === "pc" ? pc(v) : fmt === "pc1" ? pc1(v) : v.toFixed(3);
-    const raw = fmt === "pc1" ? Math.abs(a) - Math.abs(b) : b - a;
-    const better = dir === 1 ? (b > a) : (fmt === "pc1" ? Math.abs(b) < Math.abs(a) : b < a);
-    const dtxt = fmt === "r" ? (b-a >= 0 ? "+" : "−") + Math.abs(b-a).toFixed(3)
-      : (raw >= 0 ? (fmt==="pc1"?"−":"+") : (fmt==="pc1"?"+":"−")) + Math.abs(raw).toFixed(fmt==="pc1"?1:2) + "pp";
-    hb.appendChild(el("tr", null,
-      `<td>${lab}</td><td>${fm(a)}</td><td style="font-weight:600">${fm(b)}</td>
-       <td class="${better?"pos":"neg"}">${dtxt}</td>`));
-  });
+  const hrow = (lab, vals, fm, best) => { const b = best(vals);
+    hb.appendChild(el("tr", null, `<td>${lab}</td>` + vals.map(v =>
+      `<td${v === b ? ' class="pos" style="font-weight:700"' : ''}>${fm(v)}</td>`).join(""))); };
+  hrow(`${HYL} net CAGR`, PM.map(m => m.cagr), pc, hi);
+  hrow("Long-run returns only", PS.map(q => q.base.cagr), pc, hi);
+  hrow("Expected max drawdown", PM.map(m => m.maxdd), pc1, shallow);
+  hrow("Volatility σ", PM.map(m => m.vol), pc, lo);
+  hrow("Return per drawdown", PM.map(m => m.ret_per_dd), v => v.toFixed(3), hi);
+  hrow("&#8369;1M after 10y", PM.map(m => m.terminal_1m), v => "&#8369;" + (v / 1e6).toFixed(2) + "M", hi);
+  ["Hormuz", "Hawkish", "AI capex"].forEach(n =>
+    hrow(`${n} &middot; drawdown`, PS.map(q => sc(n)(q).maxdd), pc1, shallow));
   ht.appendChild(hb);
 
-  // both lenses
+  // both lenses, all four
   const t2 = $("#ptab2");
   t2.appendChild(el("thead", null,
     `<tr><th>Portfolio &amp; lens</th><th>CAGR</th><th>σ</th><th>Max DD</th><th>Ret/DD</th></tr>`));
   const tb2 = el("tbody");
-  [["A · strategic", PA.base],["A · macro-adjusted", A],
-   ["B · strategic", PB.base],["B · macro-adjusted", Bm]].forEach(([lab, m], i) => {
+  PS.forEach((q, k) => [["strategic", q.base], ["macro-adjusted", PM[k]]].forEach(([ln, m]) =>
     tb2.appendChild(el("tr", null,
-      `<td${i===3?' style="font-weight:700"':''}>${lab}</td><td>${pc(m.cagr)}</td>
-       <td>${pc(m.vol)}</td><td class="neg">${pc1(m.maxdd)}</td>
-       <td${i===3?' style="font-weight:700"':''}>${m.ret_per_dd.toFixed(3)}</td>`));
-  });
+      `<td>${P4L[k]} &middot; ${ln}</td><td>${pc(m.cagr)}</td><td>${pc(m.vol)}</td>
+       <td class="neg">${pc1(m.maxdd)}</td><td>${m.ret_per_dd.toFixed(3)}</td>`))));
   t2.appendChild(tb2);
 
-  const rc = Bm.cagr - A.cagr, dc = Math.abs(A.maxdd) - Math.abs(Bm.maxdd);
-  /* "a 11% gain" printed on 21 Oct: the article follows the number as spoken. */
-  const gv2 = (Bm.ret_per_dd / A.ret_per_dd - 1) * 100;
-  const gain = Math.abs(gv2) < 1 ? gv2.toFixed(1) : gv2.toFixed(0);
-  const an = n => /^8/.test(n) || n === "11" || n === "18" ? "an" : "a";
-  const eqw = w => PB.ids.map((id, i) => [id, i]).filter(([id, i]) => w[i] && id !== "ATRPHMM")
-    .map(([id, i]) => `${w[i]}% ${SH[i]}`).join(", ");
-  $("#deltacard").innerHTML =
-    (Math.abs(rc) <= tie + 1e-9 ? `<h3>The same return at the model's precision, less drawdown</h3>`
-     : rc > 0 ? `<h3>Better on both axes at once</h3>`
-             : `<h3>A little less return, a good deal less drawdown</h3>`) +
-    `<p>${(() => { const pz = w => w[PB.ids.indexOf("ATRPHMM")];
-        return pz(PA.weights) === pz(PB.weights)
-          ? `The two hold the same ${pz(PB.weights)}% in the money market and differ in the equity:`
-          : `A holds ${pz(PA.weights)}% in the money market and B ${pz(PB.weights)}%; in the equity`; })()}
-      A holds ${eqw(PA.weights)}, B ${eqw(PB.weights)}.</p>
-     <div class="stats" style="margin:12px 0 10px">
-       <div class="stat"><span class="k">Forecast CAGR</span>
-         <span class="v ${rc >= 0 ? "pos" : "neg"}">${sg(rc)}pp</span>
-         <span class="d">${pc(A.cagr)} → ${pc(Bm.cagr)}</span></div>
-       <div class="stat"><span class="k">Expected drawdown</span>
-         <span class="v ${dc >= 0 ? "pos" : "neg"}">${dc >= 0 ? "−" : "+"}${Math.abs(dc).toFixed(1)}pp</span>
-         <span class="d">${pc1(A.maxdd)} → ${pc1(Bm.maxdd)}</span></div>
-     </div>
-     <div class="callout"><b>Return per unit of drawdown ${+gain >= 0 ? "improves" : "falls"}
-      ${A.ret_per_dd.toFixed(3)} → ${Bm.ret_per_dd.toFixed(3)}</b> — ${an(String(Math.abs(gain)))}
-      ${Math.abs(gain)}% ${+gain >= 0 ? "gain" : "loss"}.</div>`;
+  /* WHO WINS WHERE, and every pair against every other. Read from the first named:
+     a positive CAGR gap earns more, a positive drawdown gap falls less. */
+  const nm = i => `<strong>${P4L[i]}</strong>`;
+  const at = (vals, f) => { const b = f(vals); return vals.map((v, i) => v === b ? i : -1).filter(i => i >= 0); };
+  const hz = PS.map(q => sc("Hormuz")(q).cagr);
+  const wins = [
+    [`Highest ${HYN} net CAGR`, at(PM.map(m => m.cagr), hi), PM.map(m => pc(m.cagr))],
+    ["Shallowest expected drawdown", at(PM.map(m => m.maxdd), shallow), PM.map(m => pc1(m.maxdd))],
+    ["Best return per unit of drawdown", at(PM.map(m => m.ret_per_dd), hi), PM.map(m => m.ret_per_dd.toFixed(3))],
+    ["Best return if Hormuz closes", at(hz, hi), hz.map(pc)],
+  ];
+  const pairs = [];
+  for (let i = 0; i < 4; i++) for (let j = i + 1; j < 4; j++) pairs.push([i, j]);
+  $("#deltacard").innerHTML = `<h3>Who wins where</h3><ul class="plain">` +
+    wins.map(([lab, ix, tx]) => `<li>${lab}: ${ix.map(nm).join(" and ")}, ${ix.map(i => tx[i]).join(" and ")}</li>`).join("") +
+    `</ul><div class="tw"><table class="dt" id="pvs"><thead><tr><th>Versus</th><th>CAGR</th>
+     <th>Drawdown</th><th>Ret/DD</th></tr></thead><tbody>` +
+    pairs.map(([i, j]) => {
+      const g = PM[i].cagr - PM[j].cagr, d = Math.abs(PM[j].maxdd) - Math.abs(PM[i].maxdd),
+            r = PM[i].ret_per_dd - PM[j].ret_per_dd;
+      return `<tr><td>${P4L[i]} vs ${P4L[j]}</td><td class="${cls(g)}">${sg(g)}pp</td>
+        <td class="${cls(d)}">${(d >= 0 ? "+" : "−") + Math.abs(d).toFixed(1)}pp</td>
+        <td class="${cls(r)}">${(r >= 0 ? "+" : "−") + Math.abs(r).toFixed(3)}</td></tr>`; }).join("") +
+    `</tbody></table></div><p class="note">Each row reads from the first portfolio named: a positive
+     CAGR gap means it earns more a year, a positive drawdown gap that it falls less.</p>`;
 })();
 
 /* ---------------- frontier ---------------- */
