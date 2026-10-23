@@ -157,6 +157,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+97. A NOTE THAT PRINTS "THE LATEST MOVE" DOES NOT KNOW WHICH WAY IT WENT. "The KOSPI fell
+   {latest_chg}%" was true for one session and would have printed "fell 0.3%" for a 0.3%
+   gain the next. A move that a sentence describes in the past gets its own dated input;
+   only a sentence written for either sign may read the latest one.
 96. A NAME THAT COMES BACK NEEDS ITS OLD GUARDS REWRITTEN, NOT DELETED. "Nothing left of
    Portfolio D" guarded against the retired review pick for four versions; the owner's new
    four-fund D tripped it on day one. The guard was right about the old D and wrong about

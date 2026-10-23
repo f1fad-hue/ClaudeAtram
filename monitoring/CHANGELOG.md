@@ -2,6 +2,59 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-23 — v67: rolled to Friday 23 Oct; A, B, C and D unchanged
+
+At the owner's instruction: debug, code-review and sanity-check; re-research and
+re-verify the data and math, funds and fees, net 10-year CAGR and drawdown, market
+trend, macro, volatility, regional rankings and the selections from the 22-fund list;
+house cleanup.
+
+**A, B, C and D are unchanged:** A 7.21% / −26.4% long-run (6.91% / −26.6% macro), B
+6.88% / −26.0%, C 6.95% / −26.8%, D 6.80% / −26.4%. Nothing rolled feeds a fund return:
+the drivers and regions that do are held, and the trend windows end at 30 Sep.
+
+**Errors found and fixed:**
+- **The Report described three portfolios after D joined.** "A, B and C come from one
+  rule..." and the cash section ("C 5%") left D out; both now name it (D holds 20% cash).
+- **Notes that print a move from the latest input would have flipped its sign.** The Asia,
+  earnings and volatility notes printed the KOSPI's and Nikkei's latest moves as "fell
+  X%"; rolled to Friday's +0.30% KOSPI they would have read "fell 0.3%". The 22 Oct moves
+  are now dated inputs of their own (`kospi_22oct_chg_pct`, `nikkei_22oct_chg_pct`,
+  `psei_22oct_chg_pct`, `kospi_21oct_chg_pct`), and the 23 Oct ones are worded as gains
+  or losses from the data.
+- **A backwards sentence caught in proofreading:** the first draft of the monetary note
+  had the 10-year falling "to 5.13% on the 21st - from 4.96%". Fixed before the engine
+  ran; the redraft then failed the check that the note lists at least three dated closes
+  matching the series, and now lists them day by day.
+- **"0.3%"** for a move published at 2dp: now formatted as 0.30%.
+
+**Rolled:**
+- **Peso 63.615 (23 Oct)**, 9.5 centavos weaker, a record close after a record 63.62
+  intraday (Manila Times, Filipino Times, BAP data); 7.58% loss of purchasing power this
+  year. Remolona: BSP intervenes only a little, to limit inflationary swings.
+- **PSEi 5,728.63 (−0.88%)** on the hike and the peso (Inquirer, Bloomberg).
+- **KOSPI 5,550.30 (+0.30%)**, a 4% intraday fall reversed as SK Hynix rose 4.42% on
+  halting Solidigm's IPO review; **Nikkei 62,693.16 (−0.34%)**.
+- **10-year 4.96% (22 Oct, par curve)**, −17bp (StockMarketWatch's table; 24/7 Wall St
+  citing Treasury's curve) - held back on 23 Oct on market quotes; 2-year 4.65%, 30-year
+  5.29%.
+- **FedWatch (23 Oct, tool-cited):** October 7.2%, December 80.5%, from 16% and 90%.
+- **As-of date 23 Oct** (PH/Asia Friday close; US series at Thursday 22 Oct).
+
+**Verified, unchanged:** Brent $113.17 and the VIX 19.03 (22 Oct); the US closes of the
+22nd; the held-out fees. Iran's claim of seven tankers hit is unconfirmed and disputed
+by Washington, so the geopolitics note keeps the confirmed 22 Oct facts.
+
+**Not carried:** the 23 Oct US session (trading when this was built). **Next roll:**
+Brent's year-ago base (15 Oct 2025) is at its one-week bound against the 22 Oct settle;
+the 23 Oct settle needs a newer base.
+
+**House cleanup:** the orphaned `kospi_20oct_close` and `ust_10y_mkt_22oct` and the
+superseded `fed_dec_post_selloff_reads` removed. The v66 mutation run never finished
+cleanly - the first crashed when a rebuild rewrote the payload it was reading, the
+second was stopped once this roll began editing the engine it copies - so the full set,
+D's three included, runs on this build.
+
 ## 2026-10-23 — v66: Portfolio D (four funds), and all four portfolios head to head
 
 At the owner's instruction: "Make a portfolio D compose 50% atram nasdaq equity income
