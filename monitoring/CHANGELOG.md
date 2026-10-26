@@ -57,7 +57,12 @@ removed; the README result table, CLAIMS register and disclaimer brought up to t
 funds and four horizons.
 
 **Checks:** engine 230/230 (seven new: driver paths, horizon gauges, the 10-year column,
-forward vols, the trend's four horizons, the weights' derivation, the 10-year vol ramp).
+forward vols, the trend's four horizons, the weights' derivation, the 10-year vol ramp);
+independent audit 418/418 (3 standing warnings), re-deriving every new figure from typed
+sources; page validator 24/24 on the published copy (new: the driver table at four
+horizons); mutations 43/43 caught (seven new). One old mutant, Asian Multi-Asset Income
+borrowing Asia's full trend tilt, had become a no-op - half of −0.01 rounds to −0.01 - and
+now drifts the tilt instead, so it can never pass by rounding.
 
 ## 2026-10-23 — v67: rolled to Friday 23 Oct; A, B, C and D unchanged
 
