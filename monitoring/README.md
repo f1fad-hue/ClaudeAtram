@@ -23,19 +23,20 @@ T-bill curve and USD/PHP. Primary sources only. If one is unreachable, leave the
 prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
-1Y / 3Y / 5Y / 10Y (since v68; 3M / 6M / 12M / 10Y before), then the gauge. Each
-driver's score is its 1-year reading; its 3- and 5-year points live in `DRIVER_PATH`
-and are re-judged whenever the 1-year score moves far enough to change the path.
+5Y / 10Y (since v70; 1Y / 3Y / 5Y / 10Y in v68-v69, 3M / 6M / 12M / 10Y before), then
+the gauge. Each driver's score is its reading now; its 5-year reading (the expected average
+over years 1-5) lives in `DRIVER_PATH` and is re-judged whenever the medium-term evidence
+or the reading now moves far enough to change it.
 Drivers and regions are researched on 1–10; both the headline gauge and the regional
 rankings are reported on 1–5. The horizon weights are each view's share of the ten
-years (10 / 20 / 20 / 50) and are not to be tuned. Every portfolio is built from the
+years (50 / 50) and are not to be tuned. Every portfolio is built from the
 same inputs — the drivers' rates and energy tilts (read on each driver's ten-year
 path), the **volatility gap** (the curve's FORWARD vol over each horizon's years,
 weighted, minus the LONG-RUN 19.5 every base return already assumes), the regional
 rankings and the **market trend**: each equity sleeve's market over the past year
-(momentum) and the past 3 and 5 years annualised (reversal), z-scored against its own
-long-run drift and volatility, with the 10Y score held neutral. A reads them at 10
-years alone; B, C and D at all four. Refresh `TREND_INPUTS` (quarters and
+(momentum, for the first year of the five) and the past 3 and 5 years annualised (reversal,
+for the other four), z-scored against its own long-run drift and volatility, with the 10Y
+score held neutral. A reads them at 10 years alone; B, C and D at 5 and 10. Refresh `TREND_INPUTS` (quarters and
 `trail_ann`) and `TREND_END` at each month-end; a check fails once the window is a
 month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
@@ -163,6 +164,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+101. REGROUPING HORIZONS IS ARITHMETIC; ONLY EVIDENCE MOVES A PORTFOLIO. Folding the 1-,
+   3- and 5-year views into one 5-year average reproduced the old blend to the cent - the
+   trend and volatility channels could not move, and did not. Every change in v70 came from
+   five-year evidence that disagreed with the old path's average. When horizons change, say
+   which part of the result is the new grouping and which is the new research.
 100. A TOLERANCE IS SIZED TO THE SERIES, NOT TO THE CALENDAR. A year-ago base "within a
    week" is harmless for a series that drifts and wrong for one that jumped 5.4% in a day:
    Brent's y/y was 2pp high for two releases while every check passed. Ask what the

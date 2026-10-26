@@ -2,6 +2,56 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-27 — v70: every portfolio on 5 and 10-year forecasts
+
+At the owner's instruction: "Update all portfolio based on macroeconomic drivers deep
+analysis, market trend deep analysis, regional rankings deep analysis and volatility deep
+analysis of 5 and 10yrs forecast. Do the best and recommended approach to reach max growth
+10yrs cagr minus fund fees forecast while controlling the drawdown to minimum to all
+portfolios. Do house cleanup." Market data unchanged (26 Oct; US to 23 Oct).
+
+**The two horizons, analysis by analysis** (weights: each view's share of the ten years,
+5Y years 1-5 and 10Y years 6-10, half each):
+- **Macro drivers**: each driver's 5-year reading is its expected average over years 1-5,
+  from medium-term evidence - the Fed's September projections (3.9% at end-2028, 3.6% at
+  end-2029, 3.2% long run), five-year breakevens (2.37-2.48%), the IMF's October growth
+  path, BSP's 2028 inflation forecast (3.3%), long-term EPS forecasts against their record,
+  the CAPE and the Brent curve. Monetary 4.0, Inflation 4.5, Growth 4.75, Earnings 6.0,
+  Valuation 6.0, Volatility 5.0, Geopolitics 3.75; the gauge reads 2.29 now, 2.72 at 5Y.
+- **Regional ranking**: 5-year scores US 5.75, Europe 4.0, Asia 6.75, Philippines 5.5,
+  10-year anchors unchanged.
+- **Market trend**: one 5-year score, momentum for its first year and reversal for its
+  other four (3 + 0.2 z(1Y) − 0.8 × 0.5 z(3Y, 5Y)); the 10-year anchor neutral.
+- **Volatility**: the curve at 5Y and 10Y (19.34 / 19.42%), read on forward vol.
+
+**The portfolios:** A 5 / 30 / 0 / 20 / 0 / 0 / 20 / 0 / 0 / 25 at 7.22% / −26.6%
+(unchanged); **B 10 / 35 / 0 / 10 / 0 / 20 / 25 at 7.19% / −26.0%** (was 15% Health Care,
+30% Infra, 7.20% / −26.1%); C 5 / 50 / 0 / 5 / 0 / 0 / 35 / 0 / 0 / 5 at 7.25% / −26.7%;
+D 25 / 50 / 5 / 20 at 7.06% / −26.8%. All inside the −26.97% budget.
+
+**What the regrouping alone does, and what the evidence does.** Collapsing 1, 3 and 5 years
+into one 5-year average reproduces the v69 blend exactly - the trend tilts and the
+volatility ramp do not move, and could not. What moved the portfolios is where the
+five-year evidence differs from the v69 paths' own 5-year averages: the US 5.75 against
+5.9 (the CAPE at 40.7, a Fed above its long run until 2029), Geopolitics 3.75 against 3.3
+(a Brent curve near $72 for December 2029), Valuation 6.0 against 7.2.
+
+**Errors found and fixed in the rebuild:**
+- **A check that assumed four horizons**: "the horizon blend's long bucket is the mandate
+  horizon" required exactly four weights; it now requires the published weights to be the
+  horizons themselves, ending on the mandate.
+- **A check that a 50/50 split cannot pass**: the audit's "the anchor dominates" took the
+  largest weight, which ties at half; it now asks the anchor for at least half.
+- **Dated forward oil prices read as undated spot**: the Europe note's December 2029 Brent
+  level sat 45 characters from its date; the note now dates the curve first, and the
+  forward curve is a published input the Brent checks know.
+
+**House cleanup:** the 1/3/5/10-year wording removed from the engine, page, README and
+CLAIMS; the driver table shows the reading now beside its 5- and 10-year readings; the
+held-out fund results re-run (US Equity Opportunity at 1.20% would now take 25% of B).
+
+**Checks:** engine 231/231.
+
 ## 2026-10-26 — v69: rolled to Monday 26 Oct; review of v68; A, B, C and D unchanged
 
 At the owner's instruction: debug, code-review and sanity-check; re-research and
