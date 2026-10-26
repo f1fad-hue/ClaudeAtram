@@ -49,6 +49,11 @@ averages) enter the earnings and valuation notes. FedWatch stays at 23 Oct's 7.2
 `kospi_21oct_chg_pct`, and the 22 Oct S&P and Nasdaq moves); the BSP's 17 Dec meeting is
 quoted again in the Philippines note rather than left as an orphan.
 
+**Checks:** engine 231/231 (new: every dated trailing return on or before the as-of and
+under 75 days old; the Brent year-ago bound at three days); independent audit 420/420 (3
+standing warnings); page validator 24/24 on the published copy (version 69, payload
+identical to `model/data.json`); mutations 43/43 caught.
+
 ## 2026-10-26 — v68: every portfolio on 1, 3, 5 and 10-year forecasts
 
 At the owner's instruction: "Update all portfolio based on macroeconomic drivers deep
