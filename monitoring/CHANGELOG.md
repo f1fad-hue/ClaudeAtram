@@ -2,6 +2,56 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-27 — v72: review of v71; US equities rolled to Monday 26 Oct; A, B, C and D unchanged
+
+At the owner's instruction: debug, code-review and sanity-check; re-research, fact-check
+and re-verify the data and math, funds, ETFs, stocks and fees, net 10-year CAGR and
+drawdown, market trend, macro, volatility, regional rankings and the A-D selections from
+the 22-fund list; house cleanup.
+
+**Rolled (cross-checked):**
+- **US equities, 26 Oct** (CNBC's close report, TheStreet, Yahoo): S&P 7,676.77 (+0.70%),
+  Nasdaq 26,169.38 (+0.82%), Dow 52,361.58 (+0.28%), as Anthropic's IPO filing lifted
+  the AI trade after two weekly losses. All three chain to the cent off 23 Oct.
+- **FedWatch, 26 Oct** (FXStreet citing the tool; a futures calculation on CME's method;
+  CNBC): an October hike at 9.4% (from 7.2%), a December hike at 79.7% (from 80.5%).
+- **Gulf, 26 Oct**: the Houthis claimed new strikes on the East-West pipeline's pumping
+  stations and Riyadh's airport; the coalition said it destroyed five missile-storage
+  tunnels in Yemen (Reuters); Saudi, Turkish and Pakistani officials held talks in Tehran.
+
+**Held, not guessed:** the 26 Oct VIX close (published figures run from about 18.2 to
+19.5, and Cboe's own page contradicts itself), the Brent and WTI settles (only intraday
+prints, $114-115 and $101-102), and the 10-year close (only intraday, about 4.98%). Each
+stays at its 23 Oct value until the closes agree.
+
+**Re-verified, unchanged:** the peso's 26 Oct close of 63.95 is both the day's high and
+its close (Manila Bulletin on BAP data, the Manila Times, Philstar) - a Manila Times
+line calling it an intraday record is the same print; the PSEi's 5,641.18; FactSet's
+23 Oct figures (29.5% blended growth, 83% beating, 18.7x forward); the Nasdaq Equity
+Income target's 0.35% TER (justETF, HL, finanzen); the 1.50% trust fee on the A PHP
+classes. A, B, C and D, every fund's net return and every what-if are identical to v71:
+index levels do not feed the return model, and no driver or region score moved on one
+session.
+
+**Errors found and fixed:**
+- **A duplicated dict key, silently resolved** (introduced and caught in this pass): the
+  new 23 Oct December baseline went in above the old 22 Oct one under the same name, and
+  Python kept the later, so the Monetary note printed the 22nd's 90.0% as the 23rd's. The
+  22 Oct reading now has its own name, and a new engine check parses every dict literal
+  in the engine and fails on any key typed twice (none in v71).
+- **A session move read as another day's**: the volatility note's "the Dow fell 1.23%"
+  read the live `dow_chg_pct`, which a roll would have turned into Monday's +0.28% with
+  the word "fell" still in front of it. The 23 Oct moves are now their own inputs.
+- **"a 8.07% loss"**: the article now follows the number as read aloud.
+- **A heading branch that could never run**: the driver heading searched the 10-year
+  view, which is neutral by construction, for "near neutral", so its "still below"
+  branch was dead; it now searches only the views before the anchor.
+- **Missing CLAIMS row**: the 23 Oct session was never registered (v67-v71); it is now,
+  beside 26 Oct.
+
+**Checks:** engine 233/233 (one added: no duplicated dict keys); independent audit
+414/414 (3 standing warnings); page validator 24/24 on the published copy (version 72, payload identical to `model/data.json`); mutations running on this build (count follows).
+
 ## 2026-10-27 — v71: every portfolio on 3, 5 and 10-year forecasts
 
 At the owner's instruction: "Update all portfolio based on macroeconomic drivers deep
@@ -68,7 +118,7 @@ Opportunity at 1.20% would take 20% of A, 25% of B and 10% of C); a mutant added
 trend shares (the 3-year view left on v70's 1/5 momentum split).
 
 **Checks:** engine 232/232; independent audit 414/414 (3 standing warnings); page validator
-23/24 on the local build (row 1, the viewport, is checked on the published copy); mutations run on this build (counts follow).
+24/24 on the published copy (version 71, payload identical to `model/data.json`); mutations 44/44 caught (one added: the 3-year trend view on v70's split).
 
 ## 2026-10-27 — v70: every portfolio on 5 and 10-year forecasts
 

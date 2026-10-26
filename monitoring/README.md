@@ -165,6 +165,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+103. A DICT TAKES THE LAST WORD SILENTLY. Adding a newer baseline above an older one under
+   the same key left both in the source and only one in the data, and the note printed the
+   older day's 90.0% as the newer day's. Nothing errors on a duplicated key, so the engine now
+   parses itself and counts them. When a value gets a successor, rename the old one first.
 102. A NUMBER THAT MATCHES IS NOT A NUMBER THAT IS SOURCED. The 3-year notes said the Fed's
    median was 4.1% "at the end of 2026 and 2027" off the 2026 input alone; the traceability
    check passed because 4.1 was in the payload. The 2027 median turned out to be 4.1% too

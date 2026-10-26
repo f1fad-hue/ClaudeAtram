@@ -24,8 +24,9 @@ from itertools import combinations
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-10-26"        # newest completed session carried (PH/Asia Monday close;
-                            # US series carry Friday 23 Oct, their latest close)
+AS_OF = "2026-10-26"        # newest completed session carried (PH/Asia and US equity
+                            # Monday closes; the VIX, oil settles and Treasury yields
+                            # stay at Friday 23 Oct until their 26 Oct closes agree)
 REVIEW_DATE = "2026-10-26"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -366,14 +367,21 @@ MACRO = {
     # 23 OCT (FXStreet citing the CME FedWatch Tool): a 92.8% chance of a hold next week,
     # i.e. 7.2% for a hike - Yahoo has the same 7.2% - and 80.5% for a hike by December.
     # The 22 Oct pair (16% / 90%) is its baseline; that read was before the Treasury rally.
-    "fed_hike_odds_oct": 7.2,
-    "fed_hike_odds_oct_date": "2026-10-23",
+    # 26 OCT (FXStreet citing the CME FedWatch Tool, 05:32 GMT): a 90.6% chance of a
+    # hold on the 28th, i.e. 9.4% for a hike, and 79.7% for a hike in December. A
+    # futures calculation on CME's method that morning had 90.0% / 10.0%, and CNBC's
+    # close report "a 90% likelihood" of a hold; the tool-cited pair is carried. The
+    # 23 Oct pair (7.2% / 80.5%) is its baseline. Polymarket and Kalshi (about 7% on the
+    # 25th) are not the tool and are not carried.
+    "fed_hike_odds_oct": 9.4,
+    "fed_hike_odds_oct_date": "2026-10-26",
     "fed_hike_odds_oct_intraday_14oct": 50.0,
-    "fed_hike_odds_oct_prev": 16.0, "fed_hike_odds_oct_prev_date": "2026-10-22",
+    "fed_hike_odds_oct_prev": 7.2, "fed_hike_odds_oct_prev_date": "2026-10-23",
     "fed_hike_odds_oct_first_date": "2026-09-17",
-    "fed_hike_odds_dec": 80.5,   # a hike by the 9 Dec meeting (FedWatch)
-    "fed_hike_odds_dec_date": "2026-10-23",
-    "fed_hike_odds_dec_prev": 90.0, "fed_hike_odds_dec_prev_date": "2026-10-22",
+    "fed_hike_odds_dec": 79.7,   # a hike by the 9 Dec meeting (FedWatch)
+    "fed_hike_odds_dec_date": "2026-10-26",
+    "fed_hike_odds_dec_prev": 80.5, "fed_hike_odds_dec_prev_date": "2026-10-23",
+    "fed_hike_odds_dec_22oct_am": 90.0,     # the morning of 22 Oct, before the sell-off
     # The 22 Oct evening reads (TheStreet 76%, Reuters about 80%) were recorded as a range
     # in v65 and are superseded by the 23 Oct tool read.
     # A settled reading of a DECIDED meeting. Kept for the record, and registered
@@ -1434,17 +1442,24 @@ MACRO = {
     # (-1.23%) to 52215.16, as oil topped $100 for WTI; energy the only clear gainer, and
     # the Philadelphia semiconductor index +0.44% after the 22nd's sell-off. All three
     # chain to the cent.
-    "equity_date": "2026-10-23",
-    "spx_close": 7623.68, "spx_chg_pct": -0.52,
-    "nasdaq_close": 25955.34, "nasdaq_chg_pct": -0.21,
-    "dow_close": 52215.16, "dow_chg_pct": -1.23, "dow_chg_pts": -652.82,
+    # 26 Oct (CNBC's close report; TheStreet; Yahoo): S&P +53.09 (+0.70%) to 7676.77;
+    # Nasdaq +214.04 (+0.82%) to 26169.38; Dow +146.42 (+0.28%) to 52361.58, as
+    # Anthropic's IPO filing lifted the AI trade after back-to-back weekly losses for the
+    # S&P and the Nasdaq, with the Fed on the 28th and 163 S&P companies reporting this
+    # week. All three chain to the cent off the 23 Oct closes.
+    "equity_date": "2026-10-26",
+    "spx_close": 7676.77, "spx_chg_pct": 0.70,
+    "nasdaq_close": 26169.38, "nasdaq_chg_pct": 0.82,
+    "dow_close": 52361.58, "dow_chg_pct": 0.28, "dow_chg_pts": 146.42,
+    # 23 Oct, kept for the notes that describe that session
+    "spx_23oct_chg_pct": -0.52, "nasdaq_23oct_chg_pct": -0.21, "dow_23oct_chg_pct": -1.23,
     "sox_23oct_chg_pct": 0.44,
     "spx_record_close": 7818.93, "spx_record_date": "2026-10-06",
     # Previous closes, published so the CHAIN is checkable in code rather than
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7663.43, "nasdaq_prev": 26008.86, "dow_prev": 52867.98,
+    "spx_prev": 7623.68, "nasdaq_prev": 25955.34, "dow_prev": 52215.16,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -1961,7 +1976,7 @@ POSTPONED = []
 
 CATALYSTS = [
     ("2026-10-28", "FOMC decision",
-     "FedWatch had a hike at 7.2% for October and 80.5% by December on 23 Oct: a "
+     f"FedWatch had a hike at {MACRO['fed_hike_odds_oct']}% for October and {MACRO['fed_hike_odds_dec']}% by December on 26 Oct: a "
      "pause now and a hike in December is still the priced path, less firmly than before the sell-off."),
     ("2026-10-29", "US third-quarter GDP and September PCE",
      "The first official read of the quarter the producer-price jump ran through, and "
@@ -2466,6 +2481,11 @@ TREND_ALT_BUILT = {fid: trend_build(fid, ov) for fid, ov in TREND_ALT.items()}
 # year, the IMF's growth path, cyclically adjusted valuations and the Brent curve by
 # contract year) weighed against the cycle now. The 10-year anchor is unchanged. Each
 # region's note closes with the reasoning for its 3- and 5-year scores.
+def _a_an(x):
+    """The article a number takes when read aloud: an 8.07%, an 11%, an 18%; a 7.2%."""
+    w = str(x).split(".")[0].lstrip("-")
+    return "an" if w.startswith("8") or w in ("11", "18") else "a"
+
 def _fed_26_27():
     """The Fed's end-2026 and end-2027 medians in one phrase, joined only while they agree."""
     a, b = MACRO["fed_dot_2026"], MACRO["fed_sep_2027"]
@@ -2474,16 +2494,16 @@ def _fed_26_27():
 REGIONS = {
     "US": {
         "3Y": 5.5, "5Y": 6.25, HZ_LABEL: 6.5,
-        "why": ("Held. Oil, not chips, set the tone on 23 Oct: the S&P fell "
-                f"{abs(MACRO['spx_chg_pct'])}% to 7623.68 and the Dow {abs(MACRO['dow_chg_pct'])}% to 52215.16 "
-                "as December WTI settled above $100, while the Nasdaq slipped only "
-                f"{abs(MACRO['nasdaq_chg_pct'])}% to 25955.34 and chip stocks steadied after the 22nd, when "
-                "Meta's spending plans and Lam Research's guidance had sent them down more than "
-                f"6%. FactSet has {MACRO['factset_beat_pct']}% of reporting companies beating estimates and the "
+        "why": ("Held. Anthropic's IPO filing lifted the AI trade on 26 Oct: the S&P rose "
+                f"{MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} and the Nasdaq {MACRO['nasdaq_chg_pct']:.2f}% to "
+                f"{MACRO['nasdaq_close']:.2f}, the Dow {MACRO['dow_chg_pct']:.2f}% to {MACRO['dow_close']:.2f}, after back-to-back "
+                "weekly losses for the S&P and the Nasdaq - on the 22nd Meta's spending plans and "
+                "Lam Research's guidance had sent chip stocks down more than 6%, and on the 23rd "
+                f"oil took the S&P down {abs(MACRO['spx_23oct_chg_pct']):.2f}%. FactSet has {MACRO['factset_beat_pct']}% of reporting companies beating estimates and the "
                 f"index on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages. The "
                 "data ran hot - producer prices up 1.3% in September, retail sales 0.8% - but "
-                "the hike has stayed out of October: FedWatch had it at 7.2% on 23 Oct, and the "
-                "10-year closed at 5.00%. The consumer is the "
+                f"the hike has stayed out of October: FedWatch had it at {MACRO['fed_hike_odds_oct']}% on 26 Oct, "
+                "two days before the decision, and the 10-year closed at 5.00% on the 23rd. The consumer is the "
                 "weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two "
                 "structural points: the US is a net energy EXPORTER, a relative tailwind with "
                 f"Brent +{MACRO['brent_yoy']:.1f}% y/y, and NDX at 22.4x forward on its last verified reading sat "
@@ -2553,7 +2573,7 @@ REGIONS = {
                 "to it: 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and "
                 "364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The peso "
                 f"kept falling: on 26 Oct it closed at a record {MACRO['usdphp']}, "
-                f"{MACRO['usdphp_chg_ctvo']} centavos weaker - a {MACRO['usdphp_ytd_pct']}% loss of "
+                f"{MACRO['usdphp_chg_ctvo']} centavos weaker - {_a_an(MACRO['usdphp_ytd_pct'])} {MACRO['usdphp_ytd_pct']}% loss of "
                 "purchasing power against the dollar this year - on oil and the Gulf. Governor "
                 "Remolona left the 17 Dec meeting open, and said on the 23rd that BSP intervenes "
                 f"only a little, to limit inflationary swings. The PSEi fell {abs(MACRO['psei_chg_pct'])}% to 5641.18 on the "
@@ -2599,8 +2619,9 @@ for r in REGIONS.values():
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 2.0,
      "HELD at 2.0. Nothing new from the Fed before Wednesday's decision, and the pricing "
-     "held where the sell-off left it: CME FedWatch had an October hike at 7.2% on 23 Oct "
-     "and one by December at 80.5%, from 90% on the morning of the 22nd. On official "
+     f"barely moved: CME FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on 26 Oct, from "
+     f"{MACRO['fed_hike_odds_oct_prev']}% on the 23rd, and one by December at {MACRO['fed_hike_odds_dec']}%, from {MACRO['fed_hike_odds_dec_prev']}% "
+     f"on the 23rd and {MACRO['fed_hike_odds_dec_22oct_am']:.0f}% on the morning of the 22nd. On official "
      "closes the 10-year was 5.12% on the 20th, 5.13% on the 21st, 4.96% on the 22nd and "
      "5.00% on the 23rd, back up 4bp (market close 4.988%), with the 2-year at 4.69% and "
      "the 30-year at 5.33%. All of it is below the 7 Oct intraday high of 5.365%, which is "
@@ -2643,7 +2664,8 @@ DRIVERS = [
      "(2027) stands. The market is testing the spenders: on 22 Oct Meta's spending plans "
      "cost it about 7% and chip stocks fell more than 6%; on the 23rd the chips steadied, "
      f"the Philadelphia semiconductor index up {MACRO['sox_23oct_chg_pct']}%, while the Nasdaq slipped "
-     f"{abs(MACRO['nasdaq_chg_pct'])}%. In Seoul the KOSPI fell "
+     f"{abs(MACRO['nasdaq_23oct_chg_pct']):.2f}%; on the 26th it rose {MACRO['nasdaq_chg_pct']:.2f}% on Anthropic's IPO "
+     "filing, which eased the fear that the data-centre build-out cannot pay. In Seoul the KOSPI fell "
      f"{abs(MACRO['kospi_22oct_chg_pct'])}% on the 22nd, SK Hynix "
      f"{abs(MACRO['skhynix_22oct_chg_pct'])}% and Samsung Electronics "
      f"{abs(MACRO['samsung_22oct_chg_pct'])}%, and SK Hynix won back "
@@ -2653,7 +2675,7 @@ DRIVERS = [
      f"HELD at 8.0, and now re-verified for the US: FactSet had the S&P on {MACRO['spx_fwd_pe']}x "
      f"forward earnings on 23 Oct, below its five-year ({MACRO['spx_fwd_pe_5y']}x) and ten-year "
      f"({MACRO['spx_fwd_pe_10y']}x) averages and the {MACRO['spx_fwd_pe_q3end']:.1f}x of 30 Sep. The S&P closed at "
-     f"7623.68 on the 23rd, {MACRO['spx_off_record_pct']}% below its 7818.93 record of 6 Oct. Asia was "
+     f"{MACRO['spx_close']:.2f} on the 26th, {MACRO['spx_off_record_pct']}% below its 7818.93 record of 6 Oct. Asia was "
      "on 10.5x forward before its October fall and is cheaper on the same earnings, the "
      f"KOSPI {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close at {MACRO['kospi_latest']:,.2f} on the 26th; "
      "NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y "
@@ -2666,7 +2688,7 @@ DRIVERS = [
     ("Volatility & risk appetite", 0.1, 2.5,
      f"HELD at 2.5. The VIX rose {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 23 Oct, "
      f"after trading from {MACRO['vix_23oct_intraday_low']:.2f} to {MACRO['vix_23oct_intraday_high']:.2f}, as oil "
-     f"climbed and the Dow fell {abs(MACRO['dow_chg_pct'])}%; it is a hair under the long-run "
+     f"climbed and the Dow fell {abs(MACRO['dow_23oct_chg_pct']):.2f}%; it is a hair under the long-run "
      f"{MACRO['vix_longrun']}, and below its {MACRO['vix_latest_high']} high of 16 Oct. Asia stayed heavy: "
      f"the KOSPI fell {abs(MACRO['kospi_latest_chg_pct'])}% on the 26th and the Nikkei "
      f"{abs(MACRO['nikkei_latest_chg_pct']):.2f}%, its third straight fall; on the 22nd they had fallen "
@@ -2682,7 +2704,8 @@ DRIVERS = [
      f"{abs(VIX3M_PREV_RESID):.2f}% {'below' if VIX3M_PREV_RESID < 0 else 'above'} on the same test. On "
      f"forward vol the curve sits at {VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} "
      f"{'below' if VOL_RAMP < 0 else 'above'} the long run. Held: the index is at its long-run level, "
-     f"not above it, and the 23 Oct cut already priced the sell-off."),
+     f"not above it, and the 23 Oct cut already priced the sell-off. The 26 Oct close is not "
+     f"carried: the published figures for it disagree, and the index was falling as stocks rose."),
     ("Geopolitics & energy", 0.1, 1.5,
      "HELD at 1.5; the threat widened, the barrels did not shrink. At a Florida rally on "
      "Friday President Trump said the US could launch another operation against Iran, "
@@ -2691,7 +2714,12 @@ DRIVERS = [
      "intercepted missiles and drones aimed at Riyadh and other cities, and the Houthis "
      "claimed hits on pumping stations of the East-West pipeline - claims neither Riyadh "
      "nor Aramco has confirmed. On 22 Oct strikes had killed four at Dammam's airport and "
-     "the Shaybah field and Aramco evacuated its Dhahran headquarters. Brent settled at "
+     "the Shaybah field and Aramco evacuated its Dhahran headquarters. On the 26th the "
+     "Houthis said they had struck the pipeline's pumping stations and Riyadh's airport "
+     "again, and the coalition said it had destroyed five Houthi missile-storage tunnels "
+     "in Yemen (Reuters); the same day Saudi, Turkish and Pakistani officials held talks "
+     "in Tehran, and oil eased on the hope of them - its 26 Oct settle is not carried "
+     "until the reports agree. Brent settled at "
      "$116.72 on 23 Oct, its highest close since 29 April. Read it on VOLUME, the measure "
      "this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at "
      "about 14 mb/d in the week to 18 Oct, 82% of pre-war on preliminary figures, and the "
@@ -2766,14 +2794,14 @@ GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 
 # A check requires every number in a summary to appear in its full note, so a
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
-    "Monetary policy & liquidity": "Held: the 10-year closed at 5.00% on 23 Oct and FedWatch's December odds held at 80.5%; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
+    "Monetary policy & liquidity": f"Held: FedWatch had a December hike at {MACRO['fed_hike_odds_dec']}% on 26 Oct, two days before the Fed meets; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
     "Inflation trajectory": f"Held: no new US price data; Brent settled at $116.72 on 23 Oct, its highest close since 29 April, +{MACRO['brent_yoy']:.1f}% y/y.",
     "Growth momentum": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; the US third-quarter estimate is due on 29 Oct.",
     "Corporate earnings": f"Held, the strongest pillar: {MACRO['factset_beat_pct']}% of reporting S&P companies beat estimates and third-quarter growth is blending at {MACRO['factset_q3_growth']}% (FactSet, 23 Oct).",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
     "Volatility & risk appetite": f"Held: the VIX rose {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 23 Oct, a hair under its long-run {MACRO['vix_longrun']}.",
-    "Geopolitics & energy": "Held: Trump floated another Iran operation and the Houthis kept firing at Saudi Arabia; Brent settled at $116.72, Hormuz flows near 14 mb/d.",
-    "US": f"Held: the S&P fell {abs(MACRO['spx_chg_pct'])}% to 7623.68 on 23 Oct and the Dow {abs(MACRO['dow_chg_pct'])}% as oil rose; the 10-year closed at 5.00%.",
+    "Geopolitics & energy": "Held: the Houthis kept firing at Saudi Arabia as Saudi, Turkish and Pakistani officials held talks in Tehran on the 26th; Brent settled at $116.72 on 23 Oct, Hormuz flows near 14 mb/d.",
+    "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 26 Oct as Anthropic's IPO filing lifted tech; FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}%.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
     "ASIA": f"Held: the KOSPI fell {abs(MACRO['kospi_latest_chg_pct'])}% to {MACRO['kospi_latest']:,.2f} on 26 Oct, {MACRO['kospi_off_2oct_pct']}% below 2 Oct; the Nikkei fell {abs(MACRO['nikkei_latest_chg_pct']):.2f}%.",
     "PHILIPPINES": f"Held: the peso closed at a record {MACRO['usdphp']} on 26 Oct and 91-day bills jumped to 6.624% after BSP's 50bp hike; the PSEi fell {abs(MACRO['psei_chg_pct'])}%.",
@@ -5644,6 +5672,18 @@ def report():
         _d = _dt.date.fromisoformat(iso)
         _sfx = "th" if 11 <= _d.day <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(_d.day % 10, "th")
         return (f"{_d.day}{_sfx}", f"{_d.day} {_d:%b}", f"{_d.day} {_d:%B}")
+    # NO KEY IS TYPED TWICE IN ONE DICT. Python keeps the later of two equal keys and says
+    # nothing: v72's first pass added a 23 Oct December baseline above the 22 Oct one under
+    # the same name, and the note printed the 22nd's 90.0% as the 23rd's. Every dict
+    # literal in this file is parsed and its constant keys counted.
+    import ast as _ast
+    _dupkeys = []
+    for _n in _ast.walk(_ast.parse(open(__file__, encoding="utf-8").read())):
+        if isinstance(_n, _ast.Dict):
+            _ks = [k.value for k in _n.keys if isinstance(k, _ast.Constant)]
+            _dupkeys += [(_n.lineno, k) for k in sorted({k for k in _ks if _ks.count(k) > 1})]
+    checks.append((f"no dict literal in the engine types a key twice ({len(_dupkeys)} found)",
+                   not _dupkeys))
     # FEDWATCH HAS TWO BASELINES and each delta must use its own. The first pass
     # printed "jumped from 50.9% to 73% in a day": the week's move as the day's.
     checks.append(("the FedWatch readings are dated in order, none after the as-of date",
