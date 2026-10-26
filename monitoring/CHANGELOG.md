@@ -50,7 +50,10 @@ five-year evidence differs from the v69 paths' own 5-year averages: the US 5.75 
 CLAIMS; the driver table shows the reading now beside its 5- and 10-year readings; the
 held-out fund results re-run (US Equity Opportunity at 1.20% would now take 25% of B).
 
-**Checks:** engine 231/231.
+**Checks:** engine 231/231; independent audit 408/408 (3 standing warnings; fewer checks
+than v69 because there are fewer horizons to re-derive); page validator 24/24 on the
+published copy (version 70, payload identical to `model/data.json`); mutations 43/43 caught
+(the driver-path and horizon-weight mutants moved to the 5- and 10-year keys).
 
 ## 2026-10-26 — v69: rolled to Monday 26 Oct; review of v68; A, B, C and D unchanged
 
