@@ -50,7 +50,7 @@ session.
   beside 26 Oct.
 
 **Checks:** engine 233/233 (one added: no duplicated dict keys); independent audit
-414/414 (3 standing warnings); page validator 24/24 on the published copy (version 72, payload identical to `model/data.json`); mutations running on this build (count follows).
+414/414 (3 standing warnings); page validator 24/24 on the published copy (version 72, payload identical to `model/data.json`); mutations 44/44 caught.
 
 ## 2026-10-27 — v71: every portfolio on 3, 5 and 10-year forecasts
 
