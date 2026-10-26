@@ -2,6 +2,53 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-26 — v69: rolled to Monday 26 Oct; review of v68; A, B, C and D unchanged
+
+At the owner's instruction: debug, code-review and sanity-check; re-research and
+re-verify the data and math, funds and fees, net 10-year CAGR and drawdown, market
+trend, macro, volatility, regional rankings and the selections from the 22-fund list;
+house cleanup.
+
+**A, B, C and D are unchanged:** A 7.22% / −26.6% (7.43% / −26.4% on its 10-year view),
+B 7.20% / −26.1%, C 7.26% / −26.7%, D 7.07% / −26.8%, all inside the −26.97% budget.
+Every driver and regional score is held, and nothing rolled feeds a fund return: the
+trend windows end at 30 Sep and the vol curve stays on the 20 Oct strip.
+
+**Rolled:** US closes to Friday 23 Oct (S&P 7623.68, −0.52%; Nasdaq 25955.34, −0.21%; Dow
+52215.16, −1.23%; VIX 19.45, +2.21%; 10-year 5.00% on the par curve, 2-year 4.69%,
+30-year 5.33%; Brent $116.72, +3.1%, the highest close since 29 April; WTI $103.27);
+Asia and Manila to Monday 26 Oct (KOSPI 5469.59, −1.45%; Nikkei 62189.65, −0.80%;
+PSEi 5641.18, −1.53%; the peso a record 63.95); the 26 Oct T-bill auction (91-day
+6.624%, +63.2bp, the first after BSP's 50bp hike). FactSet's 23 Oct earnings count (83%
+beating, Q3 growth 29.5%) and the S&P's forward P/E (18.7×, below its five- and ten-year
+averages) enter the earnings and valuation notes. FedWatch stays at 23 Oct's 7.2% /
+80.5%: the 26 Oct readings found disagree (79.7% to 81.0% for December).
+
+**Errors found and fixed:**
+- **Brent's year-on-year was measured a week off its anniversary.** The one-week bound
+  let v67-v68 compare 22 Oct 2026 with 15 Oct 2025 ($61.91) when 22 Oct 2025 was $62.59:
+  +82.8% published against +80.8%. The base is now the exact anniversary (23 Oct 2025,
+  $65.99, the day the Rosneft and Lukoil sanctions lifted Brent 5.4%), the bound is
+  three days, and the three settles reported for it ($65.85, $65.97, $65.99) are kept.
+- **The trend section said every 3- and 5-year return ran to 30 Sep.** Health care's run
+  to 31 Aug, global technology's to 6 Oct and 1 Sep, and the ACWI table shows no date.
+  Each sleeve now carries `trail_date`, the page prints them, and a check bounds their age.
+- **v68 left two retired horizons in prose**: the Philippines note's "the 12-month and
+  ten-year horizons stay neutral" (now "the 3-, 5- and 10-year"), and the driver-table
+  heading "Hostile for a year, near neutral by 5Y", typed, now read from the gauge path.
+  Its note's "a hiking cycle that ends by year four" overstated the Monetary path (5.0 at
+  five years, not neutral) and now says the tightening is expected to fade.
+- **A note that would have printed a fall as a gain.** The volatility note's "reversed
+  into a {latest KOSPI move} gain" would have read "−1.45% gain" on this roll; the 23 Oct
+  move is a dated input of its own (`kospi_23oct_chg_pct`), as lesson 97 asks.
+- **A past catalyst.** The 26 Oct T-bill auction left the catalyst list once it happened;
+  US third-quarter GDP and September PCE (29 Oct) joined it.
+
+**House cleanup:** five inputs no longer quoted anywhere removed
+(`fed_hike_odds_oct_postcpi`, `vix_22oct_intraday_high`, `wti_nov_final`,
+`kospi_21oct_chg_pct`, and the 22 Oct S&P and Nasdaq moves); the BSP's 17 Dec meeting is
+quoted again in the Philippines note rather than left as an orphan.
+
 ## 2026-10-26 — v68: every portfolio on 1, 3, 5 and 10-year forecasts
 
 At the owner's instruction: "Update all portfolio based on macroeconomic drivers deep

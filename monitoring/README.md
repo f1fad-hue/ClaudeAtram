@@ -163,6 +163,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+100. A TOLERANCE IS SIZED TO THE SERIES, NOT TO THE CALENDAR. A year-ago base "within a
+   week" is harmless for a series that drifts and wrong for one that jumped 5.4% in a day:
+   Brent's y/y was 2pp high for two releases while every check passed. Ask what the
+   series can do inside the bound before choosing the bound.
 99. A READING IS NOT A FORECAST UNTIL IT SAYS HOW LONG IT LASTS. The rates and energy
    tilts took a Monetary score of 2.0 as if it held for ten years, beside regional and
    volatility channels that had always averaged their horizons. The inconsistency took
