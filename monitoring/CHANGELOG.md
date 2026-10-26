@@ -2,6 +2,74 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-27 — v71: every portfolio on 3, 5 and 10-year forecasts
+
+At the owner's instruction: "Update all portfolio based on macroeconomic drivers deep
+analysis, market trend deep analysis, regional rankings deep analysis and volatility deep
+analysis of 3, 5 and 10yrs forecast. Do the best and recommended approach to reach max
+growth 10yrs cagr minus fund fees forecast while controlling the drawdown to minimum to all
+portfolios. Do house cleanup." Market data unchanged (26 Oct; US to 23 Oct).
+
+**The three horizons, analysis by analysis** (weights: each view's share of the ten years -
+3Y years 1-3 30%, 5Y years 4-5 20%, 10Y years 6-10 50%):
+- **Macro drivers**: each driver's 3-year reading is its expected average over years 1-3
+  and its 5-year reading over years 4-5, researched year by year: the Fed's September
+  medians (4.1% at the end of 2026 and 2027, 3.9% in 2028, 3.6% in 2029, 3.2% long run),
+  BSP's inflation path (6.1% / 6.0% / 3.3% for 2026-2028), five-year and 5y5y breakevens,
+  the IMF's growth path, long-term EPS forecasts against their record, the CAPE, and the
+  Brent curve for December 2027 ($86.46-87.82) and 2029 ($72.32). Monetary 3.5 / 5.0,
+  Inflation 3.75 / 5.25, Growth 4.5 / 5.25, Earnings 6.5 / 5.5, Valuation 6.5 / 5.5,
+  Volatility 4.5 / 5.5, Geopolitics 3.0 / 5.0; the gauge reads 2.29 now, 2.62 at 3Y, 2.90
+  at 5Y, 3.00 at 10Y. Each step sits between the one before it and neutral, by check.
+- **Regional ranking**: 3-year / 5-year scores US 5.5 / 6.25, Europe 3.75 / 4.5, Asia
+  6.5 / 7.0, Philippines 5.25 / 5.75; 10-year anchors unchanged. Blends (1-5): Asia 3.60,
+  US 3.29, Philippines 2.99, Europe 2.46.
+- **Market trend**: two scored views. The past year is momentum for year 1 ahead, the past
+  3 and 5 years reversal for years 2-5, and each view takes them by the share of its own
+  years in each window: 3Y = 3 + ⅓ z(1Y) − ⅔ × 0.5 z(3Y, 5Y); 5Y = 3 − 0.5 z(3Y, 5Y); 10Y
+  neutral. The shares are derived from the year windows in the engine, not typed.
+- **Volatility**: the curve at 3Y, 5Y and 10Y (19.24 / 19.34 / 19.42%), read on forward vol
+  over each view's own years (19.24 / 19.49 / 19.50%).
+
+**The portfolios:** A 5 / 30 / 0 / 20 / 0 / 0 / 20 / 0 / 0 / 25 at 7.23% / −26.6%
+(unchanged); **B 5 / 35 / 0 / 5 / 0 / 25 / 30 at 7.23% / −26.3%** (was 10% cash, 10%
+Global Technology, 20% Health Care and 25% Infra at 7.19% / −26.0%); C 5 / 50 / 0 / 5 / 0 /
+0 / 35 / 0 / 0 / 5 at 7.26% / −26.7%; D 25 / 50 / 5 / 20 at 7.07% / −26.8%. All inside the
+−26.97% budget.
+
+**What the regrouping alone does, and what the evidence does.** The trend and volatility
+channels are invariant to the regrouping (the trend blend is 3 + 0.1 z(1Y) − 0.2 z(3Y, 5Y)
+either way; the forward variances average to the 10-year implied however the years are cut),
+so their tilts did not move. Averaged over years 1-5, the year-by-year readings land within
+0.15 of v70's five-year readings. What moved B is Monetary: the Fed path above neutral
+through 2028 and near it in 2029 gives a ten-year average of 4.80 against 4.75, so the
+rates drag shrinks (×0.467 from ×0.50). Rerun with Monetary held at 4.75, the rule picks
+10 / 35 / 0 / 10 / 0 / 15 / 30 at 7.20% / −26.1%. B is a near-tie the rule settles, not a
+conviction call.
+
+**Errors found and fixed in the rebuild:**
+- **One year's input reused for another**: the 3-year notes gave the Fed's median as 4.1%
+  "at the end of 2026 and 2027" from the 2026 input alone; traceability passed because the
+  number existed. Cross-checked (FRED's FEDTARMD, the FRED blog, MUFG's 4.125% median dot),
+  the 2027 median is also 4.1%; it is now its own input (`fed_sep_2027`), and the prose
+  joins the two years only while the inputs agree.
+- **The Fed's projection path had no listed source on the page**: FRED's FEDTARMD series
+  and the FRED blog's September SEP note are added to the sources.
+- **Two dated Brent forward quotes failed the Brent prose checks**: December 2027 Brent
+  ($86.46 and $87.82, two tables) is now a published input the checks know, dated "on 22
+  Oct" beside the figure.
+- **The page's trend and driver tables read v70 keys** (`T.view`, `w_mom`, `w_rev`, the
+  first horizon taken as the 5-year one) that a third horizon breaks; both now loop over
+  the published views, and the driver heading names the first horizon near neutral.
+
+**House cleanup:** the 5/10-year wording replaced in the engine, page, README, CLAIMS and
+runbook; the held-out fund results re-run on the new engine (unchanged: US Equity
+Opportunity at 1.20% would take 20% of A, 25% of B and 10% of C); a mutant added for the
+trend shares (the 3-year view left on v70's 1/5 momentum split).
+
+**Checks:** engine 232/232; independent audit 414/414 (3 standing warnings); page validator
+23/24 on the local build (row 1, the viewport, is checked on the published copy); mutations run on this build (counts follow).
+
 ## 2026-10-27 — v70: every portfolio on 5 and 10-year forecasts
 
 At the owner's instruction: "Update all portfolio based on macroeconomic drivers deep

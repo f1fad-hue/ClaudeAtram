@@ -7,7 +7,7 @@ Allocation's fee note; re-run it when any of those fees, or the universe, change
 
 Imports the engine, builds the held-out fund with build_fund() and the factor model,
 re-binds the search's globals to the eleven funds plus that one, and re-runs the rule
-for A (the 10-year view), B (the 5/10-year view) and C (the same, Nasdaq Equity Income at 50%). For the
+for A (the 10-year view), B (the 3/5/10-year view) and C (the same, Nasdaq Equity Income at 50%). For the
 disputed fee it rebuilds the admitted fund in place and re-runs the same three."""
 import json, math, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

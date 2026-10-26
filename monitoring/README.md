@@ -23,20 +23,21 @@ T-bill curve and USD/PHP. Primary sources only. If one is unreachable, leave the
 prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
-5Y / 10Y (since v70; 1Y / 3Y / 5Y / 10Y in v68-v69, 3M / 6M / 12M / 10Y before), then
-the gauge. Each driver's score is its reading now; its 5-year reading (the expected average
-over years 1-5) lives in `DRIVER_PATH` and is re-judged whenever the medium-term evidence
-or the reading now moves far enough to change it.
+3Y / 5Y / 10Y (since v71; 5Y / 10Y in v70, 1Y / 3Y / 5Y / 10Y in v68-v69, 3M / 6M / 12M /
+10Y before), then the gauge. Each driver's score is its reading now; its 3-year reading (the
+expected average over years 1-3) and 5-year reading (years 4-5) live in `DRIVER_PATH`, each
+step between the one before it and neutral, and are re-judged whenever the year-by-year
+evidence or the reading now moves far enough to change them.
 Drivers and regions are researched on 1–10; both the headline gauge and the regional
 rankings are reported on 1–5. The horizon weights are each view's share of the ten
-years (50 / 50) and are not to be tuned. Every portfolio is built from the
+years (30 / 20 / 50) and are not to be tuned. Every portfolio is built from the
 same inputs — the drivers' rates and energy tilts (read on each driver's ten-year
 path), the **volatility gap** (the curve's FORWARD vol over each horizon's years,
 weighted, minus the LONG-RUN 19.5 every base return already assumes), the regional
 rankings and the **market trend**: each equity sleeve's market over the past year
-(momentum, for the first year of the five) and the past 3 and 5 years annualised (reversal,
-for the other four), z-scored against its own long-run drift and volatility, with the 10Y
-score held neutral. A reads them at 10 years alone; B, C and D at 5 and 10. Refresh `TREND_INPUTS` (quarters and
+(momentum, for year 1 ahead) and the past 3 and 5 years annualised (reversal, for years
+2-5), each view taking them by the share of its years inside each window, z-scored against its own long-run drift and volatility, with the 10Y
+score held neutral. A reads them at 10 years alone; B, C and D at 3, 5 and 10. Refresh `TREND_INPUTS` (quarters and
 `trail_ann`) and `TREND_END` at each month-end; a check fails once the window is a
 month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
@@ -164,6 +165,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+102. A NUMBER THAT MATCHES IS NOT A NUMBER THAT IS SOURCED. The 3-year notes said the Fed's
+   median was 4.1% "at the end of 2026 and 2027" off the 2026 input alone; the traceability
+   check passed because 4.1 was in the payload. The 2027 median turned out to be 4.1% too
+   (FRED, MUFG), but nothing had checked it. Give each year its own input, and let the prose
+   join two years only while their inputs agree.
 101. REGROUPING HORIZONS IS ARITHMETIC; ONLY EVIDENCE MOVES A PORTFOLIO. Folding the 1-,
    3- and 5-year views into one 5-year average reproduced the old blend to the cent - the
    trend and volatility channels could not move, and did not. Every change in v70 came from

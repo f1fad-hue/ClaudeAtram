@@ -339,7 +339,7 @@ details.how p:last-child{margin-bottom:0}
   </section>
 
   <section>
-    <p class="eyebrow">Drivers &middot; now / 5Y / 10Y</p>
+    <p class="eyebrow">Drivers &middot; now / 3Y / 5Y / 10Y</p>
     <h2 id="dphead">—</h2>
     <div class="card">
       <div class="tw"><table class="rgrid" id="dptab"></table></div>
@@ -348,7 +348,7 @@ details.how p:last-child{margin-bottom:0}
   </section>
 
   <section>
-    <p class="eyebrow">Regional ranking &middot; 5Y / 10Y</p>
+    <p class="eyebrow">Regional ranking &middot; 3Y / 5Y / 10Y</p>
     <h2 id="rhead">—</h2>
     <p>Blended <span class="num" id="hzw1">—</span>; each point above
       <span class="num">3.0</span> adds <span class="num" id="tiltpp">—</span> a year to
@@ -360,7 +360,7 @@ details.how p:last-child{margin-bottom:0}
   </section>
 
   <section>
-    <p class="eyebrow">Market trend &middot; 5Y / 10Y</p>
+    <p class="eyebrow">Market trend &middot; 3Y / 5Y / 10Y</p>
     <h2>Momentum for a year, reversal for four</h2>
     <p id="trendlede">—</p>
     <div class="card">
@@ -551,7 +551,7 @@ details.how p:last-child{margin-bottom:0}
       </div>
       <div class="dwrap">
         <div class="dt2">Portfolio B</div>
-        <div class="dn">5/10-year view</div>
+        <div class="dn">3/5/10-year view</div>
         <div id="donutB"></div>
       </div>
       <div class="dwrap">
@@ -609,7 +609,7 @@ details.how p:last-child{margin-bottom:0}
       <div class="tw"><table class="dt" id="ptab2"></table></div>
       <p class="note"><strong>Strategic</strong>: long-run return assumptions, no view.
         <strong>10-year view</strong>: plus the four analyses read at 10 years alone, A's
-        column. <strong>Macro-adjusted</strong>: the four analyses at 5 and 10 years
+        column. <strong>Macro-adjusted</strong>: the four analyses at 3, 5 and 10 years
         &mdash; the regional ranking, the volatility curve, the rates and energy tilts and the
         market trend.
         <span id="lenswin">—</span></p>
@@ -622,7 +622,7 @@ details.how p:last-child{margin-bottom:0}
     <p>Every 5%-step mix of the <span class="nuw">—</span> funds within the review's limits &mdash; at most
       <span id="sixlim">—</span> &mdash; <b class="num" id="ntotal">—</b>
       portfolios. The line is the best 10-year net CAGR at each level of drawdown on the
-      5/10-year view; <b class="num" id="nfeas">—</b> of them fit the budget.
+      3/5/10-year view; <b class="num" id="nfeas">—</b> of them fit the budget.
       <span id="frontread">—</span></p>
     <div class="card">
       <figure class="rel">
@@ -639,7 +639,7 @@ details.how p:last-child{margin-bottom:0}
         mixes enumerated); then, among portfolios within <span class="num"
         id="tiepp2">—</span> of that best, the lowest drawdown &mdash; a smaller
         difference is below the model's precision. A applies it to the 10-year view alone;
-        B, C and D to the 5/10-year view, C and D with Nasdaq Equity Income held at 50%.</p>
+        B, C and D to the 3/5/10-year view, C and D with Nasdaq Equity Income held at 50%.</p>
     </details>
   </section>
 
@@ -1819,6 +1819,7 @@ details.how p:last-child{margin-bottom:0}
   "factset_surprise_5y": 7.5,
   "factset_q3_growth": 29.5,
   "factset_q3_growth_prev": 29.2,
+  "fed_sep_2027": 4.1,
   "fed_sep_2028": 3.9,
   "fed_sep_2029": 3.6,
   "fed_sep_longrun": 3.2,
@@ -1841,6 +1842,8 @@ details.how p:last-child{margin-bottom:0}
   "brent_dec2029": 72.32,
   "brent_dec2030": 69.16,
   "brent_front_15oct": 105.92,
+  "brent_dec2027_lo": 86.46,
+  "brent_dec2027_hi": 87.82,
   "ndx_fwd_pe_disputed": [
    20.5,
    23.26
@@ -1949,11 +1952,21 @@ details.how p:last-child{margin-bottom:0}
  },
  "vol_ts": [
   {
+   "label": "3Y",
+   "years": 3.0,
+   "from_years": 0.0,
+   "implied": 19.24,
+   "forward": 19.24,
+   "realised": 15.74,
+   "move_1sd": 33.33,
+   "move_2sd": 66.65
+  },
+  {
    "label": "5Y",
    "years": 5.0,
-   "from_years": 0.0,
+   "from_years": 3.0,
    "implied": 19.34,
-   "forward": 19.34,
+   "forward": 19.49,
    "realised": 15.84,
    "move_1sd": 43.25,
    "move_2sd": 86.51
@@ -1972,48 +1985,57 @@ details.how p:last-child{margin-bottom:0}
  "sp_vol_lt": 19.42,
  "regions": {
   "US": {
-   "5Y": 3.11,
+   "3Y": 3.0,
+   "5Y": 3.33,
    "10Y": 3.44,
-   "why": "Held. Oil, not chips, set the tone on 23 Oct: the S&P fell 0.52% to 7623.68 and the Dow 1.23% to 52215.16 as December WTI settled above $100, while the Nasdaq slipped only 0.21% to 25955.34 and chip stocks steadied after the 22nd, when Meta's spending plans and Lam Research's guidance had sent them down more than 6%. FactSet has 83% of reporting companies beating estimates and the index on 18.7x forward earnings, below its five- and ten-year averages. The data ran hot - producer prices up 1.3% in September, retail sales 0.8% - but the hike has stayed out of October: FedWatch had it at 7.2% on 23 Oct, and the 10-year closed at 5.00%. The consumer is the weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +76.9% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. FIVE YEARS: 5.75, below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate for three of the five years - 3.9% at end-2028, 3.6% at end-2029 - and the cyclically adjusted P/E is 40.7, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost five-year returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. Most houses' decade forecasts favour non-US over US equities for the same reason.",
-   "blend_10": 6.12,
-   "5Y_10": 5.75,
+   "why": "Held. Oil, not chips, set the tone on 23 Oct: the S&P fell 0.52% to 7623.68 and the Dow 1.23% to 52215.16 as December WTI settled above $100, while the Nasdaq slipped only 0.21% to 25955.34 and chip stocks steadied after the 22nd, when Meta's spending plans and Lam Research's guidance had sent them down more than 6%. FactSet has 83% of reporting companies beating estimates and the index on 18.7x forward earnings, below its five- and ten-year averages. The data ran hot - producer prices up 1.3% in September, retail sales 0.8% - but the hike has stayed out of October: FedWatch had it at 7.2% on 23 Oct, and the 10-year closed at 5.00%. The consumer is the weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +76.9% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate through all three - 4.1% at the end of 2026 and 2027, 3.9% at end-2028 - and the cyclically adjusted P/E is 40.7, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost the next years' returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): 6.25, as policy reaches neutral (3.6% at end-2029) and the AI spending has either paid or been digested. Most houses' decade forecasts favour non-US over US equities on the same valuation.",
+   "blend_10": 6.15,
+   "3Y_10": 5.5,
+   "5Y_10": 6.25,
    "10Y_10": 6.5,
-   "blend": 3.27,
+   "blend": 3.29,
    "summary": "Held: the S&P fell 0.52% to 7623.68 on 23 Oct and the Dow 1.23% as oil rose; the 10-year closed at 5.00%."
   },
   "EUROPE": {
-   "5Y": 2.33,
+   "3Y": 2.22,
+   "5Y": 2.56,
    "10Y": 2.56,
-   "why": "Held. Eurostat confirmed September inflation at 3.8% on 16 Oct, unchanged from the flash and up from 3.2%, with energy at 18.8% and core at 2.5% - the outcome that tests, at the 29 Oct meeting, the ECB's word that its cycle ended at 2.50% on 10 Sep. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. The policy/growth mismatch stands against IMF growth of 0.9%. Europe is the largest net energy importer here, facing Brent +76.9% y/y. The offset is real - at 15.4x forward it is the cheapest large market after Asia. FIVE YEARS: 4.0, below the 4.5 anchor. The largest energy importer gets the most from an oil shock that fades - on 15 Oct the Brent curve settled near $72.32 for December 2029 and $69.16 for December 2030 - and a 15.4x market is cheap, but growth starts at 0.9% and an ECB that hiked into it leaves less room to support it.",
-   "blend_10": 4.25,
-   "5Y_10": 4.0,
+   "why": "Held. Eurostat confirmed September inflation at 3.8% on 16 Oct, unchanged from the flash and up from 3.2%, with energy at 18.8% and core at 2.5% - the outcome that tests, at the 29 Oct meeting, the ECB's word that its cycle ended at 2.50% on 10 Sep. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. The policy/growth mismatch stands against IMF growth of 0.9%. Europe is the largest net energy importer here, facing Brent +76.9% y/y. The offset is real - at 15.4x forward it is the cheapest large market after Asia. THREE YEARS: 3.75. The largest energy importer pays the most while oil stays high - December 2027 Brent was quoted at $87.82 on 22 Oct (another table has $86.46) - and growth starts at 0.9% under an ECB that hiked into it; a 15.4x market is the offset. FIVE YEARS (years 4-5): 4.5, at the anchor, as the shock fades - on 15 Oct the Brent curve settled near $72.32 for December 2029 and $69.16 for December 2030.",
+   "blend_10": 4.28,
+   "3Y_10": 3.75,
+   "5Y_10": 4.5,
    "10Y_10": 4.5,
-   "blend": 2.45,
+   "blend": 2.46,
    "summary": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test."
   },
   "ASIA": {
-   "5Y": 3.56,
+   "3Y": 3.44,
+   "5Y": 3.67,
    "10Y": 3.67,
-   "why": "Held; the ten-year anchor at 7.0 since 21 Oct. The selling resumed on 26 Oct: the KOSPI fell 1.45% to 5,469.59, 21.9% below its 7003.74 close of 2 Oct, Samsung Electronics 1.16%, while SK Hynix rose ahead of a 16tn-won special dividend; the Nikkei fell 0.80% to 62,189.65, a third straight loss. That followed the 22nd, when the KOSPI fell 3.52% as the Bank of Korea paused at 3.00% and chipmakers sold, SK Hynix 5.48% and Samsung 4.02%, and the 23rd, when a 4% intraday fall to 5,305.98 reversed into a 0.30% gain as SK Hynix rose 4.42% on halting Solidigm's IPO review. China grew 4.5% in the third quarter against 4.4% expected, on exports. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a record, and Samsung's quarter was a record 107.4tn won. Oil is the importers' problem, Brent at $116.72, with the yen near 158.48. The anchor was cut because half its case was the base return: it cited J.P. Morgan's EM equity assumption as the highest of any equity block, but that assumption is the Asia fund's base, so it was counted twice - and the 2027 edition cuts it to 7.1% from 7.8%, below US large caps. What remains is valuation: 10.5x forward before the fall against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount. FIVE YEARS: 6.75, a quarter below the 7.0 anchor - the October selling and an importer's oil bill weigh on the first years, and earnings that grow into a discounted multiple re-rate it over the rest.",
-   "blend_10": 6.88,
-   "5Y_10": 6.75,
+   "why": "Held; the ten-year anchor at 7.0 since 21 Oct. The selling resumed on 26 Oct: the KOSPI fell 1.45% to 5,469.59, 21.9% below its 7003.74 close of 2 Oct, Samsung Electronics 1.16%, while SK Hynix rose ahead of a 16tn-won special dividend; the Nikkei fell 0.80% to 62,189.65, a third straight loss. That followed the 22nd, when the KOSPI fell 3.52% as the Bank of Korea paused at 3.00% and chipmakers sold, SK Hynix 5.48% and Samsung 4.02%, and the 23rd, when a 4% intraday fall to 5,305.98 reversed into a 0.30% gain as SK Hynix rose 4.42% on halting Solidigm's IPO review. China grew 4.5% in the third quarter against 4.4% expected, on exports. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a record, and Samsung's quarter was a record 107.4tn won. Oil is the importers' problem, Brent at $116.72, with the yen near 158.48. The anchor was cut because half its case was the base return: it cited J.P. Morgan's EM equity assumption as the highest of any equity block, but that assumption is the Asia fund's base, so it was counted twice - and the 2027 edition cuts it to 7.1% from 7.8%, below US large caps. What remains is valuation: 10.5x forward before the fall against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount. THREE YEARS: 6.5, half a point below the 7.0 anchor - the October selling and an importer's oil bill weigh on the first years. FIVE YEARS (years 4-5): 7.0, at the anchor, as earnings that grew into a discounted multiple re-rate it.",
+   "blend_10": 6.85,
+   "3Y_10": 6.5,
+   "5Y_10": 7.0,
    "10Y_10": 7.0,
-   "blend": 3.62,
+   "blend": 3.6,
    "summary": "Held: the KOSPI fell 1.45% to 5,469.59 on 26 Oct, 21.9% below 2 Oct; the Nikkei fell 0.80%."
   },
   "PHILIPPINES": {
-   "5Y": 3.0,
+   "3Y": 2.89,
+   "5Y": 3.11,
    "10Y": 3.0,
-   "why": "Held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, twice the 25bp that 20 of 22 analysts expected - its fourth straight hike and the first half-point since February 2023 - and Monday's auction repriced to it: 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The peso kept falling: on 26 Oct it closed at a record 63.95, 33.5 centavos weaker - a 8.07% loss of purchasing power against the dollar this year - on oil and the Gulf. Governor Remolona left the 17 Dec meeting open, and said on the 23rd that BSP intervenes only a little, to limit inflationary swings. The PSEi fell 1.53% to 5641.18 on the 26th, after 0.72% on the 22nd and 0.88% on the 23rd, still above its 5610.39 low of 8 Oct. September inflation was 7.2%, core 4.7%. Against 7.2% every tenor's real yield is still below zero, but the gap closed by up to 63bp in one auction. The 5- and 10-year horizons stay neutral: a BSP that hikes restores the real carry. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not. FIVE YEARS: 5.5, neutral. BSP sees inflation at 6.1% this year and 6.0% next, then 3.3% in 2028, inside its 2-4% target, while the IMF has growth recovering to 5.1% in 2027 from 3.4%: the real carry is negative for two years and positive for three.",
-   "blend_10": 5.5,
-   "5Y_10": 5.5,
+   "why": "Held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, twice the 25bp that 20 of 22 analysts expected - its fourth straight hike and the first half-point since February 2023 - and Monday's auction repriced to it: 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The peso kept falling: on 26 Oct it closed at a record 63.95, 33.5 centavos weaker - a 8.07% loss of purchasing power against the dollar this year - on oil and the Gulf. Governor Remolona left the 17 Dec meeting open, and said on the 23rd that BSP intervenes only a little, to limit inflationary swings. The PSEi fell 1.53% to 5641.18 on the 26th, after 0.72% on the 22nd and 0.88% on the 23rd, still above its 5610.39 low of 8 Oct. September inflation was 7.2%, core 4.7%. Against 7.2% every tenor's real yield is still below zero, but the gap closed by up to 63bp in one auction. A BSP that hikes restores the real carry over the horizons that follow. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not. THREE YEARS: 5.25. BSP sees inflation at 6.1% this year and 6.0% next, then 3.3% in 2028, inside its 2-4% target, while the IMF has growth recovering to 5.1% in 2027 from 3.4%: the real carry is about nil for two of the three years. FIVE YEARS (years 4-5): 5.75, a little above neutral, as a policy rate set against 6% inflation meets inflation back near 3%.",
+   "blend_10": 5.47,
+   "3Y_10": 5.25,
+   "5Y_10": 5.75,
    "10Y_10": 5.5,
-   "blend": 3.0,
+   "blend": 2.99,
    "summary": "Held: the peso closed at a record 63.95 on 26 Oct and 91-day bills jumped to 6.624% after BSP's 50bp hike; the PSEi fell 1.53%."
   }
  },
  "hz_weights": {
-  "5Y": 0.5,
+  "3Y": 0.3,
+  "5Y": 0.2,
   "10Y": 0.5
  },
  "vol_channel": {
@@ -2064,16 +2086,18 @@ details.how p:last-child{margin-bottom:0}
    "note": "HELD at 2.0. Nothing new from the Fed before Wednesday's decision, and the pricing held where the sell-off left it: CME FedWatch had an October hike at 7.2% on 23 Oct and one by December at 80.5%, from 90% on the morning of the 22nd. On official closes the 10-year was 5.12% on the 20th, 5.13% on the 21st, 4.96% on the 22nd and 5.00% on the 23rd, back up 4bp (market close 4.988%), with the 2-year at 4.69% and the 30-year at 5.33%. All of it is below the 7 Oct intraday high of 5.365%, which is above the 5 Oct peak of 5.349% and the highest since April 2002. Manila repriced to BSP's 50bp hike to 5.50%: at Monday's auction 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The FOMC decides on 28 Oct, the ECB on 29 Oct and the BoJ, at 1.25%, on 30 Oct. Held: a December Fed hike is still four-in-five priced, and the peso curve has moved up to the tighter policy rather than past it.",
    "summary": "Held: the 10-year closed at 5.00% on 23 Oct and FedWatch's December odds held at 80.5%; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
    "path": {
-    "5Y": 4.0,
+    "3Y": 3.5,
+    "5Y": 5.0,
     "10Y": 5.5
    },
    "path_5": {
-    "5Y": 2.33,
+    "3Y": 2.11,
+    "5Y": 2.78,
     "10Y": 3.0
    },
-   "blend_5": 2.67,
-   "path_why": "The Fed's own September path keeps its rate above the 3.2% it calls neutral for most of the five years - 4.1% at the end of 2026 and 2027, 3.9% in 2028, 3.6% in 2029 - and BSP, hiking now, only hints at easing in 2027: tight for three years, easing for two.",
-   "blend_10": 4.75
+   "blend_5": 2.69,
+   "path_why": "The Fed's own September path keeps its rate above the 3.2% it calls neutral for three years - 4.1% at the end of 2026 and 2027, 3.9% in 2028 - and BSP, hiking now, only hints at easing in 2027: 3.5 for years 1-3. Then 3.6% in 2029, close to neutral: 5.0 for years 4-5.",
+   "blend_10": 4.8
   },
   {
    "name": "Inflation trajectory",
@@ -2083,16 +2107,18 @@ details.how p:last-child{margin-bottom:0}
    "note": "HELD at 2.0; no new US price data until September PCE on 29 Oct. Oil kept climbing: Brent settled at $116.72 on 23 Oct, up $3.55 and its highest close since 29 April, 6.2% higher on the week, against $65.99 a year earlier - Brent +76.9% y/y - as a new US strike on Iran was floated and the Houthi strikes on Saudi Arabia went on; December WTI settled at $103.27, up 3.82%. The producer print stands: September PPI rose 1.3%, the largest monthly rise since March 2022, and 6.3% on the year, with core at 0.5% and 5.0%, after CPI of 3.7% (core 2.6%). The euro area confirmed 3.8% for September, core 2.5%; the Philippines is at 7.2%, which BSP met with a 50bp hike. Held: US core CPI at 2.6% is still contained, and the producer jump is energy passing through, not yet wages.",
    "summary": "Held: no new US price data; Brent settled at $116.72 on 23 Oct, its highest close since 29 April, +76.9% y/y.",
    "path": {
-    "5Y": 4.5,
+    "3Y": 3.75,
+    "5Y": 5.25,
     "10Y": 5.5
    },
    "path_5": {
-    "5Y": 2.56,
+    "3Y": 2.22,
+    "5Y": 2.89,
     "10Y": 3.0
    },
-   "blend_5": 2.78,
-   "path_why": "The market prices US inflation at 2.37-2.48% a year over five years (October breakevens) and about 2.2% for the five after, and BSP sees 3.3% by 2028 after 6.0% in 2027: hot for two years, near target for three.",
-   "blend_10": 5.0
+   "blend_5": 2.74,
+   "path_why": "BSP sees 6.1% this year and 6.0% in 2027 before 3.3% in 2028, and the US prices 2.37-2.48% a year over five years (October breakevens): 3.75 for years 1-3. The market puts the five after at about 2.2%, near target: 5.25 for years 4-5.",
+   "blend_10": 4.92
   },
   {
    "name": "Growth momentum",
@@ -2102,16 +2128,18 @@ details.how p:last-child{margin-bottom:0}
    "note": "HELD at 4.0; the US third-quarter GDP estimate is due on 29 Oct with September PCE. China beat by a little: third-quarter GDP grew 4.5% on the year against 4.4% expected, up from 4.3%, but exports did the work - September retail sales rose only 1.1%. US September retail sales rose 0.8% against 0.3% expected, though gasoline did much of it: sales excluding gas stations rose only 0.2%. Michigan sentiment, at 46.3 in October's first read, is near May's record low of 44.8; ISM services (54.9) and manufacturing (54.5) stayed in expansion in September. Philippine growth was 2.6% in the first half. Held: China's beat is export-led, and a record-low US consumer is a warning, not a break.",
    "summary": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; the US third-quarter estimate is due on 29 Oct.",
    "path": {
-    "5Y": 4.75,
+    "3Y": 4.5,
+    "5Y": 5.25,
     "10Y": 5.5
    },
    "path_5": {
-    "5Y": 2.67,
+    "3Y": 2.56,
+    "5Y": 2.89,
     "10Y": 3.0
    },
-   "blend_5": 2.83,
-   "path_why": "The IMF has the world at 3.1% this year and 3.4% next, near its trend, and the Philippines recovering to 5.1% in 2027 but below its potential: a little under trend across the five years, not a recession.",
-   "blend_10": 5.12
+   "blend_5": 2.85,
+   "path_why": "The IMF has the world at 3.1% this year and 3.4% next and the Philippines recovering to 5.1% in 2027 but below its potential, with a hiking cycle and an energy shock in train: 4.5 for years 1-3, 5.25 for years 4-5 as policy turns.",
+   "blend_10": 5.15
   },
   {
    "name": "Corporate earnings",
@@ -2121,16 +2149,18 @@ details.how p:last-child{margin-bottom:0}
    "note": "HELD at 7.0, still the strongest pillar; the market is pricing the financing, not the profits. FactSet's 23 Oct count has 24% of the S&P reported and 83% beating estimates - by 2.1% in aggregate, against a 7.5% five-year average - with third-quarter growth blended at 29.5%, from 29.2%; health care is the one sector with earnings down on a year. TSMC's third-quarter net income was NT$763.06bn, +68.7% on a year earlier and above the NT$746.34bn expected; Samsung's preliminary quarter was a record 107.4tn won. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) stands. The market is testing the spenders: on 22 Oct Meta's spending plans cost it about 7% and chip stocks fell more than 6%; on the 23rd the chips steadied, the Philadelphia semiconductor index up 0.44%, while the Nasdaq slipped 0.21%. In Seoul the KOSPI fell 3.52% on the 22nd, SK Hynix 5.48% and Samsung Electronics 4.02%, and SK Hynix won back 4.42% on the 23rd. Held: the numbers keep beating; the multiple paid for them and the cost of funding the build-out are what move.",
    "summary": "Held, the strongest pillar: 83% of reporting S&P companies beat estimates and third-quarter growth is blending at 29.5% (FactSet, 23 Oct).",
    "path": {
-    "5Y": 6.0,
+    "3Y": 6.5,
+    "5Y": 5.5,
     "10Y": 5.5
    },
    "path_5": {
-    "5Y": 3.22,
+    "3Y": 3.44,
+    "5Y": 3.0,
     "10Y": 3.0
    },
-   "blend_5": 3.11,
-   "path_why": "Analysts' long-term S&P growth forecast is 16.7%, in the top tenth this century, but since 1992 they forecast 22.3% a year and got 9.5%: strong, and less strong than priced.",
-   "blend_10": 5.75
+   "blend_5": 3.13,
+   "path_why": "Analysts' long-term S&P growth forecast is 16.7%, in the top tenth this century, and this quarter is growing at 29.5%: 6.5 for years 1-3. But since 1992 they forecast 22.3% a year and got 9.5%: neutral by years 4-5 as margins revert.",
+   "blend_10": 5.8
   },
   {
    "name": "Valuation support",
@@ -2140,16 +2170,18 @@ details.how p:last-child{margin-bottom:0}
    "note": "HELD at 8.0, and now re-verified for the US: FactSet had the S&P on 18.7x forward earnings on 23 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7623.68 on the 23rd, 2.5% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings, the KOSPI 21.9% below its 2 Oct close at 5,469.59 on the 26th; NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since.",
    "summary": "Held: the S&P is on 18.7x forward earnings, below its five- and ten-year averages; the KOSPI is 21.9% below its 2 Oct close.",
    "path": {
-    "5Y": 6.0,
+    "3Y": 6.5,
+    "5Y": 5.5,
     "10Y": 5.5
    },
    "path_5": {
-    "5Y": 3.22,
+    "3Y": 3.44,
+    "5Y": 3.0,
     "10Y": 3.0
    },
-   "blend_5": 3.11,
-   "path_why": "The forward multiple flatters the US: on ten-year earnings the S&P is on 40.7, near the 44.2 record, a level that has preceded weak five-year returns. Asia at 10.5x and Europe at 15.4x are cheap. Mildly supportive on balance.",
-   "blend_10": 5.75
+   "blend_5": 3.13,
+   "path_why": "Asia at 10.5x and Europe at 15.4x are cheap, and the S&P's forward multiple is below its averages, but on ten-year earnings the S&P is on 40.7, near the 44.2 record: 6.5 for years 1-3, neutral for years 4-5, where the base returns already price the starting multiple.",
+   "blend_10": 5.8
   },
   {
    "name": "Volatility & risk appetite",
@@ -2159,16 +2191,18 @@ details.how p:last-child{margin-bottom:0}
    "note": "HELD at 2.5. The VIX rose 2.21% to 19.45 on 23 Oct, after trading from 18.87 to 20.66, as oil climbed and the Dow fell 1.23%; it is a hair under the long-run 19.5, and below its 22.31 high of 16 Oct. Asia stayed heavy: the KOSPI fell 1.45% on the 26th and the Nikkei 0.80%, its third straight fall; on the 22nd they had fallen 3.52% and 2.65%, and on the 23rd the KOSPI's 4% intraday fall had reversed into a 0.30% gain. The October future settled on the 21st and no full strip for a later day has been reached, so the curve stays quoted at the 20 Oct settlements - November 18.49 and December 18.7, above that day's spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. On forward vol the curve sits at 19.42, 0.08 below the long run. Held: the index is at its long-run level, not above it, and the 23 Oct cut already priced the sell-off.",
    "summary": "Held: the VIX rose 2.21% to 19.45 on 23 Oct, a hair under its long-run 19.5.",
    "path": {
-    "5Y": 5.0,
+    "3Y": 4.5,
+    "5Y": 5.5,
     "10Y": 5.5
    },
    "path_5": {
-    "5Y": 2.78,
+    "3Y": 2.56,
+    "5Y": 3.0,
     "10Y": 3.0
    },
-   "blend_5": 2.89,
-   "path_why": "The VIX curve's own five-year implied volatility is at the long run, so the average over five years is close to neutral; risk appetite stays below it while the hiking cycle and the Gulf last.",
-   "blend_10": 5.25
+   "blend_5": 2.87,
+   "path_why": "The VIX curve's own 3-year implied volatility is a little under the long run, while the hiking cycle and the Gulf keep risk appetite below neutral: 4.5 for years 1-3, neutral for years 4-5.",
+   "blend_10": 5.2
   },
   {
    "name": "Geopolitics & energy",
@@ -2178,16 +2212,18 @@ details.how p:last-child{margin-bottom:0}
    "note": "HELD at 1.5; the threat widened, the barrels did not shrink. At a Florida rally on Friday President Trump said the US could launch another operation against Iran, after the New York Times reported US and Israeli plans for renewed strikes after the 3 November midterms. The Houthis kept firing at Saudi Arabia: on 25 Oct the coalition intercepted missiles and drones aimed at Riyadh and other cities, and the Houthis claimed hits on pumping stations of the East-West pipeline - claims neither Riyadh nor Aramco has confirmed. On 22 Oct strikes had killed four at Dammam's airport and the Shaybah field and Aramco evacuated its Dhahran headquarters. Brent settled at $116.72 on 23 Oct, its highest close since 29 April. Read it on VOLUME, the measure this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at about 14 mb/d in the week to 18 Oct, 82% of pre-war on preliminary figures, and the Gulf's exports by every route above 24 mb/d against 23.3 pre-war; no later week has been published. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses the Strait; a 5 Oct report that an attack had halted it again was denied the same day, and the export volumes since bear the denial out. Vessel counts disagree and are not supply: IMF PortWatch counted 4 transits on 18 Oct against an 85 baseline, a 95% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over 10000 dwt; the US government around 30, on a basis it does not state. Held, not cut: the barrels are moving, and 1.0 is kept for full closure with Brent above $130 - strictly worse, and nearer than it was.",
    "summary": "Held: Trump floated another Iran operation and the Houthis kept firing at Saudi Arabia; Brent settled at $116.72, Hormuz flows near 14 mb/d.",
    "path": {
-    "5Y": 3.75,
+    "3Y": 3.0,
+    "5Y": 5.0,
     "10Y": 5.5
    },
    "path_5": {
-    "5Y": 2.22,
+    "3Y": 1.89,
+    "5Y": 2.78,
     "10Y": 3.0
    },
-   "blend_5": 2.61,
-   "path_why": "The oil market prices the shock out: December 2029 Brent settled at $72.32 and December 2030 at $69.16 on 15 Oct, against $105.92 for the front month that day. Two hard years and a fading premium: 3.75 across the five.",
-   "blend_10": 4.62
+   "blend_5": 2.62,
+   "path_why": "The oil market prices the shock out slowly: December 2027 Brent was quoted at $87.82 on 22 Oct (another table has $86.46), still far above pre-war - 3.0 for years 1-3. December 2029 settled at $72.32 and December 2030 at $69.16 on 15 Oct, against $105.92 for the front month: 5.0 for years 4-5, a premium still above pre-war.",
+   "blend_10": 4.65
   }
  ],
  "driver_scale": {
@@ -2200,14 +2236,16 @@ details.how p:last-child{margin-bottom:0}
  "gauge_10": 3.9,
  "gauge_neutral": 3.0,
  "gauge_path": {
-  "5Y": 2.72,
+  "3Y": 2.62,
+  "5Y": 2.9,
   "10Y": 3.0
  },
  "gauge_path_10": {
-  "5Y": 4.86,
+  "3Y": 4.64,
+  "5Y": 5.28,
   "10Y": 5.5
  },
- "gauge_blend": 2.86,
+ "gauge_blend": 2.87,
  "funds": [
   {
    "id": "ATRPHMM",
@@ -2239,10 +2277,10 @@ details.how p:last-child{margin-bottom:0}
    "gross_php": 4.85,
    "fx_drift": 0.0,
    "net_base": 4.27,
-   "regional_score": 3.0,
-   "tilt_regional": 0.0,
+   "regional_score": 2.99,
+   "tilt_regional": -0.01,
    "tilt_vol": 0.0,
-   "tilt_rates": 0.13,
+   "tilt_rates": 0.12,
    "tilt_energy": 0.01,
    "tilt_trend": 0.0,
    "equity_share": 1.0,
@@ -2253,8 +2291,8 @@ details.how p:last-child{margin-bottom:0}
    "exposure": null,
    "tilt_rates_cal": 0.25,
    "tilt_energy_cal": 0.05,
-   "tilt_total": 0.14,
-   "net_macro": 4.41,
+   "tilt_total": 0.12,
+   "net_macro": 4.39,
    "regional_score_10y": 3.0,
    "tilt_regional_10y": 0.0,
    "tilt_vol_10y": 0.0,
@@ -2271,12 +2309,12 @@ details.how p:last-child{margin-bottom:0}
    "dd_10y": -0.5,
    "target_net_macro": null,
    "target_dd_macro": null,
-   "net_novol": 4.41,
-   "net_neutral": 4.27,
-   "net_notrend": 4.41,
-   "net_trend_alt": 4.41,
-   "net_asia_norerate": 4.41,
-   "net_asia_fee_hi": 4.41
+   "net_novol": 4.39,
+   "net_neutral": 4.26,
+   "net_notrend": 4.39,
+   "net_trend_alt": 4.39,
+   "net_asia_norerate": 4.39,
+   "net_asia_fee_hi": 4.39
   },
   {
    "id": "ATRQIAP",
@@ -2299,8 +2337,8 @@ details.how p:last-child{margin-bottom:0}
    "gross_php": 9.36,
    "fx_drift": 2.0,
    "net_base": 7.51,
-   "regional_score": 3.27,
-   "tilt_regional": 0.18,
+   "regional_score": 3.29,
+   "tilt_regional": 0.2,
    "tilt_vol": -0.02,
    "tilt_rates": -0.05,
    "tilt_energy": -0.03,
@@ -2313,8 +2351,8 @@ details.how p:last-child{margin-bottom:0}
    "exposure": null,
    "tilt_rates_cal": -0.1,
    "tilt_energy_cal": -0.1,
-   "tilt_total": 0.03,
-   "net_macro": 7.54,
+   "tilt_total": 0.05,
+   "net_macro": 7.56,
    "regional_score_10y": 3.44,
    "tilt_regional_10y": 0.3,
    "tilt_vol_10y": 0.0,
@@ -2329,14 +2367,14 @@ details.how p:last-child{margin-bottom:0}
    "dd_base": -32.2,
    "dd_macro": -32.1,
    "dd_10y": -31.9,
-   "target_net_macro": 9.04,
+   "target_net_macro": 9.06,
    "target_dd_macro": -31.1,
-   "net_novol": 7.56,
-   "net_neutral": 7.62,
-   "net_notrend": 7.59,
-   "net_trend_alt": 7.54,
-   "net_asia_norerate": 7.54,
-   "net_asia_fee_hi": 7.54
+   "net_novol": 7.58,
+   "net_neutral": 7.64,
+   "net_notrend": 7.61,
+   "net_trend_alt": 7.56,
+   "net_asia_norerate": 7.56,
+   "net_asia_fee_hi": 7.56
   },
   {
    "id": "ATRASEQ",
@@ -2368,10 +2406,10 @@ details.how p:last-child{margin-bottom:0}
    "gross_php": 9.6,
    "fx_drift": 2.0,
    "net_base": 6.87,
-   "regional_score": 3.62,
-   "tilt_regional": 0.42,
+   "regional_score": 3.6,
+   "tilt_regional": 0.41,
    "tilt_vol": 0.0,
-   "tilt_rates": -0.03,
+   "tilt_rates": -0.02,
    "tilt_energy": -0.06,
    "tilt_trend": -0.01,
    "equity_share": 1.0,
@@ -2401,7 +2439,7 @@ details.how p:last-child{margin-bottom:0}
    "target_net_macro": 8.37,
    "target_dd_macro": -38.6,
    "net_novol": 7.19,
-   "net_neutral": 7.28,
+   "net_neutral": 7.27,
    "net_notrend": 7.2,
    "net_trend_alt": 7.19,
    "net_asia_norerate": 6.19,
@@ -2428,10 +2466,10 @@ details.how p:last-child{margin-bottom:0}
    "gross_php": 11.8,
    "fx_drift": 2.0,
    "net_base": 9.26,
-   "regional_score": 3.23,
-   "tilt_regional": 0.15,
+   "regional_score": 3.24,
+   "tilt_regional": 0.16,
    "tilt_vol": 0.01,
-   "tilt_rates": -0.2,
+   "tilt_rates": -0.19,
    "tilt_energy": -0.04,
    "tilt_trend": -0.04,
    "equity_share": 1.0,
@@ -2446,8 +2484,8 @@ details.how p:last-child{margin-bottom:0}
    "exposure": null,
    "tilt_rates_cal": -0.4,
    "tilt_energy_cal": -0.15,
-   "tilt_total": -0.12,
-   "net_macro": 9.14,
+   "tilt_total": -0.1,
+   "net_macro": 9.16,
    "regional_score_10y": 3.37,
    "tilt_regional_10y": 0.25,
    "tilt_vol_10y": 0.0,
@@ -2460,16 +2498,16 @@ details.how p:last-child{margin-bottom:0}
    "dd_k": 1.8,
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -56.5,
-   "dd_macro": -56.6,
+   "dd_macro": -56.5,
    "dd_10y": -56.3,
-   "target_net_macro": 10.64,
+   "target_net_macro": 10.66,
    "target_dd_macro": -55.5,
-   "net_novol": 9.13,
-   "net_neutral": 9.38,
-   "net_notrend": 9.18,
-   "net_trend_alt": 9.12,
-   "net_asia_norerate": 9.14,
-   "net_asia_fee_hi": 9.14
+   "net_novol": 9.15,
+   "net_neutral": 9.39,
+   "net_notrend": 9.2,
+   "net_trend_alt": 9.14,
+   "net_asia_norerate": 9.16,
+   "net_asia_fee_hi": 9.16
   }
  ],
  "corr": [
@@ -2835,9 +2873,32 @@ details.how p:last-child{margin-bottom:0}
   ],
   "reversal": 0.5,
   "long_end": "2026-09-30",
-  "view": "5Y",
-  "w_mom": 0.2,
-  "w_rev": 0.8,
+  "views": [
+   "3Y",
+   "5Y"
+  ],
+  "w": {
+   "3Y": {
+    "mom": 0.3333,
+    "rev": 0.6667
+   },
+   "5Y": {
+    "mom": 0.0,
+    "rev": 1.0
+   },
+   "10Y": {
+    "mom": 0.0,
+    "rev": 0.0
+   }
+  },
+  "mom_years": [
+   0.0,
+   1.0
+  ],
+  "rev_years": [
+   1.0,
+   5.0
+  ],
   "sleeves": {
    "ATRQIAP": {
     "market": "Nasdaq-100",
@@ -2895,7 +2956,8 @@ details.how p:last-child{margin-bottom:0}
     },
     "z_rev": 1.11,
     "score": {
-     "5Y": 2.69,
+     "3Y": 2.85,
+     "5Y": 2.44,
      "10Y": 3.0
     },
     "blend": 2.84,
@@ -2939,7 +3001,8 @@ details.how p:last-child{margin-bottom:0}
     },
     "z_rev": 0.78,
     "score": {
-     "5Y": 2.92,
+     "3Y": 3.13,
+     "5Y": 2.61,
      "10Y": 3.0
     },
     "blend": 2.96,
@@ -2998,7 +3061,8 @@ details.how p:last-child{margin-bottom:0}
     },
     "z_rev": 1.18,
     "score": {
-     "5Y": 2.74,
+     "3Y": 2.97,
+     "5Y": 2.41,
      "10Y": 3.0
     },
     "blend": 2.87,
@@ -3057,7 +3121,8 @@ details.how p:last-child{margin-bottom:0}
     },
     "z_rev": -0.14,
     "score": {
-     "5Y": 3.18,
+     "3Y": 3.25,
+     "5Y": 3.07,
      "10Y": 3.0
     },
     "blend": 3.09,
@@ -3095,10 +3160,11 @@ details.how p:last-child{margin-bottom:0}
     },
     "z_rev": 0.94,
     "score": {
-     "5Y": 2.73,
+     "3Y": 2.86,
+     "5Y": 2.53,
      "10Y": 3.0
     },
-    "blend": 2.87,
+    "blend": 2.86,
     "tilt": -0.04
    }
   },
@@ -3150,7 +3216,8 @@ details.how p:last-child{margin-bottom:0}
     },
     "z_rev": 0.78,
     "score": {
-     "5Y": 2.9,
+     "3Y": 3.1,
+     "5Y": 2.61,
      "10Y": 3.0
     },
     "blend": 2.95,
@@ -3209,10 +3276,11 @@ details.how p:last-child{margin-bottom:0}
     },
     "z_rev": 1.51,
     "score": {
-     "5Y": 2.61,
+     "3Y": 2.86,
+     "5Y": 2.25,
      "10Y": 3.0
     },
-    "blend": 2.8,
+    "blend": 2.81,
     "tilt": -0.06
    }
   }
@@ -3224,10 +3292,10 @@ details.how p:last-child{margin-bottom:0}
   "commit": "918c280",
   "neutral_10": 5.5,
   "reading": "blend_10",
-  "monetary_blend": 4.75,
-  "geopolitics_blend": 4.62,
-  "rates_scale": 0.5,
-  "energy_scale": 0.293333,
+  "monetary_blend": 4.8,
+  "geopolitics_blend": 4.65,
+  "rates_scale": 0.466667,
+  "energy_scale": 0.283333,
   "rates_scale_10y": 0.0,
   "energy_scale_10y": 0.0
  },
@@ -3288,7 +3356,7 @@ details.how p:last-child{margin-bottom:0}
   "baseline_k": 1.7125,
   "a_k": 1.68158,
   "c_k": 1.65789,
-  "b_k": 1.66667,
+  "b_k": 1.65789,
   "d_k": 1.69333,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
@@ -3347,7 +3415,7 @@ details.how p:last-child{margin-bottom:0}
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 2.8,
+    "cagr": 2.81,
     "vol": 20.87,
     "maxdd": -48.6
    },
@@ -3408,12 +3476,12 @@ details.how p:last-child{margin-bottom:0}
     25.0,
     0.0
    ],
-   "cagr": 7.22,
+   "cagr": 7.23,
    "vol": 13.32,
    "maxdd": -26.6,
-   "ret_per_dd": 0.271,
-   "sharpe_like": 0.048,
-   "terminal_1m": 2007974,
+   "ret_per_dd": 0.272,
+   "sharpe_like": 0.049,
+   "terminal_1m": 2009847,
    "worst_1m_from_open": 734000
   },
   "base": {
@@ -3469,35 +3537,35 @@ details.how p:last-child{margin-bottom:0}
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $117. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.25,
+    "cagr": 3.26,
     "vol": 21.31,
     "maxdd": -48.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.64,
+    "cagr": 4.65,
     "vol": 17.32,
     "maxdd": -37.9
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.85,
+    "cagr": 3.86,
     "vol": 19.32,
     "maxdd": -43.2
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.73,
+    "cagr": 9.74,
     "vol": 10.66,
     "maxdd": -18.5
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.22,
+    "cagr": 7.23,
     "vol": 13.32,
     "maxdd": -26.6
    }
@@ -3577,12 +3645,12 @@ details.how p:last-child{margin-bottom:0}
     5.0,
     0.0
    ],
-   "cagr": 7.25,
+   "cagr": 7.26,
    "vol": 13.59,
    "maxdd": -26.7,
    "ret_per_dd": 0.272,
-   "sharpe_like": 0.049,
-   "terminal_1m": 2013599,
+   "sharpe_like": 0.05,
+   "terminal_1m": 2015477,
    "worst_1m_from_open": 733000
   },
   "base": {
@@ -3632,48 +3700,48 @@ details.how p:last-child{margin-bottom:0}
   "column": "net_macro",
   "fund": "ATRQIAP",
   "pin_pct": 50,
-  "band_n": 6,
-  "n_feasible": 4969,
+  "band_n": 7,
+  "n_feasible": 4978,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $117. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.8,
+    "cagr": 3.81,
     "vol": 21.74,
     "maxdd": -48.3
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.84,
+    "cagr": 4.85,
     "vol": 17.67,
     "maxdd": -38.0
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.8,
+    "cagr": 4.81,
     "vol": 19.7,
     "maxdd": -42.8
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.48,
+    "cagr": 9.49,
     "vol": 10.87,
     "maxdd": -18.8
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.25,
+    "cagr": 7.26,
     "vol": 13.59,
     "maxdd": -26.7
    }
   ],
   "dd_cap": 26.97,
   "in_budget": true,
-  "cagr_no_rerating": 7.22
+  "cagr_no_rerating": 7.24
  },
  "portfolio_d": {
   "weights": [
@@ -3722,12 +3790,12 @@ details.how p:last-child{margin-bottom:0}
     0.0,
     0.0
    ],
-   "cagr": 7.06,
+   "cagr": 7.07,
    "vol": 13.28,
    "maxdd": -26.8,
-   "ret_per_dd": 0.263,
-   "sharpe_like": 0.036,
-   "terminal_1m": 1978210,
+   "ret_per_dd": 0.264,
+   "sharpe_like": 0.037,
+   "terminal_1m": 1980059,
    "worst_1m_from_open": 732000
   },
   "base": {
@@ -3794,7 +3862,7 @@ details.how p:last-child{margin-bottom:0}
      0,
      0
     ],
-    "cagr": 7.06,
+    "cagr": 7.07,
     "maxdd": -26.8
    }
   ],
@@ -3802,14 +3870,14 @@ details.how p:last-child{margin-bottom:0}
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $117. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.11,
+    "cagr": 3.12,
     "vol": 21.25,
     "maxdd": -48.7
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.91,
+    "cagr": 4.92,
     "vol": 17.27,
     "maxdd": -37.9
    },
@@ -3823,21 +3891,21 @@ details.how p:last-child{margin-bottom:0}
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.16,
+    "cagr": 9.17,
     "vol": 10.63,
     "maxdd": -19.0
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.06,
+    "cagr": 7.07,
     "vol": 13.28,
     "maxdd": -26.8
    }
   ],
   "dd_cap": 26.97,
   "in_budget": true,
-  "cagr_no_rerating": 7.01
+  "cagr_no_rerating": 7.02
  },
  "universe": {
   "limits": {
@@ -3898,7 +3966,7 @@ details.how p:last-child{margin-bottom:0}
    {
     "maxdd": 10.5,
     "dd": -10.5,
-    "cagr": 5.5,
+    "cagr": 5.49,
     "weights": [
      35.0,
      0.0,
@@ -3972,8 +4040,8 @@ details.how p:last-child{margin-bottom:0}
     "dd": -14.3,
     "cagr": 6.11,
     "weights": [
+     35.0,
      30.0,
-     25.0,
      0.0,
      0.0,
      0.0,
@@ -3981,7 +4049,7 @@ details.how p:last-child{margin-bottom:0}
      10.0,
      0.0,
      0.0,
-     25.0,
+     15.0,
      0.0
     ]
    },
@@ -4022,12 +4090,30 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 17.2,
-    "dd": -17.2,
-    "cagr": 6.4,
+    "maxdd": 17.1,
+    "dd": -17.1,
+    "cagr": 6.39,
+    "weights": [
+     25.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     10.0,
+     20.0,
+     0.0,
+     0.0,
+     15.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 18.0,
+    "dd": -18.0,
+    "cagr": 6.48,
     "weights": [
      20.0,
-     30.0,
+     35.0,
      0.0,
      0.0,
      0.0,
@@ -4035,16 +4121,16 @@ details.how p:last-child{margin-bottom:0}
      15.0,
      0.0,
      0.0,
-     25.0,
+     20.0,
      0.0
     ]
    },
    {
-    "maxdd": 18.1,
-    "dd": -18.1,
-    "cagr": 6.49,
+    "maxdd": 18.9,
+    "dd": -18.9,
+    "cagr": 6.57,
     "weights": [
-     20.0,
+     15.0,
      35.0,
      0.0,
      0.0,
@@ -4053,68 +4139,50 @@ details.how p:last-child{margin-bottom:0}
      20.0,
      0.0,
      0.0,
-     20.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 19.1,
-    "dd": -19.1,
-    "cagr": 6.58,
-    "weights": [
-     10.0,
-     35.0,
-     0.0,
-     0.0,
-     0.0,
-     5.0,
-     15.0,
-     0.0,
-     0.0,
-     35.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 20.0,
-    "dd": -20.0,
-    "cagr": 6.67,
-    "weights": [
-     10.0,
-     30.0,
-     0.0,
-     0.0,
-     0.0,
-     15.0,
-     20.0,
-     0.0,
-     0.0,
      25.0,
      0.0
     ]
    },
    {
-    "maxdd": 20.9,
-    "dd": -20.9,
+    "maxdd": 19.9,
+    "dd": -19.9,
+    "cagr": 6.66,
+    "weights": [
+     15.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     15.0,
+     25.0,
+     0.0,
+     0.0,
+     15.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 20.8,
+    "dd": -20.8,
     "cagr": 6.76,
     "weights": [
-     5.0,
+     10.0,
      35.0,
      0.0,
      0.0,
      0.0,
      15.0,
-     15.0,
+     20.0,
      0.0,
      0.0,
-     30.0,
+     20.0,
      0.0
     ]
    },
    {
     "maxdd": 21.9,
     "dd": -21.9,
-    "cagr": 6.84,
+    "cagr": 6.85,
     "weights": [
      5.0,
      35.0,
@@ -4132,7 +4200,7 @@ details.how p:last-child{margin-bottom:0}
    {
     "maxdd": 22.8,
     "dd": -22.8,
-    "cagr": 6.91,
+    "cagr": 6.92,
     "weights": [
      5.0,
      30.0,
@@ -4148,17 +4216,17 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 23.7,
-    "dd": -23.7,
-    "cagr": 7.0,
+    "maxdd": 23.8,
+    "dd": -23.8,
+    "cagr": 7.02,
     "weights": [
      5.0,
      35.0,
      0.0,
      0.0,
      0.0,
-     20.0,
-     30.0,
+     15.0,
+     35.0,
      0.0,
      0.0,
      10.0,
@@ -4168,25 +4236,25 @@ details.how p:last-child{margin-bottom:0}
    {
     "maxdd": 24.8,
     "dd": -24.8,
-    "cagr": 7.08,
+    "cagr": 7.09,
     "weights": [
-     10.0,
+     5.0,
      35.0,
      0.0,
-     5.0,
+     0.0,
      0.0,
      25.0,
-     25.0,
+     30.0,
      0.0,
      0.0,
      0.0,
-     0.0
+     5.0
     ]
    },
    {
     "maxdd": 25.8,
     "dd": -25.8,
-    "cagr": 7.16,
+    "cagr": 7.18,
     "weights": [
      5.0,
      35.0,
@@ -4202,17 +4270,17 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 26.0,
-    "dd": -26.0,
-    "cagr": 7.19,
+    "maxdd": 26.3,
+    "dd": -26.3,
+    "cagr": 7.23,
     "weights": [
-     10.0,
+     5.0,
      35.0,
      0.0,
-     10.0,
+     5.0,
      0.0,
-     20.0,
      25.0,
+     30.0,
      0.0,
      0.0,
      0.0,
@@ -4220,35 +4288,35 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 27.0,
-    "dd": -27.0,
-    "cagr": 7.26,
+    "maxdd": 27.2,
+    "dd": -27.2,
+    "cagr": 7.29,
+    "weights": [
+     10.0,
+     30.0,
+     0.0,
+     15.0,
+     0.0,
+     15.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 28.2,
+    "dd": -28.2,
+    "cagr": 7.38,
     "weights": [
      5.0,
      35.0,
      0.0,
-     15.0,
-     0.0,
-     0.0,
-     30.0,
-     0.0,
-     0.0,
-     15.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 28.1,
-    "dd": -28.1,
-    "cagr": 7.34,
-    "weights": [
-     5.0,
-     30.0,
-     0.0,
      20.0,
      0.0,
      0.0,
-     30.0,
+     25.0,
      0.0,
      0.0,
      15.0,
@@ -4258,7 +4326,7 @@ details.how p:last-child{margin-bottom:0}
    {
     "maxdd": 29.3,
     "dd": -29.3,
-    "cagr": 7.44,
+    "cagr": 7.46,
     "weights": [
      5.0,
      30.0,
@@ -4274,17 +4342,17 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 30.4,
-    "dd": -30.4,
-    "cagr": 7.54,
+    "maxdd": 30.2,
+    "dd": -30.2,
+    "cagr": 7.55,
     "weights": [
      5.0,
      35.0,
      0.0,
      20.0,
      0.0,
-     5.0,
-     35.0,
+     10.0,
+     30.0,
      0.0,
      0.0,
      0.0,
@@ -4292,16 +4360,16 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 31.5,
-    "dd": -31.5,
-    "cagr": 7.63,
+    "maxdd": 31.2,
+    "dd": -31.2,
+    "cagr": 7.62,
     "weights": [
      5.0,
-     35.0,
+     30.0,
      0.0,
      25.0,
      0.0,
-     15.0,
+     20.0,
      20.0,
      0.0,
      0.0,
@@ -4310,26 +4378,26 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 32.4,
-    "dd": -32.4,
-    "cagr": 7.69,
+    "maxdd": 32.1,
+    "dd": -32.1,
+    "cagr": 7.67,
     "weights": [
      5.0,
+     35.0,
+     5.0,
      25.0,
+     0.0,
      0.0,
      30.0,
      0.0,
-     15.0,
-     25.0,
-     0.0,
      0.0,
      0.0,
      0.0
     ]
    },
    {
-    "maxdd": 33.3,
-    "dd": -33.3,
+    "maxdd": 33.0,
+    "dd": -33.0,
     "cagr": 7.75,
     "weights": [
      5.0,
@@ -4337,26 +4405,8 @@ details.how p:last-child{margin-bottom:0}
      0.0,
      30.0,
      0.0,
-     0.0,
-     30.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 34.2,
-    "dd": -34.2,
-    "cagr": 7.81,
-    "weights": [
-     5.0,
-     30.0,
-     0.0,
-     35.0,
-     0.0,
-     15.0,
-     15.0,
+     10.0,
+     20.0,
      0.0,
      0.0,
      0.0,
@@ -4364,17 +4414,35 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 37.1,
-    "dd": -37.1,
-    "cagr": 7.86,
+    "maxdd": 33.9,
+    "dd": -33.9,
+    "cagr": 7.8,
     "weights": [
      5.0,
-     35.0,
      25.0,
+     0.0,
+     35.0,
+     0.0,
+     15.0,
+     20.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 35.0,
+    "dd": -35.0,
+    "cagr": 7.87,
+    "weights": [
+     5.0,
+     35.0,
+     5.0,
      35.0,
      0.0,
      0.0,
-     0.0,
+     20.0,
      0.0,
      0.0,
      0.0,
@@ -4408,20 +4476,191 @@ details.how p:last-child{margin-bottom:0}
    "vol_flat": {
     "b": {
      "weights": [
-      10,
+      5,
       35,
       0,
-      10,
+      5,
       0,
-      15,
+      25,
       30,
       0,
       0,
       0,
       0
      ],
+     "cagr": 7.24,
+     "maxdd": -26.3
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      5,
+      0,
+      0,
+      35,
+      0,
+      0,
+      5,
+      0
+     ],
+     "cagr": 7.27,
+     "maxdd": -26.7
+    },
+    "d": {
+     "weights": [
+      25,
+      50,
+      5,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.08,
+     "maxdd": -26.8
+    },
+    "a": {
+     "cagr": 7.24,
+     "maxdd": -26.6
+    }
+   },
+   "drags_neutral": {
+    "b": {
+     "weights": [
+      5,
+      30,
+      0,
+      20,
+      0,
+      0,
+      20,
+      0,
+      0,
+      25,
+      0
+     ],
+     "cagr": 7.33,
+     "maxdd": -26.5
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      10,
+      0,
+      0,
+      20,
+      0,
+      0,
+      15,
+      0
+     ],
+     "cagr": 7.32,
+     "maxdd": -26.3
+    },
+    "d": {
+     "weights": [
+      25,
+      50,
+      5,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.13,
+     "maxdd": -26.8
+    },
+    "a": {
+     "cagr": 7.33,
+     "maxdd": -26.5
+    }
+   },
+   "asia_no_rerating": {
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      10,
+      0,
+      20,
+      25,
+      0,
+      0,
+      0,
+      0
+     ],
      "cagr": 7.2,
-     "maxdd": -26.1
+     "maxdd": -26.0
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      5,
+      0,
+      20,
+      20,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.3,
+     "maxdd": -26.9
+    },
+    "d": {
+     "weights": [
+      25,
+      50,
+      5,
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.02,
+     "maxdd": -26.8
+    },
+    "a": {
+     "cagr": 7.11,
+     "maxdd": -26.6
+    }
+   },
+   "asia_fee_hi": {
+    "b": {
+     "weights": [
+      5,
+      35,
+      0,
+      5,
+      0,
+      25,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.23,
+     "maxdd": -26.3
     },
     "c": {
      "weights": [
@@ -4454,182 +4693,11 @@ details.how p:last-child{margin-bottom:0}
       0,
       0
      ],
-     "cagr": 7.07,
+     "cagr": 7.06,
      "maxdd": -26.8
     },
     "a": {
-     "cagr": 7.22,
-     "maxdd": -26.6
-    }
-   },
-   "drags_neutral": {
-    "b": {
-     "weights": [
-      5,
-      25,
-      0,
-      20,
-      0,
-      0,
-      25,
-      0,
-      0,
-      25,
-      0
-     ],
-     "cagr": 7.31,
-     "maxdd": -26.3
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      10,
-      0,
-      0,
-      20,
-      0,
-      0,
-      15,
-      0
-     ],
-     "cagr": 7.31,
-     "maxdd": -26.3
-    },
-    "d": {
-     "weights": [
-      25,
-      50,
-      5,
-      20,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.12,
-     "maxdd": -26.8
-    },
-    "a": {
-     "cagr": 7.33,
-     "maxdd": -26.5
-    }
-   },
-   "asia_no_rerating": {
-    "b": {
-     "weights": [
-      10,
-      30,
-      0,
-      10,
-      0,
-      20,
-      30,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.17,
-     "maxdd": -25.9
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      5,
-      0,
-      15,
-      25,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.29,
-     "maxdd": -26.9
-    },
-    "d": {
-     "weights": [
-      25,
-      50,
-      5,
-      20,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.01,
-     "maxdd": -26.8
-    },
-    "a": {
-     "cagr": 7.1,
-     "maxdd": -26.7
-    }
-   },
-   "asia_fee_hi": {
-    "b": {
-     "weights": [
-      10,
-      35,
-      0,
-      10,
-      0,
-      20,
-      25,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.19,
-     "maxdd": -26.0
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      5,
-      0,
-      0,
-      35,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.25,
-     "maxdd": -26.7
-    },
-    "d": {
-     "weights": [
-      25,
-      50,
-      5,
-      20,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.05,
-     "maxdd": -26.8
-    },
-    "a": {
-     "cagr": 7.22,
+     "cagr": 7.23,
      "maxdd": -26.6
     },
     "stress_pp": 0.25
@@ -4649,7 +4717,7 @@ details.how p:last-child{margin-bottom:0}
       0,
       0
      ],
-     "cagr": 7.24,
+     "cagr": 7.25,
      "maxdd": -26.4
     },
     "c": {
@@ -4666,64 +4734,7 @@ details.how p:last-child{margin-bottom:0}
       5,
       0
      ],
-     "cagr": 7.27,
-     "maxdd": -26.7
-    },
-    "d": {
-     "weights": [
-      20,
-      50,
-      20,
-      10,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.04,
-     "maxdd": -26.2
-    },
-    "a": {
-     "cagr": 7.25,
-     "maxdd": -26.5
-    }
-   },
-   "trend_alt": {
-    "b": {
-     "weights": [
-      10,
-      35,
-      0,
-      10,
-      0,
-      15,
-      30,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.19,
-     "maxdd": -26.1
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      5,
-      0,
-      0,
-      35,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.25,
+     "cagr": 7.29,
      "maxdd": -26.7
     },
     "d": {
@@ -4740,11 +4751,68 @@ details.how p:last-child{margin-bottom:0}
       0,
       0
      ],
-     "cagr": 7.06,
+     "cagr": 7.1,
      "maxdd": -26.8
     },
     "a": {
-     "cagr": 7.22,
+     "cagr": 7.26,
+     "maxdd": -26.5
+    }
+   },
+   "trend_alt": {
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      10,
+      0,
+      20,
+      25,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.2,
+     "maxdd": -26.0
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      5,
+      0,
+      0,
+      35,
+      0,
+      0,
+      5,
+      0
+     ],
+     "cagr": 7.26,
+     "maxdd": -26.7
+    },
+    "d": {
+     "weights": [
+      20,
+      50,
+      20,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.01,
+     "maxdd": -26.2
+    },
+    "a": {
+     "cagr": 7.23,
      "maxdd": -26.6
     }
    }
@@ -4752,13 +4820,13 @@ details.how p:last-child{margin-bottom:0}
  },
  "portfolio_b": {
   "weights": [
-   10,
+   5,
    35,
    0,
-   10,
+   5,
    0,
-   20,
    25,
+   30,
    0,
    0,
    0,
@@ -4778,8 +4846,8 @@ details.how p:last-child{margin-bottom:0}
    "M_GALL"
   ],
   "column": "net_macro",
-  "band_n": 35,
-  "n_feasible": 198547,
+  "band_n": 12,
+  "n_feasible": 198610,
   "shorts": [
    "Peso Money Market",
    "Nasdaq Equity Income",
@@ -4815,7 +4883,7 @@ details.how p:last-child{margin-bottom:0}
     "gross_php": 9.2,
     "fx_drift": 2.0,
     "net_base": 6.66,
-    "regional_score": 2.83,
+    "regional_score": 2.84,
     "tilt_regional": -0.11,
     "tilt_vol": 0.0,
     "tilt_rates": -0.04,
@@ -4879,10 +4947,10 @@ details.how p:last-child{margin-bottom:0}
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 6.95,
-    "regional_score": 3.1,
+    "regional_score": 3.11,
     "tilt_regional": 0.07,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.03,
+    "tilt_rates": -0.02,
     "tilt_energy": 0.0,
     "tilt_trend": 0.03,
     "equity_share": 1.0,
@@ -4901,8 +4969,8 @@ details.how p:last-child{margin-bottom:0}
     ],
     "tilt_rates_cal": -0.05,
     "tilt_energy_cal": 0.0,
-    "tilt_total": 0.07,
-    "net_macro": 7.02,
+    "tilt_total": 0.08,
+    "net_macro": 7.03,
     "regional_score_10y": 3.24,
     "tilt_regional_10y": 0.16,
     "tilt_vol_10y": 0.0,
@@ -4917,14 +4985,14 @@ details.how p:last-child{margin-bottom:0}
     "dd_base": -33.3,
     "dd_macro": -33.3,
     "dd_10y": -33.2,
-    "target_net_macro": 8.52,
+    "target_net_macro": 8.53,
     "target_dd_macro": -32.2,
-    "net_novol": 7.02,
+    "net_novol": 7.03,
     "net_neutral": 7.05,
-    "net_notrend": 6.99,
-    "net_trend_alt": 7.02,
-    "net_asia_norerate": 7.02,
-    "net_asia_fee_hi": 7.02
+    "net_notrend": 7.0,
+    "net_trend_alt": 7.03,
+    "net_asia_norerate": 7.03,
+    "net_asia_fee_hi": 7.03
    },
    {
     "id": "M_GINF",
@@ -4947,10 +5015,10 @@ details.how p:last-child{margin-bottom:0}
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 7.2,
-    "regional_score": 3.06,
-    "tilt_regional": 0.04,
+    "regional_score": 3.07,
+    "tilt_regional": 0.05,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.1,
+    "tilt_rates": -0.09,
     "tilt_energy": 0.01,
     "tilt_trend": 0.0,
     "equity_share": 1.0,
@@ -4969,8 +5037,8 @@ details.how p:last-child{margin-bottom:0}
     ],
     "tilt_rates_cal": -0.2,
     "tilt_energy_cal": 0.05,
-    "tilt_total": -0.05,
-    "net_macro": 7.15,
+    "tilt_total": -0.03,
+    "net_macro": 7.17,
     "regional_score_10y": 3.19,
     "tilt_regional_10y": 0.13,
     "tilt_vol_10y": 0.0,
@@ -4985,14 +5053,14 @@ details.how p:last-child{margin-bottom:0}
     "dd_base": -33.2,
     "dd_macro": -33.2,
     "dd_10y": -33.1,
-    "target_net_macro": 8.65,
+    "target_net_macro": 8.67,
     "target_dd_macro": -32.1,
-    "net_novol": 7.15,
-    "net_neutral": 7.24,
-    "net_notrend": 7.15,
-    "net_trend_alt": 7.15,
-    "net_asia_norerate": 7.15,
-    "net_asia_fee_hi": 7.15
+    "net_novol": 7.17,
+    "net_neutral": 7.25,
+    "net_notrend": 7.17,
+    "net_trend_alt": 7.17,
+    "net_asia_norerate": 7.17,
+    "net_asia_fee_hi": 7.17
    },
    {
     "id": "M_GEO",
@@ -5015,10 +5083,10 @@ details.how p:last-child{margin-bottom:0}
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 7.0,
-    "regional_score": 3.23,
+    "regional_score": 3.24,
     "tilt_regional": 0.16,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.1,
+    "tilt_rates": -0.09,
     "tilt_energy": -0.03,
     "tilt_trend": -0.04,
     "equity_share": 1.0,
@@ -5037,8 +5105,8 @@ details.how p:last-child{margin-bottom:0}
     ],
     "tilt_rates_cal": -0.2,
     "tilt_energy_cal": -0.1,
-    "tilt_total": -0.01,
-    "net_macro": 6.99,
+    "tilt_total": 0.0,
+    "net_macro": 7.0,
     "regional_score_10y": 3.37,
     "tilt_regional_10y": 0.25,
     "tilt_vol_10y": 0.0,
@@ -5053,14 +5121,14 @@ details.how p:last-child{margin-bottom:0}
     "dd_base": -47.8,
     "dd_macro": -47.8,
     "dd_10y": -47.6,
-    "target_net_macro": 8.49,
+    "target_net_macro": 8.5,
     "target_dd_macro": -46.7,
-    "net_novol": 6.99,
+    "net_novol": 7.0,
     "net_neutral": 7.12,
-    "net_notrend": 7.03,
-    "net_trend_alt": 6.99,
-    "net_asia_norerate": 6.99,
-    "net_asia_fee_hi": 6.99
+    "net_notrend": 7.04,
+    "net_trend_alt": 7.0,
+    "net_asia_norerate": 7.0,
+    "net_asia_fee_hi": 7.0
    },
    {
     "id": "M_GCT",
@@ -5083,10 +5151,10 @@ details.how p:last-child{margin-bottom:0}
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 7.03,
-    "regional_score": 3.25,
-    "tilt_regional": 0.17,
+    "regional_score": 3.26,
+    "tilt_regional": 0.18,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.13,
+    "tilt_rates": -0.12,
     "tilt_energy": -0.04,
     "tilt_trend": 0.0,
     "equity_share": 1.0,
@@ -5105,8 +5173,8 @@ details.how p:last-child{margin-bottom:0}
     ],
     "tilt_rates_cal": -0.25,
     "tilt_energy_cal": -0.15,
-    "tilt_total": 0.0,
-    "net_macro": 7.03,
+    "tilt_total": 0.02,
+    "net_macro": 7.05,
     "regional_score_10y": 3.38,
     "tilt_regional_10y": 0.26,
     "tilt_vol_10y": 0.0,
@@ -5121,14 +5189,14 @@ details.how p:last-child{margin-bottom:0}
     "dd_base": -79.8,
     "dd_macro": -79.8,
     "dd_10y": -79.6,
-    "target_net_macro": 8.53,
-    "target_dd_macro": -78.8,
-    "net_novol": 7.03,
-    "net_neutral": 7.2,
-    "net_notrend": 7.03,
-    "net_trend_alt": 7.03,
-    "net_asia_norerate": 7.03,
-    "net_asia_fee_hi": 7.03
+    "target_net_macro": 8.55,
+    "target_dd_macro": -78.7,
+    "net_novol": 7.05,
+    "net_neutral": 7.21,
+    "net_notrend": 7.05,
+    "net_trend_alt": 7.05,
+    "net_asia_norerate": 7.05,
+    "net_asia_fee_hi": 7.05
    },
    {
     "id": "ATRAMIP",
@@ -5151,8 +5219,8 @@ details.how p:last-child{margin-bottom:0}
     "gross_php": 8.85,
     "fx_drift": 2.0,
     "net_base": 5.81,
-    "regional_score": 3.62,
-    "tilt_regional": 0.21,
+    "regional_score": 3.6,
+    "tilt_regional": 0.2,
     "tilt_vol": 0.0,
     "tilt_rates": -0.05,
     "tilt_energy": -0.04,
@@ -5169,8 +5237,8 @@ details.how p:last-child{margin-bottom:0}
     ],
     "tilt_rates_cal": -0.1,
     "tilt_energy_cal": -0.15,
-    "tilt_total": 0.11,
-    "net_macro": 5.92,
+    "tilt_total": 0.1,
+    "net_macro": 5.91,
     "regional_score_10y": 3.67,
     "tilt_regional_10y": 0.23,
     "tilt_vol_10y": 0.0,
@@ -5185,14 +5253,14 @@ details.how p:last-child{margin-bottom:0}
     "dd_base": -19.3,
     "dd_macro": -19.2,
     "dd_10y": -19.1,
-    "target_net_macro": 7.42,
-    "target_dd_macro": -18.1,
-    "net_novol": 5.92,
-    "net_neutral": 6.01,
-    "net_notrend": 5.93,
-    "net_trend_alt": 5.92,
-    "net_asia_norerate": 5.42,
-    "net_asia_fee_hi": 5.92
+    "target_net_macro": 7.41,
+    "target_dd_macro": -18.2,
+    "net_novol": 5.91,
+    "net_neutral": 6.0,
+    "net_notrend": 5.92,
+    "net_trend_alt": 5.91,
+    "net_asia_norerate": 5.41,
+    "net_asia_fee_hi": 5.91
    },
    {
     "id": "M_GALL",
@@ -5215,8 +5283,8 @@ details.how p:last-child{margin-bottom:0}
     "gross_php": 8.62,
     "fx_drift": 2.0,
     "net_base": 6.29,
-    "regional_score": 3.18,
-    "tilt_regional": 0.07,
+    "regional_score": 3.19,
+    "tilt_regional": 0.08,
     "tilt_vol": 0.0,
     "tilt_rates": -0.05,
     "tilt_energy": -0.01,
@@ -5237,8 +5305,8 @@ details.how p:last-child{margin-bottom:0}
     ],
     "tilt_rates_cal": -0.1,
     "tilt_energy_cal": -0.05,
-    "tilt_total": -0.01,
-    "net_macro": 6.28,
+    "tilt_total": -0.0,
+    "net_macro": 6.29,
     "regional_score_10y": 3.31,
     "tilt_regional_10y": 0.13,
     "tilt_vol_10y": 0.0,
@@ -5253,117 +5321,117 @@ details.how p:last-child{margin-bottom:0}
     "dd_base": -21.6,
     "dd_macro": -21.6,
     "dd_10y": -21.5,
-    "target_net_macro": 7.48,
+    "target_net_macro": 7.49,
     "target_dd_macro": -20.7,
-    "net_novol": 6.28,
-    "net_neutral": 6.34,
-    "net_notrend": 6.3,
-    "net_trend_alt": 6.28,
-    "net_asia_norerate": 6.28,
-    "net_asia_fee_hi": 6.28
+    "net_novol": 6.29,
+    "net_neutral": 6.35,
+    "net_notrend": 6.31,
+    "net_trend_alt": 6.29,
+    "net_asia_norerate": 6.29,
+    "net_asia_fee_hi": 6.29
    }
   ],
   "macro": {
    "weights": [
-    10.0,
+    5.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
     0.0,
-    20.0,
     25.0,
+    30.0,
     0.0,
     0.0,
     0.0,
     0.0
    ],
-   "cagr": 7.19,
-   "vol": 13.2,
-   "maxdd": -26.0,
-   "ret_per_dd": 0.277,
-   "sharpe_like": 0.046,
-   "terminal_1m": 2002363,
-   "worst_1m_from_open": 740000
+   "cagr": 7.23,
+   "vol": 13.4,
+   "maxdd": -26.3,
+   "ret_per_dd": 0.275,
+   "sharpe_like": 0.048,
+   "terminal_1m": 2009847,
+   "worst_1m_from_open": 737000
   },
   "base": {
    "weights": [
-    10.0,
+    5.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
     0.0,
-    20.0,
     25.0,
+    30.0,
     0.0,
     0.0,
     0.0,
     0.0
    ],
-   "cagr": 7.17,
-   "vol": 13.2,
-   "maxdd": -26.0,
-   "ret_per_dd": 0.276,
-   "sharpe_like": 0.044,
-   "terminal_1m": 1998630,
-   "worst_1m_from_open": 740000
+   "cagr": 7.2,
+   "vol": 13.4,
+   "maxdd": -26.3,
+   "ret_per_dd": 0.274,
+   "sharpe_like": 0.046,
+   "terminal_1m": 2004231,
+   "worst_1m_from_open": 737000
   },
   "ten": {
    "weights": [
-    10.0,
+    5.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
     0.0,
-    20.0,
     25.0,
+    30.0,
     0.0,
     0.0,
     0.0,
     0.0
    ],
-   "cagr": 7.37,
-   "vol": 13.2,
-   "maxdd": -25.9,
-   "ret_per_dd": 0.285,
-   "sharpe_like": 0.06,
-   "terminal_1m": 2036243,
-   "worst_1m_from_open": 741000
+   "cagr": 7.4,
+   "vol": 13.4,
+   "maxdd": -26.2,
+   "ret_per_dd": 0.282,
+   "sharpe_like": 0.061,
+   "terminal_1m": 2041939,
+   "worst_1m_from_open": 738000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $117. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 4.01,
-    "vol": 21.12,
-    "maxdd": -46.9
+    "cagr": 4.21,
+    "vol": 21.44,
+    "maxdd": -47.3
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.07,
-    "vol": 17.16,
-    "maxdd": -36.9
+    "cagr": 5.15,
+    "vol": 17.42,
+    "maxdd": -37.2
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 5.04,
-    "vol": 19.14,
-    "maxdd": -41.5
+    "cagr": 5.46,
+    "vol": 19.43,
+    "maxdd": -41.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.12,
-    "vol": 10.56,
-    "maxdd": -18.4
+    "cagr": 9.14,
+    "vol": 10.72,
+    "maxdd": -18.7
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.19,
-    "vol": 13.2,
-    "maxdd": -26.0
+    "cagr": 7.23,
+    "vol": 13.4,
+    "maxdd": -26.3
    }
   ],
   "corr": [
@@ -5961,6 +6029,16 @@ details.how p:last-child{margin-bottom:0}
    "org": "FRED (St. Louis Fed)",
    "what": "DGS10 - 10-year constant maturity: 5.24 (28 Sep), 5.26 (29 Sep), 5.29 (30 Sep), 5.28 (2 Oct), 5.31 (5 Oct), 5.27 (6 Oct), 5.28 (7 Oct), 5.22 (8 Oct) 2026",
    "url": "https://fred.stlouisfed.org/series/DGS10"
+  },
+  {
+   "org": "FRED (St. Louis Fed)",
+   "what": "FEDTARMD - FOMC projections, median federal funds rate: 4.1 for 2026 and 2027, 3.9 for 2028, 3.6 for 2029 (September 2026 SEP)",
+   "url": "https://fred.stlouisfed.org/series/FEDTARMD"
+  },
+  {
+   "org": "FRED Blog",
+   "what": "FOMC Summary of Economic Projections, September 2026 - the median at 4.1% through 2027, 3.9% by end-2028",
+   "url": "https://fredblog.stlouisfed.org/2026/09/fomc-summary-of-economic-projections-september-2026/"
   },
   {
    "org": "Yahoo Finance / BEA",
@@ -7488,7 +7566,7 @@ $("#corrnote").textContent = D.corr_note;
      from ${num(pc1(A.maxdd))} to ${num(pc1(B.maxdd))}. Return per unit of drawdown moves
      ${num(A.ret_per_dd.toFixed(3) + " &rarr; " + B.ret_per_dd.toFixed(3))},
      ${num(gain + "%")} ${gv >= 0 ? "better" : "worse"}.`;
-  $("#rone").innerHTML = `In one sentence: <strong>hold B, the 5/10-year view's pick, with
+  $("#rone").innerHTML = `In one sentence: <strong>hold B, the 3/5/10-year view's pick, with
     ${and_(top.map(i => NM[i]))} as the core` +
     (edge < -tie - 1e-9 ? `; A returns ${Math.abs(edge).toFixed(2)}pp a year more for
        ${ddg.toFixed(1)}pp more drawdown` : Math.abs(edge) <= tie + 1e-9
@@ -7609,7 +7687,7 @@ $("#corrnote").textContent = D.corr_note;
        <div class="drvnote">${d.summary}</div>
        <details class="more"><summary>Why</summary><span class="scalenote">research scale
          ${Number.isInteger(d.score_10 * 10) ? d.score_10.toFixed(1) : d.score_10.toFixed(2)} / ${DS.research_max}</span>${d.note}
-         <span class="scalenote">Over five years</span>${d.path_why}</details>`));
+         <span class="scalenote">Over 3 and 5 years</span>${d.path_why}</details>`));
   });
   box.appendChild(el("div", { class:"drv", style:"border-top:1.5px solid var(--line-2)" },
     `<div class="drvhead"><span class="drvname" style="font-weight:700">Weighted composite</span>
@@ -7645,25 +7723,26 @@ $("#corrnote").textContent = D.corr_note;
   tb.appendChild(el("tr", { style: "font-weight:700" }, `<td>Gauge</td>` + cell(D.gauge) + HZK.map(h => cell(G[h])).join("") +
     `<td><span class="cell" style="background:var(--navy);color:#fff">${D.gauge_blend.toFixed(2)}</span></td>`));
   t.appendChild(tb);
-  /* Read from the gauge path, not typed: "near neutral" holds only while the 5-year
-     gauge is within a quarter-point of neutral. */
-  const g5 = G[HZK[0]], NEU5 = D.driver_scale.neutral;
+  /* Read from the gauge path, not typed: "near neutral" holds only while a horizon's
+     gauge is within a quarter-point of neutral; the heading names the first that is. */
+  const NEU5 = D.driver_scale.neutral;
+  const near = HZK.find(h => Math.abs(G[h] - NEU5) <= 0.25);
   $("#dphead").textContent = (D.gauge < NEU5 ? `Below neutral now` : `Above neutral now`) +
-    (Math.abs(g5 - NEU5) <= 0.25 ? `, near neutral over five years`
-      : `, still ${g5 < NEU5 ? "below" : "above"} it over five years`);
+    (near ? `, near neutral by ${near}` : `, still ${G[HZK[0]] < NEU5 ? "below" : "above"} it at ${HZK[0]}`);
   const dn = n => D.drivers.find(d => d.name.startsWith(n));
   const mo = dn("Monetary"), ge = dn("Geopolitics");
   $("#dpnote").innerHTML =
     `<em>Now</em> is each driver's score above. ${HZK[0]} is its expected average over years
-     1&ndash;5, from the medium-term evidence in each <em>Why</em>; at ${HYL} every driver is
-     neutral, because the base returns already carry the average cycle. The rates and energy
+     1&ndash;3 and ${HZK[1]} over years 4&ndash;5, from the year-by-year evidence in each
+     <em>Why</em>; at ${HYL} every driver is neutral, because the base returns already carry the
+     average cycle. The rates and energy
      tilts read Monetary and Geopolitics averaged over the ten years on the
      ${HZK.map(h => `${h} ${(D.hz_weights[h]*100).toFixed(0)}%`).join(" / ")} weights &mdash;
      <b class="num">${TC.monetary_blend.toFixed(2)}</b> and
      <b class="num">${TC.geopolitics_blend.toFixed(2)}</b> on the research scale, not their readings
      now of <b class="num">${mo.score_10.toFixed(1)}</b> and <b class="num">${ge.score_10.toFixed(1)}</b>
-     &mdash; so a tightening expected to fade over the five years drags a ${HYN} return less than
-     one held for the decade.`;
+     &mdash; so a tightening expected to fade over the next five years drags a ${HYN} return less
+     than one held for the decade.`;
 })();
 
 /* ---------------- regional ranking ---------------- */
@@ -7708,23 +7787,28 @@ $("#corrnote").textContent = D.corr_note;
     .toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   const ids = FALL.filter(f => S[f.id]).map(f => f.id);
   const short = id => FALL.find(f => f.id === id).short;
-  /* The signals (past 1, 3 and 5 years) and the two scored horizons (5Y, 10Y). */
+  /* The signals (past 1, 3 and 5 years) and the scored views (3Y, 5Y), then 10Y. */
   const hz = T.horizons.map(h => h.label).concat(T.long.map(h => h.label));
-  const lg = T.long.map(h => h.label), VW = T.view;
+  const lg = T.long.map(h => h.label), VWS = T.views;
+  const frac = x => Math.abs(x - 1 / 3) < 1e-3 ? "⅓" : Math.abs(x - 2 / 3) < 1e-3 ? "⅔" : x.toFixed(2);
+  const rule = h => "3" + (T.w[h].mom ? " + " + frac(T.w[h].mom) + " z(1Y)" : "") +
+    (T.w[h].rev ? " &minus; " + (T.w[h].rev === 1 ? "" : frac(T.w[h].rev) + " &times; ") +
+      T.reversal.toFixed(1) + " z(" + lg.join(", ") + ")" : "");
   $("#trendlede").innerHTML =
     `Each equity sleeve's market to ${num(dlong(T.end))}, read the way the evidence reads each
-     distance. The ${VW} score counts the past year as <strong>momentum</strong> for the first of its
-     five years &mdash; markets that ran tend to keep running for about a year &mdash; and the past
-     ${T.long.map(h => h.years.toFixed(0)).join(" and ")} years, annualised, as <strong>reversal</strong> for the
-     other four: the hardest runners tend to give some back over the next three to five years.
-     ${num("3 + " + T.w_mom.toFixed(1) + "z(1Y) &minus; " + T.w_rev.toFixed(1) + " &times; " +
-       T.reversal.toFixed(1) + "z(" + lg.join(", ") + ")")}, reversal at half momentum's weight. The
-     ${HYL} anchor is fixed at ${num(T.anchor.toFixed(1))}, and each point of blend above it adds
+     distance. The past year is <strong>momentum</strong> for the first year ahead &mdash; markets that
+     ran tend to keep running for about a year &mdash; and the past
+     ${T.long.map(h => h.years.toFixed(0)).join(" and ")} years, annualised, are <strong>reversal</strong> for
+     years 2&ndash;5: the hardest runners tend to give some back over the next three to five years.
+     Each view takes them in proportion to the years it covers &mdash; ` +
+     VWS.map(h => `${h} ${num(rule(h))}`).join(", ") +
+     ` &mdash; with reversal at half momentum's weight. The ${HYL} anchor is fixed at
+     ${num(T.anchor.toFixed(1))}, and each point of blend above it adds
      ${num(T.tilt_per_pt.toFixed(2) + "pp")} a year.`;
   const t = $("#trendtab");
   t.appendChild(el("thead", null, `<tr><th>Market</th>` +
     hz.map(h => `<th>Past ${h}${lg.includes(h) ? " p.a." : ""}</th>`).join("") +
-    `<th>${VW}</th><th>${HYL}</th><th>Blend</th><th>Tilt</th></tr>`));
+    VWS.map(h => `<th>${h}</th>`).join("") + `<th>${HYL}</th><th>Blend</th><th>Tilt</th></tr>`));
   const tb = el("tbody");
   ids.forEach(id => {
     const v = S[id], i = FALL.findIndex(f => f.id === id);
@@ -7733,7 +7817,8 @@ $("#corrnote").textContent = D.corr_note;
          <span class="scalenote">${short(id)}</span></td>` +
       hz.map(h => `<td class="${cls(v.ret[h])}">${sg(v.ret[h])}%<br>
          <span class="scalenote">z ${sg(v.z[h])}</span></td>`).join("") +
-      `<td>${v.score[VW].toFixed(2)}</td><td>${v.score[HYL].toFixed(2)}</td><td>${v.blend.toFixed(2)}</td>
+      VWS.map(h => `<td>${v.score[h].toFixed(2)}</td>`).join("") +
+      `<td>${v.score[HYL].toFixed(2)}</td><td>${v.blend.toFixed(2)}</td>
        <td class="${cls(v.tilt)}">${sg(v.tilt)}</td>`));
   });
   t.appendChild(tb);
@@ -8234,7 +8319,7 @@ function donut(host, w, title, cagr, dd) {
 }
 (function () {
   /* ONE RULE, FOUR PICKS: the engine chooses A to D itself, over the funds it models
-     in full - A on the 10-year view (since 2026-10-26), B on the 5/10-year view,
+     in full - A on the 10-year view (since 2026-10-26), B on the 3/5/10-year view,
      C and D on it with Nasdaq Equity Income at 50%. Nothing here is typed. */
   const PA = D.portfolio_a, PB = D.portfolio_b, PC = D.portfolio_c, RD = PB.review;
   const A = PA.macro, Bm = PB.macro, SH = PB.shorts, CF = D.funds[1], tie = D.universe.tie_pp, C = PC;
@@ -8285,7 +8370,7 @@ function donut(host, w, title, cagr, dd) {
      ${pctOrNone(D.macro.gbi_w_b_high, "B")} and ${pctOrNone(D.macro.gbi_w_c_high, "C")} at the ${D.macro.gbi_target_high.toFixed(2)}% retail rate.
      <details class="more"><summary>The ${WN[HO.length]} held out, and what each is missing</summary>
      <ul class="plain">` + HO.map(x => `<li><b>${x.short}</b> &mdash; ${x.why}</li>`).join("") + `</ul></details>`;
-  /* A is chosen on the 10-year view; the donut shows the 5/10-year view so the
+  /* A is chosen on the 10-year view; the donut shows the 3/5/10-year view so the
      four compare on one basis, and this line gives A's own. */
   $("#donutAlr").innerHTML = `On its own ${HYL} view: <b class="num">${pc(PA.ten.cagr)}</b> /
     <b class="num">${pc1(PA.ten.maxdd)}</b>`;
@@ -8297,7 +8382,7 @@ function donut(host, w, title, cagr, dd) {
   /* C's weights are in the versus table above, beside A, B and D. */
   $("#pinlede").innerHTML =
     `${CF.short} fixed at <b class="num">${C.pin_pct}%</b>; the rest are chosen from the same
-     ${NUW} funds as A and B, on B's 5/10-year driver, market-trend, regional and volatility
+     ${NUW} funds as A and B, on B's 3/5/10-year driver, market-trend, regional and volatility
      inputs and budget, by the same rule: the best net CAGR inside the budget, then the lowest drawdown
      within ${tie.toFixed(2)}pp &mdash; ${C.n_feasible.toLocaleString("en-US")} candidates fit, ${C.band_n} inside the tie.`;
   const cD = C.macro.cagr - Bm.cagr, cDD = Math.abs(C.macro.maxdd) - Math.abs(Bm.maxdd);
@@ -8322,7 +8407,7 @@ function donut(host, w, title, cagr, dd) {
 
   $("#pdlede").innerHTML =
     `${CF.short} fixed at <b class="num">${PD.pin_pct}%</b>; the rest chosen from ${lst(dOthers)} only,
-     on the same 5/10-year driver, market-trend, regional and volatility inputs and budget
+     on the same 3/5/10-year driver, market-trend, regional and volatility inputs and budget
      as B and C, by the same rule &mdash;
      ${PD.n_feasible.toLocaleString("en-US")} candidates fit, ${PD.band_n} inside the tie.
      <b class="num">${pc(DM.cagr)}</b> at <b class="num">${pc1(DM.maxdd)}</b>; on the ${HYL} view
@@ -8365,7 +8450,7 @@ function donut(host, w, title, cagr, dd) {
     .sort((a, b) => b[1] - a[1])[0];
   const bothIn = PA.in_budget && PB.in_budget;
   $("#pbnote").innerHTML =
-    `On the 5/10-year view, on J.P. Morgan's ${ed} assumptions, B returns
+    `On the 3/5/10-year view, on J.P. Morgan's ${ed} assumptions, B returns
      <b class="num">${pc(Bm.cagr)}</b>, ${vs}, with
      <b class="num">${Math.abs(ddA).toFixed(1)}pp</b> ${ddA >= 0 ? "less" : "more"} drawdown
      (${pc1(Bm.maxdd)} against ${pc1(A.maxdd)}); ${bothIn ? "both sit inside" : PB.in_budget ? "only B sits inside" : "B sits outside"}
