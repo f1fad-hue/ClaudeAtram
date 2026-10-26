@@ -23,15 +23,21 @@ T-bill curve and USD/PHP. Primary sources only. If one is unreachable, leave the
 prior value and mark it stale — never guess.
 
 **2. Re-score and re-optimise.** Seven drivers and four regions across
-3M / 6M / 12M / 10Y, then the gauge. Drivers and regions are researched on 1–10;
-both the headline gauge and the regional rankings are reported on 1–5. Portfolios B and C are built from five
-inputs — the broad gauge, the correlated per-sleeve transmission, the **volatility
-gap** (horizon-blended implied vol minus the LONG-RUN 19.5 every base return already
-assumes, same horizon weights as the regional blend), the regional rankings and,
-since 2026-10-07, the **market trend**: each equity sleeve's market over the
-3/6/12-month windows to the last month-end, z-scored against its own long-run drift
-and volatility, with the 10Y score held neutral. Refresh `TREND_INPUTS` and
-`TREND_END` at each month-end; a check fails once the window is a month stale. Every
+1Y / 3Y / 5Y / 10Y (since v68; 3M / 6M / 12M / 10Y before), then the gauge. Each
+driver's score is its 1-year reading; its 3- and 5-year points live in `DRIVER_PATH`
+and are re-judged whenever the 1-year score moves far enough to change the path.
+Drivers and regions are researched on 1–10; both the headline gauge and the regional
+rankings are reported on 1–5. The horizon weights are each view's share of the ten
+years (10 / 20 / 20 / 50) and are not to be tuned. Every portfolio is built from the
+same inputs — the drivers' rates and energy tilts (read on each driver's ten-year
+path), the **volatility gap** (the curve's FORWARD vol over each horizon's years,
+weighted, minus the LONG-RUN 19.5 every base return already assumes), the regional
+rankings and the **market trend**: each equity sleeve's market over the past year
+(momentum) and the past 3 and 5 years annualised (reversal), z-scored against its own
+long-run drift and volatility, with the 10Y score held neutral. A reads them at 10
+years alone; B, C and D at all four. Refresh `TREND_INPUTS` (quarters and
+`trail_ann`) and `TREND_END` at each month-end; a check fails once the window is a
+month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
 figure from a search is never used unless the months behind it reproduce it.
 Every portfolio — A, B, C and every what-if — is
@@ -157,6 +163,15 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+99. A READING IS NOT A FORECAST UNTIL IT SAYS HOW LONG IT LASTS. The rates and energy
+   tilts took a Monetary score of 2.0 as if it held for ten years, beside regional and
+   volatility channels that had always averaged their horizons. The inconsistency took
+   0.73pp a year off Global Technology's forecast through its rates tilt alone, and no check
+   could see it, because each channel was right on its own terms. Give every signal a path.
+98. A WEIGHT AND THE QUANTITY IT WEIGHTS MUST COVER THE SAME YEARS. Implied vol at three
+   years is the average from today; a weight for years two and three applied to it counts
+   year one again. When the weights became shares of the holding period, the vol channel
+   had to move to forward vol with them.
 97. A NOTE THAT PRINTS "THE LATEST MOVE" DOES NOT KNOW WHICH WAY IT WENT. "The KOSPI fell
    {latest_chg}%" was true for one session and would have printed "fell 0.3%" for a 0.3%
    gain the next. A move that a sentence describes in the past gets its own dated input;

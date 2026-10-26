@@ -7,7 +7,7 @@ Allocation's fee note; re-run it when any of those fees, or the universe, change
 
 Imports the engine, builds the held-out fund with build_fund() and the factor model,
 re-binds the search's globals to the eleven funds plus that one, and re-runs the rule
-for A (long-run), B (macro) and C (macro, Nasdaq Equity Income at 50%). For the
+for A (the 10-year view), B (the 1/3/5/10-year view) and C (the same, Nasdaq Equity Income at 50%). For the
 disputed fee it rebuilds the admitted fund in place and re-runs the same three."""
 import json, math, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -43,7 +43,7 @@ def run(spec):
     E._CASH = [f["cash_like"] for f in specs]
     pk = {"a": E._Pick(), "b": E._Pick(), "c": E._Pick()}
     for seq, (idx, u) in enumerate(E.univ_mixes()):
-        ms = E._measure(idx, u, ["net_base", "net_macro"])
+        ms = E._measure(idx, u, ["net_10y", "net_macro"])
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
     for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
         pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
@@ -64,7 +64,7 @@ def run_refee(fid, trust):
     E._CASH = [f["cash_like"] for f in E._US]
     pk = {"a": E._Pick(), "b": E._Pick(), "c": E._Pick()}
     for seq, (idx, u) in enumerate(E.univ_mixes()):
-        ms = E._measure(idx, u, ["net_base", "net_macro"])
+        ms = E._measure(idx, u, ["net_10y", "net_macro"])
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
     for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
         pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
@@ -81,13 +81,13 @@ if __name__ == "__main__":
     for lab, sp in (("useq_listed", spec_useq(E.MACRO["useq_trust_listed"])), ("useq_peer", spec_useq(E.MACRO["useq_trust_peer"])),
                     ("gbi_inst", spec_gbi(0.69)), ("gbi_retail", spec_gbi(1.59))):
         t = time.time(); fb, out = run(sp); res[lab] = out
-        print(f"{lab:12} fund net base {fb['net_base']} macro {fb['net_macro']} vol {fb['vol']} dd {fb['dd_macro']}  ({time.time()-t:.0f}s)")
+        print(f"{lab:12} fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']} vol {fb['vol']} dd {fb['dd_macro']}  ({time.time()-t:.0f}s)")
         for k, v in out.items():
             mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts + [fb["short"]]) if x)
             print(f"   {k.upper()}: {v['new_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
     # Global Allocation: 1.20% on two listings, 1.50% on DragonFi (2026-10-22).
     t = time.time(); fb, out = run_refee("M_GALL", 1.50)
-    print(f"gall_150     fund net base {fb['net_base']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
+    print(f"gall_150     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
     for k, v in out.items():
         mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
         print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")

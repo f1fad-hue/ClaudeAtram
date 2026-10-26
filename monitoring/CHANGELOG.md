@@ -2,6 +2,63 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-26 — v68: every portfolio on 1, 3, 5 and 10-year forecasts
+
+At the owner's instruction: "Update all portfolio based on macroeconomic drivers deep
+analysis, market trend deep analysis, regional rankings deep analysis and volatility deep
+analysis of 1, 3, 5 and 10yrs forecast. Do the best and recommended approach to reach max
+growth 10yrs cagr minus fund fees forecast while controlling the drawdown to minimum to
+all portfolios", and "do house cleanup also". Market data unchanged (23 Oct; US to 22 Oct).
+
+**The four horizons, analysis by analysis:**
+- **Weights are arithmetic now, not judgement**: each view's share of the ten years it
+  governs - 1Y 10% (year 1), 3Y 20% (years 2-3), 5Y 20% (years 4-5), 10Y 50% (6-10).
+- **Regional ranking**: 1-year scores are the old 3-, 6- and 12-month views across the year;
+  3- and 5-year scores are new, between them and the unchanged 10-year anchors (US 5.0 /
+  6.0 / 6.25 / 6.5; Europe 3.0 / 3.75 / 4.25 / 4.5; Asia 5.5 / 6.75 / 7.0 / 7.0;
+  Philippines 5.25 / 5.5 / 5.5 / 5.5), each note closing with its reasoning.
+- **Macro drivers**: each of the seven has a 1/3/5/10-year path (`DRIVER_PATH`), its
+  1-year point the researched score and every path neutral at ten years. The gauge reads
+  2.29 / 2.68 / 2.89 / 3.00 across them.
+- **Market trend**: the past year as MOMENTUM (3 + z); the past 3 and 5 years, annualised,
+  as REVERSAL (3 − 0.5z); 10 years neutral. Trailing returns sourced for all five markets.
+- **Volatility**: the curve at 1Y / 3Y / 5Y / 10Y (18.87 / 19.24 / 19.34 / 19.42%), and the
+  channel reads each horizon's FORWARD vol over its own years.
+- **A is chosen on the 10-year view** (`net_10y`: the analyses at 10 years alone), B on all
+  four horizons, C and D on them with Nasdaq Equity Income at 50%.
+
+**The portfolios:** A 5 / 30 / 0 / 20 / 0 / 0 / 20 / 0 / 0 / 25 / 0 at 7.22% / −26.6%
+(7.43% / −26.4% on its own view); B 10 / 35 / 0 / 10 / 0 / 15 / 30 at **7.20% / −26.1%**;
+C 5 / 50 / 0 / 5 / 0 / 0 / 35 / 0 / 0 / 5 at 7.26% / −26.7%; D 25 / 50 / 5 / 20 at 7.07% /
+−26.8%. All inside the −26.97% budget. Were (v67) 6.91 / 6.88 / 6.95 / 6.80%.
+
+**Errors found and fixed:**
+- **The rates and energy tilts held a 1-year reading for ten years.** The regional and
+  volatility channels averaged their horizons; the drivers' tilts took today's Monetary 2.0
+  and Geopolitics 1.5 as permanent. On the ten-year path they read 4.75 and 4.40: rates
+  ×0.50 (was ×2.333), energy ×0.367 (was ×1.333). The largest single reason every forecast
+  rose about 0.3pp; Global Technology's rates drag went from −0.93pp to −0.20pp.
+- **The vol blend would have counted year 1 four times.** The implied figure at 3, 5 and 10
+  years is the average from today, so pairing it with weights for years 2-3, 4-5 and 6-10
+  re-counts year 1 inside each. It now reads forward vol; the ramp is −0.08 (was −0.45).
+- **The held-out fund results were from the old engine.** US Equity Opportunity and Global
+  Bond Income were re-run (`model/heldout_sens.py`, A on the 10-year view): at 1.20% US
+  Equity Opportunity would take 20% of A, 20% of B and 10% of C (was 10 / 25 / 10).
+- **A disputed trailing return.** Schwab's 30 Sep page puts Global Technology at 37.6% and
+  22.0% a year over 3 and 5 years, but its one-year 45.0% is 7.6pp above what the monthly
+  series compounds to (37.43%). Three trackers agree on 31.4% and 18.8%; Schwab's pair runs
+  as `trend_alt` beside Asia's disputed quarter, and nothing moves.
+- **The Europe and Philippines notes named retired horizons** ("Held, 3M at 2.25", "6M and
+  longer held", "Near horizons held"); reworded.
+
+**House cleanup:** the superseded horizon-weight history (the 2026-09-08 reweighting) cut
+from the engine to one line pointing here; dead branches in the trend note's Asia sentence
+removed; the README result table, CLAIMS register and disclaimer brought up to the eleven
+funds and four horizons.
+
+**Checks:** engine 230/230 (seven new: driver paths, horizon gauges, the 10-year column,
+forward vols, the trend's four horizons, the weights' derivation, the 10-year vol ramp).
+
 ## 2026-10-23 — v67: rolled to Friday 23 Oct; A, B, C and D unchanged
 
 At the owner's instruction: debug, code-review and sanity-check; re-research and

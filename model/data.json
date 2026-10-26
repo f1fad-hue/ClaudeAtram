@@ -380,21 +380,21 @@
   "useq_trust_peer": 1.5,
   "useq_ocf_clean": 0.85,
   "useq_ocf_retail": 1.81,
-  "useq_w_a_listed": 10,
-  "useq_w_b_listed": 25,
-  "useq_w_a_peer": 0,
-  "useq_w_b_peer": 5,
+  "useq_w_a_listed": 20,
+  "useq_w_b_listed": 20,
+  "useq_w_a_peer": 20,
+  "useq_w_b_peer": 0,
   "useq_w_c_listed": 10,
   "useq_w_c_peer": 5,
   "gbi_trust_listed": 0.9,
   "gbi_target_low": 0.69,
   "gbi_target_high": 1.59,
   "gbi_w_a_low": 35,
-  "gbi_w_b_low": 25,
-  "gbi_w_c_low": 10,
-  "gbi_w_a_high": 30,
-  "gbi_w_b_high": 0,
-  "gbi_w_c_high": 0,
+  "gbi_w_b_low": 35,
+  "gbi_w_c_low": 25,
+  "gbi_w_a_high": 25,
+  "gbi_w_b_high": 20,
+  "gbi_w_c_high": 10,
   "brent_history": [
    [
     "2026-09-18",
@@ -1059,33 +1059,41 @@
  },
  "vol_ts": [
   {
-   "label": "3M",
-   "years": 0.25,
-   "implied": 18.29,
-   "realised": 14.79,
-   "move_1sd": 9.15,
-   "move_2sd": 18.29
-  },
-  {
-   "label": "6M",
-   "years": 0.5,
-   "implied": 18.59,
-   "realised": 15.09,
-   "move_1sd": 13.15,
-   "move_2sd": 26.29
-  },
-  {
-   "label": "12M",
+   "label": "1Y",
    "years": 1.0,
+   "from_years": 0.0,
    "implied": 18.87,
+   "forward": 18.87,
    "realised": 15.37,
    "move_1sd": 18.87,
    "move_2sd": 37.74
   },
   {
+   "label": "3Y",
+   "years": 3.0,
+   "from_years": 1.0,
+   "implied": 19.24,
+   "forward": 19.42,
+   "realised": 15.74,
+   "move_1sd": 33.33,
+   "move_2sd": 66.65
+  },
+  {
+   "label": "5Y",
+   "years": 5.0,
+   "from_years": 3.0,
+   "implied": 19.34,
+   "forward": 19.49,
+   "realised": 15.84,
+   "move_1sd": 43.25,
+   "move_2sd": 86.51
+  },
+  {
    "label": "10Y",
    "years": 10.0,
+   "from_years": 5.0,
    "implied": 19.42,
+   "forward": 19.5,
    "realised": 15.92,
    "move_1sd": 61.42,
    "move_2sd": 122.83
@@ -1094,70 +1102,70 @@
  "sp_vol_lt": 19.42,
  "regions": {
   "US": {
-   "3M": 2.33,
-   "6M": 2.67,
-   "12M": 3.0,
+   "1Y": 2.78,
+   "3Y": 3.22,
+   "5Y": 3.33,
    "10Y": 3.44,
-   "why": "Held. The AI trade broke on 22 Oct: the S&P fell 1.21% to 7663.43, its worst day since July, and the Nasdaq 2.60% to 26008.86 after Meta's spending plans and Lam Research's guidance sent chip stocks down more than 6%; the Dow held flat. The data ran hot - producer prices up 1.3% in September, retail sales 0.8% - but the hike moved out: FedWatch had October at 7.2% on 23 Oct, and the 10-year closed at 4.96% on the 22nd, 17bp lower, as money ran to Treasuries. The consumer is the weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +82.8% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well.",
-   "blend_10": 5.74,
-   "3M_10": 4.0,
-   "6M_10": 4.75,
-   "12M_10": 5.5,
+   "why": "Held. The AI trade broke on 22 Oct: the S&P fell 1.21% to 7663.43, its worst day since July, and the Nasdaq 2.60% to 26008.86 after Meta's spending plans and Lam Research's guidance sent chip stocks down more than 6%; the Dow held flat. The data ran hot - producer prices up 1.3% in September, retail sales 0.8% - but the hike moved out: FedWatch had October at 7.2% on 23 Oct, and the 10-year closed at 4.96% on the 22nd, 17bp lower, as money ran to Treasuries. The consumer is the weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +82.8% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THE PATH: 1-year 5.0, the old 3-, 6- and 12-month views (4.0, 4.75, 5.5) across the year; 3-year 6.0, as a December hike ends the cycle and the energy-exporter edge holds; 5-year 6.25, near the 6.5 anchor once the AI spending either pays or is digested.",
+   "blend_10": 6.2,
+   "1Y_10": 5.0,
+   "3Y_10": 6.0,
+   "5Y_10": 6.25,
    "10Y_10": 6.5,
-   "blend": 3.1,
+   "blend": 3.31,
    "summary": "Held: the S&P fell 1.21% to 7663.43 on 22 Oct, its worst day since July, as chip stocks sold; the 10-year closed at 4.96%."
   },
   "EUROPE": {
-   "3M": 1.56,
-   "6M": 1.89,
-   "12M": 2.11,
+   "1Y": 1.89,
+   "3Y": 2.22,
+   "5Y": 2.44,
    "10Y": 2.56,
-   "why": "Held, 3M at 2.25. Eurostat confirmed September inflation at 3.8% on 16 Oct, unchanged from the flash and up from 3.2%, with energy at 18.8% and core at 2.5% - the outcome that tests, at the 29 Oct meeting, the ECB's word that its cycle ended at 2.50% on 10 Sep. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. The policy/growth mismatch stands against IMF growth of 0.9%. Europe is the largest net energy importer here, facing Brent +82.8% y/y. 6M and longer held. The offset is real - at 15.4x forward it is the cheapest large market after Asia.",
-   "blend_10": 3.8,
-   "3M_10": 2.25,
-   "6M_10": 3.0,
-   "12M_10": 3.5,
+   "why": "Held. Eurostat confirmed September inflation at 3.8% on 16 Oct, unchanged from the flash and up from 3.2%, with energy at 18.8% and core at 2.5% - the outcome that tests, at the 29 Oct meeting, the ECB's word that its cycle ended at 2.50% on 10 Sep. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. The policy/growth mismatch stands against IMF growth of 0.9%. Europe is the largest net energy importer here, facing Brent +82.8% y/y. The offset is real - at 15.4x forward it is the cheapest large market after Asia. THE PATH: 1-year 3.0, the old 3-, 6- and 12-month views (2.25, 3.0, 3.5) across the year; 3-year 3.75, as the energy shock fades for the largest importer but the policy mismatch lingers; 5-year 4.25, toward the 4.5 anchor.",
+   "blend_10": 4.15,
+   "1Y_10": 3.0,
+   "3Y_10": 3.75,
+   "5Y_10": 4.25,
    "10Y_10": 4.5,
-   "blend": 2.25,
+   "blend": 2.4,
    "summary": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test."
   },
   "ASIA": {
-   "3M": 2.33,
-   "6M": 2.78,
-   "12M": 3.44,
+   "1Y": 3.0,
+   "3Y": 3.56,
+   "5Y": 3.67,
    "10Y": 3.67,
-   "why": "Near horizons held; the ten-year anchor at 7.0 since 21 Oct. The selling returned on 22 Oct - the KOSPI fell 3.52% as the Bank of Korea paused at 3.00% and chipmakers sold, SK Hynix 5.48% and Samsung Electronics 4.02% - and then turned on the 23rd: down 4% at its low of 5,305.98, the KOSPI closed 0.30% higher at 5,550.30 as SK Hynix rose 4.42% on halting Solidigm's IPO review, still 20.8% below its 7003.74 close of 2 Oct. The Nikkei fell 2.65% on the 22nd and 0.34% more to 62,693.16 on the 23rd. China grew 4.5% in the third quarter against 4.4% expected, on exports. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a record, and Samsung's quarter was a record 107.4tn won. Oil is the importers' problem, Brent at $113.17, with the yen near 158.48. The anchor was cut because half its case was the base return: it cited J.P. Morgan's EM equity assumption as the highest of any equity block, but that assumption is the Asia fund's base, so it was counted twice - and the 2027 edition cuts it to 7.1% from 7.8%, below US large caps. What remains is valuation: 10.5x forward before the fall against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount.",
-   "blend_10": 6.28,
-   "3M_10": 4.0,
-   "6M_10": 5.0,
-   "12M_10": 6.5,
+   "why": "Held; the ten-year anchor at 7.0 since 21 Oct. The selling returned on 22 Oct - the KOSPI fell 3.52% as the Bank of Korea paused at 3.00% and chipmakers sold, SK Hynix 5.48% and Samsung Electronics 4.02% - and then turned on the 23rd: down 4% at its low of 5,305.98, the KOSPI closed 0.30% higher at 5,550.30 as SK Hynix rose 4.42% on halting Solidigm's IPO review, still 20.8% below its 7003.74 close of 2 Oct. The Nikkei fell 2.65% on the 22nd and 0.34% more to 62,693.16 on the 23rd. China grew 4.5% in the third quarter against 4.4% expected, on exports. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a record, and Samsung's quarter was a record 107.4tn won. Oil is the importers' problem, Brent at $113.17, with the yen near 158.48. The anchor was cut because half its case was the base return: it cited J.P. Morgan's EM equity assumption as the highest of any equity block, but that assumption is the Asia fund's base, so it was counted twice - and the 2027 edition cuts it to 7.1% from 7.8%, below US large caps. What remains is valuation: 10.5x forward before the fall against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount. THE PATH: 1-year 5.5, the old 3-, 6- and 12-month views (4.0, 5.0, 6.5) across the year - the October selling weighs on the first months; 3-year 6.75, as earnings that grow into a discounted multiple start to re-rate it; 5-year at the 7.0 anchor.",
+   "blend_10": 6.8,
+   "1Y_10": 5.5,
+   "3Y_10": 6.75,
+   "5Y_10": 7.0,
    "10Y_10": 7.0,
-   "blend": 3.34,
-   "summary": "Near horizons held: the KOSPI fell 3.52% on 22 Oct and closed 0.30% higher on the 23rd, 20.8% below 2 Oct."
+   "blend": 3.58,
+   "summary": "Held: the KOSPI fell 3.52% on 22 Oct and closed 0.30% higher on the 23rd, 20.8% below 2 Oct."
   },
   "PHILIPPINES": {
-   "3M": 2.78,
-   "6M": 2.78,
-   "12M": 3.0,
+   "1Y": 2.89,
+   "3Y": 3.0,
+   "5Y": 3.0,
    "10Y": 3.0,
-   "why": "Near horizons held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, twice the 25bp that 20 of 22 analysts expected - its fourth straight hike and the first half-point since February 2023. The peso kept falling: on 23 Oct it closed at a record 63.615, 9.5 centavos weaker, after a record 63.62 intraday - a 7.58% loss of purchasing power against the dollar this year - and Governor Remolona said BSP intervenes only a little, to limit inflationary swings. The PSEi fell 0.72% on the 22nd, ending a five-session rally, and 0.88% more to 5728.63 on the 23rd, still clear of its 5610.39 low of 8 Oct. September inflation was 7.2%, core 4.7%. The carry is rising to meet it: the 19 Oct auction lifted 91-day bills to 5.992% and 364-day bills to 6.444%, a ninth straight weekly rise, before the hike; 26 Oct is the first auction after it. Against 7.2% every tenor's real yield is still below zero. The 12-month and ten-year horizons stay neutral: a BSP that hikes restores the real carry. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not.",
-   "blend_10": 5.38,
-   "3M_10": 5.0,
-   "6M_10": 5.0,
-   "12M_10": 5.5,
+   "why": "Held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, twice the 25bp that 20 of 22 analysts expected - its fourth straight hike and the first half-point since February 2023. The peso kept falling: on 23 Oct it closed at a record 63.615, 9.5 centavos weaker, after a record 63.62 intraday - a 7.58% loss of purchasing power against the dollar this year - and Governor Remolona said BSP intervenes only a little, to limit inflationary swings. The PSEi fell 0.72% on the 22nd, ending a five-session rally, and 0.88% more to 5728.63 on the 23rd, still clear of its 5610.39 low of 8 Oct. September inflation was 7.2%, core 4.7%. The carry is rising to meet it: the 19 Oct auction lifted 91-day bills to 5.992% and 364-day bills to 6.444%, a ninth straight weekly rise, before the hike; 26 Oct is the first auction after it. Against 7.2% every tenor's real yield is still below zero. The 12-month and ten-year horizons stay neutral: a BSP that hikes restores the real carry. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not. THE PATH: 1-year 5.25, the old 3-, 6- and 12-month views (5.0, 5.0, 5.5) across the year; 3-year and 5-year at the 5.5 anchor, as a BSP that hikes brings the real carry back above zero.",
+   "blend_10": 5.47,
+   "1Y_10": 5.25,
+   "3Y_10": 5.5,
+   "5Y_10": 5.5,
    "10Y_10": 5.5,
-   "blend": 2.94,
-   "summary": "Near horizons held: BSP hiked 50bp to 5.50% on 22 Oct; by the 23rd the PSEi was at 5728.63 and the peso at a record 63.615."
+   "blend": 2.99,
+   "summary": "Held: BSP hiked 50bp to 5.50% on 22 Oct; by the 23rd the PSEi was at 5728.63 and the peso at a record 63.615."
   }
  },
  "hz_weights": {
-  "3M": 0.1,
-  "6M": 0.15,
-  "12M": 0.25,
+  "1Y": 0.1,
+  "3Y": 0.2,
+  "5Y": 0.2,
   "10Y": 0.5
  },
  "vol_channel": {
-  "blend": 19.05,
+  "blend": 19.42,
   "spot": 17.31,
   "longrun": 19.5,
   "ramp_ref": "long-run",
@@ -1165,7 +1173,7 @@
   "latest": 19.03,
   "latest_date": "2026-10-22",
   "latest_gap": 1.72,
-  "ramp": -0.45,
+  "ramp": -0.08,
   "sens": {
    "ATRPHMM": 0.035,
    "ATRQIAP": 0.21,
@@ -1179,6 +1187,8 @@
    "ATRAMIP": 0.0,
    "M_GALL": 0.0
   },
+  "ramp_10y": 0.0,
+  "basis": "forward",
   "kappa": 1.5,
   "vrp": 3.5,
   "spot_move_pct": 9.9,
@@ -1200,7 +1210,22 @@
    "score": 1.44,
    "score_10": 2.0,
    "note": "HELD at 2.0. Manila tightened harder than priced: on 22 Oct BSP raised its policy rate 50bp to 5.50%, a fourth straight hike and the first half-point since February 2023, where 20 of 22 analysts had expected 25bp; the overnight corridor is 5.00-6.00%. Governor Remolona said the hike answered inflation, not the peso, and left 17 Dec open; on the 23rd he added that BSP intervenes only a little, to limit inflationary swings. The Fed pricing eased with the sell-off: CME FedWatch had an October hike at 7.2% on 23 Oct, from 16% on the morning of the 22nd and 31.6% after the CPI, and one by December at 80.5%, from 90%. On official closes the 10-year was 5.15% on the 19th, 5.12% on the 20th, 5.13% on the 21st and 4.96% on the 22nd, 17bp lower - on the market basis its biggest one-day fall since March 2023 - as money left stocks for Treasuries, with the 2-year at 4.65% and the 30-year at 5.29%. All of it is below the 7 Oct intraday high of 5.365%, which is above the 5 Oct peak of 5.349% and the highest since April 2002. The Bank of Korea paused at 3.00% on 22 Oct; the FOMC decides on 28 Oct, the ECB on 29 Oct and the BoJ, at 1.25%, on 30 Oct. Held: a December Fed hike is still four-in-five priced, and BSP's extra 25bp tightens the peso economy while lifting the money market's carry.",
-   "summary": "Held: BSP hiked 50bp to 5.50% on 22 Oct against 25bp expected; FedWatch's December odds eased to 80.5% and the 10-year closed at 4.96%."
+   "summary": "Held: BSP hiked 50bp to 5.50% on 22 Oct against 25bp expected; FedWatch's December odds eased to 80.5% and the 10-year closed at 4.96%.",
+   "path": {
+    "1Y": 2.0,
+    "3Y": 4.0,
+    "5Y": 5.0,
+    "10Y": 5.5
+   },
+   "path_5": {
+    "1Y": 1.44,
+    "3Y": 2.33,
+    "5Y": 2.78,
+    "10Y": 3.0
+   },
+   "blend_5": 2.67,
+   "path_why": "A cycle priced to peak with a December Fed hike and BSP at 5.50% is past its tightest by year two: 4.0 for years 2-3, as policy eases but real rates stay positive, and 5.0 for years 4-5.",
+   "blend_10": 4.75
   },
   {
    "name": "Inflation trajectory",
@@ -1208,7 +1233,22 @@
    "score": 1.44,
    "score_10": 2.0,
    "note": "HELD at 2.0; no new US price data. The pipeline print stands: producer prices rose 1.3% in September, the largest monthly rise since March 2022, and 6.3% on the year, with core at 0.5% and 5.0%, after CPI of 3.7% (core 2.6%). Oil broke higher: Brent settled at $113.17 on 22 Oct, up $4.35 and its highest close since 4 May, against $61.91 a year earlier - Brent +82.8% y/y - as Houthi strikes on Saudi Arabia escalated; December WTI, the front month since November expired at $101.79 on the 20th, settled at $99.47, up 2.39%. The euro area confirmed 3.8% for September, core 2.5%; the Philippines is at 7.2%, which BSP met with a 50bp hike. Held: US core CPI at 2.6% is still contained, and the producer jump is energy passing through, not yet wages.",
-   "summary": "Held: no new US price data; Brent settled at $113.17 on 22 Oct, its highest close since 4 May, +82.8% y/y."
+   "summary": "Held: no new US price data; Brent settled at $113.17 on 22 Oct, its highest close since 4 May, +82.8% y/y.",
+   "path": {
+    "1Y": 2.0,
+    "3Y": 4.0,
+    "5Y": 5.0,
+    "10Y": 5.5
+   },
+   "path_5": {
+    "1Y": 1.44,
+    "3Y": 2.33,
+    "5Y": 2.78,
+    "10Y": 3.0
+   },
+   "blend_5": 2.67,
+   "path_why": "An oil shock lifts the annual rate for about a year and then drops out of it: 4.0 for years 2-3, while the second round in wages and services fades, and 5.0 for years 4-5.",
+   "blend_10": 4.75
   },
   {
    "name": "Growth momentum",
@@ -1216,7 +1256,22 @@
    "score": 2.33,
    "score_10": 4.0,
    "note": "HELD at 4.0. China beat by a little: third-quarter GDP grew 4.5% on the year against 4.4% expected, up from 4.3%, but exports did the work - September retail sales rose only 1.1%. US September retail sales rose 0.8% against 0.3% expected, though gasoline did much of it: sales excluding gas stations rose only 0.2%. Michigan sentiment, at 46.3 in October's first read, is near May's record low of 44.8; ISM services (54.9) and manufacturing (54.5) stayed in expansion in September. Philippine growth was 2.6% in the first half. Held: China's beat is export-led, and a record-low US consumer is a warning, not a break.",
-   "summary": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; US retail sales rose 0.8%, mostly gasoline."
+   "summary": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; US retail sales rose 0.8%, mostly gasoline.",
+   "path": {
+    "1Y": 4.0,
+    "3Y": 4.5,
+    "5Y": 5.0,
+    "10Y": 5.5
+   },
+   "path_5": {
+    "1Y": 2.33,
+    "3Y": 2.56,
+    "5Y": 2.78,
+    "10Y": 3.0
+   },
+   "blend_5": 2.8,
+   "path_why": "A tightening cycle and an energy shock weigh on the next two years: 4.5 for years 2-3 and 5.0 for years 4-5, as policy turns.",
+   "blend_10": 5.05
   },
   {
    "name": "Corporate earnings",
@@ -1224,7 +1279,22 @@
    "score": 3.67,
    "score_10": 7.0,
    "note": "HELD at 7.0, still the strongest pillar; the market is pricing the financing, not the profits. TSMC's third-quarter net income was NT$763.06bn, +68.7% on a year earlier and above the NT$746.34bn expected; Samsung's preliminary quarter was a record 107.4tn won. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) stands. The market is now testing the spenders: on 22 Oct Meta's revenue rose 26% but its spending plans cost it about 7%, Lam Research's guidance disappointed, chip stocks fell more than 6% and the Nasdaq 2.60%. Asia's chip selling had returned the same day - the KOSPI fell 3.52%, SK Hynix 5.48% and Samsung Electronics 4.02%, a day after a 3.29% rebound - and SK Hynix won back 4.42% on the 23rd. Held: the numbers keep beating; the multiple paid for them and the cost of funding the build-out are what move.",
-   "summary": "Held, the strongest pillar: Meta's spending plans and Lam Research's guidance sent chip stocks down more than 6% on 22 Oct; the KOSPI fell 3.52%."
+   "summary": "Held, the strongest pillar: Meta's spending plans and Lam Research's guidance sent chip stocks down more than 6% on 22 Oct; the KOSPI fell 3.52%.",
+   "path": {
+    "1Y": 7.0,
+    "3Y": 6.0,
+    "5Y": 5.5,
+    "10Y": 5.5
+   },
+   "path_5": {
+    "1Y": 3.67,
+    "3Y": 3.22,
+    "5Y": 3.0,
+    "10Y": 3.0
+   },
+   "blend_5": 3.11,
+   "path_why": "Asian EPS growth of ~52% and ~28% cannot compound for long: 6.0 for years 2-3, as the AI build-out still lifts profits but more slowly, and neutral by years 4-5 as margins revert.",
+   "blend_10": 5.75
   },
   {
    "name": "Valuation support",
@@ -1232,15 +1302,45 @@
    "score": 4.11,
    "score_10": 8.0,
    "note": "HELD at 8.0. The S&P closed at 7663.43 on 22 Oct, 2.0% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings, the KOSPI 20.8% below its 2 Oct close after the week's fall; NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages; Europe is at 15.4x. Held, not raised: no multiple has been re-verified since the sell-off.",
-   "summary": "Held: the S&P closed at 7663.43, 2.0% below its 7818.93 record; the KOSPI is 20.8% below its 2 Oct close."
+   "summary": "Held: the S&P closed at 7663.43, 2.0% below its 7818.93 record; the KOSPI is 20.8% below its 2 Oct close.",
+   "path": {
+    "1Y": 8.0,
+    "3Y": 7.5,
+    "5Y": 6.5,
+    "10Y": 5.5
+   },
+   "path_5": {
+    "1Y": 4.11,
+    "3Y": 3.89,
+    "5Y": 3.44,
+    "10Y": 3.0
+   },
+   "blend_5": 3.38,
+   "path_why": "Cheap starting multiples feed returns for as long as they take to close the gap: 7.5 for years 2-3 and 6.5 for years 4-5, then neutral, where the base returns already price the starting multiple.",
+   "blend_10": 6.35
   },
   {
    "name": "Volatility & risk appetite",
    "weight": 0.1,
    "score": 1.67,
    "score_10": 2.5,
-   "note": "CUT to 2.5, undoing the 21 Oct raise. The VIX jumped 14.09% to 19.03 on 22 Oct as the Nasdaq fell 2.60% and chip stocks more than 6%, after touching 20.30; it is still just under the long-run 19.5. Asia had sold off that day - the KOSPI fell 3.52% and the Nikkei 2.65% - and the Gulf escalated; the KOSPI's 4% intraday fall on the 23rd reversed into a 0.30% gain. The October future settled on the 21st and no full strip for that day has been reached, so the curve stays quoted at the 20 Oct settlements - November 18.49 and December 18.7, above spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. Blended, the curve sits at 19.05, 0.45 below the long run. Cut, and no further: the calm on the S&P that earned the raise broke on the 22nd, but the VIX is below its long run and its 22.31 high of 16 Oct.",
-   "summary": "Cut to 2.5: the VIX jumped 14.09% to 19.03 on 22 Oct as the Nasdaq fell 2.60%; it is still under the long run."
+   "note": "CUT to 2.5, undoing the 21 Oct raise. The VIX jumped 14.09% to 19.03 on 22 Oct as the Nasdaq fell 2.60% and chip stocks more than 6%, after touching 20.30; it is still just under the long-run 19.5. Asia had sold off that day - the KOSPI fell 3.52% and the Nikkei 2.65% - and the Gulf escalated; the KOSPI's 4% intraday fall on the 23rd reversed into a 0.30% gain. The October future settled on the 21st and no full strip for that day has been reached, so the curve stays quoted at the 20 Oct settlements - November 18.49 and December 18.7, above spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. Blended, the curve sits at 19.42, 0.08 below the long run. Cut, and no further: the calm on the S&P that earned the raise broke on the 22nd, but the VIX is below its long run and its 22.31 high of 16 Oct.",
+   "summary": "Cut to 2.5: the VIX jumped 14.09% to 19.03 on 22 Oct as the Nasdaq fell 2.60%; it is still under the long run.",
+   "path": {
+    "1Y": 2.5,
+    "3Y": 4.5,
+    "5Y": 5.5,
+    "10Y": 5.5
+   },
+   "path_5": {
+    "1Y": 1.67,
+    "3Y": 2.56,
+    "5Y": 3.0,
+    "10Y": 3.0
+   },
+   "blend_5": 2.78,
+   "path_why": "The VIX curve itself reverts to its long run within about two years: 4.5 for years 2-3, while the hiking cycle and the Gulf keep risk appetite below neutral, and neutral from year four.",
+   "blend_10": 5.0
   },
   {
    "name": "Geopolitics & energy",
@@ -1248,7 +1348,22 @@
    "score": 1.22,
    "score_10": 1.5,
    "note": "HELD at 1.5, with the escalation now on land. Saudi Arabia says Houthi strikes on 22 Oct killed four - two at King Fahd International Airport in Dammam, two contractors at the Shaybah field - and injured ten; Aramco ordered the first full evacuation of its Dhahran headquarters since the fighting resumed in July, and the US had ordered non-emergency diplomats out of the kingdom. The New York Times reports US and Israeli plans for renewed strikes on Iran after the 3 November midterms; indirect talks continue. On 21 Oct Iran's speaker Ghalibaf said Tehran would not trust Washington until its conditions for reopening the Strait were met, and CENTCOM called Iran's claims that mines had hit tankers false. Brent settled at $113.17 on 22 Oct, up $4.35 and its highest close since 4 May. Read it on VOLUME, the measure this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at about 14 mb/d in the week to 18 Oct, 82% of pre-war on preliminary figures, and the Gulf's exports by every route above 24 mb/d against 23.3 pre-war; the week to 14 Oct read 9.4 mb/d on a crude-only basis, so the two are not a trend. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses the Strait. Vessel counts disagree and are not supply: IMF PortWatch counted 4 transits on 18 Oct against an 85 baseline, a 95% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over 10000 dwt; the US government around 30, on a basis it does not state. Held, not cut: the barrels are moving, and 1.0 is kept for full closure with Brent above $130 - strictly worse, and nearer than it was.",
-   "summary": "Held: Houthi strikes killed four in Saudi Arabia on 22 Oct and Aramco evacuated Dhahran; Brent settled at $113.17, Hormuz flows near 14 mb/d."
+   "summary": "Held: Houthi strikes killed four in Saudi Arabia on 22 Oct and Aramco evacuated Dhahran; Brent settled at $113.17, Hormuz flows near 14 mb/d.",
+   "path": {
+    "1Y": 1.5,
+    "3Y": 3.0,
+    "5Y": 4.5,
+    "10Y": 5.5
+   },
+   "path_5": {
+    "1Y": 1.22,
+    "3Y": 1.89,
+    "5Y": 2.56,
+    "10Y": 3.0
+   },
+   "blend_5": 2.51,
+   "path_why": "A war that has cut Hormuz flows to 82% of pre-war does not settle in a year: 3.0 for years 2-3, as rerouting and restarted pipelines restore supply, and 4.5 for years 4-5, with a risk premium still above pre-war.",
+   "blend_10": 4.4
   }
  ],
  "driver_scale": {
@@ -1260,6 +1375,19 @@
  "gauge": 2.29,
  "gauge_10": 3.9,
  "gauge_neutral": 3.0,
+ "gauge_path": {
+  "1Y": 2.29,
+  "3Y": 2.68,
+  "5Y": 2.89,
+  "10Y": 3.0
+ },
+ "gauge_path_10": {
+  "1Y": 3.9,
+  "3Y": 4.78,
+  "5Y": 5.25,
+  "10Y": 5.5
+ },
+ "gauge_blend": 2.84,
  "funds": [
   {
    "id": "ATRPHMM",
@@ -1291,11 +1419,11 @@
    "gross_php": 4.85,
    "fx_drift": 0.0,
    "net_base": 4.27,
-   "regional_score": 2.94,
-   "tilt_regional": -0.04,
-   "tilt_vol": -0.02,
-   "tilt_rates": 0.58,
-   "tilt_energy": 0.07,
+   "regional_score": 2.99,
+   "tilt_regional": -0.01,
+   "tilt_vol": 0.0,
+   "tilt_rates": 0.13,
+   "tilt_energy": 0.02,
    "tilt_trend": 0.0,
    "equity_share": 1.0,
    "trend_market": null,
@@ -1305,22 +1433,30 @@
    "exposure": null,
    "tilt_rates_cal": 0.25,
    "tilt_energy_cal": 0.05,
-   "tilt_total": 0.59,
-   "net_macro": 4.86,
+   "tilt_total": 0.14,
+   "net_macro": 4.41,
+   "regional_score_10y": 3.0,
+   "tilt_regional_10y": 0.0,
+   "tilt_vol_10y": 0.0,
+   "tilt_rates_10y": 0.0,
+   "tilt_energy_10y": 0.0,
+   "tilt_total_10y": 0.0,
+   "net_10y": 4.27,
    "vol": 0.41,
    "vol_beta": 0.021,
    "dd_k": 1.65,
    "dd_k_why": "Not applicable - the cash sleeve is floored by a rate shock, not by the equity formula.",
    "dd_base": -0.5,
    "dd_macro": -0.5,
+   "dd_10y": -0.5,
    "target_net_macro": null,
    "target_dd_macro": null,
-   "net_novol": 4.88,
-   "net_neutral": 4.21,
-   "net_notrend": 4.86,
-   "net_trend_alt": 4.86,
-   "net_asia_norerate": 4.86,
-   "net_asia_fee_hi": 4.86
+   "net_novol": 4.41,
+   "net_neutral": 4.26,
+   "net_notrend": 4.41,
+   "net_trend_alt": 4.41,
+   "net_asia_norerate": 4.41,
+   "net_asia_fee_hi": 4.41
   },
   {
    "id": "ATRQIAP",
@@ -1343,12 +1479,12 @@
    "gross_php": 9.36,
    "fx_drift": 2.0,
    "net_base": 7.51,
-   "regional_score": 3.1,
-   "tilt_regional": 0.07,
-   "tilt_vol": -0.09,
-   "tilt_rates": -0.23,
-   "tilt_energy": -0.13,
-   "tilt_trend": 0.11,
+   "regional_score": 3.31,
+   "tilt_regional": 0.21,
+   "tilt_vol": -0.02,
+   "tilt_rates": -0.05,
+   "tilt_energy": -0.04,
+   "tilt_trend": -0.05,
    "equity_share": 1.0,
    "trend_market": "ATRQIAP",
    "region_mix": null,
@@ -1357,22 +1493,30 @@
    "exposure": null,
    "tilt_rates_cal": -0.1,
    "tilt_energy_cal": -0.1,
-   "tilt_total": -0.27,
-   "net_macro": 7.24,
+   "tilt_total": 0.05,
+   "net_macro": 7.56,
+   "regional_score_10y": 3.44,
+   "tilt_regional_10y": 0.3,
+   "tilt_vol_10y": 0.0,
+   "tilt_rates_10y": 0.0,
+   "tilt_energy_10y": 0.0,
+   "tilt_total_10y": 0.3,
+   "net_10y": 7.81,
    "vol": 16.06,
    "vol_beta": 0.8312745098039216,
    "dd_k": 1.65,
    "dd_k_why": "At the 1.65 anchor: the premium's cushion is already in this sleeve's volatility (0.681x the Nasdaq-100) and its return; capped upside with full downside is negatively skewed, which argues against a lower k, not for one.",
    "dd_base": -32.2,
-   "dd_macro": -32.4,
-   "target_net_macro": 8.74,
-   "target_dd_macro": -31.3,
-   "net_novol": 7.33,
-   "net_neutral": 7.6,
-   "net_notrend": 7.13,
-   "net_trend_alt": 7.24,
-   "net_asia_norerate": 7.24,
-   "net_asia_fee_hi": 7.24
+   "dd_macro": -32.1,
+   "dd_10y": -31.9,
+   "target_net_macro": 9.06,
+   "target_dd_macro": -31.1,
+   "net_novol": 7.58,
+   "net_neutral": 7.65,
+   "net_notrend": 7.61,
+   "net_trend_alt": 7.56,
+   "net_asia_norerate": 7.56,
+   "net_asia_fee_hi": 7.56
   },
   {
    "id": "ATRASEQ",
@@ -1404,12 +1548,12 @@
    "gross_php": 9.6,
    "fx_drift": 2.0,
    "net_base": 6.87,
-   "regional_score": 3.34,
-   "tilt_regional": 0.23,
+   "regional_score": 3.58,
+   "tilt_regional": 0.39,
    "tilt_vol": 0.0,
-   "tilt_rates": -0.12,
-   "tilt_energy": -0.27,
-   "tilt_trend": 0.16,
+   "tilt_rates": -0.03,
+   "tilt_energy": -0.07,
+   "tilt_trend": -0.01,
    "equity_share": 1.0,
    "trend_market": "ATRASEQ",
    "region_mix": null,
@@ -1418,22 +1562,30 @@
    "exposure": null,
    "tilt_rates_cal": -0.05,
    "tilt_energy_cal": -0.2,
-   "tilt_total": 0.0,
-   "net_macro": 6.87,
+   "tilt_total": 0.28,
+   "net_macro": 7.15,
+   "regional_score_10y": 3.67,
+   "tilt_regional_10y": 0.45,
+   "tilt_vol_10y": 0.0,
+   "tilt_rates_10y": 0.0,
+   "tilt_energy_10y": 0.0,
+   "tilt_total_10y": 0.45,
+   "net_10y": 7.32,
    "vol": 18.52,
    "vol_beta": 0.9660000000000001,
    "dd_k": 1.7,
    "dd_k_why": "Above 1.65: Asian equity drawdowns carry more crash kurtosis and liquidity gapping than a developed-market index.",
    "dd_base": -39.7,
-   "dd_macro": -39.7,
-   "target_net_macro": 8.05,
-   "target_dd_macro": -38.8,
-   "net_novol": 6.87,
-   "net_neutral": 7.26,
-   "net_notrend": 6.71,
-   "net_trend_alt": 6.85,
-   "net_asia_norerate": 5.87,
-   "net_asia_fee_hi": 6.62
+   "dd_macro": -39.5,
+   "dd_10y": -39.3,
+   "target_net_macro": 8.33,
+   "target_dd_macro": -38.6,
+   "net_novol": 7.15,
+   "net_neutral": 7.25,
+   "net_notrend": 7.16,
+   "net_trend_alt": 7.15,
+   "net_asia_norerate": 6.15,
+   "net_asia_fee_hi": 6.9
   },
   {
    "id": "ATRGTEC",
@@ -1456,12 +1608,12 @@
    "gross_php": 11.8,
    "fx_drift": 2.0,
    "net_base": 9.26,
-   "regional_score": 3.04,
-   "tilt_regional": 0.02,
-   "tilt_vol": 0.05,
-   "tilt_rates": -0.93,
-   "tilt_energy": -0.2,
-   "tilt_trend": 0.16,
+   "regional_score": 3.24,
+   "tilt_regional": 0.16,
+   "tilt_vol": 0.01,
+   "tilt_rates": -0.2,
+   "tilt_energy": -0.05,
+   "tilt_trend": -0.04,
    "equity_share": 1.0,
    "trend_market": "ATRGTEC",
    "region_mix": {
@@ -1474,22 +1626,30 @@
    "exposure": null,
    "tilt_rates_cal": -0.4,
    "tilt_energy_cal": -0.15,
-   "tilt_total": -0.9,
-   "net_macro": 8.36,
+   "tilt_total": -0.12,
+   "net_macro": 9.14,
+   "regional_score_10y": 3.37,
+   "tilt_regional_10y": 0.25,
+   "tilt_vol_10y": 0.0,
+   "tilt_rates_10y": 0.0,
+   "tilt_energy_10y": 0.0,
+   "tilt_total_10y": 0.25,
+   "net_10y": 9.51,
    "vol": 24.75,
    "vol_beta": 1.3,
    "dd_k": 1.8,
    "dd_k_why": "Well above 1.65: concentrated long-duration growth has the fattest left tail on the sheet - the 2022 de-rating took the sector far past what 1.65 sigma predicts.",
    "dd_base": -56.5,
-   "dd_macro": -57.1,
-   "target_net_macro": 9.86,
-   "target_dd_macro": -56.0,
-   "net_novol": 8.31,
-   "net_neutral": 9.49,
-   "net_notrend": 8.2,
-   "net_trend_alt": 8.36,
-   "net_asia_norerate": 8.36,
-   "net_asia_fee_hi": 8.36
+   "dd_macro": -56.6,
+   "dd_10y": -56.3,
+   "target_net_macro": 10.64,
+   "target_dd_macro": -55.5,
+   "net_novol": 9.13,
+   "net_neutral": 9.39,
+   "net_notrend": 9.18,
+   "net_trend_alt": 9.12,
+   "net_asia_norerate": 9.14,
+   "net_asia_fee_hi": 9.14
   }
  ],
  "corr": [
@@ -1838,21 +1998,23 @@
   ],
   "horizons": [
    {
-    "label": "3M",
-    "quarters": 1,
-    "years": 0.25
-   },
-   {
-    "label": "6M",
-    "quarters": 2,
-    "years": 0.5
-   },
-   {
-    "label": "12M",
+    "label": "1Y",
     "quarters": 4,
     "years": 1.0
    }
   ],
+  "long": [
+   {
+    "label": "3Y",
+    "years": 3.0
+   },
+   {
+    "label": "5Y",
+    "years": 5.0
+   }
+  ],
+  "reversal": 0.5,
+  "long_end": "2026-09-30",
   "sleeves": {
    "ATRQIAP": {
     "market": "Nasdaq-100",
@@ -1893,24 +2055,25 @@
      "2026Q2": 27.74,
      "2026Q3": 0.58
     },
+    "trail_source": "AAII ETF Evaluator, QQQ at NAV to 30 Sep 2026",
     "ret": {
-     "3M": 0.57,
-     "6M": 28.46,
-     "12M": 23.81
+     "1Y": 23.81,
+     "3Y": 28.0,
+     "5Y": 16.3
     },
     "z": {
-     "3M": -0.16,
-     "6M": 1.52,
-     "12M": 0.67
+     "1Y": 0.67,
+     "3Y": 1.45,
+     "5Y": 0.77
     },
     "score": {
-     "3M": 2.84,
-     "6M": 4.52,
-     "12M": 3.67,
+     "1Y": 3.67,
+     "3Y": 2.27,
+     "5Y": 2.62,
      "10Y": 3.0
     },
-    "blend": 3.38,
-    "tilt": 0.11
+    "blend": 2.84,
+    "tilt": -0.05
    },
    "ATRASEQ": {
     "market": "MSCI AC Asia ex Japan",
@@ -1933,24 +2096,25 @@
      ]
     },
     "cross_check": {},
+    "trail_source": "ETF Research Center, AAXJ standardised performance to 30 Sep 2026; iShares AAXJ performance table (19 Oct 2026)",
     "ret": {
-     "3M": -0.23,
-     "6M": 27.41,
-     "12M": 31.38
+     "1Y": 31.38,
+     "3Y": 24.8,
+     "5Y": 8.6
     },
     "z": {
-     "3M": -0.26,
-     "6M": 1.72,
-     "12M": 1.17
+     "1Y": 1.17,
+     "3Y": 1.49,
+     "5Y": 0.06
     },
     "score": {
-     "3M": 2.74,
-     "6M": 4.72,
-     "12M": 4.17,
+     "1Y": 4.17,
+     "3Y": 2.25,
+     "5Y": 2.97,
      "10Y": 3.0
     },
-    "blend": 3.52,
-    "tilt": 0.16
+    "blend": 2.96,
+    "tilt": -0.01
    },
    "ATRGTEC": {
     "market": "Global technology, S&P Global 1200 IT",
@@ -1988,24 +2152,25 @@
      ]
     },
     "cross_check": {},
+    "trail_source": "Yahoo Finance trailing returns (3-year 31.38% to 6 Oct 2026, 5-year 18.79% to 1 Sep); PortfoliosLab (31.25%, 18.78%) and MyPlanIQ (5-year 18.85% to 24 Aug) agree",
     "ret": {
-     "3M": -2.84,
-     "6M": 40.6,
-     "12M": 37.43
+     "1Y": 37.43,
+     "3Y": 31.4,
+     "5Y": 18.8
     },
     "z": {
-     "3M": -0.5,
-     "6M": 2.01,
-     "12M": 1.08
+     "1Y": 1.08,
+     "3Y": 1.5,
+     "5Y": 0.85
     },
     "score": {
-     "3M": 2.5,
-     "6M": 5.0,
-     "12M": 4.08,
+     "1Y": 4.08,
+     "3Y": 2.25,
+     "5Y": 2.58,
      "10Y": 3.0
     },
-    "blend": 3.52,
-    "tilt": 0.16
+    "blend": 2.87,
+    "tilt": -0.04
    },
    "ATRGHCP": {
     "market": "Global health care, S&P Global 1200 Health Care",
@@ -2043,24 +2208,25 @@
      ]
     },
     "cross_check": {},
+    "trail_source": "AAII, IXJ annualised NAV returns to 31 Aug 2026; Yahoo Finance (8.58%, 4.80% to 21 Sep) agrees",
     "ret": {
-     "3M": 3.8,
-     "6M": 10.14,
-     "12M": 16.97
+     "1Y": 16.97,
+     "3Y": 8.6,
+     "5Y": 4.8
     },
     "z": {
-     "3M": 0.28,
-     "6M": 0.63,
-     "12M": 0.62
+     "1Y": 0.62,
+     "3Y": 0.13,
+     "5Y": -0.42
     },
     "score": {
-     "3M": 3.28,
-     "6M": 3.63,
-     "12M": 3.62,
+     "1Y": 3.62,
+     "3Y": 2.94,
+     "5Y": 3.21,
      "10Y": 3.0
     },
-    "blend": 3.28,
-    "tilt": 0.08
+    "blend": 3.09,
+    "tilt": 0.03
    },
    "M_GEO": {
     "market": "Global equity, MSCI ACWI",
@@ -2077,29 +2243,34 @@
     },
     "monthly": {},
     "cross_check": {},
+    "trail_source": "iShares MSCI ACWI ETF performance table; Yahoo Finance and Dividend.com agree",
     "ret": {
-     "3M": 1.6,
-     "6M": 16.77,
-     "12M": 16.75
+     "1Y": 16.75,
+     "3Y": 21.75,
+     "5Y": 11.62
     },
     "z": {
-     "3M": -0.03,
-     "6M": 1.06,
-     "12M": 0.52
+     "1Y": 0.52,
+     "3Y": 1.35,
+     "5Y": 0.53
     },
     "score": {
-     "3M": 2.97,
-     "6M": 4.06,
-     "12M": 3.52,
+     "1Y": 3.52,
+     "3Y": 2.33,
+     "5Y": 2.73,
      "10Y": 3.0
     },
-    "blend": 3.29,
-    "tilt": 0.09
+    "blend": 2.86,
+    "tilt": -0.04
    }
   },
   "alt": {
    "ATRASEQ": {
     "2026Q2": 25.73
+   },
+   "ATRGTEC": {
+    "3Y": 37.6,
+    "5Y": 22.0
    }
   },
   "alt_built": {
@@ -2124,24 +2295,81 @@
      ]
     },
     "cross_check": {},
+    "trail_source": "ETF Research Center, AAXJ standardised performance to 30 Sep 2026; iShares AAXJ performance table (19 Oct 2026)",
     "ret": {
-     "3M": -0.23,
-     "6M": 25.44,
-     "12M": 29.36
+     "1Y": 29.36,
+     "3Y": 24.8,
+     "5Y": 8.6
     },
     "z": {
-     "3M": -0.26,
-     "6M": 1.59,
-     "12M": 1.07
+     "1Y": 1.07,
+     "3Y": 1.49,
+     "5Y": 0.06
     },
     "score": {
-     "3M": 2.74,
-     "6M": 4.59,
-     "12M": 4.07,
+     "1Y": 4.07,
+     "3Y": 2.25,
+     "5Y": 2.97,
      "10Y": 3.0
     },
-    "blend": 3.48,
-    "tilt": 0.14
+    "blend": 2.95,
+    "tilt": -0.01
+   },
+   "ATRGTEC": {
+    "market": "Global technology, S&P Global 1200 IT",
+    "proxy": "iShares Global Tech ETF (IXN), total return",
+    "source": "PortfoliosLab, IXN monthly total returns (September 2026 from a second performance tracker)",
+    "mu": 9.8,
+    "beta": 1.3,
+    "sigma": 20.7,
+    "quarters": {
+     "2025Q4": 2.66,
+     "2026Q1": -4.79,
+     "2026Q2": 44.71,
+     "2026Q3": -2.84
+    },
+    "monthly": {
+     "2025Q4": [
+      7.11,
+      -5.47,
+      1.39
+     ],
+     "2026Q1": [
+      2.03,
+      -0.35,
+      -6.36
+     ],
+     "2026Q2": [
+      20.29,
+      19.58,
+      0.6
+     ],
+     "2026Q3": [
+      -8.17,
+      1.35,
+      4.4
+     ]
+    },
+    "cross_check": {},
+    "trail_source": "Yahoo Finance trailing returns (3-year 31.38% to 6 Oct 2026, 5-year 18.79% to 1 Sep); PortfoliosLab (31.25%, 18.78%) and MyPlanIQ (5-year 18.85% to 24 Aug) agree",
+    "ret": {
+     "1Y": 37.43,
+     "3Y": 37.6,
+     "5Y": 22.0
+    },
+    "z": {
+     "1Y": 1.08,
+     "3Y": 1.89,
+     "5Y": 1.14
+    },
+    "score": {
+     "1Y": 4.08,
+     "3Y": 2.06,
+     "5Y": 2.43,
+     "10Y": 3.0
+    },
+    "blend": 2.81,
+    "tilt": -0.06
    }
   }
  },
@@ -2151,8 +2379,13 @@
   "date": "2026-09-02",
   "commit": "918c280",
   "neutral_10": 5.5,
-  "rates_scale": 2.333333,
-  "energy_scale": 1.333333
+  "reading": "blend_10",
+  "monetary_blend": 4.75,
+  "geopolitics_blend": 4.4,
+  "rates_scale": 0.5,
+  "energy_scale": 0.366667,
+  "rates_scale_10y": 0.0,
+  "energy_scale_10y": 0.0
  },
  "real_yield": {
   "cpi": 7.2,
@@ -2209,10 +2442,10 @@
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.7125,
-  "a_k": 1.65789,
-  "c_k": 1.65526,
-  "b_k": 1.65789,
-  "d_k": 1.68125,
+  "a_k": 1.68158,
+  "c_k": 1.65789,
+  "b_k": 1.66667,
+  "d_k": 1.69333,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -2244,64 +2477,64 @@
     25.0,
     25.0
    ],
-   "cagr": 6.95,
+   "cagr": 7.22,
    "vol": 14.4,
-   "maxdd": -30.0,
-   "ret_per_dd": 0.232,
-   "sharpe_like": 0.035,
-   "terminal_1m": 1957978,
-   "worst_1m_from_open": 700000
+   "maxdd": -29.8,
+   "ret_per_dd": 0.242,
+   "sharpe_like": 0.054,
+   "terminal_1m": 2007974,
+   "worst_1m_from_open": 702000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $113. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 2.2,
+    "cagr": 2.47,
     "vol": 23.03,
-    "maxdd": -54.2
+    "maxdd": -54.0
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.61,
+    "cagr": 4.88,
     "vol": 18.72,
-    "maxdd": -42.1
+    "maxdd": -41.9
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 2.53,
+    "cagr": 2.8,
     "vol": 20.87,
-    "maxdd": -48.8
+    "maxdd": -48.6
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.52,
+    "cagr": 9.79,
     "vol": 11.52,
-    "maxdd": -21.2
+    "maxdd": -21.0
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.95,
+    "cagr": 7.22,
     "vol": 14.4,
-    "maxdd": -30.0
+    "maxdd": -29.8
    }
   ]
  },
  "portfolio_a": {
   "weights": [
    5,
-   35,
-   0,
-   5,
+   30,
    0,
    20,
-   35,
    0,
    0,
+   20,
    0,
+   0,
+   25,
    0
   ],
   "ids": [
@@ -2320,90 +2553,112 @@
   "macro": {
    "weights": [
     5.0,
-    35.0,
-    0.0,
-    5.0,
+    30.0,
     0.0,
     20.0,
-    35.0,
     0.0,
     0.0,
+    20.0,
     0.0,
+    0.0,
+    25.0,
     0.0
    ],
-   "cagr": 6.91,
-   "vol": 13.44,
+   "cagr": 7.22,
+   "vol": 13.32,
    "maxdd": -26.6,
-   "ret_per_dd": 0.26,
-   "sharpe_like": 0.035,
-   "terminal_1m": 1950668,
+   "ret_per_dd": 0.271,
+   "sharpe_like": 0.058,
+   "terminal_1m": 2007974,
    "worst_1m_from_open": 734000
   },
   "base": {
    "weights": [
     5.0,
-    35.0,
-    0.0,
-    5.0,
+    30.0,
     0.0,
     20.0,
-    35.0,
     0.0,
     0.0,
+    20.0,
     0.0,
+    0.0,
+    25.0,
     0.0
    ],
    "cagr": 7.21,
-   "vol": 13.44,
-   "maxdd": -26.4,
-   "ret_per_dd": 0.273,
-   "sharpe_like": 0.057,
+   "vol": 13.32,
+   "maxdd": -26.6,
+   "ret_per_dd": 0.271,
+   "sharpe_like": 0.058,
    "terminal_1m": 2006102,
+   "worst_1m_from_open": 734000
+  },
+  "ten": {
+   "weights": [
+    5.0,
+    30.0,
+    0.0,
+    20.0,
+    0.0,
+    0.0,
+    20.0,
+    0.0,
+    0.0,
+    25.0,
+    0.0
+   ],
+   "cagr": 7.43,
+   "vol": 13.32,
+   "maxdd": -26.4,
+   "ret_per_dd": 0.281,
+   "sharpe_like": 0.074,
+   "terminal_1m": 2047650,
    "worst_1m_from_open": 736000
   },
-  "column": "net_base",
-  "band_n": 29,
-  "n_feasible": 201430,
+  "column": "net_10y",
+  "band_n": 12,
+  "n_feasible": 200176,
   "is_review_pick": false,
   "review_outside": [],
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $113. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.89,
-    "vol": 21.51,
-    "maxdd": -47.7
+    "cagr": 3.25,
+    "vol": 21.31,
+    "maxdd": -48.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.75,
-    "vol": 17.48,
-    "maxdd": -37.6
+    "cagr": 4.64,
+    "vol": 17.32,
+    "maxdd": -37.9
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 5.11,
-    "vol": 19.49,
-    "maxdd": -42.1
+    "cagr": 3.85,
+    "vol": 19.32,
+    "maxdd": -43.2
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 8.87,
-    "vol": 10.75,
-    "maxdd": -18.9
+    "cagr": 9.73,
+    "vol": 10.66,
+    "maxdd": -18.5
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.91,
-    "vol": 13.44,
+    "cagr": 7.22,
+    "vol": 13.32,
     "maxdd": -26.6
    }
   ],
-  "dd_cap": 27.17,
+  "dd_cap": 26.97,
   "in_budget": true,
   "review": {
    "date": "2026-10-21",
@@ -2441,14 +2696,14 @@
   "weights": [
    5,
    50,
-   10,
+   0,
+   5,
    0,
    0,
    35,
    0,
    0,
-   0,
-   0,
+   5,
    0
   ],
   "ids": [
@@ -2468,98 +2723,120 @@
    "weights": [
     5.0,
     50.0,
-    10.0,
+    0.0,
+    5.0,
     0.0,
     0.0,
     35.0,
     0.0,
     0.0,
-    0.0,
-    0.0,
+    5.0,
     0.0
    ],
-   "cagr": 6.95,
-   "vol": 13.55,
-   "maxdd": -26.8,
-   "ret_per_dd": 0.259,
-   "sharpe_like": 0.037,
-   "terminal_1m": 1957978,
-   "worst_1m_from_open": 732000
+   "cagr": 7.26,
+   "vol": 13.59,
+   "maxdd": -26.7,
+   "ret_per_dd": 0.272,
+   "sharpe_like": 0.06,
+   "terminal_1m": 2015477,
+   "worst_1m_from_open": 733000
   },
   "base": {
    "weights": [
     5.0,
     50.0,
-    10.0,
+    0.0,
+    5.0,
     0.0,
     0.0,
     35.0,
     0.0,
     0.0,
-    0.0,
-    0.0,
+    5.0,
     0.0
    ],
-   "cagr": 7.09,
-   "vol": 13.55,
+   "cagr": 7.24,
+   "vol": 13.59,
    "maxdd": -26.7,
-   "ret_per_dd": 0.266,
-   "sharpe_like": 0.048,
-   "terminal_1m": 1983760,
+   "ret_per_dd": 0.271,
+   "sharpe_like": 0.059,
+   "terminal_1m": 2011722,
    "worst_1m_from_open": 733000
+  },
+  "ten": {
+   "weights": [
+    5.0,
+    50.0,
+    0.0,
+    5.0,
+    0.0,
+    0.0,
+    35.0,
+    0.0,
+    0.0,
+    5.0,
+    0.0
+   ],
+   "cagr": 7.46,
+   "vol": 13.59,
+   "maxdd": -26.6,
+   "ret_per_dd": 0.28,
+   "sharpe_like": 0.075,
+   "terminal_1m": 2053375,
+   "worst_1m_from_open": 734000
   },
   "column": "net_macro",
   "fund": "ATRQIAP",
   "pin_pct": 50,
-  "band_n": 10,
-  "n_feasible": 4982,
+  "band_n": 6,
+  "n_feasible": 4970,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $113. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.37,
-    "vol": 21.68,
-    "maxdd": -48.4
+    "cagr": 3.81,
+    "vol": 21.74,
+    "maxdd": -48.3
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.19,
-    "vol": 17.62,
-    "maxdd": -37.6
+    "cagr": 4.85,
+    "vol": 17.67,
+    "maxdd": -38.0
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.65,
-    "vol": 19.65,
-    "maxdd": -42.7
+    "cagr": 4.81,
+    "vol": 19.7,
+    "maxdd": -42.8
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 8.85,
-    "vol": 10.84,
-    "maxdd": -19.1
+    "cagr": 9.49,
+    "vol": 10.87,
+    "maxdd": -18.8
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.95,
-    "vol": 13.55,
-    "maxdd": -26.8
+    "cagr": 7.26,
+    "vol": 13.59,
+    "maxdd": -26.7
    }
   ],
-  "dd_cap": 27.17,
+  "dd_cap": 26.97,
   "in_budget": true,
-  "cagr_no_rerating": 6.85
+  "cagr_no_rerating": 7.23
  },
  "portfolio_d": {
   "weights": [
-   20,
+   25,
    50,
+   5,
    20,
-   10,
    0,
    0,
    0,
@@ -2589,10 +2866,10 @@
   ],
   "macro": {
    "weights": [
-    20.0,
+    25.0,
     50.0,
+    5.0,
     20.0,
-    10.0,
     0.0,
     0.0,
     0.0,
@@ -2601,20 +2878,20 @@
     0.0,
     0.0
    ],
-   "cagr": 6.8,
-   "vol": 13.12,
-   "maxdd": -26.4,
-   "ret_per_dd": 0.258,
-   "sharpe_like": 0.027,
-   "terminal_1m": 1930690,
-   "worst_1m_from_open": 736000
+   "cagr": 7.07,
+   "vol": 13.28,
+   "maxdd": -26.8,
+   "ret_per_dd": 0.264,
+   "sharpe_like": 0.047,
+   "terminal_1m": 1980059,
+   "worst_1m_from_open": 732000
   },
   "base": {
    "weights": [
-    20.0,
+    25.0,
     50.0,
+    5.0,
     20.0,
-    10.0,
     0.0,
     0.0,
     0.0,
@@ -2623,37 +2900,42 @@
     0.0,
     0.0
    ],
-   "cagr": 6.91,
-   "vol": 13.12,
-   "maxdd": -26.3,
-   "ret_per_dd": 0.263,
-   "sharpe_like": 0.036,
-   "terminal_1m": 1950668,
-   "worst_1m_from_open": 737000
+   "cagr": 7.02,
+   "vol": 13.28,
+   "maxdd": -26.8,
+   "ret_per_dd": 0.262,
+   "sharpe_like": 0.043,
+   "terminal_1m": 1970831,
+   "worst_1m_from_open": 732000
+  },
+  "ten": {
+   "weights": [
+    25.0,
+    50.0,
+    5.0,
+    20.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "cagr": 7.24,
+   "vol": 13.28,
+   "maxdd": -26.7,
+   "ret_per_dd": 0.271,
+   "sharpe_like": 0.06,
+   "terminal_1m": 2011722,
+   "worst_1m_from_open": 733000
   },
   "column": "net_macro",
   "fund": "ATRQIAP",
   "pin_pct": 50,
-  "band_n": 2,
+  "band_n": 1,
   "n_feasible": 18,
   "band": [
-   {
-    "weights": [
-     20,
-     50,
-     20,
-     10,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "cagr": 6.8,
-    "maxdd": -26.4
-   },
    {
     "weights": [
      25,
@@ -2668,50 +2950,50 @@
      0,
      0
     ],
-    "cagr": 6.85,
-    "maxdd": -27.0
+    "cagr": 7.07,
+    "maxdd": -26.8
    }
   ],
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $113. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 2.6,
-    "vol": 20.99,
-    "maxdd": -48.1
+    "cagr": 3.12,
+    "vol": 21.25,
+    "maxdd": -48.7
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.81,
-    "vol": 17.06,
-    "maxdd": -37.2
+    "cagr": 4.92,
+    "vol": 17.27,
+    "maxdd": -37.9
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.15,
-    "vol": 19.02,
-    "maxdd": -43.0
+    "cagr": 3.44,
+    "vol": 19.26,
+    "maxdd": -43.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.02,
-    "vol": 10.5,
-    "maxdd": -18.6
+    "cagr": 9.17,
+    "vol": 10.63,
+    "maxdd": -19.0
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.8,
-    "vol": 13.12,
-    "maxdd": -26.4
+    "cagr": 7.07,
+    "vol": 13.28,
+    "maxdd": -26.8
    }
   ],
-  "dd_cap": 27.17,
+  "dd_cap": 26.97,
   "in_budget": true,
-  "cagr_no_rerating": 6.6
+  "cagr_no_rerating": 7.02
  },
  "universe": {
   "limits": {
@@ -2772,7 +3054,7 @@
    {
     "maxdd": 10.5,
     "dd": -10.5,
-    "cagr": 5.46,
+    "cagr": 5.49,
     "weights": [
      35.0,
      0.0,
@@ -2790,15 +3072,15 @@
    {
     "maxdd": 11.4,
     "dd": -11.4,
-    "cagr": 5.69,
+    "cagr": 5.75,
     "weights": [
      35.0,
-     10.0,
+     15.0,
      0.0,
      0.0,
      0.0,
-     10.0,
      0.0,
+     5.0,
      0.0,
      0.0,
      30.0,
@@ -2808,15 +3090,15 @@
    {
     "maxdd": 12.3,
     "dd": -12.3,
-    "cagr": 5.84,
+    "cagr": 5.89,
     "weights": [
      35.0,
      20.0,
      0.0,
      0.0,
      0.0,
-     10.0,
      5.0,
+     10.0,
      0.0,
      0.0,
      30.0,
@@ -2826,7 +3108,7 @@
    {
     "maxdd": 13.3,
     "dd": -13.3,
-    "cagr": 5.95,
+    "cagr": 6.01,
     "weights": [
      35.0,
      20.0,
@@ -2844,231 +3126,249 @@
    {
     "maxdd": 14.3,
     "dd": -14.3,
-    "cagr": 6.06,
+    "cagr": 6.11,
     "weights": [
-     35.0,
      30.0,
-     0.0,
-     0.0,
-     0.0,
-     10.0,
-     10.0,
-     0.0,
-     0.0,
-     15.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 15.5,
-    "dd": -15.5,
-    "cagr": 6.17,
-    "weights": [
-     35.0,
      25.0,
      0.0,
      0.0,
      0.0,
-     20.0,
-     15.0,
-     0.0,
-     0.0,
-     5.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 16.4,
-    "dd": -16.4,
-    "cagr": 6.24,
-    "weights": [
-     35.0,
-     30.0,
-     0.0,
-     0.0,
-     0.0,
-     15.0,
-     20.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 17.3,
-    "dd": -17.3,
-    "cagr": 6.3,
-    "weights": [
-     30.0,
-     35.0,
-     0.0,
-     0.0,
-     0.0,
-     15.0,
-     15.0,
-     0.0,
-     0.0,
-     5.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 18.2,
-    "dd": -18.2,
-    "cagr": 6.38,
-    "weights": [
-     30.0,
-     35.0,
-     5.0,
-     0.0,
-     0.0,
-     20.0,
+     10.0,
      10.0,
      0.0,
      0.0,
+     25.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 15.4,
+    "dd": -15.4,
+    "cagr": 6.22,
+    "weights": [
+     30.0,
+     35.0,
      0.0,
+     0.0,
+     0.0,
+     5.0,
+     10.0,
+     0.0,
+     0.0,
+     20.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 16.3,
+    "dd": -16.3,
+    "cagr": 6.31,
+    "weights": [
+     25.0,
+     25.0,
+     0.0,
+     0.0,
+     0.0,
+     10.0,
+     20.0,
+     0.0,
+     0.0,
+     20.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 17.2,
+    "dd": -17.2,
+    "cagr": 6.4,
+    "weights": [
+     20.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     10.0,
+     15.0,
+     0.0,
+     0.0,
+     25.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 18.1,
+    "dd": -18.1,
+    "cagr": 6.49,
+    "weights": [
+     20.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
+     5.0,
+     20.0,
+     0.0,
+     0.0,
+     20.0,
      0.0
     ]
    },
    {
     "maxdd": 19.1,
     "dd": -19.1,
-    "cagr": 6.43,
-    "weights": [
-     25.0,
-     35.0,
-     0.0,
-     0.0,
-     0.0,
-     20.0,
-     15.0,
-     0.0,
-     0.0,
-     0.0,
-     5.0
-    ]
-   },
-   {
-    "maxdd": 20.2,
-    "dd": -20.2,
-    "cagr": 6.5,
-    "weights": [
-     20.0,
-     35.0,
-     0.0,
-     0.0,
-     0.0,
-     20.0,
-     20.0,
-     0.0,
-     0.0,
-     5.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 21.1,
-    "dd": -21.1,
-    "cagr": 6.57,
-    "weights": [
-     20.0,
-     35.0,
-     5.0,
-     0.0,
-     0.0,
-     25.0,
-     15.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 22.0,
-    "dd": -22.0,
-    "cagr": 6.62,
-    "weights": [
-     20.0,
-     30.0,
-     0.0,
-     5.0,
-     0.0,
-     25.0,
-     20.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 23.1,
-    "dd": -23.1,
-    "cagr": 6.69,
+    "cagr": 6.58,
     "weights": [
      10.0,
      35.0,
      0.0,
      0.0,
      0.0,
-     25.0,
-     25.0,
-     0.0,
-     0.0,
      5.0,
+     15.0,
+     0.0,
+     0.0,
+     35.0,
      0.0
     ]
    },
    {
-    "maxdd": 24.0,
-    "dd": -24.0,
+    "maxdd": 20.0,
+    "dd": -20.0,
+    "cagr": 6.68,
+    "weights": [
+     15.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
+     15.0,
+     20.0,
+     0.0,
+     0.0,
+     15.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 20.9,
+    "dd": -20.9,
     "cagr": 6.76,
     "weights": [
      10.0,
      35.0,
-     5.0,
      0.0,
      0.0,
-     30.0,
-     20.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 24.9,
-    "dd": -24.9,
-    "cagr": 6.82,
-    "weights": [
-     15.0,
-     35.0,
      0.0,
      10.0,
-     0.0,
      25.0,
-     15.0,
      0.0,
      0.0,
-     0.0,
+     20.0,
      0.0
     ]
    },
    {
-    "maxdd": 26.0,
-    "dd": -26.0,
-    "cagr": 6.88,
+    "maxdd": 21.9,
+    "dd": -21.9,
+    "cagr": 6.84,
     "weights": [
      5.0,
      35.0,
+     0.0,
+     0.0,
+     0.0,
+     5.0,
+     30.0,
+     0.0,
+     0.0,
+     25.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 22.8,
+    "dd": -22.8,
+    "cagr": 6.92,
+    "weights": [
+     5.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     25.0,
+     25.0,
+     0.0,
+     0.0,
      15.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 23.7,
+    "dd": -23.7,
+    "cagr": 7.01,
+    "weights": [
+     5.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
+     20.0,
+     30.0,
+     0.0,
+     0.0,
+     10.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 24.8,
+    "dd": -24.8,
+    "cagr": 7.09,
+    "weights": [
+     10.0,
+     35.0,
+     0.0,
+     5.0,
+     0.0,
+     25.0,
+     25.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 25.8,
+    "dd": -25.8,
+    "cagr": 7.17,
+    "weights": [
+     5.0,
+     35.0,
+     0.0,
+     10.0,
      0.0,
      0.0,
      35.0,
+     0.0,
+     0.0,
+     15.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 26.1,
+    "dd": -26.1,
+    "cagr": 7.2,
+    "weights": [
      10.0,
+     35.0,
+     0.0,
+     10.0,
+     0.0,
+     15.0,
+     30.0,
      0.0,
      0.0,
      0.0,
@@ -3076,35 +3376,53 @@
     ]
    },
    {
-    "maxdd": 27.2,
-    "dd": -27.2,
-    "cagr": 6.94,
+    "maxdd": 27.0,
+    "dd": -27.0,
+    "cagr": 7.27,
     "weights": [
-     10.0,
-     25.0,
+     5.0,
+     35.0,
      0.0,
      15.0,
      0.0,
-     25.0,
-     25.0,
+     0.0,
+     30.0,
      0.0,
      0.0,
-     0.0,
+     15.0,
      0.0
     ]
    },
    {
-    "maxdd": 28.6,
-    "dd": -28.6,
-    "cagr": 7.03,
+    "maxdd": 28.0,
+    "dd": -28.0,
+    "cagr": 7.35,
     "weights": [
-     10.0,
-     25.0,
+     5.0,
+     30.0,
      0.0,
      20.0,
      0.0,
+     0.0,
      30.0,
+     0.0,
+     0.0,
      15.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 29.0,
+    "dd": -29.0,
+    "cagr": 7.45,
+    "weights": [
+     5.0,
+     35.0,
+     0.0,
+     15.0,
+     0.0,
+     10.0,
+     35.0,
      0.0,
      0.0,
      0.0,
@@ -3114,15 +3432,15 @@
    {
     "maxdd": 29.9,
     "dd": -29.9,
-    "cagr": 7.12,
+    "cagr": 7.52,
     "weights": [
      5.0,
-     25.0,
+     30.0,
      0.0,
      20.0,
      0.0,
-     25.0,
-     25.0,
+     15.0,
+     30.0,
      0.0,
      0.0,
      0.0,
@@ -3132,15 +3450,15 @@
    {
     "maxdd": 30.8,
     "dd": -30.8,
-    "cagr": 7.18,
+    "cagr": 7.56,
     "weights": [
      5.0,
      35.0,
-     0.0,
+     5.0,
      20.0,
      0.0,
+     0.0,
      35.0,
-     5.0,
      0.0,
      0.0,
      0.0,
@@ -3150,12 +3468,30 @@
    {
     "maxdd": 31.7,
     "dd": -31.7,
-    "cagr": 7.24,
+    "cagr": 7.65,
     "weights": [
      5.0,
      35.0,
      0.0,
      25.0,
+     0.0,
+     5.0,
+     30.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 32.7,
+    "dd": -32.7,
+    "cagr": 7.72,
+    "weights": [
+     5.0,
+     30.0,
+     0.0,
+     30.0,
      0.0,
      15.0,
      20.0,
@@ -3166,53 +3502,35 @@
     ]
    },
    {
-    "maxdd": 32.8,
-    "dd": -32.8,
-    "cagr": 7.28,
+    "maxdd": 33.6,
+    "dd": -33.6,
+    "cagr": 7.77,
     "weights": [
      5.0,
-     25.0,
-     0.0,
-     30.0,
-     0.0,
-     25.0,
-     15.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 33.7,
-    "dd": -33.7,
-    "cagr": 7.34,
-    "weights": [
-     5.0,
-     35.0,
-     0.0,
-     30.0,
-     0.0,
-     30.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 34.6,
-    "dd": -34.6,
-    "cagr": 7.38,
-    "weights": [
-     5.0,
-     30.0,
+     20.0,
      0.0,
      35.0,
      0.0,
      20.0,
-     10.0,
+     20.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 34.5,
+    "dd": -34.5,
+    "cagr": 7.84,
+    "weights": [
+     5.0,
+     30.0,
+     0.0,
+     35.0,
+     0.0,
+     0.0,
+     30.0,
      0.0,
      0.0,
      0.0,
@@ -3223,7 +3541,7 @@
   "best_ratio": {
    "weights": [
     35.0,
-    0.0,
+    5.0,
     0.0,
     0.0,
     0.0,
@@ -3232,15 +3550,15 @@
     0.0,
     0.0,
     35.0,
-    30.0
+    25.0
    ],
-   "cagr": 5.46,
-   "vol": 6.17,
-   "maxdd": -10.5,
-   "ret_per_dd": 0.52,
-   "sharpe_like": -0.159,
-   "terminal_1m": 1701679,
-   "worst_1m_from_open": 895000
+   "cagr": 5.55,
+   "vol": 6.24,
+   "maxdd": -10.6,
+   "ret_per_dd": 0.524,
+   "sharpe_like": -0.143,
+   "terminal_1m": 1716257,
+   "worst_1m_from_open": 894000
   },
   "what_if": {
    "vol_flat": {
@@ -3248,42 +3566,42 @@
      "weights": [
       5,
       35,
-      15,
       0,
+      5,
       0,
-      35,
-      10,
+      25,
+      30,
       0,
       0,
       0,
       0
      ],
-     "cagr": 6.91,
-     "maxdd": -26.0
+     "cagr": 7.23,
+     "maxdd": -26.3
     },
     "c": {
      "weights": [
       5,
       50,
+      0,
       5,
       0,
       0,
       35,
+      0,
+      0,
       5,
-      0,
-      0,
-      0,
       0
      ],
-     "cagr": 6.99,
-     "maxdd": -26.4
+     "cagr": 7.27,
+     "maxdd": -26.7
     },
     "d": {
      "weights": [
-      20,
+      25,
       50,
+      5,
       20,
-      10,
       0,
       0,
       0,
@@ -3292,11 +3610,11 @@
       0,
       0
      ],
-     "cagr": 6.85,
-     "maxdd": -26.4
+     "cagr": 7.08,
+     "maxdd": -26.8
     },
     "a": {
-     "cagr": 6.94,
+     "cagr": 7.23,
      "maxdd": -26.6
     }
    },
@@ -3315,7 +3633,7 @@
       25,
       0
      ],
-     "cagr": 7.31,
+     "cagr": 7.33,
      "maxdd": -26.5
     },
     "c": {
@@ -3323,17 +3641,17 @@
       5,
       50,
       0,
+      10,
+      0,
+      0,
+      20,
+      0,
+      0,
       15,
-      0,
-      0,
-      5,
-      0,
-      0,
-      25,
       0
      ],
-     "cagr": 7.29,
-     "maxdd": -26.6
+     "cagr": 7.33,
+     "maxdd": -26.3
     },
     "d": {
      "weights": [
@@ -3349,31 +3667,31 @@
       0,
       0
      ],
-     "cagr": 7.11,
+     "cagr": 7.13,
      "maxdd": -26.8
     },
     "a": {
-     "cagr": 7.23,
-     "maxdd": -26.4
+     "cagr": 7.33,
+     "maxdd": -26.5
     }
    },
    "asia_no_rerating": {
     "b": {
      "weights": [
-      15,
+      10,
       35,
       0,
-      15,
+      10,
       0,
-      15,
       20,
+      25,
       0,
       0,
       0,
       0
      ],
-     "cagr": 6.89,
-     "maxdd": -26.1
+     "cagr": 7.19,
+     "maxdd": -26.0
     },
     "c": {
      "weights": [
@@ -3382,21 +3700,21 @@
       0,
       5,
       0,
-      25,
       15,
+      25,
       0,
       0,
       0,
       0
      ],
-     "cagr": 7.0,
-     "maxdd": -27.1
+     "cagr": 7.3,
+     "maxdd": -26.9
     },
     "d": {
      "weights": [
-      30,
+      25,
       50,
-      0,
+      5,
       20,
       0,
       0,
@@ -3406,30 +3724,30 @@
       0,
       0
      ],
-     "cagr": 6.75,
-     "maxdd": -25.4
+     "cagr": 7.02,
+     "maxdd": -26.8
     },
     "a": {
-     "cagr": 6.91,
-     "maxdd": -26.6
+     "cagr": 7.1,
+     "maxdd": -26.7
     }
    },
    "asia_fee_hi": {
     "b": {
      "weights": [
-      15,
+      10,
       35,
       0,
-      15,
+      10,
       0,
       15,
-      20,
+      30,
       0,
       0,
       0,
       0
      ],
-     "cagr": 6.89,
+     "cagr": 7.2,
      "maxdd": -26.1
     },
     "c": {
@@ -3439,15 +3757,15 @@
       0,
       5,
       0,
-      35,
       0,
+      35,
       0,
       0,
       5,
       0
      ],
-     "cagr": 6.96,
-     "maxdd": -27.0
+     "cagr": 7.26,
+     "maxdd": -26.7
     },
     "d": {
      "weights": [
@@ -3463,11 +3781,11 @@
       0,
       0
      ],
-     "cagr": 6.84,
-     "maxdd": -27.0
+     "cagr": 7.06,
+     "maxdd": -26.8
     },
     "a": {
-     "cagr": 6.91,
+     "cagr": 7.22,
      "maxdd": -26.6
     },
     "stress_pp": 0.25
@@ -3475,20 +3793,20 @@
    "trend_off": {
     "b": {
      "weights": [
-      10,
-      30,
+      5,
+      35,
       0,
-      10,
+      5,
       0,
-      25,
-      25,
+      20,
+      35,
       0,
       0,
       0,
       0
      ],
-     "cagr": 6.81,
-     "maxdd": -26.1
+     "cagr": 7.25,
+     "maxdd": -26.4
     },
     "c": {
      "weights": [
@@ -3497,15 +3815,15 @@
       0,
       5,
       0,
-      20,
-      20,
+      0,
+      35,
       0,
       0,
-      0,
+      5,
       0
      ],
-     "cagr": 6.91,
-     "maxdd": -27.1
+     "cagr": 7.29,
+     "maxdd": -26.7
     },
     "d": {
      "weights": [
@@ -3521,55 +3839,55 @@
       0,
       0
      ],
-     "cagr": 6.76,
-     "maxdd": -27.0
+     "cagr": 7.1,
+     "maxdd": -26.8
     },
     "a": {
-     "cagr": 6.85,
-     "maxdd": -26.7
+     "cagr": 7.25,
+     "maxdd": -26.5
     }
    },
    "trend_alt": {
     "b": {
      "weights": [
-      15,
+      10,
       35,
       0,
-      15,
+      10,
       0,
       15,
-      20,
+      30,
       0,
       0,
       0,
       0
      ],
-     "cagr": 6.89,
+     "cagr": 7.2,
      "maxdd": -26.1
     },
     "c": {
      "weights": [
       5,
       50,
-      10,
+      0,
+      5,
       0,
       0,
       35,
       0,
       0,
-      0,
-      0,
+      5,
       0
      ],
-     "cagr": 6.95,
-     "maxdd": -26.8
+     "cagr": 7.26,
+     "maxdd": -26.7
     },
     "d": {
      "weights": [
-      20,
+      25,
       50,
+      5,
       20,
-      10,
       0,
       0,
       0,
@@ -3578,11 +3896,11 @@
       0,
       0
      ],
-     "cagr": 6.8,
-     "maxdd": -26.4
+     "cagr": 7.06,
+     "maxdd": -26.8
     },
     "a": {
-     "cagr": 6.91,
+     "cagr": 7.22,
      "maxdd": -26.6
     }
    }
@@ -3590,13 +3908,13 @@
  },
  "portfolio_b": {
   "weights": [
-   5,
-   35,
-   15,
-   0,
-   0,
-   35,
    10,
+   35,
+   0,
+   10,
+   0,
+   15,
+   30,
    0,
    0,
    0,
@@ -3616,8 +3934,8 @@
    "M_GALL"
   ],
   "column": "net_macro",
-  "band_n": 71,
-  "n_feasible": 198762,
+  "band_n": 31,
+  "n_feasible": 198485,
   "shorts": [
    "Peso Money Market",
    "Nasdaq Equity Income",
@@ -3653,10 +3971,10 @@
     "gross_php": 9.2,
     "fx_drift": 2.0,
     "net_base": 6.66,
-    "regional_score": 2.63,
-    "tilt_regional": -0.25,
+    "regional_score": 2.8,
+    "tilt_regional": -0.13,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.19,
+    "tilt_rates": -0.04,
     "tilt_energy": 0.0,
     "tilt_trend": 0.0,
     "equity_share": 1.0,
@@ -3671,22 +3989,30 @@
     "exposure": null,
     "tilt_rates_cal": -0.08,
     "tilt_energy_cal": 0.0,
-    "tilt_total": -0.44,
-    "net_macro": 6.22,
+    "tilt_total": -0.17,
+    "net_macro": 6.49,
+    "regional_score_10y": 2.95,
+    "tilt_regional_10y": -0.04,
+    "tilt_vol_10y": 0.0,
+    "tilt_rates_10y": 0.0,
+    "tilt_energy_10y": 0.0,
+    "tilt_total_10y": -0.04,
+    "net_10y": 6.62,
     "vol": 15.49,
     "vol_beta": 0.8,
     "dd_k": 1.65,
     "dd_k_why": "At the 1.65 anchor: a diversified dividend portfolio's left tail is the market's.",
     "dd_base": -31.4,
-    "dd_macro": -31.8,
-    "target_net_macro": 7.72,
-    "target_dd_macro": -30.7,
-    "net_novol": 6.22,
-    "net_neutral": 6.41,
-    "net_notrend": 6.22,
-    "net_trend_alt": 6.22,
-    "net_asia_norerate": 6.22,
-    "net_asia_fee_hi": 6.22
+    "dd_macro": -31.6,
+    "dd_10y": -31.5,
+    "target_net_macro": 7.99,
+    "target_dd_macro": -30.5,
+    "net_novol": 6.49,
+    "net_neutral": 6.53,
+    "net_notrend": 6.49,
+    "net_trend_alt": 6.49,
+    "net_asia_norerate": 6.49,
+    "net_asia_fee_hi": 6.49
    },
    {
     "id": "ATRGHCP",
@@ -3709,12 +4035,12 @@
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 6.95,
-    "regional_score": 2.91,
-    "tilt_regional": -0.06,
+    "regional_score": 3.11,
+    "tilt_regional": 0.07,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.12,
+    "tilt_rates": -0.03,
     "tilt_energy": 0.0,
-    "tilt_trend": 0.08,
+    "tilt_trend": 0.03,
     "equity_share": 1.0,
     "trend_market": "ATRGHCP",
     "region_mix": {
@@ -3731,22 +4057,30 @@
     ],
     "tilt_rates_cal": -0.05,
     "tilt_energy_cal": 0.0,
-    "tilt_total": -0.1,
-    "net_macro": 6.85,
+    "tilt_total": 0.07,
+    "net_macro": 7.02,
+    "regional_score_10y": 3.24,
+    "tilt_regional_10y": 0.16,
+    "tilt_vol_10y": 0.0,
+    "tilt_rates_10y": 0.0,
+    "tilt_energy_10y": 0.0,
+    "tilt_total_10y": 0.16,
+    "net_10y": 7.11,
     "vol": 16.4,
     "vol_beta": 0.85,
     "dd_k": 1.65,
     "dd_k_why": "At the 1.65 anchor: a defensive sector, but a single-sector book; its left tail is taken as the market's.",
     "dd_base": -33.3,
-    "dd_macro": -33.4,
-    "target_net_macro": 8.35,
-    "target_dd_macro": -32.4,
-    "net_novol": 6.85,
-    "net_neutral": 6.97,
-    "net_notrend": 6.77,
-    "net_trend_alt": 6.85,
-    "net_asia_norerate": 6.85,
-    "net_asia_fee_hi": 6.85
+    "dd_macro": -33.3,
+    "dd_10y": -33.2,
+    "target_net_macro": 8.52,
+    "target_dd_macro": -32.2,
+    "net_novol": 7.02,
+    "net_neutral": 7.05,
+    "net_notrend": 6.99,
+    "net_trend_alt": 7.02,
+    "net_asia_norerate": 7.02,
+    "net_asia_fee_hi": 7.02
    },
    {
     "id": "M_GINF",
@@ -3769,11 +4103,11 @@
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 7.2,
-    "regional_score": 2.86,
-    "tilt_regional": -0.09,
+    "regional_score": 3.06,
+    "tilt_regional": 0.04,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.47,
-    "tilt_energy": 0.07,
+    "tilt_rates": -0.1,
+    "tilt_energy": 0.02,
     "tilt_trend": 0.0,
     "equity_share": 1.0,
     "trend_market": null,
@@ -3791,22 +4125,30 @@
     ],
     "tilt_rates_cal": -0.2,
     "tilt_energy_cal": 0.05,
-    "tilt_total": -0.49,
-    "net_macro": 6.71,
+    "tilt_total": -0.04,
+    "net_macro": 7.16,
+    "regional_score_10y": 3.19,
+    "tilt_regional_10y": 0.13,
+    "tilt_vol_10y": 0.0,
+    "tilt_rates_10y": 0.0,
+    "tilt_energy_10y": 0.0,
+    "tilt_total_10y": 0.13,
+    "net_10y": 7.33,
     "vol": 16.4,
     "vol_beta": 0.85,
     "dd_k": 1.65,
     "dd_k_why": "At the 1.65 anchor: regulated, contracted cash flows; no fatter tail than the market's is claimed.",
     "dd_base": -33.2,
-    "dd_macro": -33.5,
-    "target_net_macro": 8.21,
-    "target_dd_macro": -32.5,
-    "net_novol": 6.71,
-    "net_neutral": 7.11,
-    "net_notrend": 6.71,
-    "net_trend_alt": 6.71,
-    "net_asia_norerate": 6.71,
-    "net_asia_fee_hi": 6.71
+    "dd_macro": -33.2,
+    "dd_10y": -33.1,
+    "target_net_macro": 8.66,
+    "target_dd_macro": -32.1,
+    "net_novol": 7.16,
+    "net_neutral": 7.24,
+    "net_notrend": 7.16,
+    "net_trend_alt": 7.16,
+    "net_asia_norerate": 7.16,
+    "net_asia_fee_hi": 7.16
    },
    {
     "id": "M_GEO",
@@ -3829,12 +4171,12 @@
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 7.0,
-    "regional_score": 3.03,
-    "tilt_regional": 0.02,
+    "regional_score": 3.24,
+    "tilt_regional": 0.16,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.47,
-    "tilt_energy": -0.13,
-    "tilt_trend": 0.09,
+    "tilt_rates": -0.1,
+    "tilt_energy": -0.04,
+    "tilt_trend": -0.04,
     "equity_share": 1.0,
     "trend_market": "M_GEO",
     "region_mix": {
@@ -3851,22 +4193,30 @@
     ],
     "tilt_rates_cal": -0.2,
     "tilt_energy_cal": -0.1,
-    "tilt_total": -0.49,
-    "net_macro": 6.51,
+    "tilt_total": -0.02,
+    "net_macro": 6.98,
+    "regional_score_10y": 3.37,
+    "tilt_regional_10y": 0.25,
+    "tilt_vol_10y": 0.0,
+    "tilt_rates_10y": 0.0,
+    "tilt_energy_10y": 0.0,
+    "tilt_total_10y": 0.25,
+    "net_10y": 7.25,
     "vol": 21.94,
     "vol_beta": 1.15,
     "dd_k": 1.7,
     "dd_k_why": "A little above 1.65: thematic growth with a mid-cap tilt gaps further than the broad market.",
     "dd_base": -47.8,
-    "dd_macro": -48.1,
-    "target_net_macro": 8.01,
-    "target_dd_macro": -47.1,
-    "net_novol": 6.51,
-    "net_neutral": 7.11,
-    "net_notrend": 6.42,
-    "net_trend_alt": 6.51,
-    "net_asia_norerate": 6.51,
-    "net_asia_fee_hi": 6.51
+    "dd_macro": -47.8,
+    "dd_10y": -47.6,
+    "target_net_macro": 8.48,
+    "target_dd_macro": -46.7,
+    "net_novol": 6.98,
+    "net_neutral": 7.12,
+    "net_notrend": 7.02,
+    "net_trend_alt": 6.98,
+    "net_asia_norerate": 6.98,
+    "net_asia_fee_hi": 6.98
    },
    {
     "id": "M_GCT",
@@ -3889,11 +4239,11 @@
     "gross_php": 9.5,
     "fx_drift": 2.0,
     "net_base": 7.03,
-    "regional_score": 3.05,
-    "tilt_regional": 0.03,
+    "regional_score": 3.26,
+    "tilt_regional": 0.17,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.58,
-    "tilt_energy": -0.2,
+    "tilt_rates": -0.13,
+    "tilt_energy": -0.05,
     "tilt_trend": 0.0,
     "equity_share": 1.0,
     "trend_market": null,
@@ -3911,22 +4261,30 @@
     ],
     "tilt_rates_cal": -0.25,
     "tilt_energy_cal": -0.15,
-    "tilt_total": -0.75,
-    "net_macro": 6.28,
+    "tilt_total": -0.01,
+    "net_macro": 7.02,
+    "regional_score_10y": 3.38,
+    "tilt_regional_10y": 0.26,
+    "tilt_vol_10y": 0.0,
+    "tilt_rates_10y": 0.0,
+    "tilt_energy_10y": 0.0,
+    "tilt_total_10y": 0.26,
+    "net_10y": 7.29,
     "vol": 33.31,
     "vol_beta": 1.75,
     "dd_k": 1.8,
     "dd_k_why": "Well above 1.65: a concentrated consumer-growth book; its 2022 fall ran far past what 1.65 sigma predicts.",
     "dd_base": -79.8,
-    "dd_macro": -80.3,
-    "target_net_macro": 7.78,
-    "target_dd_macro": -79.3,
-    "net_novol": 6.28,
-    "net_neutral": 7.06,
-    "net_notrend": 6.28,
-    "net_trend_alt": 6.28,
-    "net_asia_norerate": 6.28,
-    "net_asia_fee_hi": 6.28
+    "dd_macro": -79.8,
+    "dd_10y": -79.6,
+    "target_net_macro": 8.52,
+    "target_dd_macro": -78.8,
+    "net_novol": 7.02,
+    "net_neutral": 7.2,
+    "net_notrend": 7.02,
+    "net_trend_alt": 7.02,
+    "net_asia_norerate": 7.02,
+    "net_asia_fee_hi": 7.02
    },
    {
     "id": "ATRAMIP",
@@ -3949,12 +4307,12 @@
     "gross_php": 8.85,
     "fx_drift": 2.0,
     "net_base": 5.81,
-    "regional_score": 3.34,
-    "tilt_regional": 0.11,
+    "regional_score": 3.58,
+    "tilt_regional": 0.2,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.23,
-    "tilt_energy": -0.2,
-    "tilt_trend": 0.08,
+    "tilt_rates": -0.05,
+    "tilt_energy": -0.05,
+    "tilt_trend": -0.01,
     "equity_share": 0.5,
     "trend_market": "ATRASEQ",
     "region_mix": null,
@@ -3967,22 +4325,30 @@
     ],
     "tilt_rates_cal": -0.1,
     "tilt_energy_cal": -0.15,
-    "tilt_total": -0.24,
-    "net_macro": 5.57,
+    "tilt_total": 0.09,
+    "net_macro": 5.9,
+    "regional_score_10y": 3.67,
+    "tilt_regional_10y": 0.23,
+    "tilt_vol_10y": 0.0,
+    "tilt_rates_10y": 0.0,
+    "tilt_energy_10y": 0.0,
+    "tilt_total_10y": 0.23,
+    "net_10y": 6.04,
     "vol": 10.03,
     "vol_beta": 0.48,
     "dd_k": 1.65,
     "dd_k_why": "At the 1.65 anchor: the bond half damps the Asian equity tail.",
     "dd_base": -19.3,
-    "dd_macro": -19.5,
-    "target_net_macro": 7.07,
-    "target_dd_macro": -18.4,
-    "net_novol": 5.57,
+    "dd_macro": -19.2,
+    "dd_10y": -19.1,
+    "target_net_macro": 7.4,
+    "target_dd_macro": -18.2,
+    "net_novol": 5.9,
     "net_neutral": 6.0,
-    "net_notrend": 5.49,
-    "net_trend_alt": 5.56,
-    "net_asia_norerate": 5.07,
-    "net_asia_fee_hi": 5.57
+    "net_notrend": 5.91,
+    "net_trend_alt": 5.9,
+    "net_asia_norerate": 5.4,
+    "net_asia_fee_hi": 5.9
    },
    {
     "id": "M_GALL",
@@ -4005,12 +4371,12 @@
     "gross_php": 8.62,
     "fx_drift": 2.0,
     "net_base": 6.29,
-    "regional_score": 2.98,
-    "tilt_regional": -0.01,
+    "regional_score": 3.18,
+    "tilt_regional": 0.07,
     "tilt_vol": 0.0,
-    "tilt_rates": -0.23,
-    "tilt_energy": -0.07,
-    "tilt_trend": 0.05,
+    "tilt_rates": -0.05,
+    "tilt_energy": -0.02,
+    "tilt_trend": -0.02,
     "equity_share": 0.6,
     "trend_market": "M_GEO",
     "region_mix": {
@@ -4027,103 +4393,133 @@
     ],
     "tilt_rates_cal": -0.1,
     "tilt_energy_cal": -0.05,
-    "tilt_total": -0.26,
-    "net_macro": 6.03,
+    "tilt_total": -0.02,
+    "net_macro": 6.27,
+    "regional_score_10y": 3.31,
+    "tilt_regional_10y": 0.13,
+    "tilt_vol_10y": 0.0,
+    "tilt_rates_10y": 0.0,
+    "tilt_energy_10y": 0.0,
+    "tilt_total_10y": 0.13,
+    "net_10y": 6.42,
     "vol": 11.16,
     "vol_beta": 0.55,
     "dd_k": 1.65,
     "dd_k_why": "At the 1.65 anchor: a balanced book; its bond share is already in its volatility.",
     "dd_base": -21.6,
-    "dd_macro": -21.8,
-    "target_net_macro": 7.23,
-    "target_dd_macro": -20.9,
-    "net_novol": 6.03,
-    "net_neutral": 6.33,
-    "net_notrend": 5.98,
-    "net_trend_alt": 6.03,
-    "net_asia_norerate": 6.03,
-    "net_asia_fee_hi": 6.03
+    "dd_macro": -21.6,
+    "dd_10y": -21.5,
+    "target_net_macro": 7.47,
+    "target_dd_macro": -20.7,
+    "net_novol": 6.27,
+    "net_neutral": 6.34,
+    "net_notrend": 6.29,
+    "net_trend_alt": 6.27,
+    "net_asia_norerate": 6.27,
+    "net_asia_fee_hi": 6.27
    }
   ],
   "macro": {
    "weights": [
-    5.0,
-    35.0,
-    15.0,
-    0.0,
-    0.0,
-    35.0,
     10.0,
+    35.0,
+    0.0,
+    10.0,
+    0.0,
+    15.0,
+    30.0,
     0.0,
     0.0,
     0.0,
     0.0
    ],
-   "cagr": 6.88,
-   "vol": 13.17,
-   "maxdd": -26.0,
-   "ret_per_dd": 0.265,
-   "sharpe_like": 0.033,
-   "terminal_1m": 1945201,
-   "worst_1m_from_open": 740000
+   "cagr": 7.2,
+   "vol": 13.24,
+   "maxdd": -26.1,
+   "ret_per_dd": 0.276,
+   "sharpe_like": 0.057,
+   "terminal_1m": 2004231,
+   "worst_1m_from_open": 739000
   },
   "base": {
    "weights": [
-    5.0,
-    35.0,
-    15.0,
-    0.0,
-    0.0,
-    35.0,
     10.0,
+    35.0,
+    0.0,
+    10.0,
+    0.0,
+    15.0,
+    30.0,
     0.0,
     0.0,
     0.0,
     0.0
    ],
-   "cagr": 7.02,
-   "vol": 13.17,
-   "maxdd": -25.9,
-   "ret_per_dd": 0.271,
-   "sharpe_like": 0.044,
-   "terminal_1m": 1970831,
-   "worst_1m_from_open": 741000
+   "cagr": 7.18,
+   "vol": 13.24,
+   "maxdd": -26.1,
+   "ret_per_dd": 0.275,
+   "sharpe_like": 0.056,
+   "terminal_1m": 2000495,
+   "worst_1m_from_open": 739000
+  },
+  "ten": {
+   "weights": [
+    10.0,
+    35.0,
+    0.0,
+    10.0,
+    0.0,
+    15.0,
+    30.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "cagr": 7.38,
+   "vol": 13.24,
+   "maxdd": -26.0,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.071,
+   "terminal_1m": 2038140,
+   "worst_1m_from_open": 740000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $113. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.45,
-    "vol": 21.07,
-    "maxdd": -47.0
+    "cagr": 4.03,
+    "vol": 21.19,
+    "maxdd": -47.1
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.14,
-    "vol": 17.12,
-    "maxdd": -36.5
+    "cagr": 5.01,
+    "vol": 17.22,
+    "maxdd": -37.0
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.78,
-    "vol": 19.09,
-    "maxdd": -41.4
+    "cagr": 5.03,
+    "vol": 19.2,
+    "maxdd": -41.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 8.78,
-    "vol": 10.53,
+    "cagr": 9.19,
+    "vol": 10.6,
     "maxdd": -18.5
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.88,
-    "vol": 13.17,
-    "maxdd": -26.0
+    "cagr": 7.2,
+    "vol": 13.24,
+    "maxdd": -26.1
    }
   ],
   "corr": [
@@ -4344,7 +4740,7 @@
    "fx_vol": 6.0,
    "typed_block": 5
   },
-  "dd_cap": 27.17,
+  "dd_cap": 26.97,
   "in_budget": true,
   "review": {
    "date": "2026-10-21",

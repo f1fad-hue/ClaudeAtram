@@ -683,24 +683,24 @@ MACRO = {
     # funds removed. US Equity Opportunity's weight turns on its trust fee, not
     # confirmed: uitf.com.ph lists 1.20% on a page about 17 months old, and ATRAM moved
     # its sister feeders to 1.50% on 14 Sep. It is HELD OUT at the owner's choice.
-    # RE-RUN 2026-10-22 ON THIS ENGINE (model/heldout_sens.py: the fund built by
-    # build_fund(), its pairs from the factor model, the rule re-run over the eleven
-    # funds plus it): at 1.20%, 10% of A, 25% of B, 10% of C; at 1.50%, none of A, 5% of
-    # B, 5% of C. (On the review model over five funds, 21 Oct: 25 / 20 / 15 and 0 / 10 / 5.)
+    # RE-RUN 2026-10-26 ON THE 1/3/5/10-YEAR ENGINE (model/heldout_sens.py: the fund built
+    # by build_fund(), its pairs from the factor model, the rule re-run over the eleven
+    # funds plus it): at 1.20%, 20% of A, 20% of B, 10% of C; at 1.50%, 20% of A, none of
+    # B, 5% of C. (22 Oct, on the 3/6/12-month engine: 10 / 25 / 10 and 0 / 5 / 5.)
     # GLOBAL BOND INCOME, the held-out fund that would move the picks most, the same way:
     # at its listed 0.90% trust fee with the target's institutional 0.69% charge, 35% of
-    # A, 25% of B and 10% of C; with the retail 1.59%, 30% of A and none of B or C. Its
+    # A, 35% of B and 25% of C; with the retail 1.59%, 25% of A, 20% of B, 10% of C. Its
     # gross is the LTCMA's investment-grade credit figure - an assumption for a fund whose
     # target is not confirmed.
     "review_list_n": 22, "review_list_prev_n": 24, "review_list_date": "2026-10-21",
     "review_list_removed": ["Long Term Peso Bond", "Medium Term Peso Bond"],
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
-    "useq_w_a_listed": 10, "useq_w_b_listed": 25, "useq_w_a_peer": 0, "useq_w_b_peer": 5,
+    "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 20, "useq_w_b_peer": 0,
     "useq_w_c_listed": 10, "useq_w_c_peer": 5,
     "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
-    "gbi_w_a_low": 35, "gbi_w_b_low": 25, "gbi_w_c_low": 10,
-    "gbi_w_a_high": 30, "gbi_w_b_high": 0, "gbi_w_c_high": 0,
+    "gbi_w_a_low": 35, "gbi_w_b_low": 35, "gbi_w_c_low": 25,
+    "gbi_w_a_high": 25, "gbi_w_b_high": 20, "gbi_w_c_high": 10,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -1940,18 +1940,30 @@ def horizon_vol(T, n=4000):
     """Annualised implied vol for a 0->T horizon via forward-variance integration."""
     return _horizon_vol_on(VOL_KNOTS, T, n)
 
-HORIZONS = [("3M", 0.25), ("6M", 0.50), ("12M", 1.00), (HZ_LABEL, HORIZON_Y)]
+# THE FORECAST HORIZONS (owner, 2026-10-26: "macroeconomic drivers ..., market trend ...,
+# regional rankings ... and volatility deep analysis of 1, 3, 5 and 10yrs forecast").
+# Until v67 they were 3, 6 and 12 months plus the 10-year anchor.
+HZ_KEYS = ("1Y", "3Y", "5Y", HZ_LABEL)
+HORIZONS = [("1Y", 1.0), ("3Y", 3.0), ("5Y", 5.0), (HZ_LABEL, HORIZON_Y)]
 VOL_TS = []
+_prev = (0.0, 0.0)
 for lbl, T in HORIZONS:
     iv = horizon_vol(T)
+    # THE FORWARD VOL OF THE YEARS THIS VIEW GOVERNS (2026-10-26): the 3-year point is
+    # the average over years 0-3, so years 2-3 alone are what is left once year 1 is
+    # taken out of the variance. Built from the PRINTED implied figures, so a reader
+    # reproduces it from the table.
+    _ivr = round(iv, 2)
+    fwd = math.sqrt((T * _ivr ** 2 - _prev[0] * _prev[1] ** 2) / (T - _prev[0]))
     VOL_TS.append({
-        "label": lbl, "years": T,
-        "implied": round(iv, 2),
+        "label": lbl, "years": T, "from_years": _prev[0],
+        "implied": _ivr, "forward": round(fwd, 2),
         "realised": round(iv - MACRO["variance_risk_premium"], 2),
         # 1-sigma and 2-sigma S&P-equivalent move over the horizon
         "move_1sd": round(iv * math.sqrt(T), 2),
         "move_2sd": round(2 * iv * math.sqrt(T), 2),
     })
+    _prev = (T, _ivr)
 SP_VOL_LT = next(v["implied"] for v in VOL_TS if v["label"] == HZ_LABEL)
 
 # What the stale strip costs, measured rather than asserted. Re-anchor the curve to
@@ -1993,25 +2005,21 @@ VIX3M_PREV_RESID = round((_horizon_vol_on([(0.0, MACRO["vix3m_spot"])]
 #    Each score is an evidence-weighted judgement over the seven drivers in
 #    DRIVERS below, blended across horizons by HZ_W.
 #
-#    HORIZON BLEND WEIGHTS - reweighted 2026-09-08.
-#    The old split was 3M 15 / 6M 25 / 12M 30 / long 30, carried over unchanged
-#    when the mandate went from 5 years to 10. Two things were wrong with it:
-#
-#      1. The comment above it claimed the blend "keeps the long anchor
-#         dominant". It did not. 70% of the weight sat on horizons under a year
-#         against 30% on the anchor - the comment described an intent the
-#         numbers contradicted, and nothing checked it.
-#      2. Whatever the right near-term weight is for a FIVE-year mandate, it is
-#         not also right for a TEN-year one. Doubling the holding period without
-#         touching the weights silently doubles how much a 3-month signal counts
-#         per year of mandate.
-#
-#    Now 3M 10 / 6M 15 / 12M 25 / long 50: near-term signals still get a vote
-#    (half the weight), the anchor genuinely dominates, and the check below
-#    asserts it rather than trusting a comment.
+#    HORIZON BLEND WEIGHTS: each view's share of the ten-year holding (below). The
+#    judgement weights they replaced (3M 10 / 6M 15 / 12M 25 / 10Y 50 from 2026-09-08,
+#    and 15/25/30/30 before) are in monitoring/CHANGELOG.md.
 # ----------------------------------------------------------------------------
 
-HZ_W = {"3M": 0.10, "6M": 0.15, "12M": 0.25, HZ_LABEL: 0.50}
+# REWEIGHTED 2026-10-26 FOR THE 1 / 3 / 5 / 10-YEAR FORECASTS: each view's weight is the
+# share of the ten-year holding it governs - the 1-year view year 1, the 3-year view
+# years 2-3, the 5-year view years 4-5, the 10-year view years 6-10. A ten-year CAGR is
+# (to first order) the average of its annual returns, so a view that holds for k of the
+# ten years moves it by k/10 of its annual effect. The weights are DERIVED from the
+# horizons, not chosen, and a check holds them there. (The 3M/6M/12M/10Y weights of
+# 10/15/25/50 they replace were a judgement; these are arithmetic.)
+_HZ_YEARS = dict(HORIZONS)
+HZ_W = {h: round((_HZ_YEARS[h] - (_HZ_YEARS[HZ_KEYS[i - 1]] if i else 0.0)) / HORIZON_Y, 2)
+        for i, h in enumerate(HZ_KEYS)}
 
 # ----------------------------------------------------------------------------
 # 3b. VOLATILITY RAMP - the optimiser's volatility channel
@@ -2021,7 +2029,12 @@ HZ_W = {"3M": 0.10, "6M": 0.15, "12M": 0.25, HZ_LABEL: 0.50}
 #     vol sits ABOVE spot - i.e. how much repricing the option market is still
 #     pointing at - using the same horizon weights as the regional blend.
 # ----------------------------------------------------------------------------
-VOL_BLEND = sum(v["implied"] * HZ_W[v["label"]] for v in VOL_TS)
+# READ ON FORWARD VOL (2026-10-26). Each horizon's weight is the share of the ten years
+# it governs, so it is paired with the vol of THOSE years - the curve's forward vol over
+# them - not with the 0-to-T average, which would count year 1 again inside the 3-, 5-
+# and 10-year points. Over the four segments the forwards' variance averages back to the
+# 10-year implied variance exactly; the blend of vols sits a hair below it.
+VOL_BLEND = sum(v["forward"] * HZ_W[v["label"]] for v in VOL_TS)
 # MEASURED FROM THE LONG-RUN LEVEL, NOT FROM SPOT. Corrected 2026-09-25. Every
 # fund's base return is a long-run (LTCMA) return, and a long-run return already
 # assumes average volatility - the 19.5 long-run VIX this model's own curve
@@ -2034,6 +2047,8 @@ VOL_BLEND = sum(v["implied"] * HZ_W[v["label"]] for v in VOL_TS)
 # unrounded -0.454 gave Global Technology +0.06 where the printed -0.45 x -0.122
 # gives +0.05, so the page's own figures did not reproduce its tilt.
 VOL_RAMP  = round(VOL_BLEND - MACRO["vix_longrun"], 2)
+# The ramp the 10-year view alone reads: years 6-10 of the curve (Portfolio A's column).
+VOL_RAMP_10 = round(VOL_TS[-1]["forward"] - MACRO["vix_longrun"], 2)
 VOL_RAMP_REF = "long-run"
 
 # Per-fund sensitivity, in pp of net CAGR per point of vol ramp. These are
@@ -2090,7 +2105,7 @@ HC_SP_BETA = 0.85      # global health care (S&P Global 1200 Health Care)
 ACWI_SP_BETA = 1.00    # global equity (MSCI ACWI), a little below the S&P's long-run vol
 
 # ----------------------------------------------------------------------------
-# 3c. MARKET TREND - 3/6/12-month momentum, the optimiser's trend channel
+# 3c. MARKET TREND - 1-year momentum, 3- and 5-year reversal, the trend channel
 #     Added 2026-10-07 at the portfolio owner's instruction: the optimised
 #     portfolios are to be built on market trend analysis as well as macro
 #     sentiment, volatility and the regional rankings, at 3, 6 and 12 months
@@ -2113,21 +2128,29 @@ ACWI_SP_BETA = 1.00    # global equity (MSCI ACWI), a little below the S&P's lon
 #     3 + z, clipped to [1, 5], so two standard deviations either way hits the
 #     bound.
 #
-#     THE 10-YEAR ANCHOR IS NEUTRAL, AND THAT IS THE EVIDENCE, NOT A DEFAULT.
-#     Time-series momentum - a market's own trailing return predicting its next
-#     months - is one of the best-documented effects in finance, and it fades
-#     within about a year and partly reverses after (Moskowitz, Ooi and Pedersen,
-#     2012). Over ten years a trend carries no signal this model can defend, so
-#     the 10Y score is held at 3.0 and the blend uses the same HZ_W weights as
-#     the regional rankings: the three trend horizons get half the vote between
-#     them, the neutral anchor the other half.
+#     THE FOUR HORIZONS (2026-10-26; until v67, 3, 6 and 12 months). The evidence
+#     says a trend means different things at different distances, so each horizon
+#     reads the signal the literature supports at that distance:
+#       1Y   MOMENTUM. Time-series momentum - a market's own trailing 12 months
+#            predicting its next 12 - is one of the best-documented effects in
+#            finance, and it fades within about a year (Moskowitz, Ooi and
+#            Pedersen, 2012). Score 3 + z on the trailing four quarters.
+#       3Y   REVERSAL. The same study finds the effect partly reverses in years
+#       5Y   two to five, and long-horizon losers outrun winners over the next
+#            three to five years (De Bondt and Thaler, 1985). Score 3 - 0.5 z on
+#            the trailing 3- and 5-year annualised returns: half the momentum
+#            weight, because reversal is the weaker and less consistent effect.
+#       10Y  NEUTRAL, and that is the evidence, not a default: over ten years a
+#            trend carries no signal this model can defend.
+#     The blend uses the same HZ_W weights as the regional rankings, so the three
+#     trend horizons get half the vote between them and the neutral anchor half.
 #
 #     HOW MUCH IT IS WORTH. TREND_TILT_PER_PT is an ASSUMPTION, recorded as one.
-#     The highest blend the scheme can produce is 4.0 (all three short horizons
+#     The highest blend the scheme can produce is 4.0 (all three trend horizons
 #     at the 5.0 bound, the anchor at 3.0). That is taken as worth about +3pp of
-#     return over the year momentum lasts - 0.30pp a year across a ten-year
-#     mandate - so 0.30 per point. Under half the regional coefficient on
-#     purpose: it is a one-year effect being priced into a ten-year forecast.
+#     return across the ten-year mandate - 0.30pp a year - so 0.30 per point.
+#     Under half the regional coefficient on purpose: momentum lasts a year and
+#     reversal is uncertain, priced here into a ten-year forecast.
 #     The "trend_off" what-if re-runs the optimiser without it, so its effect on
 #     the allocation is published rather than asserted.
 #
@@ -2143,7 +2166,10 @@ TREND_END = "2026-09-30"          # the last completed month-end before AS_OF
 TREND_TILT_PER_PT = 0.30
 TREND_ANCHOR = NEUTRAL_5          # the 10Y trend score: neutral, by the evidence above
 TREND_Q = ("2025Q4", "2026Q1", "2026Q2", "2026Q3")      # oldest first
-TREND_H = (("3M", 1, 0.25), ("6M", 2, 0.50), ("12M", 4, 1.00))   # label, quarters, years
+TREND_H = (("1Y", 4, 1.00),)     # momentum: label, quarters, years
+TREND_LONG = (("3Y", 3.0), ("5Y", 5.0))   # reversal: label, years (annualised inputs)
+TREND_REVERSAL = 0.5             # reversal's weight per unit of z, against momentum's 1.0
+TREND_LONG_END = "2026-09-30"    # the month-end the trailing 3- and 5-year returns run to
 TREND_INPUTS = {
     "ATRQIAP": {
         "market": "Nasdaq-100", "proxy": "Invesco QQQ, total return",
@@ -2157,6 +2183,11 @@ TREND_INPUTS = {
         "cross_check": {"2026Q2": 27.74, "2026Q3": 0.58},
         "source": "PortfoliosLab, QQQ monthly total returns; Nasdaq-100 factsheet "
                   "(30 Sep 2026) for the Q2 and Q3 cross-check",
+        # Annualised NAV total returns to 30 Sep 2026, the one source dated to the month-
+        # end; PortfoliosLab (26.61%, 14.54%) and FinanceCharts (26.35%, 15.87%), undated,
+        # sit 1.4-1.8pp lower on 3 years.
+        "trail_ann": {"3Y": 28.0, "5Y": 16.3},
+        "trail_source": "AAII ETF Evaluator, QQQ at NAV to 30 Sep 2026",
     },
     "ATRASEQ": {
         "market": "MSCI AC Asia ex Japan",
@@ -2173,6 +2204,12 @@ TREND_INPUTS = {
         "source": "Schroders quarterly markets reviews (Q4 2025 +4.3%, Q2 2026 +27.7%) "
                   "and monthly reviews (Aug 2026 +3.3%); Shikhara CIO's Desk (Q1 2026 "
                   "-1.13%, Jul 2026 -3.18%); MSCI index factsheet (Sep 2026 -0.25%)",
+        # The index ETF's (AAXJ) standardised returns to 30 Sep 2026; iShares' own table,
+        # dated 19 Oct, reads 24.8% and 8.65%. An ETF's return is net of its fee, so the
+        # index itself ran a little higher.
+        "trail_ann": {"3Y": 24.8, "5Y": 8.6},
+        "trail_source": "ETF Research Center, AAXJ standardised performance to 30 Sep 2026; "
+                        "iShares AAXJ performance table (19 Oct 2026)",
     },
     "ATRGTEC": {
         "market": "Global technology, S&P Global 1200 IT",
@@ -2187,6 +2224,14 @@ TREND_INPUTS = {
         "cross_check": {},
         "source": "PortfoliosLab, IXN monthly total returns (September 2026 from a "
                   "second performance tracker)",
+        # THE ONE TRAILING INPUT SOURCES DISAGREE ON. Schwab's page dated 30 Sep reads
+        # 37.6% and 22.0%, but its one-year 45.0% is 7.6pp above what the monthly series
+        # above compounds to (37.43%), so it is not on this channel's basis; it is run as
+        # the alternative (TREND_ALT). The figures used agree across three trackers.
+        "trail_ann": {"3Y": 31.4, "5Y": 18.8},
+        "trail_source": "Yahoo Finance trailing returns (3-year 31.38% to 6 Oct 2026, 5-year "
+                        "18.79% to 1 Sep); PortfoliosLab (31.25%, 18.78%) and MyPlanIQ (5-year "
+                        "18.85% to 24 Aug) agree",
     },
     # ---- added 2026-10-22 with the 22-fund universe ----
     "ATRGHCP": {
@@ -2204,6 +2249,10 @@ TREND_INPUTS = {
         "cross_check": {},
         "source": "PortfoliosLab, IXJ monthly total returns; BlackRock (Q4 2025) and iShares' "
                   "NAV returns to 30 Sep 2026 as cross-checks",
+        # A month earlier than the others: no source reached gives the 30 Sep figures.
+        "trail_ann": {"3Y": 8.6, "5Y": 4.8},
+        "trail_source": "AAII, IXJ annualised NAV returns to 31 Aug 2026; Yahoo Finance "
+                        "(8.58%, 4.80% to 21 Sep) agrees",
     },
     "M_GEO": {
         "market": "Global equity, MSCI ACWI",
@@ -2220,12 +2269,18 @@ TREND_INPUTS = {
         "cross_check": {},
         "source": "Aristotle Capital quarterly commentaries (Q4 2025 - Q2 2026, MSCI ACWI); "
                   "Maseco and Goldstone Q3 2026 market reviews",
+        # The index ETF (ACWI); the cached page does not show its as-of date, and Yahoo
+        # Finance and Dividend.com agree within 0.5pp.
+        "trail_ann": {"3Y": 21.75, "5Y": 11.62},
+        "trail_source": "iShares MSCI ACWI ETF performance table; Yahoo Finance and "
+                        "Dividend.com agree",
     },
 }
-# The one input sources disagree on materially: AAXJ, the ETF on the same Asia
-# index, published 25.73% for the quarter Schroders puts at 27.7%. The trend is
-# re-run on the lower figure and the allocation checked against it.
-TREND_ALT = {"ATRASEQ": {"2026Q2": 25.73}}
+# The inputs sources disagree on materially: AAXJ, the ETF on the same Asia index,
+# published 25.73% for the quarter Schroders puts at 27.7%; and Schwab's 30 Sep page has
+# Global Technology's 3- and 5-year returns at 37.6% and 22.0%. The trend is re-run on
+# both alternatives at once and the allocation checked against it.
+TREND_ALT = {"ATRASEQ": {"2026Q2": 25.73}, "ATRGTEC": {"3Y": 37.6, "5Y": 22.0}}
 
 def _compound(xs):
     p = 1.0
@@ -2243,8 +2298,13 @@ def trend_build(fid, override=None):
             q[k] = round(_compound(t["monthly"][k]), 2)
         else:
             q[k] = t["quarterly"][k]
+    trail = dict(t["trail_ann"])
     for k, v in (override or {}).items():
-        q[k] = v
+        if k in TREND_Q:
+            q[k] = v
+        else:
+            assert k in trail, k
+            trail[k] = v
     # REALISED, NOT IMPLIED (corrected 2026-10-10). A trailing return is a realised
     # outcome, so its z-score divides by realised volatility: the 10Y implied level
     # less the variance risk premium this model already publishes. Dividing by
@@ -2258,20 +2318,34 @@ def trend_build(fid, override=None):
         z[lbl] = round((math.log(1 + ret[lbl] / 100) - yrs * math.log(1 + mu / 100))
                        / (sigma / 100 * math.sqrt(yrs)), 2)
         score[lbl] = round(min(5.0, max(1.0, 3.0 + z[lbl])), 2)
+    # The 3- and 5-year returns are ANNUALISED, so h * ln(1 + mu) on the cumulative
+    # return becomes sqrt(h) * (ln(1 + R) - ln(1 + mu)) / sigma - the same z.
+    for lbl, yrs in TREND_LONG:
+        ret[lbl] = trail[lbl]
+        z[lbl] = round(math.sqrt(yrs) * (math.log(1 + ret[lbl] / 100) - math.log(1 + mu / 100))
+                       / (sigma / 100), 2)
+        score[lbl] = round(min(5.0, max(1.0, 3.0 - TREND_REVERSAL * z[lbl])), 2)
     score[HZ_LABEL] = TREND_ANCHOR
     blend = round(sum(score[h] * w for h, w in HZ_W.items()), 2)
     return {"market": t["market"], "proxy": t["proxy"], "source": t["source"],
             "mu": mu, "beta": t["beta"], "sigma": sigma,
             "quarters": q, "monthly": t.get("monthly", {}), "cross_check": t["cross_check"],
+            "trail_source": t["trail_source"],
             "ret": ret, "z": z, "score": score, "blend": blend,
             "tilt": rnd((blend - TREND_ANCHOR) * TREND_TILT_PER_PT)}
 
 TREND = {fid: trend_build(fid) for fid in TREND_INPUTS}
 TREND_ALT_BUILT = {fid: trend_build(fid, ov) for fid, ov in TREND_ALT.items()}
 
+# THE 1 / 3 / 5 / 10-YEAR SCORES (2026-10-26). The 1-year score is the year's path of
+# the views it replaces, weighted by the share of the year each covered - 3 months 1/4,
+# 6 months 1/4, 12 months 1/2 - and rounded to the 0.25 grid every score is kept on.
+# The 3- and 5-year scores are new research: where each region's cycle is expected to
+# stand two to five years out, between the 1-year view and the 10-year anchor, which is
+# unchanged. Each region's note closes with the reasoning for its path.
 REGIONS = {
     "US": {
-        "3M": 4.0, "6M": 4.75, "12M": 5.5, HZ_LABEL: 6.5,
+        "1Y": 5.0, "3Y": 6.0, "5Y": 6.25, HZ_LABEL: 6.5,
         "why": ("Held. The AI trade broke on 22 Oct: the S&P fell 1.21% to 7663.43, its "
                 "worst day since July, and the Nasdaq 2.60% to 26008.86 after Meta's spending "
                 "plans and Lam Research's guidance sent chip stocks down more than 6%; the "
@@ -2285,18 +2359,25 @@ REGIONS = {
                 "below its 10y and 5y averages. J.P. Morgan's "
                 f"{MACRO['ltcma_edition']} assumptions lift US large caps to "
                 f"{MACRO['ltcma_us_eq']}% from {MACRO['ltcma_us_eq_prev']}%; that is already "
-                "in every US fund's base return, so it does not move the anchor as well."),
+                "in every US fund's base return, so it does not move the anchor as well. "
+                "THE PATH: 1-year 5.0, the old 3-, 6- and 12-month views (4.0, 4.75, 5.5) "
+                "across the year; 3-year 6.0, as a December hike ends the cycle and the "
+                "energy-exporter edge holds; 5-year 6.25, near the 6.5 anchor once the AI "
+                "spending either pays or is digested."),
     },
     "EUROPE": {
-        "3M": 2.25, "6M": 3.0, "12M": 3.5, HZ_LABEL: 4.5,
-        "why": "Held, 3M at 2.25. Eurostat confirmed September inflation at 3.8% on 16 Oct, unchanged from the flash and up from 3.2%, with energy at 18.8% and core at 2.5% - the outcome that tests, at the 29 Oct meeting, the ECB's word that its cycle ended at 2.50% on 10 Sep. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. The policy/growth mismatch stands against IMF growth of 0.9%. Europe is the largest net energy importer here, facing Brent +" f"{MACRO['brent_yoy']:.1f}% y/y. 6M and longer held. The offset is real - at 15.4x forward it is the cheapest large market after Asia.",
+        "1Y": 3.0, "3Y": 3.75, "5Y": 4.25, HZ_LABEL: 4.5,
+        "why": "Held. Eurostat confirmed September inflation at 3.8% on 16 Oct, unchanged from the flash and up from 3.2%, with energy at 18.8% and core at 2.5% - the outcome that tests, at the 29 Oct meeting, the ECB's word that its cycle ended at 2.50% on 10 Sep. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. The policy/growth mismatch stands against IMF growth of 0.9%. Europe is the largest net energy importer here, facing Brent +" f"{MACRO['brent_yoy']:.1f}% y/y. The offset is real - at 15.4x forward it is the cheapest large market after Asia. "
+                 "THE PATH: 1-year 3.0, the old 3-, 6- and 12-month views (2.25, 3.0, 3.5) across the year; "
+                 "3-year 3.75, as the energy shock fades for the largest importer but the policy mismatch "
+                 "lingers; 5-year 4.25, toward the 4.5 anchor.",
     },
     "ASIA": {
         # TEN-YEAR ANCHOR 7.5 -> 7.0 (2026-10-21): half its case was the base return.
         # It cited J.P. Morgan's EM equity assumption, which IS the Asia fund's base,
         # so the same number was counted in the base and again in the tilt.
-        "3M": 4.0, "6M": 5.0, "12M": 6.5, HZ_LABEL: 7.0,
-        "why": ("Near horizons held; the ten-year anchor at 7.0 since 21 Oct. The selling "
+        "1Y": 5.5, "3Y": 6.75, "5Y": 7.0, HZ_LABEL: 7.0,
+        "why": ("Held; the ten-year anchor at 7.0 since 21 Oct. The selling "
                 f"returned on 22 Oct - the KOSPI fell {abs(MACRO['kospi_22oct_chg_pct'])}% as the Bank "
                 "of Korea paused at 3.00% and chipmakers sold, SK "
                 f"Hynix {abs(MACRO['skhynix_22oct_chg_pct'])}% and Samsung Electronics "
@@ -2317,11 +2398,15 @@ REGIONS = {
                 f"{MACRO['ltcma_edition']} edition cuts it to {MACRO['ltcma_em_eq']}% from "
                 f"{MACRO['ltcma_em_eq_prev']}%, below US large caps. What remains is "
                 "valuation: 10.5x forward before the fall against consensus EPS growth of "
-                "~52% and ~28% is a two-decade-wide discount."),
+                "~52% and ~28% is a two-decade-wide discount. THE PATH: 1-year 5.5, the "
+                "old 3-, 6- and 12-month views (4.0, 5.0, 6.5) across the year - the "
+                "October selling weighs on the first months; 3-year 6.75, as earnings "
+                "that grow into a discounted multiple start to re-rate it; 5-year at the "
+                "7.0 anchor."),
     },
     "PHILIPPINES": {
-        "3M": 5.0, "6M": 5.0, "12M": 5.5, HZ_LABEL: 5.5,
-        "why": ("Near horizons held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, "
+        "1Y": 5.25, "3Y": 5.5, "5Y": 5.5, HZ_LABEL: 5.5,
+        "why": ("Held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, "
                 "twice the 25bp that 20 of 22 analysts expected - its fourth straight hike "
                 "and the first half-point since February 2023. The peso kept falling: on 23 Oct "
                 f"it closed at a record {MACRO['usdphp']}, {MACRO['usdphp_chg_ctvo']} centavos "
@@ -2337,7 +2422,9 @@ REGIONS = {
                 "tenor's real yield is still below zero. The 12-month and ten-year horizons "
                 "stay neutral: a BSP that hikes restores the real carry. This sleeve's job - "
                 "zero duration risk and high nominal carry - is unimpaired. Its purchasing "
-                "power is not."),
+                "power is not. THE PATH: 1-year 5.25, the old 3-, 6- and 12-month views "
+                "(5.0, 5.0, 5.5) across the year; 3-year and 5-year at the 5.5 anchor, as "
+                "a BSP that hikes brings the real carry back above zero."),
     },
 }
 # to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
@@ -2352,7 +2439,7 @@ REGIONS = {
 # horizons - it is simply no longer to5() of itself.  (Audit 2026-09-20.)
 for r in REGIONS.values():
     r["blend_10"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
-    for h in ("3M", "6M", "12M", HZ_LABEL):
+    for h in HZ_KEYS:
         r[h + "_10"] = r[h]      # research basis, kept so the rescale stays auditable
         r[h] = to5(r[h])         # reported value, 1-5
     r["blend"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
@@ -2472,6 +2559,53 @@ DRIVERS = [
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
+# THE DRIVERS ACROSS THE FOUR HORIZONS (2026-10-26). Each score above is the 1-year
+# reading: the evidence in its note is about the year ahead. The 3- and 5-year readings
+# are where the driver is expected to stand in the years those views govern (HZ_W:
+# years 2-3 and 4-5). Every path closes on the 5.5 neutral at ten years: a cycle's
+# extremes do not last a decade, and the funds' base returns are long-run assumptions
+# that already carry the average cycle, so a 10-year reading away from neutral would
+# count it twice. The 1-year point is the score above, not a copy of it.
+DRIVER_NEUTRAL_10 = 5.5
+DRIVER_PATH = {
+    "Monetary policy & liquidity": {"3Y": 4.0, "5Y": 5.0,
+        "why": "A cycle priced to peak with a December Fed hike and BSP at 5.50% is past "
+               "its tightest by year two: 4.0 for years 2-3, as policy eases but real rates "
+               "stay positive, and 5.0 for years 4-5."},
+    "Inflation trajectory": {"3Y": 4.0, "5Y": 5.0,
+        "why": "An oil shock lifts the annual rate for about a year and then drops out of "
+               "it: 4.0 for years 2-3, while the second round in wages and services fades, "
+               "and 5.0 for years 4-5."},
+    "Growth momentum": {"3Y": 4.5, "5Y": 5.0,
+        "why": "A tightening cycle and an energy shock weigh on the next two years: 4.5 "
+               "for years 2-3 and 5.0 for years 4-5, as policy turns."},
+    "Corporate earnings": {"3Y": 6.0, "5Y": 5.5,
+        "why": "Asian EPS growth of ~52% and ~28% cannot compound for long: 6.0 for years "
+               "2-3, as the AI build-out still lifts profits but more slowly, and neutral "
+               "by years 4-5 as margins revert."},
+    "Valuation support": {"3Y": 7.5, "5Y": 6.5,
+        "why": "Cheap starting multiples feed returns for as long as they take to close "
+               "the gap: 7.5 for years 2-3 and 6.5 for years 4-5, then neutral, where the "
+               "base returns already price the starting multiple."},
+    "Volatility & risk appetite": {"3Y": 4.5, "5Y": 5.5,
+        "why": "The VIX curve itself reverts to its long run within about two years: 4.5 "
+               "for years 2-3, while the hiking cycle and the Gulf keep risk appetite "
+               "below neutral, and neutral from year four."},
+    "Geopolitics & energy": {"3Y": 3.0, "5Y": 4.5,
+        "why": "A war that has cut Hormuz flows to 82% of pre-war does not settle in a "
+               "year: 3.0 for years 2-3, as rerouting and restarted pipelines restore "
+               "supply, and 4.5 for years 4-5, with a risk premium still above pre-war."},
+}
+for _n, _, _s, _ in DRIVERS:
+    DRIVER_PATH[_n]["1Y"] = _s
+    DRIVER_PATH[_n][HZ_LABEL] = DRIVER_NEUTRAL_10
+# Each driver's path averaged over the ten years (the reading its tilts take), and the
+# gauge at each horizon - the headline GAUGE stays the 1-year reading.
+DRIVER_BLEND_10 = {n: round(sum(DRIVER_PATH[n][h] * w for h, w in HZ_W.items()), 2)
+                   for n, _, _, _ in DRIVERS}
+GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 2)
+                 for h in HZ_KEYS}
+
 # ONE-LINE SUMMARIES, shown by default; the full note sits one tap behind each.
 # A check requires every number in a summary to appear in its full note, so a
 # summary cannot drift from the reasoning it abbreviates.
@@ -2485,12 +2619,15 @@ SUMMARY = {
     "Geopolitics & energy": "Held: Houthi strikes killed four in Saudi Arabia on 22 Oct and Aramco evacuated Dhahran; Brent settled at $113.17, Hormuz flows near 14 mb/d.",
     "US": "Held: the S&P fell 1.21% to 7663.43 on 22 Oct, its worst day since July, as chip stocks sold; the 10-year closed at 4.96%.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
-    "ASIA": f"Near horizons held: the KOSPI fell {abs(MACRO['kospi_22oct_chg_pct'])}% on 22 Oct and closed {MACRO['kospi_latest_chg_pct']:.2f}% higher on the 23rd, {MACRO['kospi_off_2oct_pct']}% below 2 Oct.",
-    "PHILIPPINES": f"Near horizons held: BSP hiked 50bp to 5.50% on 22 Oct; by the 23rd the PSEi was at 5728.63 and the peso at a record {MACRO['usdphp']}.",
+    "ASIA": f"Held: the KOSPI fell {abs(MACRO['kospi_22oct_chg_pct'])}% on 22 Oct and closed {MACRO['kospi_latest_chg_pct']:.2f}% higher on the 23rd, {MACRO['kospi_off_2oct_pct']}% below 2 Oct.",
+    "PHILIPPINES": f"Held: BSP hiked 50bp to 5.50% on 22 Oct; by the 23rd the PSEi was at 5728.63 and the peso at a record {MACRO['usdphp']}.",
 }
 
 GAUGE = to5(GAUGE_10)          # headline, 1-5
 GAUGE_NEUTRAL = NEUTRAL_5
+# The gauge at each horizon on the reported scale, and blended on the reader's route.
+GAUGE_PATH = {h: to5(v) for h, v in GAUGE_PATH_10.items()}
+GAUGE_BLEND = round(sum(GAUGE_PATH[h] * w for h, w in HZ_W.items()), 2)
 
 # ----------------------------------------------------------------------------
 # 5. FUNDS - verified structure, fees, and the return build-up
@@ -2733,21 +2870,33 @@ NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts ar
 # The recommended allocation does not change - it was checked before this went
 # in - but every fund's forecast does, and every future driver move now reaches
 # the returns and the optimiser, which is what the page has always claimed.
-DRIVER_NEUTRAL_10 = 5.5
+#
+# READ ACROSS THE FOUR HORIZONS (2026-10-26). Until v67 the tilt took each driver's
+# 1-year reading as though it held for all ten years, while the regional and
+# volatility channels already averaged their horizons. A Monetary reading of 2.0 that
+# is expected back near neutral by year four does not drag a ten-year return as one
+# held for the decade would. The reading is now the driver's path averaged over the
+# ten years with the same HZ_W weights (DRIVER_BLEND_10); the 10-year view alone
+# (Portfolio A's column) reads the 10-year point, which is neutral, so it carries no
+# rates or energy tilt.
 TILT_CAL = {"monetary": 4.0, "geopolitics": 2.5,
             "date": "2026-09-02", "commit": "918c280"}
-_DRV_NOW = {n: s for n, _, s, _ in DRIVERS}
-MON_NOW = _DRV_NOW["Monetary policy & liquidity"]
-GEO_NOW = _DRV_NOW["Geopolitics & energy"]
+MON_BLEND = DRIVER_BLEND_10["Monetary policy & liquidity"]
+GEO_BLEND = DRIVER_BLEND_10["Geopolitics & energy"]
 assert TILT_CAL["monetary"] != DRIVER_NEUTRAL_10 and TILT_CAL["geopolitics"] != DRIVER_NEUTRAL_10, \
     "a calibration reading at neutral carries no information about sensitivity"
-RATES_SCALE = (MON_NOW - DRIVER_NEUTRAL_10) / (TILT_CAL["monetary"] - DRIVER_NEUTRAL_10)
-ENERGY_SCALE = (GEO_NOW - DRIVER_NEUTRAL_10) / (TILT_CAL["geopolitics"] - DRIVER_NEUTRAL_10)
+def _drv_scale(reading, cal):
+    return (reading - DRIVER_NEUTRAL_10) / (cal - DRIVER_NEUTRAL_10)
+RATES_SCALE = _drv_scale(MON_BLEND, TILT_CAL["monetary"])
+ENERGY_SCALE = _drv_scale(GEO_BLEND, TILT_CAL["geopolitics"])
+RATES_SCALE_10 = _drv_scale(DRIVER_PATH["Monetary policy & liquidity"][HZ_LABEL], TILT_CAL["monetary"]) + 0.0
+ENERGY_SCALE_10 = _drv_scale(DRIVER_PATH["Geopolitics & energy"][HZ_LABEL], TILT_CAL["geopolitics"]) + 0.0
 
-def regional_score(region_key):
+def regional_score(region_key, h="blend"):
+    """The fund's regional score: the horizon blend, or one horizon's score."""
     if region_key in REGION_MIX:
-        return sum(REGIONS[r]["blend"] * w for r, w in REGION_MIX[region_key].items())
-    return REGIONS[region_key]["blend"]
+        return sum(REGIONS[r][h] * w for r, w in REGION_MIX[region_key].items())
+    return REGIONS[region_key][h]
 
 # ---- Per-fund return, volatility and drawdown -------------------------------
 
@@ -2807,13 +2956,24 @@ def build_fund(f):
     vol_tilt = rnd(VOL_RAMP * VOL_SENS[f["id"]]) + 0.0   # derived, not hand-set; + 0.0 drops a -0.0
     rates_tilt = rnd(t["rates"] * RATES_SCALE)     # derived from the Monetary driver
     energy_tilt = rnd(t["energy"] * ENERGY_SCALE)  # derived from Geopolitics & energy
-    # The market whose 3/6/12M trend the fund carries: its own by default, or another
+    # The market whose 1/3/5-year trend the fund carries: its own by default, or another
     # fund's (a multi-asset fund's equity market); None where no series was sourced.
     mkt = f.get("trend_market", f["id"])
     trend_tilt = (rnd(TREND[mkt]["tilt"] * share) + 0.0 if mkt in TREND and share != 1.0
-                  else TREND[mkt]["tilt"] if mkt in TREND else 0.0)   # 3/6/12M market trend
+                  else TREND[mkt]["tilt"] if mkt in TREND else 0.0)   # 1/3/5-year market trend
     tilt_total = rnd(reg_tilt + vol_tilt + rates_tilt + energy_tilt + trend_tilt)
     macro_net = base_net + tilt_total
+    # THE 10-YEAR VIEW ALONE (2026-10-26), Portfolio A's column: the same channels read
+    # at the 10-year horizon only - the regional score's 10-year anchor, the volatility
+    # curve's years 6-10, the drivers' 10-year readings and the trend's neutral anchor.
+    rs10 = regional_score(f["region"], HZ_LABEL)
+    reg10 = rnd((rs10 - NEUTRAL) * REGIONAL_TILT_PER_PT * share if share != 1.0
+                else (rs10 - NEUTRAL) * REGIONAL_TILT_PER_PT) + 0.0
+    vol10 = rnd(VOL_RAMP_10 * VOL_SENS[f["id"]]) + 0.0
+    rates10 = rnd(t["rates"] * RATES_SCALE_10) + 0.0
+    energy10 = rnd(t["energy"] * ENERGY_SCALE_10) + 0.0
+    tilt10 = rnd(reg10 + vol10 + rates10 + energy10)
+    net10 = base_net + tilt10
 
     k = DD_K + f["dd_k_adj"]
     def dd(mu):
@@ -2852,10 +3012,14 @@ def build_fund(f):
         "tilt_rates_cal": t["rates"], "tilt_energy_cal": t["energy"],
         "tilt_total": round(tilt_total, 2),
         "net_macro": round(macro_net, 2),
+        "regional_score_10y": round(rs10, 2), "tilt_regional_10y": reg10,
+        "tilt_vol_10y": vol10, "tilt_rates_10y": rates10, "tilt_energy_10y": energy10,
+        "tilt_total_10y": round(tilt10, 2), "net_10y": round(net10, 2),
         "vol": round(sig, 2), "vol_beta": f["vol_beta"],
         "dd_k": round(k, 2), "dd_k_why": f["dd_k_why"],
         "dd_base": round(-dd(base_net), 1),
         "dd_macro": round(-dd(macro_net), 1),
+        "dd_10y": round(-dd(net10), 1),
         # THE TARGET FUND ITSELF (the ETF / SICAV each feeder buys): the same
         # exposure, in pesos, net of its OWN charge only - i.e. the sleeve's
         # return with the feeder's fee added back. Derived, not a separate
@@ -3405,11 +3569,13 @@ PIN_W = 0.50
 # confirmed (eleven since 2026-10-22; five from 21 Oct, when the peso bond funds left,
 # and six before), under the review's limits: at most 5 funds, 35% in any one, at
 # least 5% peso cash (C's pin is the one exemption). What differs is the COLUMN the rule reads:
-#   A  net_base   the long-run assumptions alone - no cycle view
-#   B  net_macro  plus the regional ranking and the market trend (each 3/6/12M against
-#                 the 10-year anchor), the volatility curve, and the drivers' rates
-#                 and energy tilts
+#   A  net_10y    the four analyses read at the 10-year horizon alone (2026-10-26; the
+#                 long-run assumptions with no view, net_base, until v67)
+#   B  net_macro  the four analyses across all four horizons - the regional ranking,
+#                 the market trend and the drivers' rates and energy tilts at 1, 3, 5
+#                 and 10 years, and the volatility curve over the same years
 #   C  net_macro  as B, with Nasdaq Equity Income held at 50%
+#   D  net_macro  as C, over Money Market, Nasdaq Equity Income, Asia and Tech only
 # Until v56 A and B were FIXED weights from the review; the engine now chooses all
 # three itself, on every roll. Whether A matches the review's own long-run pick is
 # published (portfolio_a.is_review_pick), never assumed: the review's pick (25% Global
@@ -3576,7 +3742,7 @@ _WI_KEYS = list(_WI_COL)
 # "live" is the macro column again, sent down the what-if path: a check requires it to
 # return the published B and C, so the what-ifs are proved to answer the same question.
 _WI_COL["live"] = "net_macro"; _WI_KEYS.append("live")
-_COLS_U = ["net_base", "net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
+_COLS_U = ["net_10y", "net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
 _COLS_P = ["net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
 # PORTFOLIO D (owner, 2026-10-23): "a portfolio D compose 50% atram nasdaq equity income
 # with atram global tech, atram asia equity and atram peso money market", on the same
@@ -3623,6 +3789,8 @@ PA_BAND_N, PB_BAND_N, PC_BAND_N, PD_BAND_N = len(PA_BAND), len(PB_BAND), len(PC_
 UNIV_N_FEAS = {x: _PK[x].n for x in "abcd"}
 UNIV_BEST = {x: _PK[x].best for x in "abcd"}
 PA, PA_BASE = summarise(PA_W, "net_macro", UNIV), summarise(PA_W, "net_base", UNIV)
+# Each on the 10-year view alone too: A's own column, and the second lens for B, C and D.
+PA_10, PB_10, PC_10, PD_10 = (summarise(w, "net_10y", UNIV) for w in (PA_W, PB_W, PC_W, PD_W))
 PB, PB_BASE = summarise(PB_W, "net_macro", UNIV), summarise(PB_W, "net_base", UNIV)
 PC, PC_BASE = summarise(PC_W, "net_macro", UNIV), summarise(PC_W, "net_base", UNIV)
 PD, PD_BASE = summarise(PD_W, "net_macro", UNIV), summarise(PD_W, "net_base", UNIV)
@@ -3653,8 +3821,8 @@ _brw = [x / 20 for x in _full_units(_BEST_RATIO_M[1][4], _BEST_RATIO_M[1][5])]
 UNIV_BEST_RATIO = (_brw, summarise(_brw, "net_macro", UNIV))
 
 # THE UNIVERSE WHAT-IFS (2026-10-21): B and C RE-CHOSEN by the rule on each alternative
-# column, A re-measured on it (A is chosen on the long-run column, which none of these
-# touches). All six come out of the one search above.
+# column, A re-measured on it (A is chosen on the 10-year column, which reads none of the
+# near-horizon inputs these change). All six come out of the one search above.
 def _wi_entry(k):
     b = _PK[("b", k)].result(); c = _PK[("c", k)].result(); d = _PK[("d", k)].result()
     a = summarise(PA_W, _WI_COL[k], UNIV)
@@ -4498,6 +4666,7 @@ def payload():
                         "latest_date": MACRO["vix_latest_date"],
                         "latest_gap": round(MACRO["vix_latest"] - MACRO["vix_spot"], 2),
                         "ramp": round(VOL_RAMP, 2), "sens": VOL_SENS,
+                        "ramp_10y": VOL_RAMP_10, "basis": "forward",
                         "kappa": KAPPA, "vrp": MACRO["variance_risk_premium"],
                         # How far the latest close has moved from the curve's own
                         # spot. Past 20% the strip is flagged on the page as
@@ -4525,11 +4694,18 @@ def payload():
         # composite of the REPORTED scores is exactly the headline gauge; the check block
         # asserts that rather than assuming it.
         "drivers": [{"name": n, "weight": w,
-                     "score": to5(s), "score_10": s, "note": t, "summary": SUMMARY[n]}
+                     "score": to5(s), "score_10": s, "note": t, "summary": SUMMARY[n],
+                     # the 1/3/5/10-year path on the research scale, its reasoning, and
+                     # its ten-year average - the reading the rates and energy tilts take
+                     "path": {h: DRIVER_PATH[n][h] for h in HZ_KEYS},
+                     "path_5": {h: to5(DRIVER_PATH[n][h]) for h in HZ_KEYS},
+                     "blend_5": round(sum(to5(DRIVER_PATH[n][h]) * w for h, w in HZ_W.items()), 2),
+                     "path_why": DRIVER_PATH[n]["why"], "blend_10": DRIVER_BLEND_10[n]}
                     for n, w, s, t in DRIVERS],
         "driver_scale": {"research_max": 10, "reported_max": 5,
                          "neutral": NEUTRAL_5, "neutral_10": 5.5},
         "gauge": GAUGE, "gauge_10": GAUGE_10, "gauge_neutral": GAUGE_NEUTRAL,
+        "gauge_path": GAUGE_PATH, "gauge_path_10": GAUGE_PATH_10, "gauge_blend": GAUGE_BLEND,
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
         "lookthrough": LOOKTHROUGH,
         "acwi_it_mix": ACWI_IT_MIX, "gdiv_mix": GDIV_MIX,
@@ -4553,13 +4729,19 @@ def payload():
                   "vrp": MACRO["variance_risk_premium"],
                   "anchor": TREND_ANCHOR, "quarters": list(TREND_Q),
                   "horizons": [{"label": l, "quarters": n, "years": y} for l, n, y in TREND_H],
+                  "long": [{"label": l, "years": y} for l, y in TREND_LONG],
+                  "reversal": TREND_REVERSAL, "long_end": TREND_LONG_END,
                   "sleeves": TREND, "alt": TREND_ALT, "alt_built": TREND_ALT_BUILT},
         # The calibration record for the driver transmission, published so the
         # page-level and independent harnesses can re-derive every rates and energy
         # tilt from the driver scores without importing this file.
         "driver_tilt_cal": {**TILT_CAL, "neutral_10": DRIVER_NEUTRAL_10,
+                            "reading": "blend_10",
+                            "monetary_blend": MON_BLEND, "geopolitics_blend": GEO_BLEND,
                             "rates_scale": round(RATES_SCALE, 6),
-                            "energy_scale": round(ENERGY_SCALE, 6)},
+                            "energy_scale": round(ENERGY_SCALE, 6),
+                            "rates_scale_10y": round(RATES_SCALE_10, 6),
+                            "energy_scale_10y": round(ENERGY_SCALE_10, 6)},
         # On the LATEST print. It read August's 6.1% for two days after September's
         # 7.2% was out, and the page typed the month - "against August inflation".
         # (The PPP differential above stays on August: it needs the US figure for
@@ -4601,7 +4783,7 @@ def payload():
                      "base": BASE, "under_macro": BASE_UNDER_MACRO,
                      "scenarios": run_scenarios(BASELINE_W, "net_macro")},
         "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": UNIV_IDS,
-                        "macro": PA, "base": PA_BASE, "column": "net_base",
+                        "macro": PA, "base": PA_BASE, "ten": PA_10, "column": "net_10y",
                         "band_n": PA_BAND_N, "n_feasible": UNIV_N_FEAS["a"],
                         "is_review_pick": PA_IS_REVIEW, "review_outside": PA_REVIEW_OUTSIDE,
                         "scenarios": run_scenarios(PA_W, "net_macro", UNIV),
@@ -4609,7 +4791,7 @@ def payload():
                         "in_budget": abs(PA["maxdd"]) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pa_review_")}},
         "portfolio_c": {"weights": [round(x * 100) for x in PC_W], "ids": UNIV_IDS,
-                        "macro": PC, "base": PC_BASE, "column": "net_macro",
+                        "macro": PC, "base": PC_BASE, "ten": PC_10, "column": "net_macro",
                         "fund": "ATRQIAP", "pin_pct": round(PIN_W * 100),
                         "band_n": PC_BAND_N, "n_feasible": UNIV_N_FEAS["c"],
                         "scenarios": run_scenarios(PC_W, "net_macro", UNIV),
@@ -4618,7 +4800,7 @@ def payload():
                         "cagr_no_rerating": summarise(PC_W, "net_asia_norerate", UNIV)["cagr"]},
         "portfolio_d": {"weights": [round(x * 100) for x in PD_W], "ids": UNIV_IDS,
                         "funds_allowed": list(PD_FUNDS),
-                        "macro": PD, "base": PD_BASE, "column": "net_macro",
+                        "macro": PD, "base": PD_BASE, "ten": PD_10, "column": "net_macro",
                         "fund": "ATRQIAP", "pin_pct": round(PIN_W * 100),
                         "band_n": PD_BAND_N, "n_feasible": UNIV_N_FEAS["d"],
                         "band": [{"weights": [x * 5 for x in _full_units(m[4], m[5])], "cagr": m[0],
@@ -4639,7 +4821,7 @@ def payload():
                         "column": "net_macro", "band_n": PB_BAND_N,
                         "n_feasible": UNIV_N_FEAS["b"],
                         "shorts": [f["short"] for f in UNIV[1]],
-                        "funds": F_ADD, "macro": PB, "base": PB_BASE,
+                        "funds": F_ADD, "macro": PB, "base": PB_BASE, "ten": PB_10,
                         "scenarios": run_scenarios(PB_W, "net_macro", UNIV),
                         "corr": CORR_U, "corr_note": CORR_U_NOTE,
                         # the factor model behind every pair outside the typed block, so the
@@ -4661,20 +4843,25 @@ def report():
     A("\n[1] VOLATILITY TERM STRUCTURE (forward-variance integration of the VIX complex)")
     A(f"    spot VIX {MACRO['vix_spot']}  |  front fut ({MACRO['vix_futs'][0][0]}) {MACRO['vix_fut_sep']}  |  "
       f"Dec fut {MACRO['vix_fut_dec']}  |  long-run anchor {MACRO['vix_longrun']}")
-    A(f"    {'H':<5}{'implied':>10}{'realised':>10}{'1sd move':>11}{'2sd move':>11}")
+    A(f"    {'H':<5}{'implied':>10}{'forward':>10}{'realised':>10}{'1sd move':>11}{'2sd move':>11}")
     for v in p["vol_ts"]:
-        A(f"    {v['label']:<5}{v['implied']:>9.2f}%{v['realised']:>9.2f}%"
+        A(f"    {v['label']:<5}{v['implied']:>9.2f}%{v['forward']:>9.2f}%{v['realised']:>9.2f}%"
           f"{v['move_1sd']:>10.2f}%{v['move_2sd']:>10.2f}%")
+    A(f"    forward-vol blend {p['vol_channel']['blend']}  ramp {p['vol_channel']['ramp']:+.2f}"
+      f"  (10-year view: years 6-10 ramp {p['vol_channel']['ramp_10y']:+.2f})")
     A("\n[2] REGIONAL MACRO-DRIVER RANKING (1-5, neutral 3.0)")
-    A(f"    {'region':<14}{'3M':>6}{'6M':>6}{'12M':>6}{HZ_LABEL:>6}{'blend':>8}")
+    A(f"    {'region':<14}" + "".join(f"{h:>6}" for h in HZ_KEYS) + f"{'blend':>8}")
     for k, v in sorted(p["regions"].items(), key=lambda t: -t[1]["blend"]):
-        A(f"    {k:<14}{v['3M']:>6}{v['6M']:>6}{v['12M']:>6}{v[HZ_LABEL]:>6}{v['blend']:>8}")
+        A(f"    {k:<14}" + "".join(f"{v[h]:>6}" for h in HZ_KEYS) + f"{v['blend']:>8}")
     tr = p["trend"]
-    A(f"\n[2b] MARKET TREND (window to {tr['end']}; z vs long-run drift and vol, score 3+z on 1-5, {HZ_LABEL} neutral)")
-    A(f"    {'sleeve':<10}{'3M':>8}{'6M':>8}{'12M':>8}   {'z 3M/6M/12M':<18}{'blend':>7}{'tilt':>7}")
+    A(f"\n[2b] MARKET TREND (to {tr['end']}; z vs long-run drift and vol; 1Y momentum 3+z, "
+      f"3Y/5Y reversal 3-{TREND_REVERSAL}z, {HZ_LABEL} neutral)")
+    A(f"    {'sleeve':<10}{'1Y':>8}{'3Y pa':>8}{'5Y pa':>8}   {'z 1Y/3Y/5Y':<18}{'scores':<18}{'blend':>7}{'tilt':>7}")
     for k, v in tr["sleeves"].items():
-        A(f"    {k:<10}{v['ret']['3M']:>7.2f}%{v['ret']['6M']:>7.2f}%{v['ret']['12M']:>7.2f}%   "
-          f"{'/'.join(f'{v[chr(122)][h]:+.2f}' for h in ('3M', '6M', '12M')):<18}{v['blend']:>7.2f}{v['tilt']:>+7.2f}")
+        A(f"    {k:<10}{v['ret']['1Y']:>7.2f}%{v['ret']['3Y']:>7.2f}%{v['ret']['5Y']:>7.2f}%   "
+          f"{'/'.join(f'{v[chr(122)][h]:+.2f}' for h in ('1Y', '3Y', '5Y')):<18}"
+          f"{'/'.join(f'{v[chr(115)+chr(99)+chr(111)+chr(114)+chr(101)][h]:.2f}' for h in ('1Y', '3Y', '5Y')):<18}"
+          f"{v['blend']:>7.2f}{v['tilt']:>+7.2f}")
     A("\n[3] BROAD MACRO GAUGE (drivers reported 1-5, researched 1-10)")
     for d in p["drivers"]:
         A(f"    {d['name']:<30} w={d['weight']:.2f}  "
@@ -4682,6 +4869,13 @@ def report():
     A(f"    {'COMPOSITE (research scale)':<30}            {p['gauge_10']} / 10")
     A(f"    {'HEADLINE GAUGE':<30}            {p['gauge']} / 5"
       f"   (neutral {p['gauge_neutral']})")
+    A(f"    {'driver path (1-10)':<30}" + "".join(f"{h:>6}" for h in HZ_KEYS) + f"{'blend':>8}")
+    for d in p["drivers"]:
+        A(f"    {d['name']:<30}" + "".join(f"{d['path'][h]:>6g}" for h in HZ_KEYS) + f"{d['blend_10']:>8}")
+    A(f"    {'GAUGE (1-5)':<30}" + "".join(f"{p['gauge_path'][h]:>6}" for h in HZ_KEYS)
+      + f"{p['gauge_blend']:>8}")
+    A(f"    rates scale {p['driver_tilt_cal']['rates_scale']:.4f} (Monetary {MON_BLEND} blended), "
+      f"energy scale {p['driver_tilt_cal']['energy_scale']:.4f} (Geopolitics {GEO_BLEND} blended)")
     A(f"\n[4] FUNDS - net {HZ_LABEL} CAGR after ALL fees, and expected max drawdown")
     A(f"    {'fund':<22}{'fee':>7}{'gross':>8}{'base':>8}{'tilt':>7}{'macro':>8}"
       f"{'vol':>8}{'DD base':>9}{'DD macro':>10}")
@@ -4699,9 +4893,12 @@ def report():
     A(f"    DD budget {o['dd_cap']}% = |{b['under_macro']['maxdd']}| - {DD_BUDGET_IMPROVEMENT}; "
       f"rule: best CAGR in budget, then lowest DD within {p['universe']['tie_pp']:.2f}pp; "
       f"{p['universe']['n_total']} mixes under the limits")
-    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the long-run column"), ("PORTFOLIO B", "portfolio_b", "the macro view")):
+    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the 10-year view"), ("PORTFOLIO B", "portfolio_b", "the 1/3/5/10-year view")):
         pq = p[key]
         A(f"    {lab} weights {pq['weights']}   (the rule on {rule}; {pq['n_feasible']} feasible, {pq['band_n']} in band)")
+        if "ten" in pq:
+            A(f"      10-year view   : CAGR {pq['ten']['cagr']}%  vol {pq['ten']['vol']}%  "
+              f"maxDD {pq['ten']['maxdd']}%  ret/DD {pq['ten']['ret_per_dd']}")
         A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
           f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
         A(f"      strategic view : CAGR {pq['base']['cagr']}%  vol {pq['base']['vol']}%  "
@@ -4732,7 +4929,7 @@ def report():
                    and all(x > 0 and x % 5 == 0 for x in b["weights"])))
     # NOTE: horizon vol is NOT necessarily monotone in T. It converges toward the
     # long-run anchor, and when the last liquid future sits ABOVE that anchor the
-    # 12M window can average above the 5Y window. The correct invariant is
+    # 1Y window can average above the 5Y window. The correct invariant is
     # convergence, not monotonicity. (Bug found 2026-09-02: the old monotone
     # assertion failed the moment spot VIX rose to 16.44, on data that was right.)
     anchor = MACRO["vix_longrun"]
@@ -5615,7 +5812,7 @@ def report():
                    abs(sum(d["weight"] for d in p["drivers"]) - 1.0) < 1e-9))
     checks.append(("every regional score is reported in 1-5",
                    all(1 <= v[h] <= 5 for v in p["regions"].values()
-                       for h in ("3M", "6M", "12M", HZ_LABEL, "blend"))))
+                       for h in HZ_KEYS + ("blend",))))
     # The four HORIZON scores are to5() of their research values. The BLEND is not,
     # and deliberately so since 2026-09-20: it is the horizon-weighted average of
     # the printed scores, because that is the arithmetic a reader does. Asserting
@@ -5624,7 +5821,7 @@ def report():
     checks.append(("every regional rescale 1-10 -> 1-5 is exact",
                    all(abs(v[h] - to5(v[h + "_10"])) < 1e-9
                        for v in p["regions"].values()
-                       for h in ("3M", "6M", "12M", HZ_LABEL))))
+                       for h in HZ_KEYS)))
     checks.append(("every regional blend reproduces from the scores printed beside it",
                    all(v["blend"] == round(sum(v[h] * w for h, w in HZ_W.items()), 2)
                        for v in p["regions"].values())))
@@ -5806,13 +6003,73 @@ def report():
     # calibration anchor and the driver score as PUBLISHED in the drivers list, so
     # editing a driver without the tilts following, or reverting a tilt to a typed
     # constant, both fail here.
-    _dp = {d["name"]: d["score_10"] for d in p["drivers"]}
+    # Since 2026-10-26 the reading is each driver's 1/3/5/10-year path averaged with the
+    # published horizon weights, re-derived here from the published path.
+    _dp = {d["name"]: round(sum(d["path"][h] * w for h, w in p["hz_weights"].items()), 2)
+           for d in p["drivers"]}
+    checks.append(("every driver's path starts at its 1-year score, ends at neutral, and averages to its published reading",
+                   all(d["path"]["1Y"] == d["score_10"] and d["path"][HZ_LABEL] == DRIVER_NEUTRAL_10
+                       and list(d["path"]) == list(HZ_KEYS) and _dp[d["name"]] == d["blend_10"]
+                       and all(1 <= v <= 10 for v in d["path"].values()) and d["path_why"]
+                       for d in p["drivers"])))
+    checks.append(("the gauge at each horizon is the weighted composite of the driver path, and the headline is the 1-year",
+                   all(abs(p["gauge_path_10"][h] - sum(d["weight"] * d["path"][h] for d in p["drivers"])) < 0.006
+                       and p["gauge_path"][h] == to5(p["gauge_path_10"][h]) for h in HZ_KEYS)
+                   and p["gauge_path"]["1Y"] == p["gauge"]
+                   and p["gauge_blend"] == round(sum(p["gauge_path"][h] * w for h, w in p["hz_weights"].items()), 2)))
     _rs = (_dp["Monetary policy & liquidity"] - DRIVER_NEUTRAL_10) / (TILT_CAL["monetary"] - DRIVER_NEUTRAL_10)
     _es = (_dp["Geopolitics & energy"] - DRIVER_NEUTRAL_10) / (TILT_CAL["geopolitics"] - DRIVER_NEUTRAL_10)
     checks.append(("every rates tilt is transmitted from the Monetary driver",
                    all(f2["tilt_rates"] == rnd(f2["tilt_rates_cal"] * _rs) for f2 in p["funds"])))
     checks.append(("every energy tilt is transmitted from the Geopolitics driver",
                    all(f2["tilt_energy"] == rnd(f2["tilt_energy_cal"] * _es) for f2 in p["funds"])))
+    # THE 10-YEAR VIEW (2026-10-26), Portfolio A's column, re-derived from the published
+    # 10-year scores: each region's anchor, the curve's years 6-10, the drivers' 10-year
+    # readings (neutral, so no rates or energy tilt) and no trend.
+    _all_f = p["funds"] + p["portfolio_b"]["funds"]
+    def _rs10(f2):
+        mix = f2["region_mix"] or {f2["region"]: 1.0}
+        return sum(p["regions"][r][HZ_LABEL] * w for r, w in mix.items())
+    checks.append(("every fund's 10-year column re-derives from the 10-year scores",
+                   all(abs(f2["regional_score_10y"] - round(_rs10(f2), 2)) < 1e-9
+                       and f2["tilt_regional_10y"] == rnd((_rs10(f2) - NEUTRAL) * REGIONAL_TILT_PER_PT
+                                                          * (f2["equity_share"] if f2["equity_share"] != 1.0 else 1.0)) + 0.0
+                       and f2["tilt_vol_10y"] == rnd(vc["ramp_10y"] * vc["sens"][f2["id"]]) + 0.0
+                       and f2["tilt_rates_10y"] == 0.0 and f2["tilt_energy_10y"] == 0.0
+                       and f2["tilt_total_10y"] == rnd(f2["tilt_regional_10y"] + f2["tilt_vol_10y"])
+                       and abs(f2["net_10y"] - round(f2["net_base"] + f2["tilt_total_10y"], 2)) < 0.006
+                       for f2 in _all_f)))
+    checks.append(("the 10-year view's vol ramp is the curve's years 6-10 against the long run",
+                   vc["ramp_10y"] == round(p["vol_ts"][-1]["forward"] - vc["longrun"], 2)))
+    # THE FORWARD VOLS reproduce from the printed implied column, segment by segment,
+    # and the blend the vol channel reads is their horizon-weighted average.
+    _fw_ok, _pv = True, (0.0, 0.0)
+    for v in p["vol_ts"]:
+        _fw = math.sqrt((v["years"] * v["implied"] ** 2 - _pv[0] * _pv[1] ** 2) / (v["years"] - _pv[0]))
+        _fw_ok = _fw_ok and abs(v["forward"] - _fw) < 0.006 and v["from_years"] == _pv[0]
+        _pv = (v["years"], v["implied"])
+    checks.append(("every forward vol reproduces from the printed implied curve, and the blend is their weighted average",
+                   _fw_ok and abs(vc["blend"] - sum(v["forward"] * p["hz_weights"][v["label"]]
+                                                    for v in p["vol_ts"])) < 0.006))
+    # THE TREND'S FOUR HORIZONS: 1-year momentum on the quarters, 3- and 5-year reversal
+    # on the annualised trailing returns, the anchor at neutral - all from printed figures.
+    _tr = p["trend"]
+    def _trend_ok(v):
+        ok = True
+        for h in _tr["long"]:
+            l, y = h["label"], h["years"]
+            zz = round(math.sqrt(y) * (math.log(1 + v["ret"][l] / 100) - math.log(1 + v["mu"] / 100))
+                       / (v["sigma"] / 100), 2)
+            ok = ok and v["z"][l] == zz and v["score"][l] == round(min(5.0, max(1.0, 3.0 - _tr["reversal"] * zz)), 2)
+        ok = ok and v["score"]["1Y"] == round(min(5.0, max(1.0, 3.0 + v["z"]["1Y"])), 2)
+        ok = ok and v["score"][HZ_LABEL] == _tr["anchor"] and list(v["score"]) == list(HZ_KEYS)
+        return ok and v["blend"] == round(sum(v["score"][h] * w for h, w in p["hz_weights"].items()), 2)
+    checks.append(("every trend sleeve scores momentum at 1 year, reversal at 3 and 5, neutral at 10, from its printed returns",
+                   all(_trend_ok(v) for v in list(_tr["sleeves"].values()) + list(_tr["alt_built"].values()))
+                   and all(set(v["ret"]) == {"1Y", "3Y", "5Y"} for v in _tr["sleeves"].values())))
+    checks.append(("the horizon weights are each view's share of the ten years and sum to 1",
+                   p["hz_weights"] == {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, HZ_LABEL: 0.5}
+                   and abs(sum(p["hz_weights"].values()) - 1) < 1e-9))
     checks.append(("every fund's tilt column adds up to its published total",
                    all(rnd(f2["tilt_regional"] + f2["tilt_vol"] + f2["tilt_rates"]
                              + f2["tilt_energy"] + f2["tilt_trend"]) == f2["tilt_total"]
@@ -6000,14 +6257,14 @@ def report():
     # The pick re-measured by summarise() must land on the figures the search saw.
     def _rule_ok(x, w):
         best = _PK[x].best; mine = summarise([v / 100 for v in w],
-            "net_base" if x == "a" else "net_macro", UNIV)
+            "net_10y" if x == "a" else "net_macro", UNIV)
         band = [m for m in _PK[x].band if m[0] >= best - PIN_TIE_PP - 1e-9]
         return (mine["cagr"] >= best - PIN_TIE_PP - 1e-9 and abs(mine["maxdd"]) <= DD_CAP + 1e-9
                 and not any(abs(m[1]) < abs(mine["maxdd"]) - 1e-9 for m in band)
                 and any(_full_units(m[4], m[5]) == [v // 5 for v in w] and m[0] == mine["cagr"]
                         and m[1] == mine["maxdd"] for m in band))
     _pd = p["portfolio_d"]; _dw = _pd["weights"]
-    checks.append(("A, B, C and D are each the rule's pick on their own column: A long-run, B, C and D the macro view",
+    checks.append(("A, B, C and D are each the rule's pick on their own column: A the 10-year view, B, C and D the 1/3/5/10-year blend",
                    _rule_ok("a", _aw) and _rule_ok("b", _bw) and _rule_ok("c", _cw) and _rule_ok("d", _dw)))
     # PORTFOLIO D (2026-10-23): the owner's four funds and no others, the pin at 50%,
     # the review's limits, and C's own set restricted to those four - so D can never

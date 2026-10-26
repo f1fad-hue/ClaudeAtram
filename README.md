@@ -49,41 +49,41 @@ Asia Equity / Global Technology / Global Dividend / Global Health Care / Global 
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · Long-run view | B · Macro view | C · Nasdaq Income at 50% | D · Four funds, Nasdaq Income at 50% |
+| | A · 10-year view | B · 1/3/5/10-year view | C · Nasdaq Income at 50% | D · Four funds, Nasdaq Income at 50% |
 |---|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 5 / 0 / 20 / 35 / 0 / 0 / 0 / 0 | **5 / 35 / 15 / 0 / 0 / 35 / 10 / 0 / 0 / 0 / 0** | 5 / 50 / 10 / 0 / 0 / 35 / 0 / 0 / 0 / 0 / 0 | 20 / 50 / 20 / 10 / 0 / 0 / 0 / 0 / 0 / 0 / 0 |
-| 10y net CAGR after all fees | 6.91% | 6.88% | **6.95%** | 6.80% |
-| Expected max drawdown (10y) | −26.6% | **−26.0%** | −26.8% | −26.4% |
-| Return per unit of drawdown | 0.260 | **0.265** | 0.259 | 0.258 |
+| Allocation (eleven funds, in the order above) | 5 / 30 / 0 / 20 / 0 / 0 / 20 / 0 / 0 / 25 / 0 | **10 / 35 / 0 / 10 / 0 / 15 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 5 / 0 / 0 / 35 / 0 / 0 / 5 / 0 | 25 / 50 / 5 / 20 / 0 / 0 / 0 / 0 / 0 / 0 / 0 |
+| 10y net CAGR after all fees | 7.22% | 7.20% | **7.26%** | 7.07% |
+| Expected max drawdown (10y) | −26.6% | **−26.1%** | −26.7% | −26.8% |
+| Return per unit of drawdown | 0.271 | **0.276** | 0.272 | 0.264 |
 
-All four rows are on the macro view. **One rule chooses all four**, over the eleven
-funds within the review's limits (at most 5 funds, 35% in any one, at least 5% peso
-cash; 322,725 mixes): the best 10-year net CAGR after fees inside the drawdown budget,
-then the lowest drawdown within 0.05pp of it. The engine re-chooses each at every
-update:
-- **A, the long-run view**: the rule on the 10-year long-run return assumptions alone
-  (7.21% / −26.4% there), with no cycle view: 5% money market, 35% Nasdaq Equity
-  Income, 5% Global Technology, 20% Global Health Care, 35% Global Infra Equity.
-- **B, the macro view**: the rule on the macro-adjusted returns - the regional
-  ranking and the market trend, each at 3, 6 and 12 months against the 10-year
-  anchor, the volatility curve, and the drivers' rates and energy tilts. On them B is
-  level with A at the model's precision (0.03pp a year less) for 0.6pp less drawdown
-  (71 mixes inside the tie).
-- **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35%
-  cap): 0.07pp a year above B for 0.8pp more drawdown.
-- **D** is C on four funds only - Nasdaq Equity Income at 50% with the Peso Money
-  Market, Asia Equity and Global Technology (owner, 2026-10-23): 20 / 50 / 20 / 10,
-  0.15pp a year below C for 0.4pp less drawdown, the price of leaving out Global
-  Health Care. Its tie also holds 25 / 50 / 5 / 20 at 6.85% / −27.0%.
+All four rows are on the 1/3/5/10-year view. Every portfolio is built from four analyses -
+the macro drivers, the market trend, the regional ranking and the volatility curve - each
+read at **1, 3, 5 and 10 years** and weighted by the share of the ten-year holding it governs
+(10 / 20 / 20 / 50%). **One rule chooses all four**, over the eleven funds within the
+review's limits (at most 5 funds, 35% in any one, at least 5% peso cash; 322,725 mixes):
+the best 10-year net CAGR after fees inside the drawdown budget, then the lowest drawdown
+within 0.05pp of it. The engine re-chooses each at every update:
+- **A, the 10-year view**: the rule on the four analyses read at 10 years alone (7.43% /
+  −26.4% there): 5% money market, 30% Nasdaq Equity Income, 20% Global Technology, 20%
+  Global Infra Equity, 25% Asian Multi-Asset Income.
+- **B, the 1/3/5/10-year view**: the rule on all four horizons. Level with A at the model's
+  precision (0.02pp a year less) for 0.5pp less drawdown (31 mixes inside the tie).
+- **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35% cap):
+  0.06pp a year above B for 0.6pp more drawdown.
+- **D** is C on four funds only - Nasdaq Equity Income at 50% with the Peso Money Market,
+  Asia Equity and Global Technology (owner, 2026-10-23): 25 / 50 / 5 / 20, 0.19pp a year
+  below C for 0.1pp more drawdown.
 
-Global Health Care and Global Infra Equity, both new to the search, do the diversifying
-work: their correlations with the two US-tech sleeves run 0.56-0.64. The budget, −27.17%,
-is the original 20 / 30 / 25 / 25 baseline's drawdown less 2.83pp; that baseline is kept
-only as the budget's reference. US Equity Opportunity is held out until its trust fee is
-confirmed (at the listed 1.20% it would take 10% of A, 25% of B and 10% of C); Global
-Bond Income would move the picks most (at its listed fee, 30-35% of A). The page states
-every figure here from the engine; this table is a snapshot of it, and the review audit
-fails if it drifts.
+What moved them (v68): the drivers' rates and energy tilts now read each driver's path
+across the four horizons rather than its 1-year reading held for ten years, so the hiking
+cycle and the Gulf drag a ten-year return a fifth to a quarter as much as before; every forecast
+rose about 0.3pp, Global Technology's most. The trend channel now scores the past year as
+momentum and the past 3 and 5 years as reversal; after three strong years the two largely
+cancel. The budget, −26.97%, is the original 20 / 30 / 25 / 25 baseline's drawdown less
+2.83pp. US Equity Opportunity is held out until its trust fee is confirmed (at the listed
+1.20% it would take 20% of A, 20% of B and 10% of C); Global Bond Income would move the
+picks most (at its listed fee, 25-35% of A). The page states every figure here from the
+engine; this table is a snapshot of it, and the review audit fails if it drifts.
 
 ## Layout
 
@@ -113,7 +113,7 @@ runbook, `monitoring/CLAIMS.md` the checklist of every figure and its source, an
 
 ## Disclaimer
 
-Portfolio analysis on five named funds (A, B and C hold four each) over a
-10-year horizon, not personal financial advice.
+Portfolio analysis on eleven ATRAM funds over a 10-year horizon, not personal
+financial advice.
 Forecasts are modelled expectations, not guarantees. UITF investments are not
 deposits and are not insured by the PDIC.
