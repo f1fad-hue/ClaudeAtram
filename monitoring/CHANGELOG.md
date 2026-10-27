@@ -38,8 +38,8 @@ correct ones. It now reads every cell, and the header must name exactly A, B and
 
 **Checks:** engine 228/228 (D's checks out, the retirement check in); independent audit
 406/406 (2 standing warnings, both fund fee notes); page validator 24/24 on the
-published copy (version 74, payload identical to `model/data.json`); mutations running on
-this build (count follows).
+published copy (version 74, payload identical to `model/data.json`); mutations 43/43
+caught, the two new ones (D and a D what-if put back) among them.
 
 ## 2026-10-27 — v73: review of v72; rolled to Tuesday 27 Oct; KOSPI corrected; A, B, C and D unchanged
 
