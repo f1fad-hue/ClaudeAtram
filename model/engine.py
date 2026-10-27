@@ -3985,16 +3985,13 @@ _WI_KEYS = list(_WI_COL)
 _WI_COL["live"] = "net_macro"; _WI_KEYS.append("live")
 _COLS_U = ["net_10y", "net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
 _COLS_P = ["net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
-# PORTFOLIO D (owner, 2026-10-23): "a portfolio D compose 50% atram nasdaq equity income
-# with atram global tech, atram asia equity and atram peso money market", on the same
-# macro view and the same rule as B and C. It is C's pinned set restricted to those
-# four funds, so it comes out of C's loop, mix for mix, with nothing measured twice.
-PD_FUNDS = ("ATRPHMM", "ATRQIAP", "ATRASEQ", "ATRGTEC")
-_D_ALLOW = frozenset(UNIV_IDS.index(x) for x in PD_FUNDS)
-_PK = {"a": _Pick(), "b": _Pick(), "c": _Pick(), "d": _Pick()}
+# PORTFOLIO D, RETIRED (owner, 2026-10-27: "Remove portfolio D"). From v66 to v73 it was
+# C's pinned set restricted to four funds - Money Market, Nasdaq Equity Income, Asia
+# Equity, Global Technology - and came out of C's loop; removing it changes no other
+# pick, because nothing else read its result. A check holds it gone.
+_PK = {"a": _Pick(), "b": _Pick(), "c": _Pick()}
 _PK.update({("b", k): _Pick() for k in _WI_KEYS})
 _PK.update({("c", k): _Pick() for k in _WI_KEYS})
-_PK.update({("d", k): _Pick() for k in _WI_KEYS})
 _FRONT_BUCKET, _BEST_RATIO_M, UNIV_N_TOTAL = {}, None, 0
 for _seq, (_idx, _u) in enumerate(univ_mixes()):
     _ms = _measure(_idx, _u, _COLS_U)
@@ -4017,24 +4014,18 @@ for _seq, (_idx, _u) in enumerate(univ_mixes(pinned=True)):
     _PK["c"].add(_ms[0] + (_seq, _idx, _u))
     for _k, _m in zip(_WI_KEYS, _ms[1:]):
         _PK[("c", _k)].add(_m + (_seq, _idx, _u))
-    if _D_ALLOW.issuperset(_idx):
-        _PK["d"].add(_ms[0] + (_seq, _idx, _u))
-        for _k, _m in zip(_WI_KEYS, _ms[1:]):
-            _PK[("d", _k)].add(_m + (_seq, _idx, _u))
 
 PA_W, PA_BAND, _ = _PK["a"].result()
 PB_W, PB_BAND, _ = _PK["b"].result()        # Portfolio B
 PC_W, PC_BAND, _ = _PK["c"].result()
-PD_W, PD_BAND, _ = _PK["d"].result()        # Portfolio D: C's rule on four funds
-PA_BAND_N, PB_BAND_N, PC_BAND_N, PD_BAND_N = len(PA_BAND), len(PB_BAND), len(PC_BAND), len(PD_BAND)
-UNIV_N_FEAS = {x: _PK[x].n for x in "abcd"}
-UNIV_BEST = {x: _PK[x].best for x in "abcd"}
+PA_BAND_N, PB_BAND_N, PC_BAND_N = len(PA_BAND), len(PB_BAND), len(PC_BAND)
+UNIV_N_FEAS = {x: _PK[x].n for x in "abc"}
+UNIV_BEST = {x: _PK[x].best for x in "abc"}
 PA, PA_BASE = summarise(PA_W, "net_macro", UNIV), summarise(PA_W, "net_base", UNIV)
-# Each on the 10-year view alone too: A's own column, and the second lens for B, C and D.
-PA_10, PB_10, PC_10, PD_10 = (summarise(w, "net_10y", UNIV) for w in (PA_W, PB_W, PC_W, PD_W))
+# Each on the 10-year view alone too: A's own column, and the second lens for B and C.
+PA_10, PB_10, PC_10 = (summarise(w, "net_10y", UNIV) for w in (PA_W, PB_W, PC_W))
 PB, PB_BASE = summarise(PB_W, "net_macro", UNIV), summarise(PB_W, "net_base", UNIV)
 PC, PC_BASE = summarise(PC_W, "net_macro", UNIV), summarise(PC_W, "net_base", UNIV)
-PD, PD_BASE = summarise(PD_W, "net_macro", UNIV), summarise(PD_W, "net_base", UNIV)
 # Whether the engine's A is the mix the 22-fund review found. Published, not asserted:
 # a later roll may move one and not the other, and the page says so when it does.
 PA_IS_REVIEW = (dict(MACRO["pa_review_mix"])
@@ -4065,11 +4056,10 @@ UNIV_BEST_RATIO = (_brw, summarise(_brw, "net_macro", UNIV))
 # column, A re-measured on it (A is chosen on the 10-year column, which reads none of the
 # near-horizon inputs these change). All six come out of the one search above.
 def _wi_entry(k):
-    b = _PK[("b", k)].result(); c = _PK[("c", k)].result(); d = _PK[("d", k)].result()
+    b = _PK[("b", k)].result(); c = _PK[("c", k)].result()
     a = summarise(PA_W, _WI_COL[k], UNIV)
     return {"b": {"weights": [round(x * 100) for x in b[0]], "cagr": b[2][0], "maxdd": b[2][1]},
             "c": {"weights": [round(x * 100) for x in c[0]], "cagr": c[2][0], "maxdd": c[2][1]},
-            "d": {"weights": [round(x * 100) for x in d[0]], "cagr": d[2][0], "maxdd": d[2][1]},
             "a": {"cagr": a["cagr"], "maxdd": a["maxdd"]}}
 WHAT_IF_UNIV = {k: _wi_entry(k) for k in _WI_KEYS if k != "live"}
 # The stress size the page quotes. Until v62 only the four-fund what-ifs carried it,
@@ -5015,7 +5005,7 @@ def payload():
                      "baseline_k": round(port_k(BASELINE_W), 5),
                      # the three portfolios the page shows (2026-10-21)
                      "a_k": round(port_k(PA_W, UNIV), 5), "c_k": round(port_k(PC_W, UNIV), 5),
-                     "b_k": round(port_k(PB_W, UNIV), 5), "d_k": round(port_k(PD_W, UNIV), 5),
+                     "b_k": round(port_k(PB_W, UNIV), 5),
                      "note": "1.65 is the calibration anchor, not the coefficient every sleeve "
                              "uses. Each fund carries a declared adjustment for the shape of its "
                              "own left tail; the portfolio coefficient is the weighted average "
@@ -5045,17 +5035,6 @@ def payload():
                         "dd_cap": round(DD_CAP, 2),
                         "in_budget": abs(PC["maxdd"]) <= DD_CAP + 1e-9,
                         "cagr_no_rerating": summarise(PC_W, "net_asia_norerate", UNIV)["cagr"]},
-        "portfolio_d": {"weights": [round(x * 100) for x in PD_W], "ids": UNIV_IDS,
-                        "funds_allowed": list(PD_FUNDS),
-                        "macro": PD, "base": PD_BASE, "ten": PD_10, "column": "net_macro",
-                        "fund": "ATRQIAP", "pin_pct": round(PIN_W * 100),
-                        "band_n": PD_BAND_N, "n_feasible": UNIV_N_FEAS["d"],
-                        "band": [{"weights": [x * 5 for x in _full_units(m[4], m[5])], "cagr": m[0],
-                                  "maxdd": m[1]} for m in sorted(PD_BAND, key=_key)],
-                        "scenarios": run_scenarios(PD_W, "net_macro", UNIV),
-                        "dd_cap": round(DD_CAP, 2),
-                        "in_budget": abs(PD["maxdd"]) <= DD_CAP + 1e-9,
-                        "cagr_no_rerating": summarise(PD_W, "net_asia_norerate", UNIV)["cagr"]},
         "universe": {"limits": {"max_funds": UNIV_MAX_FUNDS, "max_w": round(UNIV_MAX_W * 100),
                            "min_cash": round(UNIV_MIN_CASH * 100)},
                 "n_total": UNIV_N_TOTAL,
@@ -5157,14 +5136,9 @@ def report():
       f"{pq['n_feasible']} feasible, {pq['band_n']} in band)")
     A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
       f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
-    pq = p["portfolio_d"]
-    A(f"    PORTFOLIO D weights {pq['weights']}   (Nasdaq Equity Income at {pq['pin_pct']}% with "
-      f"{len(pq['funds_allowed']) - 1} others, the macro-view rule; {pq['n_feasible']} feasible, {pq['band_n']} in band)")
-    A(f"      macro view     : CAGR {pq['macro']['cagr']}%  vol {pq['macro']['vol']}%  "
-      f"maxDD {pq['macro']['maxdd']}%  ret/DD {pq['macro']['ret_per_dd']}")
     for k, v in p["universe"]["what_if"].items():
         A(f"    what-if {k:<17}: B {v['b']['weights']} {v['b']['cagr']}%   C {v['c']['weights']} {v['c']['cagr']}%   "
-          f"D {v['d']['weights'][:4]} {v['d']['cagr']}%   A {v['a']['cagr']}% / {v['a']['maxdd']}%")
+          f"A {v['a']['cagr']}% / {v['a']['maxdd']}%")
     br = p["universe"]["best_ratio"]
     A(f"    best pure ret/DD  : {br['weights']}  CAGR {br['cagr']}%  "
       f"maxDD {br['maxdd']}%  ratio {br['ret_per_dd']}")
@@ -6022,7 +5996,7 @@ def report():
     # the drawdown ever disagreed, and nothing was checking it. (Audit 2026-09-09.)
     for lab, port, scens in [("baseline", p["baseline"]["under_macro"], p["baseline"]["scenarios"])] + [
             (f"Portfolio {x.upper()}", p[f"portfolio_{x}"]["macro"], p[f"portfolio_{x}"]["scenarios"])
-            for x in "abcd"]:
+            for x in "abc"]:
         base_row = next((x for x in scens if x["name"].startswith("Grind")), None)
         checks.append((f"{lab} zero-shock scenario reproduces the headline row",
                        base_row is not None
@@ -6046,14 +6020,14 @@ def report():
     checks.append(("every scenario drawdown of A, B and C reproduces from its own printed row",
                    all(round(-max((p["dd_model"][f"{x_}_k"] * x["vol"] - DD_MU * x["cagr"])
                                   * DD_HORIZON_SCALAR, 0.0), 1) == x["maxdd"]
-                       for x_ in "abcd" for x in p[f"portfolio_{x_}"]["scenarios"])))
+                       for x_ in "abc" for x in p[f"portfolio_{x_}"]["scenarios"])))
     # THE SAME QUESTION, asked of the four headline rows. It was only ever asked of
     # the scenarios, and the headline rows reached the reader's answer by luck: the
     # baseline under macro came out -29.0019 raw against -29.0080 by the reader's
     # route, 0.006pp from rounding to different tenths.  (Audit 2026-09-20.)
     _hd_rows = [(p["baseline"]["base"], p["dd_model"]["baseline_k"]),
                 (p["baseline"]["under_macro"], p["dd_model"]["baseline_k"])] + [
-               (p[f"portfolio_{x_}"][r_], p["dd_model"][f"{x_}_k"]) for x_ in "abcd" for r_ in ("base", "macro")]
+               (p[f"portfolio_{x_}"][r_], p["dd_model"][f"{x_}_k"]) for x_ in "abc" for r_ in ("base", "macro")]
     checks.append(("every headline drawdown reproduces from its own printed row",
                    all(round(-max((_k * x["vol"] - DD_MU * x["cagr"])
                                   * DD_HORIZON_SCALAR, 0.0), 1) == x["maxdd"]
@@ -6168,10 +6142,9 @@ def report():
     # The what-if helper must BE the rule: on the live column it has to return the
     # published B and C, or its counterfactuals answer a different question.
     _live = _wi_entry("live")
-    checks.append(("the what-if helper reproduces the published B, C and D on live inputs",
+    checks.append(("the what-if helper reproduces the published B and C on live inputs",
                    _live["b"]["weights"] == p["portfolio_b"]["weights"]
                    and _live["c"]["weights"] == p["portfolio_c"]["weights"]
-                   and _live["d"]["weights"] == p["portfolio_d"]["weights"]
                    and _live["a"]["cagr"] == p["portfolio_a"]["macro"]["cagr"]))
     checks.append(("each what-if column differs from the live one by exactly the tilt it removes",
                    all(abs(f2["net_macro"] - f2["net_novol"] - f2["tilt_vol"]) < 0.0051
@@ -6191,7 +6164,7 @@ def report():
                    (dm["horizon_scalar"] > 1) == (dm["horizon_y"] > dm["calib_y"])))
     checks.append(("peso terminal value compounds over the mandate horizon",
                    all(abs(1_000_000 * (1 + p[f"portfolio_{x_}"]["macro"]["cagr"] / 100) ** HORIZON_Y
-                           - p[f"portfolio_{x_}"]["macro"]["terminal_1m"]) < 1.0 for x_ in "abcd")))
+                           - p[f"portfolio_{x_}"]["macro"]["terminal_1m"]) < 1.0 for x_ in "abc")))
     # The drawdown card publishes a formula. These assert the formula, using the
     # coefficients the page prints, reproduces the drawdowns the page prints -
     # the audit that was missing when 1.65 was shown as if it applied to every
@@ -6215,7 +6188,7 @@ def report():
     checks.append(("every fund's drawdown coefficient carries a stated reason",
                    all(len(fd.get("dd_k_why", "")) > 30 for fd in p["funds"])))
     for lab, mm, kk in [("baseline", p["baseline"]["under_macro"], p["dd_model"]["baseline_k"])] + [
-            (f"Portfolio {x_.upper()}", p[f"portfolio_{x_}"]["macro"], p["dd_model"][f"{x_}_k"]) for x_ in "abcd"]:
+            (f"Portfolio {x_.upper()}", p[f"portfolio_{x_}"]["macro"], p["dd_model"][f"{x_}_k"]) for x_ in "abc"]:
         pred = ((kk * mm["vol"] - p["dd_model"]["mu_coef"] * mm["cagr"])
                 * p["dd_model"]["horizon_scalar"])
         # portfolio k is published to 3dp, so it contributes vol * 0.0005
@@ -6224,7 +6197,7 @@ def report():
                        <= dd_tol(kk, p["dd_model"]["mu_coef"],
                                  k_dp=mm["vol"] * 0.0005)))
     for lab, w, kkey in [("baseline", BASELINE_W, "baseline_k")] + [
-            (f"Portfolio {x_.upper()}", [x / 100 for x in p[f"portfolio_{x_}"]["weights"]], f"{x_}_k") for x_ in "abcd"]:
+            (f"Portfolio {x_.upper()}", [x / 100 for x in p[f"portfolio_{x_}"]["weights"]], f"{x_}_k") for x_ in "abc"]:
         eq = [(w[i], _five[i]["dd_k"]) for i in range(len(w))
               if not UNIV[1][i]["cash_like"]]
         avg = sum(x * kx for x, kx in eq) / sum(x for x, _ in eq)
@@ -6447,7 +6420,7 @@ def report():
                            for f2 in FUNDS)))
     checks.append(("peso figures reconcile with the displayed CAGR and drawdown",
                    _ties(p["baseline"]["under_macro"])
-                   and all(_ties(p[f"portfolio_{x_}"][r_]) for x_ in "abcd" for r_ in ("macro", "base"))))
+                   and all(_ties(p[f"portfolio_{x_}"][r_]) for x_ in "abc" for r_ in ("macro", "base"))))
     # regression: no feasible portfolio may exceed the stated drawdown budget
     cap = p["portfolio_b"]["dd_cap"]
     # Each pick on the column it was CHOSEN on, by the raw route: A on the long-run
@@ -6455,8 +6428,7 @@ def report():
     checks.append(("no pick exceeds the drawdown budget on the column it was chosen on",
                    abs(port_dd(PA_W, "net_base", UNIV)) <= DD_CAP + 1e-9
                    and abs(port_dd(PB_W, "net_macro", UNIV)) <= DD_CAP + 1e-9
-                   and abs(port_dd(PC_W, "net_macro", UNIV)) <= DD_CAP + 1e-9
-                   and abs(port_dd(PD_W, "net_macro", UNIV)) <= DD_CAP + 1e-9))
+                   and abs(port_dd(PC_W, "net_macro", UNIV)) <= DD_CAP + 1e-9))
     # FEASIBILITY MUST MEAN THE SAME THING ON BOTH ROUTES. The constraint is tested
     # on the true drawdown, deliberately; the page prints the reader-reproducible
     # one. Nothing had been asserting that a portfolio admitted by the first is not
@@ -6470,10 +6442,9 @@ def report():
     # The published cap must BE the enforced cap. Publishing a rounded, looser
     # figure made this very check unable to bite: it read the published 26.0
     # while the optimiser enforced 25.97. (Audit 2026-09-08.)
-    checks.append(("the published drawdown cap is the one actually enforced, the same for A, B, C and D",
+    checks.append(("the published drawdown cap is the one actually enforced, the same for A, B and C",
                    abs(cap - DD_CAP) < 5e-9
-                   and p["portfolio_a"]["dd_cap"] == p["portfolio_b"]["dd_cap"] == p["portfolio_c"]["dd_cap"]
-                   == p["portfolio_d"]["dd_cap"]))
+                   and p["portfolio_a"]["dd_cap"] == p["portfolio_b"]["dd_cap"] == p["portfolio_c"]["dd_cap"]))
     # ...and a reader can rebuild it from the reference printed beside it.
     checks.append(("the published budget is the reference baseline's macro drawdown less the stated improvement",
                    abs(cap - round(abs(p["baseline"]["under_macro"]["maxdd"]) - DD_BUDGET_IMPROVEMENT, 2)) < 5e-9
@@ -6545,27 +6516,16 @@ def report():
                 and not any(abs(m[1]) < abs(mine["maxdd"]) - 1e-9 for m in band)
                 and any(_full_units(m[4], m[5]) == [v // 5 for v in w] and m[0] == mine["cagr"]
                         and m[1] == mine["maxdd"] for m in band))
-    _pd = p["portfolio_d"]; _dw = _pd["weights"]
-    checks.append(("A, B, C and D are each the rule's pick on their own column: A the 10-year view, B, C and D the 3/5/10-year blend",
-                   _rule_ok("a", _aw) and _rule_ok("b", _bw) and _rule_ok("c", _cw) and _rule_ok("d", _dw)))
-    # PORTFOLIO D (2026-10-23): the owner's four funds and no others, the pin at 50%,
-    # the review's limits, and C's own set restricted to those four - so D can never
-    # beat C, and its search is the subset of C's, not a second search.
-    _da = [UNIV_IDS.index(x) for x in _pd["funds_allowed"]]
-    checks.append(("Portfolio D holds only its four funds, Nasdaq Equity Income at 50%, inside the review's limits",
-                   set(_pd["funds_allowed"]) == {"ATRPHMM", "ATRQIAP", "ATRASEQ", "ATRGTEC"}
-                   and all(x == 0 for i, x in enumerate(_dw) if i not in _da)
-                   and _cons(_dw, _ip) and _dw[_ip] == _pd["pin_pct"] == _pc["pin_pct"]
-                   and _pd["in_budget"]))
-    checks.append(("Portfolio D is C's search on a subset: no better than C, every D mix one of C's",
-                   UNIV_BEST["d"] <= UNIV_BEST["c"] + 1e-9 and UNIV_N_FEAS["d"] <= UNIV_N_FEAS["c"]
-                   and all(set(m[4]) <= set(_da) for m in _PK["d"].band)))
-    _dmu = sum(w / 100 * f["net_macro"] for w, f in zip(_dw, _five))
-    checks.append((f"Portfolio D's CAGR re-derives from its funds ({_dmu:.2f} vs {_pd['macro']['cagr']})",
-                   abs(_dmu - _pd["macro"]["cagr"]) < 0.005))
-    checks.append(("every universe what-if re-chooses B, C and D and re-measures A",
-                   all({"a", "b", "c", "d"} <= set(v) and len(v["b"]["weights"]) == _nu and len(v["c"]["weights"]) == _nu
-                       and len(v["d"]["weights"]) == _nu
+    checks.append(("A, B and C are each the rule's pick on their own column: A the 10-year view, B and C the 3/5/10-year blend",
+                   _rule_ok("a", _aw) and _rule_ok("b", _bw) and _rule_ok("c", _cw)))
+    # PORTFOLIO D RETIRED (owner, 2026-10-27): no key, no search, no what-if entry, no
+    # coefficient - the way the four-fund optimiser was held gone from v62.
+    checks.append(("Portfolio D is retired: no portfolio_d key, no D in any what-if, no d_k",
+                   "portfolio_d" not in p and "d_k" not in p["dd_model"] and set(_PK) & {"d"} == set()
+                   and all(set(v) == {"a", "b", "c"} | ({"stress_pp"} & set(v))
+                           for v in p["universe"]["what_if"].values())))
+    checks.append(("every universe what-if re-chooses B and C and re-measures A",
+                   all({"a", "b", "c"} <= set(v) and len(v["b"]["weights"]) == _nu and len(v["c"]["weights"]) == _nu
                        for v in p["universe"]["what_if"].values())))
     _amu = sum(w / 100 * f["net_macro"] for w, f in zip(_aw, p["funds"] + _pb["funds"]))
     checks.append((f"Portfolio A's CAGR re-derives from its funds ({_amu:.2f} vs {_pa['macro']['cagr']})",
@@ -6592,10 +6552,10 @@ def report():
                    and all(MACRO[f"gbi_w_{x}_low"] >= MACRO[f"gbi_w_{x}_high"] >= 0 for x in "abc")
                    and sum(x[1] for x in MACRO["pa_review_mix"]) == 100
                    and "ATRUSEQ" not in p["portfolio_b"]["ids"]))
-    checks.append(("portfolio vol < weighted-average vol for A, B, C and D (diversification works)",
+    checks.append(("portfolio vol < weighted-average vol for A, B and C (diversification works)",
                    all(p[f"portfolio_{x_}"]["macro"]["vol"]
                        < sum(w / 100 * f["vol"] for w, f in zip(p[f"portfolio_{x_}"]["weights"], _five))
-                       for x_ in "abcd")))
+                       for x_ in "abc")))
     for name, ok in checks:
         A(f"    [{'PASS' if ok else 'FAIL'}] {name}")
     A(f"\n    {sum(1 for _, ok in checks if ok)}/{len(checks)} checks passed")

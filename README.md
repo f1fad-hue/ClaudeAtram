@@ -49,17 +49,17 @@ Asia Equity / Global Technology / Global Dividend / Global Health Care / Global 
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · 10-year view | B · 3/5/10-year view | C · Nasdaq Income at 50% | D · Four funds, Nasdaq Income at 50% |
-|---|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 30 / 0 / 20 / 0 / 0 / 20 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 5 / 0 / 25 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 5 / 0 / 0 / 35 / 0 / 0 / 5 / 0 | 25 / 50 / 5 / 20 / 0 / 0 / 0 / 0 / 0 / 0 / 0 |
-| 10y net CAGR after all fees | 7.23% | 7.23% | **7.26%** | 7.07% |
-| Expected max drawdown (10y) | −26.6% | **−26.3%** | −26.7% | −26.8% |
-| Return per unit of drawdown | 0.272 | **0.275** | 0.272 | 0.264 |
+| | A · 10-year view | B · 3/5/10-year view | C · Nasdaq Income at 50% |
+|---|---|---|---|
+| Allocation (eleven funds, in the order above) | 5 / 30 / 0 / 20 / 0 / 0 / 20 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 5 / 0 / 25 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 5 / 0 / 0 / 35 / 0 / 0 / 5 / 0 |
+| 10y net CAGR after all fees | 7.23% | 7.23% | **7.26%** |
+| Expected max drawdown (10y) | −26.6% | **−26.3%** | −26.7% |
+| Return per unit of drawdown | 0.272 | **0.275** | 0.272 |
 
-All four rows are on the 3/5/10-year view. Every portfolio is built from four analyses -
+All three columns are on the 3/5/10-year view. Every portfolio is built from four analyses -
 the macro drivers, the market trend, the regional ranking and the volatility curve - each
 read at **3, 5 and 10 years** and weighted by the share of the ten-year holding it governs
-(3Y years 1-3, 30%; 5Y years 4-5, 20%; 10Y years 6-10, 50%). **One rule chooses all four**, over the eleven funds within the review's
+(3Y years 1-3, 30%; 5Y years 4-5, 20%; 10Y years 6-10, 50%). **One rule chooses all three**, over the eleven funds within the review's
 limits (at most 5 funds, 35% in any one, at least 5% peso cash; 322,725 mixes): the best
 10-year net CAGR after fees inside the drawdown budget, then the lowest drawdown within
 0.05pp of it. The engine re-chooses each at every update:
@@ -72,9 +72,11 @@ limits (at most 5 funds, 35% in any one, at least 5% peso cash; 322,725 mixes): 
   the tie).
 - **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35% cap):
   0.03pp a year above B for 0.4pp more drawdown.
-- **D** is C on four funds only - Nasdaq Equity Income at 50% with the Peso Money Market,
-  Asia Equity and Global Technology (owner, 2026-10-23): 25 / 50 / 5 / 20, 0.19pp a year
-  below C for 0.1pp more drawdown.
+
+Portfolio D - C on four funds only (Money Market, Nasdaq Equity Income, Asia Equity and
+Global Technology), added on 2026-10-23 - was removed at the owner's request on
+2026-10-27 (v74). Removing it changed none of A, B or C: D was a subset of C's search, and
+nothing else read its result.
 
 What moved them (v71): each analysis is now researched year by year - years 1-3, then
 years 4-5 - from the Fed's projected rates (4.1% at the end of 2026 and 2027, 3.9% in 2028,
@@ -84,7 +86,7 @@ five years the readings land within 0.15 of v70's. B moves 5pp from cash into Gl
 Equity and 5pp from Global Technology into Global Health Care (7.23% against 7.19%, for
 0.3pp more drawdown). The rates drag drives it: Monetary's ten-year average rises to 4.80
 from 4.75, and with it held at 4.75, B would keep 10% in cash and 10% in Global
-Technology. A, C and D keep their weights. The budget, −26.97%, is the original 20 / 30 / 25 / 25 baseline's drawdown less
+Technology. A and C keep their weights. The budget, −26.97%, is the original 20 / 30 / 25 / 25 baseline's drawdown less
 2.83pp. US Equity Opportunity is held out until its trust fee is confirmed (at the listed
 1.20% it would take 20% of A, 25% of B and 10% of C); Global Bond Income would move the
 picks most (at its listed fee, 25-35% of A). The page states every figure here from the

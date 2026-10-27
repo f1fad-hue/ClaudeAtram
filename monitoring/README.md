@@ -37,7 +37,7 @@ weighted, minus the LONG-RUN 19.5 every base return already assumes), the region
 rankings and the **market trend**: each equity sleeve's market over the past year
 (momentum, for year 1 ahead) and the past 3 and 5 years annualised (reversal, for years
 2-5), each view taking them by the share of its years inside each window, z-scored against its own long-run drift and volatility, with the 10Y
-score held neutral. A reads them at 10 years alone; B, C and D at 3, 5 and 10. Refresh `TREND_INPUTS` (quarters and
+score held neutral. A reads them at 10 years alone; B and C at 3, 5 and 10. Refresh `TREND_INPUTS` (quarters and
 `trail_ann`) and `TREND_END` at each month-end; a check fails once the window is a
 month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
@@ -165,6 +165,9 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+106. A CHECK THAT READS A FIXED SLICE CANNOT SEE WHAT IS ADDED BESIDE IT. The README table
+   check compared columns two to five, so when D's column was due to go, a README that kept
+   it would still have passed on A, B and C. Compare the whole row, and the header too.
 105. A TOLERANCE THAT TRACES CAN ALSO HIDE. A number with no input of its own will, sooner or
    later, land within rounding of one that has: the fund's "75%" benchmark started tracing
    to Brent's +75.5% y/y the day oil fell, and its warning went quiet. When a warning

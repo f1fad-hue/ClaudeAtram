@@ -2,6 +2,45 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-27 — v74: Portfolio D removed; A, B and C unchanged
+
+At the owner's instruction: "Remove portfolio D. Do house cleanup."
+
+**What D was:** C's rule - Nasdaq Equity Income held at 50%, the rest chosen on the
+3/5/10-year view under the same budget - over four funds only: Peso Money Market, Asia
+Equity and Global Technology beside the pin (owner, 2026-10-23; v66-v73). At removal it
+held 25 / 50 / 5 / 20 at 7.07% / −26.8%.
+
+**Removed:**
+- **Engine:** D's subset of C's search loop, its pick and tie, the `portfolio_d` payload
+  block, its drawdown coefficient `d_k`, the D entry in every what-if, its report lines
+  and six checks (its three own and its entry in three per-portfolio ones). A new check
+  holds it gone: no key, no what-if entry, no `d_k`.
+- **Page:** the fourth donut, the "Portfolio D" section with its what-if table, the D
+  column in the versus and headline tables, the three D pairs in "Who wins where", and
+  the D clauses in the Portfolios lede, the Report's cap and cash notes. The versus grid
+  now sets A and B side by side with C centred beneath at the same size.
+- **Harnesses:** the audit's independent four-fund walk and D's band, what-if and CLAIMS
+  checks; the payload's retired-keys list now names `portfolio_d`; validator row 23 now
+  asserts D's absence (donut, section, table columns, what-ifs, `d_k`), rows 13 and 22
+  check three donuts and three-column tables; mutants m13, m35 and m36 removed, m45 (D
+  comes back) and m46 (a D what-if comes back) added.
+- **Docs:** the README table's D column and bullet (a retirement note in their place),
+  the CLAIMS D row marked RETIRED, D removed from the feasible counts, the worst-case
+  peso row and the runbook.
+
+**Unchanged, verified:** A, B and C are byte-identical in the payload to v73, and every
+what-if's B and C is identical. D was a subset of C's search and nothing else read it.
+
+**Error found and fixed in the harness:** the audit's README table check read a fixed
+slice of four columns, so it would have passed a README that kept D's column beside three
+correct ones. It now reads every cell, and the header must name exactly A, B and C.
+
+**Checks:** engine 228/228 (D's checks out, the retirement check in); independent audit
+406/406 (2 standing warnings, both fund fee notes); page validator 24/24 on the
+published copy (version 74, payload identical to `model/data.json`); mutations running on
+this build (count follows).
+
 ## 2026-10-27 — v73: review of v72; rolled to Tuesday 27 Oct; KOSPI corrected; A, B, C and D unchanged
 
 At the owner's instruction: debug, code-review and sanity-check; re-research, fact-check
