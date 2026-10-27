@@ -55,11 +55,28 @@ by the one rule over the whole universe (eleven funds from the owner's 22-fund l
 since 2026-10-22) within the review's limits - at most 5 funds, at most 35% in any one (C's Nasdaq Equity Income
 pin excepted), at least 5% in the money market - on the 5% grid, each
 summing to 100. A fund may be held at 0%. Every pick, and every what-if, sits inside ONE
-drawdown budget: the 20/30/25/25 reference baseline's macro drawdown less 2.83pp.
-The baseline stays in the payload, off the page, so the budget can be re-derived;
-do not replace it with a current pick, or the budget would depend on the portfolio
-it judges. (The internal four-fund optimiser that ran beside the picks was retired
-on 2026-10-22, v62.)
+drawdown budget: **the owner's 25%** (`DD_BUDGET_OWNER`, set 2026-10-27, v75). Do not
+move it on the review's own judgment - only the owner moves it, and step 2c says when
+to propose it. The derivation it replaced (the 20/30/25/25 reference baseline's macro
+drawdown less 2.83pp, 26.97% at v74) is still computed and published as
+`dd_budget.derived_ref`, and the baseline stays in the payload, off the page, so it can
+be re-derived; do not replace the baseline with a current pick, or the reference would
+depend on the portfolio it judges. (The internal four-fund optimiser that ran beside the
+picks was retired on 2026-10-22, v62.)
+
+**2c. Read the drawdown-budget gauge** (`dd_gauge`, the Budget tab) at each month-end.
+Each of the 3Y, 5Y and 10Y views reads 1-5 as the mean of three parts: the driver
+gauge on that view's path, the forward vol against the long-run 19.5 (3 at the long
+run, one point per 10% the curve prices below it, clipped 1-5) and the mean trend score
+of the five trend markets. The gauge is 60% of the 3Y view and 40% of the 5Y; the 10Y is
+shown as the anchor and not weighted (it is neutral by construction, lesson 107). The
+bands: under 2.5 → 24%, 2.5-3.5 → 25%, 3.5-4.25 → 26%, 4.25 and over → 27%. A step is
+recommended only when (a) two month-end reviews running land in the same band - append
+each review's reading to `DDG_REVIEWS` with its date, never a mid-month one - and, for
+a raise, (b) Geopolitics scores above 2.0 and (c) the VIX closes at or under its
+long-run 19.5. The recommendation is the model's; the owner decides, and only then
+does `DD_BUDGET_OWNER` change (with its date). Never type a band, weight or guard into
+the page; the step table is rebuilt by the rule at each cap.
 
 **2b. Re-check the 22-fund list's held-out funds** (`list22_held_out`). A fund enters
 the search once its fees are confirmed - its trust fee on ATRAM's own page or on two
@@ -68,8 +85,9 @@ not before. When one is confirmed, build it like the others (`ADD_FUNDS`, its fa
 loadings, its vol sensitivity, its shocks in every scenario row, its look-through) and
 remove it from the held-out list; the check that every one of the 22 is searched or
 held out, never both, fails until both are done. Re-run `model/heldout_sens.py` for US Equity
-Opportunity and Global Bond Income when their fees move, and update `useq_w_*` /
-`gbi_w_*`.
+Opportunity and Global Bond Income when their fees, the universe or **the drawdown budget**
+move, and update `useq_w_*` / `gbi_w_*` with `heldout_run_cap` and `heldout_run_date`; a
+check fails while the recorded cap is not the live one.
 
 **3. Re-verify the claims** in `CLAIMS.md`, marking each VERIFIED / CHANGED /
 STALE / UNREACHABLE with the date. Do not promote a claim from "verified via
@@ -165,6 +183,17 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+108. A TYPED RESULT CARRIES THE ASSUMPTIONS OF THE RUN THAT MADE IT. The held-out funds'
+   what-if weights are outputs of `heldout_sens.py` typed in as inputs; when the budget moved
+   from 26.97% to 25%, every check on them still passed, because they were checked for order
+   (listed fee ≥ peer fee) and not for the budget they were run at. Record each run's
+   assumptions beside its results and check them against the live ones.
+107. A GAUGE THAT WEIGHTS A NEUTRAL-BY-CONSTRUCTION VIEW CANNOT REACH ITS OUTER BANDS. The
+   10-year view reads 3.0 on every part by design (the driver paths end at neutral, the
+   curve's forward vol converges on the long run, the trend score is taken at neutral at
+   10 years), so the first draft, weighting it 50%, could move only between 2 and 4: the
+   24% and 27% bands were unreachable whatever the market did. Before a band is drawn,
+   drive every input to its extreme and show each band can be reached.
 106. A CHECK THAT READS A FIXED SLICE CANNOT SEE WHAT IS ADDED BESIDE IT. The README table
    check compared columns two to five, so when D's column was due to go, a README that kept
    it would still have passed on A, B and C. Compare the whole row, and the header too.

@@ -2,6 +2,123 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-27 — v75: the owner's 25% drawdown budget for A, B and C; a budget gauge on its own tab; rolled to the 27 Oct US close
+
+At the owner's instruction: "Apply the 25% drawdown to all portfolios. Can you make a best
+recommended gauge 1 to 5 when to increase the drawdown of the portfolio based on macro
+sentiments, volatility, market trends of 3, 5 and 10yrs in a separate tab with reasonings",
+with the full review (debug, code review, sanity check; re-research and re-verify the data
+and math, funds, ETFs, stocks and fees, net 10-year CAGR and drawdown, the trend, macro,
+volatility and regional analyses at 3, 5 and 10 years, and the A-C selections from the
+22-fund list) and house cleanup.
+
+**The budget: 25%, the owner's** (`DD_BUDGET_OWNER`, dated 2026-10-27). It replaces the
+derived 26.97% (the reference baseline's macro drawdown less 2.83pp), which is still
+computed and published as `dd_budget.derived_ref` so it can be re-derived. Every pick and
+every what-if sits inside it. The rule re-chose all three over the same eleven funds:
+
+| | v74 at 26.97% | v75 at 25% | Cost / gain |
+|---|---|---|---|
+| A (10-year view) | 5 / 30 / 20 Tech / 20 Infra / 25 AMI: 7.23% / −26.6% | 5 / 30 / 15 Tech / 20 Infra / 30 AMI: 7.07% / −24.6% | −0.16pp a year for 2.0pp of drawdown |
+| B (3/5/10) | 5 / 35 / 5 Tech / 25 Health / 30 Infra: 7.23% / −26.3% | 5 / 35 / 10 Tech / 25 Infra / 25 AMI: 7.05% / −24.3% | −0.18pp for 2.0pp |
+| C (50% Nasdaq Income) | 5 / 50 / 5 Tech / 35 Infra / 5 AMI: 7.26% / −26.7% | 5 / 50 / 10 Health / 25 Infra / 10 AMI: 7.09% / −24.3% | −0.17pp for 2.4pp |
+
+(Money market / Nasdaq Equity Income first, then the rest; CAGR and drawdown on the
+3/5/10-year macro view, net of all fees.) A moves 5pp from Technology to Asian Multi-Asset
+Income; B drops Health Care for 25% Asian Multi-Asset Income, with 5pp more Technology and
+5pp less Infra; C takes 10pp from Infra and 5pp from Technology into 10% Health Care and
+5pp more Asian Multi-Asset Income. For C the step from 25% down to 24% costs 0.11pp a
+year and the step up to 26% buys 0.07pp, which is why 25% sits at its knee.
+
+**The gauge** (`dd_gauge`, the new Budget tab, sixth in the bar). Advisory: it never moves
+the budget. Each of the 3Y, 5Y and 10Y views reads 1-5 as the mean of the driver gauge on
+that view's path, the forward implied vol against the long-run 19.5 (3 at the long run, a
+point per 10% below it, clipped 1-5; the 10% step is an assumption and says so) and the
+mean trend score of the five trend markets. The gauge is 60% of the 3Y view and 40% of
+the 5Y view (their shares of the first five years); the 10Y view is shown as the anchor
+but not weighted. Bands: under 2.5 tighten to 24%, 2.5-3.5 hold at 25%, 3.5-4.25 raise to
+26%, 4.25 and over raise to 27% (the derived figure, the ceiling). A step needs two
+month-end reviews in the same band; a raise also needs Geopolitics above 2.0 and the VIX
+at or under 19.5. **It reads 2.89 → hold at 25%** (3Y 2.92: macro 2.62, vol 3.13, trend
+3.01; 5Y 2.84: 2.90, 3.01, 2.61). Even a reading of 3.5 or more would not raise it today:
+no month-end review is on record yet (the first is due at the 31 Oct roll) and Geopolitics
+is 1.5, under its 2.0 floor. The VIX guard is clear at 17.52. The tab's step table
+rebuilds A, B and C by the rule at 24%, 26% and 27%, so each step's price is shown, not
+asserted: 6.97-6.98% at −23.4% for 24%, up to 7.23-7.26% at −26.3% to −26.7% for 27% -
+which reproduces v74's three picks exactly.
+
+**Rolled to 27 Oct** (each from two sources, each chaining from the previous close):
+- **US equities**: S&P +0.60% to 7,722.60, Nasdaq +1.18% to 26,477.81, Dow +0.03% to
+  52,377.57, chip stocks extending the rally on the eve of the Fed (TheStreet; TradingKey).
+  A 7,732.80 S&P print is intraday and was not used.
+- **VIX**: 17.52, −4.7% (Cboe's spot; AD HOC News). Doug's Daily Diary's 17.51 is kept as
+  disputed, not carried.
+- **FedWatch**: an October hike at 7.2% near the close (Kiplinger citing the CME tool, 92.8%
+  hold; Forbes about 93%). The December figure stays at the 26 Oct 79.7%: the 27 Oct reads
+  run from 71% to above 80% across outlets that do not say when they read it.
+
+**Withheld:** the 27 Oct Brent and WTI settles ($113.88 and $99.90 from one source only;
+oil stays at the 26 Oct $115.81 / $101.76), and the 10-year's 26 Oct official close (FRED
+and H.15 have not published it; the 23 Oct 5.00% stays). Brent's year-ago base (23 Oct
+2025) is at its three-day bound: the next oil roll must re-anchor it to 27 Oct 2025.
+No driver, region, trend or volatility score moved: one more up session is not 3- or
+5-year evidence. Only the notes that quote the rolled figures changed.
+
+**Fees re-checked:** Global Infra Equity re-verified at a 1.50% trust fee plus a 0.80%
+target-fund TER; the other funds carry their v73 verification. The one open dispute
+remains the Asian Multi-Asset Income trust fee: 1.50% on ATRAM's page (carried) against
+1.20% in its October 2025 KIID and on uitf.com.ph. At 1.20%, A and B keep their weights
+(7.16% and 7.13%) and C moves 5pp from Infra to Health Care (7.11%); logged in CLAIMS.
+
+**Errors found and fixed (all before publishing):**
+- **The held-out funds' what-if weights were still the 26.97% run's.** `useq_w_*` and
+  `gbi_w_*` are results of `model/heldout_sens.py` typed in as inputs, and the page and
+  README quote them; the budget moved under them and every check still passed, because
+  the checks tested their order, not the budget they were run at. Re-run at 25%: US Equity
+  Opportunity at its listed 1.20% would take 20% of A, 20% of B and none of C (was 20 / 25
+  / 10), at 1.50% none of any (was 20 / 0 / 5); Global Bond Income 35 / 35 / 30 at the
+  institutional charge (was 35 / 35 / 25) and 30 / 0 / 0 at the retail one (was 25 / 20 /
+  10). Global Allocation at 1.50% still changes nothing. The run's cap and date are now
+  inputs, and a check fails while the cap is not the live budget (runbook 108).
+- **The CLAIMS row for the 22-fund list quoted an older run** (10 / 25 / 10 and 0 / 5 / 5
+  for US Equity Opportunity, 35 / 25 / 10 and 30 / 0 / 0 for Global Bond Income), which
+  disagreed with the engine before v75 as well. It now carries the 25% run, with the
+  26.97% figures as history.
+- **The gauge's first design could not reach its outer bands.** It weighted the 10-year
+  view at 50%, and that view reads 3.0 by construction (the driver paths end at neutral,
+  the forward vol converges on the long run, the trend is neutral at 10 years), so the
+  gauge could only move between 2.0 and 4.0: the 24% and 27% bands were decoration. It now
+  reads the 3- and 5-year views only, and a new engine check drives the weighted views to
+  1 and to 5 and requires both outer bands to be crossed (runbook 107).
+- **`ddg_alt()` was called at module level before `run_scenarios` was defined** (a
+  NameError on the first run). The step table is now built when the payload is.
+- **The tab's renderer used `dlong` and `num`, which exist only inside another tab's
+  renderer**, so it threw and left the tab blank. It defines its own.
+- **The tab's prose was typed for today's state** ("hold", "Geopolitics blocks a raise").
+  Every such sentence is now chosen from the payload, so it cannot go stale when the
+  reading moves.
+- **The step table overflowed at 412px**; its cells now stack CAGR over drawdown.
+- **Validator row 25 read `innerText` inside a closed `<details>`**, which is empty, so
+  it could not see the reasoning text. It reads `textContent`.
+
+**Harnesses:** engine checks for the owner's budget, the derived reference, the gauge's
+parts, weights, bands, reachability and guards, the 25% step equalling the published A-C,
+a looser step never lowering the best return, and the held-out what-ifs run at the
+live budget (237 in all). The independent audit types
+the 25% and the gauge's weights, step and bands itself and rebuilds every step's A, B and
+C by its own walk (414 checks). Validator row 25 renders the Budget tab and checks its
+reading, bands, guards and steps against the payload; tab count 6. Mutants m47 (budget
+put back on the derived figure), m48 (gauge value typed), m49 (a raise recommended past a
+guard), m50 (a step's mix typed).
+
+**House cleanup:** README's portfolio table, budget text and tab list; CLAIMS rows for the
+budget, the gauge, A-C, the feasible counts, the 27 Oct session, the VIX and the Fed odds;
+runbook step 2 (the owner's budget), step 2b (re-run the held-out what-ifs when the budget
+moves), new step 2c (the month-end gauge review) and lessons 107 and 108.
+
+**Checks:** engine 237/237; independent audit 414/414 (2 standing warnings, both fund fee notes); page validator 25/25 on the
+published copy (version 75, payload identical to `model/data.json`); mutations (47 mutants) still running at this commit - the count follows in the next.
+
 ## 2026-10-27 — v74: Portfolio D removed; A, B and C unchanged
 
 At the owner's instruction: "Remove portfolio D. Do house cleanup."

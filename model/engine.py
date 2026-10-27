@@ -24,9 +24,10 @@ from itertools import combinations
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-10-27"        # newest completed session carried (PH/Asia Tuesday close;
-                            # US equities, the VIX and oil at Monday 26 Oct; Treasury
-                            # yields at Friday 23 Oct until the 26 Oct official close)
+AS_OF = "2026-10-27"        # newest completed session carried (PH/Asia and US equity
+                            # Tuesday closes and the VIX; oil at Monday 26 Oct until a
+                            # second source has the 27 Oct settles; Treasury yields at
+                            # Friday 23 Oct until the 26 Oct official close)
 REVIEW_DATE = "2026-10-27"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -373,10 +374,14 @@ MACRO = {
     # close report "a 90% likelihood" of a hold; the tool-cited pair is carried. The
     # 23 Oct pair (7.2% / 80.5%) is its baseline. Polymarket and Kalshi (about 7% on the
     # 25th) are not the tool and are not carried.
-    "fed_hike_odds_oct": 9.4,
-    "fed_hike_odds_oct_date": "2026-10-26",
+    # 27 OCT, near the close (Kiplinger's live page citing the CME FedWatch Tool: a 92.8%
+    # chance of a hold, from 90.6% earlier in the day; Forbes about 93% at 4:30pm ET):
+    # 7.2% for an October hike. December reads that day run from 71% to above 80% across
+    # outlets that do not say when they read the tool, so the 26 Oct 79.7% stays, dated.
+    "fed_hike_odds_oct": 7.2,
+    "fed_hike_odds_oct_date": "2026-10-27",
     "fed_hike_odds_oct_intraday_14oct": 50.0,
-    "fed_hike_odds_oct_prev": 7.2, "fed_hike_odds_oct_prev_date": "2026-10-23",
+    "fed_hike_odds_oct_prev": 9.4, "fed_hike_odds_oct_prev_date": "2026-10-26",
     "fed_hike_odds_oct_first_date": "2026-09-17",
     "fed_hike_odds_dec": 79.7,   # a hike by the 9 Dec meeting (FedWatch)
     "fed_hike_odds_dec_date": "2026-10-26",
@@ -720,25 +725,28 @@ MACRO = {
     # funds removed. US Equity Opportunity's weight turns on its trust fee, not
     # confirmed: uitf.com.ph lists 1.20% on a page about 17 months old, and ATRAM moved
     # its sister feeders to 1.50% on 14 Sep. It is HELD OUT at the owner's choice.
-    # RE-RUN 2026-10-27 ON THE 3/5/10-YEAR ENGINE (model/heldout_sens.py: the fund built
-    # by build_fund(), its pairs from the factor model, the rule re-run over the eleven
-    # funds plus it): at 1.20%, 20% of A, 25% of B, 10% of C; at 1.50%, 20% of A, none of
-    # B, 5% of C - the same as on the 5/10-year engine. (26 Oct, on the 1/3/5/10-year
-    # engine: 20 / 20 / 10 and 20 / 0 / 5.)
+    # RE-RUN 2026-10-27 AT THE OWNER'S 25% BUDGET (v75; model/heldout_sens.py: the fund
+    # built by build_fund(), its pairs from the factor model, the rule re-run over the
+    # eleven funds plus it): at 1.20%, 20% of A, 20% of B, none of C; at 1.50%, none of
+    # A, B or C. (At the derived 26.97% to v74: 20 / 25 / 10 and 20 / 0 / 5.)
     # GLOBAL BOND INCOME, the held-out fund that would move the picks most, the same way:
     # at its listed 0.90% trust fee with the target's institutional 0.69% charge, 35% of
-    # A, 35% of B and 25% of C; with the retail 1.59%, 25% of A, 20% of B, 10% of C. Its
-    # gross is the LTCMA's investment-grade credit figure - an assumption for a fund whose
-    # target is not confirmed.
+    # A, 35% of B and 30% of C; with the retail 1.59%, 30% of A and none of B or C (at
+    # 26.97%: 35 / 35 / 25 and 25 / 20 / 10). Its gross is the LTCMA's investment-grade
+    # credit figure - an assumption for a fund whose target is not confirmed.
+    # These are RESULTS OF A RUN, so they carry the run's budget: heldout_run_cap must be
+    # the live budget, or the check fails and the script must be re-run (v75: the budget
+    # moved to 25% and these sat at their 26.97% values until the review caught it).
     "review_list_n": 22, "review_list_prev_n": 24, "review_list_date": "2026-10-21",
     "review_list_removed": ["Long Term Peso Bond", "Medium Term Peso Bond"],
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
-    "useq_w_a_listed": 20, "useq_w_b_listed": 25, "useq_w_a_peer": 20, "useq_w_b_peer": 0,
-    "useq_w_c_listed": 10, "useq_w_c_peer": 5,
+    "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 0, "useq_w_b_peer": 0,
+    "useq_w_c_listed": 0, "useq_w_c_peer": 0,
     "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
-    "gbi_w_a_low": 35, "gbi_w_b_low": 35, "gbi_w_c_low": 25,
-    "gbi_w_a_high": 25, "gbi_w_b_high": 20, "gbi_w_c_high": 10,
+    "gbi_w_a_low": 35, "gbi_w_b_low": 35, "gbi_w_c_low": 30,
+    "gbi_w_a_high": 30, "gbi_w_b_high": 0, "gbi_w_c_high": 0,
+    "heldout_run_cap": 25.0, "heldout_run_date": "2026-10-27",
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -1347,6 +1355,10 @@ MACRO = {
         # (-5.9%) is the one outlier and is not carried; the v72 pass withheld this
         # close the same evening, when the figures still ran from 18.2 to 19.5.
         ("2026-10-26", 18.39),
+        # 27 Oct 17.52, -0.87 (-4.7%) (Cboe's own spot 17.52; AD HOC News, the same close
+        # and prior). 18.39 - 0.87 = 17.52. Doug's Daily Diary has 17.51 (-4.79%), a cent
+        # apart, and is kept as disputed, not carried.
+        ("2026-10-27", 17.52),
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -1367,7 +1379,7 @@ MACRO = {
         "2026-10-15": -2.43, "2026-10-16": 21.45, "2026-10-19": -7.75,
         "2026-10-20": -6.13,
         "2026-10-21": -3.64, "2026-10-22": 14.09, "2026-10-23": 2.21,
-        "2026-10-26": -5.45,
+        "2026-10-26": -5.45, "2026-10-27": -4.7,
     },
     # 28 Sep WITHHELD: two reports, 16.07 ("+1.20, +8.07%") and 16.30 ("+1.43,
     # +9.62%), and BOTH reproduce from 14.87 - the chain cannot choose, and one
@@ -1379,6 +1391,7 @@ MACRO = {
     "vix_disputed_20oct": [17.31, 17.60],
     "vix_disputed_22oct": [18.84, 19.03],   # Investing.com's table against three sources
     "vix_disputed_26oct": [18.30, 18.39],   # AD HOC News against three sources
+    "vix_disputed_27oct": [17.51, 17.52],   # Doug's Daily Diary against Cboe
     "vix_disputed_28sep": [16.07, 16.30],   # the record of the resolved dispute
     # MOVED 2026-10-17: 22.31 intraday on 16 Oct (The Weekly Debrief; CNBC "above
     # 22 for the first time in four months"), past 10 Sep's 18.17.
@@ -1470,10 +1483,16 @@ MACRO = {
     # Anthropic's IPO filing lifted the AI trade after back-to-back weekly losses for the
     # S&P and the Nasdaq, with the Fed on the 28th and 163 S&P companies reporting this
     # week. All three chain to the cent off the 23 Oct closes.
-    "equity_date": "2026-10-26",
-    "spx_close": 7676.77, "spx_chg_pct": 0.70,
-    "nasdaq_close": 26169.38, "nasdaq_chg_pct": 0.82,
-    "dow_close": 52361.58, "dow_chg_pct": 0.28, "dow_chg_pts": 146.42,
+    # 27 Oct (TheStreet; TradingKey): S&P +45.83 (+0.60%) to 7722.60; Nasdaq +308.43
+    # (+1.18%) to 26477.81; Dow +15.99 (+0.03%) to 52377.57, chip stocks extending the
+    # rally on the eve of the Fed's decision as oil slid. All three chain to the cent off
+    # the 26 Oct closes. A 24/7 Wall St. 7732.80 is an intraday print.
+    "equity_date": "2026-10-27",
+    "spx_close": 7722.60, "spx_chg_pct": 0.60,
+    "nasdaq_close": 26477.81, "nasdaq_chg_pct": 1.18,
+    "dow_close": 52377.57, "dow_chg_pct": 0.03, "dow_chg_pts": 15.99,
+    # 26 Oct, kept for the notes that describe that session
+    "spx_26oct_chg_pct": 0.70, "nasdaq_26oct_chg_pct": 0.82,
     # 23 Oct, kept for the notes that describe that session
     "spx_23oct_chg_pct": -0.52, "nasdaq_23oct_chg_pct": -0.21, "dow_23oct_chg_pct": -1.23,
     "sox_23oct_chg_pct": 0.44,
@@ -1482,7 +1501,7 @@ MACRO = {
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7623.68, "nasdaq_prev": 25955.34, "dow_prev": 52215.16,
+    "spx_prev": 7676.77, "nasdaq_prev": 26169.38, "dow_prev": 52361.58,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -2021,7 +2040,7 @@ POSTPONED = []
 
 CATALYSTS = [
     ("2026-10-28", "FOMC decision",
-     f"FedWatch had a hike at {MACRO['fed_hike_odds_oct']}% for October and {MACRO['fed_hike_odds_dec']}% by December on 26 Oct: a "
+     f"FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on 27 Oct and one by December at {MACRO['fed_hike_odds_dec']}% on the 26th: a "
      "pause now and a hike in December is still the priced path, less firmly than before the sell-off."),
     ("2026-10-29", "US third-quarter GDP and September PCE",
      "The first official read of the quarter the producer-price jump ran through, and "
@@ -2539,16 +2558,17 @@ def _fed_26_27():
 REGIONS = {
     "US": {
         "3Y": 5.5, "5Y": 6.25, HZ_LABEL: 6.5,
-        "why": ("Held. Anthropic's IPO filing lifted the AI trade on 26 Oct: the S&P rose "
+        "why": ("Held. Chip stocks carried the rally into a second day on 27 Oct: the S&P rose "
                 f"{MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} and the Nasdaq {MACRO['nasdaq_chg_pct']:.2f}% to "
-                f"{MACRO['nasdaq_close']:.2f}, the Dow {MACRO['dow_chg_pct']:.2f}% to {MACRO['dow_close']:.2f}, after back-to-back "
+                f"{MACRO['nasdaq_close']:.2f}, the Dow {MACRO['dow_chg_pct']:.2f}% to {MACRO['dow_close']:.2f}, after Anthropic's IPO "
+                f"filing lifted the AI trade on the 26th (S&P +{MACRO['spx_26oct_chg_pct']:.2f}%) and back-to-back "
                 "weekly losses for the S&P and the Nasdaq - on the 22nd Meta's spending plans and "
                 "Lam Research's guidance had sent chip stocks down more than 6%, and on the 23rd "
                 f"oil took the S&P down {abs(MACRO['spx_23oct_chg_pct']):.2f}%. FactSet has {MACRO['factset_beat_pct']}% of reporting companies beating estimates and the "
                 f"index on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages. The "
                 "data ran hot - producer prices up 1.3% in September, retail sales 0.8% - but "
-                f"the hike has stayed out of October: FedWatch had it at {MACRO['fed_hike_odds_oct']}% on 26 Oct, "
-                "two days before the decision, and the 10-year closed at 5.00% on the 23rd. The consumer is the "
+                f"the hike has stayed out of October: FedWatch had it at {MACRO['fed_hike_odds_oct']}% on 27 Oct, "
+                "the eve of the decision, and the 10-year closed at 5.00% on the 23rd. The consumer is the "
                 "weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two "
                 "structural points: the US is a net energy EXPORTER, a relative tailwind with "
                 f"Brent +{MACRO['brent_yoy']:.1f}% y/y, and NDX at 22.4x forward on its last verified reading sat "
@@ -2671,9 +2691,9 @@ for r in REGIONS.values():
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 2.0,
      "HELD at 2.0. Nothing new from the Fed before Wednesday's decision, and the pricing "
-     f"barely moved: CME FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on 26 Oct, from "
-     f"{MACRO['fed_hike_odds_oct_prev']}% on the 23rd, and one by December at {MACRO['fed_hike_odds_dec']}%, from {MACRO['fed_hike_odds_dec_prev']}% "
-     f"on the 23rd and {MACRO['fed_hike_odds_dec_22oct_am']:.0f}% on the morning of the 22nd. On official "
+     f"barely moved: CME FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on 27 Oct, from "
+     f"{MACRO['fed_hike_odds_oct_prev']}% on the 26th, and one by December at {MACRO['fed_hike_odds_dec']}% on the 26th, from "
+     f"{MACRO['fed_hike_odds_dec_prev']}% on the 23rd and {MACRO['fed_hike_odds_dec_22oct_am']:.0f}% on the morning of the 22nd. On official "
      "closes the 10-year was 5.12% on the 20th, 5.13% on the 21st, 4.96% on the 22nd and "
      "5.00% on the 23rd, back up 4bp (market close 4.988%), with the 2-year at 4.69% and "
      "the 30-year at 5.33%. All of it is below the 7 Oct intraday high of 5.365%, which is "
@@ -2718,7 +2738,7 @@ DRIVERS = [
      "(2027) stands. The market is testing the spenders: on 22 Oct Meta's spending plans "
      "cost it about 7% and chip stocks fell more than 6%; on the 23rd the chips steadied, "
      f"the Philadelphia semiconductor index up {MACRO['sox_23oct_chg_pct']}%, while the Nasdaq slipped "
-     f"{abs(MACRO['nasdaq_23oct_chg_pct']):.2f}%; on the 26th it rose {MACRO['nasdaq_chg_pct']:.2f}% on Anthropic's IPO "
+     f"{abs(MACRO['nasdaq_23oct_chg_pct']):.2f}%; on the 26th it rose {MACRO['nasdaq_26oct_chg_pct']:.2f}% on Anthropic's IPO "
      "filing, which eased the fear that the data-centre build-out cannot pay. In Seoul the KOSPI fell "
      f"{abs(MACRO['kospi_22oct_chg_pct'])}% on the 22nd, SK Hynix "
      f"{abs(MACRO['skhynix_22oct_chg_pct'])}% and Samsung Electronics "
@@ -2729,7 +2749,7 @@ DRIVERS = [
      f"HELD at 8.0, and now re-verified for the US: FactSet had the S&P on {MACRO['spx_fwd_pe']}x "
      f"forward earnings on 23 Oct, below its five-year ({MACRO['spx_fwd_pe_5y']}x) and ten-year "
      f"({MACRO['spx_fwd_pe_10y']}x) averages and the {MACRO['spx_fwd_pe_q3end']:.1f}x of 30 Sep. The S&P closed at "
-     f"{MACRO['spx_close']:.2f} on the 26th, {MACRO['spx_off_record_pct']}% below its 7818.93 record of 6 Oct. Asia was "
+     f"{MACRO['spx_close']:.2f} on the 27th, {MACRO['spx_off_record_pct']}% below its 7818.93 record of 6 Oct. Asia was "
      "on 10.5x forward before its October fall and is cheaper on the same earnings, the "
      f"KOSPI {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close at {MACRO['kospi_latest']:,.2f} on the 27th, after its rebound; "
      "NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y "
@@ -2740,9 +2760,10 @@ DRIVERS = [
     # Asia sold off and the Gulf escalated. CUT 2.75 -> 2.5 (2026-10-23): the VIX's
     # 14% jump on the AI sell-off undid the calm the raise rested on. HELD 2026-10-26.
     ("Volatility & risk appetite", 0.1, 2.5,
-     f"HELD at 2.5. The VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 26 Oct as stocks "
-     f"rose and oil eased, back under the long-run {MACRO['vix_longrun']} and its {MACRO['vix_latest_high']} high of "
-     f"16 Oct, after rising on the 23rd as oil climbed and the Dow fell {abs(MACRO['dow_23oct_chg_pct']):.2f}%. Asia "
+     f"HELD at 2.5. The VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 27 Oct, after "
+     f"{abs(MACRO['vix_reported_moves']['2026-10-26'])}% on the 26th, as stocks rose two days running and oil eased - "
+     f"under the long-run {MACRO['vix_longrun']} and well off its {MACRO['vix_latest_high']} high of 16 Oct, after "
+     f"rising on the 23rd as oil climbed and the Dow fell {abs(MACRO['dow_23oct_chg_pct']):.2f}%. Asia "
      f"followed on the 27th: the KOSPI rose {MACRO['kospi_latest_chg_pct']:.2f}% and the Nikkei "
      f"{MACRO['nikkei_latest_chg_pct']:.2f}%, after falling {abs(MACRO['kospi_26oct_chg_pct']):.2f}% and "
      f"{abs(MACRO['nikkei_26oct_chg_pct']):.2f}% on the 26th; on the 22nd they had fallen "
@@ -2850,14 +2871,14 @@ GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 
 # A check requires every number in a summary to appear in its full note, so a
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
-    "Monetary policy & liquidity": f"Held: FedWatch had a December hike at {MACRO['fed_hike_odds_dec']}% on 26 Oct, two days before the Fed meets; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
+    "Monetary policy & liquidity": f"Held: FedWatch had a December hike at {MACRO['fed_hike_odds_dec']}% on the 26th and an October one at {MACRO['fed_hike_odds_oct']}% on the eve of the decision; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
     "Inflation trajectory": f"Held: no new US price data; Brent settled at ${MACRO['brent']:.2f} on 26 Oct as Tehran talks began, +{MACRO['brent_yoy']:.1f}% y/y.",
     "Growth momentum": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; the US third-quarter estimate is due on 29 Oct.",
     "Corporate earnings": f"Held, the strongest pillar: {MACRO['factset_beat_pct']}% of reporting S&P companies beat estimates and third-quarter growth is blending at {MACRO['factset_q3_growth']}% (FactSet, 23 Oct).",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Held: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 26 Oct, back under its long-run {MACRO['vix_longrun']}, and Asia rebounded on the 27th.",
+    "Volatility & risk appetite": f"Held: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 27 Oct, a second fall, under its long-run {MACRO['vix_longrun']}, and Asia rebounded the same day.",
     "Geopolitics & energy": f"Held: the Houthis kept firing at Saudi Arabia as Saudi, Turkish and Pakistani officials met Iran's president in Tehran on the 26th; Brent settled at ${MACRO['brent']:.2f}, Hormuz flows near 14 mb/d.",
-    "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 26 Oct as Anthropic's IPO filing lifted tech; FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}%.",
+    "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 27 Oct as chip stocks extended the rally; FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on the eve of the decision.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
     "ASIA": f"Held: the KOSPI rose {MACRO['kospi_latest_chg_pct']:.2f}% to {MACRO['kospi_latest']:,.2f} on 27 Oct as the AI trade revived, still {MACRO['kospi_off_2oct_pct']}% below 2 Oct; the Nikkei rose {MACRO['nikkei_latest_chg_pct']:.2f}%.",
     "PHILIPPINES": f"Held: the peso closed past 64 for the first time, at a record {MACRO['usdphp']:.2f} on 27 Oct, as the PSEi rebounded {MACRO['psei_chg_pct']:.2f}%; 91-day bills jumped to 6.624% after BSP's 50bp hike.",
@@ -3780,7 +3801,16 @@ BASE_UNDER_MACRO = summarise(BASELINE_W, "net_macro")
 # quietly LOOSEN the objective. It is scaled by the same factor as the drawdowns
 # it constrains, so the constraint means what it meant before.
 DD_BUDGET_IMPROVEMENT = round(2.0 * DD_HORIZON_SCALAR, 2)
-DD_CAP = abs(BASE_UNDER_MACRO["maxdd"]) - DD_BUDGET_IMPROVEMENT
+DD_CAP_DERIVED = abs(BASE_UNDER_MACRO["maxdd"]) - DD_BUDGET_IMPROVEMENT
+# THE BUDGET IS THE OWNER'S FROM v75 (2026-10-27: "Apply the 25% drawdown to all
+# portfolios"), after a sweep of the rule from 18% to 32% found Portfolio C's trade-off
+# bending there: below 25% each point of drawdown accepted earned about 0.11pp a year,
+# above it about 0.07pp. Until v74 the budget was the derivation above (-26.97% on 26
+# Oct); it stays published beside the owner's figure as the reference it replaced, and
+# it is the ceiling the budget gauge below may raise the budget towards, never past.
+DD_BUDGET_OWNER = 25.0
+DD_BUDGET_OWNER_DATE = "2026-10-27"
+DD_CAP = DD_BUDGET_OWNER
 
 # ONE SELECTION RULE FOR EVERY PORTFOLIO - unified 2026-10-07 at the owner's
 # instruction ("the best and recommended approach to reach max growth ... while
@@ -3954,12 +3984,14 @@ def _key(m):
     return (abs(m[1]), -m[0], abs(m[2]), m[3])
 
 class _Pick:
-    """The rule, streamed: the best feasible CAGR, and every feasible mix within the tie."""
-    def __init__(self):
+    """The rule, streamed: the best feasible CAGR, and every feasible mix within the tie.
+    The cap is the live budget unless an alternative is named (the budget gauge's steps)."""
+    def __init__(self, cap=None):
         self.best, self.band, self.n = -1e9, [], 0
+        self.cap = DD_CAP if cap is None else cap
     def add(self, m):
         r_d, d_d, raw = m[0], m[1], m[2]
-        if abs(raw) > DD_CAP + 1e-9 or abs(d_d) > DD_CAP + 1e-9:
+        if abs(raw) > self.cap + 1e-9 or abs(d_d) > self.cap + 1e-9:
             return
         self.n += 1
         if r_d > self.best:
@@ -3992,12 +4024,18 @@ _COLS_P = ["net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
 _PK = {"a": _Pick(), "b": _Pick(), "c": _Pick()}
 _PK.update({("b", k): _Pick() for k in _WI_KEYS})
 _PK.update({("c", k): _Pick() for k in _WI_KEYS})
+# The budget gauge's alternative steps (2026-10-27), chosen by the same rule in the same
+# pass: what A, B and C would hold if the budget moved to each.
+DDG_STEPS = (24.0, 26.0, 27.0)
+_PKX = {(x, c): _Pick(c) for x in "abc" for c in DDG_STEPS}
 _FRONT_BUCKET, _BEST_RATIO_M, UNIV_N_TOTAL = {}, None, 0
 for _seq, (_idx, _u) in enumerate(univ_mixes()):
     _ms = _measure(_idx, _u, _COLS_U)
     UNIV_N_TOTAL += 1
     _a = _ms[0] + (_seq, _idx, _u); _b = _ms[1] + (_seq, _idx, _u)
     _PK["a"].add(_a); _PK["b"].add(_b)
+    for _c in DDG_STEPS:
+        _PKX[("a", _c)].add(_a); _PKX[("b", _c)].add(_b)
     for _k, _m in zip(_WI_KEYS, _ms[2:]):
         _PK[("b", _k)].add(_m + (_seq, _idx, _u))
     # the macro frontier and the best pure ratio, over every limit-respecting mix
@@ -4012,6 +4050,8 @@ for _seq, (_idx, _u) in enumerate(univ_mixes()):
 for _seq, (_idx, _u) in enumerate(univ_mixes(pinned=True)):
     _ms = _measure(_idx, _u, _COLS_P)
     _PK["c"].add(_ms[0] + (_seq, _idx, _u))
+    for _c in DDG_STEPS:
+        _PKX[("c", _c)].add(_ms[0] + (_seq, _idx, _u))
     for _k, _m in zip(_WI_KEYS, _ms[1:]):
         _PK[("c", _k)].add(_m + (_seq, _idx, _u))
 
@@ -4062,6 +4102,93 @@ def _wi_entry(k):
             "c": {"weights": [round(x * 100) for x in c[0]], "cagr": c[2][0], "maxdd": c[2][1]},
             "a": {"cagr": a["cagr"], "maxdd": a["maxdd"]}}
 WHAT_IF_UNIV = {k: _wi_entry(k) for k in _WI_KEYS if k != "live"}
+
+# ----------------------------------------------------------------------------
+# THE DRAWDOWN BUDGET GAUGE (owner, 2026-10-27: "a best recommended gauge 1 to 5 when to
+# increase the drawdown of the portfolio based on macro sentiments, volatility, market
+# trends of 3, 5 and 10yrs"). ADVISORY: it never moves DD_CAP by itself. It reads, at each
+# view, three things this model already publishes on 1-5, 3 neutral:
+#   MACRO  the driver gauge at that horizon (GAUGE_PATH) - the seven drivers' path;
+#   VOL    the forward implied volatility of the years the view covers against the
+#          long-run level every base return assumes: 3 - (forward / long-run - 1) / step,
+#          one point per DDG_VOL_STEP (10%) of the long-run level, clipped to 1-5. The
+#          step is an ASSUMPTION, stated as one;
+#   TREND  the market-trend score at that horizon, averaged over the trend markets.
+# A view's reading is the mean of the three. THE GAUGE READS THE 3- AND 5-YEAR VIEWS ONLY,
+# weighted by the years of the first five each covers (3/5 and 2/5): the 10-year view is
+# neutral by construction for the drivers and the trend, and its volatility years sit at
+# the long run, so it carries no timing information - it is what the fixed budget
+# itself stands for. Weighted in, it would pin the gauge between 2 and 4 and make the
+# outer bands unreachable. It is shown beside the other two, not hidden.
+# The reading maps to a step of the budget (DDG_BANDS); a step away from 25% is acted on
+# only when two consecutive month-end reviews read the same band, and a RAISE also needs
+# both risk guards clear: the Geopolitics & energy reading above 2.0 (1-10) - the Hormuz
+# tail the stress grid prices - and the VIX at or below its long run. The ceiling is 27%,
+# the derived budget the owner's figure replaced; the floor 24%.
+DDG_VOL_STEP = 0.10
+DDG_VIEWS = tuple(h for h in HZ_KEYS if h != HZ_LABEL)
+DDG_W = {h: round((_HZ_YEARS[h] - (_HZ_YEARS[DDG_VIEWS[i - 1]] if i else 0.0))
+                  / _HZ_YEARS[DDG_VIEWS[-1]], 2) for i, h in enumerate(DDG_VIEWS)}
+DDG_BANDS = [  # [lo, hi) on the 1-5 reading, the budget it points to, the action
+    (1.0, 2.5, 24.0, "Tighten to 24%"),
+    (2.5, 3.5, 25.0, "Hold at 25%"),
+    (3.5, 4.25, 26.0, "Raise to 26%"),
+    (4.25, 5.0001, 27.0, "Raise to 27%"),
+]
+DDG_GEO_FLOOR = 2.0
+DDG_REVIEWS_NEEDED = 2
+# Month-end readings on record, oldest first: (date, reading). The first is due at the
+# 31 Oct roll; until two share a band, no step is taken.
+DDG_REVIEWS = []
+_VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}
+
+def _ddg_vol(h):
+    return round(min(5.0, max(1.0, 3.0 - (_VOL_FWD[h] / MACRO["vix_longrun"] - 1) / DDG_VOL_STEP)), 2)
+
+def _ddg_trend(h):
+    return round(sum(TREND[f]["score"][h] for f in TREND) / len(TREND), 2)
+
+DDG_PARTS = {h: {"macro": GAUGE_PATH[h], "vol": _ddg_vol(h), "trend": _ddg_trend(h),
+                 "vol_forward": _VOL_FWD[h]} for h in HZ_KEYS}
+for _h in HZ_KEYS:
+    _p = DDG_PARTS[_h]
+    _p["reading"] = round((_p["macro"] + _p["vol"] + _p["trend"]) / 3, 2)
+DDG_VALUE = round(sum(DDG_PARTS[h]["reading"] * DDG_W[h] for h in DDG_VIEWS), 2)
+DDG_BAND = next(b for b in DDG_BANDS if b[0] <= DDG_VALUE < b[1])
+_geo_now = next(s_ for n_, _, s_, _ in DRIVERS if n_.startswith("Geopolitics"))
+DDG_GUARDS = [
+    {"name": "persistence", "ok": (len(DDG_REVIEWS) >= DDG_REVIEWS_NEEDED and all(
+        next(b for b in DDG_BANDS if b[0] <= v_ < b[1]) == DDG_BAND
+        for _, v_ in DDG_REVIEWS[-DDG_REVIEWS_NEEDED:])),
+     "reviews": len(DDG_REVIEWS), "needed": DDG_REVIEWS_NEEDED, "applies_to": "any step"},
+    {"name": "geopolitics", "ok": _geo_now > DDG_GEO_FLOOR, "reading": _geo_now,
+     "floor": DDG_GEO_FLOOR, "applies_to": "raise"},
+    {"name": "vix", "ok": MACRO["vix_latest"] <= MACRO["vix_longrun"], "reading": MACRO["vix_latest"],
+     "longrun": MACRO["vix_longrun"], "applies_to": "raise"},
+]
+_raise = DDG_BAND[2] > DD_CAP
+_step_ok = all(g_["ok"] for g_ in DDG_GUARDS
+               if g_["applies_to"] == "any step" or (g_["applies_to"] == "raise" and _raise))
+DDG_RECOMMENDED = DDG_BAND[2] if (DDG_BAND[2] != DD_CAP and _step_ok) else DD_CAP
+DDG_BLOCKED_BY = [g_["name"] for g_ in DDG_GUARDS if DDG_BAND[2] != DD_CAP and not g_["ok"]
+                  and (g_["applies_to"] == "any step" or _raise)]
+
+def _alt_entry(cap):
+    out = {}
+    for x in "abc":
+        if cap == DD_CAP:
+            w_, n_, best = {"a": PA_W, "b": PB_W, "c": PC_W}[x], _PK[x].n, _PK[x].best
+        else:
+            w_, _band, _ = _PKX[(x, cap)].result(); n_, best = _PKX[(x, cap)].n, _PKX[(x, cap)].best
+        m_ = summarise(w_, "net_macro", UNIV)
+        out[x] = {"weights": [round(v * 100) for v in w_], "cagr": m_["cagr"], "maxdd": m_["maxdd"],
+                  "vol": m_["vol"], "ret_per_dd": m_["ret_per_dd"], "n_feasible": n_, "best": best,
+                  "hormuz_dd": next(r for r in run_scenarios(w_, "net_macro", UNIV)
+                                    if r["name"].startswith("Hormuz"))["maxdd"]}
+    return out
+def ddg_alt():
+    """A, B and C at each step, measured when the payload is built (the stress grid comes later)."""
+    return {c: _alt_entry(c) for c in sorted(set(DDG_STEPS) | {DD_CAP})}
 # The stress size the page quotes. Until v62 only the four-fund what-ifs carried it,
 # so the page's sentence fell back to a typed "0.25pp" that nothing tied to this input.
 WHAT_IF_UNIV["asia_fee_hi"]["stress_pp"] = ASIA_FEE_STRESS
@@ -5035,6 +5162,17 @@ def payload():
                         "dd_cap": round(DD_CAP, 2),
                         "in_budget": abs(PC["maxdd"]) <= DD_CAP + 1e-9,
                         "cagr_no_rerating": summarise(PC_W, "net_asia_norerate", UNIV)["cagr"]},
+        "dd_budget": {"cap": DD_CAP, "source": "owner", "date": DD_BUDGET_OWNER_DATE,
+                      "derived_ref": round(DD_CAP_DERIVED, 2), "improvement": DD_BUDGET_IMPROVEMENT},
+        "dd_gauge": {"value": DDG_VALUE, "views": list(DDG_VIEWS), "w": DDG_W,
+                     "parts": DDG_PARTS, "vol_step": DDG_VOL_STEP, "longrun": MACRO["vix_longrun"],
+                     "bands": [{"lo": b[0], "hi": min(b[1], 5.0), "cap": b[2], "action": b[3]}
+                               for b in DDG_BANDS],
+                     "band": {"lo": DDG_BAND[0], "hi": min(DDG_BAND[1], 5.0), "cap": DDG_BAND[2],
+                              "action": DDG_BAND[3]},
+                     "guards": DDG_GUARDS, "recommended_cap": DDG_RECOMMENDED,
+                     "blocked_by": DDG_BLOCKED_BY, "reviews": DDG_REVIEWS,
+                     "alt": {f"{c:.0f}": v for c, v in ddg_alt().items()}},
         "universe": {"limits": {"max_funds": UNIV_MAX_FUNDS, "max_w": round(UNIV_MAX_W * 100),
                            "min_cash": round(UNIV_MIN_CASH * 100)},
                 "n_total": UNIV_N_TOTAL,
@@ -5118,7 +5256,9 @@ def report():
       f"maxDD {b['base']['maxdd']}%  ret/DD {b['base']['ret_per_dd']}")
     A(f"      macro view     : CAGR {b['under_macro']['cagr']}%  vol {b['under_macro']['vol']}%  "
       f"maxDD {b['under_macro']['maxdd']}%  ret/DD {b['under_macro']['ret_per_dd']}")
-    A(f"    DD budget {o['dd_cap']}% = |{b['under_macro']['maxdd']}| - {DD_BUDGET_IMPROVEMENT}; "
+    A(f"    DD budget {o['dd_cap']}% (the owner's, {DD_BUDGET_OWNER_DATE}); the derivation it replaced "
+      f"|{b['under_macro']['maxdd']}| - {DD_BUDGET_IMPROVEMENT} = {round(DD_CAP_DERIVED, 2)}%; "
+      f"budget gauge {DDG_VALUE} -> {DDG_BAND[3]}, recommended {DDG_RECOMMENDED:.0f}%; "
       f"rule: best CAGR in budget, then lowest DD within {p['universe']['tie_pp']:.2f}pp; "
       f"{p['universe']['n_total']} mixes under the limits")
     for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the 10-year view"), ("PORTFOLIO B", "portfolio_b", "the 3/5/10-year view")):
@@ -6445,10 +6585,61 @@ def report():
     checks.append(("the published drawdown cap is the one actually enforced, the same for A, B and C",
                    abs(cap - DD_CAP) < 5e-9
                    and p["portfolio_a"]["dd_cap"] == p["portfolio_b"]["dd_cap"] == p["portfolio_c"]["dd_cap"]))
-    # ...and a reader can rebuild it from the reference printed beside it.
-    checks.append(("the published budget is the reference baseline's macro drawdown less the stated improvement",
-                   abs(cap - round(abs(p["baseline"]["under_macro"]["maxdd"]) - DD_BUDGET_IMPROVEMENT, 2)) < 5e-9
+    # THE OWNER'S BUDGET (v75): 25%, enforced on every pick; the derivation it replaced is
+    # published beside it, and a reader can still rebuild that from the reference baseline.
+    checks.append(("the budget is the owner's 25%, the one enforced, dated",
+                   cap == 25.0 == DD_BUDGET_OWNER == p["dd_budget"]["cap"]
+                   and p["dd_budget"]["source"] == "owner" and p["dd_budget"]["date"] <= AS_OF))
+    checks.append(("the derived reference it replaced is the baseline's macro drawdown less the stated improvement",
+                   abs(p["dd_budget"]["derived_ref"] - round(abs(p["baseline"]["under_macro"]["maxdd"])
+                                                              - DD_BUDGET_IMPROVEMENT, 2)) < 5e-9
                    and abs(DD_BUDGET_IMPROVEMENT - round(2.0 * p["dd_model"]["horizon_scalar"], 2)) < 5e-9))
+    # THE BUDGET GAUGE (v75): every part re-derived from the published inputs it reads.
+    _dg = p["dd_gauge"]
+    checks.append(("the budget gauge's parts are the published driver gauge, forward vol and trend scores at each view",
+                   all(_dg["parts"][h]["macro"] == p["gauge_path"][h]
+                       and _dg["parts"][h]["trend"] == round(sum(v["score"][h] for v in p["trend"]["sleeves"].values())
+                                                             / len(p["trend"]["sleeves"]), 2)
+                       and _dg["parts"][h]["vol"] == round(min(5.0, max(1.0, 3.0 - (
+                           next(v["forward"] for v in p["vol_ts"] if v["label"] == h) / p["macro"]["vix_longrun"] - 1)
+                           / _dg["vol_step"])), 2)
+                       and _dg["parts"][h]["reading"] == round((_dg["parts"][h]["macro"] + _dg["parts"][h]["vol"]
+                                                               + _dg["parts"][h]["trend"]) / 3, 2)
+                       for h in HZ_KEYS)))
+    checks.append(("the budget gauge reads the 3- and 5-year views by their share of the first five years, the 10-year anchor shown but not weighted",
+                   _dg["views"] == ["3Y", "5Y"] and _dg["w"] == {"3Y": 0.6, "5Y": 0.4}
+                   and _dg["value"] == round(sum(_dg["parts"][h]["reading"] * _dg["w"][h] for h in _dg["views"]), 2)
+                   and 1.0 <= _dg["value"] <= 5.0 and HZ_LABEL in _dg["parts"]))
+    _bands = _dg["bands"]
+    checks.append(("the gauge's bands tile 1-5 without a gap, step 1pp from 24% to 27%, and hold at the owner's 25%",
+                   _bands[0]["lo"] == 1.0 and _bands[-1]["hi"] == 5.0
+                   and all(a["hi"] == b["lo"] for a, b in zip(_bands, _bands[1:]))
+                   and [b["cap"] for b in _bands] == [24.0, 25.0, 26.0, 27.0]
+                   and any(b["cap"] == p["dd_budget"]["cap"] and b["lo"] <= 3.0 < b["hi"] for b in _bands)
+                   and _dg["band"]["lo"] <= _dg["value"] < _dg["band"]["hi"] + (1e-9 if _dg["band"]["hi"] == 5.0 else 0)))
+    # runbook 107: a weighted view that is neutral by construction pins the gauge inside
+    # its outer bands. Drive the weighted views to 1 and to 5, the 10-year held where it is.
+    _ext = lambda v: round(sum((v if h != HZ_LABEL else _dg["parts"][h]["reading"]) * w
+                               for h, w in _dg["w"].items()), 2)
+    checks.append(("every band of the gauge is reachable: the weighted views at 1 and at 5 cross the 24% and 27% bands",
+                   _ext(1.0) < _bands[0]["hi"] and _ext(5.0) >= _bands[-1]["lo"]))
+    _gd = {g["name"]: g for g in _dg["guards"]}
+    _rz = _dg["band"]["cap"] > p["dd_budget"]["cap"]
+    _okstep = all(g["ok"] for g in _dg["guards"] if g["applies_to"] == "any step" or (_rz and g["applies_to"] == "raise"))
+    checks.append(("the recommendation follows the band only when every guard that applies is clear, never past 27% or the derived reference",
+                   _gd["geopolitics"]["ok"] == (_gd["geopolitics"]["reading"] > _gd["geopolitics"]["floor"])
+                   and _gd["vix"]["ok"] == (p["macro"]["vix_latest"] <= p["macro"]["vix_longrun"])
+                   and _gd["persistence"]["ok"] == (_gd["persistence"]["reviews"] >= _gd["persistence"]["needed"]
+                                                    and _gd["persistence"]["ok"])
+                   and _dg["recommended_cap"] == (_dg["band"]["cap"] if _okstep else p["dd_budget"]["cap"])
+                   and _dg["recommended_cap"] <= 27.0 <= p["dd_budget"]["derived_ref"] + 0.05))
+    _alt = _dg["alt"]
+    checks.append(("the gauge's 25% step is the published A, B and C, and each step's picks sit inside their own cap",
+                   all(_alt["25"][x]["weights"] == p[f"portfolio_{x}"]["weights"] for x in "abc")
+                   and all(abs(_alt[c][x]["maxdd"]) <= float(c) + 1e-9 for c in _alt for x in "abc")))
+    checks.append(("a looser step never lowers the best return the rule can reach",
+                   all(_alt[a][x]["best"] <= _alt[b][x]["best"] + 1e-9
+                       for x in "abc" for a, b in zip(sorted(_alt, key=float), sorted(_alt, key=float)[1:]))))
     checks.append(("the published horizon scalar reproduces the enforced one",
                    abs(p["dd_model"]["horizon_scalar"] - DD_HORIZON_SCALAR) < 5e-9))
     # PORTFOLIO B (chosen by the rule since v56). The checks are about measurement:
@@ -6535,7 +6726,7 @@ def report():
     checks.append(("the review's two picks order as their rules say: A the higher base case, the best-worst-case pick the better worst case",
                    MACRO["pa_review_date"] == MACRO["pd_review_date"] <= AS_OF
                    and (_dt.date.fromisoformat(AS_OF) - _dt.date.fromisoformat(MACRO["pd_review_date"])).days <= 14
-                   and MACRO["pa_review_dd"] <= DD_CAP + 1e-9 and MACRO["pa_review_band_n"] >= 1
+                   and MACRO["pa_review_dd"] <= DD_CAP_DERIVED + 1e-9 and MACRO["pa_review_band_n"] >= 1
                    and MACRO["pa_review_stress_dd"] >= MACRO["pa_review_dd"]
                    and 0 < MACRO["pa_review_pool_n"] <= MACRO["pd_review_n_funds"]))
     # The 24-fund re-run is recorded, not applied: the held picks hold none of the new
@@ -6552,6 +6743,8 @@ def report():
                    and all(MACRO[f"gbi_w_{x}_low"] >= MACRO[f"gbi_w_{x}_high"] >= 0 for x in "abc")
                    and sum(x[1] for x in MACRO["pa_review_mix"]) == 100
                    and "ATRUSEQ" not in p["portfolio_b"]["ids"]))
+    checks.append(("the held-out funds' what-if weights were run at the live drawdown budget, on or before today",
+                   MACRO["heldout_run_cap"] == p["dd_budget"]["cap"] and MACRO["heldout_run_date"] <= AS_OF))
     checks.append(("portfolio vol < weighted-average vol for A, B and C (diversification works)",
                    all(p[f"portfolio_{x_}"]["macro"]["vol"]
                        < sum(w / 100 * f["vol"] for w, f in zip(p[f"portfolio_{x_}"]["weights"], _five))
