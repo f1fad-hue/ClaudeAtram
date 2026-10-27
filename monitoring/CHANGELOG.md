@@ -2,6 +2,59 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-27 — v73: review of v72; rolled to Tuesday 27 Oct; KOSPI corrected; A, B, C and D unchanged
+
+At the owner's instruction: debug, code-review and sanity-check; re-research, fact-check
+and re-verify the data and math, funds, ETFs, stocks and fees, net 10-year CAGR and
+drawdown, the market trend, macro, volatility and regional analyses at 3, 5 and 10
+years, and the A-D selections from the 22-fund list; house cleanup.
+
+**Rolled (each cross-checked, each chaining from its previous close):**
+- **Peso, 27 Oct**: 64.17, 22 centavos weaker, the first close past 64 and a record for
+  a sixth session (Rappler and the Manila Times on BAP data). Year-to-date loss 8.38%.
+- **PSEi, 27 Oct**: +2.13% to 5,761.19, its best day since 1 Sep (BusinessWorld; Inquirer).
+- **KOSPI, 27 Oct**: +3.09% to 5,638.34, a sidecar on program buying, as Anthropic's IPO
+  filing revived the AI trade before SK Hynix reports (Asia Business Daily; Seoul
+  Economic Daily; MoneyToday). **Nikkei**: +1.73% to 63,268.32 (TradingKey; CNBC).
+- **VIX, 26 Oct**: 18.39, −5.45% (Yahoo's history, Investing.com, Cboe; AD HOC's 18.30
+  is the one outlier).
+- **Brent and WTI, 26 Oct**: $115.81 (−$0.91) and $101.76 (−$1.51) as Saudi Arabia's
+  defence minister, with Turkish and Pakistani officials, met Iran's president; the four
+  agreed to keep talking (CNBC; Reuters via Yahoo and Investing.com; Al Jazeera).
+
+**Held:** the 10-year at its 23 Oct official close (FRED and the Fed's H.15 have not
+published 26 Oct; the secondary prints run 4.986-5.00%); the VIX futures curve at the
+20 Oct settlements (no later strip found); FedWatch at its 26 Oct read; Brent's year-ago
+base at 23 Oct 2025 ($65.99), now exactly at its three-day bound - 24 Oct 2025's $65.94
+has one source - so the next roll must re-anchor to 27 Oct 2025. No driver, region,
+trend or volatility score moved: no new 3- or 5-year evidence, and a rebound session
+after a sell-off is not a regime. A, B, C and D, every fund's net return and drawdown,
+and every what-if are identical to v72.
+
+**Errors found and fixed:**
+- **The 26 Oct KOSPI was the wrong one of two prints** (v69-v72): 5,469.59 (−80.71,
+  TokenPost) was carried and the exchange figure, 5,469.47 (−80.83, −1.46%; Korea
+  Exchange data via UPI, Asia Business Daily, JoongAng), was set aside as "a feed
+  value". Both chain from 5,550.30, so the arithmetic could not choose; the source had
+  to, and the wrong one was trusted.
+- **"Planned" was a report**: the Asia note said SK Hynix rose "ahead of its planned
+  16tn-won special dividend"; the company says it is reviewing shareholder returns and
+  has decided nothing. It now says so.
+- **A fund figure traced by coincidence**: the 75 in Nasdaq Equity Income's "75%
+  Nasdaq-100" benchmark had no input, and from this roll the audit's ±0.5 tolerance
+  matched it to Brent's +75.5% y/y, silencing its warning. Verified (ATRAM's fund page,
+  uitf.com.ph, the fact sheet) and made an input.
+- **A Brent sentence the oil checks misread**: "Brent settled $0.91 lower at $115.81"
+  put the change where the checks read the level; caught by two engine checks before
+  publishing and reworded.
+
+**House cleanup:** nine CLAIMS rows rolled (USD/PHP, PSEi, the peso's YTD loss, Brent,
+WTI, Brent y/y, Nikkei, KOSPI, VIX); two 23 Oct VIX intraday inputs no longer quoted
+removed; the README's data line dated.
+
+**Checks:** engine 233/233; independent audit 416/416 (2 standing warnings, both fund
+fee notes); page validator 24/24 on the published copy (version 73, payload identical to `model/data.json`); mutations running on this build (count follows).
+
 ## 2026-10-27 — v72: review of v71; US equities rolled to Monday 26 Oct; A, B, C and D unchanged
 
 At the owner's instruction: debug, code-review and sanity-check; re-research, fact-check

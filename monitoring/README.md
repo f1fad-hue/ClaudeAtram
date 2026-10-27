@@ -165,6 +165,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+105. A TOLERANCE THAT TRACES CAN ALSO HIDE. A number with no input of its own will, sooner or
+   later, land within rounding of one that has: the fund's "75%" benchmark started tracing
+   to Brent's +75.5% y/y the day oil fell, and its warning went quiet. When a warning
+   disappears without a fix, ask what it matched.
+104. WHEN TWO PRINTS BOTH CHAIN, THE SOURCE DECIDES. The KOSPI's 5,469.59 and 5,469.47 each
+   reproduced from 5,550.30 with their own points change; the arithmetic could not pick,
+   so a news aggregator was preferred to the exchange's own figure for four versions.
+   Prefer the print that names the exchange, and keep the other in the comment beside it.
 103. A DICT TAKES THE LAST WORD SILENTLY. Adding a newer baseline above an older one under
    the same key left both in the source and only one in the data, and the note printed the
    older day's 90.0% as the newer day's. Nothing errors on a duplicated key, so the engine now
