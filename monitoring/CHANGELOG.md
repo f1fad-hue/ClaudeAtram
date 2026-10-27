@@ -117,7 +117,7 @@ runbook step 2 (the owner's budget), step 2b (re-run the held-out what-ifs when 
 moves), new step 2c (the month-end gauge review) and lessons 107 and 108.
 
 **Checks:** engine 237/237; independent audit 414/414 (2 standing warnings, both fund fee notes); page validator 25/25 on the
-published copy (version 75, payload identical to `model/data.json`); mutations (47 mutants) still running at this commit - the count follows in the next.
+published copy (version 75, payload identical to `model/data.json`); mutations 47/47 caught, the four new ones (budget back on the derived figure, gauge reading typed, a raise past a guard, a step's mix typed) among them.
 
 ## 2026-10-27 — v74: Portfolio D removed; A, B and C unchanged
 
