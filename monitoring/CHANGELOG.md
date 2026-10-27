@@ -53,7 +53,7 @@ WTI, Brent y/y, Nikkei, KOSPI, VIX); two 23 Oct VIX intraday inputs no longer qu
 removed; the README's data line dated.
 
 **Checks:** engine 233/233; independent audit 416/416 (2 standing warnings, both fund
-fee notes); page validator 24/24 on the published copy (version 73, payload identical to `model/data.json`); mutations running on this build (count follows).
+fee notes); page validator 24/24 on the published copy (version 73, payload identical to `model/data.json`); mutations 44/44 caught.
 
 ## 2026-10-27 — v72: review of v71; US equities rolled to Monday 26 Oct; A, B, C and D unchanged
 
