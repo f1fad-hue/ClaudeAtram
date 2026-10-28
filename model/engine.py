@@ -4051,6 +4051,19 @@ for _f in F + F_ADD:
 _WI_COL = {"vol_flat": "net_novol", "drags_neutral": "net_neutral",
            "asia_no_rerating": "net_asia_norerate", "asia_fee_hi": "net_asia_fee_hi",
            "trend_off": "net_notrend", "trend_alt": "net_trend_alt"}
+# EACH PORTFOLIO ON ITS OWN HORIZON (owner, 2026-10-28: "Update portfolio A to 10yrs
+# horizon and portfolio B to 3, 5, 10yrs horizons"). A is chosen on the 10-year column,
+# so its what-ifs are measured there too: the same change applied to the 10-year view.
+# That view carries no rates, energy or trend tilt and the curve's years 6-10, so four
+# of the six leave A where it is by construction - which is the finding, not a gap.
+for _f in F + F_ADD:
+    _f["net10_novol"] = round(_f["net_10y"] - _f["tilt_vol_10y"], 2)
+    _f["net10_neutral"] = round(_f["net_10y"] - _f["tilt_rates_10y"] - _f["tilt_energy_10y"], 2)
+    _f["net10_notrend"] = _f["net_10y"]          # the 10-year trend anchor is neutral
+    _f["net10_trend_alt"] = _f["net_10y"]
+    _f["net10_asia_norerate"] = round(_f["net_10y"] - MACRO["asia_rerating"] * _f["asia_rerating_share"], 2)
+    _f["net10_asia_fee_hi"] = round(_f["net_10y"] - (ASIA_FEE_STRESS if _f["id"] == "ATRASEQ" else 0.0), 2)
+_WI_COL10 = {k: "net10_" + v[4:] for k, v in _WI_COL.items()}
 
 # ---- THE SEARCH (rewritten 2026-10-22 for the eleven-fund universe) ----------
 # Until v62 the universe was every point of a 21^(n-1) grid, filtered - fine for five
@@ -4164,7 +4177,7 @@ def _full_units(idx, units):
 _WI_KEYS = list(_WI_COL)
 # "live" is the macro column again, sent down the what-if path: a check requires it to
 # return the published B, so the what-ifs are proved to answer the same question.
-_WI_COL["live"] = "net_macro"; _WI_KEYS.append("live")
+_WI_COL["live"] = "net_macro"; _WI_COL10["live"] = "net_10y"; _WI_KEYS.append("live")
 _COLS_U = ["net_10y", "net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
 # PORTFOLIO D, RETIRED (owner, 2026-10-27: "Remove portfolio D"). From v66 to v73 it was
 # the since-retired C's pinned set restricted to four funds - Money Market, Nasdaq Equity
@@ -4237,7 +4250,7 @@ UNIV_BEST_RATIO = (_brw, summarise(_brw, "net_macro", UNIV))
 # near-horizon inputs these change). All six come out of the one search above.
 def _wi_entry(k):
     b = _PK[("b", k)].result()
-    a = summarise(PA_W, _WI_COL[k], UNIV)
+    a = summarise(PA_W, _WI_COL10[k], UNIV)   # A on its own (10-year) view, v80
     return {"b": {"weights": [round(x * 100) for x in b[0]], "cagr": b[2][0], "maxdd": b[2][1]},
             "a": {"cagr": a["cagr"], "maxdd": a["maxdd"]}}
 WHAT_IF_UNIV = {k: _wi_entry(k) for k in _WI_KEYS if k != "live"}
@@ -4250,10 +4263,11 @@ def _alt_entry(cap):
             w_, n_, best = {"a": PA_W, "b": PB_W}[x], _PK[x].n, _PK[x].best
         else:
             w_, _band, _ = _PKX[(x, cap)].result(); n_, best = _PKX[(x, cap)].n, _PKX[(x, cap)].best
-        m_ = summarise(w_, "net_macro", UNIV)
+        col_ = "net_10y" if x == "a" else "net_macro"      # each on its own horizon (v80)
+        m_ = summarise(w_, col_, UNIV)
         out[x] = {"weights": [round(v * 100) for v in w_], "cagr": m_["cagr"], "maxdd": m_["maxdd"],
                   "vol": m_["vol"], "ret_per_dd": m_["ret_per_dd"], "n_feasible": n_, "best": best,
-                  "hormuz_dd": next(r for r in run_scenarios(w_, "net_macro", UNIV)
+                  "hormuz_dd": next(r for r in run_scenarios(w_, col_, UNIV)
                                     if r["name"].startswith("Hormuz"))["maxdd"]}
     return out
 def ddg_alt():
@@ -5267,7 +5281,7 @@ def payload():
                         "macro": PA, "base": PA_BASE, "ten": PA_10, "column": "net_10y",
                         "band_n": PA_BAND_N, "n_feasible": UNIV_N_FEAS["a"],
                         "is_review_pick": PA_IS_REVIEW, "review_outside": PA_REVIEW_OUTSIDE,
-                        "scenarios": run_scenarios(PA_W, "net_macro", UNIV),
+                        "scenarios": run_scenarios(PA_W, "net_10y", UNIV),   # its own horizon (v80)
                         "dd_cap": round(DD_CAP, 2),
                         # inside the budget on the 3/5/10-year view AS COMPUTED AND AS SHOWN
                         # (v77: the printed figure alone called A inside at -25.0% while its true
@@ -6266,8 +6280,10 @@ def report():
     # 1.0 volatility multiplier is the modelled path, so it must reproduce the
     # headline row of the portfolio it describes - CAGR, vol AND drawdown. Only
     # the drawdown ever disagreed, and nothing was checking it. (Audit 2026-09-09.)
+    # Each portfolio's zero-shock row is its OWN headline (v80): A's on the 10-year view.
+    _own = lambda q: q["ten"] if q["column"] == "net_10y" else q["macro"]
     for lab, port, scens in [("baseline", p["baseline"]["under_macro"], p["baseline"]["scenarios"])] + [
-            (f"Portfolio {x.upper()}", p[f"portfolio_{x}"]["macro"], p[f"portfolio_{x}"]["scenarios"])
+            (f"Portfolio {x.upper()}", _own(p[f"portfolio_{x}"]), p[f"portfolio_{x}"]["scenarios"])
             for x in "ab"]:
         base_row = next((x for x in scens if x["name"].startswith("Grind")), None)
         checks.append((f"{lab} zero-shock scenario reproduces the headline row",
@@ -6416,7 +6432,7 @@ def report():
     _live = _wi_entry("live")
     checks.append(("the what-if helper reproduces the published B on live inputs",
                    _live["b"]["weights"] == p["portfolio_b"]["weights"]
-                   and _live["a"]["cagr"] == p["portfolio_a"]["macro"]["cagr"]))
+                   and _live["a"]["cagr"] == p["portfolio_a"]["ten"]["cagr"]))
     checks.append(("each what-if column differs from the live one by exactly the tilt it removes",
                    all(abs(f2["net_macro"] - f2["net_novol"] - f2["tilt_vol"]) < 0.0051
                        and abs(f2["net_macro"] - f2["net_neutral"] - f2["tilt_rates"]
@@ -6775,6 +6791,17 @@ def report():
                    all(_alt[f"{DD_CAP:.0f}"][x]["weights"] == p[f"portfolio_{x}"]["weights"] for x in "ab")
                    and all(abs(_alt[c][x]["maxdd"]) <= float(c) + 1e-9 for c in _alt for x in "ab")
                    and all(set(_alt[c]) == {"a", "b"} for c in _alt)))
+    # EACH ON ITS OWN HORIZON (v80): the step in force reports A on its 10-year view and B
+    # on the 3/5/10-year view, and so do A's what-ifs - and on the 10-year view the four
+    # near-horizon what-ifs (volatility, drags, trend twice) cannot move A at all.
+    _wiu = p["universe"]["what_if"]
+    checks.append(("A and B are reported on their own horizons: the step in force and A's what-ifs on the 10-year view, B's on 3/5/10",
+                   _alt[f"{DD_CAP:.0f}"]["a"]["cagr"] == p["portfolio_a"]["ten"]["cagr"]
+                   and _alt[f"{DD_CAP:.0f}"]["a"]["maxdd"] == p["portfolio_a"]["ten"]["maxdd"]
+                   and _alt[f"{DD_CAP:.0f}"]["b"]["cagr"] == p["portfolio_b"]["macro"]["cagr"]
+                   and all(_wiu[k]["a"]["cagr"] == p["portfolio_a"]["ten"]["cagr"]
+                           for k in ("vol_flat", "drags_neutral", "trend_off", "trend_alt")
+                           if all(abs(f2["tilt_vol_10y"]) < 1e-9 for f2 in p["funds"] + p["portfolio_b"]["funds"]) or k != "vol_flat")))
     checks.append(("a looser step never lowers the best return the rule can reach",
                    all(_alt[a][x]["best"] <= _alt[b][x]["best"] + 1e-9
                        for x in "ab" for a, b in zip(sorted(_alt, key=float), sorted(_alt, key=float)[1:]))))

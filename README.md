@@ -54,11 +54,13 @@ Global Allocation.
 | | A · 10-year view | B · 3/5/10-year view |
 |---|---|---|
 | Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** |
-| 10y net CAGR after all fees | **7.11%** | 7.10% |
-| Expected max drawdown (10y) | −25.0% | **−24.9%** |
-| Return per unit of drawdown | 0.284 | **0.285** |
+| 10y net CAGR after all fees | **7.30%** | 7.10% |
+| Expected max drawdown (10y) | −24.9% | −24.9% |
+| Return per unit of drawdown | **0.293** | 0.285 |
 
-Both columns are on the 3/5/10-year view. Every portfolio is built from four analyses -
+Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B on
+the 3/5/10-year. On one basis, the 3/5/10-year view, A returns 7.11% at −25.0% against B's
+7.10% at −24.9%; on the 10-year view B returns 7.26% at −24.8%. Every portfolio is built from four analyses -
 the macro drivers, the market trend, the regional ranking and the volatility curve - each
 read at **3, 5 and 10 years** and weighted by the share of the ten-year holding it governs
 (3Y years 1-3, 30%; 5Y years 4-5, 20%; 10Y years 6-10, 50%). **One rule chooses both**, over the eleven funds within the review's

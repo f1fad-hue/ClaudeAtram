@@ -2,6 +2,58 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-28 — v80: each portfolio shown on its own horizon - A on 10 years, B on 3, 5 and 10; A and B unchanged
+
+At the owner's instruction: "Update portfolio A to 10yrs horizon and portfolio B to 3, 5, 10yrs
+horizons", then "Update portfolio A based on 10yrs volatility, market trend, macroeconomic
+sentiments and regional rankings deep analysis from the 22 atram lists. Update portfolio B based
+on 3, 5, 10yrs ... from the 22 atram lists." It followed the question of why the donut gave A
+7.11% and B 7.10%.
+
+**The selection already did this; the display did not.** Since v68 A has been chosen on the four
+analyses read at 10 years (`net_10y`) and since v71 B on all four at 3, 5 and 10 years weighted
+30 / 20 / 50 (`net_macro`), over the eleven funds of the 22-fund list whose fees are confirmed. But
+the page showed A on B's 3/5/10-year view - 7.11% / −25.0% at the centre of a donut headed "10-year
+view" - so the two could be compared on one basis. **From v80 every headline shows each portfolio on
+its own horizon**: A **7.30% / −24.9%** on the 10-year view, B **7.10% / −24.9%** on the 3/5/10-year
+view, both inside the 25% budget there. The like-for-like figures stay, labelled: on the 3/5/10-year
+view A is 7.11% / −25.0% (just past the budget before rounding, which is why B cannot hold A's mix);
+on the 10-year view B is 7.26% / −24.8%.
+
+**What each analysis adds, on each portfolio's own horizon** (net CAGR after all fees, in pp):
+
+| | Strategic | Regional | Volatility | Rates & energy (macro) | Trend | Net |
+|---|---|---|---|---|---|---|
+| A, 10-year | 7.09 | +0.22 | 0.00 | 0.00 | 0.00 | **7.30** |
+| B, 3/5/10-year | 7.07 | +0.11 | −0.01 | −0.05 | −0.01 | **7.10** |
+
+At 10 years the macro drivers are neutral (the base returns carry the average cycle), the volatility
+curve's years 6-10 sit at the long-run 19.5, and the trend's momentum and reversal evidence does not
+reach past year five - so the regional ranking is the analysis that moves A, by construction, not by
+omission. B reads all four, the drags of the near years included.
+
+**Changed:**
+- Engine: A's stress table, the Budget tab's steps and A's what-ifs are measured on its 10-year view
+  (new 10-year what-if columns; four of the six leave A unchanged there, since that view carries no
+  volatility, rates, energy or trend tilt; removing the Asia re-rating credit takes it to 7.21%
+  through Asian Multi-Asset Income's equity half). A check pins the step in force and the what-ifs to
+  each portfolio's own horizon.
+- Page: the donuts, the head-to-head table (with "Both on the 3/5/10-year view" and "Both on the 10Y
+  view" rows), "Who wins where", the ₱1M table, the stress table, the Portfolios note, the Report's
+  lede, conclusion and what-ifs, the trend note and the Budget step note.
+- Audit: the grind-on row, the budget steps and A's what-ifs re-derived on A's own view (the what-ifs
+  from the published 10-year tilts); a new check on the step in force; README's table on own horizons.
+- Validator row 11: the head-to-head table and the donut centres carry each portfolio's own figures.
+- README and CLAIMS on own horizons (A's worst case on ₱1M is ₱751,000 on its view).
+
+**Not changed:** the rule, the budget, the 28 Oct data, A's and B's weights. Brent's, WTI's and the
+VIX's 28 Oct closes still have one source each and stay at 27 Oct.
+
+**Checks:** engine 241/241; independent audit 408/408 (2 standing warnings, both fund fee notes);
+page validator 25/25 on the published copy (version 80, payload identical to `model/data.json`);
+mutations: 58 on a frozen copy, the two new ones (A's grind-on row back on B's view; the step in
+force showing A on B's view) caught in a quick run - the full count, and v79's, follow in the next.
+
 ## 2026-10-28 — v79: the Fed held; rolled to the 28 Oct US close; review; the page made concise; A and B unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search

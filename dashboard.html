@@ -564,6 +564,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
         <div class="dt2">Portfolio B</div>
         <div class="dn">3/5/10-year view</div>
         <div id="donutB"></div>
+        <div class="note" id="donutBlr" style="text-align:center;margin-top:2px">—</div>
       </div>
     </div>
     <div class="card" style="margin-top:12px">
@@ -581,9 +582,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <p class="eyebrow">Headline forecast &middot; A vs B</p>
     <div class="card">
       <div class="tw"><table class="dt" id="ptab"></table></div>
-      <p class="note">Both on the same macro-adjusted returns, the same fund forecasts and
-        the same drawdown budget, so the differences are the weights alone. The best figure in
-        each row is marked.</p>
+      <p class="note">Each on its own horizon &mdash; A on the 10-year forecasts, B on the
+        3/5/10-year &mdash; from the same fund forecasts and drawdown budget; the last two rows put
+        both on one basis. The best figure in each row is marked.</p>
     </div>
     <div class="card" id="deltacard"></div>
     <details class="card how">
@@ -629,6 +630,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <h2>What breaks it</h2>
     <div class="card">
       <div class="tw"><table class="dt" id="stab"></table></div>
+      <p class="note">A on its 10-year view, B on its 3/5/10-year view.</p>
     </div>
     <details class="card how">
       <summary>What each scenario assumes</summary>
@@ -641,8 +643,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <div class="card">
       <h3>&#8369;1,000,000 over ten years</h3>
       <div class="tw"><table class="dt" id="pesotab"></table></div>
-      <p class="note">Value compounds the net CAGR for ten years. The worst case applies
-        the expected drawdown to the <em>opening</em> &#8369;1,000,000.</p>
+      <p class="note">Each on its own horizon (A 10-year, B 3/5/10-year). Value compounds the
+        net CAGR for ten years; the worst case applies the expected drawdown to the
+        <em>opening</em> &#8369;1,000,000.</p>
     </div>
   </section>
 </div>
@@ -2407,7 +2410,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "net_notrend": 4.39,
    "net_trend_alt": 4.39,
    "net_asia_norerate": 4.39,
-   "net_asia_fee_hi": 4.39
+   "net_asia_fee_hi": 4.39,
+   "net10_novol": 4.27,
+   "net10_neutral": 4.27,
+   "net10_notrend": 4.27,
+   "net10_trend_alt": 4.27,
+   "net10_asia_norerate": 4.27,
+   "net10_asia_fee_hi": 4.27
   },
   {
    "id": "ATRQIAP",
@@ -2467,7 +2476,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "net_notrend": 7.61,
    "net_trend_alt": 7.56,
    "net_asia_norerate": 7.56,
-   "net_asia_fee_hi": 7.56
+   "net_asia_fee_hi": 7.56,
+   "net10_novol": 7.81,
+   "net10_neutral": 7.81,
+   "net10_notrend": 7.81,
+   "net10_trend_alt": 7.81,
+   "net10_asia_norerate": 7.81,
+   "net10_asia_fee_hi": 7.81
   },
   {
    "id": "ATRASEQ",
@@ -2536,7 +2551,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "net_notrend": 7.2,
    "net_trend_alt": 7.19,
    "net_asia_norerate": 6.19,
-   "net_asia_fee_hi": 6.94
+   "net_asia_fee_hi": 6.94,
+   "net10_novol": 7.32,
+   "net10_neutral": 7.32,
+   "net10_notrend": 7.32,
+   "net10_trend_alt": 7.32,
+   "net10_asia_norerate": 6.32,
+   "net10_asia_fee_hi": 7.07
   },
   {
    "id": "ATRGTEC",
@@ -2600,7 +2621,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "net_notrend": 9.2,
    "net_trend_alt": 9.14,
    "net_asia_norerate": 9.16,
-   "net_asia_fee_hi": 9.16
+   "net_asia_fee_hi": 9.16,
+   "net10_novol": 9.51,
+   "net10_neutral": 9.51,
+   "net10_notrend": 9.51,
+   "net10_trend_alt": 9.51,
+   "net10_asia_norerate": 9.51,
+   "net10_asia_fee_hi": 9.51
   }
  ],
  "corr": [
@@ -3623,37 +3650,37 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $114. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.61,
+    "cagr": 3.81,
     "vol": 20.4,
-    "maxdd": -45.5
+    "maxdd": -45.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.73,
+    "cagr": 4.92,
     "vol": 16.57,
-    "maxdd": -35.7
+    "maxdd": -35.6
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.44,
+    "cagr": 4.63,
     "vol": 18.49,
-    "maxdd": -40.4
+    "maxdd": -40.3
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.39,
+    "cagr": 9.58,
     "vol": 10.2,
-    "maxdd": -17.4
+    "maxdd": -17.3
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.11,
+    "cagr": 7.3,
     "vol": 12.75,
-    "maxdd": -25.0
+    "maxdd": -24.9
    }
   ],
   "dd_cap": 25.0,
@@ -3809,13 +3836,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       20,
       0
      ],
-     "cagr": 7.02,
-     "maxdd": -24.0,
+     "cagr": 7.2,
+     "maxdd": -23.8,
      "vol": 12.34,
-     "ret_per_dd": 0.292,
+     "ret_per_dd": 0.303,
      "n_feasible": 147099,
      "best": 7.2,
-     "hormuz_dd": -43.6
+     "hormuz_dd": -43.5
     },
     "b": {
      "weights": [
@@ -3855,13 +3882,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       20,
       0
      ],
-     "cagr": 7.11,
-     "maxdd": -25.0,
+     "cagr": 7.3,
+     "maxdd": -24.9,
      "vol": 12.75,
-     "ret_per_dd": 0.284,
+     "ret_per_dd": 0.293,
      "n_feasible": 165884,
      "best": 7.3,
-     "hormuz_dd": -45.5
+     "hormuz_dd": -45.4
     },
     "b": {
      "weights": [
@@ -3901,13 +3928,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       20,
       0
      ],
-     "cagr": 7.19,
-     "maxdd": -26.0,
+     "cagr": 7.39,
+     "maxdd": -25.9,
      "vol": 13.15,
-     "ret_per_dd": 0.277,
+     "ret_per_dd": 0.285,
      "n_feasible": 183892,
      "best": 7.39,
-     "hormuz_dd": -47.3
+     "hormuz_dd": -47.2
     },
     "b": {
      "weights": [
@@ -3947,13 +3974,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       15,
       0
      ],
-     "cagr": 7.28,
-     "maxdd": -26.9,
+     "cagr": 7.48,
+     "maxdd": -26.8,
      "vol": 13.56,
-     "ret_per_dd": 0.271,
+     "ret_per_dd": 0.279,
      "n_feasible": 201004,
      "best": 7.48,
-     "hormuz_dd": -48.8
+     "hormuz_dd": -48.7
     },
     "b": {
      "weights": [
@@ -4565,8 +4592,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.12,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     }
    },
    "drags_neutral": {
@@ -4588,7 +4615,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.2,
+     "cagr": 7.3,
      "maxdd": -24.9
     }
    },
@@ -4611,8 +4638,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.01,
-     "maxdd": -25.1
+     "cagr": 7.21,
+     "maxdd": -24.9
     }
    },
    "asia_fee_hi": {
@@ -4634,8 +4661,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.11,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     },
     "stress_pp": 0.25
    },
@@ -4658,8 +4685,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.14,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     }
    },
    "trend_alt": {
@@ -4681,8 +4708,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.11,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     }
    }
   }
@@ -4793,7 +4820,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "net_notrend": 6.51,
     "net_trend_alt": 6.51,
     "net_asia_norerate": 6.51,
-    "net_asia_fee_hi": 6.51
+    "net_asia_fee_hi": 6.51,
+    "net10_novol": 6.62,
+    "net10_neutral": 6.62,
+    "net10_notrend": 6.62,
+    "net10_trend_alt": 6.62,
+    "net10_asia_norerate": 6.62,
+    "net10_asia_fee_hi": 6.62
    },
    {
     "id": "ATRGHCP",
@@ -4861,7 +4894,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "net_notrend": 7.0,
     "net_trend_alt": 7.03,
     "net_asia_norerate": 7.03,
-    "net_asia_fee_hi": 7.03
+    "net_asia_fee_hi": 7.03,
+    "net10_novol": 7.11,
+    "net10_neutral": 7.11,
+    "net10_notrend": 7.11,
+    "net10_trend_alt": 7.11,
+    "net10_asia_norerate": 7.11,
+    "net10_asia_fee_hi": 7.11
    },
    {
     "id": "M_GINF",
@@ -4929,7 +4968,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "net_notrend": 7.17,
     "net_trend_alt": 7.17,
     "net_asia_norerate": 7.17,
-    "net_asia_fee_hi": 7.17
+    "net_asia_fee_hi": 7.17,
+    "net10_novol": 7.33,
+    "net10_neutral": 7.33,
+    "net10_notrend": 7.33,
+    "net10_trend_alt": 7.33,
+    "net10_asia_norerate": 7.33,
+    "net10_asia_fee_hi": 7.33
    },
    {
     "id": "M_GEO",
@@ -4997,7 +5042,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "net_notrend": 7.04,
     "net_trend_alt": 7.0,
     "net_asia_norerate": 7.0,
-    "net_asia_fee_hi": 7.0
+    "net_asia_fee_hi": 7.0,
+    "net10_novol": 7.25,
+    "net10_neutral": 7.25,
+    "net10_notrend": 7.25,
+    "net10_trend_alt": 7.25,
+    "net10_asia_norerate": 7.25,
+    "net10_asia_fee_hi": 7.25
    },
    {
     "id": "M_GCT",
@@ -5065,7 +5116,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "net_notrend": 7.05,
     "net_trend_alt": 7.05,
     "net_asia_norerate": 7.05,
-    "net_asia_fee_hi": 7.05
+    "net_asia_fee_hi": 7.05,
+    "net10_novol": 7.29,
+    "net10_neutral": 7.29,
+    "net10_notrend": 7.29,
+    "net10_trend_alt": 7.29,
+    "net10_asia_norerate": 7.29,
+    "net10_asia_fee_hi": 7.29
    },
    {
     "id": "ATRAMIP",
@@ -5129,7 +5186,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "net_notrend": 5.92,
     "net_trend_alt": 5.91,
     "net_asia_norerate": 5.41,
-    "net_asia_fee_hi": 5.91
+    "net_asia_fee_hi": 5.91,
+    "net10_novol": 6.04,
+    "net10_neutral": 6.04,
+    "net10_notrend": 6.04,
+    "net10_trend_alt": 6.04,
+    "net10_asia_norerate": 5.54,
+    "net10_asia_fee_hi": 6.04
    },
    {
     "id": "M_GALL",
@@ -5197,7 +5260,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "net_notrend": 6.31,
     "net_trend_alt": 6.29,
     "net_asia_norerate": 6.29,
-    "net_asia_fee_hi": 6.29
+    "net_asia_fee_hi": 6.29,
+    "net10_novol": 6.42,
+    "net10_neutral": 6.42,
+    "net10_notrend": 6.42,
+    "net10_trend_alt": 6.42,
+    "net10_asia_norerate": 6.42,
+    "net10_asia_fee_hi": 6.42
    }
   ],
   "macro": {
@@ -7461,7 +7530,7 @@ $("#corrnote").textContent = D.corr_note;
 (function () {
   /* B against A since 2026-10-21. Every sentence is
      conditioned on the data: weights, ranks and ties are read from the payload. */
-  const PA = D.portfolio_a, PB = D.portfolio_b, A = PA.macro, B = PB.macro, VC = D.vol_channel;
+  const PA = D.portfolio_a, PB = D.portfolio_b, A = PA.macro, Ao = PA.ten, B = PB.macro, VC = D.vol_channel;
   const W = PB.weights, WA = PA.weights, M = D.macro, IDS = PB.ids, NM = PB.shorts;
   const FX = Object.fromEntries(D.funds.concat(PB.funds).map(f => [f.id, f]));
   const fund = i => FX[IDS[i]];
@@ -7482,13 +7551,14 @@ $("#corrnote").textContent = D.corr_note;
   const edge = B.cagr - A.cagr, ddg = Math.abs(A.maxdd) - Math.abs(B.maxdd);
   $("#rlede").innerHTML =
     `The most weight goes to ${and_(top.map(i => `<strong>${NM[i]}</strong>`))}
-     (${num(W[top[0]] + "%")}${top.length > 1 ? " each" : ""}). B forecasts ${num(pc(B.cagr))}
-     against A's ${num(pc(A.cagr))}, with an expected drawdown of ${num(pc1(B.maxdd))}
-     against ${num(pc1(A.maxdd))}: ` +
+     (${num(W[top[0]] + "%")}${top.length > 1 ? " each" : ""}). Each on its own horizon, A forecasts
+     ${num(pc(Ao.cagr))} at ${num(pc1(Ao.maxdd))} on the 10-year view and B ${num(pc(B.cagr))} at
+     ${num(pc1(B.maxdd))} on the 3/5/10-year view. On B's view A returns ${num(pc(A.cagr))} at
+     ${num(pc1(A.maxdd))}, so B is ` +
     (Math.abs(edge) <= tie + 1e-9 ? `the same return at the model's precision, with less risk.`
      : edge > 0 ? `more return and less risk.`
      : `${num(Math.abs(edge).toFixed(2) + "pp")} less return for ${num(ddg.toFixed(1) + "pp")}
-        less drawdown.`);
+        less drawdown there.`);
 
   const V = D.vol_ts;
   $("#volpara").innerHTML =
@@ -7547,7 +7617,8 @@ $("#corrnote").textContent = D.corr_note;
   const gv = (B.ret_per_dd / A.ret_per_dd - 1) * 100;
   const gain = Math.abs(gv) < 1 ? Math.abs(gv).toFixed(1) : String(Math.abs(Math.round(gv)));
   $("#concl").innerHTML =
-    `Moving from A to B ` +
+    `Each on its own horizon, A forecasts ${num(pc(Ao.cagr))} at ${num(pc1(Ao.maxdd))} and B
+     ${num(pc(B.cagr))} at ${num(pc1(B.maxdd))}. On one basis, the 3/5/10-year view, moving from A to B ` +
     (Math.abs(edge) <= tie + 1e-9 ? `keeps` : edge >= 0 ? `raises` : `lowers`)
     + ` forecast ${HYN} net CAGR` + (Math.abs(edge) <= tie + 1e-9 ? ` level` : ``)
     + ` (${num(pc(A.cagr))} to ${num(pc(B.cagr))}) while cutting expected maximum drawdown
@@ -7556,7 +7627,7 @@ $("#corrnote").textContent = D.corr_note;
      ${num(gain + "%")} ${gv >= 0 ? "better" : "worse"}.`;
   $("#rone").innerHTML = `In one sentence: <strong>hold B, the 3/5/10-year view's pick, with
     ${and_(top.map(i => NM[i]))} as the core` +
-    (edge < -tie - 1e-9 ? `; A returns ${Math.abs(edge).toFixed(2)}pp a year more for
+    (edge < -tie - 1e-9 ? `; on B's view A returns ${Math.abs(edge).toFixed(2)}pp a year more for
        ${ddg.toFixed(1)}pp more drawdown` : Math.abs(edge) <= tie + 1e-9
        ? `; A's return is level at the model's precision, with ${ddg.toFixed(1)}pp more drawdown` : ``) + `.</strong>`;
 
@@ -7564,9 +7635,10 @@ $("#corrnote").textContent = D.corr_note;
      column, A re-measured on it (A is chosen on the 10-year view, which reads none of
      the near-horizon inputs these change). */
   const WI = D.universe.what_if, fa = FX.ATRASEQ, iAS = IDS.indexOf("ATRASEQ");
-  $("#wikey").textContent = `Each re-chooses B by the same rule on the changed input and re-measures A.`;
+  $("#wikey").textContent = `Each re-chooses B by the same rule on the changed input and re-measures A on its ${HYL} view.`;
   const BC = x => `B holds ${num(wj(x.b.weights))} for ${num(pc(x.b.cagr))}` +
-    (same(x.b.weights, W) ? ` (unchanged)` : ``) + `; A returns ${num(pc(x.a.cagr))}`;
+    (same(x.b.weights, W) ? ` (unchanged)` : ``) + `; A ` +
+    (x.a.cagr === Ao.cagr ? `stays at ${num(pc(x.a.cagr))} on its ${HYL} view` : `returns ${num(pc(x.a.cagr))} on its ${HYL} view`);
   $("#wiasia").innerHTML =
     (W[iAS] || WA[iAS] ? `` : `Neither A nor B holds it. `) +
     `Its target-fund charge (${num(fa.fee_target.toFixed(2) + "%")}) may be higher for a Hong
@@ -7575,7 +7647,10 @@ $("#corrnote").textContent = D.corr_note;
       : `${BC(WI.asia_fee_hi)}.`) +
     ` Without its ${num("+" + M.asia_rerating.toFixed(1) + "%")} re-rating credit, ` +
     (same(WI.asia_no_rerating.b.weights, W)
-      ? `B does not move either.` : `${BC(WI.asia_no_rerating)}.`);
+      ? `B does not move either` + (WI.asia_no_rerating.a.cagr === Ao.cagr ? `.`
+          : `; A, which carries the credit through Asian Multi-Asset Income's equity half, falls to
+             ${num(pc(WI.asia_no_rerating.a.cagr))} on its ${HYL} view.`)
+      : `${BC(WI.asia_no_rerating)}.`);
   $("#wi2").innerHTML = `With the Monetary and Geopolitics drivers at neutral,
     ${BC(WI.drags_neutral)}.`;
   $("#wi1").innerHTML = `At its long-run level, ${BC(WI.vol_flat)}.`;
@@ -7731,8 +7806,8 @@ $("#corrnote").textContent = D.corr_note;
   const goUp = up.length > 0, nx = goUp ? up[0] : dn[dn.length - 1], top = caps[caps.length - 1];
   const dC = x => Math.abs(AL[nx][x].cagr - AL[c0][x].cagr), dD = x => Math.abs(Math.abs(AL[nx][x].maxdd) - Math.abs(AL[c0][x].maxdd));
   $("#ddstepnote").innerHTML =
-    `${HYN[0].toUpperCase() + HYN.slice(1)} net CAGR after fees (above) and expected maximum drawdown (below) on the
-     3/5/10-year view, each mix chosen by the one rule inside that budget. A step ${goUp ? "up" : "down"} to ${nx}% ${goUp ? "adds" : "gives up"} ${["a", "b"].map(x =>
+    `${HYN[0].toUpperCase() + HYN.slice(1)} net CAGR after fees (above) and expected maximum drawdown (below), A on
+     its ${HY} view and B on the 3/5/10-year, each mix chosen by the one rule inside that budget. A step ${goUp ? "up" : "down"} to ${nx}% ${goUp ? "adds" : "gives up"} ${["a", "b"].map(x =>
        `${x.toUpperCase()} ${f2(dC(x))}pp`).join(" and ")} a year for ${["a", "b"].map(x =>
        `${dD(x).toFixed(1)}pp`).join(" and ")} ${goUp ? "more" : "less"} drawdown; ${top}% is the derived budget the owner's
      ${base.toFixed(0)}% replaced. Last column: B's modelled fall if Hormuz closes outright, what the
@@ -7980,7 +8055,7 @@ $("#corrnote").textContent = D.corr_note;
      re-measured on it. */
   const WI = D.universe.what_if, TO = WI.trend_off, TA = WI.trend_alt,
         BW_ = D.portfolio_b.weights;
-  const PA = D.portfolio_a.macro, PB = D.portfolio_b.macro;
+  const PA = D.portfolio_a.ten, PB = D.portfolio_b.macro;   /* each on its own horizon (v80) */
   const same = (a, b) => a.join() === b.join();
   const qs = ids.map(id => S[id]);
   const hi = qs.reduce((a, b) => b.tilt > a.tilt ? b : a), lo = qs.reduce((a, b) => b.tilt < a.tilt ? b : a);
@@ -7991,7 +8066,9 @@ $("#corrnote").textContent = D.corr_note;
   const after = D.as_of > T.end;
   $("#trendnote").innerHTML =
     `Tilts run from ${num(sg(lo.tilt) + "pp")} (${lo.market}) to ${num(sg(hi.tilt) + "pp")}
-     (${hi.market}). Without them A returns ${num(pc(TO.a.cagr))} (from ${num(pc(PA.cagr))});
+     (${hi.market}). Without them A ` + (TO.a.cagr === PA.cagr
+       ? `stays at ${num(pc(PA.cagr))}: its ${HYL} view carries no trend`
+       : `returns ${num(pc(TO.a.cagr))} (from ${num(pc(PA.cagr))}) on its ${HYL} view`) + `;
      B ` + (same(TO.b.weights, BW_) ? `keeps its weights at ${num(pc(TO.b.cagr))} (from ${num(pc(PB.cagr))})`
       : `would hold ${num(MIXN(TO.b.weights))} at ${num(pc(TO.b.cagr))}`) + `. ` +
     (after ? `<strong>Moves since ${dlong(T.end)} are not in these windows</strong>; they
@@ -8456,10 +8533,13 @@ function donut(host, w, title, cagr, dd) {
      here is typed. (C, Nasdaq Equity Income held at 50%, was retired at the owner's
      request on 2026-10-28; D, its four-fund variant, on 2026-10-27.) */
   const PA = D.portfolio_a, PB = D.portfolio_b, RD = PB.review;
-  const A = PA.macro, Bm = PB.macro, SH = PB.shorts, tie = D.universe.tie_pp;
+  /* EACH ON ITS OWN HORIZON (owner, 2026-10-28): A's headline is its 10-year view (Ao),
+     B's the 3/5/10-year view (Bm). A on B's view (A, the common basis) stays in the
+     like-for-like rows and sentences, labelled. */
+  const A = PA.macro, Ao = PA.ten, Bm = PB.macro, SH = PB.shorts, tie = D.universe.tie_pp;
   const L6 = D.universe.limits;
   const NUW = wn(PB.ids.length);
-  donut($("#donutA"), PA.weights, "Portfolio A", A.cagr, A.maxdd);
+  donut($("#donutA"), PA.weights, "Portfolio A", Ao.cagr, Ao.maxdd);
   donut($("#donutB"), PB.weights, "Portfolio B", Bm.cagr, Bm.maxdd);
   /* WHO HOLDS WHAT, A vs B (owner, 2026-10-23: "make all portfolios to be versus").
      A row for every fund either holds, a column per portfolio. */
@@ -8508,10 +8588,11 @@ function donut(host, w, title, cagr, dd) {
      at the ${D.macro.gbi_target_high.toFixed(2)}% retail rate.
      <details class="more"><summary>The ${wn(HO.length)} held out, and what each is missing</summary>
      <ul class="plain">` + HO.map(x => `<li><b>${x.short}</b> &mdash; ${x.why}</li>`).join("") + `</ul></details>`;
-  /* A is chosen on the 10-year view; the donut shows the 3/5/10-year view so the
-     two compare on one basis, and this line gives A's own. */
-  $("#donutAlr").innerHTML = `On its own ${HYL} view: <b class="num">${pc(PA.ten.cagr)}</b> /
-    <b class="num">${pc1(PA.ten.maxdd)}</b>`;
+  /* Each donut shows its own horizon; the line under it gives the other view. */
+  $("#donutAlr").innerHTML = `On the 3/5/10-year view: <b class="num">${pc(A.cagr)}</b> /
+    <b class="num">${pc1(A.maxdd)}</b>`;
+  $("#donutBlr").innerHTML = `On the ${HYL} view: <b class="num">${pc(PB.ten.cagr)}</b> /
+    <b class="num">${pc1(PB.ten.maxdd)}</b>`;
 
   const sc = n => x => x.scenarios.find(r => r.name.indexOf(n) === 0);
   /* B against A. Signed by the data: "level with" inside the tie, above/below outside
@@ -8526,7 +8607,9 @@ function donut(host, w, title, cagr, dd) {
     .sort((a, b) => b[1] - a[1])[0];
   const bothIn = PA.in_budget && PB.in_budget;
   $("#pbnote").innerHTML =
-    `On the 3/5/10-year view, on J.P. Morgan's ${ed} assumptions, B returns
+    `Each on its own horizon, on J.P. Morgan's ${ed} assumptions: A returns <b class="num">${pc(Ao.cagr)}</b>
+     at <b class="num">${pc1(Ao.maxdd)}</b> on the 10-year forecasts, B <b class="num">${pc(Bm.cagr)}</b> at
+     <b class="num">${pc1(Bm.maxdd)}</b> on the 3/5/10-year. On one basis, the 3/5/10-year view, B returns
      <b class="num">${pc(Bm.cagr)}</b>, ${vs}, with
      <b class="num">${Math.abs(ddA).toFixed(1)}pp</b> ${ddA >= 0 ? "less" : "more"} drawdown
      (${pc1(Bm.maxdd)} against ${pc1(A.maxdd)}); ${bothIn ? "both sit inside" : PB.in_budget ? "only B sits inside" : "B sits outside"}
@@ -8556,23 +8639,25 @@ function donut(host, w, title, cagr, dd) {
   /* HEAD TO HEAD (owner, 2026-10-23: "make all portfolios to be versus"). Both on
      one table, the best in each row marked - the highest return, the shallowest
      drawdown, the lowest volatility - every tie marked, none named in advance. */
-  const PS = [PA, PB], PM = [A, Bm];
+  const PS = [PA, PB], PM = [Ao, Bm];   /* own horizons (v80) */
   const hi = v => Math.max(...v), lo = v => Math.min(...v),
         shallow = v => v.reduce((a, b) => Math.abs(b) < Math.abs(a) ? b : a);
   const ht = $("#ptab");
-  ht.appendChild(el("thead", null, `<tr><th>Macro-adjusted</th>` + P4L.map(x => `<th>${x}</th>`).join("") + `</tr>`));
+  ht.appendChild(el("thead", null, `<tr><th>Own horizon</th>` + P4L.map(x => `<th>${x}</th>`).join("") + `</tr>`));
   const hb = el("tbody");
   const hrow = (lab, vals, fm, best) => { const b = best(vals);
     hb.appendChild(el("tr", null, `<td>${lab}</td>` + vals.map(v =>
       `<td${v === b ? ' class="pos" style="font-weight:700"' : ''}>${fm(v)}</td>`).join(""))); };
+  hb.appendChild(el("tr", null, `<td>Horizon</td><td>${HYL}</td><td>3/5/10-year</td>`));
   hrow(`${HYL} net CAGR`, PM.map(m => m.cagr), pc, hi);
-  hrow(`${HYL} view only`, PS.map(q => q.ten.cagr), pc, hi);
   hrow("Expected max drawdown", PM.map(m => m.maxdd), pc1, shallow);
   hrow("Volatility σ", PM.map(m => m.vol), pc, lo);
   hrow("Return per drawdown", PM.map(m => m.ret_per_dd), v => v.toFixed(3), hi);
   hrow("&#8369;1M after 10y", PM.map(m => m.terminal_1m), v => "&#8369;" + (v / 1e6).toFixed(2) + "M", hi);
   ["Hormuz", "Hawkish", "AI capex"].forEach(n =>
     hrow(`${n} &middot; drawdown`, PS.map(q => sc(n)(q).maxdd), pc1, shallow));
+  hrow(`Both on the 3/5/10-year view`, PS.map(q => q.macro.cagr), pc, hi);
+  hrow(`Both on the ${HYL} view`, PS.map(q => q.ten.cagr), pc, hi);
   ht.appendChild(hb);
 
   // every lens, both portfolios
@@ -8609,7 +8694,8 @@ function donut(host, w, title, cagr, dd) {
       return `<tr><td>${P4L[i]} vs ${P4L[j]}</td><td class="${cls(g)}">${sg(g)}pp</td>
         <td class="${cls(d)}">${(d >= 0 ? "+" : "−") + Math.abs(d).toFixed(1)}pp</td>
         <td class="${cls(r)}">${(r >= 0 ? "+" : "−") + Math.abs(r).toFixed(3)}</td></tr>`; }).join("") +
-    `</tbody></table></div><p class="note">Each row reads from the first portfolio named: a positive
+    `</tbody></table></div><p class="note">Each on its own horizon (A ${HYL}, B 3/5/10-year); the table's
+     last two rows put both on one basis. Each row reads from the first portfolio named: a positive
      CAGR gap means it earns more a year, a positive drawdown gap that it falls less.</p>`;
 })();
 
@@ -8658,9 +8744,9 @@ function donut(host, w, title, cagr, dd) {
   const gap = x => Math.max(line(x.maxdd) - x.cagr, 0);
   const on = x => gap(x) <= D.universe.tie_pp + 1e-9;
   const where = x => on(x) ? "on the line" : `${gap(x).toFixed(2)}pp below the line`;
-  $("#frontread").innerHTML = `B is chosen from these and sits ${where(B)} at its drawdown. ` +
+  $("#frontread").innerHTML = `On this 3/5/10-year view B is chosen from these and sits ${where(B)} at its drawdown. ` +
     (on(A) ? `A, chosen on the ${HYL} view alone, sits on it too.`
-     : `A, chosen on the ${HYL} view alone, sits ${where(A)}.`);
+     : `A, chosen on the ${HYL} view alone, sits ${where(A)} here.`);
   const host = $("#frontier"); host.appendChild(s);
   const tp = tipper(host);
   P.forEach(p => {
@@ -8679,7 +8765,7 @@ function donut(host, w, title, cagr, dd) {
   const A = D.portfolio_a.scenarios, B = D.portfolio_b.scenarios;
   const t = $("#stab");
   t.appendChild(el("thead", null,
-    `<tr><th>Scenario</th><th>A CAGR</th><th>B CAGR</th><th>A DD</th><th>B DD</th></tr>`));
+    `<tr><th>Scenario</th><th>A CAGR</th><th>B CAGR</th><th>A DD</th><th>B DD</th></tr>`));   /* A on 10-year, B on 3/5/10 (v80) */
   const tb = el("tbody");
   B.forEach((b, i) => {
     const a = A[i], base = b.name === "Grind-on base case";
@@ -8696,7 +8782,7 @@ function donut(host, w, title, cagr, dd) {
 
 /* ---------------- peso illustration ---------------- */
 (function () {
-  const A = D.portfolio_a.macro, B = D.portfolio_b.macro;
+  const A = D.portfolio_a.ten, B = D.portfolio_b.macro;   /* own horizons (v80) */
   const t = $("#pesotab");
   t.appendChild(el("thead", null,
     `<tr><th></th><th>A</th><th>B</th><th>Δ</th></tr>`));

@@ -1544,7 +1544,13 @@
    "net_notrend": 4.39,
    "net_trend_alt": 4.39,
    "net_asia_norerate": 4.39,
-   "net_asia_fee_hi": 4.39
+   "net_asia_fee_hi": 4.39,
+   "net10_novol": 4.27,
+   "net10_neutral": 4.27,
+   "net10_notrend": 4.27,
+   "net10_trend_alt": 4.27,
+   "net10_asia_norerate": 4.27,
+   "net10_asia_fee_hi": 4.27
   },
   {
    "id": "ATRQIAP",
@@ -1604,7 +1610,13 @@
    "net_notrend": 7.61,
    "net_trend_alt": 7.56,
    "net_asia_norerate": 7.56,
-   "net_asia_fee_hi": 7.56
+   "net_asia_fee_hi": 7.56,
+   "net10_novol": 7.81,
+   "net10_neutral": 7.81,
+   "net10_notrend": 7.81,
+   "net10_trend_alt": 7.81,
+   "net10_asia_norerate": 7.81,
+   "net10_asia_fee_hi": 7.81
   },
   {
    "id": "ATRASEQ",
@@ -1673,7 +1685,13 @@
    "net_notrend": 7.2,
    "net_trend_alt": 7.19,
    "net_asia_norerate": 6.19,
-   "net_asia_fee_hi": 6.94
+   "net_asia_fee_hi": 6.94,
+   "net10_novol": 7.32,
+   "net10_neutral": 7.32,
+   "net10_notrend": 7.32,
+   "net10_trend_alt": 7.32,
+   "net10_asia_norerate": 6.32,
+   "net10_asia_fee_hi": 7.07
   },
   {
    "id": "ATRGTEC",
@@ -1737,7 +1755,13 @@
    "net_notrend": 9.2,
    "net_trend_alt": 9.14,
    "net_asia_norerate": 9.16,
-   "net_asia_fee_hi": 9.16
+   "net_asia_fee_hi": 9.16,
+   "net10_novol": 9.51,
+   "net10_neutral": 9.51,
+   "net10_notrend": 9.51,
+   "net10_trend_alt": 9.51,
+   "net10_asia_norerate": 9.51,
+   "net10_asia_fee_hi": 9.51
   }
  ],
  "corr": [
@@ -2760,37 +2784,37 @@
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $114. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.61,
+    "cagr": 3.81,
     "vol": 20.4,
-    "maxdd": -45.5
+    "maxdd": -45.4
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.73,
+    "cagr": 4.92,
     "vol": 16.57,
-    "maxdd": -35.7
+    "maxdd": -35.6
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.44,
+    "cagr": 4.63,
     "vol": 18.49,
-    "maxdd": -40.4
+    "maxdd": -40.3
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.39,
+    "cagr": 9.58,
     "vol": 10.2,
-    "maxdd": -17.4
+    "maxdd": -17.3
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.11,
+    "cagr": 7.3,
     "vol": 12.75,
-    "maxdd": -25.0
+    "maxdd": -24.9
    }
   ],
   "dd_cap": 25.0,
@@ -2946,13 +2970,13 @@
       20,
       0
      ],
-     "cagr": 7.02,
-     "maxdd": -24.0,
+     "cagr": 7.2,
+     "maxdd": -23.8,
      "vol": 12.34,
-     "ret_per_dd": 0.292,
+     "ret_per_dd": 0.303,
      "n_feasible": 147099,
      "best": 7.2,
-     "hormuz_dd": -43.6
+     "hormuz_dd": -43.5
     },
     "b": {
      "weights": [
@@ -2992,13 +3016,13 @@
       20,
       0
      ],
-     "cagr": 7.11,
-     "maxdd": -25.0,
+     "cagr": 7.3,
+     "maxdd": -24.9,
      "vol": 12.75,
-     "ret_per_dd": 0.284,
+     "ret_per_dd": 0.293,
      "n_feasible": 165884,
      "best": 7.3,
-     "hormuz_dd": -45.5
+     "hormuz_dd": -45.4
     },
     "b": {
      "weights": [
@@ -3038,13 +3062,13 @@
       20,
       0
      ],
-     "cagr": 7.19,
-     "maxdd": -26.0,
+     "cagr": 7.39,
+     "maxdd": -25.9,
      "vol": 13.15,
-     "ret_per_dd": 0.277,
+     "ret_per_dd": 0.285,
      "n_feasible": 183892,
      "best": 7.39,
-     "hormuz_dd": -47.3
+     "hormuz_dd": -47.2
     },
     "b": {
      "weights": [
@@ -3084,13 +3108,13 @@
       15,
       0
      ],
-     "cagr": 7.28,
-     "maxdd": -26.9,
+     "cagr": 7.48,
+     "maxdd": -26.8,
      "vol": 13.56,
-     "ret_per_dd": 0.271,
+     "ret_per_dd": 0.279,
      "n_feasible": 201004,
      "best": 7.48,
-     "hormuz_dd": -48.8
+     "hormuz_dd": -48.7
     },
     "b": {
      "weights": [
@@ -3702,8 +3726,8 @@
      "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.12,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     }
    },
    "drags_neutral": {
@@ -3725,7 +3749,7 @@
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.2,
+     "cagr": 7.3,
      "maxdd": -24.9
     }
    },
@@ -3748,8 +3772,8 @@
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.01,
-     "maxdd": -25.1
+     "cagr": 7.21,
+     "maxdd": -24.9
     }
    },
    "asia_fee_hi": {
@@ -3771,8 +3795,8 @@
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.11,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     },
     "stress_pp": 0.25
    },
@@ -3795,8 +3819,8 @@
      "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.14,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     }
    },
    "trend_alt": {
@@ -3818,8 +3842,8 @@
      "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.11,
-     "maxdd": -25.0
+     "cagr": 7.3,
+     "maxdd": -24.9
     }
    }
   }
@@ -3930,7 +3954,13 @@
     "net_notrend": 6.51,
     "net_trend_alt": 6.51,
     "net_asia_norerate": 6.51,
-    "net_asia_fee_hi": 6.51
+    "net_asia_fee_hi": 6.51,
+    "net10_novol": 6.62,
+    "net10_neutral": 6.62,
+    "net10_notrend": 6.62,
+    "net10_trend_alt": 6.62,
+    "net10_asia_norerate": 6.62,
+    "net10_asia_fee_hi": 6.62
    },
    {
     "id": "ATRGHCP",
@@ -3998,7 +4028,13 @@
     "net_notrend": 7.0,
     "net_trend_alt": 7.03,
     "net_asia_norerate": 7.03,
-    "net_asia_fee_hi": 7.03
+    "net_asia_fee_hi": 7.03,
+    "net10_novol": 7.11,
+    "net10_neutral": 7.11,
+    "net10_notrend": 7.11,
+    "net10_trend_alt": 7.11,
+    "net10_asia_norerate": 7.11,
+    "net10_asia_fee_hi": 7.11
    },
    {
     "id": "M_GINF",
@@ -4066,7 +4102,13 @@
     "net_notrend": 7.17,
     "net_trend_alt": 7.17,
     "net_asia_norerate": 7.17,
-    "net_asia_fee_hi": 7.17
+    "net_asia_fee_hi": 7.17,
+    "net10_novol": 7.33,
+    "net10_neutral": 7.33,
+    "net10_notrend": 7.33,
+    "net10_trend_alt": 7.33,
+    "net10_asia_norerate": 7.33,
+    "net10_asia_fee_hi": 7.33
    },
    {
     "id": "M_GEO",
@@ -4134,7 +4176,13 @@
     "net_notrend": 7.04,
     "net_trend_alt": 7.0,
     "net_asia_norerate": 7.0,
-    "net_asia_fee_hi": 7.0
+    "net_asia_fee_hi": 7.0,
+    "net10_novol": 7.25,
+    "net10_neutral": 7.25,
+    "net10_notrend": 7.25,
+    "net10_trend_alt": 7.25,
+    "net10_asia_norerate": 7.25,
+    "net10_asia_fee_hi": 7.25
    },
    {
     "id": "M_GCT",
@@ -4202,7 +4250,13 @@
     "net_notrend": 7.05,
     "net_trend_alt": 7.05,
     "net_asia_norerate": 7.05,
-    "net_asia_fee_hi": 7.05
+    "net_asia_fee_hi": 7.05,
+    "net10_novol": 7.29,
+    "net10_neutral": 7.29,
+    "net10_notrend": 7.29,
+    "net10_trend_alt": 7.29,
+    "net10_asia_norerate": 7.29,
+    "net10_asia_fee_hi": 7.29
    },
    {
     "id": "ATRAMIP",
@@ -4266,7 +4320,13 @@
     "net_notrend": 5.92,
     "net_trend_alt": 5.91,
     "net_asia_norerate": 5.41,
-    "net_asia_fee_hi": 5.91
+    "net_asia_fee_hi": 5.91,
+    "net10_novol": 6.04,
+    "net10_neutral": 6.04,
+    "net10_notrend": 6.04,
+    "net10_trend_alt": 6.04,
+    "net10_asia_norerate": 5.54,
+    "net10_asia_fee_hi": 6.04
    },
    {
     "id": "M_GALL",
@@ -4334,7 +4394,13 @@
     "net_notrend": 6.31,
     "net_trend_alt": 6.29,
     "net_asia_norerate": 6.29,
-    "net_asia_fee_hi": 6.29
+    "net_asia_fee_hi": 6.29,
+    "net10_novol": 6.42,
+    "net10_neutral": 6.42,
+    "net10_notrend": 6.42,
+    "net10_trend_alt": 6.42,
+    "net10_asia_norerate": 6.42,
+    "net10_asia_fee_hi": 6.42
    }
   ],
   "macro": {
