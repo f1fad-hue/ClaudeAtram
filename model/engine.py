@@ -737,14 +737,16 @@ MACRO = {
     # funds removed. US Equity Opportunity's weight turns on its trust fee, not
     # confirmed: uitf.com.ph lists 1.20% on a page about 17 months old, and ATRAM moved
     # its sister feeders to 1.50% on 14 Sep. It is HELD OUT at the owner's choice.
-    # RE-RUN 2026-10-27 AT THE OWNER'S 25% BUDGET (v75; model/heldout_sens.py: the fund
-    # built by build_fund(), its pairs from the factor model, the rule re-run over the
-    # eleven funds plus it): at 1.20%, 20% of A and 20% of B; at 1.50%, none of either.
-    # (At the derived 26.97% to v74, A / B / the since-retired C: 20 / 25 / 10 and 20 / 0 / 5.)
+    # RE-RUN 2026-10-28 UNDER THE MAXIMUM-GROWTH RULE AT THE BAND'S 25% (v77;
+    # model/heldout_sens.py: the fund built by build_fund(), its pairs from the factor
+    # model, the rule re-run over the eleven funds plus it): at 1.20%, 20% of A and 20% of
+    # B; at 1.50%, 15% of A and none of B. (Under the 0.05pp tie of v75-v76: 20 / 20 and
+    # 0 / 0; at the derived 26.97% to v74, A / B / the since-retired C: 20 / 25 / 10 and
+    # 20 / 0 / 5.)
     # GLOBAL BOND INCOME, the held-out fund that would move the picks most, the same way:
     # at its listed 0.90% trust fee with the target's institutional 0.69% charge, 35% of
-    # A and 35% of B; with the retail 1.59%, 30% of A and none of B (at 26.97%, A / B / C:
-    # 35 / 35 / 25 and 25 / 20 / 10). Its gross is the LTCMA's investment-grade
+    # A and 35% of B; with the retail 1.59%, 25% of A and 20% of B (v75-v76: 35 / 35 and
+    # 30 / 0; at 26.97%, A / B / C: 35 / 35 / 25 and 25 / 20 / 10). Its gross is the LTCMA's investment-grade
     # credit figure - an assumption for a fund whose target is not confirmed.
     # These are RESULTS OF A RUN, so they carry the run's budget: heldout_run_cap must be
     # the live budget, or the check fails and the script must be re-run (v75: the budget
@@ -753,11 +755,17 @@ MACRO = {
     "review_list_removed": ["Long Term Peso Bond", "Medium Term Peso Bond"],
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
-    "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 0, "useq_w_b_peer": 0,
+    "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 15, "useq_w_b_peer": 0,
     "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
     "gbi_w_a_low": 35, "gbi_w_b_low": 35,
-    "gbi_w_a_high": 30, "gbi_w_b_high": 0,
-    "heldout_run_cap": 25.0, "heldout_run_date": "2026-10-28",
+    "gbi_w_a_high": 25, "gbi_w_b_high": 20,
+    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-10-28",
+    # ASIAN MULTI-ASSET INCOME'S DISPUTED TRUST FEE (v75 CLAIMS; on the page from v77): ATRAM's
+    # page has 1.50%, carried; the October 2025 KIID and uitf.com.ph 1.20%. Re-run 2026-10-28
+    # (heldout_sens.run_refee) under the maximum-growth rule at 25%: the fund's net rises
+    # 0.30pp, and A holds 35% of it (7.39% on its 10-year view), B 30% (7.18%) - against 20%
+    # and none at 1.50%. Results of a run, at the run's budget and rule above.
+    "amip_trust_alt": 1.20, "amip_w_a_alt": 35, "amip_w_b_alt": 30,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -3474,7 +3482,9 @@ ADD_FUNDS = [
         "fee_feeder": 1.50, "fee_target": 1.54,
         "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + "
                     "~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; "
-                    "the class the feeder holds is not published)",
+                    "the class the feeder holds is not published). DISPUTED: the October 2025 KIID and "
+                    f"uitf.com.ph list a {MACRO['amip_trust_alt']:.2f}% trust fee; at it, A would hold "
+                    f"{MACRO['amip_w_a_alt']}% of this fund and B {MACRO['amip_w_b_alt']}%",
         # Half the page's Asia equity sleeve, half Asian credit. No 2027 LTCMA figure for
         # Asian credit was found, so US investment grade stands in for it.
         "gross_usd": round(0.5 * (MACRO["ltcma_em_eq"] + MACRO["asia_rerating"] - MACRO["asia_div_drag"])
@@ -3850,27 +3860,107 @@ BASE_UNDER_MACRO = summarise(BASELINE_W, "net_macro")
 # it constrains, so the constraint means what it meant before.
 DD_BUDGET_IMPROVEMENT = round(2.0 * DD_HORIZON_SCALAR, 2)
 DD_CAP_DERIVED = abs(BASE_UNDER_MACRO["maxdd"]) - DD_BUDGET_IMPROVEMENT
-# THE BUDGET IS THE OWNER'S FROM v75 (2026-10-27: "Apply the 25% drawdown to all
+# THE OWNER'S 25% IS THE BASE FROM v75 (2026-10-27: "Apply the 25% drawdown to all
 # portfolios"), after a sweep of the rule from 18% to 32% found the trade-off of
-# Portfolio C (retired in v76) bending there: below 25% each point of drawdown accepted earned about 0.11pp a year,
-# above it about 0.07pp. Until v74 the budget was the derivation above (-26.97% on 26
-# Oct); it stays published beside the owner's figure as the reference it replaced, and
-# it is the ceiling the budget gauge below may raise the budget towards, never past.
+# Portfolio C (retired in v76) bending there: below 25% each point of drawdown accepted
+# earned about 0.11pp a year, above it about 0.07pp. Until v74 the budget was the
+# derivation above (-26.97% on 26 Oct); it stays published beside it as the reference it
+# replaced, and it is the ceiling the gauge may raise the budget towards, never past.
+# FROM v77 THE BAND SETS THE BUDGET (owner, 2026-10-28: "Use the budget drawdown band to
+# portfolio A and B"): DD_CAP is the gauge's recommended step - the base while the
+# reading sits in the hold band, or a guard is not clear; the band's step once two
+# month-end reviews in a row read it and, for a raise, both risk guards are clear.
 DD_BUDGET_OWNER = 25.0
 DD_BUDGET_OWNER_DATE = "2026-10-27"
-DD_CAP = DD_BUDGET_OWNER
+DD_BUDGET_BAND_DATE = "2026-10-28"
+
+# ----------------------------------------------------------------------------
+# THE DRAWDOWN BUDGET GAUGE (owner, 2026-10-27: "a best recommended gauge 1 to 5 when to
+# increase the drawdown of the portfolio based on macro sentiments, volatility, market
+# trends of 3, 5 and 10yrs"). FROM v77 IT SETS THE BUDGET (owner, 2026-10-28: "Use the budget
+# drawdown band to portfolio A and B"): DD_CAP is the recommended step below, which leaves
+# the owner's 25% base only when the guards allow it. It reads, at each view, three things
+# this model already publishes on 1-5, 3 neutral:
+#   MACRO  the driver gauge at that horizon (GAUGE_PATH) - the seven drivers' path;
+#   VOL    the forward implied volatility of the years the view covers against the
+#          long-run level every base return assumes: 3 - (forward / long-run - 1) / step,
+#          one point per DDG_VOL_STEP (10%) of the long-run level, clipped to 1-5. The
+#          step is an ASSUMPTION, stated as one;
+#   TREND  the market-trend score at that horizon, averaged over the trend markets.
+# A view's reading is the mean of the three. THE GAUGE READS THE 3- AND 5-YEAR VIEWS ONLY,
+# weighted by the years of the first five each covers (3/5 and 2/5): the 10-year view is
+# neutral by construction for the drivers and the trend, and its volatility years sit at
+# the long run, so it carries no timing information - it is what the fixed budget
+# itself stands for. Weighted in, it would pin the gauge between 2 and 4 and make the
+# outer bands unreachable. It is shown beside the other two, not hidden.
+# The reading maps to a step of the budget (DDG_BANDS); a step away from 25% is acted on
+# only when two consecutive month-end reviews read the same band, and a RAISE also needs
+# both risk guards clear: the Geopolitics & energy reading above 2.0 (1-10) - the Hormuz
+# tail the stress grid prices - and the VIX at or below its long run. The ceiling is 27%,
+# the derived budget the owner's figure replaced; the floor 24%.
+DDG_VOL_STEP = 0.10
+DDG_VIEWS = tuple(h for h in HZ_KEYS if h != HZ_LABEL)
+DDG_W = {h: round((_HZ_YEARS[h] - (_HZ_YEARS[DDG_VIEWS[i - 1]] if i else 0.0))
+                  / _HZ_YEARS[DDG_VIEWS[-1]], 2) for i, h in enumerate(DDG_VIEWS)}
+DDG_BANDS = [  # [lo, hi) on the 1-5 reading, the budget it points to, the action
+    (1.0, 2.5, 24.0, "Tighten to 24%"),
+    (2.5, 3.5, 25.0, "Hold at 25%"),
+    (3.5, 4.25, 26.0, "Raise to 26%"),
+    (4.25, 5.0001, 27.0, "Raise to 27%"),
+]
+DDG_GEO_FLOOR = 2.0
+DDG_REVIEWS_NEEDED = 2
+# Month-end readings on record, oldest first: (date, reading). The first is due at the
+# 31 Oct roll; until two share a band, no step is taken.
+DDG_REVIEWS = []
+_VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}
+
+def _ddg_vol(h):
+    return round(min(5.0, max(1.0, 3.0 - (_VOL_FWD[h] / MACRO["vix_longrun"] - 1) / DDG_VOL_STEP)), 2)
+
+def _ddg_trend(h):
+    return round(sum(TREND[f]["score"][h] for f in TREND) / len(TREND), 2)
+
+DDG_PARTS = {h: {"macro": GAUGE_PATH[h], "vol": _ddg_vol(h), "trend": _ddg_trend(h),
+                 "vol_forward": _VOL_FWD[h]} for h in HZ_KEYS}
+for _h in HZ_KEYS:
+    _p = DDG_PARTS[_h]
+    _p["reading"] = round((_p["macro"] + _p["vol"] + _p["trend"]) / 3, 2)
+DDG_VALUE = round(sum(DDG_PARTS[h]["reading"] * DDG_W[h] for h in DDG_VIEWS), 2)
+DDG_BAND = next(b for b in DDG_BANDS if b[0] <= DDG_VALUE < b[1])
+_geo_now = next(s_ for n_, _, s_, _ in DRIVERS if n_.startswith("Geopolitics"))
+DDG_GUARDS = [
+    {"name": "persistence", "ok": (len(DDG_REVIEWS) >= DDG_REVIEWS_NEEDED and all(
+        next(b for b in DDG_BANDS if b[0] <= v_ < b[1]) == DDG_BAND
+        for _, v_ in DDG_REVIEWS[-DDG_REVIEWS_NEEDED:])),
+     "reviews": len(DDG_REVIEWS), "needed": DDG_REVIEWS_NEEDED, "applies_to": "any step"},
+    {"name": "geopolitics", "ok": _geo_now > DDG_GEO_FLOOR, "reading": _geo_now,
+     "floor": DDG_GEO_FLOOR, "applies_to": "raise"},
+    {"name": "vix", "ok": MACRO["vix_latest"] <= MACRO["vix_longrun"], "reading": MACRO["vix_latest"],
+     "longrun": MACRO["vix_longrun"], "applies_to": "raise"},
+]
+_raise = DDG_BAND[2] > DD_BUDGET_OWNER
+_step_ok = all(g_["ok"] for g_ in DDG_GUARDS
+               if g_["applies_to"] == "any step" or (g_["applies_to"] == "raise" and _raise))
+DDG_RECOMMENDED = DDG_BAND[2] if (DDG_BAND[2] != DD_BUDGET_OWNER and _step_ok) else DD_BUDGET_OWNER
+DDG_BLOCKED_BY = [g_["name"] for g_ in DDG_GUARDS if DDG_BAND[2] != DD_BUDGET_OWNER and not g_["ok"]
+                  and (g_["applies_to"] == "any step" or _raise)]
+
+DD_CAP = DDG_RECOMMENDED
 
 # ONE SELECTION RULE FOR EVERY PORTFOLIO - unified 2026-10-07 at the owner's
 # instruction ("the best and recommended approach to reach max growth ... while
-# controlling the drawdown to minimum"). Take the best CAGR the drawdown budget
-# allows; among the portfolios within PIN_TIE_PP of it, take the one with the
-# LOWEST drawdown (ties: the higher CAGR). A return difference smaller than the
-# model's own precision is not worth more drawdown.
-# Until this date Portfolio B took the strict maximum and Portfolio C this rule.
-# The 2026-09-29 scrub found B's optimum was not sharp - four portfolios inside
-# 0.05pp of it - so a difference below the model's precision was deciding B, and
-# the two donuts were chosen by different rules.
-PIN_TIE_PP = 0.05
+# controlling the drawdown to minimum"). From then until v76 it took the best CAGR the
+# budget allows and, among the portfolios within 0.05pp of it, the one with the LOWEST
+# drawdown: a return difference below the model's precision was not worth more drawdown.
+# MAXIMUM GROWTH FROM v77 (owner, 2026-10-28: "the best and recommended approach to
+# reach maximum growth 10yrs cagr minus fund fees ... Use the budget drawdown band"):
+# the drawdown is held by the band's budget, so the rule takes the HIGHEST net CAGR the
+# budget allows; a shallower drawdown decides only between mixes that print the same
+# CAGR (then the lower true drawdown, then the mix generated first).
+# On the v76 inputs at 25% it adds 0.04pp a year to A and 0.05pp to B for 0.4pp and
+# 0.6pp more drawdown - the size of the tolerance it replaces, inside the budget.
+PIN_TIE_PP = 0.0
 
 # The rule itself is _Pick, below with the search: it streams every mix once.
 
@@ -4069,8 +4159,9 @@ _COLS_U = ["net_10y", "net_macro"] + [_WI_COL[k] for k in _WI_KEYS]
 _PK = {"a": _Pick(), "b": _Pick()}
 _PK.update({("b", k): _Pick() for k in _WI_KEYS})
 # The budget gauge's alternative steps (2026-10-27), chosen by the same rule in the same
-# pass: what A and B would hold if the budget moved to each.
-DDG_STEPS = (24.0, 26.0, 27.0)
+# pass: what A and B would hold if the budget moved to each - every band's step but the
+# one in force.
+DDG_STEPS = tuple(sorted({b[2] for b in DDG_BANDS} - {DD_CAP}))
 _PKX = {(x, c): _Pick(c) for x in "ab" for c in DDG_STEPS}
 _FRONT_BUCKET, _BEST_RATIO_M, UNIV_N_TOTAL = {}, None, 0
 for _seq, (_idx, _u) in enumerate(univ_mixes()):
@@ -4137,75 +4228,6 @@ def _wi_entry(k):
             "a": {"cagr": a["cagr"], "maxdd": a["maxdd"]}}
 WHAT_IF_UNIV = {k: _wi_entry(k) for k in _WI_KEYS if k != "live"}
 
-# ----------------------------------------------------------------------------
-# THE DRAWDOWN BUDGET GAUGE (owner, 2026-10-27: "a best recommended gauge 1 to 5 when to
-# increase the drawdown of the portfolio based on macro sentiments, volatility, market
-# trends of 3, 5 and 10yrs"). ADVISORY: it never moves DD_CAP by itself. It reads, at each
-# view, three things this model already publishes on 1-5, 3 neutral:
-#   MACRO  the driver gauge at that horizon (GAUGE_PATH) - the seven drivers' path;
-#   VOL    the forward implied volatility of the years the view covers against the
-#          long-run level every base return assumes: 3 - (forward / long-run - 1) / step,
-#          one point per DDG_VOL_STEP (10%) of the long-run level, clipped to 1-5. The
-#          step is an ASSUMPTION, stated as one;
-#   TREND  the market-trend score at that horizon, averaged over the trend markets.
-# A view's reading is the mean of the three. THE GAUGE READS THE 3- AND 5-YEAR VIEWS ONLY,
-# weighted by the years of the first five each covers (3/5 and 2/5): the 10-year view is
-# neutral by construction for the drivers and the trend, and its volatility years sit at
-# the long run, so it carries no timing information - it is what the fixed budget
-# itself stands for. Weighted in, it would pin the gauge between 2 and 4 and make the
-# outer bands unreachable. It is shown beside the other two, not hidden.
-# The reading maps to a step of the budget (DDG_BANDS); a step away from 25% is acted on
-# only when two consecutive month-end reviews read the same band, and a RAISE also needs
-# both risk guards clear: the Geopolitics & energy reading above 2.0 (1-10) - the Hormuz
-# tail the stress grid prices - and the VIX at or below its long run. The ceiling is 27%,
-# the derived budget the owner's figure replaced; the floor 24%.
-DDG_VOL_STEP = 0.10
-DDG_VIEWS = tuple(h for h in HZ_KEYS if h != HZ_LABEL)
-DDG_W = {h: round((_HZ_YEARS[h] - (_HZ_YEARS[DDG_VIEWS[i - 1]] if i else 0.0))
-                  / _HZ_YEARS[DDG_VIEWS[-1]], 2) for i, h in enumerate(DDG_VIEWS)}
-DDG_BANDS = [  # [lo, hi) on the 1-5 reading, the budget it points to, the action
-    (1.0, 2.5, 24.0, "Tighten to 24%"),
-    (2.5, 3.5, 25.0, "Hold at 25%"),
-    (3.5, 4.25, 26.0, "Raise to 26%"),
-    (4.25, 5.0001, 27.0, "Raise to 27%"),
-]
-DDG_GEO_FLOOR = 2.0
-DDG_REVIEWS_NEEDED = 2
-# Month-end readings on record, oldest first: (date, reading). The first is due at the
-# 31 Oct roll; until two share a band, no step is taken.
-DDG_REVIEWS = []
-_VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}
-
-def _ddg_vol(h):
-    return round(min(5.0, max(1.0, 3.0 - (_VOL_FWD[h] / MACRO["vix_longrun"] - 1) / DDG_VOL_STEP)), 2)
-
-def _ddg_trend(h):
-    return round(sum(TREND[f]["score"][h] for f in TREND) / len(TREND), 2)
-
-DDG_PARTS = {h: {"macro": GAUGE_PATH[h], "vol": _ddg_vol(h), "trend": _ddg_trend(h),
-                 "vol_forward": _VOL_FWD[h]} for h in HZ_KEYS}
-for _h in HZ_KEYS:
-    _p = DDG_PARTS[_h]
-    _p["reading"] = round((_p["macro"] + _p["vol"] + _p["trend"]) / 3, 2)
-DDG_VALUE = round(sum(DDG_PARTS[h]["reading"] * DDG_W[h] for h in DDG_VIEWS), 2)
-DDG_BAND = next(b for b in DDG_BANDS if b[0] <= DDG_VALUE < b[1])
-_geo_now = next(s_ for n_, _, s_, _ in DRIVERS if n_.startswith("Geopolitics"))
-DDG_GUARDS = [
-    {"name": "persistence", "ok": (len(DDG_REVIEWS) >= DDG_REVIEWS_NEEDED and all(
-        next(b for b in DDG_BANDS if b[0] <= v_ < b[1]) == DDG_BAND
-        for _, v_ in DDG_REVIEWS[-DDG_REVIEWS_NEEDED:])),
-     "reviews": len(DDG_REVIEWS), "needed": DDG_REVIEWS_NEEDED, "applies_to": "any step"},
-    {"name": "geopolitics", "ok": _geo_now > DDG_GEO_FLOOR, "reading": _geo_now,
-     "floor": DDG_GEO_FLOOR, "applies_to": "raise"},
-    {"name": "vix", "ok": MACRO["vix_latest"] <= MACRO["vix_longrun"], "reading": MACRO["vix_latest"],
-     "longrun": MACRO["vix_longrun"], "applies_to": "raise"},
-]
-_raise = DDG_BAND[2] > DD_CAP
-_step_ok = all(g_["ok"] for g_ in DDG_GUARDS
-               if g_["applies_to"] == "any step" or (g_["applies_to"] == "raise" and _raise))
-DDG_RECOMMENDED = DDG_BAND[2] if (DDG_BAND[2] != DD_CAP and _step_ok) else DD_CAP
-DDG_BLOCKED_BY = [g_["name"] for g_ in DDG_GUARDS if DDG_BAND[2] != DD_CAP and not g_["ok"]
-                  and (g_["applies_to"] == "any step" or _raise)]
 
 def _alt_entry(cap):
     out = {}
@@ -5207,9 +5229,14 @@ def payload():
                         "is_review_pick": PA_IS_REVIEW, "review_outside": PA_REVIEW_OUTSIDE,
                         "scenarios": run_scenarios(PA_W, "net_macro", UNIV),
                         "dd_cap": round(DD_CAP, 2),
-                        "in_budget": abs(PA["maxdd"]) <= DD_CAP + 1e-9,
+                        # inside the budget on the 3/5/10-year view AS COMPUTED AND AS SHOWN
+                        # (v77: the printed figure alone called A inside at -25.0% while its true
+                        # drawdown there was 25.0035%)
+                        "in_budget": abs(PA["maxdd"]) <= DD_CAP + 1e-9
+                                     and abs(port_dd(PA_W, "net_macro", UNIV)) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pa_review_")}},
-        "dd_budget": {"cap": DD_CAP, "source": "owner", "date": DD_BUDGET_OWNER_DATE,
+        "dd_budget": {"cap": DD_CAP, "source": "band", "base": DD_BUDGET_OWNER, "base_source": "owner",
+                      "date": DD_BUDGET_OWNER_DATE, "band_date": DD_BUDGET_BAND_DATE,
                       "derived_ref": round(DD_CAP_DERIVED, 2), "improvement": DD_BUDGET_IMPROVEMENT},
         "dd_gauge": {"value": DDG_VALUE, "views": list(DDG_VIEWS), "w": DDG_W,
                      "parts": DDG_PARTS, "vol_step": DDG_VOL_STEP, "longrun": MACRO["vix_longrun"],
@@ -5240,7 +5267,8 @@ def payload():
                         "factors": {"names": list(FACTORS), "loadings": FACTOR_LOADINGS,
                                     "fx_corr": FX_CORR, "fx_vol": FX_VOL, "typed_block": 5},
                         "dd_cap": round(DD_CAP, 2),
-                        "in_budget": abs(PB["maxdd"]) <= DD_CAP + 1e-9,
+                        "in_budget": abs(PB["maxdd"]) <= DD_CAP + 1e-9
+                                     and abs(port_dd(PB_W, "net_macro", UNIV)) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pd_review_")}},
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
@@ -5303,7 +5331,7 @@ def report():
       f"maxDD {b['base']['maxdd']}%  ret/DD {b['base']['ret_per_dd']}")
     A(f"      macro view     : CAGR {b['under_macro']['cagr']}%  vol {b['under_macro']['vol']}%  "
       f"maxDD {b['under_macro']['maxdd']}%  ret/DD {b['under_macro']['ret_per_dd']}")
-    A(f"    DD budget {o['dd_cap']}% (the owner's, {DD_BUDGET_OWNER_DATE}); the derivation it replaced "
+    A(f"    DD budget {o['dd_cap']}% (the band's step from the owner's {DD_BUDGET_OWNER:.0f}% base of {DD_BUDGET_OWNER_DATE}); the derivation it replaced "
       f"|{b['under_macro']['maxdd']}| - {DD_BUDGET_IMPROVEMENT} = {round(DD_CAP_DERIVED, 2)}%; "
       f"budget gauge {DDG_VALUE} -> {DDG_BAND[3]}, recommended {DDG_RECOMMENDED:.0f}%; "
       f"rule: best CAGR in budget, then lowest DD within {p['universe']['tie_pp']:.2f}pp; "
@@ -6609,10 +6637,11 @@ def report():
                    and all(_ties(p[f"portfolio_{x_}"][r_]) for x_ in "ab" for r_ in ("macro", "base"))))
     # regression: no feasible portfolio may exceed the stated drawdown budget
     cap = p["portfolio_b"]["dd_cap"]
-    # Each pick on the column it was CHOSEN on, by the raw route: A on the long-run
-    # returns (on the macro view A may sit outside; the page says so from in_budget).
+    # Each pick on the column it was CHOSEN on, by the raw route: A on the 10-year view
+    # since v68 (this read the long-run column, A's before then, until v77), B on the macro
+    # view. On another column a pick may sit outside; the page says so from in_budget.
     checks.append(("no pick exceeds the drawdown budget on the column it was chosen on",
-                   abs(port_dd(PA_W, "net_base", UNIV)) <= DD_CAP + 1e-9
+                   abs(port_dd(PA_W, "net_10y", UNIV)) <= DD_CAP + 1e-9
                    and abs(port_dd(PB_W, "net_macro", UNIV)) <= DD_CAP + 1e-9))
     # FEASIBILITY MUST MEAN THE SAME THING ON BOTH ROUTES. The constraint is tested
     # on the true drawdown, deliberately; the page prints the reader-reproducible
@@ -6632,9 +6661,15 @@ def report():
                    and p["portfolio_a"]["dd_cap"] == p["portfolio_b"]["dd_cap"]))
     # THE OWNER'S BUDGET (v75): 25%, enforced on every pick; the derivation it replaced is
     # published beside it, and a reader can still rebuild that from the reference baseline.
-    checks.append(("the budget is the owner's 25%, the one enforced, dated",
-                   cap == 25.0 == DD_BUDGET_OWNER == p["dd_budget"]["cap"]
-                   and p["dd_budget"]["source"] == "owner" and p["dd_budget"]["date"] <= AS_OF))
+    checks.append(("the budget is the band's recommended step from the owner's 25% base, the one enforced, dated",
+                   cap == p["dd_budget"]["cap"] == p["dd_gauge"]["recommended_cap"] == DDG_RECOMMENDED
+                   and p["dd_budget"]["base"] == 25.0 == DD_BUDGET_OWNER and p["dd_budget"]["source"] == "band"
+                   and p["dd_budget"]["date"] <= p["dd_budget"]["band_date"] <= AS_OF))
+    # MAXIMUM GROWTH (v77): each pick is the highest net CAGR its budget allows - nothing
+    # feasible prints a higher CAGR on its column.
+    checks.append(("A and B are the highest net CAGR the budget allows on their own column (no tie tolerance)",
+                   PIN_TIE_PP == 0.0 == p["universe"]["tie_pp"]
+                   and _PK["a"].best == p["portfolio_a"]["ten"]["cagr"] and _PK["b"].best == p["portfolio_b"]["macro"]["cagr"]))
     checks.append(("the derived reference it replaced is the baseline's macro drawdown less the stated improvement",
                    abs(p["dd_budget"]["derived_ref"] - round(abs(p["baseline"]["under_macro"]["maxdd"])
                                                               - DD_BUDGET_IMPROVEMENT, 2)) < 5e-9
@@ -6660,7 +6695,7 @@ def report():
                    _bands[0]["lo"] == 1.0 and _bands[-1]["hi"] == 5.0
                    and all(a["hi"] == b["lo"] for a, b in zip(_bands, _bands[1:]))
                    and [b["cap"] for b in _bands] == [24.0, 25.0, 26.0, 27.0]
-                   and any(b["cap"] == p["dd_budget"]["cap"] and b["lo"] <= 3.0 < b["hi"] for b in _bands)
+                   and any(b["cap"] == p["dd_budget"]["base"] and b["lo"] <= 3.0 < b["hi"] for b in _bands)
                    and _dg["band"]["lo"] <= _dg["value"] < _dg["band"]["hi"] + (1e-9 if _dg["band"]["hi"] == 5.0 else 0)))
     # runbook 107: a weighted view that is neutral by construction pins the gauge inside
     # its outer bands. Drive the weighted views to 1 and to 5, the 10-year held where it is.
@@ -6669,18 +6704,18 @@ def report():
     checks.append(("every band of the gauge is reachable: the weighted views at 1 and at 5 cross the 24% and 27% bands",
                    _ext(1.0) < _bands[0]["hi"] and _ext(5.0) >= _bands[-1]["lo"]))
     _gd = {g["name"]: g for g in _dg["guards"]}
-    _rz = _dg["band"]["cap"] > p["dd_budget"]["cap"]
+    _rz = _dg["band"]["cap"] > p["dd_budget"]["base"]
     _okstep = all(g["ok"] for g in _dg["guards"] if g["applies_to"] == "any step" or (_rz and g["applies_to"] == "raise"))
     checks.append(("the recommendation follows the band only when every guard that applies is clear, never past 27% or the derived reference",
                    _gd["geopolitics"]["ok"] == (_gd["geopolitics"]["reading"] > _gd["geopolitics"]["floor"])
                    and _gd["vix"]["ok"] == (p["macro"]["vix_latest"] <= p["macro"]["vix_longrun"])
                    and _gd["persistence"]["ok"] == (_gd["persistence"]["reviews"] >= _gd["persistence"]["needed"]
                                                     and _gd["persistence"]["ok"])
-                   and _dg["recommended_cap"] == (_dg["band"]["cap"] if _okstep else p["dd_budget"]["cap"])
+                   and _dg["recommended_cap"] == (_dg["band"]["cap"] if _okstep else p["dd_budget"]["base"])
                    and _dg["recommended_cap"] <= 27.0 <= p["dd_budget"]["derived_ref"] + 0.05))
     _alt = _dg["alt"]
-    checks.append(("the gauge's 25% step is the published A and B, and each step's picks sit inside their own cap",
-                   all(_alt["25"][x]["weights"] == p[f"portfolio_{x}"]["weights"] for x in "ab")
+    checks.append(("the gauge's step in force is the published A and B, and each step's picks sit inside their own cap",
+                   all(_alt[f"{DD_CAP:.0f}"][x]["weights"] == p[f"portfolio_{x}"]["weights"] for x in "ab")
                    and all(abs(_alt[c][x]["maxdd"]) <= float(c) + 1e-9 for c in _alt for x in "ab")
                    and all(set(_alt[c]) == {"a", "b"} for c in _alt)))
     checks.append(("a looser step never lowers the best return the rule can reach",
@@ -6797,8 +6832,15 @@ def report():
                    and all(MACRO[f"gbi_w_{x}_low"] >= MACRO[f"gbi_w_{x}_high"] >= 0 for x in "ab")
                    and sum(x[1] for x in MACRO["pa_review_mix"]) == 100
                    and "ATRUSEQ" not in p["portfolio_b"]["ids"]))
-    checks.append(("the held-out funds' what-if weights were run at the live drawdown budget, on or before today",
-                   MACRO["heldout_run_cap"] == p["dd_budget"]["cap"] and MACRO["heldout_run_date"] <= AS_OF))
+    checks.append(("the held-out funds' what-if weights were run at the live drawdown budget and rule, on or before today",
+                   MACRO["heldout_run_cap"] == p["dd_budget"]["cap"] and MACRO["heldout_run_tie"] == PIN_TIE_PP
+                   and MACRO["heldout_run_date"] <= AS_OF
+                   # the disputed-fee re-run (same run, same budget and rule): a lower fee than the
+                   # one carried, weights inside the limits, and the note on the page quoting them
+                   and MACRO["amip_trust_alt"] < next(f["fee_feeder"] for f in UNIV[1] if f["id"] == "ATRAMIP")
+                   and all(0 <= MACRO[k] <= MACRO["pd_review_max_w"] for k in ("amip_w_a_alt", "amip_w_b_alt"))
+                   and f"A would hold {MACRO['amip_w_a_alt']}% of this fund and B {MACRO['amip_w_b_alt']}%"
+                       in next(f["fee_note"] for f in UNIV[1] if f["id"] == "ATRAMIP")))
     checks.append(("portfolio vol < weighted-average vol for A and B (diversification works)",
                    all(p[f"portfolio_{x_}"]["macro"]["vol"]
                        < sum(w / 100 * f["vol"] for w, f in zip(p[f"portfolio_{x_}"]["weights"], _five))

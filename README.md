@@ -52,33 +52,39 @@ Global Allocation.
 
 | | A · 10-year view | B · 3/5/10-year view |
 |---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 30 / 0 / 15 / 0 / 0 / 20 / 0 / 0 / 30 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** |
-| 10y net CAGR after all fees | **7.07%** | 7.05% |
-| Expected max drawdown (10y) | −24.6% | **−24.3%** |
-| Return per unit of drawdown | 0.287 | **0.290** |
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** |
+| 10y net CAGR after all fees | **7.11%** | 7.10% |
+| Expected max drawdown (10y) | −25.0% | **−24.9%** |
+| Return per unit of drawdown | 0.284 | **0.285** |
 
 Both columns are on the 3/5/10-year view. Every portfolio is built from four analyses -
 the macro drivers, the market trend, the regional ranking and the volatility curve - each
 read at **3, 5 and 10 years** and weighted by the share of the ten-year holding it governs
 (3Y years 1-3, 30%; 5Y years 4-5, 20%; 10Y years 6-10, 50%). **One rule chooses both**, over the eleven funds within the review's
-limits (at most 5 funds, 35% in any one, at least 5% peso cash; 322,725 mixes): the best
-10-year net CAGR after fees inside the drawdown budget, then the lowest drawdown within
-0.05pp of it. The budget is **−25%, the owner's from 27 Oct 2026** (v75), in place of the
-derived −26.97% (the original 20 / 30 / 25 / 25 baseline's drawdown less 2.83pp). The
-engine re-chooses each at every update:
-- **A, the 10-year view**: the rule on the four analyses read at 10 years alone (7.26% /
-  −24.5% there): 5% money market, 30% Nasdaq Equity Income, 15% Global Technology, 20%
-  Global Infra Equity, 30% Asian Multi-Asset Income.
-- **B, the 3/5/10-year view**: the rule on all three horizons: 5% money market, 35%
-  Nasdaq Equity Income, 10% Global Technology, 25% Global Infra Equity, 25% Asian
-  Multi-Asset Income. Level with A at the model's precision for 0.3pp less drawdown (49
-  mixes inside the tie).
+limits (at most 5 funds, 35% in any one, at least 5% peso cash; 322,725 mixes): **maximum
+growth** - the highest 10-year net CAGR after all fund fees whose drawdown is inside the
+budget, as computed and as shown; a shallower drawdown decides only between mixes that print
+the same CAGR (since v77; until v76, the lowest drawdown within 0.05pp of the best). The
+budget is **the Budget tab's band**, from the owner's **−25% base** (27 Oct 2026, v75): the
+band leaves the base only when two month-end reviews in a row read another band and, for a
+raise, both risk guards are clear. It is −25% today, in place of the derived −26.97% (the
+original 20 / 30 / 25 / 25 baseline's drawdown less 2.83pp). The engine re-chooses each at
+every update:
+- **A, the 10-year view**: the rule on the four analyses read at 10 years alone (7.30% /
+  −24.9% there): 5% money market, 35% Nasdaq Equity Income, 10% Global Technology, 30%
+  Global Infra Equity, 20% Asian Multi-Asset Income. On the 3/5/10-year view it prints at
+  the budget (−25.0%) and sits just past it before rounding.
+- **B, the 3/5/10-year view**: the rule on all three horizons: 10% money market, 35%
+  Nasdaq Equity Income, 5% Global Technology, 20% Global Health Care, 30% Global Infra
+  Equity - the highest 3/5/10-year CAGR inside the budget, 0.01pp below A there for 0.1pp
+  less drawdown. Maximum growth added 0.04pp a year to A and 0.05pp to B against the v76
+  rule, for 0.4pp and 0.6pp more drawdown, both inside the budget.
 
 **The Budget tab** reads, on 1-5, whether the next three and five years justify moving the
 25% budget - from the macro drivers, the volatility curve and the market trend at each
 view - with bands for a step to 24%, 26% or 27%, guards that must also be clear, and what
-each step does to A and B. On 28 Oct it reads 2.89: hold at 25%. It is advisory; the
-budget never moves by itself.
+each step does to A and B. On 28 Oct it reads 2.89: hold at 25%. Since v77 the band sets
+the budget for A and B (owner, 28 Oct), through the same guards.
 
 Portfolio C - B with Nasdaq Equity Income held at 50%, the pin exempt from the 35% cap,
 added on 2026-09-25 - was removed at the owner's request on 2026-10-28 (v76). At removal it
@@ -100,7 +106,9 @@ Technology. A and C kept their weights. (Those were the picks under the derived 
 v75 moved all three to the owner's 25%; C was retired in v76.) US Equity Opportunity is
 held out until its trust fee is confirmed (at the listed 1.20% it would take 20% of A and
 20% of B, at the 25% budget); Global Bond Income would move the picks most (at its listed
-fee, 30-35% of A). The page states every figure here from the
+fee, 25-35% of A). **The Asian Multi-Asset Income trust fee is disputed** (1.50% on ATRAM's
+page, carried; 1.20% in its October 2025 KIID): at 1.20%, A would hold 35% of it and B 30%,
+against 20% and none. The page states every figure here from the
 engine; this table is a snapshot of it, and the review audit fails if it drifts.
 
 ## Layout

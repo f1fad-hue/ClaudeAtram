@@ -614,12 +614,11 @@ details.how p:last-child{margin-bottom:0}
     <details class="card how">
       <summary>Why not simply maximise return?</summary>
       <p id="extremes">Because the answer is degenerate.</p>
-      <p style="margin-bottom:0">So the rule has two steps: the best net CAGR with
-        expected drawdown inside the budget (<span class="num" id="ntotal2">—</span>
-        mixes enumerated); then, among portfolios within <span class="num"
-        id="tiepp2">—</span> of that best, the lowest drawdown &mdash; a smaller
-        difference is below the model's precision. A applies it to the 10-year view alone,
-        B to the 3/5/10-year view.</p>
+      <p style="margin-bottom:0">So the budget holds the drawdown and the rule maximises growth
+        inside it: the highest net CAGR after fees whose expected drawdown is inside the budget
+        as computed and as shown (<span class="num" id="ntotal2">—</span> mixes enumerated); a
+        shallower drawdown decides only between mixes that print the same CAGR. A applies it to
+        the 10-year view alone, B to the 3/5/10-year view.</p>
     </details>
   </section>
 
@@ -692,8 +691,9 @@ details.how p:last-child{margin-bottom:0}
       <summary>Why the gauge works this way</summary>
       <div id="ddwhy"></div>
     </details>
-    <p class="note">A model's advisory reading, not personal financial advice. The budget does not
-      move by itself: a step is the owner's decision, taken at a month-end review.</p>
+    <p class="note">A model's reading, not personal financial advice. The budget follows the band
+      (owner, 28 October): it leaves the 25% base only when two month-end reviews in a row read
+      another band and, for a raise, both risk guards are clear.</p>
   </section>
 </div>
 
@@ -1258,17 +1258,21 @@ details.how p:last-child{margin-bottom:0}
   "useq_ocf_retail": 1.81,
   "useq_w_a_listed": 20,
   "useq_w_b_listed": 20,
-  "useq_w_a_peer": 0,
+  "useq_w_a_peer": 15,
   "useq_w_b_peer": 0,
   "gbi_trust_listed": 0.9,
   "gbi_target_low": 0.69,
   "gbi_target_high": 1.59,
   "gbi_w_a_low": 35,
   "gbi_w_b_low": 35,
-  "gbi_w_a_high": 30,
-  "gbi_w_b_high": 0,
+  "gbi_w_a_high": 25,
+  "gbi_w_b_high": 20,
   "heldout_run_cap": 25.0,
+  "heldout_run_tie": 0.0,
   "heldout_run_date": "2026-10-28",
+  "amip_trust_alt": 1.2,
+  "amip_w_a_alt": 35,
+  "amip_w_b_alt": 30,
   "brent_history": [
    [
     "2026-09-18",
@@ -3440,8 +3444,8 @@ details.how p:last-child{margin-bottom:0}
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.7125,
-  "a_k": 1.67368,
-  "b_k": 1.66579,
+  "a_k": 1.66579,
+  "b_k": 1.65833,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -3522,15 +3526,15 @@ details.how p:last-child{margin-bottom:0}
  "portfolio_a": {
   "weights": [
    5,
-   30,
+   35,
    0,
-   15,
+   10,
+   0,
+   0,
+   30,
    0,
    0,
    20,
-   0,
-   0,
-   30,
    0
   ],
   "ids": [
@@ -3549,71 +3553,71 @@ details.how p:last-child{margin-bottom:0}
   "macro": {
    "weights": [
     5.0,
-    30.0,
+    35.0,
     0.0,
-    15.0,
+    10.0,
+    0.0,
+    0.0,
+    30.0,
     0.0,
     0.0,
     20.0,
-    0.0,
-    0.0,
-    30.0,
     0.0
    ],
-   "cagr": 7.07,
-   "vol": 12.51,
-   "maxdd": -24.6,
-   "ret_per_dd": 0.287,
-   "sharpe_like": 0.039,
-   "terminal_1m": 1980059,
-   "worst_1m_from_open": 754000
+   "cagr": 7.11,
+   "vol": 12.75,
+   "maxdd": -25.0,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.041,
+   "terminal_1m": 1987468,
+   "worst_1m_from_open": 750000
   },
   "base": {
    "weights": [
     5.0,
-    30.0,
+    35.0,
     0.0,
-    15.0,
+    10.0,
+    0.0,
+    0.0,
+    30.0,
     0.0,
     0.0,
     20.0,
-    0.0,
-    0.0,
-    30.0,
     0.0
    ],
-   "cagr": 7.04,
-   "vol": 12.51,
-   "maxdd": -24.6,
-   "ret_per_dd": 0.286,
-   "sharpe_like": 0.037,
-   "terminal_1m": 1974518,
-   "worst_1m_from_open": 754000
+   "cagr": 7.09,
+   "vol": 12.75,
+   "maxdd": -25.0,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.04,
+   "terminal_1m": 1983760,
+   "worst_1m_from_open": 750000
   },
   "ten": {
    "weights": [
     5.0,
-    30.0,
+    35.0,
     0.0,
-    15.0,
+    10.0,
+    0.0,
+    0.0,
+    30.0,
     0.0,
     0.0,
     20.0,
-    0.0,
-    0.0,
-    30.0,
     0.0
    ],
-   "cagr": 7.26,
-   "vol": 12.51,
-   "maxdd": -24.5,
-   "ret_per_dd": 0.296,
-   "sharpe_like": 0.054,
-   "terminal_1m": 2015477,
-   "worst_1m_from_open": 755000
+   "cagr": 7.3,
+   "vol": 12.75,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.293,
+   "sharpe_like": 0.056,
+   "terminal_1m": 2023006,
+   "worst_1m_from_open": 751000
   },
   "column": "net_10y",
-  "band_n": 14,
+  "band_n": 1,
   "n_feasible": 165884,
   "is_review_pick": false,
   "review_outside": [],
@@ -3621,41 +3625,41 @@ details.how p:last-child{margin-bottom:0}
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $114. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.32,
-    "vol": 20.02,
-    "maxdd": -45.0
+    "cagr": 3.61,
+    "vol": 20.4,
+    "maxdd": -45.5
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.66,
-    "vol": 16.27,
-    "maxdd": -35.2
+    "cagr": 4.73,
+    "vol": 16.57,
+    "maxdd": -35.7
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.97,
-    "vol": 18.15,
-    "maxdd": -40.2
+    "cagr": 4.44,
+    "vol": 18.49,
+    "maxdd": -40.4
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.45,
-    "vol": 10.01,
-    "maxdd": -17.0
+    "cagr": 9.39,
+    "vol": 10.2,
+    "maxdd": -17.4
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.07,
-    "vol": 12.51,
-    "maxdd": -24.6
+    "cagr": 7.11,
+    "vol": 12.75,
+    "maxdd": -25.0
    }
   ],
   "dd_cap": 25.0,
-  "in_budget": true,
+  "in_budget": false,
   "review": {
    "date": "2026-10-21",
    "cagr": 7.06,
@@ -3690,8 +3694,11 @@ details.how p:last-child{margin-bottom:0}
  },
  "dd_budget": {
   "cap": 25.0,
-  "source": "owner",
+  "source": "band",
+  "base": 25.0,
+  "base_source": "owner",
   "date": "2026-10-27",
+  "band_date": "2026-10-28",
   "derived_ref": 26.97,
   "improvement": 2.83
  },
@@ -3793,70 +3800,116 @@ details.how p:last-child{margin-bottom:0}
     "a": {
      "weights": [
       5,
-      30,
+      35,
       0,
-      10,
-      0,
-      0,
-      25,
+      5,
       0,
       0,
-      30,
+      35,
+      0,
+      0,
+      20,
       0
      ],
-     "cagr": 6.97,
-     "maxdd": -23.4,
-     "vol": 12.04,
-     "ret_per_dd": 0.298,
+     "cagr": 7.02,
+     "maxdd": -24.0,
+     "vol": 12.34,
+     "ret_per_dd": 0.292,
      "n_feasible": 147099,
      "best": 7.2,
-     "hormuz_dd": -42.9
+     "hormuz_dd": -43.6
     },
     "b": {
      "weights": [
       5,
-      30,
+      35,
+      0,
+      0,
+      0,
+      15,
+      35,
+      0,
       0,
       10,
-      0,
-      0,
-      25,
-      0,
-      0,
-      30,
       0
      ],
-     "cagr": 6.97,
-     "maxdd": -23.4,
-     "vol": 12.04,
-     "ret_per_dd": 0.298,
+     "cagr": 7.02,
+     "maxdd": -23.8,
+     "vol": 12.34,
+     "ret_per_dd": 0.295,
      "n_feasible": 145540,
      "best": 7.02,
-     "hormuz_dd": -42.9
+     "hormuz_dd": -43.1
     }
    },
    "25": {
     "a": {
      "weights": [
       5,
+      35,
+      0,
+      10,
+      0,
+      0,
+      30,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.11,
+     "maxdd": -25.0,
+     "vol": 12.75,
+     "ret_per_dd": 0.284,
+     "n_feasible": 165884,
+     "best": 7.3,
+     "hormuz_dd": -45.5
+    },
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      5,
+      0,
+      20,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.1,
+     "maxdd": -24.9,
+     "vol": 12.75,
+     "ret_per_dd": 0.285,
+     "n_feasible": 164263,
+     "best": 7.1,
+     "hormuz_dd": -44.9
+    }
+   },
+   "26": {
+    "a": {
+     "weights": [
+      5,
       30,
       0,
       15,
       0,
       0,
-      20,
-      0,
-      0,
       30,
+      0,
+      0,
+      20,
       0
      ],
-     "cagr": 7.07,
-     "maxdd": -24.6,
-     "vol": 12.51,
-     "ret_per_dd": 0.287,
-     "n_feasible": 165884,
-     "best": 7.3,
-     "hormuz_dd": -45.0
+     "cagr": 7.19,
+     "maxdd": -26.0,
+     "vol": 13.15,
+     "ret_per_dd": 0.277,
+     "n_feasible": 183892,
+     "best": 7.39,
+     "hormuz_dd": -47.3
     },
     "b": {
      "weights": [
@@ -3866,22 +3919,22 @@ details.how p:last-child{margin-bottom:0}
       10,
       0,
       0,
-      25,
+      35,
       0,
       0,
-      25,
+      15,
       0
      ],
-     "cagr": 7.05,
-     "maxdd": -24.3,
-     "vol": 12.41,
-     "ret_per_dd": 0.29,
-     "n_feasible": 164263,
-     "best": 7.1,
-     "hormuz_dd": -44.3
+     "cagr": 7.18,
+     "maxdd": -25.8,
+     "vol": 13.12,
+     "ret_per_dd": 0.278,
+     "n_feasible": 182266,
+     "best": 7.18,
+     "hormuz_dd": -46.8
     }
    },
-   "26": {
+   "27": {
     "a": {
      "weights": [
       5,
@@ -3890,87 +3943,41 @@ details.how p:last-child{margin-bottom:0}
       15,
       0,
       0,
-      20,
-      0,
-      0,
-      25,
-      0
-     ],
-     "cagr": 7.15,
-     "maxdd": -25.5,
-     "vol": 12.9,
-     "ret_per_dd": 0.28,
-     "n_feasible": 183892,
-     "best": 7.39,
-     "hormuz_dd": -46.5
-    },
-    "b": {
-     "weights": [
-      5,
-      35,
-      5,
-      0,
-      0,
-      25,
       30,
       0,
       0,
-      0,
+      15,
       0
      ],
-     "cagr": 7.13,
-     "maxdd": -25.2,
-     "vol": 12.95,
-     "ret_per_dd": 0.283,
-     "n_feasible": 182266,
-     "best": 7.18,
-     "hormuz_dd": -45.5
-    }
-   },
-   "27": {
-    "a": {
-     "weights": [
-      5,
-      30,
-      0,
-      20,
-      0,
-      0,
-      20,
-      0,
-      0,
-      25,
-      0
-     ],
-     "cagr": 7.23,
-     "maxdd": -26.6,
-     "vol": 13.32,
-     "ret_per_dd": 0.272,
+     "cagr": 7.28,
+     "maxdd": -26.9,
+     "vol": 13.56,
+     "ret_per_dd": 0.271,
      "n_feasible": 201004,
      "best": 7.48,
-     "hormuz_dd": -48.4
+     "hormuz_dd": -48.8
     },
     "b": {
      "weights": [
       5,
       35,
       0,
-      5,
+      15,
       0,
-      25,
+      0,
       30,
       0,
       0,
-      0,
+      15,
       0
      ],
-     "cagr": 7.23,
-     "maxdd": -26.3,
-     "vol": 13.4,
-     "ret_per_dd": 0.275,
+     "cagr": 7.28,
+     "maxdd": -26.9,
+     "vol": 13.56,
+     "ret_per_dd": 0.271,
      "n_feasible": 199469,
      "best": 7.28,
-     "hormuz_dd": -47.3
+     "hormuz_dd": -48.8
     }
    }
   }
@@ -4029,7 +4036,7 @@ details.how p:last-child{margin-bottom:0}
     "why": "no current fee found; the same job as the money market"
    }
   ],
-  "tie_pp": 0.05,
+  "tie_pp": 0.0,
   "frontier": [
    {
     "maxdd": 10.5,
@@ -4302,31 +4309,13 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 24.3,
-    "dd": -24.3,
-    "cagr": 7.05,
+    "maxdd": 24.8,
+    "dd": -24.8,
+    "cagr": 7.09,
     "weights": [
      5.0,
      35.0,
      0.0,
-     10.0,
-     0.0,
-     0.0,
-     25.0,
-     0.0,
-     0.0,
-     25.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 25.2,
-    "dd": -25.2,
-    "cagr": 7.13,
-    "weights": [
-     5.0,
-     35.0,
-     5.0,
      0.0,
      0.0,
      25.0,
@@ -4334,20 +4323,20 @@ details.how p:last-child{margin-bottom:0}
      0.0,
      0.0,
      0.0,
-     0.0
+     5.0
     ]
    },
    {
-    "maxdd": 26.1,
-    "dd": -26.1,
-    "cagr": 7.21,
+    "maxdd": 24.9,
+    "dd": -24.9,
+    "cagr": 7.1,
     "weights": [
      10.0,
      35.0,
      0.0,
-     10.0,
+     5.0,
      0.0,
-     15.0,
+     20.0,
      30.0,
      0.0,
      0.0,
@@ -4356,27 +4345,27 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 27.2,
-    "dd": -27.2,
-    "cagr": 7.29,
+    "maxdd": 25.8,
+    "dd": -25.8,
+    "cagr": 7.18,
     "weights": [
+     5.0,
+     35.0,
+     0.0,
      10.0,
-     30.0,
+     0.0,
+     0.0,
+     35.0,
+     0.0,
      0.0,
      15.0,
-     0.0,
-     15.0,
-     30.0,
-     0.0,
-     0.0,
-     0.0,
      0.0
     ]
    },
    {
-    "maxdd": 28.2,
-    "dd": -28.2,
-    "cagr": 7.38,
+    "maxdd": 26.8,
+    "dd": -26.8,
+    "cagr": 7.25,
     "weights": [
      5.0,
      35.0,
@@ -4384,25 +4373,25 @@ details.how p:last-child{margin-bottom:0}
      20.0,
      0.0,
      0.0,
-     25.0,
-     0.0,
-     0.0,
      15.0,
+     0.0,
+     0.0,
+     25.0,
      0.0
     ]
    },
    {
-    "maxdd": 29.3,
-    "dd": -29.3,
-    "cagr": 7.46,
+    "maxdd": 28.0,
+    "dd": -28.0,
+    "cagr": 7.36,
     "weights": [
      5.0,
      30.0,
      0.0,
-     25.0,
+     20.0,
      0.0,
      0.0,
-     25.0,
+     30.0,
      0.0,
      0.0,
      15.0,
@@ -4410,17 +4399,35 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 30.2,
-    "dd": -30.2,
-    "cagr": 7.55,
+    "maxdd": 29.0,
+    "dd": -29.0,
+    "cagr": 7.45,
+    "weights": [
+     5.0,
+     35.0,
+     0.0,
+     15.0,
+     0.0,
+     10.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 30.0,
+    "dd": -30.0,
+    "cagr": 7.54,
     "weights": [
      5.0,
      35.0,
      0.0,
      20.0,
      0.0,
-     10.0,
-     30.0,
+     20.0,
+     20.0,
      0.0,
      0.0,
      0.0,
@@ -4428,17 +4435,17 @@ details.how p:last-child{margin-bottom:0}
     ]
    },
    {
-    "maxdd": 31.2,
-    "dd": -31.2,
-    "cagr": 7.62,
+    "maxdd": 30.9,
+    "dd": -30.9,
+    "cagr": 7.58,
     "weights": [
      5.0,
-     30.0,
+     20.0,
      0.0,
      25.0,
      0.0,
      20.0,
-     20.0,
+     30.0,
      0.0,
      0.0,
      0.0,
@@ -4547,70 +4554,24 @@ details.how p:last-child{margin-bottom:0}
       5,
       35,
       0,
+      10,
       0,
       0,
-      25,
       30,
       0,
       0,
-      5,
+      20,
       0
      ],
-     "cagr": 7.08,
-     "maxdd": -24.4
+     "cagr": 7.12,
+     "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.07,
-     "maxdd": -24.6
+     "cagr": 7.12,
+     "maxdd": -25.0
     }
    },
    "drags_neutral": {
-    "b": {
-     "weights": [
-      5,
-      30,
-      0,
-      15,
-      0,
-      0,
-      20,
-      0,
-      0,
-      30,
-      0
-     ],
-     "cagr": 7.16,
-     "maxdd": -24.5
-    },
-    "a": {
-     "cagr": 7.16,
-     "maxdd": -24.5
-    }
-   },
-   "asia_no_rerating": {
-    "b": {
-     "weights": [
-      5,
-      35,
-      0,
-      0,
-      0,
-      20,
-      30,
-      0,
-      0,
-      0,
-      10
-     ],
-     "cagr": 7.05,
-     "maxdd": -24.4
-    },
-    "a": {
-     "cagr": 6.92,
-     "maxdd": -24.7
-    }
-   },
-   "asia_fee_hi": {
     "b": {
      "weights": [
       5,
@@ -4619,18 +4580,64 @@ details.how p:last-child{margin-bottom:0}
       10,
       0,
       0,
-      25,
+      30,
       0,
       0,
-      25,
+      20,
       0
      ],
-     "cagr": 7.05,
-     "maxdd": -24.3
+     "cagr": 7.2,
+     "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.07,
-     "maxdd": -24.6
+     "cagr": 7.2,
+     "maxdd": -24.9
+    }
+   },
+   "asia_no_rerating": {
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      5,
+      0,
+      20,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.1,
+     "maxdd": -24.9
+    },
+    "a": {
+     "cagr": 7.01,
+     "maxdd": -25.1
+    }
+   },
+   "asia_fee_hi": {
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      5,
+      0,
+      20,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.1,
+     "maxdd": -24.9
+    },
+    "a": {
+     "cagr": 7.11,
+     "maxdd": -25.0
     },
     "stress_pp": 0.25
    },
@@ -4640,60 +4647,60 @@ details.how p:last-child{margin-bottom:0}
       5,
       35,
       0,
+      10,
+      0,
+      0,
+      30,
       0,
       0,
       20,
-      35,
-      0,
-      0,
-      5,
       0
      ],
-     "cagr": 7.09,
-     "maxdd": -24.5
+     "cagr": 7.14,
+     "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.09,
-     "maxdd": -24.6
+     "cagr": 7.14,
+     "maxdd": -25.0
     }
    },
    "trend_alt": {
     "b": {
      "weights": [
-      5,
+      10,
       35,
       0,
-      10,
+      5,
+      0,
+      20,
+      30,
       0,
       0,
-      25,
       0,
-      0,
-      25,
       0
      ],
-     "cagr": 7.05,
-     "maxdd": -24.3
+     "cagr": 7.1,
+     "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.07,
-     "maxdd": -24.6
+     "cagr": 7.11,
+     "maxdd": -25.0
     }
    }
   }
  },
  "portfolio_b": {
   "weights": [
-   5,
+   10,
    35,
    0,
-   10,
+   5,
+   0,
+   20,
+   30,
    0,
    0,
-   25,
    0,
-   0,
-   25,
    0
   ],
   "ids": [
@@ -4710,7 +4717,7 @@ details.how p:last-child{margin-bottom:0}
    "M_GALL"
   ],
   "column": "net_macro",
-  "band_n": 49,
+  "band_n": 2,
   "n_feasible": 164263,
   "shorts": [
    "Peso Money Market",
@@ -5070,7 +5077,7 @@ details.how p:last-child{margin-bottom:0}
     "region": "ASIA",
     "target": "Target fund: Schroder Asian Asset Income Fund (named at launch, Sep 2022). Benchmark: 50% MSCI AC Asia Pacific ex Japan + 50% Bloomberg EM Asia.",
     "target_verified": true,
-    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published)",
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%",
     "gross_note": "Half equity, half bonds, as its benchmark: the Asia equity build (JPM LTCMA 2027 EM equity 7.1% + 1.0% re-rating - 0.5% dividend drag) and 6.1% for Asian credit (the LTCMA's US investment-grade figure, a proxy).",
     "code": "ATRAMIP",
     "fee_feeder": 1.5,
@@ -5197,105 +5204,105 @@ details.how p:last-child{margin-bottom:0}
   ],
   "macro": {
    "weights": [
-    5.0,
+    10.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
+    0.0,
+    20.0,
+    30.0,
     0.0,
     0.0,
-    25.0,
     0.0,
-    0.0,
-    25.0,
     0.0
    ],
-   "cagr": 7.05,
-   "vol": 12.41,
-   "maxdd": -24.3,
-   "ret_per_dd": 0.29,
-   "sharpe_like": 0.038,
-   "terminal_1m": 1976363,
-   "worst_1m_from_open": 757000
+   "cagr": 7.1,
+   "vol": 12.75,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.285,
+   "sharpe_like": 0.041,
+   "terminal_1m": 1985613,
+   "worst_1m_from_open": 751000
   },
   "base": {
    "weights": [
-    5.0,
+    10.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
+    0.0,
+    20.0,
+    30.0,
     0.0,
     0.0,
-    25.0,
     0.0,
-    0.0,
-    25.0,
     0.0
    ],
-   "cagr": 7.02,
-   "vol": 12.41,
-   "maxdd": -24.3,
-   "ret_per_dd": 0.289,
-   "sharpe_like": 0.035,
-   "terminal_1m": 1970831,
-   "worst_1m_from_open": 757000
+   "cagr": 7.07,
+   "vol": 12.75,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.038,
+   "terminal_1m": 1980059,
+   "worst_1m_from_open": 751000
   },
   "ten": {
    "weights": [
-    5.0,
+    10.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
+    0.0,
+    20.0,
+    30.0,
     0.0,
     0.0,
-    25.0,
     0.0,
-    0.0,
-    25.0,
     0.0
    ],
-   "cagr": 7.24,
-   "vol": 12.41,
-   "maxdd": -24.1,
-   "ret_per_dd": 0.3,
+   "cagr": 7.26,
+   "vol": 12.75,
+   "maxdd": -24.8,
+   "ret_per_dd": 0.293,
    "sharpe_like": 0.053,
-   "terminal_1m": 2011722,
-   "worst_1m_from_open": 759000
+   "terminal_1m": 2015477,
+   "worst_1m_from_open": 752000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $114. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.5,
-    "vol": 19.86,
-    "maxdd": -44.3
+    "cagr": 4.2,
+    "vol": 20.4,
+    "maxdd": -44.9
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.72,
-    "vol": 16.14,
-    "maxdd": -34.7
+    "cagr": 5.1,
+    "vol": 16.58,
+    "maxdd": -35.3
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.28,
-    "vol": 18.0,
-    "maxdd": -39.4
+    "cagr": 5.32,
+    "vol": 18.49,
+    "maxdd": -39.6
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.33,
-    "vol": 9.93,
-    "maxdd": -16.8
+    "cagr": 8.91,
+    "vol": 10.2,
+    "maxdd": -17.6
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.05,
-    "vol": 12.41,
-    "maxdd": -24.3
+    "cagr": 7.1,
+    "vol": 12.75,
+    "maxdd": -24.9
    }
   ],
   "corr": [
@@ -7353,7 +7360,6 @@ $("#spv").textContent = D.sp_vol_lt.toFixed(2) + "%";
 document.querySelectorAll(".nuw").forEach(e => e.textContent =
   WN[D.portfolio_b.ids.length]);
 $("#nfeas").textContent = D.portfolio_b.n_feasible.toLocaleString("en-US");
-$("#tiepp2").textContent = D.universe.tie_pp.toFixed(2) + "pp";
 $("#sixlim").textContent = `${D.universe.limits.max_funds} funds, ${D.universe.limits.max_w}% in any one and at least ${D.universe.limits.min_cash}% cash`;
 /* The lens verdict, A against D. Retired with B: the "vs baseline" sentence that
    described B against the old 20/30/25/25 (2026-10-21). */
@@ -7542,30 +7548,34 @@ $("#corrnote").textContent = D.corr_note;
     `<b>The limits are the 22-fund review's:</b> at most ${num(L6.max_funds + " funds")},
      ${num(L6.max_w + "%")} in any one and at least
      ${num(L6.min_cash + "%")} in peso cash; the drawdown budget does the rest &mdash;
-     ${num(D.dd_budget.cap.toFixed(0) + "%")}, the owner's since ${new Date(D.dd_budget.date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long" })}, in place of the
-     derived ${num(D.dd_budget.derived_ref.toFixed(2) + "%")} (the no-view baseline's drawdown less
-     ${num(D.dd_budget.improvement.toFixed(2) + "pp")}). The Budget tab reads when to move it.`;
+     ${num(D.dd_budget.cap.toFixed(0) + "%")}, the Budget tab's band step from the owner's
+     ${num(D.dd_budget.base.toFixed(0) + "%")} base, in place of the derived
+     ${num(D.dd_budget.derived_ref.toFixed(2) + "%")} (the no-view baseline's drawdown less
+     ${num(D.dd_budget.improvement.toFixed(2) + "pp")}).`;
 })();
 /* ---------------- drawdown budget gauge (v75) ---------------- */
 (function () {
   const G = D.dd_gauge, BU = D.dd_budget, P = G.parts, V = G.views, HY = HYL;
   const dlong = iso => new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   const num = t => `<b class="num">${t}</b>`;
-  const f2 = x => x.toFixed(2), cap = BU.cap;
+  /* v77: the band sets the budget. cap is the budget in force (the band's step), base the
+     owner's 25% the band holds at. */
+  const f2 = x => x.toFixed(2), cap = BU.cap, base = BU.base;
   const bandOf = v => G.bands.find(b => v >= b.lo && (v < b.hi || (b.hi === 5 && v <= 5)));
-  const B = G.band, hold = B.cap === cap;
+  const B = G.band, hold = B.cap === base;
   const blocked = G.blocked_by, rec = G.recommended_cap;
   const GN = Object.fromEntries(G.guards.map(g => [g.name, g]));
   $("#ddhead").textContent = `${f2(G.value)} of 5: ${B.action}` +
-    (!hold && rec === cap ? `, not yet` : ``);
+    (!hold && rec === base ? `, not yet` : ``);
   $("#ddlede").innerHTML =
-    `The drawdown budget is <b class="num">${cap.toFixed(0)}%</b>, the owner's since ${dlong(BU.date)}. This gauge
-     reads whether the next three and five years justify moving it, from the three analyses this
+    `The drawdown budget is <b class="num">${cap.toFixed(0)}%</b>, set by this gauge's band from the owner's
+     ${base.toFixed(0)}% base since ${dlong(BU.band_date)}. It reads whether the next three and five years justify
+     moving it, from the three analyses this
      page already publishes on 1&ndash;5 &mdash; the macro drivers, the volatility curve and the market
      trend &mdash; with 3 neutral. It reads <b class="num">${f2(G.value)}</b>: ${B.action.toLowerCase()}` +
-    (hold ? `.` : rec === cap ? `, but ${blocked.length > 1 ? "guards" : "a guard"} below
+    (hold ? `.` : rec === base ? `, but ${blocked.length > 1 ? "guards" : "a guard"} below
        ${blocked.length > 1 ? "hold" : "holds"} the budget at ${cap.toFixed(0)}% for now.` : `.`) +
-    ` Recommended budget: <b class="num">${rec.toFixed(0)}%</b>.`;
+    ` Budget in force for A and B: <b class="num">${cap.toFixed(0)}%</b>.`;
   /* the bar: the four bands across 1-5, the reading marked */
   const W = 420, H = 74, x0 = 14, x1 = W - 14, X = v => x0 + (x1 - x0) * (v - 1) / 4;
   const s = svg(W, H); s.setAttribute("aria-label", `Drawdown budget gauge: ${f2(G.value)} of 5`);
@@ -7587,8 +7597,8 @@ $("#corrnote").textContent = D.corr_note;
   vt.textContent = f2(G.value); s.appendChild(vt);
   $("#ddbar").appendChild(s);
   $("#ddbarnote").innerHTML = G.bands.map(b => `${f2(b.lo)}&ndash;${f2(b.hi)} ${b.action.toLowerCase()}`).join(" &middot; ") +
-    `. A step away from ${cap.toFixed(0)}% is never larger than ${(Math.max(...G.bands.map(b => b.cap)) - cap).toFixed(0)}
-     points up or ${(cap - Math.min(...G.bands.map(b => b.cap))).toFixed(0)} down.`;
+    `. A step away from the ${base.toFixed(0)}% base is never larger than ${(Math.max(...G.bands.map(b => b.cap)) - base).toFixed(0)}
+     points up or ${(base - Math.min(...G.bands.map(b => b.cap))).toFixed(0)} down.`;
   /* the readings by view */
   const t = $("#ddtab"), HZA = Object.keys(P);
   t.appendChild(el("thead", null, `<tr><th>Reading</th>` + HZA.map(h => `<th>${h}</th>`).join("") + `</tr>`));
@@ -7619,7 +7629,7 @@ $("#corrnote").textContent = D.corr_note;
     ` The gauge weights the ${V.join(" and ")} views by the years of the first five each covers
      (${V.map(h => `${h} ${(G.w[h] * 100).toFixed(0)}%`).join(", ")}). The ${HY} view is shown, not weighted: it is neutral by
      construction for the drivers and the trend, and its volatility years sit at the long run, so it carries no timing
-     signal &mdash; it is what the fixed ${cap.toFixed(0)}% stands for.`;
+     signal &mdash; it is what the ${base.toFixed(0)}% base stands for.`;
   /* the bands */
   const bt = $("#ddbands");
   bt.appendChild(el("thead", null, `<tr><th>Reading</th><th>Action</th><th>Budget</th></tr>`));
@@ -7646,8 +7656,8 @@ $("#corrnote").textContent = D.corr_note;
     ? `The reading sits in the hold band, so no step is due and the budget stays at
        ${num(cap.toFixed(0) + "%")}. Of the guards a raise would need, ${rz.filter(g => g.ok).length ? rz.filter(g => g.ok).map(g => g.name === "vix" ? "the VIX" : "geopolitics").join(" and ") + " " + (rz.filter(g => g.ok).length > 1 ? "are" : "is") + " clear" : "none is clear"}${rz.filter(g => !g.ok).length ? " and " + rz.filter(g => !g.ok).map(g => g.name === "vix" ? "the VIX" : "geopolitics").join(" and ") + " " + (rz.filter(g => !g.ok).length > 1 ? "are" : "is") + " not" : ""}. It would take a reading of ${num(f2(G.bands.find(b => b.cap > cap).lo))} or more, held at two
        month-end reviews, with both risk guards clear, to raise it to ${num(G.bands.find(b => b.cap > cap).cap.toFixed(0) + "%")}.`
-    : rec === cap ? `The reading points to ${B.cap.toFixed(0)}%, but ${blocked.join(" and ")} ${blocked.length > 1 ? "are" : "is"} not met: the budget stays at ${cap.toFixed(0)}%.`
-    : `The reading and every guard agree: the recommended budget is ${rec.toFixed(0)}%.`;
+    : rec === base ? `The reading points to ${B.cap.toFixed(0)}%, but ${blocked.join(" and ")} ${blocked.length > 1 ? "are" : "is"} not met: the budget stays at ${cap.toFixed(0)}%.`
+    : `The reading and every guard agree: the budget has moved to ${cap.toFixed(0)}%.`;
   /* the steps */
   const st = $("#ddsteps"), AL = G.alt, caps = Object.keys(AL).sort((a, b) => +a - +b);
   st.appendChild(el("thead", null, `<tr><th>Budget</th><th>A</th><th>B</th><th>B, Hormuz</th></tr>`));
@@ -7664,23 +7674,23 @@ $("#corrnote").textContent = D.corr_note;
      mix chosen by the page's one rule inside that budget (return above, drawdown below). A step to ${nx}% adds ${["a", "b"].map(x =>
        `${x.toUpperCase()} ${f2(dC(x))}pp`).join(" and ")} a year for ${["a", "b"].map(x =>
        `${dD(x).toFixed(1)}pp`).join(" and ")} more drawdown; ${top}% is the derived budget the owner's
-     ${cap.toFixed(0)}% replaced, and returns the portfolios held before. The last column is B's modelled fall if the
+     ${base.toFixed(0)}% replaced. The last column is B's modelled fall if the
      Strait of Hormuz closes outright &mdash; what the geopolitics guard protects.`;
   $("#ddwhy").innerHTML =
-    `<p><b>Why a gauge and not a moving budget.</b> The four analyses already move every fund's forecast and so
-       every mix; a budget that also moved on each reading would count the same evidence twice. Tests of timing
-       risk by volatility found the managed versions did not beat staying invested out of sample
-       (Cederburg, O'Doherty, Wang and Yan, <i>Journal of Financial Economics</i>, 2020). So the budget stays
-       fixed, the gauge advises, and a step needs two month-end reviews in a row.</p>
+    `<p><b>Why a slow band and not a budget that moves on every reading.</b> The four analyses already move every
+       fund's forecast and so every mix; a budget that also moved on each reading would count the same evidence
+       twice. Tests of timing risk by volatility found the managed versions did not beat staying invested out of
+       sample (Cederburg, O'Doherty, Wang and Yan, <i>Journal of Financial Economics</i>, 2020). So the budget
+       moves only on the band, by one step at a time, and a step needs two month-end reviews in a row.</p>
      <p><b>Why these three.</b> They are the parts of the analysis that describe the risk ahead rather than the
        return: the drivers' path, the volatility the options market prices for each stretch of years, and
        whether markets have run far enough to give some back. The regional ranking moves which funds are held,
        not how much risk the whole portfolio takes, so it is not in the gauge.</p>
      <p><b>Why 3 and 5 years weigh in, and 10 does not.</b> Each view counts for the share of the first five
        years it covers (${V.map(h => `${h} ${(G.w[h] * 100).toFixed(0)}%`).join(", ")}). Over ten years the cycle averages
-       out &mdash; that is the ${cap.toFixed(0)}% budget itself.</p>
+       out &mdash; that is the ${base.toFixed(0)}% base itself.</p>
      <p><b>Why the steps stop at ${Math.max(...G.bands.map(b => b.cap)).toFixed(0)}% and ${Math.min(...G.bands.map(b => b.cap)).toFixed(0)}%.</b>
-       ${Math.max(...G.bands.map(b => b.cap)).toFixed(0)}% is the derived budget (${BU.derived_ref.toFixed(2)}%) the owner's figure replaced; past
+       ${Math.max(...G.bands.map(b => b.cap)).toFixed(0)}% is the derived budget (${BU.derived_ref.toFixed(2)}%) the owner's base replaced; past
        it the page has no reference. Going down, the step to ${Math.min(...G.bands.map(b => b.cap)).toFixed(0)}% already costs
        ${["a", "b"].map(x => { const lo = String(Math.min(...G.bands.map(b => b.cap))), c0 = String(cap);
          return `${x.toUpperCase()} ${((G.alt[c0][x].cagr - G.alt[lo][x].cagr) / (Math.abs(G.alt[c0][x].maxdd) - Math.abs(G.alt[lo][x].maxdd))).toFixed(2)}pp`; }).join(" and ")}
@@ -8398,8 +8408,8 @@ function donut(host, w, title, cagr, dd) {
     P4.map(q => `<td>${q.weights[i] ? q.weights[i] + "%" : "&ndash;"}</td>`).join(""))); });
   vw.appendChild(vwb);
   $("#pblede").innerHTML =
-    `One rule for both: the best ${HYN} net CAGR after fees inside the drawdown budget,
-     then the lowest drawdown within ${tie.toFixed(2)}pp of it, over the ${NUW} funds this page
+    `One rule for both, maximum growth: the highest ${HYN} net CAGR after fees the drawdown budget allows
+     (a shallower drawdown decides only between mixes that print the same CAGR), over the ${NUW} funds this page
      models in full, with at most ${L6.max_funds} funds, ${L6.max_w}% in any one and
      at least ${L6.min_cash}% cash. <strong>A</strong> reads the four analyses &mdash; drivers,
      market trend, regional ranking and volatility &mdash; at ${HYL} alone:
@@ -8409,7 +8419,7 @@ function donut(host, w, title, cagr, dd) {
     `. <strong>B</strong> reads them at ${HZK.slice(0, -1).join(", ")} and ${HYL}, each weighted
      by its share of the ten years (${HZK.map(h => `${h} ${(D.hz_weights[h]*100).toFixed(0)}%`).join(" / ")}):
      <b class="num">${pc(Bm.cagr)}</b> at
-     <b class="num">${pc1(Bm.maxdd)}</b>, ${PB.band_n} mixes inside the tie. The engine re-chooses
+     <b class="num">${pc1(Bm.maxdd)}</b>, ${PB.band_n === 1 ? "the one mix" : WN[PB.band_n] + " mixes"} at that CAGR. The engine re-chooses
      both at every update.`;
   /* THE 22-FUND LIST, SEARCHED (2026-10-22): every fund whose fees are confirmed is in
      the search; the rest are held out, each with what is missing. */
@@ -8457,7 +8467,9 @@ function donut(host, w, title, cagr, dd) {
      <b class="num">${pc(Bm.cagr)}</b>, ${vs}, with
      <b class="num">${Math.abs(ddA).toFixed(1)}pp</b> ${ddA >= 0 ? "less" : "more"} drawdown
      (${pc1(Bm.maxdd)} against ${pc1(A.maxdd)}); ${bothIn ? "both sit inside" : PB.in_budget ? "only B sits inside" : "B sits outside"}
-     the ${pc(-PB.dd_cap)} budget.` +
+     the ${pc(-PB.dd_cap)} budget` +
+    (!PA.in_budget && Math.abs(A.maxdd) <= PA.dd_cap + 1e-9 ? ` (A prints at it on this view but sits just past it
+       before rounding; it is chosen, and inside the budget, on its own ${HYL} view)` : ``) + `.` +
     (!lvl && dA < 0 ? ` A's extra return comes from ${SH[contrib[0]]}:
        ${PA.weights[contrib[0]]}% against B's ${PB.weights[contrib[0]]}%.` : ``);
   /* A ROW PER FUND since 2026-10-22: seven added funds would not fit as columns. */

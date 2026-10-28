@@ -2,6 +2,71 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-28 — v77: maximum growth for A and B inside the band's drawdown budget
+
+At the owner's instruction: "Do the best and recommended approach to reach maximum growth
+10yrs cagr minus fund fees forecasts to portfolio A and B. Use the budget drawdown band to
+portfolio A and B." No market input changed: the data are v76's (28 Oct).
+
+**The rule: maximum growth.** Since 2026-10-07 the rule took the best net CAGR inside the
+budget, then the lowest drawdown within 0.05pp of it - a return gain below the model's
+precision was not worth more drawdown. With the drawdown now held by the band's budget, it
+takes the **highest net CAGR after all fund fees** whose drawdown is inside the budget as
+computed and as shown; a shallower drawdown decides only between mixes that print the same
+CAGR (`PIN_TIE_PP` 0.05 → 0).
+
+| | v76 | v77, maximum growth | Change |
+|---|---|---|---|
+| A (10-year view) | 5 / 30 / 15 Tech / 20 Infra / 30 AMI: 7.26% / −24.5% | 5 / 35 / 10 Tech / 30 Infra / 20 AMI: 7.30% / −24.9% | +0.04pp a year for 0.4pp more drawdown |
+| B (3/5/10-year view) | 5 / 35 / 10 Tech / 25 Infra / 25 AMI: 7.05% / −24.3% | 10 / 35 / 5 Tech / 20 Health / 30 Infra: 7.10% / −24.9% | +0.05pp for 0.6pp more drawdown |
+
+(Money market / Nasdaq Equity Income first. A's figures are on its own 10-year view, B's on
+the 3/5/10-year view.) Both sit inside the 25% budget. If Hormuz closes outright, A's modelled
+fall deepens to −45.5% (from −45.0%) and B's to −44.9% (from −44.3%); the worst case on ₱1M
+is ₱750,000 for A and ₱751,000 for B. The gain is the size of the tolerance it replaces - at
+the edge of what the model can tell apart - and the page says so.
+
+**The budget: the band's.** The gauge is now computed before the search, and `DD_CAP` is its
+recommended step from the owner's 25% base (`dd_budget.source` "band", `base` 25). It reads
+2.89 - hold at 25% - so the budget is 25% today. It leaves the base only when two month-end
+reviews in a row read another band and, for a raise, both risk guards are clear (Geopolitics
+is 1.5, under its 2.0 floor). The gauge's steps are now every band but the one in force, so a
+step re-chooses A and B by the same rule.
+
+**Re-run under the new rule (the held-out what-ifs record their budget and rule):** US Equity
+Opportunity 20 / 20 at 1.20% and 15 / none at 1.50%; Global Bond Income 35 / 35 at the
+institutional charge and 25 / 20 at the retail one; Global Allocation at 1.50% still in
+neither. **The Asian Multi-Asset Income fee dispute now decides B's Asia sleeve:** at the 1.20%
+in its October 2025 KIID, A would hold 35% of it and B 30%, against 20% and none at the carried
+1.50%. That is now on the page, in the fund's fee note, and checked against the run.
+
+**Errors found and fixed:**
+- **A's budget flag read the printed drawdown alone.** On the 3/5/10-year view A prints −25.0%
+  against the 25% budget and sits 0.0035pp past it before rounding, so the flag said inside
+  while the search - which requires both routes (runbook 27) - treated A as outside on that
+  view. That is why B, chosen on that view, returns 0.01pp less than A there. `in_budget` now
+  uses both routes, in the engine and the audit, and the page says why A is outside on that
+  view though inside on its own (runbook 110).
+- **The "no pick exceeds the budget on the column it was chosen on" check read A on the
+  long-run column** (`net_base`), A's column before v68, not the 10-year view it has been chosen
+  on since. It passed only because the long-run drawdown is the deeper of the two. It reads
+  `net_10y`.
+- **The Budget tab said the 27% step "returns the portfolios held before"** - true of the old
+  rule's 27% picks (v74's), false under maximum growth. The sentence is gone.
+- **Validator row 16 assumed A sits inside the budget on B's view**; it now requires B to beat
+  A there only when A is inside, and A to be inside on its own view. (Row 25 also read the old
+  "Recommended budget" phrase.)
+
+**Docs:** README (table, rule, budget, the fee dispute), CLAIMS (A, B, selection rule, budget,
+gauge, worst case, drawdown k, held-out and Asian Multi-Asset Income rows), runbook (step 2's
+rule and budget, step 2c, lesson 110).
+
+**Not changed:** the 28 Oct data; the FOMC decides at 2pm ET today, after this as-of.
+
+**Checks:** engine 236/236; independent audit 406/406 (2 standing warnings, both fund fee
+notes); page validator 25/25 on the published copy (version 77, payload identical to
+`model/data.json`); mutations (52 mutants) still running at this commit - the count follows in the next.
+
 ## 2026-10-28 — v76: Portfolio C removed; rolled to the 28 Oct Manila and Seoul closes; A and B unchanged
 
 At the owner's instruction: "Remove portfolio C. Do house cleanup", with the full review

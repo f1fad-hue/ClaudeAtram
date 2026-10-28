@@ -395,17 +395,21 @@
   "useq_ocf_retail": 1.81,
   "useq_w_a_listed": 20,
   "useq_w_b_listed": 20,
-  "useq_w_a_peer": 0,
+  "useq_w_a_peer": 15,
   "useq_w_b_peer": 0,
   "gbi_trust_listed": 0.9,
   "gbi_target_low": 0.69,
   "gbi_target_high": 1.59,
   "gbi_w_a_low": 35,
   "gbi_w_b_low": 35,
-  "gbi_w_a_high": 30,
-  "gbi_w_b_high": 0,
+  "gbi_w_a_high": 25,
+  "gbi_w_b_high": 20,
   "heldout_run_cap": 25.0,
+  "heldout_run_tie": 0.0,
   "heldout_run_date": "2026-10-28",
+  "amip_trust_alt": 1.2,
+  "amip_w_a_alt": 35,
+  "amip_w_b_alt": 30,
   "brent_history": [
    [
     "2026-09-18",
@@ -2577,8 +2581,8 @@
   "calib_y": 5.0,
   "horizon_scalar": 1.414213562,
   "baseline_k": 1.7125,
-  "a_k": 1.67368,
-  "b_k": 1.66579,
+  "a_k": 1.66579,
+  "b_k": 1.65833,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -2659,15 +2663,15 @@
  "portfolio_a": {
   "weights": [
    5,
-   30,
+   35,
    0,
-   15,
+   10,
+   0,
+   0,
+   30,
    0,
    0,
    20,
-   0,
-   0,
-   30,
    0
   ],
   "ids": [
@@ -2686,71 +2690,71 @@
   "macro": {
    "weights": [
     5.0,
-    30.0,
+    35.0,
     0.0,
-    15.0,
+    10.0,
+    0.0,
+    0.0,
+    30.0,
     0.0,
     0.0,
     20.0,
-    0.0,
-    0.0,
-    30.0,
     0.0
    ],
-   "cagr": 7.07,
-   "vol": 12.51,
-   "maxdd": -24.6,
-   "ret_per_dd": 0.287,
-   "sharpe_like": 0.039,
-   "terminal_1m": 1980059,
-   "worst_1m_from_open": 754000
+   "cagr": 7.11,
+   "vol": 12.75,
+   "maxdd": -25.0,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.041,
+   "terminal_1m": 1987468,
+   "worst_1m_from_open": 750000
   },
   "base": {
    "weights": [
     5.0,
-    30.0,
+    35.0,
     0.0,
-    15.0,
+    10.0,
+    0.0,
+    0.0,
+    30.0,
     0.0,
     0.0,
     20.0,
-    0.0,
-    0.0,
-    30.0,
     0.0
    ],
-   "cagr": 7.04,
-   "vol": 12.51,
-   "maxdd": -24.6,
-   "ret_per_dd": 0.286,
-   "sharpe_like": 0.037,
-   "terminal_1m": 1974518,
-   "worst_1m_from_open": 754000
+   "cagr": 7.09,
+   "vol": 12.75,
+   "maxdd": -25.0,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.04,
+   "terminal_1m": 1983760,
+   "worst_1m_from_open": 750000
   },
   "ten": {
    "weights": [
     5.0,
-    30.0,
+    35.0,
     0.0,
-    15.0,
+    10.0,
+    0.0,
+    0.0,
+    30.0,
     0.0,
     0.0,
     20.0,
-    0.0,
-    0.0,
-    30.0,
     0.0
    ],
-   "cagr": 7.26,
-   "vol": 12.51,
-   "maxdd": -24.5,
-   "ret_per_dd": 0.296,
-   "sharpe_like": 0.054,
-   "terminal_1m": 2015477,
-   "worst_1m_from_open": 755000
+   "cagr": 7.3,
+   "vol": 12.75,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.293,
+   "sharpe_like": 0.056,
+   "terminal_1m": 2023006,
+   "worst_1m_from_open": 751000
   },
   "column": "net_10y",
-  "band_n": 14,
+  "band_n": 1,
   "n_feasible": 165884,
   "is_review_pick": false,
   "review_outside": [],
@@ -2758,41 +2762,41 @@
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $114. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.32,
-    "vol": 20.02,
-    "maxdd": -45.0
+    "cagr": 3.61,
+    "vol": 20.4,
+    "maxdd": -45.5
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.66,
-    "vol": 16.27,
-    "maxdd": -35.2
+    "cagr": 4.73,
+    "vol": 16.57,
+    "maxdd": -35.7
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 3.97,
-    "vol": 18.15,
-    "maxdd": -40.2
+    "cagr": 4.44,
+    "vol": 18.49,
+    "maxdd": -40.4
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.45,
-    "vol": 10.01,
-    "maxdd": -17.0
+    "cagr": 9.39,
+    "vol": 10.2,
+    "maxdd": -17.4
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.07,
-    "vol": 12.51,
-    "maxdd": -24.6
+    "cagr": 7.11,
+    "vol": 12.75,
+    "maxdd": -25.0
    }
   ],
   "dd_cap": 25.0,
-  "in_budget": true,
+  "in_budget": false,
   "review": {
    "date": "2026-10-21",
    "cagr": 7.06,
@@ -2827,8 +2831,11 @@
  },
  "dd_budget": {
   "cap": 25.0,
-  "source": "owner",
+  "source": "band",
+  "base": 25.0,
+  "base_source": "owner",
   "date": "2026-10-27",
+  "band_date": "2026-10-28",
   "derived_ref": 26.97,
   "improvement": 2.83
  },
@@ -2930,70 +2937,116 @@
     "a": {
      "weights": [
       5,
-      30,
+      35,
       0,
-      10,
-      0,
-      0,
-      25,
+      5,
       0,
       0,
-      30,
+      35,
+      0,
+      0,
+      20,
       0
      ],
-     "cagr": 6.97,
-     "maxdd": -23.4,
-     "vol": 12.04,
-     "ret_per_dd": 0.298,
+     "cagr": 7.02,
+     "maxdd": -24.0,
+     "vol": 12.34,
+     "ret_per_dd": 0.292,
      "n_feasible": 147099,
      "best": 7.2,
-     "hormuz_dd": -42.9
+     "hormuz_dd": -43.6
     },
     "b": {
      "weights": [
       5,
-      30,
+      35,
+      0,
+      0,
+      0,
+      15,
+      35,
+      0,
       0,
       10,
-      0,
-      0,
-      25,
-      0,
-      0,
-      30,
       0
      ],
-     "cagr": 6.97,
-     "maxdd": -23.4,
-     "vol": 12.04,
-     "ret_per_dd": 0.298,
+     "cagr": 7.02,
+     "maxdd": -23.8,
+     "vol": 12.34,
+     "ret_per_dd": 0.295,
      "n_feasible": 145540,
      "best": 7.02,
-     "hormuz_dd": -42.9
+     "hormuz_dd": -43.1
     }
    },
    "25": {
     "a": {
      "weights": [
       5,
+      35,
+      0,
+      10,
+      0,
+      0,
+      30,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.11,
+     "maxdd": -25.0,
+     "vol": 12.75,
+     "ret_per_dd": 0.284,
+     "n_feasible": 165884,
+     "best": 7.3,
+     "hormuz_dd": -45.5
+    },
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      5,
+      0,
+      20,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.1,
+     "maxdd": -24.9,
+     "vol": 12.75,
+     "ret_per_dd": 0.285,
+     "n_feasible": 164263,
+     "best": 7.1,
+     "hormuz_dd": -44.9
+    }
+   },
+   "26": {
+    "a": {
+     "weights": [
+      5,
       30,
       0,
       15,
       0,
       0,
-      20,
-      0,
-      0,
       30,
+      0,
+      0,
+      20,
       0
      ],
-     "cagr": 7.07,
-     "maxdd": -24.6,
-     "vol": 12.51,
-     "ret_per_dd": 0.287,
-     "n_feasible": 165884,
-     "best": 7.3,
-     "hormuz_dd": -45.0
+     "cagr": 7.19,
+     "maxdd": -26.0,
+     "vol": 13.15,
+     "ret_per_dd": 0.277,
+     "n_feasible": 183892,
+     "best": 7.39,
+     "hormuz_dd": -47.3
     },
     "b": {
      "weights": [
@@ -3003,22 +3056,22 @@
       10,
       0,
       0,
-      25,
+      35,
       0,
       0,
-      25,
+      15,
       0
      ],
-     "cagr": 7.05,
-     "maxdd": -24.3,
-     "vol": 12.41,
-     "ret_per_dd": 0.29,
-     "n_feasible": 164263,
-     "best": 7.1,
-     "hormuz_dd": -44.3
+     "cagr": 7.18,
+     "maxdd": -25.8,
+     "vol": 13.12,
+     "ret_per_dd": 0.278,
+     "n_feasible": 182266,
+     "best": 7.18,
+     "hormuz_dd": -46.8
     }
    },
-   "26": {
+   "27": {
     "a": {
      "weights": [
       5,
@@ -3027,87 +3080,41 @@
       15,
       0,
       0,
-      20,
-      0,
-      0,
-      25,
-      0
-     ],
-     "cagr": 7.15,
-     "maxdd": -25.5,
-     "vol": 12.9,
-     "ret_per_dd": 0.28,
-     "n_feasible": 183892,
-     "best": 7.39,
-     "hormuz_dd": -46.5
-    },
-    "b": {
-     "weights": [
-      5,
-      35,
-      5,
-      0,
-      0,
-      25,
       30,
       0,
       0,
-      0,
+      15,
       0
      ],
-     "cagr": 7.13,
-     "maxdd": -25.2,
-     "vol": 12.95,
-     "ret_per_dd": 0.283,
-     "n_feasible": 182266,
-     "best": 7.18,
-     "hormuz_dd": -45.5
-    }
-   },
-   "27": {
-    "a": {
-     "weights": [
-      5,
-      30,
-      0,
-      20,
-      0,
-      0,
-      20,
-      0,
-      0,
-      25,
-      0
-     ],
-     "cagr": 7.23,
-     "maxdd": -26.6,
-     "vol": 13.32,
-     "ret_per_dd": 0.272,
+     "cagr": 7.28,
+     "maxdd": -26.9,
+     "vol": 13.56,
+     "ret_per_dd": 0.271,
      "n_feasible": 201004,
      "best": 7.48,
-     "hormuz_dd": -48.4
+     "hormuz_dd": -48.8
     },
     "b": {
      "weights": [
       5,
       35,
       0,
-      5,
+      15,
       0,
-      25,
+      0,
       30,
       0,
       0,
-      0,
+      15,
       0
      ],
-     "cagr": 7.23,
-     "maxdd": -26.3,
-     "vol": 13.4,
-     "ret_per_dd": 0.275,
+     "cagr": 7.28,
+     "maxdd": -26.9,
+     "vol": 13.56,
+     "ret_per_dd": 0.271,
      "n_feasible": 199469,
      "best": 7.28,
-     "hormuz_dd": -47.3
+     "hormuz_dd": -48.8
     }
    }
   }
@@ -3166,7 +3173,7 @@
     "why": "no current fee found; the same job as the money market"
    }
   ],
-  "tie_pp": 0.05,
+  "tie_pp": 0.0,
   "frontier": [
    {
     "maxdd": 10.5,
@@ -3439,31 +3446,13 @@
     ]
    },
    {
-    "maxdd": 24.3,
-    "dd": -24.3,
-    "cagr": 7.05,
+    "maxdd": 24.8,
+    "dd": -24.8,
+    "cagr": 7.09,
     "weights": [
      5.0,
      35.0,
      0.0,
-     10.0,
-     0.0,
-     0.0,
-     25.0,
-     0.0,
-     0.0,
-     25.0,
-     0.0
-    ]
-   },
-   {
-    "maxdd": 25.2,
-    "dd": -25.2,
-    "cagr": 7.13,
-    "weights": [
-     5.0,
-     35.0,
-     5.0,
      0.0,
      0.0,
      25.0,
@@ -3471,20 +3460,20 @@
      0.0,
      0.0,
      0.0,
-     0.0
+     5.0
     ]
    },
    {
-    "maxdd": 26.1,
-    "dd": -26.1,
-    "cagr": 7.21,
+    "maxdd": 24.9,
+    "dd": -24.9,
+    "cagr": 7.1,
     "weights": [
      10.0,
      35.0,
      0.0,
-     10.0,
+     5.0,
      0.0,
-     15.0,
+     20.0,
      30.0,
      0.0,
      0.0,
@@ -3493,27 +3482,27 @@
     ]
    },
    {
-    "maxdd": 27.2,
-    "dd": -27.2,
-    "cagr": 7.29,
+    "maxdd": 25.8,
+    "dd": -25.8,
+    "cagr": 7.18,
     "weights": [
+     5.0,
+     35.0,
+     0.0,
      10.0,
-     30.0,
+     0.0,
+     0.0,
+     35.0,
+     0.0,
      0.0,
      15.0,
-     0.0,
-     15.0,
-     30.0,
-     0.0,
-     0.0,
-     0.0,
      0.0
     ]
    },
    {
-    "maxdd": 28.2,
-    "dd": -28.2,
-    "cagr": 7.38,
+    "maxdd": 26.8,
+    "dd": -26.8,
+    "cagr": 7.25,
     "weights": [
      5.0,
      35.0,
@@ -3521,25 +3510,25 @@
      20.0,
      0.0,
      0.0,
-     25.0,
-     0.0,
-     0.0,
      15.0,
+     0.0,
+     0.0,
+     25.0,
      0.0
     ]
    },
    {
-    "maxdd": 29.3,
-    "dd": -29.3,
-    "cagr": 7.46,
+    "maxdd": 28.0,
+    "dd": -28.0,
+    "cagr": 7.36,
     "weights": [
      5.0,
      30.0,
      0.0,
-     25.0,
+     20.0,
      0.0,
      0.0,
-     25.0,
+     30.0,
      0.0,
      0.0,
      15.0,
@@ -3547,17 +3536,35 @@
     ]
    },
    {
-    "maxdd": 30.2,
-    "dd": -30.2,
-    "cagr": 7.55,
+    "maxdd": 29.0,
+    "dd": -29.0,
+    "cagr": 7.45,
+    "weights": [
+     5.0,
+     35.0,
+     0.0,
+     15.0,
+     0.0,
+     10.0,
+     35.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "maxdd": 30.0,
+    "dd": -30.0,
+    "cagr": 7.54,
     "weights": [
      5.0,
      35.0,
      0.0,
      20.0,
      0.0,
-     10.0,
-     30.0,
+     20.0,
+     20.0,
      0.0,
      0.0,
      0.0,
@@ -3565,17 +3572,17 @@
     ]
    },
    {
-    "maxdd": 31.2,
-    "dd": -31.2,
-    "cagr": 7.62,
+    "maxdd": 30.9,
+    "dd": -30.9,
+    "cagr": 7.58,
     "weights": [
      5.0,
-     30.0,
+     20.0,
      0.0,
      25.0,
      0.0,
      20.0,
-     20.0,
+     30.0,
      0.0,
      0.0,
      0.0,
@@ -3684,70 +3691,24 @@
       5,
       35,
       0,
+      10,
       0,
       0,
-      25,
       30,
       0,
       0,
-      5,
+      20,
       0
      ],
-     "cagr": 7.08,
-     "maxdd": -24.4
+     "cagr": 7.12,
+     "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.07,
-     "maxdd": -24.6
+     "cagr": 7.12,
+     "maxdd": -25.0
     }
    },
    "drags_neutral": {
-    "b": {
-     "weights": [
-      5,
-      30,
-      0,
-      15,
-      0,
-      0,
-      20,
-      0,
-      0,
-      30,
-      0
-     ],
-     "cagr": 7.16,
-     "maxdd": -24.5
-    },
-    "a": {
-     "cagr": 7.16,
-     "maxdd": -24.5
-    }
-   },
-   "asia_no_rerating": {
-    "b": {
-     "weights": [
-      5,
-      35,
-      0,
-      0,
-      0,
-      20,
-      30,
-      0,
-      0,
-      0,
-      10
-     ],
-     "cagr": 7.05,
-     "maxdd": -24.4
-    },
-    "a": {
-     "cagr": 6.92,
-     "maxdd": -24.7
-    }
-   },
-   "asia_fee_hi": {
     "b": {
      "weights": [
       5,
@@ -3756,18 +3717,64 @@
       10,
       0,
       0,
-      25,
+      30,
       0,
       0,
-      25,
+      20,
       0
      ],
-     "cagr": 7.05,
-     "maxdd": -24.3
+     "cagr": 7.2,
+     "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.07,
-     "maxdd": -24.6
+     "cagr": 7.2,
+     "maxdd": -24.9
+    }
+   },
+   "asia_no_rerating": {
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      5,
+      0,
+      20,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.1,
+     "maxdd": -24.9
+    },
+    "a": {
+     "cagr": 7.01,
+     "maxdd": -25.1
+    }
+   },
+   "asia_fee_hi": {
+    "b": {
+     "weights": [
+      10,
+      35,
+      0,
+      5,
+      0,
+      20,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.1,
+     "maxdd": -24.9
+    },
+    "a": {
+     "cagr": 7.11,
+     "maxdd": -25.0
     },
     "stress_pp": 0.25
    },
@@ -3777,60 +3784,60 @@
       5,
       35,
       0,
+      10,
+      0,
+      0,
+      30,
       0,
       0,
       20,
-      35,
-      0,
-      0,
-      5,
       0
      ],
-     "cagr": 7.09,
-     "maxdd": -24.5
+     "cagr": 7.14,
+     "maxdd": -25.0
     },
     "a": {
-     "cagr": 7.09,
-     "maxdd": -24.6
+     "cagr": 7.14,
+     "maxdd": -25.0
     }
    },
    "trend_alt": {
     "b": {
      "weights": [
-      5,
+      10,
       35,
       0,
-      10,
+      5,
+      0,
+      20,
+      30,
       0,
       0,
-      25,
       0,
-      0,
-      25,
       0
      ],
-     "cagr": 7.05,
-     "maxdd": -24.3
+     "cagr": 7.1,
+     "maxdd": -24.9
     },
     "a": {
-     "cagr": 7.07,
-     "maxdd": -24.6
+     "cagr": 7.11,
+     "maxdd": -25.0
     }
    }
   }
  },
  "portfolio_b": {
   "weights": [
-   5,
+   10,
    35,
    0,
-   10,
+   5,
+   0,
+   20,
+   30,
    0,
    0,
-   25,
    0,
-   0,
-   25,
    0
   ],
   "ids": [
@@ -3847,7 +3854,7 @@
    "M_GALL"
   ],
   "column": "net_macro",
-  "band_n": 49,
+  "band_n": 2,
   "n_feasible": 164263,
   "shorts": [
    "Peso Money Market",
@@ -4207,7 +4214,7 @@
     "region": "ASIA",
     "target": "Target fund: Schroder Asian Asset Income Fund (named at launch, Sep 2022). Benchmark: 50% MSCI AC Asia Pacific ex Japan + 50% Bloomberg EM Asia.",
     "target_verified": true,
-    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published)",
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%",
     "gross_note": "Half equity, half bonds, as its benchmark: the Asia equity build (JPM LTCMA 2027 EM equity 7.1% + 1.0% re-rating - 0.5% dividend drag) and 6.1% for Asian credit (the LTCMA's US investment-grade figure, a proxy).",
     "code": "ATRAMIP",
     "fee_feeder": 1.5,
@@ -4334,105 +4341,105 @@
   ],
   "macro": {
    "weights": [
-    5.0,
+    10.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
+    0.0,
+    20.0,
+    30.0,
     0.0,
     0.0,
-    25.0,
     0.0,
-    0.0,
-    25.0,
     0.0
    ],
-   "cagr": 7.05,
-   "vol": 12.41,
-   "maxdd": -24.3,
-   "ret_per_dd": 0.29,
-   "sharpe_like": 0.038,
-   "terminal_1m": 1976363,
-   "worst_1m_from_open": 757000
+   "cagr": 7.1,
+   "vol": 12.75,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.285,
+   "sharpe_like": 0.041,
+   "terminal_1m": 1985613,
+   "worst_1m_from_open": 751000
   },
   "base": {
    "weights": [
-    5.0,
+    10.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
+    0.0,
+    20.0,
+    30.0,
     0.0,
     0.0,
-    25.0,
     0.0,
-    0.0,
-    25.0,
     0.0
    ],
-   "cagr": 7.02,
-   "vol": 12.41,
-   "maxdd": -24.3,
-   "ret_per_dd": 0.289,
-   "sharpe_like": 0.035,
-   "terminal_1m": 1970831,
-   "worst_1m_from_open": 757000
+   "cagr": 7.07,
+   "vol": 12.75,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.038,
+   "terminal_1m": 1980059,
+   "worst_1m_from_open": 751000
   },
   "ten": {
    "weights": [
-    5.0,
+    10.0,
     35.0,
     0.0,
-    10.0,
+    5.0,
+    0.0,
+    20.0,
+    30.0,
     0.0,
     0.0,
-    25.0,
     0.0,
-    0.0,
-    25.0,
     0.0
    ],
-   "cagr": 7.24,
-   "vol": 12.41,
-   "maxdd": -24.1,
-   "ret_per_dd": 0.3,
+   "cagr": 7.26,
+   "vol": 12.75,
+   "maxdd": -24.8,
+   "ret_per_dd": 0.293,
    "sharpe_like": 0.053,
-   "terminal_1m": 2011722,
-   "worst_1m_from_open": 759000
+   "terminal_1m": 2015477,
+   "worst_1m_from_open": 752000
   },
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $114. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.5,
-    "vol": 19.86,
-    "maxdd": -44.3
+    "cagr": 4.2,
+    "vol": 20.4,
+    "maxdd": -44.9
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 4.72,
-    "vol": 16.14,
-    "maxdd": -34.7
+    "cagr": 5.1,
+    "vol": 16.58,
+    "maxdd": -35.3
    },
    {
     "name": "AI capex digestion",
     "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.28,
-    "vol": 18.0,
-    "maxdd": -39.4
+    "cagr": 5.32,
+    "vol": 18.49,
+    "maxdd": -39.6
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.33,
-    "vol": 9.93,
-    "maxdd": -16.8
+    "cagr": 8.91,
+    "vol": 10.2,
+    "maxdd": -17.6
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.05,
-    "vol": 12.41,
-    "maxdd": -24.3
+    "cagr": 7.1,
+    "vol": 12.75,
+    "maxdd": -24.9
    }
   ],
   "corr": [

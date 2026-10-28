@@ -43,8 +43,10 @@ month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
 figure from a search is never used unless the months behind it reproduce it.
 Every portfolio — A, B and every what-if — is
-chosen by the one function `pick()`: the best CAGR in budget, then the lowest
-drawdown within 0.05pp of it. Three of the inputs are derived rather than judged: the
+chosen by the one function `pick()`: maximum growth since v77 - the highest net CAGR
+inside the budget (as computed and as shown), a shallower drawdown deciding only between
+mixes that print the same CAGR (`PIN_TIE_PP = 0`; the lowest drawdown within 0.05pp of the
+best until v76). Three of the inputs are derived rather than judged: the
 regional tilt is `(score − 3.0) × 0.675` on the reported 1–5 scale (identical to
 the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's volatility tilt is
 `gap × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
@@ -55,9 +57,9 @@ by the one rule over the whole universe (eleven funds from the owner's 22-fund l
 since 2026-10-22) within the review's limits - at most 5 funds, at most 35% in any one, at least 5% in the money
 market - on the 5% grid, each
 summing to 100. A fund may be held at 0%. Every pick, and every what-if, sits inside ONE
-drawdown budget: **the owner's 25%** (`DD_BUDGET_OWNER`, set 2026-10-27, v75). Do not
-move it on the review's own judgment - only the owner moves it, and step 2c says when
-to propose it. The derivation it replaced (the 20/30/25/25 reference baseline's macro
+drawdown budget: **the band's step from the owner's 25% base** (`DD_CAP = DDG_RECOMMENDED`,
+v77; the base `DD_BUDGET_OWNER`, set 2026-10-27, v75). Never type a budget: the band moves it
+through its guards (step 2c), and only the owner moves the base. The derivation it replaced (the 20/30/25/25 reference baseline's macro
 drawdown less 2.83pp, 26.97% at v74) is still computed and published as
 `dd_budget.derived_ref`, and the baseline stays in the payload, off the page, so it can
 be re-derived; do not replace the baseline with a current pick, or the reference would
@@ -85,9 +87,11 @@ bands: under 2.5 → 24%, 2.5-3.5 → 25%, 3.5-4.25 → 26%, 4.25 and over → 2
 recommended only when (a) two month-end reviews running land in the same band - append
 each review's reading to `DDG_REVIEWS` with its date, never a mid-month one - and, for
 a raise, (b) Geopolitics scores above 2.0 and (c) the VIX closes at or under its
-long-run 19.5. The recommendation is the model's; the owner decides, and only then
-does `DD_BUDGET_OWNER` change (with its date). Never type a band, weight or guard into
-the page; the step table is rebuilt by the rule at each cap.
+long-run 19.5. Since v77 (owner, 2026-10-28) the recommended step IS the budget for A and
+B: when the guards clear, the next roll re-chooses both at the new step, and the CHANGELOG
+records the step. `DD_BUDGET_OWNER` (the base) changes only on the owner's instruction,
+with its date. Never type a band, weight or guard into the page; the step table is rebuilt
+by the rule at each cap. Re-run `model/heldout_sens.py` whenever the budget steps.
 
 **2d. Clear the catalysts on their own market's clock.** AS_OF is the newest session
 carried, usually Manila's or Seoul's; a US decision or data print (the FOMC, GDP, PCE, CPI)
@@ -192,6 +196,12 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+110. A FLAG IS A CLAIM, AND IT IS COMPUTED THE WAY THE CLAIM IS. A's `in_budget` read the printed
+   drawdown alone. Under the maximum-growth rule A prints −25.0% on the 3/5/10-year view against a
+   25% budget and sits 0.0035pp past it before rounding, so the flag said inside while the search
+   (raw AND printed, runbook 27) correctly treated A as outside - which is why B, picked on that
+   view, returns 0.01pp less than A there. Every flag that restates a constraint uses the
+   constraint's own test.
 109. A DATE IS NOT A CLOCK. "Every pending catalyst is dated after the as-of date" assumed that
    anything dated on the as-of day had happened. Rolled to Manila's 28 Oct close, it failed on the
    FOMC, which decides at 2pm New York time that day - after the as-of and before any US session
