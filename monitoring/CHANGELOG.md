@@ -36,7 +36,7 @@ re-derived by hand from the published k, volatility and CAGR (A: (1.666 × 12.75
 √2 = 24.9; B: (1.658 × 12.75 − 0.5 × 7.10) × √2 = 24.9); every fund forecast, fee and what-if; the
 gauge (2.89, hold at 25%).
 
-**Mutations:** v79's run finished **56/56 caught**; v80's (58) was still running at this commit.
+**Mutations:** v79's run finished **56/56 caught**, v80's **58/58**, and v81's own run, on a frozen copy of commit e4be871, **58/58** (recorded after that commit). No mutant has been missed since the frozen-copy runs began in v76.
 
 **Docs:** README (data dates), CLAIMS (Brent, WTI, Brent y/y, the 28 Oct session, next-move odds, the
 new table), runbook lesson 114.
