@@ -43,23 +43,24 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 27 Oct 2026 (Philippine and Asian closes; US
-equities, the VIX and oil settles to 26 Oct; Treasury yields to 23 Oct). Weights in the universe's order: Money Market / Nasdaq Equity Income /
+market assumptions. Market data as of 28 Oct 2026 (the peso, PSEi and KOSPI closes; US
+equities, the VIX and Brent to 27 Oct; WTI, the Nikkei and the 10-year Treasury to the
+session before, where the next prints are not yet confirmed). Weights in the universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · 10-year view | B · 3/5/10-year view | C · Nasdaq Income at 50% |
-|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 30 / 0 / 15 / 0 / 0 / 20 / 0 / 0 / 30 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** | 5 / 50 / 0 / 0 / 0 / 10 / 25 / 0 / 0 / 10 / 0 |
-| 10y net CAGR after all fees | 7.07% | 7.05% | **7.09%** |
-| Expected max drawdown (10y) | −24.6% | **−24.3%** | −24.3% |
-| Return per unit of drawdown | 0.287 | 0.290 | **0.292** |
+| | A · 10-year view | B · 3/5/10-year view |
+|---|---|---|
+| Allocation (eleven funds, in the order above) | 5 / 30 / 0 / 15 / 0 / 0 / 20 / 0 / 0 / 30 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** |
+| 10y net CAGR after all fees | **7.07%** | 7.05% |
+| Expected max drawdown (10y) | −24.6% | **−24.3%** |
+| Return per unit of drawdown | 0.287 | **0.290** |
 
-All three columns are on the 3/5/10-year view. Every portfolio is built from four analyses -
+Both columns are on the 3/5/10-year view. Every portfolio is built from four analyses -
 the macro drivers, the market trend, the regional ranking and the volatility curve - each
 read at **3, 5 and 10 years** and weighted by the share of the ten-year holding it governs
-(3Y years 1-3, 30%; 5Y years 4-5, 20%; 10Y years 6-10, 50%). **One rule chooses all three**, over the eleven funds within the review's
+(3Y years 1-3, 30%; 5Y years 4-5, 20%; 10Y years 6-10, 50%). **One rule chooses both**, over the eleven funds within the review's
 limits (at most 5 funds, 35% in any one, at least 5% peso cash; 322,725 mixes): the best
 10-year net CAGR after fees inside the drawdown budget, then the lowest drawdown within
 0.05pp of it. The budget is **−25%, the owner's from 27 Oct 2026** (v75), in place of the
@@ -72,20 +73,20 @@ engine re-chooses each at every update:
   Nasdaq Equity Income, 10% Global Technology, 25% Global Infra Equity, 25% Asian
   Multi-Asset Income. Level with A at the model's precision for 0.3pp less drawdown (49
   mixes inside the tie).
-- **C** is B with Nasdaq Equity Income held at 50% (the pin is exempt from the 35% cap):
-  5% money market, 10% Global Health Care, 25% Global Infra Equity, 10% Asian Multi-Asset
-  Income; 0.04pp a year above B at the same drawdown.
 
 **The Budget tab** reads, on 1-5, whether the next three and five years justify moving the
 25% budget - from the macro drivers, the volatility curve and the market trend at each
 view - with bands for a step to 24%, 26% or 27%, guards that must also be clear, and what
-each step does to A, B and C. On 27 Oct it reads 2.89: hold at 25%. It is advisory; the
+each step does to A and B. On 28 Oct it reads 2.89: hold at 25%. It is advisory; the
 budget never moves by itself.
 
-Portfolio D - C on four funds only (Money Market, Nasdaq Equity Income, Asia Equity and
-Global Technology), added on 2026-10-23 - was removed at the owner's request on
-2026-10-27 (v74). Removing it changed none of A, B or C: D was a subset of C's search, and
-nothing else read its result.
+Portfolio C - B with Nasdaq Equity Income held at 50%, the pin exempt from the 35% cap,
+added on 2026-09-25 - was removed at the owner's request on 2026-10-28 (v76). At removal it
+held 5 / 50 / 10 Global Health Care / 25 Global Infra Equity / 10 Asian Multi-Asset Income at
+7.09% / −24.3%. Removing it changed neither A nor B: they come out of a different search,
+and nothing else read its result. Portfolio D - C on four funds only (Money Market, Nasdaq
+Equity Income, Asia Equity and Global Technology), added on 2026-10-23 - was removed on
+2026-10-27 (v74), for the same reason changing nothing else.
 
 What moved them (v71): each analysis is now researched year by year - years 1-3, then
 years 4-5 - from the Fed's projected rates (4.1% at the end of 2026 and 2027, 3.9% in 2028,
@@ -96,10 +97,10 @@ Equity and 5pp from Global Technology into Global Health Care (7.23% against 7.1
 0.3pp more drawdown). The rates drag drives it: Monetary's ten-year average rises to 4.80
 from 4.75, and with it held at 4.75, B would keep 10% in cash and 10% in Global
 Technology. A and C kept their weights. (Those were the picks under the derived −26.97% budget;
-v75 moved all three to the owner's 25%.) US Equity Opportunity is held out until its
-trust fee is confirmed (at the listed 1.20% it would take 20% of A, 20% of B and none of
-C, at the 25% budget); Global Bond Income would move the picks most (at its listed fee,
-30-35% of A). The page states every figure here from the
+v75 moved all three to the owner's 25%; C was retired in v76.) US Equity Opportunity is
+held out until its trust fee is confirmed (at the listed 1.20% it would take 20% of A and
+20% of B, at the 25% budget); Global Bond Income would move the picks most (at its listed
+fee, 30-35% of A). The page states every figure here from the
 engine; this table is a snapshot of it, and the review audit fails if it drifts.
 
 ## Layout

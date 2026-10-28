@@ -37,12 +37,12 @@ weighted, minus the LONG-RUN 19.5 every base return already assumes), the region
 rankings and the **market trend**: each equity sleeve's market over the past year
 (momentum, for year 1 ahead) and the past 3 and 5 years annualised (reversal, for years
 2-5), each view taking them by the share of its years inside each window, z-scored against its own long-run drift and volatility, with the 10Y
-score held neutral. A reads them at 10 years alone; B and C at 3, 5 and 10. Refresh `TREND_INPUTS` (quarters and
+score held neutral. A reads them at 10 years alone; B at 3, 5 and 10. Refresh `TREND_INPUTS` (quarters and
 `trail_ann`) and `TREND_END` at each month-end; a check fails once the window is a
 month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
 figure from a search is never used unless the months behind it reproduce it.
-Every portfolio — A, B, C and every what-if — is
+Every portfolio — A, B and every what-if — is
 chosen by the one function `pick()`: the best CAGR in budget, then the lowest
 drawdown within 0.05pp of it. Three of the inputs are derived rather than judged: the
 regional tilt is `(score − 3.0) × 0.675` on the reported 1–5 scale (identical to
@@ -50,10 +50,10 @@ the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's
 `gap × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
 of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
 not because you have a view on the market. Never change a score without rewriting
-its rationale to cite the new evidence. Re-run the engine: it re-chooses A, B and C
+its rationale to cite the new evidence. Re-run the engine: it re-chooses A and B
 by the one rule over the whole universe (eleven funds from the owner's 22-fund list
-since 2026-10-22) within the review's limits - at most 5 funds, at most 35% in any one (C's Nasdaq Equity Income
-pin excepted), at least 5% in the money market - on the 5% grid, each
+since 2026-10-22) within the review's limits - at most 5 funds, at most 35% in any one, at least 5% in the money
+market - on the 5% grid, each
 summing to 100. A fund may be held at 0%. Every pick, and every what-if, sits inside ONE
 drawdown budget: **the owner's 25%** (`DD_BUDGET_OWNER`, set 2026-10-27, v75). Do not
 move it on the review's own judgment - only the owner moves it, and step 2c says when
@@ -63,6 +63,17 @@ drawdown less 2.83pp, 26.97% at v74) is still computed and published as
 be re-derived; do not replace the baseline with a current pick, or the reference would
 depend on the portfolio it judges. (The internal four-fund optimiser that ran beside the
 picks was retired on 2026-10-22, v62.)
+
+**2b. Re-check the 22-fund list's held-out funds** (`list22_held_out`). A fund enters
+the search once its fees are confirmed - its trust fee on ATRAM's own page or on two
+current listings that agree, and its target fund named with a published charge - and
+not before. When one is confirmed, build it like the others (`ADD_FUNDS`, its factor
+loadings, its vol sensitivity, its shocks in every scenario row, its look-through) and
+remove it from the held-out list; the check that every one of the 22 is searched or
+held out, never both, fails until both are done. Re-run `model/heldout_sens.py` for US Equity
+Opportunity and Global Bond Income when their fees, the universe or **the drawdown budget**
+move, and update `useq_w_*` / `gbi_w_*` with `heldout_run_cap` and `heldout_run_date`; a
+check fails while the recorded cap is not the live one.
 
 **2c. Read the drawdown-budget gauge** (`dd_gauge`, the Budget tab) at each month-end.
 Each of the 3Y, 5Y and 10Y views reads 1-5 as the mean of three parts: the driver
@@ -78,16 +89,10 @@ long-run 19.5. The recommendation is the model's; the owner decides, and only th
 does `DD_BUDGET_OWNER` change (with its date). Never type a band, weight or guard into
 the page; the step table is rebuilt by the rule at each cap.
 
-**2b. Re-check the 22-fund list's held-out funds** (`list22_held_out`). A fund enters
-the search once its fees are confirmed - its trust fee on ATRAM's own page or on two
-current listings that agree, and its target fund named with a published charge - and
-not before. When one is confirmed, build it like the others (`ADD_FUNDS`, its factor
-loadings, its vol sensitivity, its shocks in every scenario row, its look-through) and
-remove it from the held-out list; the check that every one of the 22 is searched or
-held out, never both, fails until both are done. Re-run `model/heldout_sens.py` for US Equity
-Opportunity and Global Bond Income when their fees, the universe or **the drawdown budget**
-move, and update `useq_w_*` / `gbi_w_*` with `heldout_run_cap` and `heldout_run_date`; a
-check fails while the recorded cap is not the live one.
+**2d. Clear the catalysts on their own market's clock.** AS_OF is the newest session
+carried, usually Manila's or Seoul's; a US decision or data print (the FOMC, GDP, PCE, CPI)
+happens after both have closed. Remove a US catalyst once a US session on or after its date is
+carried (`CATALYST_CLOCK`, the US equity date), every other one once AS_OF reaches its date.
 
 **3. Re-verify the claims** in `CLAIMS.md`, marking each VERIFIED / CHANGED /
 STALE / UNREACHABLE with the date. Do not promote a claim from "verified via
@@ -105,10 +110,14 @@ truth; the artifact is a rendering of it.
 
 ## Invariants — a job must never break these
 
-1. A, B and C are chosen by the one rule over the whole universe; none is set by
+1. A and B are chosen by the one rule over the whole universe; neither is set by
    hand. A fund at 0% is allowed. A fund removed from the list (the two peso bond
    funds, 2026-10-21) never comes back without the owner's instruction. Every fund
    on the 22-fund list is either searched or held out with its reason (v63).
+   Portfolio C (Nasdaq Equity Income held at 50%) was retired at the owner's request
+   on 2026-10-28 (v76), D on 2026-10-27 (v74); neither comes back without the owner's
+   instruction, and a check fails if either does.
+
 2. Every allocation weight ends in **5 or 0** and each portfolio sums to **100**.
 3. Every figure on the page comes from `model/engine.py`. If a model OUTPUT is
    typed into `dashboard.html` by hand, it is a bug — move it into the payload and
@@ -183,6 +192,12 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+109. A DATE IS NOT A CLOCK. "Every pending catalyst is dated after the as-of date" assumed that
+   anything dated on the as-of day had happened. Rolled to Manila's 28 Oct close, it failed on the
+   FOMC, which decides at 2pm New York time that day - after the as-of and before any US session
+   that could carry it. Moving the as-of back would have hidden the Asian closes; loosening the
+   check to "on or after" would have let a decided event sit as pending for a day. The fix was to
+   say which market's clock decides each event.
 108. A TYPED RESULT CARRIES THE ASSUMPTIONS OF THE RUN THAT MADE IT. The held-out funds'
    what-if weights are outputs of `heldout_sens.py` typed in as inputs; when the budget moved
    from 26.97% to 25%, every check on them still passed, because they were checked for order

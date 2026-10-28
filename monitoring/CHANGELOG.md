@@ -2,6 +2,95 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-28 — v76: Portfolio C removed; rolled to the 28 Oct Manila and Seoul closes; A and B unchanged
+
+At the owner's instruction: "Remove portfolio C. Do house cleanup", with the full review
+(debug, code review, sanity check; re-research and re-verify the data and math, funds, ETFs,
+stocks and fees, net 10-year CAGR and drawdown, the trend, macro, volatility and regional
+analyses at 3, 5 and 10 years, and the selections from the 22-fund list).
+
+**What C was:** B's rule and inputs with Nasdaq Equity Income held at exactly 50% (exempt from
+the 35% cap), from 2026-09-25. At removal it held 5 / 50 / 0 / 0 / 0 / 10 / 25 / 0 / 0 / 10 / 0
+- money market, Nasdaq Equity Income, Global Health Care, Global Infra Equity, Asian
+Multi-Asset Income - at 7.09% / −24.3% on the 3/5/10-year view.
+
+**Removed:**
+- **Engine:** the pinned search (`PIN_W`, the pinned branch of `univ_mixes`, its loop), C's
+  pick and band, the `portfolio_c` payload block, its coefficient `c_k`, the C entry in every
+  what-if and every budget-gauge step, the held-out funds' C weights (`useq_w_c_*`,
+  `gbi_w_c_*`), its report lines, and every check's C clause. A new check holds it gone: no
+  key, no pinned search, no C what-if or gauge step, no C held-out weight, no `c_k`.
+  `model/heldout_sens.py` re-runs A and B only.
+- **Page:** C's donut and section, the C column in the versus, headline and lens tables, the
+  C rows in "Who wins where" (one pair now, A vs B), C in the what-if, trend, cash, technology,
+  fund-card and frontier notes, and C's pin in the limits note. The Budget tab's steps table
+  shows A and B, and its last column is now B's modelled fall if Hormuz closes.
+- **Harnesses:** the audit's pinned walk and every C check; its payload and page-label checks
+  now fail if C returns. Validator row 17 (C's requirement since 2026-09-25) now asserts its
+  absence; rows 2, 12, 13, 16, 22, 23 and 25 check two portfolios. Mutants m5, m8, m20 and m23
+  retargeted (m20 and m23 now put C and its coefficient back); m51 (a C budget step) and m52
+  (a C what-if) added.
+- **Docs:** the README table's C column and bullet (a retirement note in their place), the
+  CLAIMS Portfolio C row marked RETIRED, C removed from the budget, selection-rule, drawdown-k,
+  worst-case peso, gauge and held-out rows, and the runbook.
+
+**Unchanged, verified:** A's and B's weights and every figure - macro, 10-year, strategic,
+stress rows - are identical to v75 (only the Hormuz row's text moves, quoting Brent at $114),
+as is every what-if's B, the frontier, the budget-gauge reading (2.89, hold at 25%) and A's and
+B's steps. The held-out what-ifs
+re-run for A and B give the same weights (US Equity Opportunity 20 / 20 and none; Global Bond
+Income 35 / 35 and 30 / none).
+
+**Rolled to 28 Oct** (each from two sources, each chaining from its previous close):
+- **Peso**: 64.025, 14.5 centavos stronger, ending the run of record closes; the record stays
+  the 27 Oct 64.17 (Philstar; Tribune). A Manila Bulletin 63.92 for the 27th (via astig.ph) is
+  against four sources and is not carried.
+- **PSEi**: −1.87% to 5,653.55 on inflation fears (Inquirer; Tribune).
+- **KOSPI**: +6.63% to 6,012.44 (Newsis; SBS Biz; Newspim; LCNews) on SK hynix's record quarter:
+  operating profit 83.3tn won, +632% on a year, and about 100tn won of 2026 shareholder returns
+  (the company's release). That settles the dividend report v73 reworded. A 6,023.73 in one
+  English report does not reproduce.
+- **Brent, 27 Oct**: $113.88, −$1.93, on the Iran talks (CNBC; The Nation) - the settle v75
+  withheld on one source. Its **year-ago base is re-anchored** to the exact anniversary: on 27
+  Oct 2025 December Brent settled at $65.62, −32 cents (Sprague Energy; Reuters via
+  Investing.com), which also chains 24 Oct 2025. Brent +73.54% y/y.
+- **10-year, 26 Oct official**: 5.00%, unchanged (FRED DGS10 from the Fed's H.15 of 27 Oct).
+
+**Held:** WTI at 26 Oct (its 27 Oct prints, 99.82 / 99.90 / 100.16, have one source each); the
+Nikkei at 27 Oct (four 28 Oct prints from 63,954 to 64,232, none repeated); the 10-year's 27
+Oct official close (not published); FedWatch's December figure at 26 Oct (28 Oct reads of
+84.3-84.4% from one outlet); a 28 Oct Houthi claim on a Saudi refinery (one source). **The FOMC
+decides at 2pm ET today, after this as-of**, and the ECB and US GDP/PCE follow on the 29th. No
+driver, region, trend or volatility score moved: a rebound in Seoul and a fall in Manila are
+sessions, not 3- or 5-year evidence. Fees: no ATRAM repricing notice since 14 Sep was found;
+every fund carries its last verification.
+
+**Due at the next roll:** Brent's December contract expires on 30 Oct - the series crosses to
+January (about $4.6 lower) and needs January's own prior. The 2-year and 30-year are at their
+five-day bound (23 Oct) and must roll.
+
+**Errors found and fixed:**
+- **The catalyst check took a date for a clock** (engine and audit). "Every pending catalyst
+  is dated after the as-of date" failed the moment AS_OF reached Manila's 28 Oct close, because
+  the FOMC is dated the 28th but decides at 2pm in New York, after it. Rolling AS_OF back would
+  have hidden the Asian closes; loosening the check would let a decided event sit as pending. A
+  US decision or release is now read against the last US session carried (`CATALYST_CLOCK` in
+  the engine; the audit types its own rule), everything else against AS_OF (runbook 109).
+- **A fee-note check matched one exact phrase.** Global Allocation's note says no portfolio
+  holds the fund; with two portfolios it now says "neither holds it", and the check, which
+  searched for "none holds it", went false. It accepts either.
+- **The audit's orphan check knows only some aliases.** Moving the page's Global Bond Income
+  reads to a local `M_` alias made two inputs look unread, because the check recognises
+  `D.macro.`, `M.` and `m.` only. The page reads them through `D.macro.` again.
+- **Validator row 17 first read a hidden table's header with `innerText`**, which runs the cells
+  together; it reads the cells.
+- **House cleanup:** the runbook's steps 2b and 2c had been out of order since v75; the CLAIMS
+  "27 Oct session" row still said Brent's 27 Oct settle had one source.
+
+**Checks:** engine 235/235; independent audit 406/406 (2 standing warnings, both fund fee
+notes); page validator 25/25 on the published copy (version 76, payload identical to
+`model/data.json`); mutations (49 mutants) still running at this commit - the count follows in the next.
+
 ## 2026-10-27 — v75: the owner's 25% drawdown budget for A, B and C; a budget gauge on its own tab; rolled to the 27 Oct US close
 
 At the owner's instruction: "Apply the 25% drawdown to all portfolios. Can you make a best

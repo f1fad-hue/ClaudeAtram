@@ -7,8 +7,8 @@ Allocation's fee note; re-run it when any of those fees, or the universe, change
 
 Imports the engine, builds the held-out fund with build_fund() and the factor model,
 re-binds the search's globals to the eleven funds plus that one, and re-runs the rule
-for A (the 10-year view), B (the 3/5/10-year view) and C (the same, Nasdaq Equity Income at 50%). For the
-disputed fee it rebuilds the admitted fund in place and re-runs the same three."""
+for A (the 10-year view) and B (the 3/5/10-year view); Portfolio C was retired in v76. For
+the disputed fee it rebuilds the admitted fund in place and re-runs the same two."""
 import json, math, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import engine as E
@@ -41,20 +41,18 @@ def run(spec):
     E._UF, E._US, E._UC = E.F + E.F_ADD + [fb], specs, C
     E._UN = n; E._VOL = [f["vol"] for f in E._UF]; E._ADJ = [f["dd_k_adj"] for f in specs]
     E._CASH = [f["cash_like"] for f in specs]
-    pk = {"a": E._Pick(), "b": E._Pick(), "c": E._Pick()}
+    pk = {"a": E._Pick(), "b": E._Pick()}
     for seq, (idx, u) in enumerate(E.univ_mixes()):
         ms = E._measure(idx, u, ["net_10y", "net_macro"])
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
-    for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
-        pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
     out = {}
-    for k in "abc":
+    for k in "ab":
         w, band, win = pk[k].result()
         out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "new_w": round(w[-1] * 100)}
     return fb, out
 
 def run_refee(fid, trust):
-    """Re-run A, B and C with an admitted fund rebuilt at a different trust fee."""
+    """Re-run A and B with an admitted fund rebuilt at a different trust fee."""
     ix = E.UNIV_IDS.index(fid)
     spec = dict(E.UNIV[1][ix], fee_feeder=trust)
     fb = E.build_fund(spec)
@@ -62,14 +60,12 @@ def run_refee(fid, trust):
     E._US, E._UC, E._UN = E.UNIV[1], E.UNIV[2], len(E.UNIV[1])
     E._VOL = [f["vol"] for f in E._UF]; E._ADJ = [f["dd_k_adj"] for f in E._US]
     E._CASH = [f["cash_like"] for f in E._US]
-    pk = {"a": E._Pick(), "b": E._Pick(), "c": E._Pick()}
+    pk = {"a": E._Pick(), "b": E._Pick()}
     for seq, (idx, u) in enumerate(E.univ_mixes()):
         ms = E._measure(idx, u, ["net_10y", "net_macro"])
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
-    for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
-        pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
     out = {}
-    for k in "abc":
+    for k in "ab":
         w, band, win = pk[k].result()
         out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "fund_w": round(w[ix] * 100)}
     E._UF = E.UNIV[0]
