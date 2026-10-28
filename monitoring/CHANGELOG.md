@@ -56,10 +56,10 @@ readings at 3, 5 and 10 years; the gauge (2.89, hold at 25%); and the picks, re-
 independently by the audit over all 322,725 mixes. Against v77's payload only market data and
 prose differ - no fund forecast, weight, CAGR or drawdown moved, so the held-out what-ifs stand.
 
-**Mutations:** v76's run finished **49/49 caught**; v77's stood at 44/52 caught, none missed,
-at this commit. v78 adds two - the Nikkei's prior close 0.05 low, the S&P's points 0.05 off -
-both caught in a quick run; the full 54 is running on a frozen copy, the count follows in the
-next.
+**Mutations:** v76's run finished **49/49 caught**, v77's **52/52**. v78 adds two - the
+Nikkei's prior close 0.05 low, the S&P's points 0.05 off - and its full run, on a frozen copy
+of commit 6c7dacd, finished **54/54 caught** (recorded after that commit). Every run since v76
+has been on a frozen copy, so no count reads files that changed under it.
 
 **Docs:** README (data dates), CLAIMS (2-year, 30-year, WTI, Nikkei), runbook lesson 111.
 
