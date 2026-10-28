@@ -196,6 +196,19 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+113. A CRASH IS NOT A PASS, AND NOT A CATCH EITHER. A mutant that removed a field made the
+   audit raise a KeyError; the mutation harness counted only [FAIL] lines, so it scored the crash
+   MISSED - right by accident, since a crashed audit reports nothing after the line that died. The
+   check now reports a missing field as a failure, and the harness counts a crash as caught and
+   says it crashed, so neither reading can pass silently.
+112. RETIRING A FIELD RETIRES ITS READERS - ALL OF THEM. When the Fed decided on 28 Oct the
+   October odds were retired with the meeting, as September's were, and the engine's checks
+   moved to December's. The page read the old field by name, and its Report setup would have
+   said "an October hike at undefined% on Invalid Date". The validator's scan for malformed
+   text did not know "Invalid Date", so a second breakage of the same kind - the fee note's
+   "raised to 0.58% from 0.71% on Invalid Date", live since 22 Oct, on a fee that was CUT and
+   never dated - had passed it for a week. The audit now requires every macro field the page
+   script reads to exist in the payload, and the scan knows "Invalid Date".
 111. A PERCENT CHAIN CANNOT SEE A CENTS ERROR. The Nikkei's 27 Oct close was carried at 63,268.32
    (+1,078.67) for two versions; the true close was 63,268.37 (+1,078.72). The only chain on it was
    the percent's, whose bound - half a unit of the published 2dp - is about 3 index points, so it

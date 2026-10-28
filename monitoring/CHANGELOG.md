@@ -2,6 +2,79 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-28 — v79: the Fed held; rolled to the 28 Oct US close; review; the page made concise; A and B unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Make the page concise. Do house cleanup."
+
+**The Fed held at 3.75–4.00% on 28 Oct, 10–2**, Governor Cook and Cleveland's Hammack
+preferring a 25bp hike, the statement calling inflation elevated (the Fed's statement; CNBC; Fox
+Business). It was priced - 92.8% for a hold on the eve - so the monetary driver holds at 2.0. The
+**October odds are retired with the meeting**, as September's were on 17 Sep: no October-odds
+input is left, the next move is December's - **85.0%** for a hike by 9 Dec on 28 Oct (ABC News and
+Kiplinger citing FedWatch), from 79.7% on the 26th - and the FOMC leaves the pending catalysts.
+
+**Rolled (two sources each):**
+- US equities, 28 Oct: S&P **7,743.98** (+21.38, +0.28%), Nasdaq **26,549.85** (+72.04, +0.27%), Dow
+  **52,475.10** (+97.53, +0.19%), a third straight gain (CNBC; AP via KRMG; Brownfield for the Dow).
+  All three chain to the cent, on points and on percent.
+- The 10-year's 27 Oct official close **4.99%** (−1bp; Forbes, StockMarketWatch) and the 2-year's
+  **4.70%** (StockMarketWatch; FRED's T10Y2Y 0.29 = 4.99 − 4.70).
+- Geopolitics, 28 Oct: the US reportedly told Gulf states to be ready for a short, intense campaign
+  against Iran after the 3 Nov midterms (the Wall Street Journal via CNBC; The Hill; The National).
+  The driver holds at 1.5, already the stress case's floor; the midterms catalyst says so.
+
+**Not rolled, one source each so far:** Brent's and WTI's 28 Oct settles (CNBC: $115.32, +1.3%;
+$102.78, +2.9%), the VIX's 28 Oct close, the 30-year's 27 Oct 5.30%. They stay at 27 Oct (26 Oct
+for the 30-year).
+
+**Errors found and fixed:**
+- **The Report's setup read a field the roll retired.** It would have said "FedWatch had an October
+  hike at undefined% on Invalid Date"; it now states the decision, the vote and December's odds. No
+  harness caught it: the engine checks MACRO, and the page reads the payload by name. The audit now
+  requires every macro field the page script reads to exist in the payload (it fails on the v78
+  page against the v79 payload, as it should) - runbook 112.
+- **The fee note said the Money Market's fee was "raised to 0.58% from 0.71% on Invalid Date"** -
+  live since the fee changes were grouped on 22 Oct. The 0.71% was a superseded KIIDS, so the fee was
+  corrected down, not raised, and the correction has no date. The verb and the date now come from
+  the data. The validator's malformed-text scan knew NaN and undefined but not "Invalid Date"; it
+  does now.
+- **A crashed audit was scored as a missed mutant.** Removing a field the audit read raised a
+  KeyError, and the harness counts only [FAIL] lines. The check now reports the missing field, and
+  the harness counts a crash as caught and says so (runbook 113).
+- **Stale timing prose**: "nothing new from the Fed before Wednesday's decision", "the FOMC decides on
+  28 Oct", "on the eve of the Fed's decision" and the US note's October odds, all now past tense or
+  gone. An orphaned input (`ust_10y_mkt_23oct`, its one reader trimmed) and a duplicate source URL
+  (Forbes' Treasury page, already listed) were removed.
+
+**Checked and left, with the evidence recorded:** Global Consumer Trends' expected drawdown of −79.8%
+- the deepest on the sheet - comes from an assumed volatility beta of 1.75 (33.3% volatility) and a
+tail factor of 1.80. The evidence brackets it rather than settling it: the India-listed feeder of
+the same strategy shows a 3-year standard deviation of 28.0% on one source and 37.8% on another, and
+a worst fall of 51–53% (2022: −44.6%). Neither portfolio holds the fund, and at any of these
+volatilities its drawdown keeps it out, so the assumption stays, flagged. The tab bar's sixth tab was
+checked at 360, 393 and 412px wide - it fits; a screenshot's crop had suggested otherwise.
+
+**Concise (owner: "Make the page concise"):** about 7% fewer words on screen (6,575 → 6,111) with
+nothing removed that a figure depends on. Each fund slide folds its stated target behind its one-line
+net figure; the trend's two disputed inputs move into "How the trend is scored"; the Portfolios lede,
+the driver-path note, the trend lede, the Budget tab's reading, step and lede notes, the frontier
+paragraph, the cash and Hormuz items and the geopolitics note are tightened.
+
+**Re-verified, unchanged:** A (5 / 35 / 10 Tech / 30 Infra / 20 AMI: 7.30% / −24.9% on its 10-year
+view) and B (10 / 35 / 5 Tech / 20 Health / 30 Infra: 7.10% / −24.9% on the 3/5/10-year view),
+re-derived independently by the audit over all 322,725 mixes; every fund forecast, fee, drawdown and
+what-if; the gauge (2.89, hold at 25%). Against v78's payload only market data, the Fed fields and
+prose differ.
+
+**Docs:** README (data dates), CLAIMS (Fed funds, next-move odds, the 28 Oct session, 10-year,
+2-year, 30-year), runbook lessons 112–113.
+
+**Checks:** engine 240/240; independent audit 407/407 (2 standing warnings, both fund fee notes);
+page validator 25/25 on the published copy (version 79, payload identical to `model/data.json`);
+mutations: 56 mutants on a frozen copy, the two new ones (October's odds back; a field the page reads
+missing) caught in a quick run - the full count follows in the next.
+
 ## 2026-10-28 — v78: review of v76–v77; the Nikkei corrected and rolled to 28 Oct, WTI to 27 Oct; A and B unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search

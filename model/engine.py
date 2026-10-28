@@ -24,10 +24,11 @@ from itertools import combinations
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-10-28"        # newest completed session carried (PH and KOSPI Wednesday
-                            # closes and the Nikkei; US equities, the VIX, Brent and WTI
-                            # at Tuesday 27 Oct; the 10-year, 2-year and 30-year at
-                            # their 26 Oct official closes)
+AS_OF = "2026-10-28"        # newest completed session carried (Wednesday's closes in
+                            # Manila, Seoul, Tokyo and New York, after the Fed held; the
+                            # VIX, Brent and WTI at 27 Oct, their 28 Oct closes not yet
+                            # in two sources; the 10-year and 2-year at their 27 Oct
+                            # official closes, the 30-year at 26 Oct)
 REVIEW_DATE = "2026-10-28"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -175,9 +176,12 @@ MACRO = {
         # Reuters "about 4.99%"); CNBC: "back to 5%" on the week.
         ("2026-10-23", 5.00),
         # 26 Oct OFFICIAL: 5.00 (FRED DGS10, from the Fed's H.15 release of 27 Oct, whose
-        # table runs to the 26th), unchanged; the market basis had it near 4.99. The 27 Oct
-        # official close is not yet published (Investing.com's market close 4.993).
+        # table runs to the 26th), unchanged; the market basis had it near 4.99.
         ("2026-10-26", 5.00),
+        # 27 Oct: 4.99, -1bp, on the par curve (Forbes' Treasury-rates page; StockMarketWatch's
+        # table, "official U.S. Treasury data"); market close 4.993% (Investing.com, Portfolio
+        # Terminal). FRED's T10Y2Y for the 27th is 0.29 = 4.99 - 4.70. MND's 5.019 is not carried.
+        ("2026-10-27", 4.99),
     ],
     # 23 Sep is the 5.104% market-close print (CNBC, Wolf Street: "+13.7bp to
     # 5.104") rounded to 2dp, NOT a Treasury par-curve / H.15 figure: neither was
@@ -317,10 +321,11 @@ MACRO = {
     # 26 Oct, par curve (StockMarketWatch's table; Forbes): 2-year 4.68% (-1bp), 30-year
     # 5.31% (-2bp); 5.00 - 4.68 = 0.32 on the 10-year's own 26 Oct close. CNBC's
     # mid-session 4.716% / 5.299% are not carried.
-    "ust_2y": 4.68, "ust_2y_date": "2026-10-26",
+    # 27 Oct, par curve (StockMarketWatch's table): 2-year 4.70% (+2bp); FRED's T10Y2Y 0.29
+    # is 4.99 - 4.70. Its 30-year 5.30% has no second source, so the 30-year stays at 26 Oct.
+    "ust_2y": 4.70, "ust_2y_date": "2026-10-27",
     "ust_10y_intraday_14oct": 5.33,   # ~30 minutes after the CPI (Quartz, CNBC)
     "ust_30y": 5.31, "ust_30y_date": "2026-10-26",
-    "ust_10y_mkt_23oct": 4.988,       # 23 Oct market close (Investing.com), beside the 5.00 par
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
 
@@ -385,15 +390,22 @@ MACRO = {
     # chance of a hold, from 90.6% earlier in the day; Forbes about 93% at 4:30pm ET):
     # 7.2% for an October hike. December reads that day run from 71% to above 80% across
     # outlets that do not say when they read the tool, so the 26 Oct 79.7% stays, dated.
-    "fed_hike_odds_oct": 7.2,
-    "fed_hike_odds_oct_date": "2026-10-27",
-    "fed_hike_odds_oct_intraday_14oct": 50.0,
-    "fed_hike_odds_oct_prev": 9.4, "fed_hike_odds_oct_prev_date": "2026-10-26",
-    "fed_hike_odds_oct_first_date": "2026-09-17",
-    "fed_hike_odds_dec": 79.7,   # a hike by the 9 Dec meeting (FedWatch)
-    "fed_hike_odds_dec_date": "2026-10-26",
-    "fed_hike_odds_dec_prev": 80.5, "fed_hike_odds_dec_prev_date": "2026-10-23",
-    "fed_hike_odds_dec_22oct_am": 90.0,     # the morning of 22 Oct, before the sell-off
+    # 28 OCT, THE OCTOBER MEETING DECIDED: a hold at 3.75-4.00%, 10-2, Governor Cook and
+    # Cleveland's Hammack preferring a quarter-point hike (the Fed's statement; CNBC; Fox
+    # Business). The statement has inflation "elevated". It was priced: FedWatch had a
+    # 92.8% hold on the eve (7.2% for a hike). The October odds fields are RETIRED with
+    # the meeting, as September's were on 17 Sep - an "October odds" input surviving the
+    # October decision would describe the past as pending (runbook 20); the readings
+    # stay in CLAIMS. The next move is December's.
+    "fed_oct_decision_date": "2026-10-28",
+    "fed_oct_votes_hold": 10, "fed_oct_votes_hike": 2,
+    # December, after the decision (28 Oct): "CME's FedWatch tool is currently
+    # projecting an 85% likelihood" of a hike (ABC News); "85% probability" (Kiplinger);
+    # Finimize 86.0% and Yahoo 84% at 1:27pm ET are other reads of the same afternoon.
+    # The baseline is the tool-cited 79.7% of 26 Oct; the 27 Oct reads were untimed.
+    "fed_hike_odds_dec": 85.0,   # a hike by the 9 Dec meeting (FedWatch)
+    "fed_hike_odds_dec_date": "2026-10-28",
+    "fed_hike_odds_dec_prev": 79.7, "fed_hike_odds_dec_prev_date": "2026-10-26",
     # The 22 Oct evening reads (TheStreet 76%, Reuters about 80%) were recorded as a range
     # in v65 and are superseded by the 23 Oct tool read.
     # A settled reading of a DECIDED meeting. Kept for the record, and registered
@@ -1523,11 +1535,16 @@ MACRO = {
     # (+1.18%) to 26477.81; Dow +15.99 (+0.03%) to 52377.57, chip stocks extending the
     # rally on the eve of the Fed's decision as oil slid. All three chain to the cent off
     # the 26 Oct closes. A 24/7 Wall St. 7732.80 is an intraday print.
-    "equity_date": "2026-10-27",
-    "spx_close": 7722.60, "spx_chg_pct": 0.60, "spx_chg_pts": 45.83,
-    "nasdaq_close": 26477.81, "nasdaq_chg_pct": 1.18, "nasdaq_chg_pts": 308.43,
-    "dow_close": 52377.57, "dow_chg_pct": 0.03, "dow_chg_pts": 15.99,
-    # 26 Oct, kept for the notes that describe that session
+    # 28 Oct (CNBC's close report; AP via KRMG; Brownfield for the Dow): S&P +21.38
+    # (+0.28%) to 7743.98; Nasdaq +72.04 (+0.27%) to 26549.85; Dow +97.53 (+0.19%) to
+    # 52475.10 - a third straight gain for all three, the Fed holding at 2pm. All three
+    # chain to the cent off the 27 Oct closes. Reuters-based 7739.58 was mid-session.
+    "equity_date": "2026-10-28",
+    "spx_close": 7743.98, "spx_chg_pct": 0.28, "spx_chg_pts": 21.38,
+    "nasdaq_close": 26549.85, "nasdaq_chg_pct": 0.27, "nasdaq_chg_pts": 72.04,
+    "dow_close": 52475.10, "dow_chg_pct": 0.19, "dow_chg_pts": 97.53,
+    # 27 and 26 Oct, kept for the notes that describe those sessions
+    "spx_27oct_chg_pct": 0.60,
     "spx_26oct_chg_pct": 0.70, "nasdaq_26oct_chg_pct": 0.82,
     # 23 Oct, kept for the notes that describe that session
     "spx_23oct_chg_pct": -0.52, "nasdaq_23oct_chg_pct": -0.21, "dow_23oct_chg_pct": -1.23,
@@ -1537,7 +1554,7 @@ MACRO = {
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7676.77, "nasdaq_prev": 26169.38, "dow_prev": 52361.58,
+    "spx_prev": 7722.60, "nasdaq_prev": 26477.81, "dow_prev": 52377.57,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -2021,8 +2038,6 @@ MACRO["brent_wk_chg_pct"] = (round((MACRO["brent"] / dict(MACRO["brent_history"]
 # together, derived so the note's count has its own input rather than tracing to
 # whatever else happens to equal 16.
 MACRO["fed_dots_any_more"] = MACRO["fed_dots_one_more"] + MACRO["fed_dots_two_more"]
-MACRO["fed_hike_odds_oct_chg_pp"] = round(MACRO["fed_hike_odds_oct"]
-                                          - MACRO["fed_hike_odds_oct_prev"], 1)
 # How far spot sits below the four-month high, and the day's move, both DERIVED so
 # the notes quoting them cannot drift from the levels they come from.
 # NOT ACROSS A ROLL. The $108.75 settle high of 15 Sep is November's; December,
@@ -2094,12 +2109,9 @@ MACRO["vix_fut_dec"] = next(lvl for lbl, _, lvl in MACRO["vix_futs"] if lbl == "
 POSTPONED = []
 
 CATALYSTS = [
-    ("2026-10-28", "FOMC decision",
-     f"FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on 27 Oct and one by December at {MACRO['fed_hike_odds_dec']}% on the 26th: a "
-     "pause now and a hike in December is still the priced path, less firmly than before the sell-off."),
     ("2026-10-29", "US third-quarter GDP and September PCE",
      "The first official read of the quarter the producer-price jump ran through, and "
-     "the inflation gauge the Fed targets - a day after its decision, before December's."),
+     "the inflation gauge the Fed targets - a day after it held, with two votes for a hike."),
     ("2026-10-29", "ECB decision",
      "At 2.50% after the 10 Sep hike, with September inflation confirmed at 3.8%; "
      "another hike would say the energy shock outweighs growth of 0.9%."),
@@ -2107,18 +2119,16 @@ CATALYSTS = [
      "At 1.25% after the 18 Sep hike. Most expect a hold now and a move by "
      "December; the yen is near 158.48 per dollar."),
     ("2026-11-03", "US midterm elections",
-     "The date both sides of the Hormuz talks work to: the US pledged on 8 Oct not "
-     "to strike Iran before it, and on 22 Oct the New York Times reported US and "
-     "Israeli strike plans for after it. Full closure, the stress table's worst row, "
-     "is the state this date can bring back."),
+     "The date the Hormuz standoff works to: the US pledged on 8 Oct not to strike Iran "
+     "before it, and on 28 Oct reportedly told Gulf states to prepare for strikes after "
+     "it. Full closure, the stress table's worst row, is what this date can bring back."),
 ]
 # WHICH CLOCK DECIDES THAT A CATALYST HAS HAPPENED (2026-10-28). AS_OF is the newest
 # session carried, which is Manila's and Seoul's: on the 28th the Fed decides at 2pm in
 # New York, after both have closed and before any US session that would carry it. A US
 # event is past once a US session ON OR AFTER its date is carried, so it is read against
 # the US equity date; every other catalyst against AS_OF.
-CATALYST_CLOCK = {"FOMC decision": "equity_date",
-                  "US third-quarter GDP and September PCE": "equity_date"}
+CATALYST_CLOCK = {"US third-quarter GDP and September PCE": "equity_date"}
 
 # ----------------------------------------------------------------------------
 # 2. VOLATILITY TERM STRUCTURE
@@ -2620,18 +2630,17 @@ def _fed_26_27():
 REGIONS = {
     "US": {
         "3Y": 5.5, "5Y": 6.25, HZ_LABEL: 6.5,
-        "why": ("Held. Chip stocks carried the rally into a second day on 27 Oct: the S&P rose "
-                f"{MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} and the Nasdaq {MACRO['nasdaq_chg_pct']:.2f}% to "
+        "why": ("Held. All three indexes rose a third day on 28 Oct as the Fed held: the S&P "
+                f"{MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f}, the Nasdaq {MACRO['nasdaq_chg_pct']:.2f}% to "
                 f"{MACRO['nasdaq_close']:.2f}, the Dow {MACRO['dow_chg_pct']:.2f}% to {MACRO['dow_close']:.2f}, after Anthropic's IPO "
-                f"filing lifted the AI trade on the 26th (S&P +{MACRO['spx_26oct_chg_pct']:.2f}%) and back-to-back "
-                "weekly losses for the S&P and the Nasdaq - on the 22nd Meta's spending plans and "
-                "Lam Research's guidance had sent chip stocks down more than 6%, and on the 23rd "
-                f"oil took the S&P down {abs(MACRO['spx_23oct_chg_pct']):.2f}%. FactSet has {MACRO['factset_beat_pct']}% of reporting companies beating estimates and the "
+                f"filing lifted the AI trade on the 26th (S&P +{MACRO['spx_26oct_chg_pct']:.2f}%) and chips carried it on the 27th "
+                f"(+{MACRO['spx_27oct_chg_pct']:.2f}%), ending back-to-back weekly losses; on the 23rd oil had taken the S&P "
+                f"down {abs(MACRO['spx_23oct_chg_pct']):.2f}%. FactSet has {MACRO['factset_beat_pct']}% of reporting companies beating estimates and the "
                 f"index on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages. The "
-                "data ran hot - producer prices up 1.3% in September, retail sales 0.8% - but "
-                f"the hike has stayed out of October: FedWatch had it at {MACRO['fed_hike_odds_oct']}% on 27 Oct, "
-                "the eve of the decision, and the 10-year closed at 5.00% on the 23rd. The consumer is the "
-                "weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two "
+                "data ran hot - producer prices up 1.3% in September, retail sales 0.8% - and "
+                f"{MACRO['fed_oct_votes_hike']} Fed voters wanted a hike; FedWatch has one by December at "
+                f"{MACRO['fed_hike_odds_dec']}% on 28 Oct, and the 10-year closed at {MACRO['ust_10y']:.2f}% on the 27th. "
+                "The consumer is the weak point, Michigan sentiment at 46.3. The anchor holds at 6.5 on two "
                 "structural points: the US is a net energy EXPORTER, a relative tailwind with "
                 f"Brent +{MACRO['brent_yoy']:.1f}% y/y, and NDX at 22.4x forward on its last verified reading sat "
                 "below its 10y and 5y averages. J.P. Morgan's "
@@ -2752,19 +2761,17 @@ for r in REGIONS.values():
 
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 2.0,
-     "HELD at 2.0. Nothing new from the Fed before Wednesday's decision, and the pricing "
-     f"barely moved: CME FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on 27 Oct, from "
-     f"{MACRO['fed_hike_odds_oct_prev']}% on the 26th, and one by December at {MACRO['fed_hike_odds_dec']}% on the 26th, from "
-     f"{MACRO['fed_hike_odds_dec_prev']}% on the 23rd and {MACRO['fed_hike_odds_dec_22oct_am']:.0f}% on the morning of the 22nd. On official "
-     "closes the 10-year was 5.12% on the 20th, 5.13% on the 21st, 4.96% on the 22nd and "
-     "5.00% on the 23rd, back up 4bp (market close 4.988%), and held at 5.00% on the 26th, with "
-     f"the 2-year at {MACRO['ust_2y']:.2f}% and the 30-year at {MACRO['ust_30y']:.2f}% that day. All of it is below the 7 Oct intraday high of 5.365%, which is "
-     "above the 5 Oct peak of 5.349% and the highest since April 2002. Manila repriced to BSP's 50bp hike to 5.50%: at Monday's "
-     "auction 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and "
-     "364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The FOMC "
-     "decides on 28 Oct, the ECB on 29 Oct and the BoJ, at 1.25%, on 30 Oct. Held: a "
-     "December Fed hike is still four-in-five priced, and the peso curve has moved up to "
-     "the tighter policy rather than past it."),
+     f"HELD at 2.0. CME FedWatch has a hike by the 9 Dec meeting at {MACRO['fed_hike_odds_dec']}% on 28 Oct, from "
+     f"{MACRO['fed_hike_odds_dec_prev']}% on the 26th, after the Fed held at {MACRO['fed_funds_lower']:.2f}-{MACRO['fed_funds_upper']:.2f}% "
+     f"that day, {MACRO['fed_oct_votes_hold']}-{MACRO['fed_oct_votes_hike']}: Governor Cook and Cleveland's Hammack "
+     "wanted a quarter-point hike, and the statement calls inflation elevated. On official closes the "
+     "10-year was 4.96% on the 22nd, 5.00% on the 23rd and the 26th and "
+     f"{MACRO['ust_10y']:.2f}% on the 27th, the 2-year {MACRO['ust_2y']:.2f}% that day and the 30-year "
+     f"{MACRO['ust_30y']:.2f}% a session earlier - all below the 7 Oct intraday high of 5.365%, above the "
+     "5 Oct peak of 5.349% and the highest since April 2002. Manila repriced to BSP's 50bp hike to 5.50%: at Monday's auction 91-day bills "
+     "jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%. "
+     "The ECB decides on 29 Oct and the BoJ, at 1.25%, on 30 Oct. Held: the hold was priced, and a "
+     "December hike was already the path the score assumed."),
     ("Inflation trajectory", 0.15, 2.0,
      "HELD at 2.0; no new US price data until September PCE on 29 Oct. Oil eased for a "
      f"second day: Brent settled at ${MACRO['brent']:.2f} on 27 Oct, down ${abs(MACRO['brent_chg_pts']):.2f}, as the "
@@ -2843,24 +2850,22 @@ DRIVERS = [
      f"{VIX3M_BOUND_PCT:.0f}% bound; the 5 Oct strip it replaced read "
      f"{abs(VIX3M_PREV_RESID):.2f}% {'below' if VIX3M_PREV_RESID < 0 else 'above'} on the same test. On "
      f"forward vol the curve sits at {VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} "
-     f"{'below' if VOL_RAMP < 0 else 'above'} the long run. Held: two calmer sessions, on the eve of the "
-     f"Fed's decision, are not a regime, and the 23 Oct cut already priced the "
+     f"{'below' if VOL_RAMP < 0 else 'above'} the long run. Held: two calmer sessions before the "
+     f"Fed held are not a regime, and the 23 Oct cut already priced the "
      f"sell-off it answered."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "HELD at 1.5; the threat widened, the barrels did not shrink. At a Florida rally on "
-     "Friday President Trump said the US could launch another operation against Iran, "
-     "after the New York Times reported US and Israeli plans for renewed strikes after the "
-     "3 November midterms. The Houthis kept firing at Saudi Arabia: on 25 Oct the coalition "
-     "intercepted missiles and drones aimed at Riyadh and other cities, and the Houthis "
-     "claimed hits on pumping stations of the East-West pipeline - claims neither Riyadh "
-     "nor Aramco has confirmed. On 22 Oct strikes had killed four at Dammam's airport and "
-     "the Shaybah field and Aramco evacuated its Dhahran headquarters. On the 26th the "
-     "Houthis said they had struck the pipeline's pumping stations and Riyadh's airport "
-     "again, and the coalition said it had destroyed five Houthi missile-storage tunnels "
-     "in Yemen (Reuters); the same day Saudi Arabia's defence minister, with Turkish and "
-     "Pakistani officials, met Iran's president in Tehran, and the four agreed to keep "
-     "talking (Al Jazeera; Yahoo). Early on the 27th the coalition said it intercepted "
-     f"three ballistic missiles aimed at the Eastern Province. Brent settled at ${MACRO['brent']:.2f} on "
+     "HELD at 1.5; the threat widened, the barrels did not shrink. On 28 Oct the Wall Street "
+     "Journal reported that the US had told Gulf states to be ready for a short, intense "
+     "campaign against Iran after the 3 November midterms (via CNBC; The Hill and The "
+     "National the same day), after President Trump said at a Florida rally that the US could "
+     "launch another operation and the New York Times reported US and Israeli strike plans. "
+     "The Houthis kept firing at Saudi Arabia, claiming hits on the East-West pipeline's "
+     "pumping stations and Riyadh's airport - claims neither Riyadh nor Aramco has confirmed; "
+     "on 22 Oct strikes had killed four at Dammam's airport, and early on the 27th the "
+     "coalition intercepted three ballistic missiles aimed at the Eastern Province. On the "
+     "26th Saudi Arabia's defence minister, with Turkish and Pakistani officials, met Iran's "
+     "president in Tehran, and the four agreed to keep talking (Al Jazeera; Yahoo). "
+     f"Brent settled at ${MACRO['brent']:.2f} on "
      f"the 27th, down ${abs(MACRO['brent_chg_pts']):.2f} and off the ${MACRO['brent_high']} of the 23rd, its highest "
      "close since 29 April. Read it on VOLUME, the measure "
      "this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at "
@@ -2936,14 +2941,14 @@ GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 
 # A check requires every number in a summary to appear in its full note, so a
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
-    "Monetary policy & liquidity": f"Held: FedWatch had a December hike at {MACRO['fed_hike_odds_dec']}% on the 26th and an October one at {MACRO['fed_hike_odds_oct']}% on the eve of the decision; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
+    "Monetary policy & liquidity": f"Held: the Fed held on 28 Oct, {MACRO['fed_oct_votes_hold']}-{MACRO['fed_oct_votes_hike']} with two votes for a hike, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on 28 Oct; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
     "Inflation trajectory": f"Held: no new US price data; Brent settled at ${MACRO['brent']:.2f} on 27 Oct as the Tehran talks went on, +{MACRO['brent_yoy']:.1f}% y/y.",
     "Growth momentum": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; the US third-quarter estimate is due on 29 Oct.",
     "Corporate earnings": f"Held, the strongest pillar: {MACRO['factset_beat_pct']}% of reporting S&P companies beat estimates (FactSet, 23 Oct), and SK hynix's quarterly operating profit rose {MACRO['skhynix_q3_op_yoy']}% on a year.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
     "Volatility & risk appetite": f"Held: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 27 Oct, a second fall, under its long-run {MACRO['vix_longrun']}, and Asia rebounded the same day.",
-    "Geopolitics & energy": f"Held: the Houthis kept firing at Saudi Arabia as Saudi, Turkish and Pakistani officials met Iran's president in Tehran on the 26th; Brent settled at ${MACRO['brent']:.2f} on the 27th, Hormuz flows near 14 mb/d.",
-    "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 27 Oct as chip stocks extended the rally; FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on the eve of the decision.",
+    "Geopolitics & energy": f"Held: on 28 Oct the US reportedly told Gulf states to prepare for strikes on Iran after the midterms, while the Houthis kept firing at Saudi Arabia; Brent settled at ${MACRO['brent']:.2f} on the 27th, Hormuz flows near 14 mb/d.",
+    "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 28 Oct, a third straight gain, as the Fed held; FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on 28 Oct.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
     "ASIA": f"Held: the KOSPI rose {MACRO['kospi_latest_chg_pct']:.2f}% to {MACRO['kospi_latest']:,.2f} on 28 Oct on SK hynix's record quarter, still {MACRO['kospi_off_2oct_pct']}% below 2 Oct; the Nikkei rose {MACRO['nikkei_latest_chg_pct']:.2f}% to {MACRO['nikkei_latest']:,.2f} the same day.",
     "PHILIPPINES": f"Held: the peso closed at a record {MACRO['usdphp_record']:.2f} on 27 Oct and recovered to {MACRO['usdphp']} on the 28th as the PSEi fell {abs(MACRO['psei_chg_pct']):.2f}%; 91-day bills jumped to 6.624% after BSP's 50bp hike.",
@@ -4326,6 +4331,24 @@ def run_scenarios(w, key, u=None):
 # 8. SOURCES
 # ----------------------------------------------------------------------------
 SOURCES = [
+    ("CNBC", "Oil prices rise as U.S. reportedly tells Gulf countries to prepare for Iran strikes after midterm elections (citing the Wall Street Journal), 28 Oct 2026",
+     "https://www.cnbc.com/2026/10/28/oil-price-today-wti-brent-hormuz.html"),
+    ("The Hill", "Oil prices climb as Trump, Pentagon mull fresh strikes on Iran, 28 Oct 2026",
+     "https://thehill.com/policy/energy-environment/6136014-oil-gas-prices-surge-reports-fresh-iran-strikes-white-house/"),
+    ("The National", "Oil prices up due to Houthi strikes and US threat to renew Iran war, 28 Oct 2026",
+     "https://thenationalnews.com/business/energy/2026/10/28/oil-prices-up-due-to-houthi-strikes-and-us-threat-to-renew-iran-war"),
+    ("Federal Reserve", "Federal Reserve issues FOMC statement - target range held at 3.75-4.00%, Cook and Hammack for a hike, 28 Oct 2026",
+     "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"),
+    ("CNBC", "Fed holds rates steady, 10-2, two officials for a hike, 28 Oct 2026",
+     "https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html"),
+    ("CNBC", "Stock market news for 28 Oct 2026 - S&P +0.28% to 7,743.98, Nasdaq +0.27% to 26,549.85, Dow +0.19% to 52,475.10",
+     "https://www.cnbc.com/2026/10/27/stock-market-today-live-updates.html"),
+    ("Associated Press via KRMG", "How major US stock indexes fared Wednesday 10/28/2026 - S&P +21.38, Nasdaq +72.04, Dow +97.53",
+     "https://krmg.com/2026/10/28/how-major-us-stock-indexes-fared-wednesday-10-28-2026/"),
+    ("ABC News", "Federal Reserve holds interest rates steady as midterm elections loom - FedWatch 85% for a December hike, 28 Oct 2026",
+     "https://abcnews.com/Business/federal-reserve-set-issue-interest-rate-decision-midterm/story?id=137599228"),
+    ("Kiplinger", "October Fed meeting live - 85% priced for a December hike, 28 Oct 2026",
+     "https://www.kiplinger.com/investing/live/fed-meeting-updates-and-commentary-october-2026"),
     ("DTN", "WTI near $100 ahead of Hormuz diplomacy and the Fed - December WTI -$1.86 (-1.83%) to settle at $99.90, 27 Oct 2026",
      "https://www.dtnpf.com/agriculture/web/ag/news/world-policy/article/2026/10/27/wti-100-ahead-hormuz-diplomacy-fed"),
     ("AD HOC News", "Nikkei 225 closes 686 points higher as Kioxia leads chips - 63,954.19, 28 Oct 2026",
@@ -4891,7 +4914,7 @@ SOURCES = [
      "https://www.cnbc.com/2026/10/17/trump-waives-russia-related-sanctions-tariffs-before-they-take-effect-.html"),
     ("Straits Daily Brief", "Strait of Hormuz status, 20 Oct 2026 - IMF PortWatch 4 transits on 18 Oct against an 85/day baseline",
      "https://straits.live/briefs/2026-10-20"),
-    ("Forbes Advisor", "Treasury rates today - 10-year par yield 5.15% on 19 Oct 2026, 5.12% on 20 Oct (down 3 basis points) and 5.13% on 21 Oct, with the 2-year 4.81% and 30-year 5.42%",
+    ("Forbes Advisor", "Treasury rates today - 10-year par yield 5.15% on 19 Oct 2026, 5.12% on 20 Oct (down 3 basis points) and 5.13% on 21 Oct, with the 2-year 4.81% and 30-year 5.42%; 4.99% on 27 Oct (down 1bp)",
      "https://www.forbes.com/advisor/investing/treasury-rates/"),
     ("CNBC", "Treasury yields move higher as investors assess the US inflation backdrop - 10-year 5.146%, 19 Oct 2026",
      "https://www.cnbc.com/2026/10/19/bonds-treasurys-us-yields.html"),
@@ -5430,7 +5453,7 @@ def report():
     # renamed on 2026-09-17 when the September meeting decided: an input called
     # "September odds" surviving past the September meeting would describe the past
     # as though it were still pending.
-    _odds = MACRO["fed_hike_odds_oct"]
+    _odds = MACRO["fed_hike_odds_dec"]   # the next meeting since 28 Oct (October decided)
     _mon = next(d[3] for d in DRIVERS if d[0].startswith("Monetary"))
     _m = re.search(r"FedWatch[^.]*?(\d+(?:\.\d+)?)%", _mon)
     checks.append(("the live hike odds asserted in the monetary note match the input",
@@ -5904,9 +5927,16 @@ def report():
     checks.append(("the 30-year's session high is dated, not after the as-of date, and at or above the reading",
                    MACRO["ust_30y_high_date"] <= AS_OF
                    and MACRO["ust_30y_high"] >= MACRO["ust_30y"]))
-    checks.append(("the October FedWatch reading is dated, after its baseline, within 5 days",
-                   MACRO["fed_hike_odds_oct_prev_date"] < MACRO["fed_hike_odds_oct_date"] <= AS_OF
-                   and (_asof - _dt.date.fromisoformat(MACRO["fed_hike_odds_oct_date"])).days <= 5))
+    checks.append(("the next-meeting (December) FedWatch reading is dated, after its baseline, within 5 days",
+                   MACRO["fed_hike_odds_dec_prev_date"] < MACRO["fed_hike_odds_dec_date"] <= AS_OF
+                   and (_asof - _dt.date.fromisoformat(MACRO["fed_hike_odds_dec_date"])).days <= 5))
+    # A DECIDED MEETING LEAVES NO LIVE ODDS BEHIND (v79): no input still names the
+    # October odds, and the decision is dated on or before the as-of and the US session
+    # carried, with its vote adding up to the twelve voters.
+    checks.append(("the October meeting is recorded as decided: no October odds input left, the vote adds to 12, dated by the US session",
+                   not any(k.startswith("fed_hike_odds_oct") for k in MACRO)
+                   and MACRO["fed_oct_votes_hold"] + MACRO["fed_oct_votes_hike"] == 12
+                   and MACRO["fed_oct_decision_date"] <= MACRO["equity_date"] <= AS_OF))
     checks.append(("the PSEi's point and percent moves reproduce from its prior close",
                    abs(MACRO["psei_prev"] + MACRO["psei_chg_pts"] - MACRO["psei"]) < 0.005
                    and abs(MACRO["psei_chg_pts"] / MACRO["psei_prev"] * 100
@@ -5960,13 +5990,12 @@ def report():
     # FEDWATCH HAS TWO BASELINES and each delta must use its own. The first pass
     # printed "jumped from 50.9% to 73% in a day": the week's move as the day's.
     checks.append(("the FedWatch readings are dated in order, none after the as-of date",
-                   MACRO["fed_hike_odds_oct_first_date"] <= MACRO["fed_hike_odds_oct_prev_date"]
-                   < AS_OF and MACRO["fed_hike_odds_dec_date"] <= AS_OF))
+                   MACRO["fed_hike_odds_dec_prev_date"] < MACRO["fed_hike_odds_dec_date"] <= AS_OF))
     _oneday = [m for t in _notes_all
                for m in re.finditer(r"from (\d+(?:\.\d+)?)% to (\d+(?:\.\d+)?)% in a day", t)]
     checks.append(("every 'in a day' FedWatch move is quoted off the previous session",
-                   all(abs(float(m.group(1)) - MACRO["fed_hike_odds_oct_prev"]) < 0.05
-                       and abs(float(m.group(2)) - MACRO["fed_hike_odds_oct"]) < 0.05
+                   all(abs(float(m.group(1)) - MACRO["fed_hike_odds_dec_prev"]) < 0.05
+                       and abs(float(m.group(2)) - MACRO["fed_hike_odds_dec"]) < 0.05
                        for m in _oneday)))
     # A reading not re-found on the review date may be quoted, but only with its date.
     _decq = f"{MACRO['fed_hike_odds_dec']}%"
