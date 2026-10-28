@@ -25,10 +25,10 @@ from itertools import combinations
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
 AS_OF = "2026-10-28"        # newest completed session carried (Wednesday's closes in
-                            # Manila, Seoul, Tokyo and New York, after the Fed held; the
-                            # VIX, Brent and WTI at 27 Oct, their 28 Oct closes not yet
-                            # in two sources; the 10-year and 2-year at their 27 Oct
-                            # official closes, the 30-year at 26 Oct)
+                            # Manila, Seoul, Tokyo and New York, after the Fed held, and
+                            # Brent's and WTI's settles; the VIX at 27 Oct, its 28 Oct
+                            # close not yet in two sources; the 10-year and 2-year at their
+                            # 27 Oct official closes, the 30-year at 26 Oct)
 REVIEW_DATE = "2026-10-28"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -403,7 +403,9 @@ MACRO = {
     # projecting an 85% likelihood" of a hike (ABC News); "85% probability" (Kiplinger);
     # Finimize 86.0% and Yahoo 84% at 1:27pm ET are other reads of the same afternoon.
     # The baseline is the tool-cited 79.7% of 26 Oct; the 27 Oct reads were untimed.
-    "fed_hike_odds_dec": 85.0,   # a hike by the 9 Dec meeting (FedWatch)
+    # Carried at the sources' own precision (v81): "85%", not "85.0%" - a decimal no source
+    # gave (CNBC's 85.7% is a different read of the same afternoon).
+    "fed_hike_odds_dec": 85,     # a hike by the 9 Dec meeting (FedWatch)
     "fed_hike_odds_dec_date": "2026-10-28",
     "fed_hike_odds_dec_prev": 79.7, "fed_hike_odds_dec_prev_date": "2026-10-26",
     # The 22 Oct evening reads (TheStreet 76%, Reuters about 80%) were recorded as a range
@@ -898,6 +900,11 @@ MACRO = {
         # another contract. December expires on 30 Oct: the next roll crosses to January,
         # about $4.6 lower (Mitrade), and needs January's own prior.
         ("2026-10-27", 113.88),
+        # 28 Oct: "Brent for December advanced 1.3% to settle at $115.32" (CNBC; Rigzone the
+        # same), on the Wall Street Journal's report that the US told Gulf states to prepare for
+        # strikes on Iran after the midterms. 113.88 + 1.44 = 115.32; 1.44 / 113.88 is +1.26%.
+        # Still December, which expires on the 30th. Held in v79-v80 on CNBC alone.
+        ("2026-10-28", 115.32),
     ],
     # ACROSS A ROLL the reported move is off the NEW contract's prior settle, which
     # is not in the front-month series. Carried here, dated by the session it is the
@@ -926,7 +933,8 @@ MACRO = {
                              "2026-10-16": 3.7, "2026-10-19": -0.3,
                              "2026-10-20": -0.7, "2026-10-21": 0.03,
                              "2026-10-22": 4.0, "2026-10-23": 3.1,
-                             "2026-10-26": -0.8, "2026-10-27": -1.7},
+                             "2026-10-26": -0.8, "2026-10-27": -1.7,
+                             "2026-10-28": 1.3},
     # 28 Sep: $108.83 intraday on the rejection - ABOVE the $108.75 SETTLE high of
     # 15 Sep (verified 2026-09-29: "Brent finished up $3.07 at $108.75 ... highest
     # close since May 19"), so the settle high stands and this is an intraday one.
@@ -1598,11 +1606,13 @@ MACRO = {
     # 26 Oct: "fell $1.51 to settle at $101.76" (CNBC; Reuters via Yahoo). 103.27 - 1.51
     # = 101.76; 1.51 / 103.27 is -1.46%.
     # 27 Oct: "fell $1.86, or 1.83%, to settle at $99.90" (DTN; CNBC $99.90, -1.83%).
-    # 101.76 - 1.86 = 99.90; 1.86 / 101.76 is -1.83%. December again - one contract.
-    "wti_settle": 99.90, "wti_chg_pct": -1.83,
-    "wti_date": "2026-10-27", "wti_contract": "2026-12",
-    "wti_prev": 101.76,            # December's own 26 Oct settle - within one contract
-    "wti_prev_date": "2026-10-26",
+    # 101.76 - 1.86 = 99.90; 1.86 / 101.76 is -1.83%.
+    # 28 Oct: "gained 2.9% to settle at $102.78" (CNBC; Rigzone the same). 99.90 + 2.88 =
+    # 102.78; 2.88 / 99.90 is +2.88%, the reported 2.9% to 1dp. December again - one contract.
+    "wti_settle": 102.78, "wti_chg_pct": 2.88,
+    "wti_date": "2026-10-28", "wti_contract": "2026-12",
+    "wti_prev": 99.90,             # December's own 27 Oct settle - within one contract
+    "wti_prev_date": "2026-10-27",
     "wti_expired_contract": "2026-11",
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
@@ -2773,13 +2783,13 @@ DRIVERS = [
      "The ECB decides on 29 Oct and the BoJ, at 1.25%, on 30 Oct. Held: the hold was priced, and a "
      "December hike was already the path the score assumed."),
     ("Inflation trajectory", 0.15, 2.0,
-     "HELD at 2.0; no new US price data until September PCE on 29 Oct. Oil eased for a "
-     f"second day: Brent settled at ${MACRO['brent']:.2f} on 27 Oct, down ${abs(MACRO['brent_chg_pts']):.2f}, as the "
-     f"talks with Tehran went on - off the ${MACRO['brent_high']} of the 23rd, its highest close since "
+     "HELD at 2.0; no new US price data until September PCE on 29 Oct. Oil rose again: "
+     f"Brent settled at ${MACRO['brent']:.2f} on 28 Oct, {'up' if MACRO['brent_chg_pts'] > 0 else 'down'} ${abs(MACRO['brent_chg_pts']):.2f}, on reports of US strike "
+     f"plans for after the midterms - below the ${MACRO['brent_high']} of the 23rd, its highest close since "
      f"29 April, and {abs(MACRO['brent_wk_chg_pct'])}% {'higher' if MACRO['brent_wk_chg_pct'] > 0 else 'lower'} on the week, against "
      f"${MACRO['brent_yr_ago']:.2f} a year earlier - Brent +{MACRO['brent_yoy']:.1f}% y/y - while the Houthi "
-     f"strikes on Saudi Arabia went on; December WTI settled at ${MACRO['wti_settle']:.2f} on the 27th, down "
-     f"{abs(MACRO['wti_chg_pct']):.2f}%. "
+     f"strikes on Saudi Arabia went on; December WTI settled at ${MACRO['wti_settle']:.2f} the same day, "
+     f"{'up' if MACRO['wti_chg_pct'] > 0 else 'down'} {abs(MACRO['wti_chg_pct']):.2f}%. "
      "The producer print stands: September PPI rose 1.3%, the largest monthly rise since "
      "March 2022, and 6.3% on the year, with core at 0.5% and 5.0%, after CPI of 3.7% "
      "(core 2.6%). The euro area confirmed 3.8% for September, core 2.5%; the Philippines "
@@ -2866,7 +2876,7 @@ DRIVERS = [
      "26th Saudi Arabia's defence minister, with Turkish and Pakistani officials, met Iran's "
      "president in Tehran, and the four agreed to keep talking (Al Jazeera; Yahoo). "
      f"Brent settled at ${MACRO['brent']:.2f} on "
-     f"the 27th, down ${abs(MACRO['brent_chg_pts']):.2f} and off the ${MACRO['brent_high']} of the 23rd, its highest "
+     f"the 28th, {'up' if MACRO['brent_chg_pts'] > 0 else 'down'} ${abs(MACRO['brent_chg_pts']):.2f} and below the ${MACRO['brent_high']} of the 23rd, its highest "
      "close since 29 April. Read it on VOLUME, the measure "
      "this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at "
      "about 14 mb/d in the week to 18 Oct, 82% of pre-war on preliminary figures, and the "
@@ -2942,12 +2952,12 @@ GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
     "Monetary policy & liquidity": f"Held: the Fed held on 28 Oct, {MACRO['fed_oct_votes_hold']}-{MACRO['fed_oct_votes_hike']} with two votes for a hike, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on 28 Oct; Manila's 91-day bill jumped to 6.624% after BSP's 50bp hike.",
-    "Inflation trajectory": f"Held: no new US price data; Brent settled at ${MACRO['brent']:.2f} on 27 Oct as the Tehran talks went on, +{MACRO['brent_yoy']:.1f}% y/y.",
+    "Inflation trajectory": f"Held: no new US price data; Brent settled at ${MACRO['brent']:.2f} on 28 Oct on reports of US strike plans, +{MACRO['brent_yoy']:.1f}% y/y.",
     "Growth momentum": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; the US third-quarter estimate is due on 29 Oct.",
     "Corporate earnings": f"Held, the strongest pillar: {MACRO['factset_beat_pct']}% of reporting S&P companies beat estimates (FactSet, 23 Oct), and SK hynix's quarterly operating profit rose {MACRO['skhynix_q3_op_yoy']}% on a year.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
     "Volatility & risk appetite": f"Held: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 27 Oct, a second fall, under its long-run {MACRO['vix_longrun']}, and Asia rebounded the same day.",
-    "Geopolitics & energy": f"Held: on 28 Oct the US reportedly told Gulf states to prepare for strikes on Iran after the midterms, while the Houthis kept firing at Saudi Arabia; Brent settled at ${MACRO['brent']:.2f} on the 27th, Hormuz flows near 14 mb/d.",
+    "Geopolitics & energy": f"Held: on 28 Oct the US reportedly told Gulf states to prepare for strikes on Iran after the midterms, while the Houthis kept firing at Saudi Arabia; Brent settled at ${MACRO['brent']:.2f} on the 28th, Hormuz flows near 14 mb/d.",
     "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 28 Oct, a third straight gain, as the Fed held; FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on 28 Oct.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
     "ASIA": f"Held: the KOSPI rose {MACRO['kospi_latest_chg_pct']:.2f}% to {MACRO['kospi_latest']:,.2f} on 28 Oct on SK hynix's record quarter, still {MACRO['kospi_off_2oct_pct']}% below 2 Oct; the Nikkei rose {MACRO['nikkei_latest_chg_pct']:.2f}% to {MACRO['nikkei_latest']:,.2f} the same day.",
@@ -4345,6 +4355,8 @@ def run_scenarios(w, key, u=None):
 # 8. SOURCES
 # ----------------------------------------------------------------------------
 SOURCES = [
+    ("Rigzone", "Oil rises with Iran attack report - Brent +1.3% to $115.32, WTI +2.9% to $102.78, 28 Oct 2026",
+     "https://www.rigzone.com/news/oil_rises_with_iran_attack_report_israeli_election_in_focus-28-oct-2026-184958-article"),
     ("CNBC", "Oil prices rise as U.S. reportedly tells Gulf countries to prepare for Iran strikes after midterm elections (citing the Wall Street Journal), 28 Oct 2026",
      "https://www.cnbc.com/2026/10/28/oil-price-today-wti-brent-hormuz.html"),
     ("The Hill", "Oil prices climb as Trump, Pentagon mull fresh strikes on Iran, 28 Oct 2026",
@@ -6013,10 +6025,12 @@ def report():
                        for m in _oneday)))
     # A reading not re-found on the review date may be quoted, but only with its date.
     _decq = f"{MACRO['fed_hike_odds_dec']}%"
+    # A whole-number figure is matched as a whole token (v81): "85%" is inside "18.85%".
+    _decre = re.compile(r"(?<![\d.])" + re.escape(_decq))
     checks.append(("the December odds are quoted only beside the date they were verified",
                    all(any(f in sent for f in _dayforms(MACRO["fed_hike_odds_dec_date"]))
                        for t in _notes_all for sent in re.split(r"(?<=[.;])\s", t)
-                       if _decq in sent)))
+                       if _decre.search(sent))))
     # THE DOT PLOT'S OWN INPUTS MUST REPRODUCE ITS MEDIAN: participants not in the
     # one- or two-more groups sit at today's midpoint, and each group is a whole
     # number of 25bp steps above it.

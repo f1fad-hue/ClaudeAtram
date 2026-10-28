@@ -44,8 +44,8 @@ Each fund is measured against its own target, not a house benchmark.
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
 market assumptions. Market data as of 28 Oct 2026 (Wednesday's closes in Manila, Seoul,
-Tokyo and New York, after the Fed held at 3.75-4.00%; the VIX, Brent and WTI to 27 Oct,
-their 28 Oct closes not yet in two sources; the 10- and 2-year Treasury yields to their
+Tokyo and New York, after the Fed held at 3.75-4.00%, and Brent's and WTI's settles; the VIX
+to 27 Oct, its 28 Oct close not yet confirmed; the 10- and 2-year Treasury yields to their
 27 Oct official closes, the 30-year to 26 Oct). Weights in the universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /

@@ -196,6 +196,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+114. A TABLE'S SHAPE IS PART OF WHAT IT SAYS. Twenty-six CLAIMS rows - the portfolios, the
+   gauge, the fund list - had five cells under the three-column "Modelled assumptions" header,
+   so the rendered register silently dropped their Kind, Source and Last-verified columns; and a
+   row given an extra cell (v77, and again while writing v81) passed every check, because the
+   checks read only the bold value. The audit now requires every row to have its header's cell
+   count. A precision is part of what a figure says, too: "85.0%" claimed a decimal the sources
+   ("85%") never gave, and is now carried as they printed it.
 113. A CRASH IS NOT A PASS, AND NOT A CATCH EITHER. A mutant that removed a field made the
    audit raise a KeyError; the mutation harness counted only [FAIL] lines, so it scored the crash
    MISSED - right by accident, since a crashed audit reports nothing after the line that died. The

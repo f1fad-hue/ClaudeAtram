@@ -2,6 +2,48 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-28 — v81: review of v80; Brent and WTI rolled to 28 Oct; the claim register's tables repaired; A and B unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Do house cleanup."
+
+**Rolled (two sources each):** Brent's 28 Oct December settle **$115.32**, +$1.44 (+1.26%; reported
++1.3%) and WTI's **$102.78**, +$2.88 (+2.88%; reported +2.9%), on the report that the US told Gulf
+states to prepare for strikes on Iran after the midterms (CNBC; Rigzone - held in v79-v80 on CNBC
+alone). Both chain to the cent within the December contract; Brent's expires on the 30th. Brent is
+now +75.74% on a year, +6.0% on the week and 1.20% below its 23 Oct high. The drivers hold; no fund
+forecast, weight, CAGR or drawdown moved.
+
+**Not rolled:** the VIX's 28 Oct close (the "17.52" some pages show is the 27th's; the intraday prints
+run 16.88-17.32); the 10-year's 28 Oct official close (not yet published; it traded near 5.03%).
+
+**Errors found and fixed:**
+- **Twenty-six CLAIMS rows sat under the wrong header.** The portfolio, gauge and fund-list rows had
+  five cells under the three-column "Modelled assumptions" table, so the rendered register dropped
+  their Kind, Source and Last-verified columns. They now have their own table ("Portfolios, budget
+  and fund list"), the two assumption rows that followed them went back to theirs, and the audit
+  requires every row to match its header's cell count - it fails on the v80 register (runbook 114).
+- **A CLAIMS row given an extra cell while writing this roll** (Brent y/y) - the same slip as v77's
+  budget row, which the new check now catches.
+- **The December odds printed "85.0%"**, a decimal none of the sources gave ("85%"): carried at
+  their precision, with the date-beside-the-odds check matching whole tokens so "85%" no longer
+  collides with figures like "18.85%".
+- **"10Y view" beside "3/5/10-year view"** in the labels v80 added: now "10-year view" throughout.
+
+**Re-verified, unchanged:** A 7.30% / −24.9% on its 10-year view and B 7.10% / −24.9% on the
+3/5/10-year view, re-derived independently by the audit over all 322,725 mixes; each drawdown
+re-derived by hand from the published k, volatility and CAGR (A: (1.666 × 12.75 − 0.5 × 7.30) ×
+√2 = 24.9; B: (1.658 × 12.75 − 0.5 × 7.10) × √2 = 24.9); every fund forecast, fee and what-if; the
+gauge (2.89, hold at 25%).
+
+**Mutations:** v79's run finished **56/56 caught**; v80's (58) was still running at this commit.
+
+**Docs:** README (data dates), CLAIMS (Brent, WTI, Brent y/y, the 28 Oct session, next-move odds, the
+new table), runbook lesson 114.
+
+**Checks:** engine 241/241; independent audit 410/410 (2 standing warnings, both fund fee notes);
+page validator 25/25 on the published copy (version 81, payload identical to `model/data.json`).
+
 ## 2026-10-28 — v80: each portfolio shown on its own horizon - A on 10 years, B on 3, 5 and 10; A and B unchanged
 
 At the owner's instruction: "Update portfolio A to 10yrs horizon and portfolio B to 3, 5, 10yrs
