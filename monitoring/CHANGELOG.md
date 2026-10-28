@@ -2,6 +2,71 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-28 — v78: review of v76–v77; the Nikkei corrected and rolled to 28 Oct, WTI to 27 Oct; A and B unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Do house cleanup."
+
+**Errors found and fixed:**
+- **The Nikkei's 27 Oct close was carried five hundredths low** in v76–v77: 63,268.32
+  (+1,078.67, from one source) for 63,268.37 (+1,078.72; Yahoo historical, AD HOC News). The
+  only chain on it was the percent's, whose bound - half a unit of the published 2dp - is about
+  3 index points, so it passed. The next session caught it: 685.82 points onto 63,268.32 gives
+  63,954.14, the one 28 Oct print no second source repeats, while 63,268.37 gives the 63,954.19
+  that three do. The S&P, the Nasdaq and the Nikkei now carry their points and chain on them to
+  the cent, as the KOSPI, the PSEi and the Dow already did (three engine checks; the audit's
+  index chains; runbook 111).
+- **The Budget tab broke at its own end steps.** At a 27% budget the step note read the step
+  above, which does not exist (`AL[undefined]`, a TypeError that stops the rest of the tab);
+  at 24% the "Going down" sentence divided 0 by 0. Neither is live - the band holds at 25% -
+  but both are states the band can reach. The note now takes the step below when there is
+  none above; the reasoning prices the step into 24% from the one above when the budget is
+  already 24%; a step that removes no drawdown says so. Tested by rendering the tab at 24%,
+  26% and 27%.
+- **A number word past twelve printed "undefined".** Counts read `WN[n]`, and only one call had
+  a fallback; one helper (`wn`) now falls back to the numeral everywhere, the Funds tab header
+  included. Latent: every count today is twelve or under (eleven funds; two mixes at B's CAGR).
+- **A check's name claimed a comparison its body never made**: "the review's two picks order
+  as their rules say: A the higher base case, the best-worst-case pick the better worst case",
+  from the D era. The body tests that the 22-fund review record holds together; the name now
+  says so (runbook 110).
+- **The monetary driver's note typed the 2-year and 30-year** (4.69%, 5.33%); the audit's
+  untraced-number check caught them on the roll, and they now read the inputs.
+- **Stale comments and names**: Portfolio A "fixed like D"; "A, B and C moved to one rule ...
+  now five" (eleven); "the lens verdict, A against D"; "FIVE FUNDS ON THIS TAB" (eleven, five
+  with page roles); B's weight on the fund slides named `wD`.
+
+**Rolled (two sources each):**
+- WTI: 27 Oct December settle **$99.90**, −$1.86 (−1.83%) off $101.76 (DTN; CNBC) - resolves
+  the dispute held in v76–v77.
+- Nikkei: 28 Oct **63,954.19**, +685.82 (+1.08%), Kioxia leading chips after SK hynix's quarter
+  (Jiji; AD HOC News; Il Sole 24 Ore).
+- Treasury par curve, 26 Oct: 2-year **4.68%** (−1bp), 30-year **5.31%** (−2bp)
+  (StockMarketWatch; Forbes) - both had reached their five-day bound.
+
+**Not rolled:** the 10-year's 27 Oct official close (the H.15 table runs to the 26th; market
+close 4.993%); the VIX futures strip (no full later strip found); the FOMC decides at 2pm ET
+today, after this as-of.
+
+**Re-verified, unchanged:** fund fees (GCash's 1.15% for Global Technology is the fee before
+14 Sep, already recorded as raised to 1.50%; the Money Market's 0.58% KIIDS basis against its
+0.50% listing); the net 10-year CAGR and drawdown of A (7.30% / −24.9% on its 10-year view)
+and B (7.10% / −24.9% on the 3/5/10-year view); the macro, volatility, trend and regional
+readings at 3, 5 and 10 years; the gauge (2.89, hold at 25%); and the picks, re-derived
+independently by the audit over all 322,725 mixes. Against v77's payload only market data and
+prose differ - no fund forecast, weight, CAGR or drawdown moved, so the held-out what-ifs stand.
+
+**Mutations:** v76's run finished **49/49 caught**; v77's stood at 44/52 caught, none missed,
+at this commit. v78 adds two - the Nikkei's prior close 0.05 low, the S&P's points 0.05 off -
+both caught in a quick run; the full 54 is running on a frozen copy, the count follows in the
+next.
+
+**Docs:** README (data dates), CLAIMS (2-year, 30-year, WTI, Nikkei), runbook lesson 111.
+
+**Checks:** engine 239/239; independent audit 406/406 (2 standing warnings, both fund fee
+notes); page validator 25/25 on the published copy (version 78, payload identical to
+`model/data.json`).
+
 ## 2026-10-28 — v77: maximum growth for A and B inside the band's drawdown budget
 
 At the owner's instruction: "Do the best and recommended approach to reach maximum growth

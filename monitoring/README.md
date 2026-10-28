@@ -196,6 +196,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+111. A PERCENT CHAIN CANNOT SEE A CENTS ERROR. The Nikkei's 27 Oct close was carried at 63,268.32
+   (+1,078.67) for two versions; the true close was 63,268.37 (+1,078.72). The only chain on it was
+   the percent's, whose bound - half a unit of the published 2dp - is about 3 index points, so it
+   passed. What caught it was the next session: 685.82 points onto 63,268.32 gives 63,954.14, the
+   one 28 Oct print no second source repeats, while 63,268.37 gives the 63,954.19 that three do.
+   Wherever a source prints points, carry them and chain on them to the cent; the S&P, the Nasdaq
+   and the Nikkei now do, as the KOSPI, the PSEi and the Dow already did.
 110. A FLAG IS A CLAIM, AND IT IS COMPUTED THE WAY THE CLAIM IS. A's `in_budget` read the printed
    drawdown alone. Under the maximum-growth rule A prints −25.0% on the 3/5/10-year view against a
    25% budget and sits 0.0035pp past it before rounding, so the flag said inside while the search

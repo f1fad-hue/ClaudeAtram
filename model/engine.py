@@ -25,9 +25,9 @@ from itertools import combinations
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
 AS_OF = "2026-10-28"        # newest completed session carried (PH and KOSPI Wednesday
-                            # closes; US equities, the VIX and Brent at Tuesday 27 Oct;
-                            # WTI and the Nikkei held where their next prints disagree;
-                            # the 10-year at its 26 Oct official close)
+                            # closes and the Nikkei; US equities, the VIX, Brent and WTI
+                            # at Tuesday 27 Oct; the 10-year, 2-year and 30-year at
+                            # their 26 Oct official closes)
 REVIEW_DATE = "2026-10-28"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -314,9 +314,12 @@ MACRO = {
     # (-13bp); CNBC's market closes 4.659% and 5.296% agree within a basis point.
     # 23 Oct, par curve (the same two republications): 2-year 4.69% (+4bp), 30-year
     # 5.33% (+4bp).
-    "ust_2y": 4.69, "ust_2y_date": "2026-10-23",
+    # 26 Oct, par curve (StockMarketWatch's table; Forbes): 2-year 4.68% (-1bp), 30-year
+    # 5.31% (-2bp); 5.00 - 4.68 = 0.32 on the 10-year's own 26 Oct close. CNBC's
+    # mid-session 4.716% / 5.299% are not carried.
+    "ust_2y": 4.68, "ust_2y_date": "2026-10-26",
     "ust_10y_intraday_14oct": 5.33,   # ~30 minutes after the CPI (Quartz, CNBC)
-    "ust_30y": 5.33, "ust_30y_date": "2026-10-23",
+    "ust_30y": 5.31, "ust_30y_date": "2026-10-26",
     "ust_10y_mkt_23oct": 4.988,       # 23 Oct market close (Investing.com), beside the 5.00 par
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
@@ -938,8 +941,9 @@ MACRO = {
     "brent_disputed_7oct": [100.17, 100.27, 101.90],
     "brent_disputed_23sep": [98.44, 101.61, 103.08],
     "wti_disputed_23sep": [89.31, 92.16, 92.54],
-    # 27 Oct HELD: CNBC's 99.90 (-1.83%), Macrotrends 99.82, Investing.com 100.16 - one
-    # source each; WTI stays at its 26 Oct settle until two agree.
+    # 27 Oct, held in v76-v77 on three prints of one source each (CNBC 99.90,
+    # Macrotrends 99.82, Investing.com 100.16). RESOLVED in v78: DTN's settle report
+    # repeats CNBC's 99.90 with its points (-$1.86), so it is carried below.
     "wti_disputed_27oct": [99.82, 99.90, 100.16],
     # The four Monday candidates, kept as the record of the dispute - and of the
     # heuristic that picked the wrong one.
@@ -1520,8 +1524,8 @@ MACRO = {
     # rally on the eve of the Fed's decision as oil slid. All three chain to the cent off
     # the 26 Oct closes. A 24/7 Wall St. 7732.80 is an intraday print.
     "equity_date": "2026-10-27",
-    "spx_close": 7722.60, "spx_chg_pct": 0.60,
-    "nasdaq_close": 26477.81, "nasdaq_chg_pct": 1.18,
+    "spx_close": 7722.60, "spx_chg_pct": 0.60, "spx_chg_pts": 45.83,
+    "nasdaq_close": 26477.81, "nasdaq_chg_pct": 1.18, "nasdaq_chg_pts": 308.43,
     "dow_close": 52377.57, "dow_chg_pct": 0.03, "dow_chg_pts": 15.99,
     # 26 Oct, kept for the notes that describe that session
     "spx_26oct_chg_pct": 0.70, "nasdaq_26oct_chg_pct": 0.82,
@@ -1575,11 +1579,13 @@ MACRO = {
     # 23 Oct: "closes up $3.80, or 3.8%; settles at $103.27" (MarketScreener; Investing.com
     # +3.82%; CNBC). 99.47 + 3.80 = 103.27; 3.80 / 99.47 is +3.82%.
     # 26 Oct: "fell $1.51 to settle at $101.76" (CNBC; Reuters via Yahoo). 103.27 - 1.51
-    # = 101.76; 1.51 / 103.27 is -1.46%. December again - one contract.
-    "wti_settle": 101.76, "wti_chg_pct": -1.46,
-    "wti_date": "2026-10-26", "wti_contract": "2026-12",
-    "wti_prev": 103.27,            # December's own 23 Oct settle - within one contract
-    "wti_prev_date": "2026-10-23",
+    # = 101.76; 1.51 / 103.27 is -1.46%.
+    # 27 Oct: "fell $1.86, or 1.83%, to settle at $99.90" (DTN; CNBC $99.90, -1.83%).
+    # 101.76 - 1.86 = 99.90; 1.86 / 101.76 is -1.83%. December again - one contract.
+    "wti_settle": 99.90, "wti_chg_pct": -1.83,
+    "wti_date": "2026-10-27", "wti_contract": "2026-12",
+    "wti_prev": 101.76,            # December's own 26 Oct settle - within one contract
+    "wti_prev_date": "2026-10-26",
     "wti_expired_contract": "2026-11",
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
@@ -1761,17 +1767,20 @@ MACRO = {
     # lows; 62907.84 - 214.68 = 62693.16. Investing.com's "-0.25%" was a pre-close print.
     # 26 Oct: -503.51 (-0.80%) to 62189.65, a third straight fall, on chip selling
     # (TokenPost; TradingKey 62189.60). 62693.16 - 503.51 = 62189.65.
-    # 27 Oct: +1078.67 (+1.73%) to 63268.32 as chip and AI stocks rallied, SoftBank +5%
-    # (TradingKey; CNBC's live blog +1.73%). 62189.65 + 1078.67 = 63268.32. Investing.com's
-    # "+1.78%" headline does not reproduce from 62189.65; the 1.73% does. Trading
-    # Economics' 63201 is a CFD.
-    # 28 Oct HELD: 63954.19 (+1.1%), 63954.14 (+1.08%), Yahoo's 64000.18 (+1.16%, its text
-    # +1.29%) and Investing.com's 64232 (+1.52%) - four prints, none with points that a
-    # second source repeats. The 27 Oct close stays until one does.
+    # 27 Oct: +1078.72 (+1.73%) to 63268.37 as chip and AI stocks rallied, SoftBank +5%
+    # (Yahoo historical; AD HOC News; CNBC's live blog +1.73%). 62189.65 + 1078.72 =
+    # 63268.37. v76-v77 CARRIED 63268.32 (+1078.67), five hundredths low: the 1.73% chain
+    # check passes either way, so only re-reading the points caught it. Investing.com's
+    # "+1.78%" headline does not reproduce from 62189.65; the 1.73% does.
+    # 28 Oct: +685.82 (+1.08%) to 63954.19, Kioxia leading chips after SK hynix's quarter
+    # (Jiji; AD HOC News "686 points higher"; Il Sole 24 Ore +1.08%). 63268.37 + 685.82 =
+    # 63954.19 - which also confirms the corrected 27 Oct close. Held in v76-v77 among four
+    # prints (63954.14, Yahoo's 64000.18, Investing.com's 64232 kept as the record).
     "nikkei_disputed_28oct": [63954.14, 63954.19, 64000.18, 64232.0],
-    "nikkei_latest": 63268.32, "nikkei_latest_chg_pct": 1.73,
-    "nikkei_latest_date": "2026-10-27",
-    "nikkei_latest_prev": 62189.65,
+    "nikkei_latest": 63954.19, "nikkei_latest_chg_pct": 1.08, "nikkei_latest_chg_pts": 685.82,
+    "nikkei_latest_date": "2026-10-28",
+    "nikkei_latest_prev": 63268.37,
+    "nikkei_27oct_chg_pct": 1.73,    # 27 Oct, the AI-trade rebound
     "nikkei_26oct_chg_pct": -0.80,   # 26 Oct, a third straight fall
     "nikkei_22oct_chg_pct": -2.65,   # 22 Oct, the AI sell-off day
     # KOREA REOPENED from Chuseok on 28 Sep: KOSPI -191.18 (-2.70%) to 6,889.74 from
@@ -2661,8 +2670,8 @@ REGIONS = {
                 f"reported a record quarter - operating profit of {MACRO['skhynix_q3_op_tn']:.1f}tn won, up "
                 f"{MACRO['skhynix_q3_op_yoy']}% on a year - and about {MACRO['skhynix_returns_2026_tn']}tn won of shareholder "
                 f"returns for 2026, after {MACRO['kospi_27oct_chg_pct']:.2f}% on the 27th as Anthropic's IPO filing revived "
-                f"the AI trade, when the Nikkei rose {MACRO['nikkei_latest_chg_pct']:.2f}% to "
-                f"{MACRO['nikkei_latest']:,.2f}. The KOSPI is still {MACRO['kospi_off_2oct_pct']}% below its 7003.74 close "
+                f"the AI trade; the Nikkei rose {MACRO['nikkei_27oct_chg_pct']:.2f}% on the 27th and "
+                f"{MACRO['nikkei_latest_chg_pct']:.2f}% more on the 28th to {MACRO['nikkei_latest']:,.2f}. The KOSPI is still {MACRO['kospi_off_2oct_pct']}% below its 7003.74 close "
                 f"of 2 Oct: on the 26th it had fallen {abs(MACRO['kospi_26oct_chg_pct']):.2f}% to a seven-month low, "
                 f"Samsung Electronics {abs(MACRO['samsung_26oct_chg_pct'])}%, and the Nikkei "
                 f"{abs(MACRO['nikkei_26oct_chg_pct']):.2f}%, its third straight loss. That "
@@ -2748,8 +2757,8 @@ DRIVERS = [
      f"{MACRO['fed_hike_odds_oct_prev']}% on the 26th, and one by December at {MACRO['fed_hike_odds_dec']}% on the 26th, from "
      f"{MACRO['fed_hike_odds_dec_prev']}% on the 23rd and {MACRO['fed_hike_odds_dec_22oct_am']:.0f}% on the morning of the 22nd. On official "
      "closes the 10-year was 5.12% on the 20th, 5.13% on the 21st, 4.96% on the 22nd and "
-     "5.00% on the 23rd, back up 4bp (market close 4.988%), with the 2-year at 4.69% and "
-     "the 30-year at 5.33%. All of it is below the 7 Oct intraday high of 5.365%, which is "
+     "5.00% on the 23rd, back up 4bp (market close 4.988%), and held at 5.00% on the 26th, with "
+     f"the 2-year at {MACRO['ust_2y']:.2f}% and the 30-year at {MACRO['ust_30y']:.2f}% that day. All of it is below the 7 Oct intraday high of 5.365%, which is "
      "above the 5 Oct peak of 5.349% and the highest since April 2002. Manila repriced to BSP's 50bp hike to 5.50%: at Monday's "
      "auction 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and "
      "364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The FOMC "
@@ -2762,8 +2771,8 @@ DRIVERS = [
      f"talks with Tehran went on - off the ${MACRO['brent_high']} of the 23rd, its highest close since "
      f"29 April, and {abs(MACRO['brent_wk_chg_pct'])}% {'higher' if MACRO['brent_wk_chg_pct'] > 0 else 'lower'} on the week, against "
      f"${MACRO['brent_yr_ago']:.2f} a year earlier - Brent +{MACRO['brent_yoy']:.1f}% y/y - while the Houthi "
-     f"strikes on Saudi Arabia went on; December WTI settled at ${MACRO['wti_settle']:.2f} on the 26th, down "
-     f"{abs(MACRO['wti_chg_pct']):.2f}%, and its 27 Oct prints disagree. "
+     f"strikes on Saudi Arabia went on; December WTI settled at ${MACRO['wti_settle']:.2f} on the 27th, down "
+     f"{abs(MACRO['wti_chg_pct']):.2f}%. "
      "The producer print stands: September PPI rose 1.3%, the largest monthly rise since "
      "March 2022, and 6.3% on the year, with core at 0.5% and 5.0%, after CPI of 3.7% "
      "(core 2.6%). The euro area confirmed 3.8% for September, core 2.5%; the Philippines "
@@ -2820,7 +2829,7 @@ DRIVERS = [
      f"under the long-run {MACRO['vix_longrun']} and well off its {MACRO['vix_latest_high']} high of 16 Oct, after "
      f"rising on the 23rd as oil climbed and the Dow fell {abs(MACRO['dow_23oct_chg_pct']):.2f}%. Asia "
      f"followed on the 27th: the KOSPI rose {MACRO['kospi_27oct_chg_pct']:.2f}% and the Nikkei "
-     f"{MACRO['nikkei_latest_chg_pct']:.2f}%, then the KOSPI {MACRO['kospi_latest_chg_pct']:.2f}% more on the 28th on SK hynix's "
+     f"{MACRO['nikkei_27oct_chg_pct']:.2f}%, then {MACRO['kospi_latest_chg_pct']:.2f}% and {MACRO['nikkei_latest_chg_pct']:.2f}% more on the 28th on SK hynix's "
      f"quarter, after falling {abs(MACRO['kospi_26oct_chg_pct']):.2f}% and "
      f"{abs(MACRO['nikkei_26oct_chg_pct']):.2f}% on the 26th; on the 22nd they had fallen "
      f"{abs(MACRO['kospi_22oct_chg_pct'])}% and {abs(MACRO['nikkei_22oct_chg_pct'])}%, and on the 23rd "
@@ -2936,7 +2945,7 @@ SUMMARY = {
     "Geopolitics & energy": f"Held: the Houthis kept firing at Saudi Arabia as Saudi, Turkish and Pakistani officials met Iran's president in Tehran on the 26th; Brent settled at ${MACRO['brent']:.2f} on the 27th, Hormuz flows near 14 mb/d.",
     "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 27 Oct as chip stocks extended the rally; FedWatch had an October hike at {MACRO['fed_hike_odds_oct']}% on the eve of the decision.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
-    "ASIA": f"Held: the KOSPI rose {MACRO['kospi_latest_chg_pct']:.2f}% to {MACRO['kospi_latest']:,.2f} on 28 Oct on SK hynix's record quarter, still {MACRO['kospi_off_2oct_pct']}% below 2 Oct; the Nikkei rose {MACRO['nikkei_latest_chg_pct']:.2f}% on the 27th.",
+    "ASIA": f"Held: the KOSPI rose {MACRO['kospi_latest_chg_pct']:.2f}% to {MACRO['kospi_latest']:,.2f} on 28 Oct on SK hynix's record quarter, still {MACRO['kospi_off_2oct_pct']}% below 2 Oct; the Nikkei rose {MACRO['nikkei_latest_chg_pct']:.2f}% to {MACRO['nikkei_latest']:,.2f} the same day.",
     "PHILIPPINES": f"Held: the peso closed at a record {MACRO['usdphp_record']:.2f} on 27 Oct and recovered to {MACRO['usdphp']} on the 28th as the PSEi fell {abs(MACRO['psei_chg_pct']):.2f}%; 91-day bills jumped to 6.624% after BSP's 50bp hike.",
 }
 
@@ -4317,6 +4326,14 @@ def run_scenarios(w, key, u=None):
 # 8. SOURCES
 # ----------------------------------------------------------------------------
 SOURCES = [
+    ("DTN", "WTI near $100 ahead of Hormuz diplomacy and the Fed - December WTI -$1.86 (-1.83%) to settle at $99.90, 27 Oct 2026",
+     "https://www.dtnpf.com/agriculture/web/ag/news/world-policy/article/2026/10/27/wti-100-ahead-hormuz-diplomacy-fed"),
+    ("AD HOC News", "Nikkei 225 closes 686 points higher as Kioxia leads chips - 63,954.19, 28 Oct 2026",
+     "https://www.ad-hoc-news.de/boerse/news/marktberichte/nikkei-225-closes-686-points-higher-as-kioxia-leads-chips/70425452"),
+    ("Il Sole 24 Ore", "Tokyo: the Nikkei closes up 1.08%, the Wall Street effect boosts tech, 28 Oct 2026",
+     "https://en.ilsole24ore.com/art/tokyo-stock-exchange-nikkei-closes-up-108-per-cent-wall-street-effect-boosts-tech-sector-AJ5waXwB"),
+    ("AD HOC News", "Nikkei 225 gains 1.7 percent as the AI rally extends - 63,268.37 (+1,078.72), 27 Oct 2026",
+     "https://www.ad-hoc-news.de/boerse/news/marktberichte/nikkei-225-gains-1-7-percent-as-ai-rally-extends-after-close/70422671"),
     ("CNBC", "Oil today, 27 Oct 2026 - Brent -1.7% to settle at $113.88, WTI $99.90, on Iran diplomacy",
      "https://www.cnbc.com/2026/10/27/oil-today-iran-us-crude-wti-brent-trump.html"),
     ("The Nation (Thailand)", "Brent drops US$1.93 a barrel on October 27 amid Iran talks",
@@ -5858,6 +5875,17 @@ def report():
                        - MACRO["kospi_latest"]) < 0.005
                    and abs(MACRO["kospi_latest_chg_pts"] / MACRO["kospi_latest_prev"] * 100
                            - MACRO["kospi_latest_chg_pct"]) <= 0.005 + 1e-9))
+    # THE POINTS CHAIN, wherever a source prints points (v78). The percent chain's bound
+    # is half a unit of the published 2dp - about 3 points on the Nikkei - so it passed the
+    # 27 Oct close that v76-v77 carried five hundredths low (63268.32). Points are printed
+    # to the cent, so their chain is exact, and it is what catches that error:
+    # 63268.32 + 685.82 is the 63954.14 one source printed for the 28th. The KOSPI, the
+    # PSEi and the Dow carried points already; the S&P, the Nasdaq and the Nikkei now do.
+    for _lbl, _c, _p, _pt in (("S&P", "spx_close", "spx_prev", "spx_chg_pts"),
+                              ("Nasdaq", "nasdaq_close", "nasdaq_prev", "nasdaq_chg_pts"),
+                              ("Nikkei", "nikkei_latest", "nikkei_latest_prev", "nikkei_latest_chg_pts")):
+        checks.append((f"the {_lbl}'s point move chains to the cent from its prior close",
+                       abs(MACRO[_p] + MACRO[_pt] - MACRO[_c]) < 0.005))
     checks.append(("the Nikkei's move reproduces from its own previous close",
                    abs(MACRO["nikkei_latest_prev"] * (1 + MACRO["nikkei_latest_chg_pct"] / 100)
                        - MACRO["nikkei_latest"]) <= MACRO["nikkei_latest_prev"] * 0.00005 + 0.01))
@@ -6758,7 +6786,7 @@ def report():
                    and "US Equity Opportunity" in _ho))
     checks.append(("the factor model reproduces the typed five-fund block within 0.01",
                    all(abs(_FC[i][j] - CORR_5[i][j]) <= 0.01 + 1e-9 for i in range(5) for j in range(5))))
-    # PORTFOLIO A (2026-10-21): the review's highest-return pick, fixed like D.
+    # PORTFOLIO A: the highest 10-year net CAGR inside the drawdown budget (v77 rule).
     _pa = p["portfolio_a"]; _aw = _pa["weights"]
     _cons = lambda w: (len(w) == _nu and sum(w) == 100 and all(x % 5 == 0 for x in w)
                        and sum(1 for x in w if x) <= MACRO["pd_review_max_funds"]
@@ -6811,9 +6839,11 @@ def report():
     _amu = sum(w / 100 * f["net_macro"] for w, f in zip(_aw, p["funds"] + _pb["funds"]))
     checks.append((f"Portfolio A's CAGR re-derives from its funds ({_amu:.2f} vs {_pa['macro']['cagr']})",
                    abs(_amu - _pa["macro"]["cagr"]) < 0.005))
-    # The two picks are the two ends of one search, so their recorded results must
-    # order the right way: A has the higher base case, D the better worst case.
-    checks.append(("the review's two picks order as their rules say: A the higher base case, the best-worst-case pick the better worst case",
+    # THE 22-FUND REVIEW RECORD (21 Oct) holds together. Its name said "the two picks
+    # order as their rules say: A the higher base case, the best-worst-case pick the
+    # better worst case" from the D era to v77, while the body compared no two picks -
+    # a check's name is a claim too (lesson 110), so it now says what the body tests.
+    checks.append(("the 22-fund review record holds together: one date, under two weeks old, its A inside the budget it ran at, its stress drawdown no milder than its base",
                    MACRO["pa_review_date"] == MACRO["pd_review_date"] <= AS_OF
                    and (_dt.date.fromisoformat(AS_OF) - _dt.date.fromisoformat(MACRO["pd_review_date"])).days <= 14
                    and MACRO["pa_review_dd"] <= DD_CAP_DERIVED + 1e-9 and MACRO["pa_review_band_n"] >= 1
