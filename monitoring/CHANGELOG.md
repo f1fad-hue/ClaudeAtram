@@ -49,7 +49,8 @@ an input; the "two calmer sessions before the Fed" line now reads three, around 
 **Harnesses:** engine **248/248**; audit **423 checks, 0 failures, 0 warnings** (the first run
 without a standing warning since they appeared); validator **26/26** on the live copy; mutations:
 two added (a close quoted on the wrong day; the VIX a session behind its series - the second
-MISSED until the audit's series check was added).
+MISSED until the audit's series check was added). v83's own run, on a frozen copy of the tree
+committed as 692a0f6: **64/64 caught**, every defined mutant listed (recorded after that commit).
 
 Not personal financial advice.
 
