@@ -7,8 +7,9 @@ Allocation's fee note; re-run it when any of those fees, or the universe, change
 
 Imports the engine, builds the held-out fund with build_fund() and the factor model,
 re-binds the search's globals to the eleven funds plus that one, and re-runs the rule
-for A (the 10-year view) and B (the 3/5/10-year view); Portfolio C was retired in v76. For
-the disputed fee it rebuilds the admitted fund in place and re-runs the same two."""
+for A (the 10-year view), B (the 3/5/10-year view) and C (B's view with Nasdaq Equity Income
+held at 50%; retired in v76, restored in v82). For the disputed fee it rebuilds the admitted
+fund in place and re-runs the same three."""
 import json, math, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import engine as E
@@ -41,12 +42,14 @@ def run(spec):
     E._UF, E._US, E._UC = E.F + E.F_ADD + [fb], specs, C
     E._UN = n; E._VOL = [f["vol"] for f in E._UF]; E._ADJ = [f["dd_k_adj"] for f in specs]
     E._CASH = [f["cash_like"] for f in specs]
-    pk = {"a": E._Pick(), "b": E._Pick()}
+    pk = {"a": E._Pick(), "b": E._Pick(), "c": E._Pick()}
     for seq, (idx, u) in enumerate(E.univ_mixes()):
         ms = E._measure(idx, u, ["net_10y", "net_macro"])
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
+    for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
+        pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
     out = {}
-    for k in "ab":
+    for k in "abc":
         w, band, win = pk[k].result()
         out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "new_w": round(w[-1] * 100)}
     return fb, out
@@ -60,12 +63,14 @@ def run_refee(fid, trust):
     E._US, E._UC, E._UN = E.UNIV[1], E.UNIV[2], len(E.UNIV[1])
     E._VOL = [f["vol"] for f in E._UF]; E._ADJ = [f["dd_k_adj"] for f in E._US]
     E._CASH = [f["cash_like"] for f in E._US]
-    pk = {"a": E._Pick(), "b": E._Pick()}
+    pk = {"a": E._Pick(), "b": E._Pick(), "c": E._Pick()}
     for seq, (idx, u) in enumerate(E.univ_mixes()):
         ms = E._measure(idx, u, ["net_10y", "net_macro"])
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
+    for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
+        pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
     out = {}
-    for k in "ab":
+    for k in "abc":
         w, band, win = pk[k].result()
         out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "fund_w": round(w[ix] * 100)}
     E._UF = E.UNIV[0]
@@ -84,6 +89,12 @@ if __name__ == "__main__":
     # Global Allocation: 1.20% on two listings, 1.50% on DragonFi (2026-10-22).
     t = time.time(); fb, out = run_refee("M_GALL", 1.50)
     print(f"gall_150     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
+    for k, v in out.items():
+        mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
+        print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
+    # Asian Multi-Asset Income: 1.50% carried, 1.20% on the October 2025 KIID (2026-10-28).
+    t = time.time(); fb, out = run_refee("ATRAMIP", E.MACRO["amip_trust_alt"])
+    print(f"amip_alt     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
     for k, v in out.items():
         mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
         print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")

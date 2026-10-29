@@ -2,6 +2,67 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-29 — v82: Portfolio C restored - Nasdaq Equity Income at 50%, the rest by the one rule on the 3/5/10-year view, inside the band budget; A and B unchanged
+
+At the owner's instruction: "Make portfolio C with 50% atram nasdaq equity income allocation based
+on 3, 5, 10yrs volatility, market trend, macroeconomic sentiments and regional rankings deep
+analysis from the 22 atram lists. Use budget drawdown band for portfolio C."
+
+**C (engine `portfolio_c`, retired in v76):** B's rule (maximum growth), B's inputs - the four
+analyses read at 3, 5 and 10 years and weighted 30 / 20 / 50 (`net_macro`) - and the band's budget
+(25% now), with ATRAM Nasdaq Equity Income held at exactly 50%. The pin is the one fund exempt from
+the 35% cap; it counts against the five-fund limit, and the 5% cash floor holds. The rest is chosen
+over the other ten confirmed-fee funds of the 22-fund list: 8,289 pinned mixes, 3,551 inside the
+budget, one at the highest CAGR. **5% Peso Money Market, 50% Nasdaq Equity Income, 15% Global
+Health Care, 25% Global Infra Equity, 5% Asian Multi-Asset Income: 7.14% / −24.9%** (vol 12.85%,
+ret/DD 0.287; 10-year view 7.32% / −24.8%; drawdown coefficient 1.65, so (1.65 × 12.85 − 0.5 ×
+7.14) × √2 = 24.9).
+- **Against B on the same view and budget it returns 0.04pp a year more at the same printed
+  drawdown.** That is the cap, not skill: B may not hold more than 35% of any fund, and the drawdown
+  model prices volatility and tail shape, not one manager holding half the money. The page and the
+  report say so; the report's one-line recommendation stays B.
+- **Budget steps:** 24% 7.03 / −23.7 (Asian Multi-Asset Income up to 15%), 26% 7.21 / −25.7, 27%
+  7.30 / −26.9. **What-ifs:** its weights hold under flat vol (7.15), neutral drags (7.20), no trend
+  (7.16), the alternative trend and the Asia fee stress (7.14); with no Asia re-rating it swaps
+  Asian Multi-Asset Income for 10% Global Allocation and 5pp less Infra (7.12). **Stresses:** Hormuz
+  3.97 / −45.1, hawkish 5.08 / −35.4, AI capex 5.14 / −39.8, disinflation 9.10 / −17.6.
+- **Held-out funds, re-run for C** (`model/heldout_sens.py`): US Equity Opportunity takes none of C
+  at 1.20% or 1.50%; Global Bond Income 25% at its target's 0.69% institutional charge, none at the
+  1.59% retail; Global Allocation at 1.50% none of A, B or C; Asian Multi-Asset Income at the
+  disputed 1.50% keeps C's 5%. The run date (29 Oct) is checked to sit between the data date and the
+  review date, which moves to 29 Oct.
+- **A and B do not move:** C's pinned search is separate, and nothing in A's or B's reads it.
+
+**Page:** a third donut, centred beneath A and B; C's column in the who-holds-what, head-to-head,
+lens, budget-step, stress (now CAGR over drawdown, so three portfolios fit a phone) and peso tables;
+C on the frontier (0.04pp above the line it is not drawn from, and the page says why); every
+what-if, the cash line, the held-out note and each fund's weight line name C.
+
+**Errors found and fixed:**
+- **A's "macro-adjusted" lens row repeated its 10-year view (v80-v81).** The lens table read each
+  portfolio's own headline, which for A has been the 10-year view since v80, so A showed 7.30% twice
+  and never its 3/5/10-year 7.11%. It now reads each column by name, labelled "3/5/10-year view",
+  and the validator checks every lens row against its column (new row 11b; it fails on v81's page).
+- **"10Y view" beside "3/5/10-year view"** survived in that table's labels: now "10-year view".
+- **The Global Allocation fee note said "A and B are unchanged, as neither holds it"** - true of C
+  too, so it now names all three; the engine's check that the note stays true already covered C.
+- **Ties printed three times** ("A and B and C, −24.9% and −24.9% and −24.9%"): a shared value now
+  prints once ("A, B and C, all −24.9%").
+- **The mutation run reported "all caught" with four C mutants missing.** The edit that listed them
+  was blocked along with an unrelated command, so 58 of 62 ran. The harness now refuses to run
+  unless every defined mutant is listed, and prints the count (runbook 116).
+
+**Harnesses:** engine **247/247**; audit **420 checks, 0 failures** (2 standing warnings) - it
+re-derives C's pinned search with its own depth-first walk (the pin held, the cap waived for it
+alone), C's pick, band and feasible count, every C what-if and budget step, C's coefficient,
+CAGR/vol/drawdown on all three columns, its budget flag on both routes, and the README and CLAIMS C
+rows; validator **26 rows** (row 1 passes on the live copy); mutations: three "C stays retired"
+mutants become C faults (the pin slipping to 45%, a C step's mix typed, a C what-if typed as B's),
+plus C on A's column, its pinned search size, its grind-on row on the wrong view and its flag
+flipped - **62/62 caught** on a frozen copy.
+
+Not personal financial advice.
+
 ## 2026-10-28 — v81: review of v80; Brent and WTI rolled to 28 Oct; the claim register's tables repaired; A and B unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search

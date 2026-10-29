@@ -396,6 +396,11 @@
   "useq_w_b_listed": 20,
   "useq_w_a_peer": 15,
   "useq_w_b_peer": 0,
+  "useq_w_c_listed": 0,
+  "useq_w_c_peer": 0,
+  "gbi_w_c_low": 25,
+  "gbi_w_c_high": 0,
+  "amip_w_c_alt": 5,
   "gbi_trust_listed": 0.9,
   "gbi_target_low": 0.69,
   "gbi_target_high": 1.59,
@@ -405,7 +410,7 @@
   "gbi_w_b_high": 20,
   "heldout_run_cap": 25.0,
   "heldout_run_tie": 0.0,
-  "heldout_run_date": "2026-10-28",
+  "heldout_run_date": "2026-10-29",
   "amip_trust_alt": 1.2,
   "amip_w_a_alt": 35,
   "amip_w_b_alt": 30,
@@ -1171,7 +1176,7 @@
   "hormuz_vessel_drop_pct": 95.0,
   "hormuz_queue_date": "2026-10-07",
   "hormuz_queue_now": 206,
-  "hormuz_transits_age_d": 10,
+  "hormuz_transits_age_d": 11,
   "vix_futs": [
    [
     "Nov",
@@ -1310,7 +1315,7 @@
   "vix3m_resid": -3.66,
   "vix3m_prev_strip_resid": -4.66,
   "prev_strip_date": "2026-10-05",
-  "strip_age_d": 8
+  "strip_age_d": 9
  },
  "drivers": [
   {
@@ -2099,7 +2104,7 @@
   "ppp_now": 3.5
  },
  "vix_quote_date": "2026-10-20",
- "review_date": "2026-10-28",
+ "review_date": "2026-10-29",
  "regional_tilt_per_pt": 0.675,
  "trend": {
   "end": "2026-09-30",
@@ -2610,6 +2615,7 @@
   "baseline_k": 1.7125,
   "a_k": 1.66579,
   "b_k": 1.65833,
+  "c_k": 1.65,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -3004,6 +3010,28 @@
      "n_feasible": 145540,
      "best": 7.02,
      "hormuz_dd": -43.1
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      5,
+      25,
+      0,
+      0,
+      15,
+      0
+     ],
+     "cagr": 7.03,
+     "maxdd": -23.7,
+     "vol": 12.3,
+     "ret_per_dd": 0.297,
+     "n_feasible": 2748,
+     "best": 7.03,
+     "hormuz_dd": -43.3
     }
    },
    "25": {
@@ -3050,6 +3078,28 @@
      "n_feasible": 164263,
      "best": 7.1,
      "hormuz_dd": -44.9
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      25,
+      0,
+      0,
+      5,
+      0
+     ],
+     "cagr": 7.14,
+     "maxdd": -24.9,
+     "vol": 12.85,
+     "ret_per_dd": 0.287,
+     "n_feasible": 3551,
+     "best": 7.14,
+     "hormuz_dd": -45.1
     }
    },
    "26": {
@@ -3096,6 +3146,28 @@
      "n_feasible": 182266,
      "best": 7.18,
      "hormuz_dd": -46.8
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      30,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.21,
+     "maxdd": -25.7,
+     "vol": 13.21,
+     "ret_per_dd": 0.281,
+     "n_feasible": 4347,
+     "best": 7.21,
+     "hormuz_dd": -46.4
     }
    },
    "27": {
@@ -3142,6 +3214,28 @@
      "n_feasible": 199469,
      "best": 7.28,
      "hormuz_dd": -48.8
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      5,
+      0,
+      20,
+      20,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.3,
+     "maxdd": -26.9,
+     "vol": 13.66,
+     "ret_per_dd": 0.271,
+     "n_feasible": 5008,
+     "best": 7.3,
+     "hormuz_dd": -48.5
     }
    }
   }
@@ -3730,6 +3824,23 @@
      "cagr": 7.12,
      "maxdd": -25.0
     },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      25,
+      0,
+      0,
+      5,
+      0
+     ],
+     "cagr": 7.15,
+     "maxdd": -24.9
+    },
     "a": {
      "cagr": 7.3,
      "maxdd": -24.9
@@ -3748,6 +3859,23 @@
       0,
       0,
       20,
+      0
+     ],
+     "cagr": 7.2,
+     "maxdd": -24.9
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      25,
+      0,
+      0,
+      5,
       0
      ],
      "cagr": 7.2,
@@ -3776,6 +3904,23 @@
      "cagr": 7.1,
      "maxdd": -24.9
     },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      20,
+      0,
+      0,
+      0,
+      10
+     ],
+     "cagr": 7.12,
+     "maxdd": -24.9
+    },
     "a": {
      "cagr": 7.21,
      "maxdd": -24.9
@@ -3797,6 +3942,23 @@
       0
      ],
      "cagr": 7.1,
+     "maxdd": -24.9
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      25,
+      0,
+      0,
+      5,
+      0
+     ],
+     "cagr": 7.14,
      "maxdd": -24.9
     },
     "a": {
@@ -3823,6 +3985,23 @@
      "cagr": 7.14,
      "maxdd": -25.0
     },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      25,
+      0,
+      0,
+      5,
+      0
+     ],
+     "cagr": 7.16,
+     "maxdd": -24.9
+    },
     "a": {
      "cagr": 7.3,
      "maxdd": -24.9
@@ -3844,6 +4023,23 @@
       0
      ],
      "cagr": 7.1,
+     "maxdd": -24.9
+    },
+    "c": {
+     "weights": [
+      5,
+      50,
+      0,
+      0,
+      0,
+      15,
+      25,
+      0,
+      0,
+      5,
+      0
+     ],
+     "cagr": 7.14,
      "maxdd": -24.9
     },
     "a": {
@@ -4271,7 +4467,7 @@
     "region": "ASIA",
     "target": "Target fund: Schroder Asian Asset Income Fund (named at launch, Sep 2022). Benchmark: 50% MSCI AC Asia Pacific ex Japan + 50% Bloomberg EM Asia.",
     "target_verified": true,
-    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%",
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%, and C the 5% it holds at 1.50%",
     "gross_note": "Half equity, half bonds, as its benchmark: the Asia equity build (JPM LTCMA 2027 EM equity 7.1% + 1.0% re-rating - 0.5% dividend drag) and 6.1% for Asian credit (the LTCMA's US investment-grade figure, a proxy).",
     "code": "ATRAMIP",
     "fee_feeder": 1.5,
@@ -4341,7 +4537,7 @@
     "region": "GLOBAL_ALLOC",
     "target": "Target fund: BlackRock Global Funds - Global Allocation Fund (A2 USD).",
     "target_verified": true,
-    "fee_note": "1.20% ATRAM trust fee (uitf.com.ph PHP and USD classes and the feeder's fact sheet; DragonFi lists 1.50%, and the fund is not among the six repriced on 14 Sep; at 1.50% A and B are unchanged, as neither holds it) + 1.13% target-fund TER (PUBLISHED on the feeder's fact sheet)",
+    "fee_note": "1.20% ATRAM trust fee (uitf.com.ph PHP and USD classes and the feeder's fact sheet; DragonFi lists 1.50%, and the fund is not among the six repriced on 14 Sep; at 1.50% A, B and C are unchanged, as none holds it) + 1.13% target-fund TER (PUBLISHED on the feeder's fact sheet)",
     "gross_note": "Three-fifths global equity (7.5%) and two-fifths global bonds (5.3%, JPM LTCMA 2027 global aggregate).",
     "code": "14UF06",
     "fee_feeder": 1.2,
@@ -4740,6 +4936,145 @@
    "max_w": 35,
    "min_cash": 5
   }
+ },
+ "portfolio_c": {
+  "weights": [
+   5,
+   50,
+   0,
+   0,
+   0,
+   15,
+   25,
+   0,
+   0,
+   5,
+   0
+  ],
+  "ids": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRASEQ",
+   "ATRGTEC",
+   "ATRGLDV",
+   "ATRGHCP",
+   "M_GINF",
+   "M_GEO",
+   "M_GCT",
+   "ATRAMIP",
+   "M_GALL"
+  ],
+  "macro": {
+   "weights": [
+    5.0,
+    50.0,
+    0.0,
+    0.0,
+    0.0,
+    15.0,
+    25.0,
+    0.0,
+    0.0,
+    5.0,
+    0.0
+   ],
+   "cagr": 7.14,
+   "vol": 12.85,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.287,
+   "sharpe_like": 0.043,
+   "terminal_1m": 1993042,
+   "worst_1m_from_open": 751000
+  },
+  "base": {
+   "weights": [
+    5.0,
+    50.0,
+    0.0,
+    0.0,
+    0.0,
+    15.0,
+    25.0,
+    0.0,
+    0.0,
+    5.0,
+    0.0
+   ],
+   "cagr": 7.1,
+   "vol": 12.85,
+   "maxdd": -25.0,
+   "ret_per_dd": 0.284,
+   "sharpe_like": 0.04,
+   "terminal_1m": 1985613,
+   "worst_1m_from_open": 750000
+  },
+  "ten": {
+   "weights": [
+    5.0,
+    50.0,
+    0.0,
+    0.0,
+    0.0,
+    15.0,
+    25.0,
+    0.0,
+    0.0,
+    5.0,
+    0.0
+   ],
+   "cagr": 7.32,
+   "vol": 12.85,
+   "maxdd": -24.8,
+   "ret_per_dd": 0.295,
+   "sharpe_like": 0.057,
+   "terminal_1m": 2026780,
+   "worst_1m_from_open": 752000
+  },
+  "column": "net_macro",
+  "fund": "ATRQIAP",
+  "pin_pct": 50,
+  "band_n": 1,
+  "n_feasible": 3551,
+  "n_total": 8289,
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $115. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 3.97,
+    "vol": 20.55,
+    "maxdd": -45.1
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.2% unemployment rate; duration-heavy growth de-rates.",
+    "cagr": 5.08,
+    "vol": 16.7,
+    "maxdd": -35.4
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Semis order book rolls over; the 52% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 5.14,
+    "vol": 18.63,
+    "maxdd": -39.8
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 9.1,
+    "vol": 10.28,
+    "maxdd": -17.6
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
+    "cagr": 7.14,
+    "vol": 12.85,
+    "maxdd": -24.9
+   }
+  ],
+  "dd_cap": 25.0,
+  "in_budget": true
  },
  "sources": [
   {

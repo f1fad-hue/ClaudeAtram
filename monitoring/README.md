@@ -196,6 +196,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+116. A RUN THAT REPORTS NO MISSES MUST SAY HOW MANY RAN. Four new C mutants were defined, but
+   the edit that listed them was blocked with another command; the run printed 58 lines, every one
+   caught, and read as a clean pass. The harness now compares the mutants it lists with the ones
+   defined, refuses to start on a gap, and prints the count first.
+115. A HEADLINE MOVED IS A HEADLINE MOVED EVERYWHERE IT IS READ. v80 made A's headline its 10-year
+   view; the lens table used the headline as its "macro-adjusted" row, so A showed the 10-year
+   figure twice for two versions. Name the column you mean (`q.macro`), not the variable that
+   happens to hold it today, and check tables cell by cell, not just their totals.
 114. A TABLE'S SHAPE IS PART OF WHAT IT SAYS. Twenty-six CLAIMS rows - the portfolios, the
    gauge, the fund list - had five cells under the three-column "Modelled assumptions" header,
    so the rendered register silently dropped their Kind, Source and Last-verified columns; and a
