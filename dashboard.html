@@ -551,7 +551,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
 
   <section id="vssec">
     <p class="eyebrow">A vs B vs C &middot; one rule, three answers</p>
-    <h2>Two portfolios, head to head</h2>
+    <h2>Three portfolios, head to head</h2>
     <p class="lede" id="pblede">—</p>
     <div class="note" id="listnote">—</div>
     <div class="vsgrid">
@@ -589,9 +589,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <p class="eyebrow">Headline forecast &middot; A vs B vs C</p>
     <div class="card">
       <div class="tw"><table class="dt" id="ptab"></table></div>
-      <p class="note">Each on its own horizon &mdash; A on the 10-year forecasts, B on the
+      <p class="note">Each on its own horizon &mdash; A on the 10-year forecasts, B and C on the
         3/5/10-year &mdash; from the same fund forecasts and drawdown budget; the last two rows put
-        both on one basis. The best figure in each row is marked.</p>
+        all three on one basis. The best figure in each row is marked.</p>
     </div>
     <div class="card" id="deltacard"></div>
     <details class="card how">
@@ -1261,6 +1261,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "Long Term Peso Bond",
    "Medium Term Peso Bond"
   ],
+  "ghcp_target_iacc_ter": 0.89,
+  "geo_target_at_ter": 1.95,
   "useq_trust_listed": 1.2,
   "useq_trust_peer": 1.5,
   "useq_ocf_clean": 0.85,
@@ -1769,6 +1771,10 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    [
     "2026-10-27",
     17.52
+   ],
+   [
+    "2026-10-28",
+    16.91
    ]
   ],
   "vix_reported_moves": {
@@ -1802,7 +1808,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "2026-10-22": 14.09,
    "2026-10-23": 2.21,
    "2026-10-26": -5.45,
-   "2026-10-27": -4.7
+   "2026-10-27": -4.7,
+   "2026-10-28": -3.48
   },
   "vix_withheld": [],
   "vix_disputed_20oct": [
@@ -1820,6 +1827,10 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "vix_disputed_27oct": [
    17.51,
    17.52
+  ],
+  "vix_disputed_28oct": [
+   16.83,
+   16.91
   ],
   "vix_disputed_28sep": [
    16.07,
@@ -2010,13 +2021,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "phmm_gross_prev": 5.25,
   "ltcma_em_eq": 7.1,
   "ltcma_em_eq_prev": 7.8,
-  "vix_latest_date": "2026-10-27",
-  "vix_latest": 17.52,
-  "vix_prev_date": "2026-10-26",
-  "vix_prev_close": 18.39,
-  "vix_latest_chg_pct_calc": -4.73,
-  "vix_latest_chg_pct": -4.7,
-  "vix_latest_chg_dp": 1,
+  "vix_latest_date": "2026-10-28",
+  "vix_latest": 16.91,
+  "vix_prev_date": "2026-10-27",
+  "vix_prev_close": 17.52,
+  "vix_latest_chg_pct_calc": -3.48,
+  "vix_latest_chg_pct": -3.48,
+  "vix_latest_chg_dp": 2,
   "vix_episode_high": 19.99,
   "vix_episode_high_date": "2026-10-16",
   "vix_episode_low_date": "2026-09-22",
@@ -2157,9 +2168,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "longrun": 19.5,
   "ramp_ref": "long-run",
   "quote_date": "2026-10-20",
-  "latest": 17.52,
-  "latest_date": "2026-10-27",
-  "latest_gap": 0.21,
+  "latest": 16.91,
+  "latest_date": "2026-10-28",
+  "latest_gap": -0.4,
   "ramp": -0.08,
   "sens": {
    "ATRPHMM": 0.035,
@@ -2178,7 +2189,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "basis": "forward",
   "kappa": 1.5,
   "vrp": 3.5,
-  "spot_move_pct": 1.2,
+  "spot_move_pct": -2.3,
   "overtaken": false,
   "overtaken_pct": 20.0,
   "vix3m_bound_pct": 10.0,
@@ -2280,7 +2291,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "weight": 0.1,
    "score": 4.11,
    "score_10": 8.0,
-   "note": "HELD at 8.0, and now re-verified for the US: FactSet had the S&P on 18.7x forward earnings on 23 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7743.98 on the 27th, 1.0% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings, the KOSPI 14.2% below its 2 Oct close at 6,012.44 on the 28th, after its rebound; NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since.",
+   "note": "HELD at 8.0, and now re-verified for the US: FactSet had the S&P on 18.7x forward earnings on 23 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7743.98 on 28 Oct, 1.0% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings, the KOSPI 14.2% below its 2 Oct close at 6,012.44 on the 28th, after its rebound; NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since.",
    "summary": "Held: the S&P is on 18.7x forward earnings, below its five- and ten-year averages; the KOSPI is 14.2% below its 2 Oct close.",
    "path": {
     "3Y": 6.5,
@@ -2301,8 +2312,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "weight": 0.1,
    "score": 1.67,
    "score_10": 2.5,
-   "note": "HELD at 2.5. The VIX fell 4.7% to 17.52 on 27 Oct, after 5.45% on the 26th, as stocks rose two days running and oil eased - under the long-run 19.5 and well off its 22.31 high of 16 Oct, after rising on the 23rd as oil climbed and the Dow fell 1.23%. Asia followed on the 27th: the KOSPI rose 3.09% and the Nikkei 1.73%, then 6.63% and 1.08% more on the 28th on SK hynix's quarter, after falling 1.46% and 0.80% on the 26th; on the 22nd they had fallen 3.52% and 2.65%, and on the 23rd the KOSPI's 4% intraday fall had reversed into a 0.30% gain. The October future settled on the 21st and no full strip for a later day has been reached, so the curve stays quoted at the 20 Oct settlements - November 18.49 and December 18.7, above that day's spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. On forward vol the curve sits at 19.42, 0.08 below the long run. Held: two calmer sessions before the Fed held are not a regime, and the 23 Oct cut already priced the sell-off it answered.",
-   "summary": "Held: the VIX fell 4.7% to 17.52 on 27 Oct, a second fall, under its long-run 19.5, and Asia rebounded the same day.",
+   "note": "HELD at 2.5. The VIX fell 3.48% to 16.91 on 28 Oct as the Fed held, a third fall, after 4.7% on the 27th and 5.45% on the 26th as stocks rose and oil eased - under the long-run 19.5 and well off its 22.31 high of 16 Oct, after rising on the 23rd as oil climbed and the Dow fell 1.23%. Asia followed on the 27th: the KOSPI rose 3.09% and the Nikkei 1.73%, then 6.63% and 1.08% more on the 28th on SK hynix's quarter, after falling 1.46% and 0.80% on the 26th; on the 22nd they had fallen 3.52% and 2.65%, and on the 23rd the KOSPI's 4% intraday fall had reversed into a 0.30% gain. The October future settled on the 21st and no full strip for a later day has been reached, so the curve stays quoted at the 20 Oct settlements - November 18.49 and December 18.7, above that day's spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. On forward vol the curve sits at 19.42, 0.08 below the long run. Held: three calmer sessions around the Fed's hold are not a regime, and the 23 Oct cut already priced the sell-off it answered.",
+   "summary": "Held: the VIX fell 3.48% to 16.91 on 28 Oct as the Fed held, a third fall, under its long-run 19.5.",
    "path": {
     "3Y": 4.5,
     "5Y": 5.5,
@@ -3830,7 +3841,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    {
     "name": "vix",
     "ok": true,
-    "reading": 17.52,
+    "reading": 16.91,
     "longrun": 19.5,
     "applies_to": "raise"
    }
@@ -7774,6 +7785,21 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "org": "uitf.com.ph",
    "what": "ATRAM US Equity Opportunity Feeder Fund (USD unit class) - trust fee 1.20% p.a. (held out: stale listing)",
    "url": "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=260"
+  },
+  {
+   "org": "Yahoo Finance",
+   "what": "CBOE Volatility Index (^VIX) - 16.91, -0.61 (-3.48%) at the 28 Oct 2026 close",
+   "url": "https://finance.yahoo.com/quote/%5EVIX/"
+  },
+  {
+   "org": "CNBC",
+   "what": "CBOE Market Volatility Index (.VIX) - last 16.91, previous close 17.52, 28 Oct 2026",
+   "url": "https://www.cnbc.com/quotes/.VIX"
+  },
+  {
+   "org": "PC Thematic",
+   "what": "Daily market report, 28 Oct 2026 - VIX cooled to 16.91 from 17.52",
+   "url": "https://pcthematic.substack.com/p/daily-market-report-october-28-2026"
   }
  ]
 }
@@ -7970,16 +7996,16 @@ $("#corrnote").textContent = D.corr_note;
   /* "0.276 -> 0.277, 0% better" printed on 21 Oct: a gain under 1% gets a decimal. */
   const gv = (B.ret_per_dd / A.ret_per_dd - 1) * 100;
   const gain = Math.abs(gv) < 1 ? Math.abs(gv).toFixed(1) : String(Math.abs(Math.round(gv)));
+  /* v83, concise: the own-horizon figures are the lede's; this is the like-for-like view. */
   $("#concl").innerHTML =
-    `Each on its own horizon, A forecasts ${num(pc(Ao.cagr))} at ${num(pc1(Ao.maxdd))} and B
-     ${num(pc(B.cagr))} at ${num(pc1(B.maxdd))}. On one basis, the 3/5/10-year view, moving from A to B ` +
+    `On the 3/5/10-year view, moving from A to B ` +
     (Math.abs(edge) <= tie + 1e-9 ? `keeps` : edge >= 0 ? `raises` : `lowers`)
     + ` forecast ${HYN} net CAGR` + (Math.abs(edge) <= tie + 1e-9 ? ` level` : ``)
     + ` (${num(pc(A.cagr))} to ${num(pc(B.cagr))}) while cutting expected maximum drawdown
-     from ${num(pc1(A.maxdd))} to ${num(pc1(B.maxdd))}; C forecasts ${num(pc(D.portfolio_c.macro.cagr))} at
-     ${num(pc1(D.portfolio_c.macro.maxdd))} there. Return per unit of drawdown moves
+     from ${num(pc1(A.maxdd))} to ${num(pc1(B.maxdd))}, and return per unit of drawdown moves
      ${num(A.ret_per_dd.toFixed(3) + " &rarr; " + B.ret_per_dd.toFixed(3))},
-     ${num(gain + "%")} ${gv >= 0 ? "better" : "worse"}.`;
+     ${num(gain + "%")} ${gv >= 0 ? "better" : "worse"}; C's is ${num(D.portfolio_c.macro.ret_per_dd.toFixed(3))}, at
+     ${num(pc(D.portfolio_c.macro.cagr))} / ${num(pc1(D.portfolio_c.macro.maxdd))}.`;
   const PCr = D.portfolio_c, eC = PCr.macro.cagr - B.cagr;
   $("#rone").innerHTML = `In one sentence: <strong>hold B, the 3/5/10-year view's pick within the
     ${D.universe.limits.max_w}% single-fund limit, with ${and_(top.map(i => NM[i]))} as the core` +
@@ -7995,22 +8021,30 @@ $("#corrnote").textContent = D.corr_note;
   const WI = D.universe.what_if, fa = FX.ATRASEQ, iAS = IDS.indexOf("ATRASEQ");
   $("#wikey").textContent = `Each re-chooses B and C by the same rule on the changed input and re-measures A on its ${HYN} view.`;
   const CW = D.portfolio_c.weights;
-  const BC = x => `B holds ${num(wj(x.b.weights))} for ${num(pc(x.b.cagr))}` +
+  /* v83, concise: a mix the previous what-if already spelled out is not spelled out again. */
+  let lastB = null;
+  const BC = x => { const rep_ = lastB && same(x.b.weights, lastB); lastB = x.b.weights;
+    return (rep_ ? `B holds the same mix for ${num(pc(x.b.cagr))}` : `B holds ${num(wj(x.b.weights))} for ${num(pc(x.b.cagr))}`) +
     (same(x.b.weights, W) ? ` (unchanged)` : ``) +
     `; C ` + (same(x.c.weights, CW) ? `keeps its weights, at ${num(pc(x.c.cagr))}` : `holds ${num(wj(x.c.weights))} for ${num(pc(x.c.cagr))}`) + `; A ` +
-    (x.a.cagr === Ao.cagr ? `stays at ${num(pc(x.a.cagr))} on its ${HYN} view` : `returns ${num(pc(x.a.cagr))} on its ${HYN} view`);
+    (x.a.cagr === Ao.cagr ? `stays at ${num(pc(x.a.cagr))} on its ${HYN} view` : `returns ${num(pc(x.a.cagr))} on its ${HYN} view`); };
+  /* v83: C in both Asia cases - it moves without the re-rating credit, and v82 left it out. */
+  const mvs = r => {
+    const ph = ["b", "c"].map(x => [x, same(r[x].weights, x === "b" ? W : CW) ? null
+      : `${x.toUpperCase()} holds ${num(wj(r[x].weights))} for ${num(pc(r[x].cagr))}`]);
+    const still = ph.filter(p => !p[1]).map(p => p[0].toUpperCase());
+    return [still.length ? `${still.join(" and ")} ${still.length > 1 ? "do" : "does"} not move` : ``]
+      .concat(ph.filter(p => p[1]).map(p => p[1])).filter(Boolean).join("; ");
+  };
   $("#wiasia").innerHTML =
-    (W[iAS] || WA[iAS] ? `` : `Neither A nor B holds it. `) +
+    (W[iAS] || WA[iAS] || CW[iAS] ? `` : `None of A, B or C holds it. `) +
     `Its target-fund charge (${num(fa.fee_target.toFixed(2) + "%")}) may be higher for a Hong
      Kong unit trust: ${num(WI.asia_fee_hi.stress_pp ? WI.asia_fee_hi.stress_pp.toFixed(2) + "pp" : "0.25pp")} more and ` +
-    (same(WI.asia_fee_hi.b.weights, W) ? `B does not move.`
-      : `${BC(WI.asia_fee_hi)}.`) +
-    ` Without its ${num("+" + M.asia_rerating.toFixed(1) + "%")} re-rating credit, ` +
-    (same(WI.asia_no_rerating.b.weights, W)
-      ? `B does not move either` + (WI.asia_no_rerating.a.cagr === Ao.cagr ? `.`
-          : `; A, which carries the credit through Asian Multi-Asset Income's equity half, falls to
-             ${num(pc(WI.asia_no_rerating.a.cagr))} on its ${HYN} view.`)
-      : `${BC(WI.asia_no_rerating)}.`);
+    mvs(WI.asia_fee_hi) + (WI.asia_fee_hi.a.cagr === Ao.cagr ? `` : `; A returns ${num(pc(WI.asia_fee_hi.a.cagr))} on its ${HYN} view`) + `.` +
+    ` Without its ${num("+" + M.asia_rerating.toFixed(1) + "%")} re-rating credit, ` + mvs(WI.asia_no_rerating) +
+    (WI.asia_no_rerating.a.cagr === Ao.cagr ? ``
+      : `; A, which carries the credit through Asian Multi-Asset Income's equity half, falls to
+         ${num(pc(WI.asia_no_rerating.a.cagr))} on its ${HYN} view`) + `.`;
   $("#wi2").innerHTML = `With the Monetary and Geopolitics drivers at neutral,
     ${BC(WI.drags_neutral)}.`;
   $("#wi1").innerHTML = `At its long-run level, ${BC(WI.vol_flat)}.`;
@@ -8063,7 +8097,6 @@ $("#corrnote").textContent = D.corr_note;
   const bandOf = v => G.bands.find(b => v >= b.lo && (v < b.hi || (b.hi === 5 && v <= 5)));
   const B = G.band, hold = B.cap === base;
   const blocked = G.blocked_by, rec = G.recommended_cap;
-  const GN = Object.fromEntries(G.guards.map(g => [g.name, g]));
   $("#ddhead").textContent = `${f2(G.value)} of 5: ${B.action}` +
     (!hold && rec === base ? `, not yet` : ``);
   $("#ddlede").innerHTML =
@@ -8108,7 +8141,6 @@ $("#corrnote").textContent = D.corr_note;
   tb.appendChild(el("tr", null, `<td>Weight in the gauge</td>` +
     HZA.map(h => `<td>${G.w[h] !== undefined ? (G.w[h] * 100).toFixed(0) + "%" : "anchor"}</td>`).join("")));
   t.appendChild(tb);
-  const lo3 = (k) => V.filter(h => P[h][k] < 3).map(h => h);
   $("#ddtabnote").innerHTML =
     `<b>Macro</b>: the driver gauge (${V.map(h => `${h} ${f2(P[h].macro)}`).join(", ")})` +
     (V.every(h => P[h].macro < 3) ? `, below neutral at both${P[V[0]].macro < P[V[1]].macro ? ", closing on it by the fifth year" : ""}.`
@@ -8192,7 +8224,7 @@ $("#corrnote").textContent = D.corr_note;
        ${Math.max(...G.bands.map(b => b.cap)).toFixed(0)}% is the derived budget (${BU.derived_ref.toFixed(2)}%) the owner's base replaced; past
        it the page has no reference. Going down, the step from ${hiLo}% to ${lo}% already costs
        ${and3(["a", "b", "c"].map(x => { const dd = Math.abs(G.alt[hiLo][x].maxdd) - Math.abs(G.alt[lo][x].maxdd);
-         return `${x.toUpperCase()} ${dd > 0.05 ? ((G.alt[hiLo][x].cagr - G.alt[lo][x].cagr) / dd).toFixed(2) + "pp a year for each point of drawdown removed" : "nothing: it removes no drawdown"}`; }))}.</p>
+         return `${x.toUpperCase()} ${dd > 0.05 ? ((G.alt[hiLo][x].cagr - G.alt[lo][x].cagr) / dd).toFixed(2) + "pp" : "nothing (no drawdown removed)"}`; }))} a year for each point of drawdown removed.</p>
      <p><b>The volatility step is an assumption.</b> One gauge point per ${(G.vol_step * 100).toFixed(0)}% of the long-run
        level, so a curve 10% above the long run reads 2. It is stated so it can be argued with.</p>`;
 })();
@@ -8430,7 +8462,9 @@ $("#corrnote").textContent = D.corr_note;
        ? `stays at ${num(pc(PA.cagr))}: its ${HYN} view carries no trend`
        : `returns ${num(pc(TO.a.cagr))} (from ${num(pc(PA.cagr))}) on its ${HYN} view`) + `;
      B ` + (same(TO.b.weights, BW_) ? `keeps its weights at ${num(pc(TO.b.cagr))} (from ${num(pc(PB.cagr))})`
-      : `would hold ${num(MIXN(TO.b.weights))} at ${num(pc(TO.b.cagr))}`) + `. ` +
+      : `would hold ${num(MIXN(TO.b.weights))} at ${num(pc(TO.b.cagr))}`) + `; C ` +
+    (same(TO.c.weights, D.portfolio_c.weights) ? `keeps its weights at ${num(pc(TO.c.cagr))} (from ${num(pc(D.portfolio_c.macro.cagr))})`
+      : `would hold ${num(MIXN(TO.c.weights))} at ${num(pc(TO.c.cagr))}`) + `. ` +
     (after ? `<strong>Moves since ${dlong(T.end)} are not in these windows</strong>; they
        enter at the next month-end. ` : ``) +
     `On the two disputed inputs (under <em>How the trend is scored</em>) ` +
@@ -8619,7 +8653,7 @@ function tipper(host) {
   dk.appendChild(dkb);
   const DM = D.dd_model;
   $("#ddkport").innerHTML =
-    `portfolio k &nbsp; A <b>${DM.a_k.toFixed(3)}</b> &nbsp;·&nbsp; B <b style="color:var(--f6)">${DM.b_k.toFixed(3)}</b>`;
+    `portfolio k &nbsp; A <b>${DM.a_k.toFixed(3)}</b> &nbsp;·&nbsp; B <b style="color:var(--f6)">${DM.b_k.toFixed(3)}</b> &nbsp;·&nbsp; C <b>${DM.c_k.toFixed(3)}</b>`;
 
   const ft = $("#fvoltab");
   ft.appendChild(el("thead", null,
@@ -8972,24 +9006,22 @@ function donut(host, w, title, cagr, dd) {
   const contrib = PB.ids.map((id, i) => [i, (PA.weights[i] - PB.weights[i]) / 100 * FX[id].net_macro])
     .sort((a, b) => b[1] - a[1])[0];
   const bothIn = PA.in_budget && PB.in_budget;
+  /* v83, concise: the own-horizon figures are in the donuts, the lede and the table above. */
   $("#pbnote").innerHTML =
-    `Each on its own horizon, on J.P. Morgan's ${ed} assumptions: A returns <b class="num">${pc(Ao.cagr)}</b>
-     at <b class="num">${pc1(Ao.maxdd)}</b> on the 10-year forecasts, B <b class="num">${pc(Bm.cagr)}</b> at
-     <b class="num">${pc1(Bm.maxdd)}</b> on the 3/5/10-year. On one basis, the 3/5/10-year view, B returns
+    `On one basis, the 3/5/10-year view on J.P. Morgan's ${ed} assumptions, B returns
      <b class="num">${pc(Bm.cagr)}</b>, ${vs}, with
-     <b class="num">${Math.abs(ddA).toFixed(1)}pp</b> ${ddA >= 0 ? "less" : "more"} drawdown
-     (${pc1(Bm.maxdd)} against ${pc1(A.maxdd)}); ${bothIn ? "both sit inside" : PB.in_budget ? "only B sits inside" : "B sits outside"}
-     the ${pc(-PB.dd_cap)} budget` +
-    (!PA.in_budget && Math.abs(A.maxdd) <= PA.dd_cap + 1e-9 ? ` (A prints at it on this view but sits just past it
-       before rounding; it is chosen, and inside the budget, on its own ${HYN} view)` : ``) + `.` +
+     <b class="num">${Math.abs(ddA).toFixed(1)}pp</b> ${ddA >= 0 ? "less" : "more"} drawdown;
+     ${bothIn ? "both sit inside" : PB.in_budget ? "only B sits inside" : "B sits outside"} the ${pc(-PB.dd_cap)} budget there` +
+    (!PA.in_budget && Math.abs(A.maxdd) <= PA.dd_cap + 1e-9 ? ` (A prints at it but sits just past it before rounding;
+       it is inside on its own ${HYN} view)` : ``) + `.` +
     (!lvl && dA < 0 ? ` A's extra return comes from ${SH[contrib[0]]}:
        ${PA.weights[contrib[0]]}% against B's ${PB.weights[contrib[0]]}%.` : ``) +
     /* C against B on the one view they share: the pin is the only difference in the rule. */
     (() => { const g = Cm.cagr - Bm.cagr, dd = Math.abs(Bm.maxdd) - Math.abs(Cm.maxdd);
-      return ` On the same view C returns <b class="num">${pc(Cm.cagr)}</b> at <b class="num">${pc1(Cm.maxdd)}</b>, ` +
-        (Math.abs(g) < 0.005 ? `level with B` : `${Math.abs(g).toFixed(2)}pp ${g > 0 ? "above" : "below"} B`) +
+      return ` C returns ` +
+        (Math.abs(g) < 0.005 ? `the same as B` : `${Math.abs(g).toFixed(2)}pp ${g > 0 ? "more" : "less"} than B`) +
         ` with ${Math.abs(dd) < 0.05 ? "the same" : Math.abs(dd).toFixed(1) + "pp " + (dd > 0 ? "less" : "more")} drawdown` +
-        (g > 0 ? `: B's ${L6.max_w}% cap on any one fund is what holds it below a ${PC.pin_pct}% Nasdaq Equity Income mix inside the same budget.` : `.`); })();
+        (g > 0 ? `, only because its ${PC.pin_pct}% Nasdaq Equity Income is exempt from the ${L6.max_w}% cap.` : `.`); })();
   /* A ROW PER FUND since 2026-10-22: seven added funds would not fit as columns. */
   const ft = $("#addfunds"), FD = PB.funds, i0 = D.funds.length;
   ft.appendChild(el("thead", null, `<tr><th>Fund</th><th>Fees</th><th>Strategic</th><th>Tilt</th>
@@ -9069,9 +9101,8 @@ function donut(host, w, title, cagr, dd) {
       return `<tr><td>${P4L[i]} vs ${P4L[j]}</td><td class="${cls(g)}">${sg(g)}pp</td>
         <td class="${cls(d)}">${(d >= 0 ? "+" : "−") + Math.abs(d).toFixed(1)}pp</td>
         <td class="${cls(r)}">${(r >= 0 ? "+" : "−") + Math.abs(r).toFixed(3)}</td></tr>`; }).join("") +
-    `</tbody></table></div><p class="note">Each on its own horizon (A ${HYN}, B and C 3/5/10-year); the table's
-     last two rows put all three on one basis. Each row reads from the first portfolio named: a positive
-     CAGR gap means it earns more a year, a positive drawdown gap that it falls less.</p>`;
+    `</tbody></table></div><p class="note">Each on its own horizon. Each row reads from the first portfolio
+     named: a positive gap means it earns more a year, or falls less.</p>`;
 })();
 
 /* ---------------- frontier ---------------- */

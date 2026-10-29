@@ -388,6 +388,8 @@
    "Long Term Peso Bond",
    "Medium Term Peso Bond"
   ],
+  "ghcp_target_iacc_ter": 0.89,
+  "geo_target_at_ter": 1.95,
   "useq_trust_listed": 1.2,
   "useq_trust_peer": 1.5,
   "useq_ocf_clean": 0.85,
@@ -896,6 +898,10 @@
    [
     "2026-10-27",
     17.52
+   ],
+   [
+    "2026-10-28",
+    16.91
    ]
   ],
   "vix_reported_moves": {
@@ -929,7 +935,8 @@
    "2026-10-22": 14.09,
    "2026-10-23": 2.21,
    "2026-10-26": -5.45,
-   "2026-10-27": -4.7
+   "2026-10-27": -4.7,
+   "2026-10-28": -3.48
   },
   "vix_withheld": [],
   "vix_disputed_20oct": [
@@ -947,6 +954,10 @@
   "vix_disputed_27oct": [
    17.51,
    17.52
+  ],
+  "vix_disputed_28oct": [
+   16.83,
+   16.91
   ],
   "vix_disputed_28sep": [
    16.07,
@@ -1137,13 +1148,13 @@
   "phmm_gross_prev": 5.25,
   "ltcma_em_eq": 7.1,
   "ltcma_em_eq_prev": 7.8,
-  "vix_latest_date": "2026-10-27",
-  "vix_latest": 17.52,
-  "vix_prev_date": "2026-10-26",
-  "vix_prev_close": 18.39,
-  "vix_latest_chg_pct_calc": -4.73,
-  "vix_latest_chg_pct": -4.7,
-  "vix_latest_chg_dp": 1,
+  "vix_latest_date": "2026-10-28",
+  "vix_latest": 16.91,
+  "vix_prev_date": "2026-10-27",
+  "vix_prev_close": 17.52,
+  "vix_latest_chg_pct_calc": -3.48,
+  "vix_latest_chg_pct": -3.48,
+  "vix_latest_chg_dp": 2,
   "vix_episode_high": 19.99,
   "vix_episode_high_date": "2026-10-16",
   "vix_episode_low_date": "2026-09-22",
@@ -1284,9 +1295,9 @@
   "longrun": 19.5,
   "ramp_ref": "long-run",
   "quote_date": "2026-10-20",
-  "latest": 17.52,
-  "latest_date": "2026-10-27",
-  "latest_gap": 0.21,
+  "latest": 16.91,
+  "latest_date": "2026-10-28",
+  "latest_gap": -0.4,
   "ramp": -0.08,
   "sens": {
    "ATRPHMM": 0.035,
@@ -1305,7 +1316,7 @@
   "basis": "forward",
   "kappa": 1.5,
   "vrp": 3.5,
-  "spot_move_pct": 1.2,
+  "spot_move_pct": -2.3,
   "overtaken": false,
   "overtaken_pct": 20.0,
   "vix3m_bound_pct": 10.0,
@@ -1407,7 +1418,7 @@
    "weight": 0.1,
    "score": 4.11,
    "score_10": 8.0,
-   "note": "HELD at 8.0, and now re-verified for the US: FactSet had the S&P on 18.7x forward earnings on 23 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7743.98 on the 27th, 1.0% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings, the KOSPI 14.2% below its 2 Oct close at 6,012.44 on the 28th, after its rebound; NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since.",
+   "note": "HELD at 8.0, and now re-verified for the US: FactSet had the S&P on 18.7x forward earnings on 23 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7743.98 on 28 Oct, 1.0% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings, the KOSPI 14.2% below its 2 Oct close at 6,012.44 on the 28th, after its rebound; NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since.",
    "summary": "Held: the S&P is on 18.7x forward earnings, below its five- and ten-year averages; the KOSPI is 14.2% below its 2 Oct close.",
    "path": {
     "3Y": 6.5,
@@ -1428,8 +1439,8 @@
    "weight": 0.1,
    "score": 1.67,
    "score_10": 2.5,
-   "note": "HELD at 2.5. The VIX fell 4.7% to 17.52 on 27 Oct, after 5.45% on the 26th, as stocks rose two days running and oil eased - under the long-run 19.5 and well off its 22.31 high of 16 Oct, after rising on the 23rd as oil climbed and the Dow fell 1.23%. Asia followed on the 27th: the KOSPI rose 3.09% and the Nikkei 1.73%, then 6.63% and 1.08% more on the 28th on SK hynix's quarter, after falling 1.46% and 0.80% on the 26th; on the 22nd they had fallen 3.52% and 2.65%, and on the 23rd the KOSPI's 4% intraday fall had reversed into a 0.30% gain. The October future settled on the 21st and no full strip for a later day has been reached, so the curve stays quoted at the 20 Oct settlements - November 18.49 and December 18.7, above that day's spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. On forward vol the curve sits at 19.42, 0.08 below the long run. Held: two calmer sessions before the Fed held are not a regime, and the 23 Oct cut already priced the sell-off it answered.",
-   "summary": "Held: the VIX fell 4.7% to 17.52 on 27 Oct, a second fall, under its long-run 19.5, and Asia rebounded the same day.",
+   "note": "HELD at 2.5. The VIX fell 3.48% to 16.91 on 28 Oct as the Fed held, a third fall, after 4.7% on the 27th and 5.45% on the 26th as stocks rose and oil eased - under the long-run 19.5 and well off its 22.31 high of 16 Oct, after rising on the 23rd as oil climbed and the Dow fell 1.23%. Asia followed on the 27th: the KOSPI rose 3.09% and the Nikkei 1.73%, then 6.63% and 1.08% more on the 28th on SK hynix's quarter, after falling 1.46% and 0.80% on the 26th; on the 22nd they had fallen 3.52% and 2.65%, and on the 23rd the KOSPI's 4% intraday fall had reversed into a 0.30% gain. The October future settled on the 21st and no full strip for a later day has been reached, so the curve stays quoted at the 20 Oct settlements - November 18.49 and December 18.7, above that day's spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. On forward vol the curve sits at 19.42, 0.08 below the long run. Held: three calmer sessions around the Fed's hold are not a regime, and the 23 Oct cut already priced the sell-off it answered.",
+   "summary": "Held: the VIX fell 3.48% to 16.91 on 28 Oct as the Fed held, a third fall, under its long-run 19.5.",
    "path": {
     "3Y": 4.5,
     "5Y": 5.5,
@@ -2957,7 +2968,7 @@
    {
     "name": "vix",
     "ok": true,
-    "reading": 17.52,
+    "reading": 16.91,
     "longrun": 19.5,
     "applies_to": "raise"
    }
@@ -6901,6 +6912,21 @@
    "org": "uitf.com.ph",
    "what": "ATRAM US Equity Opportunity Feeder Fund (USD unit class) - trust fee 1.20% p.a. (held out: stale listing)",
    "url": "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=260"
+  },
+  {
+   "org": "Yahoo Finance",
+   "what": "CBOE Volatility Index (^VIX) - 16.91, -0.61 (-3.48%) at the 28 Oct 2026 close",
+   "url": "https://finance.yahoo.com/quote/%5EVIX/"
+  },
+  {
+   "org": "CNBC",
+   "what": "CBOE Market Volatility Index (.VIX) - last 16.91, previous close 17.52, 28 Oct 2026",
+   "url": "https://www.cnbc.com/quotes/.VIX"
+  },
+  {
+   "org": "PC Thematic",
+   "what": "Daily market report, 28 Oct 2026 - VIX cooled to 16.91 from 17.52",
+   "url": "https://pcthematic.substack.com/p/daily-market-report-october-28-2026"
   }
  ]
 }

@@ -25,10 +25,11 @@ from itertools import combinations
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
 AS_OF = "2026-10-28"        # newest completed session carried (Wednesday's closes in
-                            # Manila, Seoul, Tokyo and New York, after the Fed held, and
-                            # Brent's and WTI's settles; the VIX at 27 Oct, its 28 Oct
-                            # close not yet in two sources; the 10-year and 2-year at their
-                            # 27 Oct official closes, the 30-year at 26 Oct)
+                            # Manila, Seoul, Tokyo and New York, after the Fed held,
+                            # Brent's and WTI's settles and the VIX; the 10-year and 2-year
+                            # at their 27 Oct official closes, the 30-year at 26 Oct. Tokyo's
+                            # and Seoul's 29 Oct closes are verified but wait for Manila's
+                            # and for the 29 Oct ECB decision and US GDP)
 REVIEW_DATE = "2026-10-29"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -770,6 +771,10 @@ MACRO = {
     # moved to 25% and these sat at their 26.97% values until the review caught it).
     "review_list_n": 22, "review_list_prev_n": 24, "review_list_date": "2026-10-21",
     "review_list_removed": ["Long Term Peso Bond", "Medium Term Peso Bond"],
+    # Other share classes' charges quoted beside two target funds' (v83: typed in the notes
+    # until now, the audit's two standing "figure without its own input" warnings).
+    "ghcp_target_iacc_ter": 0.89,   # Fidelity Global Healthcare, I-Acc class
+    "geo_target_at_ter": 1.95,      # Allianz Thematica, retail AT class (Citywire)
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
     "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 15, "useq_w_b_peer": 0,
@@ -1420,6 +1425,11 @@ MACRO = {
         # and prior). 18.39 - 0.87 = 17.52. Doug's Daily Diary has 17.51 (-4.79%), a cent
         # apart, and is kept as disputed, not carried.
         ("2026-10-27", 17.52),
+        # 28 Oct 16.91, -0.61 (-3.48%), after the Fed held (Cboe's own spot; Yahoo Finance's
+        # close; CNBC, prior 17.52; PC Thematic "cooled to 16.91, from 17.52"). 17.52 - 0.61 =
+        # 16.91. One recap's 16.83 is not carried; Investing.com's 17.32 and Bloomberg's 17.41
+        # are intraday snapshots (13:32 ET for Bloomberg).
+        ("2026-10-28", 16.91),
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -1440,7 +1450,7 @@ MACRO = {
         "2026-10-15": -2.43, "2026-10-16": 21.45, "2026-10-19": -7.75,
         "2026-10-20": -6.13,
         "2026-10-21": -3.64, "2026-10-22": 14.09, "2026-10-23": 2.21,
-        "2026-10-26": -5.45, "2026-10-27": -4.7,
+        "2026-10-26": -5.45, "2026-10-27": -4.7, "2026-10-28": -3.48,
     },
     # 28 Sep WITHHELD: two reports, 16.07 ("+1.20, +8.07%") and 16.30 ("+1.43,
     # +9.62%), and BOTH reproduce from 14.87 - the chain cannot choose, and one
@@ -1453,6 +1463,7 @@ MACRO = {
     "vix_disputed_22oct": [18.84, 19.03],   # Investing.com's table against three sources
     "vix_disputed_26oct": [18.30, 18.39],   # AD HOC News against three sources
     "vix_disputed_27oct": [17.51, 17.52],   # Doug's Daily Diary against Cboe
+    "vix_disputed_28oct": [16.83, 16.91],   # one recap against Cboe, Yahoo, CNBC and PC Thematic
     "vix_disputed_28sep": [16.07, 16.30],   # the record of the resolved dispute
     # MOVED 2026-10-17: 22.31 intraday on 16 Oct (The Weekly Debrief; CNBC "above
     # 22 for the first time in four months"), past 10 Sep's 18.17.
@@ -2835,7 +2846,7 @@ DRIVERS = [
      f"HELD at 8.0, and now re-verified for the US: FactSet had the S&P on {MACRO['spx_fwd_pe']}x "
      f"forward earnings on 23 Oct, below its five-year ({MACRO['spx_fwd_pe_5y']}x) and ten-year "
      f"({MACRO['spx_fwd_pe_10y']}x) averages and the {MACRO['spx_fwd_pe_q3end']:.1f}x of 30 Sep. The S&P closed at "
-     f"{MACRO['spx_close']:.2f} on the 27th, {MACRO['spx_off_record_pct']}% below its 7818.93 record of 6 Oct. Asia was "
+     f"{MACRO['spx_close']:.2f} on {_dt.date.fromisoformat(MACRO['equity_date']).day} Oct, {MACRO['spx_off_record_pct']}% below its 7818.93 record of 6 Oct. Asia was "
      "on 10.5x forward before its October fall and is cheaper on the same earnings, the "
      f"KOSPI {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close at {MACRO['kospi_latest']:,.2f} on the 28th, after its rebound; "
      "NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y "
@@ -2846,8 +2857,10 @@ DRIVERS = [
     # Asia sold off and the Gulf escalated. CUT 2.75 -> 2.5 (2026-10-23): the VIX's
     # 14% jump on the AI sell-off undid the calm the raise rested on. HELD 2026-10-26.
     ("Volatility & risk appetite", 0.1, 2.5,
-     f"HELD at 2.5. The VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 27 Oct, after "
-     f"{abs(MACRO['vix_reported_moves']['2026-10-26'])}% on the 26th, as stocks rose two days running and oil eased - "
+     f"HELD at 2.5. The VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on "
+     f"{_dt.date.fromisoformat(MACRO['vix_latest_date']).day} Oct as the Fed held, a third fall, after "
+     f"{abs(MACRO['vix_reported_moves']['2026-10-27'])}% on the 27th and "
+     f"{abs(MACRO['vix_reported_moves']['2026-10-26'])}% on the 26th as stocks rose and oil eased - "
      f"under the long-run {MACRO['vix_longrun']} and well off its {MACRO['vix_latest_high']} high of 16 Oct, after "
      f"rising on the 23rd as oil climbed and the Dow fell {abs(MACRO['dow_23oct_chg_pct']):.2f}%. Asia "
      f"followed on the 27th: the KOSPI rose {MACRO['kospi_27oct_chg_pct']:.2f}% and the Nikkei "
@@ -2865,8 +2878,8 @@ DRIVERS = [
      f"{VIX3M_BOUND_PCT:.0f}% bound; the 5 Oct strip it replaced read "
      f"{abs(VIX3M_PREV_RESID):.2f}% {'below' if VIX3M_PREV_RESID < 0 else 'above'} on the same test. On "
      f"forward vol the curve sits at {VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} "
-     f"{'below' if VOL_RAMP < 0 else 'above'} the long run. Held: two calmer sessions before the "
-     f"Fed held are not a regime, and the 23 Oct cut already priced the "
+     f"{'below' if VOL_RAMP < 0 else 'above'} the long run. Held: three calmer sessions around the "
+     f"Fed's hold are not a regime, and the 23 Oct cut already priced the "
      f"sell-off it answered."),
     ("Geopolitics & energy", 0.1, 1.5,
      "HELD at 1.5; the threat widened, the barrels did not shrink. On 28 Oct the Wall Street "
@@ -2961,7 +2974,7 @@ SUMMARY = {
     "Growth momentum": "Held: China's third-quarter GDP grew 4.5% against 4.4% expected, on exports; the US third-quarter estimate is due on 29 Oct.",
     "Corporate earnings": f"Held, the strongest pillar: {MACRO['factset_beat_pct']}% of reporting S&P companies beat estimates (FactSet, 23 Oct), and SK hynix's quarterly operating profit rose {MACRO['skhynix_q3_op_yoy']}% on a year.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Held: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on 27 Oct, a second fall, under its long-run {MACRO['vix_longrun']}, and Asia rebounded the same day.",
+    "Volatility & risk appetite": f"Held: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']} on {_dt.date.fromisoformat(MACRO['vix_latest_date']).day} Oct as the Fed held, a third fall, under its long-run {MACRO['vix_longrun']}.",
     "Geopolitics & energy": f"Held: on 28 Oct the US reportedly told Gulf states to prepare for strikes on Iran after the midterms, while the Houthis kept firing at Saudi Arabia; Brent settled at ${MACRO['brent']:.2f} on the 28th, Hormuz flows near 14 mb/d.",
     "US": f"Held: the S&P rose {MACRO['spx_chg_pct']:.2f}% to {MACRO['spx_close']:.2f} on 28 Oct, a third straight gain, as the Fed held; FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on 28 Oct.",
     "EUROPE": "Held: euro-area inflation was confirmed at 3.8%, putting the ECB's 29 Oct decision to the test.",
@@ -3423,7 +3436,7 @@ ADD_FUNDS = [
         "fee_feeder_prev": 1.20, "fee_feeder_from": "2026-09-14",
         "fee_note": "1.50% ATRAM trust fee incl. distribution fee from 14 Sep 2026, up from 1.20% "
                     "(ATRAM's fund page and uitf.com.ph) + 1.05% target-fund TER (PUBLISHED on the "
-                    "feeder's fact sheet; Fidelity's I-Acc class shows 0.89%)",
+                    f"feeder's fact sheet; Fidelity's I-Acc class shows {MACRO['ghcp_target_iacc_ter']:.2f}%)",
         "gross_usd": MACRO["ltcma_global_eq"],
         "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} global equity {MACRO['ltcma_global_eq']}%, "
                        f"with no sector premium: the LTCMA publishes regional, not sector, assumptions."),
@@ -3468,7 +3481,7 @@ ADD_FUNDS = [
         "fee_feeder_prev": 1.20, "fee_feeder_from": "2026-09-14",
         "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (ATRAM's fund page, "
                     "uitf.com.ph PHP class) + 1.00% target-fund TER (PUBLISHED in the feeder's KIID, "
-                    "31 Mar 2026; Allianz's retail AT class lists 1.95%)",
+                    f"31 Mar 2026; Allianz's retail AT class lists {MACRO['geo_target_at_ter']:.2f}%)",
         "gross_usd": MACRO["ltcma_global_eq"],
         "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} global equity {MACRO['ltcma_global_eq']}%, "
                        f"with no theme premium."),
@@ -5184,6 +5197,12 @@ SOURCES = [
      "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=364"),
     ("uitf.com.ph", "ATRAM US Equity Opportunity Feeder Fund (USD unit class) - trust fee 1.20% p.a. (held out: stale listing)",
      "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=260"),
+    ("Yahoo Finance", "CBOE Volatility Index (^VIX) - 16.91, -0.61 (-3.48%) at the 28 Oct 2026 close",
+     "https://finance.yahoo.com/quote/%5EVIX/"),
+    ("CNBC", "CBOE Market Volatility Index (.VIX) - last 16.91, previous close 17.52, 28 Oct 2026",
+     "https://www.cnbc.com/quotes/.VIX"),
+    ("PC Thematic", "Daily market report, 28 Oct 2026 - VIX cooled to 16.91 from 17.52",
+     "https://pcthematic.substack.com/p/daily-market-report-october-28-2026"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -6078,6 +6097,28 @@ def report():
                    all(any(f in sent for f in _dayforms(MACRO["fed_hike_odds_dec_date"]))
                        for t in _notes_all for sent in re.split(r"(?<=[.;])\s", t)
                        if _decre.search(sent))))
+    # A DAILY CLOSE QUOTED WITH A DATE CARRIES ITS OWN DATE (v83). The valuation note said
+    # "The S&P closed at 7743.98 on the 27th" from v79 to v82: the level rolled to the 28th
+    # and the typed ordinal did not. In every note and summary, a sentence that quotes one of
+    # these closes and names any day must name the close's own day among them.
+    _dayre = re.compile(r"\b(\d{1,2})(?:st|nd|rd|th)\b|\b(\d{1,2}) (?:Sep|Oct|Nov|September|October|November)\b")
+    _closes = [(k, d) for k, d in (("spx_close", "equity_date"), ("nasdaq_close", "equity_date"),
+               ("dow_close", "equity_date"), ("nikkei_latest", "nikkei_latest_date"),
+               ("kospi_latest", "kospi_latest_date"), ("psei", "psei_date"), ("usdphp", "usdphp_date"),
+               ("brent", "brent_date"), ("wti_settle", "wti_date"), ("vix_latest", "vix_latest_date"))]
+    _bad_days = []
+    for t in _notes_all + list(SUMMARY.values()):
+        for sent in re.split(r"(?<=[.;])\s", t):
+            days = {int(a or b) for a, b in _dayre.findall(sent)}
+            if not days: continue
+            for k, dk in _closes:
+                v = MACRO[k]
+                forms = {f"{v:.2f}", f"{v:,.2f}", f"{v}", f"{v:,}"}
+                if any(re.search(r"(?<![\d.,])" + re.escape(f_) + r"(?![\d])", sent) for f_ in forms) \
+                        and _dt.date.fromisoformat(MACRO[dk]).day not in days:
+                    _bad_days.append((k, sent[:80]))
+    checks.append((f"every daily close quoted beside a date is quoted beside its own ({len(_bad_days)} not)",
+                   not _bad_days))
     # THE DOT PLOT'S OWN INPUTS MUST REPRODUCE ITS MEDIAN: participants not in the
     # one- or two-more groups sit at today's midpoint, and each group is a whole
     # number of 25bp steps above it.

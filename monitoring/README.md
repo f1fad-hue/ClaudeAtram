@@ -196,6 +196,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+118. CHECK THE PUBLISHED VALUE AGAINST ITS OWN SERIES, FOR EVERY SERIES. Brent's latest was held to
+   the last point of its history; the VIX's was not, so a latest typed a session behind passed
+   the audit (a mutant found it). Every series that publishes a "latest" beside its history needs
+   the same check.
+117. A TYPED ORDINAL BESIDE A ROLLED VALUE IS A SECOND COPY OF THE DATE. "The S&P closed at
+   7743.98 on the 27th" was true for one roll and wrong for four: the level moved, "the 27th" did
+   not. Derive the day from the value's own date, and check every quoted close against it.
 116. A RUN THAT REPORTS NO MISSES MUST SAY HOW MANY RAN. Four new C mutants were defined, but
    the edit that listed them was blocked with another command; the run printed 58 lines, every one
    caught, and read as a clean pass. The harness now compares the mutants it lists with the ones

@@ -2,6 +2,57 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-29 — v83: review of v82; the VIX rolled to 28 Oct; a close quoted a day early since v79; C carried into three more passages; the page shorter; A, B and C unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Make the page concise. Do house cleanup."
+
+**Rolled (two sources or more):** the VIX's 28 Oct close, **16.91**, −0.61 (−3.48%), as the Fed held
+(Cboe's spot; Yahoo Finance; CNBC, prior 17.52; PC Thematic). 17.52 − 0.61 = 16.91. One recap's
+16.83 is kept as disputed; Investing.com's 17.32 and Bloomberg's 17.41 were intraday. The VIX
+guard stays clear (16.91 against 19.5) and the gauge stays at 2.89; no weight, CAGR or drawdown moved.
+
+**Verified, not carried:** Tokyo's 29 Oct close, 64,594.00 (+639.81, +1.00%; Reuters via
+Investing.com; Trading Economics 64,595), and Seoul's, 5,937.66 (−74.78, −1.24%; Seoul Economic
+Daily; SBS), both chaining from the carried 28 Oct closes. The data date stays at 28 Oct: Manila's
+29 Oct closes were not yet published, and moving it would mark the 29 Oct ECB decision and US GDP
+release as past. **Not rolled:** the 10-year's 28 Oct official close (the Treasury curve and FRED
+cannot be reached from this session; Investing.com has 5.015, CNBC 5.02 intraday); the December
+odds, which ran from 78.4% to 85.7% across same-day sources (85% on 28 Oct is kept).
+**Fees:** no ATRAM fee change found; GCash's undated 1.15% for Global Technology is the fee before
+the 14 Sep repricing the fund note records.
+
+**Errors found and fixed:**
+- **The S&P's 28 Oct close was quoted "on the 27th" (v79-v82).** The valuation note typed the
+  ordinal beside a level that rolled. The day now comes from the equity date, and the engine and
+  the audit each check that every daily close quoted beside a date names its own day (runbook 117).
+- **Three passages still read A and B only after v82 restored C:** the Report's Asia what-if
+  ("Neither A nor B holds it", and no word that C moves without the re-rating credit, to 7.12%),
+  the market-trend note, and the Volatility tab's portfolio k line. Each now carries C.
+- **"Two portfolios, head to head"** and a head-to-head note that left C out: now three.
+- **A page-script error in this pass's own first edit** (a second `moves` in one scope) blanked
+  the Report until the console check caught it; renamed before anything else ran.
+- **The VIX could be published a session behind its own series and the audit would pass it.** The
+  audit now requires the latest and prior closes to be the series' last two points, as it already
+  did for Brent (runbook 118).
+
+**Concise:** the Portfolios note drops the own-horizon figures the donuts, lede and table already
+give; the Report's conclusion drops the lede's; a what-if mix already spelled out is not spelled out
+again; the step-down sentence on the Budget tab says "per point of drawdown" once, not three times;
+the versus note loses its repeat of the table note. Words shown by default: **6,569 → 6,462**, with C
+in three more places.
+
+**House cleanup:** two unused page helpers removed; the audit's two standing warnings (Fidelity's
+0.89% I-Acc and Allianz's 1.95% AT class charges, typed in fee notes) cleared by giving each figure
+an input; the "two calmer sessions before the Fed" line now reads three, around the hold.
+
+**Harnesses:** engine **248/248**; audit **423 checks, 0 failures, 0 warnings** (the first run
+without a standing warning since they appeared); validator **26/26** on the live copy; mutations:
+two added (a close quoted on the wrong day; the VIX a session behind its series - the second
+MISSED until the audit's series check was added).
+
+Not personal financial advice.
+
 ## 2026-10-29 — v82: Portfolio C restored - Nasdaq Equity Income at 50%, the rest by the one rule on the 3/5/10-year view, inside the band budget; A and B unchanged
 
 At the owner's instruction: "Make portfolio C with 50% atram nasdaq equity income allocation based
