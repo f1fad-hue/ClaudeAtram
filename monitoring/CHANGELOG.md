@@ -2,6 +2,78 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-30 — v85: the 30 Oct session rolled - the S&P's worst day since June, Brent's December expiry at a six-month high, the VIX at 19.42; Michigan's final and the IMF's October outlook replace stale figures; A, B and C unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Do house cleanup."
+
+**Rolled (two sources or more, each chained to its prior close):**
+- **New York, 30 Oct** (AP via the Washington Times; ABC News; Stock Titan; CNBC): S&P 7,580.07
+  (−140.32, −1.82%), its worst day since June and a third weekly loss; Nasdaq 25,437.00 (−747.72,
+  −2.86%); Dow 51,770.31 (−572.25, −1.09%), as Intel had its worst day since 1974 on a weak forecast
+  and Amazon's profit disappointed.
+- **The VIX, 30 Oct**: 19.42 (+2.22, +12.91%), intraday high 23.93 past 16 Oct's 22.31, still under
+  the long-run 19.5 at the close (Yahoo Finance; Cboe; Investrade). Investing.com's 18.97 is an
+  earlier snapshot.
+- **Brent, 30 Oct**: December's final settle $117.64 (+$2.76, carried in cents), the highest since
+  the end of April (Reuters via the Korea Times and Rallies). January, front month from 2 Nov,
+  settled $113.43 the same day - recorded for the roll.
+- **WTI**: $104.12 on 30 Oct (+$2.12, +2.08%), which resolves 29 Oct at $102.00 (Investing.com's
+  table), the print held in v84 against 102.20.
+- **Manila, 30 Oct**: the peso 63.74, 11 centavos stronger (Tribune, BAP data; Philstar); the PSEi
+  5,680.35 (−0.44%) on oil and fears of US strikes on Iran before the 2 Nov holiday (Inquirer;
+  Tribune; Trading Economics). Both were held in v84 on one source each.
+- **Hormuz**: the British military said a tanker caught fire after a small boat attached two
+  explosives to it (Reuters) - an attack confirmed, beside the same day's mine claims that
+  US Central Command called false.
+
+**Scored, all held:** Volatility stays at 2.5 - the close is under the long run, and 2.5 is the
+score the 23 Oct AI sell-off set; a spike that gave back most of its rise is a test, not a regime.
+Geopolitics stays at 1.5 - one confirmed attack is not a closure, the last confirmed flows were near
+14 mb/d, and 1.0 stays reserved for full closure with Brent above $130. Europe's 3-year score stays
+at 3.75: the IMF's upgrade is too small to offset oil's new high. Gauge 2.29, regions 3.60 / 3.29 /
+2.99 / 2.46, the drawdown gauge 2.89 (hold at 25%; the VIX guard clear at 19.42 against 19.5), and
+**A, B and C are unchanged** (7.30%, 7.10%, 7.14%; −24.9% each).
+
+**Not carried:** FactSet's 30 Oct update (blended growth 30.2%, all eleven sectors growing) - in
+FactSet's own pages only, so the dated 23 Oct count stays; a Kpler week of lower Hormuz flows (CNBC
+only) and October's average flow (sources differ); an official 30 Oct 10-year close (held at 29
+Oct). cnbc.com and insight.factset.com cannot be fetched from this session, so their figures come
+from search results.
+
+**Errors found and fixed:**
+- **Michigan's preliminary reading was quoted for a week after the final** - "46.3" in the US and
+  growth notes, against the 48.0 final of 23 Oct (University of Michigan; Advisor Perspectives;
+  CollisionWeek). The register's own row said "final on 23 Oct". The engine and audit now fail a
+  first read older than two weeks (runbook 122).
+- **The IMF's July euro-area growth (0.9%) stood for 17 days after the October WEO (1.1%, 13 Oct)**,
+  in the Europe note - typed there, not read from the input - and the Report. The edition-age bound
+  (120 days) was wider than the quarterly cycle it guards; it is now 105 days in the engine and the
+  audit (runbook 123). The October WEO, which the 3-year growth path has quoted since v71, was not in
+  the source list; it is now. Two register rows still read July; one is updated, one retired.
+- **Two notes would have put Brent "below" a high it had just passed** ("$117.64 ... below the $116.72
+  of the 23rd"): a helper now words both cases, as the page already did, and the audit fails the
+  phrase (runbook 124). Caught in the rewrite, before publishing.
+- **Context typed into notes went stale on the roll**: "its first fall in four sessions", "no later
+  week has been published" (a later Kpler week was reported on the 30th) and "mines claimed are not
+  mines confirmed" (an attack was confirmed). Each rewritten from the session's own evidence.
+- **The peso's run miscounted in the draft** ("a second straight gain"; 28, 29 and 30 Oct were all
+  gains). Caught before publishing.
+- **A source listed twice** (Yahoo's VIX quote page), caught by the audit and merged into one entry.
+
+**Cleanup:** five inputs nothing read are gone - the July update's global and emerging-market
+figures (`imf_global_2026`, `imf_global_2027`, `imf_emde_2026`) and Michigan's preliminary five-year
+expectations (`us_umich_infl_5y`, `_prev`), never re-read against the final; one register row
+retired; a comment orphaned by an earlier removal deleted.
+
+**Harnesses:** engine **250/250**; audit **429 checks, 0 failures, 0 warnings**; validator 26/26 on
+the live copy; mutations: three added (a first read kept past its final; July's IMF edition back;
+Brent "below" a high it reached), 69 defined and listed, each dry-applied to the payload
+before the run; the run's count is recorded after this commit (it ran on a frozen copy taken
+before two wording fixes - the geopolitics lead and an engine comment - which no mutant touches).
+
+Not personal financial advice.
+
 ## 2026-10-30 — v84: rolled to 30 Oct - US GDP, September PCE, the ECB's and BoJ's holds, the Alphabet sell-off, Hormuz mine claims; a wrong "verified" Tokyo close recorded; notes shortened; A, B and C unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search

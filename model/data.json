@@ -216,11 +216,12 @@
   "us_ppi_sep_yoy": 6.3,
   "us_ppi_core_mom": 0.5,
   "us_ppi_core_yoy": 5.0,
-  "us_umich_oct": 46.3,
+  "us_umich_oct": 48.0,
+  "us_umich_oct_prelim": 46.3,
+  "us_umich_oct_date": "2026-10-23",
+  "us_umich_oct_final": true,
   "us_umich_record_low": 44.8,
   "us_umich_infl_1y": 4.7,
-  "us_umich_infl_5y": 3.5,
-  "us_umich_infl_5y_prev": 3.4,
   "fr_oat_spread_bp": 140,
   "fr_deficit_2026": 5.4,
   "fr_deficit_target": 5.0,
@@ -273,11 +274,11 @@
   "ph_cpi_bottom30_sep": 9.0,
   "ph_cpi_bottom_hh_pct": 30,
   "bsp_infl_2027": 5.4,
-  "usdphp": 63.85,
-  "usdphp_date": "2026-10-29",
-  "usdphp_prev": 64.025,
-  "usdphp_prev_date": "2026-10-28",
-  "usdphp_chg": -0.175,
+  "usdphp": 63.74,
+  "usdphp_date": "2026-10-30",
+  "usdphp_prev": 63.85,
+  "usdphp_prev_date": "2026-10-29",
+  "usdphp_chg": -0.11,
   "usdphp_record": 64.17,
   "usdphp_record_date": "2026-10-27",
   "usdphp_record_prev": 63.95,
@@ -287,12 +288,12 @@
   "usdphp_records_2026": 24,
   "usdphp_sept_records": 6,
   "usdphp_2025_close": 58.79,
-  "psei": 5705.58,
-  "psei_chg_pts": 52.03,
-  "psei_chg_pct": 0.92,
-  "psei_date": "2026-10-29",
-  "psei_prev": 5653.55,
-  "psei_28oct_chg_pct": -1.87,
+  "psei": 5680.35,
+  "psei_chg_pts": -25.23,
+  "psei_chg_pct": -0.44,
+  "psei_date": "2026-10-30",
+  "psei_prev": 5705.58,
+  "psei_29oct_chg_pct": 0.92,
   "psei_2026_low": 5610.39,
   "psei_2026_low_date": "2026-10-08",
   "ph_tbill_91": 6.624,
@@ -550,6 +551,10 @@
    [
     "2026-10-29",
     114.88
+   ],
+   [
+    "2026-10-30",
+    117.64
    ]
   ],
   "brent_roll_priors": {
@@ -593,12 +598,14 @@
    "2026-10-28": 1.3
   },
   "brent_reported_pts": {
-   "2026-10-29": -0.44
+   "2026-10-29": -0.44,
+   "2026-10-30": 2.76
   },
   "brent_session_highs": {
    "2026-09-24": 108.23,
    "2026-09-28": 108.83,
-   "2026-10-20": 111.99
+   "2026-10-20": 111.99,
+   "2026-10-30": 118.0
   },
   "brent_withheld": [
    "2026-10-07"
@@ -629,11 +636,11 @@
    101.4,
    101.5
   ],
-  "brent_high": 116.72,
-  "brent_high_since": "29 April",
-  "brent_high_prev": 113.17,
-  "brent_high_prev_date": "2026-10-22",
-  "brent_high_date": "2026-10-23",
+  "brent_high": 117.64,
+  "brent_high_since": "the end of April",
+  "brent_high_prev": 116.72,
+  "brent_high_prev_date": "2026-10-23",
+  "brent_high_date": "2026-10-30",
   "brent_closure": 130.0,
   "brent_disinflation": 65.0,
   "brent_yr_ago": 65.62,
@@ -931,6 +938,10 @@
    [
     "2026-10-29",
     17.2
+   ],
+   [
+    "2026-10-30",
+    19.42
    ]
   ],
   "vix_reported_moves": {
@@ -966,7 +977,8 @@
    "2026-10-26": -5.45,
    "2026-10-27": -4.7,
    "2026-10-28": -3.48,
-   "2026-10-29": 1.71
+   "2026-10-29": 1.71,
+   "2026-10-30": 12.91
   },
   "vix_withheld": [],
   "vix_disputed_20oct": [
@@ -993,29 +1005,32 @@
    16.07,
    16.3
   ],
-  "vix_latest_high": 22.31,
-  "vix_latest_high_date": "2026-10-16",
-  "equity_date": "2026-10-29",
-  "spx_close": 7720.39,
-  "spx_chg_pct": -0.3,
-  "spx_chg_pts": -23.59,
-  "nasdaq_close": 26184.72,
-  "nasdaq_chg_pct": -1.38,
-  "nasdaq_chg_pts": -365.13,
-  "dow_close": 52342.56,
-  "dow_chg_pct": -0.25,
-  "dow_chg_pts": -132.54,
+  "vix_latest_high": 23.93,
+  "vix_latest_high_date": "2026-10-30",
+  "vix_latest_high_prev": 22.31,
+  "vix_latest_high_prev_date": "2026-10-16",
+  "equity_date": "2026-10-30",
+  "spx_close": 7580.07,
+  "spx_chg_pct": -1.82,
+  "spx_chg_pts": -140.32,
+  "nasdaq_close": 25437.0,
+  "nasdaq_chg_pct": -2.86,
+  "nasdaq_chg_pts": -747.72,
+  "dow_close": 51770.31,
+  "dow_chg_pct": -1.09,
+  "dow_chg_pts": -572.25,
+  "nasdaq_29oct_chg_pct": -1.38,
   "spx_record_close": 7818.93,
   "spx_record_date": "2026-10-06",
-  "spx_prev": 7743.98,
-  "nasdaq_prev": 26549.85,
-  "dow_prev": 52475.1,
-  "wti_settle": 102.78,
-  "wti_chg_pct": 2.88,
-  "wti_date": "2026-10-28",
+  "spx_prev": 7720.39,
+  "nasdaq_prev": 26184.72,
+  "dow_prev": 52342.56,
+  "wti_settle": 104.12,
+  "wti_chg_pct": 2.08,
+  "wti_date": "2026-10-30",
   "wti_contract": "2026-12",
-  "wti_prev": 99.9,
-  "wti_prev_date": "2026-10-27",
+  "wti_prev": 102.0,
+  "wti_prev_date": "2026-10-29",
   "wti_expired_contract": "2026-11",
   "vix_2026_low": 13.8,
   "vix_2026_low_date": "2026-09-04",
@@ -1064,12 +1079,9 @@
   "vix_futs_prev_date": "2026-10-05",
   "vix_longrun": 19.5,
   "variance_risk_premium": 3.5,
-  "imf_weo_vintage": "2026-07-08",
-  "imf_global_2026": 3.0,
-  "imf_global_2027": 3.4,
-  "imf_ea_2026": 0.9,
+  "imf_weo_vintage": "2026-10-13",
+  "imf_ea_2026": 1.1,
   "imf_ea_2027": 1.2,
-  "imf_emde_2026": 3.8,
   "spx_fwd_pe": 18.7,
   "spx_fwd_pe_5y": 19.8,
   "spx_fwd_pe_10y": 19.1,
@@ -1170,12 +1182,12 @@
   "phmm_gross_prev": 5.25,
   "ltcma_em_eq": 7.1,
   "ltcma_em_eq_prev": 7.8,
-  "vix_latest_date": "2026-10-29",
-  "vix_latest": 17.2,
-  "vix_prev_date": "2026-10-28",
-  "vix_prev_close": 16.91,
-  "vix_latest_chg_pct_calc": 1.71,
-  "vix_latest_chg_pct": 1.71,
+  "vix_latest_date": "2026-10-30",
+  "vix_latest": 19.42,
+  "vix_prev_date": "2026-10-29",
+  "vix_prev_close": 17.2,
+  "vix_latest_chg_pct_calc": 12.91,
+  "vix_latest_chg_pct": 12.91,
   "vix_latest_chg_dp": 2,
   "vix_episode_high": 19.99,
   "vix_episode_high_date": "2026-10-16",
@@ -1185,27 +1197,27 @@
   "ust_10y_prev_date": "2026-10-28",
   "ust_10y_prev": 5.05,
   "ust_10y_chg_bp": -7.0,
-  "brent_date": "2026-10-29",
-  "brent": 114.88,
-  "brent_prev_date": "2026-10-28",
-  "brent_prev": 115.32,
+  "brent_date": "2026-10-30",
+  "brent": 117.64,
+  "brent_prev_date": "2026-10-29",
+  "brent_prev": 114.88,
   "wti_expired_last_trade": "2026-10-20",
   "wti_prev_implied": false,
-  "brent_yoy": 75.07,
-  "brent_wk_chg_pct": 1.5,
+  "brent_yoy": 79.27,
+  "brent_wk_chg_pct": 0.8,
   "fed_dots_any_more": 16,
   "brent_high_contract": "2026-12",
   "brent_contract": "2026-12",
-  "brent_off_high_pct": 1.58,
-  "brent_chg_pct": -0.38,
+  "brent_off_high_pct": 0.0,
+  "brent_chg_pct": 2.4,
   "brent_chg_reported": null,
-  "brent_session_high_date": "2026-10-20",
-  "brent_session_high": 111.99,
-  "usdphp_ytd_pct": 7.92,
+  "brent_session_high_date": "2026-10-30",
+  "brent_session_high": 118.0,
+  "usdphp_ytd_pct": 7.77,
   "kospi_off_2oct_pct": 18.2,
-  "spx_off_record_pct": 1.3,
-  "brent_chg_pts": -0.44,
-  "usdphp_chg_ctvo": -17.5,
+  "spx_off_record_pct": 3.1,
+  "brent_chg_pts": 2.76,
+  "usdphp_chg_ctvo": -11.0,
   "hormuz_vessel_drop_pct": 95.0,
   "hormuz_queue_date": "2026-10-07",
   "hormuz_queue_now": 206,
@@ -1261,19 +1273,19 @@
    "3Y": 3.0,
    "5Y": 3.33,
    "10Y": 3.44,
-   "why": "Held. On 29 Oct the S&P fell 0.30% to 7720.39, its first fall in four sessions, the Nasdaq 1.38% to 26184.72 and the Dow 0.25% to 52342.56, as Alphabet's quarter revived the question of what the AI build-out earns. The economy is not the problem: GDP grew at a 3.4% annual rate in the third quarter against 3.1% expected, but September core PCE was 3.1% on the year and producer prices rose 1.3% in the month; 2 Fed voters wanted a hike on 28 Oct, FedWatch has one by December at 79.6% on 29 Oct, and the 10-year closed at 4.98% on 29 Oct. FactSet has 83% of reporting companies beating estimates and the index on 18.7x forward earnings, below its five- and ten-year averages. The consumer is the weak point: Michigan sentiment at 46.3, retail sales 0.8% in September, the saving rate down to 3.8%. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +75.1% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate through all three - 4.1% at the end of 2026 and 2027, 3.9% at end-2028 - and the cyclically adjusted P/E is 40.7, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost the next years' returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): 6.25, as policy reaches neutral (3.6% at end-2029) and the AI spending has either paid or been digested. Most houses' decade forecasts favour non-US over US equities on the same valuation.",
+   "why": "Held. On 30 Oct the S&P fell 1.82% to 7580.07, its worst day since June and a third weekly loss, the Nasdaq 2.86% to 25437.00 and the Dow 1.09% to 51770.31, as Intel had its worst day since 1974 on a weak forecast and Amazon's profit disappointed, a day after Alphabet's quarter revived the question of what the AI build-out earns. The economy is not the problem: GDP grew at a 3.4% annual rate in the third quarter against 3.1% expected, but September core PCE was 3.1% on the year and producer prices rose 1.3% in the month; 2 Fed voters wanted a hike on 28 Oct, FedWatch has one by December at 79.6% on 29 Oct, and the 10-year closed at 4.98% on 29 Oct. FactSet's 23 Oct count has 83% of reporting companies beating estimates and the index on 18.7x forward earnings, below its five- and ten-year averages. The consumer is the weak point: Michigan sentiment ended October at 48.0, the lowest since May, retail sales rose 0.8% in September, the saving rate down to 3.8%. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +79.3% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate through all three - 4.1% at the end of 2026 and 2027, 3.9% at end-2028 - and the cyclically adjusted P/E is 40.7, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost the next years' returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): 6.25, as policy reaches neutral (3.6% at end-2029) and the AI spending has either paid or been digested. Most houses' decade forecasts favour non-US over US equities on the same valuation.",
    "blend_10": 6.15,
    "3Y_10": 5.5,
    "5Y_10": 6.25,
    "10Y_10": 6.5,
    "blend": 3.29,
-   "summary": "Held: the S&P fell 0.30% to 7720.39 on 29 Oct on Alphabet's quarter, after GDP beat at 3.4%; FedWatch has a December hike at 79.6% on 29 Oct."
+   "summary": "Held: the S&P fell 1.82% to 7580.07 on 30 Oct, its worst day since June, as Intel and Amazon disappointed, after GDP beat at 3.4%; FedWatch has a December hike at 79.6% on 29 Oct."
   },
   "EUROPE": {
    "3Y": 2.22,
    "5Y": 2.56,
    "10Y": 2.56,
-   "why": "Held. The ECB held its deposit rate at 2.50% on 29 Oct, after the 10 Sep hike, with September inflation confirmed at 3.8% (energy 18.8%, core 2.5%), and made no commitment on December; Lagarde said she will step down early, in February. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. Europe is the largest net energy importer here, facing Brent +75.1% y/y against IMF growth of 0.9%; the offset is real - at 15.4x forward it is the cheapest large market after Asia. THREE YEARS: 3.75. The largest energy importer pays the most while oil stays high - December 2027 Brent was quoted at $87.82 on 22 Oct (another table has $86.46) - and growth starts at 0.9% under an ECB that hiked into it; a 15.4x market is the offset. FIVE YEARS (years 4-5): 4.5, at the anchor, as the shock fades - on 15 Oct the Brent curve settled near $72.32 for December 2029 and $69.16 for December 2030.",
+   "why": "Held. The ECB held its deposit rate at 2.50% on 29 Oct, after the 10 Sep hike, with September inflation confirmed at 3.8% (energy 18.8%, core 2.5%), and made no commitment on December; Lagarde said she will step down early, in February. The 10-year OAT-Bund spread eased to 135.5bp on 14 Oct from about 140bp as the Assembly took up a budget meant to cut the deficit to 5.0% of GDP from 5.4%. Europe is the largest net energy importer here, facing Brent +79.3% y/y against IMF growth of 1.1% this year; the offset is real - at 15.4x forward it is the cheapest large market after Asia. THREE YEARS: 3.75. The largest energy importer pays the most while oil stays high - December 2027 Brent was quoted at $87.82 on 22 Oct (another table has $86.46) - and growth starts at 1.1% under an ECB that hiked into it (the IMF's October upgrade, too small to offset oil's new high); a 15.4x market is the offset. FIVE YEARS (years 4-5): 4.5, at the anchor, as the shock fades - on 15 Oct the Brent curve settled near $72.32 for December 2029 and $69.16 for December 2030.",
    "blend_10": 4.28,
    "3Y_10": 3.75,
    "5Y_10": 4.5,
@@ -1285,7 +1297,7 @@
    "3Y": 3.44,
    "5Y": 3.67,
    "10Y": 3.67,
-   "why": "Held; the ten-year anchor at 7.0 since 21 Oct. The AI trade turned on Asia's chipmakers: on 30 Oct the KOSPI fell 3.48% to 5,730.74 and the Nikkei 2.12% to 63,290.11 after Alphabet's quarter, and the BoJ held at 1.25% with a hike flagged for December. On the 29th the KOSPI had slipped 1.24% as Samsung fell on its detailed quarter, while the Nikkei rose 1.10%; on the 28th the KOSPI jumped 6.63% as SK hynix reported a record quarter - operating profit of 83.3tn won, up 632% on a year - and about 100tn won of shareholder returns for 2026. The KOSPI is 18.2% below its 7003.74 close of 2 Oct. China grew 4.5% in the third quarter against 4.4% expected, on exports. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a record, and Samsung's quarter was a record 107.4tn won. Oil is the importers' problem, Brent at $114.88, with the yen near 158.48. The anchor was cut because half its case was the base return: it cited J.P. Morgan's EM equity assumption as the highest of any equity block, but that assumption is the Asia fund's base, so it was counted twice - and the 2027 edition cuts it to 7.1% from 7.8%, below US large caps. What remains is valuation: 10.5x forward before the fall against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount. THREE YEARS: 6.5, half a point below the 7.0 anchor - the October selling and an importer's oil bill weigh on the first years. FIVE YEARS (years 4-5): 7.0, at the anchor, as earnings that grew into a discounted multiple re-rate it.",
+   "why": "Held; the ten-year anchor at 7.0 since 21 Oct. The AI trade turned on Asia's chipmakers: on 30 Oct the KOSPI fell 3.48% to 5,730.74 and the Nikkei 2.12% to 63,290.11 after Alphabet's quarter, and the BoJ held at 1.25% with a hike flagged for December. On the 29th the KOSPI had slipped 1.24% as Samsung fell on its detailed quarter, while the Nikkei rose 1.10%; on the 28th the KOSPI jumped 6.63% as SK hynix reported a record quarter - operating profit of 83.3tn won, up 632% on a year - and about 100tn won of shareholder returns for 2026. The KOSPI is 18.2% below its 7003.74 close of 2 Oct. China grew 4.5% in the third quarter against 4.4% expected, on exports. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a record, and Samsung's quarter was a record 107.4tn won. Oil is the importers' problem, Brent at $117.64, with the yen near 158.48. The anchor was cut because half its case was the base return: it cited J.P. Morgan's EM equity assumption as the highest of any equity block, but that assumption is the Asia fund's base, so it was counted twice - and the 2027 edition cuts it to 7.1% from 7.8%, below US large caps. What remains is valuation: 10.5x forward before the fall against consensus EPS growth of ~52% and ~28% is a two-decade-wide discount. THREE YEARS: 6.5, half a point below the 7.0 anchor - the October selling and an importer's oil bill weigh on the first years. FIVE YEARS (years 4-5): 7.0, at the anchor, as earnings that grew into a discounted multiple re-rate it.",
    "blend_10": 6.85,
    "3Y_10": 6.5,
    "5Y_10": 7.0,
@@ -1297,13 +1309,13 @@
    "3Y": 2.89,
    "5Y": 3.11,
    "10Y": 3.0,
-   "why": "Held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, twice the 25bp that 20 of 22 analysts expected - its fourth straight hike and the first half-point since February 2023 - and the 26 Oct auction repriced to it: 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The peso, after a record 64.17 on 27 Oct, recovered to 63.85 on 29 Oct, 17.5 centavos stronger on the day, as the President signalled support and the Fed held - still a 7.92% loss of purchasing power against the dollar this year. Governor Remolona left the 17 Dec meeting open, and says BSP will not defend a level and intervenes only to cushion excessive moves. The PSEi rose 0.92% to 5705.58 on 29 Oct, after falling 1.87% on the 28th on inflation fears; its 2026 low is 5610.39, on 8 Oct. September inflation was 7.2%, core 4.7%: against it every tenor's real yield is still below zero, though the gap closed by up to 63bp in one auction. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not. THREE YEARS: 5.25. BSP sees inflation at 6.1% this year and 6.0% next, then 3.3% in 2028, inside its 2-4% target, while the IMF has growth recovering to 5.1% in 2027 from 3.4%: the real carry is about nil for two of the three years. FIVE YEARS (years 4-5): 5.75, a little above neutral, as a policy rate set against 6% inflation meets inflation back near 3%.",
+   "why": "Held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, twice the 25bp that 20 of 22 analysts expected - its fourth straight hike and the first half-point since February 2023 - and the 26 Oct auction repriced to it: 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The peso, after a record 64.17 on 27 Oct, kept recovering to 63.74 on 30 Oct, 11 centavos stronger on the day, after the President signalled support and the Fed held - still a 7.77% loss of purchasing power against the dollar this year. Governor Remolona left the 17 Dec meeting open, and says BSP will not defend a level and intervenes only to cushion excessive moves. The PSEi fell 0.44% to 5680.35 on 30 Oct on oil and fears of renewed US strikes on Iran, before the 2 Nov holiday, after rising 0.92% on the 29th; its 2026 low is 5610.39, on 8 Oct. September inflation was 7.2%, core 4.7%: against it every tenor's real yield is still below zero, though the gap closed by up to 63bp in one auction. This sleeve's job - zero duration risk and high nominal carry - is unimpaired. Its purchasing power is not. THREE YEARS: 5.25. BSP sees inflation at 6.1% this year and 6.0% next, then 3.3% in 2028, inside its 2-4% target, while the IMF has growth recovering to 5.1% in 2027 from 3.4%: the real carry is about nil for two of the three years. FIVE YEARS (years 4-5): 5.75, a little above neutral, as a policy rate set against 6% inflation meets inflation back near 3%.",
    "blend_10": 5.47,
    "3Y_10": 5.25,
    "5Y_10": 5.75,
    "10Y_10": 5.5,
    "blend": 2.99,
-   "summary": "Held: the peso recovered to 63.85 on 29 Oct from its 64.17 record and the PSEi rose 0.92%; 91-day bills are at 6.624% after BSP's 50bp hike."
+   "summary": "Held: the peso recovered to 63.74 on 30 Oct from its 64.17 record while the PSEi fell 0.44%; 91-day bills are at 6.624% after BSP's 50bp hike."
   }
  },
  "hz_weights": {
@@ -1317,9 +1329,9 @@
   "longrun": 19.5,
   "ramp_ref": "long-run",
   "quote_date": "2026-10-20",
-  "latest": 17.2,
-  "latest_date": "2026-10-29",
-  "latest_gap": -0.11,
+  "latest": 19.42,
+  "latest_date": "2026-10-30",
+  "latest_gap": 2.11,
   "ramp": -0.08,
   "sens": {
    "ATRPHMM": 0.035,
@@ -1338,7 +1350,7 @@
   "basis": "forward",
   "kappa": 1.5,
   "vrp": 3.5,
-  "spot_move_pct": -0.6,
+  "spot_move_pct": 12.2,
   "overtaken": false,
   "overtaken_pct": 20.0,
   "vix3m_bound_pct": 10.0,
@@ -1377,8 +1389,8 @@
    "weight": 0.15,
    "score": 1.44,
    "score_10": 2.0,
-   "note": "HELD at 2.0. September PCE prices rose 0.5% on the month and 3.6% on the year, from 3.4% in August; core rose 0.3% and 3.1%, from 3.0%, in line with forecasts. That followed September PPI up 1.3%, the largest monthly rise since March 2022, and 6.3% on the year (core 0.5% and 5.0%), and CPI of 3.7% (core 2.6%). Brent settled at $114.88 on 29 Oct, down $0.44, below the $116.72 of the 23rd, its highest close since 29 April, and 1.5% higher on the week, and 75.1% above the $65.62 of a year earlier; December WTI settled at $102.78 on 28 Oct. The euro area is at 3.8% (core 2.5%) and the Philippines at 7.2%. Held: core is firming, not running away, and most of the jump is energy passing through, not yet wages.",
-   "summary": "Held: September PCE prices rose 3.6% on the year, core 3.1%; Brent settled at $114.88 on 29 Oct, +75.1% y/y.",
+   "note": "HELD at 2.0. September PCE prices rose 0.5% on the month and 3.6% on the year, from 3.4% in August; core rose 0.3% and 3.1%, from 3.0%, in line with forecasts. That followed September PPI up 1.3%, the largest monthly rise since March 2022, and 6.3% on the year (core 0.5% and 5.0%), and CPI of 3.7% (core 2.6%). Brent settled at $117.64 on 30 Oct, up $2.76 on the December contract's last day, its highest close since the end of April, 0.8% higher on the week and 79.3% above the $65.62 of a year earlier; December WTI settled at $104.12 on 30 Oct. The euro area is at 3.8% (core 2.5%) and the Philippines at 7.2%. Held: core is firming, not running away, and most of the jump is energy passing through, not yet wages.",
+   "summary": "Held: September PCE prices rose 3.6% on the year, core 3.1%; Brent settled at $117.64 on 30 Oct, +79.3% y/y.",
    "path": {
     "3Y": 3.75,
     "5Y": 5.25,
@@ -1398,7 +1410,7 @@
    "weight": 0.15,
    "score": 2.33,
    "score_10": 4.0,
-   "note": "HELD at 4.0. US GDP grew at a 3.4% annual rate in the third quarter, against 3.1% expected and 2.2% in the second, on inventories, equipment and consumer and government spending - but September's real spending was flat and the saving rate fell to 3.8%, the lowest in almost four years. China grew 4.5% on the year against 4.4% expected, on exports; its September retail sales rose only 1.1%. Michigan sentiment, at 46.3 in October's first read, is near May's record low of 44.8; ISM services (54.9) and manufacturing (54.5) stayed in expansion in September. Philippine growth was 2.6% in the first half. Held: a beat built on inventories, with a stretched consumer behind it, is not a turn in the cycle.",
+   "note": "HELD at 4.0. US GDP grew at a 3.4% annual rate in the third quarter, against 3.1% expected and 2.2% in the second, on inventories, equipment and consumer and government spending - but September's real spending was flat and the saving rate fell to 3.8%, the lowest in almost four years. China grew 4.5% on the year against 4.4% expected, on exports; its September retail sales rose only 1.1%. Michigan sentiment ended October at 48.0, revised up from a first read of 46.3 but the lowest since May's record low of 44.8; ISM services (54.9) and manufacturing (54.5) stayed in expansion in September. Philippine growth was 2.6% in the first half. Held: a beat built on inventories, with a stretched consumer behind it, is not a turn in the cycle.",
    "summary": "Held: US GDP grew at a 3.4% annual rate in the third quarter against 3.1% expected, on inventories, while September's real spending was flat.",
    "path": {
     "3Y": 4.5,
@@ -1419,8 +1431,8 @@
    "weight": 0.2,
    "score": 3.67,
    "score_10": 7.0,
-   "note": "HELD at 7.0, still the strongest pillar; the market is pricing the financing, not the profits. FactSet's 23 Oct count has 24% of the S&P reported and 83% beating estimates - by 2.1% in aggregate, against a 7.5% five-year average - with third-quarter growth blended at 29.5%, from 29.2%; health care is the one sector with earnings down on a year. On 29 Oct Alphabet took the largest one-day fall in market value in its history after a revenue miss and negative free cash flow on its AI spending, and the Nasdaq fell 1.38%; on the 30th the KOSPI fell 3.48% and the Nikkei 2.12%. The suppliers' numbers are records: SK hynix's third-quarter operating profit was 83.3tn won, up 632% on a year, with about 100tn won of shareholder returns planned for 2026; TSMC's net income rose 68.7% to NT$763.06bn, above the NT$746.34bn expected; Samsung's quarter was a record 107.4tn won. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) stands. Held: the profits keep coming; what is being questioned is the return on the spending that buys them.",
-   "summary": "Held, the strongest pillar: 83% of reporting S&P companies beat (FactSet, 23 Oct), but Alphabet's AI spending took the Nasdaq down 1.38% on 29 Oct.",
+   "note": "HELD at 7.0, still the strongest pillar; the market is pricing the financing, not the profits. FactSet's 23 Oct count has 24% of the S&P reported and 83% beating estimates - by 2.1% in aggregate, against a 7.5% five-year average - with third-quarter growth blended at 29.5%, from 29.2%; health care is the one sector with earnings down on a year. On 29 Oct Alphabet took the largest one-day fall in market value in its history after a revenue miss and negative free cash flow on its AI spending, and the Nasdaq fell 1.38%; on the 30th the KOSPI fell 3.48% and the Nikkei 2.12%, then Intel had its worst day since 1974 on a weak forecast, Amazon's profit disappointed and the Nasdaq fell 2.86% more. The suppliers' numbers are records: SK hynix's third-quarter operating profit was 83.3tn won, up 632% on a year, with about 100tn won of shareholder returns planned for 2026; TSMC's net income rose 68.7% to NT$763.06bn, above the NT$746.34bn expected; Samsung's quarter was a record 107.4tn won. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) stands. Held: the profits keep coming; what is being questioned is the return on the spending that buys them.",
+   "summary": "Held, the strongest pillar: 83% of reporting S&P companies beat (FactSet, 23 Oct), but the AI-spending scare took the Nasdaq down 1.38% on 29 Oct and 2.86% on 30 Oct.",
    "path": {
     "3Y": 6.5,
     "5Y": 5.5,
@@ -1440,7 +1452,7 @@
    "weight": 0.1,
    "score": 4.11,
    "score_10": 8.0,
-   "note": "HELD at 8.0: FactSet had the S&P on 18.7x forward earnings on 23 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7720.39 on 29 Oct, 1.3% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings: the KOSPI closed at 5,730.74 on 30 Oct, 18.2% below its 2 Oct close. NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since.",
+   "note": "HELD at 8.0: FactSet had the S&P on 18.7x forward earnings on 23 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7580.07 on 30 Oct, 3.1% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings: the KOSPI closed at 5,730.74 on 30 Oct, 18.2% below its 2 Oct close. NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since.",
    "summary": "Held: the S&P is on 18.7x forward earnings, below its five- and ten-year averages; the KOSPI is 18.2% below its 2 Oct close.",
    "path": {
     "3Y": 6.5,
@@ -1461,8 +1473,8 @@
    "weight": 0.1,
    "score": 1.67,
    "score_10": 2.5,
-   "note": "HELD at 2.5. The VIX rose 1.71% to 17.20 on 29 Oct as Alphabet's quarter hit tech, after three falls into the Fed's hold (3.48% on the 28th, 4.7% on the 27th) - still under the long-run 19.5 and well off its 22.31 high of 16 Oct. Asia took the shock on the 30th: the KOSPI fell 3.48%, tripping a sell-side sidecar, and the Nikkei 2.12%. No full futures strip after the 20 Oct settlements has been reached, so the curve stays quoted there - November 18.49 and December 18.7, above that day's spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. On forward vol the curve sits at 19.42, 0.08 below the long run. Held: one up day after three down is not a regime, and the Asian sell-off is an earnings question, not a volatility one.",
-   "summary": "Held: the VIX rose 1.71% to 17.20 on 29 Oct, still under its long-run 19.5, before Seoul and Tokyo sold off on the 30th.",
+   "note": "HELD at 2.5. The VIX rose 12.91% to 19.42 on 30 Oct, after 1.71% on the 29th, as the tech sell-off deepened; it touched 23.93 intraday, past the 22.31 high of 16 Oct, but closed still under the long-run 19.5. Asia took the shock first: on the 30th the KOSPI fell 3.48%, tripping a sell-side sidecar, and the Nikkei 2.12%. No full futures strip after the 20 Oct settlements has been reached, so the curve stays quoted there - November 18.49 and December 18.7, above that day's spot, the ordinary upward slope - and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; the 5 Oct strip it replaced read 4.66% below on the same test. On forward vol the curve sits at 19.42, 0.08 below the long run. Held: the close is under the long run and 2.5 is the score the 23 Oct AI sell-off set; a spike that gave back most of its rise by the close tests that, it does not yet make a new regime.",
+   "summary": "Held: the VIX rose 12.91% to 19.42 on 30 Oct and touched 23.93 intraday, but closed under its long-run 19.5.",
    "path": {
     "3Y": 4.5,
     "5Y": 5.5,
@@ -1482,8 +1494,8 @@
    "weight": 0.1,
    "score": 1.22,
    "score_10": 1.5,
-   "note": "HELD at 1.5; the threat widened again, and the barrels have not yet shrunk. On 30 Oct Iran's Revolutionary Guard claimed that tankers leaving the Strait by unauthorised routes had struck mines and caught fire; US Central Command said it had cleared mines from the main transit routes and called the claim false, and UKMTO reported explosives attached to a tanker off Khasab, Oman (CNBC; AP; Gulf News). On the 28th the US had reportedly told Gulf states to prepare for a short, intense campaign against Iran after the 3 November midterms (the Wall Street Journal, via CNBC), and the Houthis claim new attacks on Saudi airports and oil facilities while Qatari mediators are in Tehran. Brent settled at $114.88 on 29 Oct, below the $116.72 of the 23rd, its highest close since 29 April. Read it on VOLUME, the measure this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at about 14 mb/d in the week to 18 Oct, 82% of pre-war on preliminary figures, and the Gulf's exports by every route above 24 mb/d against 23.3 pre-war; no later week has been published. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses the Strait, and the export volumes since bear out that it runs. Vessel counts disagree and are not supply: IMF PortWatch counted 4 transits on 18 Oct against an 85 baseline, a 95% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over 10000 dwt; the US government around 30, on a basis it does not state. Held, not cut: mines claimed are not mines confirmed, and 1.0 is kept for full closure with Brent above $130 - strictly worse, and nearer than it was.",
-   "summary": "Held: on 30 Oct Iran claimed tankers had struck mines in Hormuz, which US Central Command called false; Brent settled at $114.88 on 29 Oct, flows near 14 mb/d.",
+   "note": "HELD at 1.5; a tanker attack on 30 Oct is confirmed, but the last confirmed count of the barrels had not shrunk. On 30 Oct UKMTO reported explosives attached to a tanker off Khasab, Oman, and the British military said a tanker had caught fire after a small boat attached two explosives to it; Iran's Revolutionary Guard claimed that tankers leaving by unauthorised routes had struck mines, which US Central Command, saying it had cleared the main transit routes, called false (CNBC; AP; Gulf News; Reuters). On the 28th the US had reportedly told Gulf states to prepare for a short, intense campaign against Iran after the 3 November midterms (the Wall Street Journal, via CNBC), and the Houthis claim new attacks on Saudi airports and oil facilities while Qatari mediators are in Tehran. Brent settled at $117.64 on 30 Oct, its highest close since the end of April. Read it on VOLUME, the measure this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at about 14 mb/d in the week to 18 Oct, 82% of pre-war on preliminary figures, and the Gulf's exports by every route above 24 mb/d against 23.3 pre-war. A lower figure for a later week is in one report only and October's average differs by source, so neither is carried. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses the Strait, and the export volumes since bear out that it runs. Vessel counts disagree and are not supply: IMF PortWatch counted 4 transits on 18 Oct against an 85 baseline, a 95% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over 10000 dwt; the US government around 30, on a basis it does not state. Held, not cut: one confirmed attack is not a closure, and 1.0 is kept for full closure with Brent above $130 - strictly worse, and nearer than it was.",
+   "summary": "Held: a tanker attack in Hormuz on 30 Oct is confirmed, but the last confirmed flows were near 14 mb/d; Brent settled at $117.64 on 30 Oct, its highest close since the end of April.",
    "path": {
     "3Y": 3.0,
     "5Y": 5.0,
@@ -2681,7 +2693,7 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $115. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $118. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
     "cagr": 2.48,
     "vol": 23.03,
     "maxdd": -54.0
@@ -2817,7 +2829,7 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $115. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $118. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
     "cagr": 3.81,
     "vol": 20.4,
     "maxdd": -45.4
@@ -2980,7 +2992,7 @@
    {
     "name": "vix",
     "ok": true,
-    "reading": 17.2,
+    "reading": 19.42,
     "longrun": 19.5,
     "applies_to": "raise"
    }
@@ -4696,7 +4708,7 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $115. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $118. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
     "cagr": 4.2,
     "vol": 20.4,
     "maxdd": -44.9
@@ -5062,7 +5074,7 @@
   "scenarios": [
    {
     "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $115. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $118. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
     "cagr": 3.97,
     "vol": 20.55,
     "maxdd": -45.1
@@ -5782,8 +5794,13 @@
   },
   {
    "org": "IMF",
-   "what": "World Economic Outlook Update, July 2026 - 'Global Economy in Crosscurrents of War and Technology': global 3.0% (2026) / 3.4% (2027), US 2.3% / 2.2%, euro area 0.9% / 1.2%, advanced economies 1.7% / 1.8%, EMDEs 3.8% / 4.5%",
-   "url": "https://www.imf.org/en/publications/weo/issues/2026/07/08/world-economic-outlook-update-july-2026"
+   "what": "World Economic Outlook, October 2026 - 'Resilience Under Strain, Urgent Choices': world 3.1% (2026) / 3.4% (2027), euro area 1.1% / 1.2% (July: 0.9% / 1.2%), 13 Oct 2026",
+   "url": "https://www.imf.org/en/publications/weo/issues/2026/10/13/world-economic-outlook-october-2026"
+  },
+  {
+   "org": "Yahoo Finance UK",
+   "what": "IMF forecasts 3.1% global growth in 2026, with eurozone at 1.1%",
+   "url": "https://uk.finance.yahoo.com/news/imf-forecasts-3-1-global-024937434.html"
   },
   {
    "org": "Cboe",
@@ -6927,7 +6944,7 @@
   },
   {
    "org": "Yahoo Finance",
-   "what": "CBOE Volatility Index (^VIX) - 16.91, -0.61 (-3.48%) at the 28 Oct 2026 close",
+   "what": "CBOE Volatility Index (^VIX) - 19.42, +2.22 (+12.91%), day range 18.03-23.93, at the 30 Oct 2026 close (a live quote page; 16.91 at the 28 Oct close)",
    "url": "https://finance.yahoo.com/quote/%5EVIX/"
   },
   {
@@ -7109,6 +7126,66 @@
    "org": "Finance Calendar",
    "what": "US Employment Situation (non-farm payrolls), October 2026 - release 6 Nov 2026",
    "url": "https://www.financecalendar.com/event/us-employment-situation-non-farm-payrolls-october-2026/"
+  },
+  {
+   "org": "Washington Times / AP",
+   "what": "Wall Street drops to its worst day since June after the sell-off for tech stocks deepens - S&P 500 7,580.07, Nasdaq 25,437.00, Dow 51,770.31, 30 Oct 2026",
+   "url": "https://www.washingtontimes.com/news/2026/oct/30/wall-street-falls-worst-day-since-june-sell-tech-stocks-deepens/"
+  },
+  {
+   "org": "ABC News (Australia)",
+   "what": "Wall Street drops to its worst day since June; Amazon lower after its profit report, 31 Oct 2026",
+   "url": "https://www.abc.net.au/news/2026-10-31/wall-street-drops-to-its-worst-day-since-june/107331332"
+  },
+  {
+   "org": "Stock Titan",
+   "what": "Stock market today, 30 Oct 2026 - Intel has its worst day since 1974 as the tech sell-off deepens",
+   "url": "https://stocktitan.net/articles/stock-market-today-live-october-30-2026"
+  },
+  {
+   "org": "Investrade",
+   "what": "Market review, 30 Oct 2026 - the VIX spiked as high as 23.93, taking out the 16 Oct 22.31 high",
+   "url": "https://investrade.com/market-review-october-30-2026/"
+  },
+  {
+   "org": "Korea Times / Reuters",
+   "what": "Oil jumps 2%, settles at 6-month highs on fears of escalation in Iran - Brent December $117.64 (+$2.76) at expiry, WTI $104.12 (+$2.12), 30 Oct 2026",
+   "url": "https://www.koreatimes.co.kr/world/20261031/oil-jumps-2-settles-at-6-month-highs-on-fears-of-escalation-in-iran"
+  },
+  {
+   "org": "Rallies / Reuters",
+   "what": "Oil jumps 2%, settles at six-month highs on fears of escalation in Iran, 30 Oct 2026",
+   "url": "https://rallies.ai/news/oil-jumps-2-settles-at-six-month-highs-on-fears-of-escalation-in-iran-6ce8eedea1b78f5d"
+  },
+  {
+   "org": "Daily Tribune",
+   "what": "Peso extends recovery as PSEi slips 0.44 percent - P63.74 from P63.85; PSEi 5,680.35, 30 Oct 2026",
+   "url": "https://tribune.net.ph/2026/10/30/peso-extends-recovery-as-psei-slips-044-percent"
+  },
+  {
+   "org": "Philstar",
+   "what": "Shares tumble, peso gains ahead of Undas break, 31 Oct 2026",
+   "url": "https://www.philstar.com/business/2026/10/31/2566735/shares-tumble-peso-gains-ahead-undas-break"
+  },
+  {
+   "org": "Philippine Daily Inquirer",
+   "what": "Looming oil price surge pulls PSEi back to 5,600 - down 25.23 (0.44%) to 5,680.35, 30 Oct 2026",
+   "url": "https://business.inquirer.net/618875/looming-oil-price-surge-pulls-psei-back-to-5600"
+  },
+  {
+   "org": "University of Michigan",
+   "what": "Surveys of Consumers, October 2026 final - sentiment 48.0, from 48.1 in September and a 46.3 first read",
+   "url": "https://news.umich.edu/as-concerns-over-purchasing-power-dominate-consumer-sentiment-moves-sideways/"
+  },
+  {
+   "org": "Advisor Perspectives",
+   "what": "Consumer sentiment at five-month low - October final 48.0, 23 Oct 2026",
+   "url": "https://www.advisorperspectives.com/dshort/updates/2026/10/23/consumer-sentiment-at-five-month-low"
+  },
+  {
+   "org": "CNBC",
+   "what": "Tankers defy sharp escalation of Iranian attacks to keep crude flowing through the Strait of Hormuz (Kpler weekly flows), 30 Oct 2026",
+   "url": "https://www.cnbc.com/2026/10/30/tanker-attack-strait-hormuz-iran-war-oil.html"
   }
  ]
 }

@@ -196,6 +196,16 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+124. A SENTENCE COMPARING A LEVEL TO ITS HIGH MUST SURVIVE THE DAY THEY MEET. "Brent settled at
+   $117.64, below the $116.72 of the 23rd" is what two notes would have printed on 30 Oct. Wording
+   that depends on which side of a threshold a value sits is computed for both sides, and the audit
+   fails the false one.
+123. A FRESHNESS BOUND WIDER THAN THE CYCLE IT GUARDS GUARDS NOTHING. The IMF publishes quarterly; a
+   120-day bound let July's edition pass for 17 days after October's. The bound is one cycle plus a
+   week, and a figure a note quotes is read from its input, never typed beside it.
+122. A FIRST READ HAS A FINAL, AND THE FINAL HAS A DATE. Michigan's October preliminary stood in two
+   notes for a week after the final, while the register row said "final on 23 Oct". A preliminary
+   reading carries its release date and a final flag, and the checks fail it two weeks on.
 121. A NOTE IS PARSED; WRITE IT SO THE PARSER READS WHAT YOU MEANT. The 10-year check reads every
    "X.XX% on the Nth" in the monetary note as a 10-year close, so "the BoJ at 1.25% on the 30th" and
    the 2-year's "4.70% on the 27th" failed it. Other rates now carry their dates in parentheses.
