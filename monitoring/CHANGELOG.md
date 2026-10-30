@@ -2,6 +2,72 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-30 — v84: rolled to 30 Oct - US GDP, September PCE, the ECB's and BoJ's holds, the Alphabet sell-off, Hormuz mine claims; a wrong "verified" Tokyo close recorded; notes shortened; A, B and C unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Make the page concise. Do house cleanup."
+
+**Rolled (two sources or more, each chained to its prior close):**
+- **New York, 29 Oct** (AP via WTOP and KVUE; TheStreet): S&P 7,720.39 (−23.59, −0.30%), its
+  first fall in four sessions; Nasdaq 26,184.72 (−365.13, −1.38%); Dow 52,342.56 (−132.54, −0.25%),
+  as Alphabet's quarter (a revenue miss and negative free cash flow on its AI spending) took the
+  largest one-day bite out of its market value on record.
+- **The VIX, 29 Oct**: 17.20 (+0.29, +1.71%) (AD HOC News; Investing.com; PC Thematic; CappNotes).
+- **The 10-year**: 5.05% on 28 Oct (+6bp, held in v83 on market quotes alone) and **4.98% on 29 Oct**
+  (−7bp) on the par curve (Forbes' Treasury-rates page; JOLT Journal).
+- **Brent, 29 Oct**: $114.88 for December, down 44 cents (CNBC), which Reuters' next-morning quote
+  (+$1.20 to $116.08, via Gulf Today) lands on. Carried as a move in cents (below).
+- **FedWatch**: a December hike at 79.6% on 29 Oct (Fox Business; IBTimes), from 85% on the 28th.
+- **Seoul**: 5,937.66 on 29 Oct (−1.24%) and **5,730.74 on 30 Oct (−3.48%)**, a sell-side sidecar
+  on the AI-spending scare (Seoul Economic Daily; Korea Times; SBS).
+- **Tokyo**: **64,659.47 on 29 Oct (+1.10%)** (Nikkei Indexes; FRED; News on Japan) and **63,290.11
+  on 30 Oct (−2.12%)** (Japan Daily Sun; News on Japan) after the BoJ held.
+- **Manila, 29 Oct**: the peso 63.85, 17.5 centavos stronger (BusinessWorld; GMA; Philstar); the
+  PSEi 5,705.58 (+0.92%) (Inquirer; BusinessWorld).
+- **Releases and decisions**: US third-quarter GDP +3.4% at an annual rate against 3.1% expected
+  (BEA); September PCE prices +0.5% and 3.6% y/y, core +0.3% and 3.1%, the saving rate 3.8% (BEA;
+  Xinhua); the ECB held at 2.50% and Lagarde will leave early, in February; the BoJ held at 1.25%,
+  8–1, with a hike flagged for December. On 30 Oct Iran claimed tankers had struck mines in Hormuz;
+  US Central Command called it false (CNBC; AP; Gulf News).
+
+**Scored, all held:** every driver and region keeps its score - the GDP beat rests on inventories
+with real spending flat; core PCE is firming within the December-hike path already scored; the mine
+claims are unconfirmed and 1.0 stays reserved for full closure. Gauge 2.29, regions 3.60 / 3.29 /
+2.99 / 2.46, the drawdown gauge 2.89 (hold at 25%), and **A, B and C are unchanged** (7.30%, 7.10%,
+7.14%). The held-out runs were re-run on the 30 Oct inputs and came back identical.
+
+**Not carried:** WTI's 29 Oct settle (102.00 and 102.20 disagree; held at 28 Oct); the 2-year and
+30-year for 28-29 Oct (no exact official print found); Manila's 30 Oct closes (one source each).
+cnbc.com, financefeeds.com and gulftoday.ae cannot be fetched from this session, so their figures
+come from search results.
+
+**Errors found and fixed:**
+- **v83 recorded a wrong Tokyo close as "verified, not carried"**: 64,594.00 (+639.81, Reuters via
+  Investing.com; Trading Economics 64,595) for 29 Oct. The index provider's close is 64,659.47
+  (+705.28). Both press figures chained from the 28 Oct close, so the chain proved only the
+  arithmetic, not the timing (runbook 119). It never reached the page.
+- **A move reported in cents would have been typed as a percentage no source printed** (−0.38%).
+  Brent now carries cents-reported moves as cents, and the engine and audit check each to the cent.
+- **The fault-injection harness would have crashed on this roll**: mutant m66 typed "on 28 Oct", the
+  date the note it mutates had just rolled past. It now derives the day from the data (runbook 120).
+- **A note's phrasing was read as data**: "the BoJ at 1.25% on the 30th" in the monetary note was
+  parsed by the 10-year check as a 10-year close on the 30th; the 2- and 30-year quotes too. They
+  now carry their dates in parentheses (runbook 121).
+- **A malformed sign in three new strings** ("week - +75.1%" and two source titles), caught by the
+  page validator before publishing.
+
+**Concise and cleanup:** every driver and region note rewritten around the week's evidence, with
+each date taken from its value's own date; the market detail of 22-27 Oct is gone from the notes,
+and with it **24 inputs nothing read any more** (each confirmed unread by the engine and the page,
+then removed); the Report's Hormuz what-if loses its second set of flow figures. Words shown by
+default: 6,462 → **6,365**.
+
+**Harnesses:** engine **249/249**; audit **425 checks, 0 failures, 0 warnings**; validator 26/26 on
+the live copy; mutations: two added (a Brent cents move a cent off; the Nikkei's prior back on the
+pre-close print).
+
+Not personal financial advice.
+
 ## 2026-10-29 — v83: review of v82; the VIX rolled to 28 Oct; a close quoted a day early since v79; C carried into three more passages; the page shorter; A, B and C unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search

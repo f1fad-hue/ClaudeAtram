@@ -43,9 +43,10 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 28 Oct 2026 (Wednesday's closes in Manila, Seoul,
-Tokyo and New York, after the Fed held at 3.75-4.00%, Brent's and WTI's settles and the
-VIX; the 10- and 2-year Treasury yields to their 27 Oct official closes, the 30-year to 26 Oct). Weights in the universe's order: Money Market / Nasdaq Equity Income /
+market assumptions. Market data as of 30 Oct 2026 (Friday's closes in Seoul and Tokyo,
+after the BoJ held; Thursday's in New York and Manila, Brent's settle, the VIX and the 10-year,
+after US GDP, September PCE and the ECB's hold; WTI at 28 Oct; the 2-year at 27 Oct and the
+30-year at 26 Oct). Weights in the universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
@@ -94,7 +95,7 @@ every update:
 **The Budget tab** reads, on 1-5, whether the next three and five years justify moving the
 25% budget - from the macro drivers, the volatility curve and the market trend at each
 view - with bands for a step to 24%, 26% or 27%, guards that must also be clear, and what
-each step does to A, B and C. On 28 Oct it reads 2.89: hold at 25%. Since v77 the band sets
+each step does to A, B and C. On 30 Oct it reads 2.89: hold at 25%. Since v77 the band sets
 the budget for A and B (owner, 28 Oct), and since v82 for C, through the same guards.
 
 Portfolio C was first added on 2026-09-25, removed on 2026-10-28 (v76) and restored on

@@ -196,6 +196,16 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+121. A NOTE IS PARSED; WRITE IT SO THE PARSER READS WHAT YOU MEANT. The 10-year check reads every
+   "X.XX% on the Nth" in the monetary note as a 10-year close, so "the BoJ at 1.25% on the 30th" and
+   the 2-year's "4.70% on the 27th" failed it. Other rates now carry their dates in parentheses.
+120. A MUTANT THAT TYPES A DATE BREAKS ON THE NEXT ROLL, LIKE A NOTE THAT DOES. m66 replaced "on
+   28 Oct" in a note that had rolled to the 29th; the harness would have crashed, not caught. A
+   mutant derives what it mutates from the data, as the notes now do.
+119. THE INDEX PROVIDER'S CLOSE OUTRANKS TWO PRESS PRINTS THAT AGREE. Reuters' 64,594.00 and Trading
+   Economics' 64,595 for Tokyo's 29 Oct close agreed, and both chained from the carried 28 Oct close -
+   and both were early. Nikkei Indexes (and FRED) had 64,659.47. A chain proves the arithmetic, not
+   the timing; where the exchange or index provider publishes its own close, that is the source.
 118. CHECK THE PUBLISHED VALUE AGAINST ITS OWN SERIES, FOR EVERY SERIES. Brent's latest was held to
    the last point of its history; the VIX's was not, so a latest typed a session behind passed
    the audit (a mutant found it). Every series that publishes a "latest" beside its history needs
