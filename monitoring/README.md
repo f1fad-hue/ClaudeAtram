@@ -199,7 +199,8 @@ truth; the artifact is a rendering of it.
 124. A SENTENCE COMPARING A LEVEL TO ITS HIGH MUST SURVIVE THE DAY THEY MEET. "Brent settled at
    $117.64, below the $116.72 of the 23rd" is what two notes would have printed on 30 Oct. Wording
    that depends on which side of a threshold a value sits is computed for both sides, and the audit
-   fails the false one.
+   fails the false one. Its first pattern stopped at any "." - including the decimal point in
+   "$2.76" - and missed its own mutant: a check is not written until its mutant has failed it.
 123. A FRESHNESS BOUND WIDER THAN THE CYCLE IT GUARDS GUARDS NOTHING. The IMF publishes quarterly; a
    120-day bound let July's edition pass for 17 days after October's. The bound is one cycle plus a
    week, and a figure a note quotes is read from its input, never typed beside it.

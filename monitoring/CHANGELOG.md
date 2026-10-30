@@ -69,8 +69,12 @@ retired; a comment orphaned by an earlier removal deleted.
 **Harnesses:** engine **250/250**; audit **429 checks, 0 failures, 0 warnings**; validator 26/26 on
 the live copy; mutations: three added (a first read kept past its final; July's IMF edition back;
 Brent "below" a high it reached), 69 defined and listed, each dry-applied to the payload
-before the run; the run's count is recorded after this commit (it ran on a frozen copy taken
-before two wording fixes - the geopolitics lead and an engine comment - which no mutant touches).
+before the run. v85's own run, on a frozen copy of the tree taken before two wording fixes (the
+geopolitics lead and an engine comment, which no mutant touches), split across four workers:
+**68/69 caught on the first pass. The miss was the new Brent check's own mutant (m72)**: its
+pattern stopped at any full stop, so the decimal point in "up $2.76" ended the match before it
+reached "below the $117.64". A decimal point is no longer read as a sentence end; m72 re-run on
+the fixed audit: caught. **69/69** (recorded after the v85 commit).
 
 Not personal financial advice.
 
