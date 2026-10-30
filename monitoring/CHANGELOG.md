@@ -64,7 +64,9 @@ default: 6,462 → **6,365**.
 
 **Harnesses:** engine **249/249**; audit **425 checks, 0 failures, 0 warnings**; validator 26/26 on
 the live copy; mutations: two added (a Brent cents move a cent off; the Nikkei's prior back on the
-pre-close print).
+pre-close print). v84's own run, on a frozen copy of the tree committed as a30f1e7: **66/66 caught**,
+every defined mutant listed and each one dry-applied to the payload before the run (recorded after
+that commit).
 
 Not personal financial advice.
 
