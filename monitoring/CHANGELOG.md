@@ -64,7 +64,10 @@ month (its 30 Oct prior is in one wire so far); Manila is closed for All Souls' 
 **Harnesses:** engine **249/249** (one fewer: Global Health Care no longer carries a dated table);
 audit **428 checks, 0 failures, 0 warnings**; validator 26/26 on the live copy; mutations: one added
 (JEPQ's table back on its August date), 70 defined and listed, each dry-applied to the
-payload before the run; the run's count is recorded after this commit.
+payload before the run. v86's own run, on a frozen copy of the tree committed as b882421, split
+across four workers: **70/70 caught on the first pass**, no crashes - the calendar-based IMF
+check catching July's edition, and the audit's 60-day bound catching JEPQ's August date
+(recorded after that commit).
 
 Not personal financial advice.
 
