@@ -2,6 +2,72 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-10-31 — v86: weekend review - the 2-, 10- and 30-year's 30 Oct official closes, China's October PMIs, three fund holdings tables refreshed or withdrawn, an IMF check that would have failed falsely replaced; A, B and C unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Do house cleanup."
+
+**Rolled (two sources or more):**
+- **Treasuries, 30 Oct, official closes**: the 10-year **4.94%** (−4bp, as the tech sell-off sent
+  money into bonds; WRE News; Credit Market Close); the 2-year **4.56%** (Forbes; Credit Market
+  Close; FRED's T10Y2Y 0.38 = 4.94 − 4.56); the 30-year **5.31%** (Forbes; Trading Economics;
+  CNBC's market close 5.315%).
+- **China's official PMIs, October** (NBS, 31 Oct; Reuters via Nikkei Asia and Al Arabiya;
+  Channel NewsAsia): manufacturing **49.3** from 50.1, a third contraction in four months;
+  non-manufacturing **49.7** from 50.2. In the growth and Asia notes.
+- **Holdings**: JEPQ's **30 September** top 10 (J.P. Morgan's factsheet; Schwab's table has the
+  same top three at 2dp and the ten at 43.33%) - a different list from August, not the relabel
+  rejected on 10 Oct; Fidelity Global Technology's 30 September sheet, the six legible leaders.
+
+**Scored, all held:** Monetary 2.0 (yields lower, the December odds unchanged); Growth 4.0 (China's
+contraction fits "not a turn in the cycle"); Asia's 3 / 5 / 10-year scores (one month's PMI against
+record chip earnings). Gauge 2.29, regions 3.60 / 3.29 / 2.99 / 2.46, the drawdown gauge 2.89
+(hold at 25%), and **A, B and C are unchanged** (7.30%, 7.10%, 7.14%; −24.9% each).
+
+**Not carried:** FactSet's 30 Oct update (still in FactSet's own pages only); a FedWatch reading
+for 30 Oct (none found); January Brent's 30 Oct settle ($113.43, one wire relayed); a later Kpler
+week (one report); weekend Hormuz claims (no new confirmed event); a Trump remark that Iran wants
+to talk (no dated second source). Blocked from this session, so read through search results only:
+schroders.com, investing.com, atram.com.ph, uitf.com.ph, fidelityinternational.com,
+english.news.cn and globaltimes.cn.
+
+**Errors found and fixed:**
+- **v85's own IMF check would have failed falsely in a late January.** Its 105-day age bound
+  fails when an October edition passes 105 days with no newer one out - 112 days passed between
+  the October 2023 and January 2024 editions. The engine and audit now read the IMF's calendar
+  (January, April, July, October, and the day of the month each has been out by): once a month's
+  window has closed, its edition must be the one carried (runbook 125).
+- **Three fund holdings tables expired the morning after v85 shipped**: JEPQ, Global Technology and
+  Global Health Care, all at 31 August, 61 days old at this review - though the engine's own comment
+  of 23 Oct said "inside the 60-day bound until 30 Oct". JEPQ and Global Technology are refreshed to
+  30 September; Global Health Care's partial is withdrawn, as no September table was reachable.
+  Global Technology's August sector and country tables are dropped rather than shown beside
+  September rows, and the page now shows its country line only when a dated one is carried
+  (runbook 126).
+- **The 2- and 30-year were one session from failing** the five-day bound (at 27 and 26 Oct):
+  Monday's roll would have failed both the engine and the audit. Rolled to 30 Oct.
+- **The freshness check misdescribed itself**: "within 60 days of the as-of date" while measuring
+  to the review date, and printing no age. It now says "of the review" and prints the days left.
+- **The rate sentence compared all three yields to the 10-year's intraday high** and typed both
+  peak figures; it now names the 10-year and reads both peaks from their inputs.
+- **A register row broke its table**: a quotation containing "|" split the 10-year row into extra
+  cells, caught by the audit before publishing.
+- **"December WTI" was typed**; it is now read from the contract, before December expires in November.
+
+**Cleanup:** v85's backups and helper scripts removed; the page's Global Technology line, which
+assumed a country table, now checks for one.
+
+**Known for Monday's roll (2 Nov):** Brent's year-ago base (27 Oct 2025) falls outside its
+three-day bound, and no 30 Oct-5 Nov 2025 settle has two sources yet; January becomes Brent's front
+month (its 30 Oct prior is in one wire so far); Manila is closed for All Souls' Day.
+
+**Harnesses:** engine **249/249** (one fewer: Global Health Care no longer carries a dated table);
+audit **428 checks, 0 failures, 0 warnings**; validator 26/26 on the live copy; mutations: one added
+(JEPQ's table back on its August date), 70 defined and listed, each dry-applied to the
+payload before the run; the run's count is recorded after this commit.
+
+Not personal financial advice.
+
 ## 2026-10-30 — v85: the 30 Oct session rolled - the S&P's worst day since June, Brent's December expiry at a six-month high, the VIX at 19.42; Michigan's final and the IMF's October outlook replace stale figures; A, B and C unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search

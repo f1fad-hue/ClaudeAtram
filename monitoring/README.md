@@ -196,6 +196,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+126. A KNOWN EXPIRY IS A TASK, NOT A COMMENT. "Inside the 60-day bound until 30 Oct" sat in the
+   engine for a week, v85 shipped on the 30th, and three holdings tables failed at the next review;
+   the 2- and 30-year were one session from the same failure. Expiry checks now print the days left,
+   and anything within a week of its bound is refreshed in the review that sees it.
+125. A RELEASE CALENDAR IS NOT AN AGE. An age bound tight enough to catch a missed IMF edition
+   quickly (105 days) fails falsely in a late year (112 days from October 2023 to January 2024); one
+   loose enough not to (120) misses an edition for weeks. The check reads the publisher's calendar:
+   once a release window has closed, that edition must be the one carried.
 124. A SENTENCE COMPARING A LEVEL TO ITS HIGH MUST SURVIVE THE DAY THEY MEET. "Brent settled at
    $117.64, below the $116.72 of the 23rd" is what two notes would have printed on 30 Oct. Wording
    that depends on which side of a threshold a value sits is computed for both sides, and the audit

@@ -26,9 +26,9 @@ from itertools import combinations
 # that nobody updates. Both weekdays are derived and checked below instead.
 AS_OF = "2026-10-30"        # newest completed session carried (Friday's closes everywhere:
                             # Manila, Seoul, Tokyo and New York, Brent's December expiry and
-                            # WTI's settle, the VIX. The 10-year at its 29 Oct official close,
-                            # the 2-year at 27 Oct and the 30-year at 26 Oct; FedWatch at 29 Oct)
-REVIEW_DATE = "2026-10-30"  # when this review was worked through
+                            # WTI's settle, the VIX and the 2-, 10- and 30-year's official
+                            # closes; FedWatch at 29 Oct)
+REVIEW_DATE = "2026-10-31"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -198,6 +198,11 @@ MACRO = {
         # 29 Oct: 4.98, -7bp, after the GDP beat and September PCE (Forbes' Treasury-rates
         # page; the par curve via JOLT Journal); ^TNX's 4.989 is the market close.
         ("2026-10-29", 4.98),
+        # 30 Oct: 4.94, -4bp, as the tech sell-off sent money into Treasuries (WRE News:
+        # "Treasury's official 10-year constant-maturity rate" 4.98% on the 29th to 4.94% on
+        # the 30th; Credit Market Close: "10Y nominal yield: 4.94% | Previous 4.98% | -4bp").
+        # Trading Economics' 4.93 is a market close; Investing.com's 4.898 is not carried.
+        ("2026-10-30", 4.94),
     ],
     # 23 Sep is the 5.104% market-close print (CNBC, Wolf Street: "+13.7bp to
     # 5.104") rounded to 2dp, NOT a Treasury par-curve / H.15 figure: neither was
@@ -339,9 +344,14 @@ MACRO = {
     # mid-session 4.716% / 5.299% are not carried.
     # 27 Oct, par curve (StockMarketWatch's table): 2-year 4.70% (+2bp); FRED's T10Y2Y 0.29
     # is 4.99 - 4.70. Its 30-year 5.30% has no second source, so the 30-year stays at 26 Oct.
-    "ust_2y": 4.70, "ust_2y_date": "2026-10-27",
+    # 30 Oct, par curve (Forbes' Treasury-rates page): 2-year 4.56%, 30-year 5.31%. FRED's
+    # T10Y2Y for the 30th is 0.38 = 4.94 - 4.56, and Credit Market Close has the 2-year at
+    # 4.56%; CNBC's market closes 4.596% and 5.315% and Trading Economics' 4.60 / 5.31 are the
+    # market basis. Both rolled in v86, before Monday's roll would have put them past the
+    # audit's five-day bound (the 2-year at 27 Oct, the 30-year at 26 Oct).
+    "ust_2y": 4.56, "ust_2y_date": "2026-10-30",
     "ust_10y_intraday_14oct": 5.33,   # ~30 minutes after the CPI (Quartz, CNBC)
-    "ust_30y": 5.31, "ust_30y_date": "2026-10-26",
+    "ust_30y": 5.31, "ust_30y_date": "2026-10-30",
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
 
@@ -518,6 +528,11 @@ MACRO = {
     # investment fell (Reuters via US News, China Daily, Anadolu).
     "china_gdp_q3": 4.5, "china_gdp_q3_consensus": 4.4, "china_gdp_q2": 4.3,
     "china_retail_sep": 1.1,
+    # CHINA'S OFFICIAL PMIs, October (NBS, 31 Oct; Reuters via Nikkei Asia and Al Arabiya;
+    # Channel NewsAsia): manufacturing 49.3 from 50.1, a third contraction in four months,
+    # as export orders and holiday spending faded; non-manufacturing 49.7 from 50.2. The
+    # forecast is reported as 50.0 and as 49.9, so none is carried.
+    "china_pmi_oct": 49.3, "china_pmi_sep": 50.1, "china_nmpmi_oct": 49.7, "china_nmpmi_sep": 50.2,
     # 22 OCT, BSP DECIDED (BusinessWorld, Rappler, Tribune, astig.ph): the Monetary
     # Board raised the target RRP rate 50bp to 5.50%, its fourth straight hike and
     # the first half-point since February 2023, where 20 of 22 analysts in
@@ -1782,7 +1797,8 @@ MACRO = {
     # euro area 1.1% in 2026, from July's 0.9%, and 1.2% in 2027, unchanged; world 3.1% and
     # 3.4% (imf_world_* below). THE SECOND TIME AN EDITION WAS MISSED: until v85 the Europe
     # note and the Report read July's 0.9% for 17 days after October's was out, because the
-    # age bound (120 days) was wider than the cycle it guards (runbook 123). The July
+    # age bound (120 days) was wider than the cycle it guards (runbook 123); from v86 the
+    # check reads the IMF's release calendar instead (WEO_WINDOWS; runbook 125). The July
     # update's global and emerging-market fields, which nothing read, are retired.
     "imf_weo_vintage": "2026-10-13",
     "imf_ea_2026": 1.1,
@@ -2075,6 +2091,10 @@ def front_contract(iso, last_trade):
 
 VIX_QUOTE_DATE = "2026-10-20"   # Tuesday close - the date every VIX level here is from
 VIX_FWD_WINDOW_D = 30           # a VIX future pays on 30-day forward implied vol
+# The IMF's WEO months and the day by which each edition has been out in recent years
+# (latest seen: 30 Jan 2024, 22 Apr 2025, 29 Jul 2025, 22 Oct 2024) - an ASSUMPTION about
+# the calendar, read by the edition check (v86).
+WEO_WINDOWS = ((1, 31), (4, 25), (7, 31), (10, 25))
 
 def _third_friday(y, m):
     return [_dt.date(y, m, d) for d in range(15, 22)
@@ -2742,6 +2762,7 @@ def _brent_vs_high():
             f"{MACRO['brent_high_since']}")
 _brent_expiry = brent_last_trade(*map(int, MACRO["brent_contract"].split("-"))).isoformat() == MACRO["brent_date"]
 _brent_month = f"{_dt.date.fromisoformat(MACRO['brent_contract'] + '-01'):%B}"
+_wti_month = f"{_dt.date.fromisoformat(MACRO['wti_contract'] + '-01'):%B}"
 
 REGIONS = {
     "US": {
@@ -2803,7 +2824,8 @@ REGIONS = {
                 f"profit of {MACRO['skhynix_q3_op_tn']:.1f}tn won, up {MACRO['skhynix_q3_op_yoy']}% on a year - and about "
                 f"{MACRO['skhynix_returns_2026_tn']}tn won of shareholder returns for 2026. The KOSPI is "
                 f"{MACRO['kospi_off_2oct_pct']}% below its 7003.74 close of 2 Oct. China grew 4.5% in the third quarter "
-                "against 4.4% expected, on exports. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a "
+                f"against 4.4% expected, on exports, but its official factory PMI fell back to {MACRO['china_pmi_oct']} in "
+                f"October from {MACRO['china_pmi_sep']}, a third contraction in four months. The earnings did not break: TSMC's third-quarter profit rose 68.7% to a "
                 "record, and Samsung's quarter was a record 107.4tn won. Oil is the importers' "
                 f"problem, Brent at ${MACRO['brent']:.2f}, with the yen near 158.48. The anchor was cut "
                 "because half its case was the base return: it cited J.P. Morgan's EM "
@@ -2876,10 +2898,11 @@ DRIVERS = [
      f"{MACRO['us_core_pce_mom_sep']}% on the month and {MACRO['us_core_pce_sep']}% on the year, headline "
      f"{MACRO['us_pce_mom_sep']}% and {MACRO['us_pce_sep']}%, and FedWatch has a hike by the 9 Dec meeting at "
      f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, from {MACRO['fed_hike_odds_dec_prev']}% on the "
-     f"28th. On official closes the 10-year was {_u10['2026-10-27']:.2f}% on the 27th, {_u10['2026-10-28']:.2f}% on the "
-     f"28th and {MACRO['ust_10y']:.2f}% on the 29th, with the 2-year last at {MACRO['ust_2y']:.2f}% ({_dday('ust_2y_date')}) "
-     f"and the 30-year at {MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}) - all below the 7 Oct intraday high of 5.365%, "
-     "above the 5 Oct peak of 5.349% and the highest since April 2002. "
+     f"28th. On official closes the 10-year was {_u10['2026-10-28']:.2f}% on the 28th, {_u10['2026-10-29']:.2f}% on the "
+     f"29th and {MACRO['ust_10y']:.2f}% on the 30th, as the tech sell-off sent money into Treasuries, with the 2-year at {MACRO['ust_2y']:.2f}% ({_dday('ust_2y_date')}) "
+     f"and the 30-year at {MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}). The 10-year's 7 Oct intraday high of "
+     f"{MACRO['ust_10y_peak']}%, above the 5 Oct peak of {MACRO['ust_10y_peak_prev']}%, was the highest since "
+     f"{MACRO['ust_10y_peak_since']}. "
      f"The ECB held at {MACRO['ecb_depo']:.2f}% on 29 Oct and the BoJ, a day later, at {MACRO['boj_rate']:.2f}%, "
      f"{MACRO['boj_oct_vote_hold']}-{MACRO['boj_oct_vote_hike']} with a vote for {MACRO['boj_oct_dissent_rate']}% and a "
      "hike flagged for December. Manila repriced to BSP's 50bp hike to 5.50%: at the 26 Oct auction 91-day bills "
@@ -2894,7 +2917,7 @@ DRIVERS = [
      f"{'up' if MACRO['brent_chg_pts'] > 0 else 'down'} ${abs(MACRO['brent_chg_pts']):.2f}"
      f"{' on the ' + _brent_month + ' contract' + chr(39) + 's last day' if _brent_expiry else ''}, {_brent_vs_high()}, "
      f"{abs(MACRO['brent_wk_chg_pct'])}% {'higher' if MACRO['brent_wk_chg_pct'] > 0 else 'lower'} on the week and "
-     f"{MACRO['brent_yoy']:.1f}% above the ${MACRO['brent_yr_ago']:.2f} of a year earlier; December WTI settled at "
+     f"{MACRO['brent_yoy']:.1f}% above the ${MACRO['brent_yr_ago']:.2f} of a year earlier; {_wti_month} WTI settled at "
      f"${MACRO['wti_settle']:.2f} on {_dday('wti_date')}. The euro area is at 3.8% (core 2.5%) and the Philippines at 7.2%. Held: core is firming, "
      "not running away, and most of the jump is energy passing through, not yet wages."),
     ("Growth momentum", 0.15, 4.0,
@@ -2902,7 +2925,8 @@ DRIVERS = [
      f"{MACRO['us_gdp_q3_consensus']}% expected and {MACRO['us_gdp_q2']}% in the second, on inventories, equipment and "
      "consumer and government spending - but September's real spending was flat and the saving rate fell to "
      f"{MACRO['us_saving_rate_sep']}%, the lowest in almost four years. China grew 4.5% on the year against 4.4% "
-     f"expected, on exports; its September retail sales rose only 1.1%. Michigan sentiment ended October at "
+     f"expected, on exports, but its September retail sales rose only 1.1% and its official factory PMI fell back to "
+     f"{MACRO['china_pmi_oct']} in October, services and construction to {MACRO['china_nmpmi_oct']} from {MACRO['china_nmpmi_sep']}. Michigan sentiment ended October at "
      f"{MACRO['us_umich_oct']}, revised up from a first read of {MACRO['us_umich_oct_prelim']} but the lowest since May's "
      f"record low of {MACRO['us_umich_record_low']}; ISM services (54.9) and manufacturing (54.5) stayed in expansion "
      "in September. Philippine growth was 2.6% in the first half. Held: a beat built on inventories, with a stretched "
@@ -3041,7 +3065,7 @@ SUMMARY = {
     "Geopolitics & energy": f"Held: a tanker attack in Hormuz on 30 Oct is confirmed, but the last confirmed flows were near 14 mb/d; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {_brent_vs_high()}.",
     "US": f"Held: the S&P fell {abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f} on {_dday('equity_date')}, its worst day since June, as Intel and Amazon disappointed, after GDP beat at {MACRO['us_gdp_q3']}%; FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at 3.8%, and Lagarde will leave early.",
-    "ASIA": f"Held: the KOSPI fell {abs(MACRO['kospi_latest_chg_pct']):.2f}% to {MACRO['kospi_latest']:,.2f} and the Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}% to {MACRO['nikkei_latest']:,.2f} on {_dday('kospi_latest_date')} on the AI-spending scare; the BoJ held at {MACRO['boj_rate']:.2f}%.",
+    "ASIA": f"Held: the KOSPI fell {abs(MACRO['kospi_latest_chg_pct']):.2f}% to {MACRO['kospi_latest']:,.2f} and the Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}% to {MACRO['nikkei_latest']:,.2f} on {_dday('kospi_latest_date')} on the AI-spending scare, and China's factory PMI fell back to {MACRO['china_pmi_oct']}; the BoJ held at {MACRO['boj_rate']:.2f}%.",
     "PHILIPPINES": f"Held: the peso recovered to {MACRO['usdphp']} on {_dday('usdphp_date')} from its {MACRO['usdphp_record']:.2f} record while the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}%; 91-day bills are at 6.624% after BSP's 50bp hike.",
 }
 
@@ -3825,16 +3849,20 @@ LOOKTHROUGH = {
         # mixed-date table. (The 2dp "September" list in circulation is the same
         # data at the same $42.21bn of assets - an August sheet re-labelled - and
         # is not carried.)
-        "as_of": "2026-08-31",
+        # REFRESHED 2026-10-31 to the 30 September factsheet: the 31 August sheet
+        # reached 61 days at this review. It is a different list, not a relabel - AMD
+        # 4.0% from 3.1%, Meta 3.0% from 2.4%, Micron past Alphabet, Lam Research in
+        # and Broadcom out. Schwab's 30 Sep table has the same top three at 2dp
+        # (7.36 / 6.40 / 5.19) and the ten at 43.33%; the 1dp rows sum to 43.5.
+        "as_of": "2026-09-30",
         "note": "Top 10 of the strategy, from the US-listed JEPQ factsheet; the "
-                "feeder holds the UCITS sister fund, which runs the same strategy. "
-                "Still the latest sheet found (checked 2026-10-23).",
-        "rows": [["NVIDIA", 7.3], ["Apple", 6.4], ["Microsoft", 5.3],
-                 ["Alphabet Class C", 4.8], ["Micron Technology", 4.6],
-                 ["Amazon", 4.0], ["Advanced Micro Devices", 3.1],
-                 ["Meta Platforms", 2.4], ["Broadcom", 2.1], ["Tesla", 2.1]],
+                "feeder holds the UCITS sister fund, which runs the same strategy.",
+        "rows": [["NVIDIA", 7.4], ["Apple", 6.4], ["Microsoft", 5.2],
+                 ["Micron Technology", 5.0], ["Alphabet Class C", 4.7],
+                 ["Advanced Micro Devices", 4.0], ["Amazon", 3.7],
+                 ["Meta Platforms", 3.0], ["Lam Research", 2.1], ["Tesla", 2.0]],
         "unit": "% of fund",
-        "source": "J.P. Morgan Asset Management JEPQ factsheet, 31 August 2026",
+        "source": "J.P. Morgan Asset Management JEPQ factsheet, 30 September 2026; Schwab's 30 Sep holdings table",
     },
     "ATRASEQ": {
         "dp": 1,
@@ -3868,22 +3896,23 @@ LOOKTHROUGH = {
         # Microsoft 7.1, Apple 5.7), but two reads of it disagree on its date and its
         # country table, so it is not carried. The 31 Aug sheet stays, inside the
         # 60-day bound until 30 Oct.
-        "as_of": "2026-08-31",
+        # REFRESHED 2026-10-31 to the 30 September sheet: the August one reached 61
+        # days. Its date is now settled by the document's own name (G-TEC, 20260930),
+        # and the same six leaders read the same way again. Only six are legible, so six
+        # are shown; the sector and country tables were not read, so none is carried -
+        # an August table beside September rows would be a mixed-date table.
+        "as_of": "2026-09-30",
         # "Less American than its benchmark" was cut 2026-10-15: the benchmark's
         # country weights are not an input, and the ~72% US figure the page typed
         # for them had no source.
-        "note": "From Fidelity's 31 August 2026 factsheet (98 positions). The "
-                "tenth holding, a 2.1% position, is not named in the text "
-                "reachable here, so it is left out rather than guessed.",
-        "rows": [["Taiwan Semiconductor", 9.1], ["Microsoft", 6.9], ["Apple", 5.4],
-                 ["Alphabet", 4.4], ["Amazon", 3.8], ["ASML", 3.6],
-                 ["Texas Instruments", 3.6], ["Oracle", 2.2], ["Netflix", 2.0]],
+        "note": "From Fidelity's 30 September 2026 factsheet (95 positions). Only "
+                "the six largest holdings are legible in the text reachable here, so "
+                "the other four are left out rather than guessed.",
+        "rows": [["Taiwan Semiconductor", 9.6], ["Microsoft", 7.1], ["Apple", 5.7],
+                 ["Alphabet", 4.6], ["ASML", 3.9], ["Texas Instruments", 3.9]],
         "unit": "% of fund",
-        "sectors": [["Information Technology", 65.7], ["Communication Services", 13.5],
-                    ["Consumer Discretionary", 7.4]],
-        "geo": [["USA", 53.5], ["Taiwan", 10.8], ["Netherlands", 8.6]],
-        "unnamed_pct": 2.1, "positions": 98,
-        "source": "Fidelity Funds - Global Technology Fund factsheet, 31 August 2026 "
+        "positions": 95,
+        "source": "Fidelity Funds - Global Technology Fund factsheet, 30 September 2026 "
                   "(Fidelity International, Singapore edition)",
     },
     # ---- the fund beyond the original four (2026-10-21) ----
@@ -3914,12 +3943,13 @@ LOOKTHROUGH = {
     # ---- the six added from the 22-fund list (2026-10-22): declared gaps ----
     # Each target is named and its charge sourced, but no current top-10 table was
     # reachable for any of them, so none is typed from memory.
-    "ATRGHCP": {"kind": "gap", "as_of": "2026-08-31",
-                "top2": [["Eli Lilly", 8.7], ["AbbVie", 7.4]], "positions": 41,
-                "note": "Fidelity Funds - Global Healthcare Fund. Its 31 Aug 2026 Singapore factsheet "
-                        "lists Eli Lilly (8.7%) and AbbVie (7.4%) as the largest of 41 positions; the "
-                        "full top 10 was not legible in the text reached.",
-                "source": "Fidelity Funds - Global Healthcare Fund factsheet, 31 August 2026 (Singapore edition), partial"},
+    # WITHDRAWN 2026-10-31: the 31 Aug partial (Eli Lilly 8.7%, AbbVie 7.4%, 41 positions)
+    # reached 61 days, and the 30 Sep sheet's table was not reachable. Described, not shown.
+    "ATRGHCP": {"kind": "gap",
+                "note": "Fidelity Funds - Global Healthcare Fund. Its 31 August sheet led with Eli "
+                        "Lilly and AbbVie, but it is past the 60-day limit and the 30 September "
+                        "table was not reachable, so no weights are shown.",
+                "source": "Fidelity Funds - Global Healthcare Fund factsheet (Singapore edition); retry at each review"},
     "M_GINF": {"kind": "gap",
                "note": "HSBC GIF Global Infrastructure Equity. No holdings table was reachable.",
                "source": "ATRAM Global Infra Equity Feeder Fund fact sheet (target change, March 2025)"},
@@ -5359,6 +5389,14 @@ SOURCES = [
      "https://www.advisorperspectives.com/dshort/updates/2026/10/23/consumer-sentiment-at-five-month-low"),
     ("CNBC", "Tankers defy sharp escalation of Iranian attacks to keep crude flowing through the Strait of Hormuz (Kpler weekly flows), 30 Oct 2026",
      "https://www.cnbc.com/2026/10/30/tanker-attack-strait-hormuz-iran-war-oil.html"),
+    ("WRE News", "10-Year Treasury yield falls to 4.94% as October ends - the official constant-maturity rate 4.98% on 29 Oct, 4.94% on 30 Oct 2026",
+     "https://wrenews.com/treasury-10-year-yield-494-october-30-2026-mortgage-outlook/"),
+    ("Credit Market Close", "Credit market close, 30 Oct 2026 - 10Y nominal yield 4.94%, previous 4.98%, -4bp",
+     "https://cloudzhu.substack.com/p/credit-market-close-october-30-ai"),
+    ("Al Arabiya / Reuters", "China's factory activity marks third contraction in four months - official manufacturing PMI 49.3 in October from 50.1, 31 Oct 2026",
+     "https://english.alarabiya.net/business/economy/2026/10/31/china-s-factory-activity-marks-third-contraction-in-four-months"),
+    ("Nikkei Asia / Reuters", "China's factory activity marks third contraction in four months - non-manufacturing PMI 49.7 from 50.2, 31 Oct 2026",
+     "https://asia.nikkei.com/economy/china-s-factory-activity-marks-third-contraction-in-four-months"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -5806,7 +5844,11 @@ def report():
         if not _v.get("as_of"):
             continue
         _age = (_asof_d - _lt_date(_v["as_of"])).days
-        checks.append((f"{_k} look-through is within {_LT_MAX_AGE_D} days of the as-of date",
+        # Labelled with the date it is measured against and the age (v86): it read "of the
+        # as-of date" while measuring to the review date, and printed no age, so three
+        # tables a day from expiry passed v85 silently and failed the next morning.
+        checks.append((f"{_k} look-through is within {_LT_MAX_AGE_D} days of the review "
+                       f"({_age}d, {_LT_MAX_AGE_D - _age}d left)",
                        0 <= _age <= _LT_MAX_AGE_D))
     # Weight-ranked kinds only. A yield curve is ordered by TENOR, and the money
     # market rows (5.138 / 5.517 / 5.717) ascend correctly - the first version of
@@ -5972,19 +6014,27 @@ def report():
                    f"({_ymid:.2f} vs {_half:.2f} mb/d)", abs(_ymid - _half) <= 0.5))
     # (the review-date-vs-as-of ordering is already asserted below, beside the
     # catalyst checks - not duplicated here)
-    # THE IMF VINTAGE IS A CLOCK. The April WEO sat here for 2.5 months after the
-    # July update superseded it, because nothing knew which edition was carried.
-    # The WEO appears every ~3 months (Jan/Apr/Jul/Oct). 120 days was wider than that
-    # cycle, and July's edition passed for 17 days after October's (v85): the bound is
-    # now one cycle plus a week - 105 days past the carried edition, a newer one exists.
-    _imf_age = (_asof - _dt.date.fromisoformat(MACRO["imf_weo_vintage"])).days
-    checks.append((f"the IMF WEO edition carried is current ({_imf_age}d old, bound 105d)",
-                   0 <= _imf_age <= 105))
+    # THE IMF EDITION IS A CALENDAR, NOT AN AGE (v86). The April WEO sat here for 2.5
+    # months after the July update superseded it, and July's for 17 days after October's
+    # under a 120-day age bound. v85 tightened that to 105 days, which would have failed
+    # in late January in a year like 2024, when the October edition was 112 days old and
+    # no newer one existed. The WEO comes in January and July (updates) and April and
+    # October (full reports), and each has been out by these days of its month in recent
+    # years (latest seen: 30 Jan 2024, 22 Apr 2025, 29 Jul 2025, 22 Oct 2024). Once a
+    # month's window has closed by the review date, that edition exists and is the one
+    # carried - no false alarm in a late year, and no edition missed past its window.
+    _weo_due = max(_dt.date(y, m, 1) for y in (_revd.year - 1, _revd.year)
+                   for m, last in WEO_WINDOWS if _dt.date(y, m, last) <= _revd)
+    _weo = _dt.date.fromisoformat(MACRO["imf_weo_vintage"])
+    checks.append((f"the IMF WEO edition carried is the newest due ({_weo:%b %Y} carried, {_weo_due:%b %Y} due)",
+                   _weo_due <= _weo <= _revd))
     # A PRELIMINARY READING HAS A FINAL (v85). Michigan's final comes two weeks after its
     # first read; the notes quoted October's 46.3 for a week after the 48.0 final was out.
+    # Aged to the review date (v86): a final released after the last session carried is
+    # still out by the time the page is reviewed.
     checks.append(("Michigan sentiment is the final reading, or its first read is under two weeks old",
                    MACRO["us_umich_oct_final"]
-                   or (_asof - _dt.date.fromisoformat(MACRO["us_umich_oct_date"])).days < 14))
+                   or (_revd - _dt.date.fromisoformat(MACRO["us_umich_oct_date"])).days < 14))
     # A US catalyst is read against the last US session carried (CATALYST_CLOCK).
     _cat_clock = lambda n: (_dt.date.fromisoformat(MACRO[CATALYST_CLOCK[n]]) if n in CATALYST_CLOCK
                             else _asof)
