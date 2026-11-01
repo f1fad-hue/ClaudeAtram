@@ -44,8 +44,9 @@ Philippine October CPI (5 Nov) and US October payrolls (6 Nov) follow.
 
 **Harnesses:** engine **248/248** (one fewer: the retired record's check); audit **428 checks, 0
 failures, 0 warnings**; validator 26/26 on the live copy; mutations: m27 repointed at the retired
-flag; 70 defined and listed, each dry-applied to the payload before the run; the run's count is
-recorded after this commit.
+flag; 70 defined and listed, each dry-applied to the payload before the run. v87's own run, on a
+frozen copy of the tree committed as d54f4e0, split across four workers: **70/70 caught on the
+first pass**, no crashes - m27 caught by the new retirement check (recorded after that commit).
 
 Not personal financial advice.
 
