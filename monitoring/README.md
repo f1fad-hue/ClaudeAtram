@@ -196,6 +196,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+127. A RECORD NOBODY SEES STILL TICKS. The 21 Oct review's own pick sat in A's payload, shown only
+   if A matched it, under a two-week clock that would have failed a page that never displayed it.
+   When a record no longer describes anything on the page, retire it - and make the audit check
+   that it stays retired - rather than refreshing it to keep a check quiet.
 126. A KNOWN EXPIRY IS A TASK, NOT A COMMENT. "Inside the 60-day bound until 30 Oct" sat in the
    engine for a week, v85 shipped on the 30th, and three holdings tables failed at the next review;
    the 2- and 30-year were one session from the same failure. Expiry checks now print the days left,

@@ -28,7 +28,7 @@ AS_OF = "2026-10-30"        # newest completed session carried (Friday's closes 
                             # Manila, Seoul, Tokyo and New York, Brent's December expiry and
                             # WTI's settle, the VIX and the 2-, 10- and 30-year's official
                             # closes; FedWatch at 29 Oct)
-REVIEW_DATE = "2026-10-31"  # when this review was worked through
+REVIEW_DATE = "2026-11-01"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -787,21 +787,10 @@ MACRO = {
     # The review's search, shared by both picks: at most 5 funds, at most 35% in any
     # one, at least 5% in peso cash, on the 5% grid.
     "pd_review_max_funds": 5, "pd_review_max_w": 35, "pd_review_min_cash": 5,
-    # THE REVIEW'S HIGHEST-RETURN PICK, the reference A is compared with: the best
-    # base-case net CAGR inside the budget, then the lowest drawdown within the tie.
-    # RE-RUN 2026-10-21 WITHOUT EITHER PESO BOND FUND (owner), with the money market
-    # at 0.58% and on the page's -27.17% budget (the review model had carried -27.27%,
-    # a budget from before the 2027 roll), over the 11 funds the review kept after
-    # screening less the two bond funds. It holds 25% Global Health Care, a fund this
-    # page does not model, so A - chosen over this page's five - cannot match it.
-    # 58 in the tie; worst case 6.55% (on the 2026 assumptions); -28.0% if bonds and
-    # tech fall together. With the bonds it was 5 / 25 / 0 / 35 / 35 / 0 at 7.68%.
-    "pa_review_date": "2026-10-21", "pa_review_cagr": 7.06, "pa_review_dd": 26.3,
-    "pa_review_band_n": 58, "pa_review_worst": 6.55, "pa_review_stress_dd": 28.0,
-    "pa_review_pool_n": 11,
-    "pa_review_mix": [["Peso Money Market", 15], ["Nasdaq Equity Income", 35],
-                      ["Global Technology", 15], ["Global Dividend", 10],
-                      ["Global Health Care", 25]],
+    # THE 21 OCT REVIEW'S OWN PICK (pa_review_*) RETIRED 2026-11-01 (v87): it described a
+    # search on the old -27.17% budget that called Global Health Care unmodelled, A no longer
+    # matches it, and its two-week clock would have failed on 5 Nov. A, B and C are re-chosen
+    # from the same list on every roll; the record is history in the changelog (v59-v86).
     # THE LIST (owner, 2026-10-21): 24 funds with ATRAM US Equity Opportunity and US
     # Multi-Asset Income added, then 22 with the Long Term and Medium Term Peso Bond
     # funds removed. US Equity Opportunity's weight turns on its trust fee, not
@@ -978,7 +967,9 @@ MACRO = {
         # after touching a high of $118", the highest settle since the end of April, as a
         # tanker caught fire in Hormuz (Reuters via the Korea Times and Rallies; Press News
         # Agency). 114.88 + 2.76 = 117.64. January, front month from 2 Nov, settled up $2.63
-        # at $113.43 the same day - the prior the next roll needs. Brent rose 13.6% in October.
+        # at $113.43 the same day (Reuters via the Korea Times and CNBC; Yahoo Finance's BZ=F,
+        # 113.43 +2.63, +2.37% - two sources from v87) - the prior the 2 Nov roll needs, to go
+        # into brent_roll_priors on that day. Brent rose 13.6% in October.
         ("2026-10-30", 117.64),
     ],
     # ACROSS A ROLL the reported move is off the NEW contract's prior settle, which
@@ -1120,8 +1111,11 @@ MACRO = {
     # few days behind and carrying it undated let it go fourteen days stale: 6 was
     # the 6 September count and was still here on the 19th. Both the reading and
     # its date are inputs now, and a check bounds the gap.
-    "hormuz_transits": 4,          # IMF PortWatch, all transits (2 on 11 Oct, 4 on 4 Oct)
-    "hormuz_transits_date": "2026-10-18",   # latest published day, 20 Oct (Straits Daily Brief)
+    # REFRESHED 2026-11-01 (v87), on the day the 18 Oct reading reached its two-cycle bound:
+    # PortWatch's newest published day is 25 Oct, 2 transits against the 85 baseline (Straits
+    # Daily Brief, 29 and 31 Oct briefs).
+    "hormuz_transits": 2,          # IMF PortWatch, all transits (4 on 18 Oct, 2 on 11 Oct)
+    "hormuz_transits_date": "2026-10-25",   # latest published day, 31 Oct (Straits Daily Brief)
     "hormuz_transits_cadence_d": 7,   # weekly Tuesday publication
     "hormuz_baseline": 85,         # pre-crisis transits/day, SAME PortWatch basis
                                    # (measured 28 Feb 2025 - 27 Feb 2026)
@@ -1340,7 +1334,11 @@ MACRO = {
                      ("2026-09-21", 401), ("2026-09-22", 443), ("2026-09-25", 407),
                      ("2026-09-26", 422), ("2026-09-27", 262), ("2026-09-28", 233),
                      ("2026-10-02", 147), ("2026-10-06", 242),
-                     ("2026-10-07", 206)],   # 02:50 UTC each
+                     ("2026-10-07", 206),    # 02:50 UTC each
+                     # EXTENDED 2026-11-01 (v87) from the 29 Oct brief: "35 ... holding
+                     # position away from berth, down from 139 on October 11" - its stamps
+                     # not given, so, like the rest, read only as a range.
+                     ("2026-10-11", 139), ("2026-10-29", 35)],
     # That reading is now OUT OF DATE and was carried too long: through 2026-09-18
     # this comment still said the VIX had "fallen BACK toward the 2026 low", which
     # widened the gap to the futures curve. It did the opposite. Spot ran to 17.20
@@ -2990,8 +2988,9 @@ DRIVERS = [
      "of pre-war on preliminary figures, and the Gulf's exports by every route above 24 mb/d against 23.3 pre-war. A "
      "lower figure for a later week is in one report only and October's average differs by source, so neither is "
      "carried. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses "
-     "the Strait, and the export volumes since bear out that it runs. Vessel counts disagree and are not supply: IMF PortWatch counted 4 transits on 18 Oct against an "
-     "85 baseline, a 95% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over "
+     "the Strait, and the export volumes since bear out that it runs. Vessel counts disagree and are not supply: IMF PortWatch counted "
+     f"{MACRO['hormuz_transits']} transits on {_dday('hormuz_transits_date')} against "
+     f"{_a_an(MACRO['hormuz_baseline'])} {MACRO['hormuz_baseline']} baseline, a {MACRO['hormuz_vessel_drop_pct']:.0f}% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over "
      "10000 dwt; the US government around 30, on a basis it does not state. Held, not cut: one confirmed attack is "
      "not a closure, and 1.0 is kept for full closure with Brent above $130 - strictly worse, and nearer than it was."),
 ]
@@ -4128,9 +4127,8 @@ PIN_W = 0.50
 # (C, B with Nasdaq Equity Income held at 50%, was retired in v76; D, C over four funds,
 # in v74.)
 # Until v56 A and B were FIXED weights from the review; the engine now chooses both
-# itself, on every roll. Whether A matches the review's own long-run pick is
-# published (portfolio_a.is_review_pick), never assumed: the review's pick (25% Global
-# Health Care) is not the engine's, now with every fund in it modelled.
+# itself, on every roll. (The review's own 21 Oct pick, published beside A until v86, was
+# retired in v87: it no longer described anything on the page.)
 # The four-fund optimiser that ran beside them off the page, kept only for its own
 # checks, was retired on 2026-10-22 (v62); the baseline above is all that is left of it.
 UNIV = (F + F_ADD, FUNDS + ADD_FUNDS, CORR_U)
@@ -4369,12 +4367,6 @@ PA, PA_BASE = summarise(PA_W, "net_macro", UNIV), summarise(PA_W, "net_base", UN
 PA_10, PB_10 = (summarise(w, "net_10y", UNIV) for w in (PA_W, PB_W))
 PB, PB_BASE = summarise(PB_W, "net_macro", UNIV), summarise(PB_W, "net_base", UNIV)
 PC, PC_BASE, PC_10 = (summarise(PC_W, c_, UNIV) for c_ in ("net_macro", "net_base", "net_10y"))
-# Whether the engine's A is the mix the 22-fund review found. Published, not asserted:
-# a later roll may move one and not the other, and the page says so when it does.
-PA_IS_REVIEW = (dict(MACRO["pa_review_mix"])
-                == {f["short"]: round(w * 100) for f, w in zip(UNIV[1], PA_W) if round(w * 100)})
-# The review's holdings in funds this page does not model, if any.
-PA_REVIEW_OUTSIDE = [x for x in MACRO["pa_review_mix"] if x[0] not in [f["short"] for f in UNIV[1]]]
 
 # The universe's macro frontier and the best pure ratio, for the Portfolios chart and
 # the "why not simply maximise return" note - the same set B is chosen from. The
@@ -5397,6 +5389,12 @@ SOURCES = [
      "https://english.alarabiya.net/business/economy/2026/10/31/china-s-factory-activity-marks-third-contraction-in-four-months"),
     ("Nikkei Asia / Reuters", "China's factory activity marks third contraction in four months - non-manufacturing PMI 49.7 from 50.2, 31 Oct 2026",
      "https://asia.nikkei.com/economy/china-s-factory-activity-marks-third-contraction-in-four-months"),
+    ("Straits Daily Brief", "Strait of Hormuz news, 31 Oct 2026 - IMF PortWatch 2 transits on 25 Oct, its most recent published day, against an 85/day baseline",
+     "https://straits.live/briefs/2026-10-31"),
+    ("Straits Daily Brief", "Strait of Hormuz news, 29 Oct 2026 - 35 AIS-visible vessels holding position away from berth, down from 139 on 11 Oct",
+     "https://straits.live/briefs/2026-10-29"),
+    ("Yahoo Finance", "Brent Crude Oil Last Day Financial Futures (BZ=F) - 113.43, +2.63 (+2.37%), January's settle on 30 Oct 2026",
+     "https://finance.yahoo.com/quote/BZ%3DF/"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -5541,15 +5539,13 @@ def payload():
         "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": UNIV_IDS,
                         "macro": PA, "base": PA_BASE, "ten": PA_10, "column": "net_10y",
                         "band_n": PA_BAND_N, "n_feasible": UNIV_N_FEAS["a"],
-                        "is_review_pick": PA_IS_REVIEW, "review_outside": PA_REVIEW_OUTSIDE,
                         "scenarios": run_scenarios(PA_W, "net_10y", UNIV),   # its own horizon (v80)
                         "dd_cap": round(DD_CAP, 2),
                         # inside the budget on the 3/5/10-year view AS COMPUTED AND AS SHOWN
                         # (v77: the printed figure alone called A inside at -25.0% while its true
                         # drawdown there was 25.0035%)
                         "in_budget": abs(PA["maxdd"]) <= DD_CAP + 1e-9
-                                     and abs(port_dd(PA_W, "net_macro", UNIV)) <= DD_CAP + 1e-9,
-                        "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pa_review_")}},
+                                     and abs(port_dd(PA_W, "net_macro", UNIV)) <= DD_CAP + 1e-9},
         "dd_budget": {"cap": DD_CAP, "source": "band", "base": DD_BUDGET_OWNER, "base_source": "owner",
                       "date": DD_BUDGET_OWNER_DATE, "band_date": DD_BUDGET_BAND_DATE,
                       "derived_ref": round(DD_CAP_DERIVED, 2), "improvement": DD_BUDGET_IMPROVEMENT},
@@ -7234,16 +7230,6 @@ def report():
     _amu = sum(w / 100 * f["net_macro"] for w, f in zip(_aw, p["funds"] + _pb["funds"]))
     checks.append((f"Portfolio A's CAGR re-derives from its funds ({_amu:.2f} vs {_pa['macro']['cagr']})",
                    abs(_amu - _pa["macro"]["cagr"]) < 0.005))
-    # THE 22-FUND REVIEW RECORD (21 Oct) holds together. Its name said "the two picks
-    # order as their rules say: A the higher base case, the best-worst-case pick the
-    # better worst case" from the D era to v77, while the body compared no two picks -
-    # a check's name is a claim too (lesson 110), so it now says what the body tests.
-    checks.append(("the 22-fund review record holds together: one date, under two weeks old, its A inside the budget it ran at, its stress drawdown no milder than its base",
-                   MACRO["pa_review_date"] == MACRO["pd_review_date"] <= AS_OF
-                   and (_dt.date.fromisoformat(AS_OF) - _dt.date.fromisoformat(MACRO["pd_review_date"])).days <= 14
-                   and MACRO["pa_review_dd"] <= DD_CAP_DERIVED + 1e-9 and MACRO["pa_review_band_n"] >= 1
-                   and MACRO["pa_review_stress_dd"] >= MACRO["pa_review_dd"]
-                   and 0 < MACRO["pa_review_pool_n"] <= MACRO["pd_review_n_funds"]))
     # The 24-fund re-run is recorded, not applied: the held picks hold none of the new
     # fund, and the recorded weights fall as its assumed fee rises.
     checks.append(("the review list's re-run is recorded consistently and the universe excludes the unconfirmed fund",
@@ -7256,7 +7242,6 @@ def report():
                    and MACRO["useq_w_c_listed"] >= MACRO["useq_w_c_peer"] >= 0
                    and MACRO["gbi_target_low"] < MACRO["gbi_target_high"]
                    and all(MACRO[f"gbi_w_{x}_low"] >= MACRO[f"gbi_w_{x}_high"] >= 0 for x in "abc")
-                   and sum(x[1] for x in MACRO["pa_review_mix"]) == 100
                    and "ATRUSEQ" not in p["portfolio_b"]["ids"]))
     checks.append(("the held-out funds' what-if weights were run at the live drawdown budget and rule, on or before today",
                    MACRO["heldout_run_cap"] == p["dd_budget"]["cap"] and MACRO["heldout_run_tie"] == PIN_TIE_PP

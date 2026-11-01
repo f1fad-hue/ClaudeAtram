@@ -2,6 +2,53 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-01 — v87: Sunday review - the Hormuz transit count refreshed on the day it expired, the 21 Oct review record retired before its clock failed, January Brent's prior confirmed; A, B and C unchanged
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Do house cleanup."
+
+**Refreshed (two sources or more, or the series' own source):**
+- **Hormuz vessel count**: IMF PortWatch's newest published day is 25 Oct, **2 transits** against
+  the 85-a-day baseline (98% down; 4 on 18 Oct) (Straits Daily Brief, 29 and 31 Oct). The 18 Oct
+  reading reached its two-cycle bound today. The queue off berth adds 139 (11 Oct) and 35 (29 Oct).
+- **January Brent's 30 Oct settle**, $113.43 (+$2.63), now has two sources (Reuters via CNBC;
+  Yahoo Finance's BZ=F, +2.37%) - the prior Monday's switch to January needs.
+
+**Scored, all held:** no market has traded since Friday. The weekend's Hormuz reports are claims
+on both sides (Iran's Revolutionary Guard: four tankers struck mines; US Central Command: the main
+routes are clear and Iran's naval craft have left the Strait), so Geopolitics holds at 1.5 on the
+volume rule. Gauge 2.29, regions 3.60 / 3.29 / 2.99 / 2.46, the drawdown gauge 2.89 (hold at 25%),
+and **A, B and C are unchanged** (7.30%, 7.10%, 7.14%; −24.9% each).
+
+**Not carried:** Korea's October exports (the headline growth is reported as 93.7% and as 76.1%,
+and the "259.4%" chip figure in circulation is September's first twenty days); FactSet's 30 Oct
+update (still one source); a 30 Oct-5 Nov 2025 Brent settle for the year-ago base (none found in
+two sources); a 30 Oct FedWatch reading (none found).
+
+**Errors found and fixed:**
+- **A record nobody saw still had a clock.** Portfolio A's payload carried the 21 Oct review's own
+  pick (its mix, 7.06% / −26.3%, pool of eleven) under a two-week check that would have failed on
+  5 Nov. It described a search on the old −27.17% budget, its comment called Global Health Care "a
+  fund this page does not model" (modelled since 22 Oct), and the page showed it only when A matched
+  it, which A no longer does. **Retired** from the engine, the payload and the page; the audit's check
+  of it now checks that it stays retired, and mutant m27 now restores the retired flag (runbook 127).
+- **The Hormuz transit count expired today** (14 of 14 days); refreshed above. The days-left labels
+  added in v86 made it visible in the review that had to act on it.
+- **The vessel-count sentence was typed** ("4 transits on 18 Oct ... a 95% drop"); it now reads the
+  count, its date, the baseline and the derived drop from their inputs.
+
+**Known for the next rolls:** Monday 2 Nov - Brent's year-ago base must move to a 30 Oct-5 Nov 2025
+settle, January becomes the front month (its prior is recorded), Manila is closed; Wednesday 4 Nov -
+the 29 Oct FedWatch reading passes its five-day bound; the US midterms (3 Nov) pass as a catalyst;
+Philippine October CPI (5 Nov) and US October payrolls (6 Nov) follow.
+
+**Harnesses:** engine **248/248** (one fewer: the retired record's check); audit **428 checks, 0
+failures, 0 warnings**; validator 26/26 on the live copy; mutations: m27 repointed at the retired
+flag; 70 defined and listed, each dry-applied to the payload before the run; the run's count is
+recorded after this commit.
+
+Not personal financial advice.
+
 ## 2026-10-31 — v86: weekend review - the 2-, 10- and 30-year's 30 Oct official closes, China's October PMIs, three fund holdings tables refreshed or withdrawn, an IMF check that would have failed falsely replaced; A, B and C unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
