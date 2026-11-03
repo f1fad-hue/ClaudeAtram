@@ -2440,6 +2440,18 @@ VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.
 
 
 
+def cagr2(w, nets):
+    """THE PRINTED CAGR (v88): the exact decimal sum of weight x net, rounded half-up -
+    the reader's route and the project's convention (rnd). Weights sit on the 5% grid and
+    every net is published at 2dp, so the exact sum lands on x.xx5 often: A's 10-year CAGR
+    is exactly 7.305. Built-in round() on the float sum printed it 7.30 (half-even on a
+    binary value just below 7.305), and which way such a tie fell depended on the order of
+    the additions and the Python version. Here it is exact, so it falls the same way always."""
+    s_ = sum(Decimal(repr(round(wi, 10))) * (n if isinstance(n, Decimal) else Decimal(repr(n)))
+             for wi, n in zip(w, nets) if wi)
+    return float(Decimal(s_).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+
+
 def to5(v10):
     """Linear rescale of a 1-10 research score onto 1-5. 1->1, 5.5->3.0, 10->5."""
     return round(1 + (v10 - 1) * 4 / 9, 2)
@@ -3743,27 +3755,29 @@ CORR_U_NOTE = (f"Global Dividend moves with the other equity sleeves "
 def _univ(u):
     return u if u is not None else (F, FUNDS, CORR)
 
+# EVERY PORTFOLIO SUM IS math.fsum (v88). The search's _measure() added its terms in a
+# plain loop and port_ret() with the built-in sum(), which Python 3.12 made compensated:
+# on 3.13 the two differ in the last bit, and at a value sitting on x.xx5 the printed
+# figure flips - one step of the budget gauge printed CAGR 7.20 beside its own "best"
+# 7.21, and the stress rows moved by 0.01 with the interpreter. fsum is exactly rounded,
+# so every path, and every Python, gets the same number.
 def port_vol(w, u=None):
     Fs, _, C = _univ(u)
     s = [w[i] * Fs[i]["vol"] for i in range(len(w))]
-    v = 0.0
-    for i in range(len(w)):
-        for j in range(len(w)):
-            v += s[i] * s[j] * C[i][j]
-    return math.sqrt(v)
+    return math.sqrt(math.fsum(s[i] * s[j] * C[i][j] for i in range(len(w)) for j in range(len(w))))
 
 def port_ret(w, key, u=None):
     Fs, _, _ = _univ(u)
-    return sum(w[i] * Fs[i][key] for i in range(len(w)))
+    return math.fsum(w[i] * Fs[i][key] for i in range(len(w)))
 
 def port_k(w, u=None):
     """Weight-averaged drawdown coefficient, ex-cash (cash contributes no equity DD)."""
     _, FS, _ = _univ(u)
-    eq = sum(w[i] for i in range(len(w)) if not FS[i]["cash_like"])
+    eq = math.fsum(w[i] for i in range(len(w)) if not FS[i]["cash_like"])
     if eq <= 0:
         return DD_K
-    return DD_K + sum(w[i] * FS[i]["dd_k_adj"] for i in range(len(w))
-                      if not FS[i]["cash_like"]) / eq
+    return DD_K + math.fsum(w[i] * FS[i]["dd_k_adj"] for i in range(len(w))
+                            if not FS[i]["cash_like"]) / eq
 
 def port_dd(w, key, u=None):
     mu = port_ret(w, key, u)
@@ -3792,7 +3806,7 @@ def summarise(w, key, u=None):
     # way; the headline rows were the last place the raw value still surfaced.
     # port_dd() itself is UNCHANGED and still raw - the optimiser's constraint must
     # test the true drawdown, not a display value.  (Audit 2026-09-20.)
-    r_d, v_d = round(r, 2), round(v, 2)
+    r_d, v_d = cagr2(w, [f[key] for f in _univ(u)[0]]), round(v, 2)
     d_d = round(-max((port_k(w, u) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0), 1)
     return {
         "weights": [round(x * 100, 1) for x in w],
@@ -4207,6 +4221,7 @@ _WI_COL10 = {k: "net10_" + v[4:] for k, v in _WI_COL.items()}
 _UN = len(UNIV_IDS)
 _UF, _US, _UC = UNIV
 _VOL = [f["vol"] for f in _UF]
+_UF100 = [{k: round(v * 100) for k, v in f.items() if k.startswith("net") and isinstance(v, float)} for f in _UF]
 _ADJ = [f["dd_k_adj"] for f in _US]
 _CASH = [f["cash_like"] for f in _US]
 _MAXU, _CASHU = round(UNIV_MAX_W * 20), round(UNIV_MIN_CASH * 20)
@@ -4244,31 +4259,20 @@ def _measure(idx, units, cols):
     """Raw and published figures for one mix on each column, by summarise()'s arithmetic."""
     w = [u / 20 for u in units]
     sv = [w[a] * _VOL[i] for a, i in enumerate(idx)]
-    v = 0.0
-    for a, i in enumerate(idx):
-        for b, j in enumerate(idx):
-            v += sv[a] * sv[b] * _UC[i][j]
-    v = math.sqrt(v)
-    eq = 0
-    for a, i in enumerate(idx):
-        if not _CASH[i]:
-            eq += w[a]
+    v = math.sqrt(math.fsum(sv[a] * sv[b] * _UC[i][j] for a, i in enumerate(idx) for b, j in enumerate(idx)))
+    eq = math.fsum(w[a] for a, i in enumerate(idx) if not _CASH[i])
     if eq <= 0:
         k = DD_K
     else:
-        ka = 0
-        for a, i in enumerate(idx):
-            if not _CASH[i]:
-                ka += w[a] * _ADJ[i]
-        k = DD_K + ka / eq
+        k = DD_K + math.fsum(w[a] * _ADJ[i] for a, i in enumerate(idx) if not _CASH[i]) / eq
     v_d = round(v, 2)
     out = []
     for col in cols:
-        mu = 0
-        for a, i in enumerate(idx):
-            mu += w[a] * _UF[i][col]
+        mu = math.fsum(w[a] * _UF[i][col] for a, i in enumerate(idx))
         raw = -max((k * v - DD_MU * mu) * DD_HORIZON_SCALAR, 0.0)
-        r_d = round(mu, 2)
+        # the printed CAGR exactly, as cagr2() rounds it: units of 5% x hundredths, /20
+        s_ = sum(units[a] * _UF100[i][col] for a, i in enumerate(idx))
+        r_d = ((s_ + 10) // 20 if s_ >= 0 else -((-s_ + 10) // 20)) / 100
         d_d = round(-max((k * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0), 1)
         out.append((r_d, d_d, raw))
     return out
@@ -4461,9 +4465,9 @@ def run_scenarios(w, key, u=None):
     n = len(w)
     rows = []
     for name, desc, shock, volmul in SCENARIOS:
-        r = sum(w[i] * (Fs[i][key] + shock[Fs[i]["id"]]) for i in range(n))
+        r = math.fsum(w[i] * (Fs[i][key] + shock[Fs[i]["id"]]) for i in range(n))
         s = [w[i] * Fs[i]["vol"] * volmul for i in range(n)]
-        v = math.sqrt(sum(s[i] * s[j] * C[i][j] for i in range(n) for j in range(n)))
+        v = math.sqrt(math.fsum(s[i] * s[j] * C[i][j] for i in range(n) for j in range(n)))
         # The horizon scalar belongs here exactly as it does in port_dd(). It was
         # MISSING from 2026-09-07, when the mandate moved to 10 years, until the
         # 2026-09-09 audit: every other drawdown on the page was scaled and these
@@ -4478,7 +4482,9 @@ def run_scenarios(w, key, u=None):
         # peso figures on 2026-09-03, ret_per_dd on 2026-09-11, and here - each time
         # because the fix was applied where it was found rather than everywhere the
         # pattern occurs. (Audit 2026-09-14.)
-        r_d, v_d = round(r, 2), round(v, 2)
+        # net + shock added in decimal: as floats, 7.81 - 4.5 is 3.3099999999999996
+        r_d = cagr2(w, [Decimal(repr(Fs[i][key])) + Decimal(repr(shock[Fs[i]["id"]])) for i in range(n)])
+        v_d = round(v, 2)
         d = -max((port_k(w, u) * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0)
         rows.append({"name": name, "desc": desc, "cagr": r_d,
                      "vol": v_d, "maxdd": round(d, 1)})
@@ -7080,6 +7086,10 @@ def report():
                    and _dg["value"] == round(sum(_dg["parts"][h]["reading"] * _dg["w"][h] for h in _dg["views"]), 2)
                    and 1.0 <= _dg["value"] <= 5.0 and HZ_LABEL in _dg["parts"]))
     _bands = _dg["bands"]
+    # ONE NUMBER, ONE ARITHMETIC (v88): each budget step prints the CAGR its own search
+    # ranked on. Two summation routes printed 7.20 beside a "best" of 7.21 on Python 3.13.
+    checks.append(("every budget step's printed CAGR is the best its search found",
+                   all(e["cagr"] == e["best"] for alt in p["dd_gauge"]["alt"].values() for e in alt.values())))
     checks.append(("the gauge's bands tile 1-5 without a gap, step 1pp from 24% to 27%, and hold at the owner's 25%",
                    _bands[0]["lo"] == 1.0 and _bands[-1]["hi"] == 5.0
                    and all(a["hi"] == b["lo"] for a, b in zip(_bands, _bands[1:]))
