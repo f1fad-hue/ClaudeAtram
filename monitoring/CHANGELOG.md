@@ -2,6 +2,81 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-03 — v89: Election Day closes, the 2 Nov Nikkei and 10-year resolved, the peso rolled, the midterms re-dated to their result; A, B and C unchanged
+
+At the owner's instruction, the rewritten review command: "ATRAM review: bring the dashboard up to
+today, check every number, and publish it." Evidence rule: two independent sources that agree and
+chain, or the last confirmed figure is kept and the dispute recorded.
+
+**Blocked from the review environment** (the proxy refuses the connection): atram.com.ph,
+uitf.com.ph, schroders.com, investing.com, home.treasury.gov, fred.stlouisfed.org, cnbc.com,
+am.jpmorgan.com, morningstar.com and bworldonline.com. Every figure below came through search
+results; what that left unverified is listed under Held and in the fund check.
+
+**Updated (two sources or more, each chaining):**
+- **US, 3 Nov (Election Day)**: S&P 7,568.92 (+27.52, +0.36%), snapping a three-session slide;
+  Nasdaq 25,372.01 (+0.83%) on the chipmakers; Dow 51,786.72 (−197.26, −0.38%) on Apple's margin
+  outlook (Yahoo Finance; TradingKey; Kiplinger; Investing.com; CNBC; AP).
+- **Brent, 3 Nov**: $103.60, −$1.17 (−1.12%), a second day lower after the Qeshm strike report;
+  **WTI** $96.09, −$0.37 (CNBC; SBS). Brent +59.21% y/y.
+- **Peso, 3 Nov**: 63.47, 27 centavos stronger after the holiday (GMA, BAP data; BusinessWorld) -
+  held in v88 on one source.
+- **Nikkei, 2 Nov**: 63,081.86 (−208.25, −0.33%), **resolving v88's withheld session** by four
+  sources (Reuters via Business Recorder and Arab News Japan; BBN Times; AD HOC News; BigGo).
+- **Treasuries, 2 Nov par curve**: 10-year 4.91% (−3bp), 2-year 4.59% (+3bp) (StockMarketWatch;
+  MarketScreener citing the Treasury), **resolving the 10-year withheld in v88**.
+
+**Held:** the VIX at 2 Nov's 21.15 (3 Nov's 20.51 is in AD HOC News alone, the source that was wrong
+on 2 Nov - withheld); the 30-year at 30 Oct (2 Nov's 5.28% in one source); FedWatch at 29 Oct's
+79.6% (3 Nov reads of 73%, 75% and 77%, none in two sources); PH T-bills at 26 Oct (no 2-3 Nov
+auction found); the Hormuz count at 25 Oct (PortWatch's Tuesday release not yet out); Brent's
+year-ago base at 31 Oct 2025 (no 1-7 Nov 2025 settle in two sources).
+
+**Funds (the 22):** fees unchanged and confirmed where reachable - ATRAM's 14 Sep rise on six feeder
+funds is the 1.50% carried; Asian Multi-Asset Income's page still reads 1.50%. **New:** a search
+shows uitf.com.ph's US Equity Opportunity USD-class page at 1.50%, against the 1.20% recorded; it
+stays held out (the owner's hold), and at 1.50% the held-out run gives it none of A, B or C. No
+merger, closure or new fund since Global Gold Equity (10 Sep). Holdings: Global Technology's
+carried table matches Fidelity's 30 Sep factsheet; Nasdaq Equity Income's 30 Sep table is inside
+its 60 days, with no October month-end edition out yet; Global Health Care's newest factsheet found
+is 31 Aug, past the 60-day bound, so its gap stays; Global Infra Equity's and Asian Multi-Asset
+Income's targets have no dated table in two sources. No fund input moved, so the held-out what-if
+of 3 Nov stands.
+
+**Scored, all held:** nothing carried moves a driver or region - the VIX is held, oil fell, the
+10-year eased, and the talks have no deal while a strike was reported. Gauge 2.28; regions 3.60 /
+3.29 / 2.99 / 2.46; drawdown gauge 2.89, hold at 25%. **A, B and C are unchanged** (A 7.31% on its
+10-year view; B 7.10% and C 7.14% on the 3/5/10-year; −24.9% each).
+
+**Errors found and fixed:**
+- **The midterms would have left the calendar unpriced.** With New York's 3 Nov close carried, the
+  "US midterm elections" catalyst (3 Nov) failed its own clock - correctly, since the vote had
+  happened - but the polls closed after the close, so its result is in none of these numbers. It is
+  re-dated to 4 Nov as "US midterm results", the first session that can price it (runbook 133).
+- **Nine sentences would have printed the latest move beside an older date or the wrong story** (six in
+  five notes, three summaries): "Brent fell 1.12%, its sharpest fall in three months" (2 Nov's −7.63%
+  was meant); "the 10-year at 4.91% on the 30th"; the Nikkei's 2 Nov −0.33% twice as "on the 30th";
+  the Nasdaq's 3 Nov rise as "fell again as Oracle set out to raise money"; the S&P's 3 Nov rise as "a
+  third straight loss"; and the earnings, geopolitics and US summaries. Each now reads its own day's field (`brent_2nov_chg_pct`, derived
+  from the series and the roll record; `nikkei_30oct_chg_pct`; `nasdaq_2nov_chg_pct`;
+  `dow_2nov_chg_pct`; the 10-year's own 30 Oct close).
+- **An input nobody read**: `spx_2nov_chg_pct`, added in this roll, was caught by the audit's orphan
+  check and removed.
+- **The Nasdaq's 2 Nov close is disputed**, found by the chain: Yahoo's 3 Nov +207.65 lands on
+  25,372.01 from 25,164.36 (BBN Times; a recap citing official closing data), not from the 25,164.32
+  carried. Kept as carried and recorded (`nasdaq_disputed_2nov`); the 0.04 moves no percentage.
+
+**Known for the next rolls:** FedWatch's 29 Oct read is at its five-day bound (0 days left) and must
+be replaced; the 30-year has one day left; **Brent's year-ago base fails the three-day bound at the
+next Brent settle** unless a 1-7 Nov 2025 settle is found in two sources; the midterm results (4 Nov);
+the PortWatch release; Philippine October CPI (5 Nov) and US October payrolls (6 Nov); the PH T-bill
+clock runs to 9 Nov and the VIX strip's to 19 Nov.
+
+**Harnesses:** engine **252/252**; audit **238 checks, 0 failures**; validator **15/15**;
+mutations **40/40 caught** on the final payload, none missed or crashed.
+
+Not personal financial advice.
+
 ## 2026-11-03 — v88: the harnesses rebuilt in the repo, every CAGR printed exactly, the first roll into November (Brent onto January, the trend window, October's month-end gauge review), Volatility cut to 2.25; A and B unchanged, C 5pp from Infra to Health Care
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search

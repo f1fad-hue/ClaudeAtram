@@ -196,6 +196,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+133. AN EVENT IS PRICED WHEN ITS RESULT IS, NOT WHEN IT HAPPENS. The midterms were dated to the vote,
+   and the clock read them as past once New York's 3 Nov close was carried - but the polls closed
+   after that close, so no number on the page had seen the result. Date an event by the first
+   session that can price it: an after-the-close release, a vote, an overnight decision.
 132. A CHECK WRITTEN IN ONE MONTH MUST SURVIVE THE NEXT. The trend window's check said "the last
    month-end before AS_OF" for a window built from quarters; it held through October only because
    30 Sep is both, and failed on the first roll into November with nothing wrong. The month-end
