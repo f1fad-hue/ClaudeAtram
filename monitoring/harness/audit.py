@@ -175,8 +175,41 @@ G = D["dd_gauge"]; band = [b for b in G["bands"] if b["lo"] <= G["value"] < b["h
 ck("the drawdown gauge's bands tile 1-5 and its value sits in the band it reports",
    G["bands"][0]["lo"] == 1 and G["bands"][-1]["hi"] == 5 and all(a["hi"] == b["lo"] for a, b in zip(G["bands"], G["bands"][1:]))
    and len(band) == 1 and band[0] == G["band"], f"{G['value']} in {G['band']}")
-ck("the budget in force is the band's step (guards permitting) and the budget the picks ran at",
-   D["dd_budget"]["cap"] == G["band"]["cap"] == G["recommended_cap"] and all(P["dd_cap"] == CAP for P in (PAA, PBB, PCC)))
+# THE GAUGE RE-DERIVED (v90). Until v90 the audit checked only the bands and the budget, not
+# the readings - and its budget check took the band's step as the budget, which would have
+# failed falsely the first time a new band was read before two month-end reviews.
+_w3 = HZ["3Y"] / (HZ["3Y"] + HZ["5Y"]); _wv = {"3Y": round(_w3, 2), "5Y": round(1 - _w3, 2)}
+_trp = {h: round(sum(v["score"][h] for v in D["trend"]["sleeves"].values()) / len(D["trend"]["sleeves"]), 2) for h in ("3Y", "5Y", "10Y")}
+from decimal import Decimal as _D, ROUND_HALF_UP as _HU
+_q2 = lambda x: float(x.quantize(_D("0.01"), rounding=_HU))      # exact half-up, the page's convention
+_rd = {h: _q2((_D(str(D["gauge_path"][h])) + _D(str(_trp[h]))) / 2) for h in ("3Y", "5Y", "10Y")}
+ck("each budget-gauge view reads the mean of the driver gauge and the trend score at that horizon - volatility not in it",
+   G["reading_of"] == ["macro", "trend"]
+   and all(G["parts"][h]["macro"] == D["gauge_path"][h] and G["parts"][h]["trend"] == _trp[h]
+           and G["parts"][h]["reading"] == _rd[h] and "vol" not in G["parts"][h] for h in ("3Y", "5Y", "10Y")),
+   f"{ {h: (G['parts'][h]['macro'], G['parts'][h]['trend'], G['parts'][h]['reading']) for h in G['parts']} } vs {_rd}")
+_val = _q2(sum(_D(str(_rd[h])) * _D(str(_wv[h])) for h in ("3Y", "5Y")))
+ck(f"the budget gauge is the 3- and 5-year readings weighted by their share of the first five years ({_val})",
+   G["views"] == ["3Y", "5Y"] and G["w"] == _wv and G["value"] == _val, f"{G['value']} vs {_val}")
+_me = lambda x: (d(x) + dt.timedelta(days=1)).day == 1
+ck("every month-end review on record is a month-end before the data date, read on 1-5",
+   all(_me(r[0]) and d(r[0]) < AS_OF and 1 <= r[1] <= 5 for r in G["reviews"]), f"{G['reviews']}")
+_bof = lambda v: next(b for b in G["bands"] if b["lo"] <= v < b["hi"] or (b["hi"] == 5 and v == 5))
+_base = D["dd_budget"]["base"]; _gz = {g["name"]: g for g in G["guards"]}
+_geo = next(x["score_10"] for x in DR if x["name"].startswith("Geopolitics"))
+_ok = {"persistence": len(G["reviews"]) >= _gz["persistence"]["needed"]
+                      and all(_bof(r[1]) == G["band"] for r in G["reviews"][-_gz["persistence"]["needed"]:]),
+       "geopolitics": _geo > _gz["geopolitics"]["floor"],
+       "vix": M["vix_latest"] <= M["vix_longrun"]}
+_raise = G["band"]["cap"] > _base
+_step = all(_ok[n] for n, g in _gz.items() if g["applies_to"] == "any step" or (_raise and g["applies_to"] == "raise"))
+_rec = G["band"]["cap"] if G["band"]["cap"] != _base and _step else _base
+ck("each guard reads what it guards: two month-end reviews in the band, geopolitics above its floor, the VIX at or under its long run",
+   all(_gz[n]["ok"] == _ok[n] for n in _ok) and _gz["vix"]["reading"] == M["vix_latest"] and _gz["geopolitics"]["reading"] == _geo,
+   f"{ {n: (_gz[n]['ok'], _ok[n]) for n in _ok} }")
+ck(f"the budget in force is the band's step only when every guard that applies is clear ({_rec:.0f}%), and the picks ran at it",
+   D["dd_budget"]["cap"] == G["recommended_cap"] == _rec and all(P["dd_cap"] == CAP == _rec for P in (PAA, PBB, PCC)),
+   f"{D['dd_budget']['cap']} / {G['recommended_cap']} vs {_rec}")
 
 # ---------------------------------------------------------------------------
 sec("E. FRESHNESS (every clock, with its days left)")

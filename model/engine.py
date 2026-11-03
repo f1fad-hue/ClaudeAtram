@@ -75,11 +75,11 @@ MACRO = {
     # to the ECB rate and a VIX move, fuel oil's +52% to Asia's EPS growth, the
     # 0.2% consensus to a VIX future's maturity. July's food rate (3.0%) could not
     # be re-verified and is no longer quoted.
-    "us_cpi_core": 2.6, "us_cpi_core_prev": 2.4,   # Sep (14 Oct) / Aug (11 Sep)
+    "us_cpi_core": 2.6,   # Sep (14 Oct); August's 2.4 retired in v90, nothing read it
     "us_cpi_core_mom": 0.3, "us_cpi_core_mom_consensus": 0.2,
     "us_cpi_headline_mom": 0.6,
     "us_cpi_shelter": 3.2, "us_cpi_shelter_prev": 3.0,
-    "us_cpi_food": 2.5, "us_cpi_energy_yoy": 20.4,
+    "us_cpi_food": 2.5,
     "us_cpi_gasoline_yoy": 34.2, "us_cpi_gasoline_mom": 9.1,
     "us_cpi_airfare_yoy": 22,
     "us_pce_12m": 3.7,
@@ -362,7 +362,6 @@ MACRO = {
     # 2 Nov, par curve (StockMarketWatch; MarketScreener citing the Treasury): 2-year 4.59%
     # (+3bp); 4.91 - 4.59 = 0.32. The 30-year's 5.28% is in MarketScreener only, so it holds.
     "ust_2y": 4.59, "ust_2y_date": "2026-11-02",
-    "ust_10y_intraday_14oct": 5.33,   # ~30 minutes after the CPI (Quartz, CNBC)
     "ust_30y": 5.31, "ust_30y_date": "2026-10-30",
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
@@ -1194,7 +1193,6 @@ MACRO = {
     # recovery Goldman measured has since been taken out, and the 15.5 figure is
     # stale in a knowable direction. No post-shutdown flow number has been
     # published, so none is invented here.
-    "hormuz_flow_asof": "2026-08-28",
     # GOLDMAN'S OWN SERIES, RE-READ (29-30 Sep, Bloomberg/gCaptain): Persian Gulf oil
     # exports, dark flows included, "recovered to 23.3 mb/d over the last week, a
     # level in line with the 2025 average" - against the 23.0 pre-war baseline their
@@ -1210,8 +1208,6 @@ MACRO = {
     # station hit 10 Sep, another says "last Thursday" (the 11th) from a 18 Sep
     # story. The shutdown is corroborated; the strike date is recorded as disputed
     # rather than silently picked, because nothing downstream depends on it.
-    "petroline_struck": "2026-09-10",
-    "petroline_struck_disputed": True,
     # REPAIR, which the model had no view of at all - so "still shut" was carrying
     # an implied permanence the reporting does not support. Aramco is bypassing the
     # damaged section, targeting half capacity within days and full in about six
@@ -1272,11 +1268,9 @@ MACRO = {
     # 1 Oct; a third US carrier group was reported heading to the region (WSJ,
     # 1 Oct). And the other side: Washington sent a counter-proposal through Qatar,
     # which Araghchi put to Iran's cabinet.
-    "tanker_struck_date": "2026-10-02",
     # CHINA halted gasoline, diesel and jet fuel exports beyond Hong Kong and Macau
     # "until further notice" (1 Oct) - a PRODUCTS shock for Asian importers, the
     # Philippines among them, separate from crude volume.
-    "china_fuel_export_halt_date": "2026-10-01",
     # US SPR: DOE offered the LAST 40 million barrels of the 172m-barrel release
     # (bids due 6 Oct; exchange, not sale), leaving the reserve under 284 million
     # barrels, the lowest since 1982.
@@ -1301,7 +1295,6 @@ MACRO = {
     # Iran before the 3 Nov midterms, after The Atlantic reported the White House
     # had asked for strike options; on 9 Oct he called talks "productive". China
     # resumed refined-fuel exports after its Golden Week halt.
-    "tankers_attacked_week": 12, "tankers_attacked_week_end": "2026-10-05",
     # 12-15 OCT. The Singapore-flagged container ship GFS Pride sank after a
     # projectile strike on 13 Oct (crew of 21 evacuated); GFS Giselle was hit on
     # the 14th. Reuters: more than 20 vessels, mostly tankers, attacked in October
@@ -1310,9 +1303,6 @@ MACRO = {
     # nearly 40% below pre-war. IEA (10 Oct): Hormuz flows rose 3.7 mb/d to 10.9
     # mb/d in September. Iran called the US reply to its ceasefire plan
     # "insufficient" (11 Oct).
-    "vessels_attacked_oct_min": 20, "vessels_attacked_oct_date": "2026-10-14",
-    "container_ship_sunk_date": "2026-10-13",
-    "aramco_hq_struck_date": "2026-10-13",
     # 16 Oct (CNBC citing Kpler): Hormuz shipments 9.4 mb/d in the week to Wednesday
     # 14 Oct, "about 70% of the average before the Iran war"; Middle East shipments
     # including the bypass pipelines ~14 mb/d, nearly 20% below. Up from 8.5 mb/d
@@ -1323,16 +1313,14 @@ MACRO = {
     # about 14 mb/d, 82% of pre-war (preliminary); the Gulf's exports by every route
     # were above 24 mb/d against 23.3 pre-war. Bloomberg: the October-to-date average
     # is still below pre-war. NOT like-for-like with the 9.4 mb/d crude-only reading
-    # of the week to 14 Oct, which is kept as the previous point, not a trend.
+    # of the week to 14 Oct (history here; retired as an input in v90, nothing read it), not a trend.
     "hormuz_crude_kpler": 14, "hormuz_crude_kpler_week": "2026-10-18",
-    "hormuz_crude_kpler_prev": 9.4, "hormuz_crude_kpler_prev_week": "2026-10-14",
     "gulf_exports_kpler": 24, "gulf_exports_prewar": 23.3,
     # 16-17 Oct: two tankers attacked 68-78 nm northeast of Al Jubayl, Saudi
     # Arabia (UKMTO; one by an RPG from a small boat); the IRGC says the Strait is
     # "closed" and a supertanker hit a mine, CENTCOM that traffic continues. Iran
     # sent a seven-day reopening plan via Qatar. The US is weighing easing
     # sanctions on "shadow fleet" tankers to cut freight costs (Reuters, 15 Oct).
-    "jubayl_attacks_date": "2026-10-16",
     # 17-20 OCT. The IRGC says a supertanker carrying more than 2m barrels hit a
     # naval mine south of the Strait and exploded (17 Oct; vessel unnamed, nothing
     # independent). On 19 Oct the Houthis claimed strikes on Riyadh and Abha
@@ -1343,14 +1331,10 @@ MACRO = {
     # the US approved and Iran gave preliminary consent); a diplomat told Bloomberg
     # a deal is not close. Lavrov was in Tehran on the 19th. The US waived the new
     # Russia sanctions and tariffs on 16 Oct for a 60-day review.
-    "tanker_mine_claim_date": "2026-10-17",
-    "houthi_saudi_claims_date": "2026-10-19",
     "vessels_fired_on_2wk": 18,
-    "us_iran_proposal_date": "2026-10-20",
     # 21 Oct: Iran's speaker Ghalibaf said Tehran would not trust Washington until
     # its conditions for reopening the Strait were met; CENTCOM called the IRGC's
     # mine claims false. Brent rose about 1.5% in Asian trading (CNBC, AA).
-    "us_iran_stall_date": "2026-10-21",
     # 22 Oct: the US ordered non-emergency diplomats and families out of Saudi Arabia
     # after Houthi strikes - an attack on King Fahd International Airport in Dammam
     # killed one and injured eight, and a drone on an Aramco-run field killed two
@@ -1364,7 +1348,6 @@ MACRO = {
     # of its Dhahran headquarters since fighting resumed in July (Reuters via Detroit
     # News, Business Recorder). The 22 Oct Asian-session Brent move (+1.7%) is gone
     # from the notes now that the day's settle is carried, and from the inputs.
-    "us_saudi_departure_date": "2026-10-22",
     "dammam_attack_dead": 2, "dammam_attack_injured": 8, "aramco_field_dead": 2,
     "iea_hormuz_sep": 10.9, "iea_hormuz_sep_chg": 3.7,
     # BusinessWorld poll (20 Oct, "Inflation risks to keep BSP hawkish"): 20 of 22
@@ -1947,7 +1930,6 @@ MACRO = {
     # behind them (they traced to unrelated 1.9 / 2.2 figures); on 2026-09-26 none
     # could be re-verified, and one source dates the leg down to the 10th, so the
     # percentages were dropped and the sell-off is dated 10-11 Sep.
-    "nikkei": 64011, "kospi": 6910,
     # 24 Sep: the Nikkei reopened from the 23 Sep equinox holiday +0.76% at 65,513.94
     # (TradingKey close). Corroborated by construction: Trading Economics' intraday
     # +0.99% at 65,665 implies the same prior close (~65,020) - two reports agreeing
@@ -2099,7 +2081,7 @@ MACRO = {
     # TSMC Q3 (15 Oct): net income NT$763.06bn, +68.7% y/y, against NT$746.34bn
     # expected (LSEG); a sixth straight record quarter.
     "tsmc_q3_ni_bn": 763.06, "tsmc_q3_ni_yoy": 68.7, "tsmc_q3_consensus_bn": 746.34,
-    "samsung_q3_op_tn": 107.4, "samsung_q3_consensus_tn": 106.1,
+    "samsung_q3_op_tn": 107.4,
     # JPM LTCMA, ROLLED 2026-10-21 to the 2027 edition (published 19 Oct 2026): US
     # large cap 7.5% (+80bp on resilient profits), EM equity 7.1% (down as the AI and
     # capex tailwinds normalise) - developed markets above emerging for the first
@@ -3003,23 +2985,23 @@ REGIONS = {
     },
     "PHILIPPINES": {
         "3Y": 5.25, "5Y": 5.75, HZ_LABEL: 5.5,
-        "why": ("Held. BSP raised its policy rate 50bp to 5.50% on 22 Oct, "
+        "why": (f"Held. BSP raised its policy rate 50bp to 5.50% on {_dday('bsp_decision_date')}, "
                 "twice the 25bp that 20 of 22 analysts expected - its fourth straight hike "
                 "and the first half-point since February 2023 - and the 26 Oct auction repriced "
                 "to it: 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and "
                 "364-day bills 13.9bp to 6.583%, the two longer tenors under-awarded. The peso, "
-                f"after a record {MACRO['usdphp_record']:.2f} on 27 Oct, kept recovering to {MACRO['usdphp']} on "
+                f"after a record {MACRO['usdphp_record']:.2f} on {_dday('usdphp_record_date')}, kept recovering to {MACRO['usdphp']} on "
                 f"{_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos "
                 f"{'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'} than on 30 Oct, the session before the All Souls' "
                 "Day holiday, on Middle East peace hopes, after the President signalled support and the Fed held - still "
                 f"{_a_an(MACRO['usdphp_ytd_pct'])} {MACRO['usdphp_ytd_pct']}% loss of "
-                "purchasing power against the dollar this year. Governor Remolona left the 17 Dec meeting open, and says "
+                f"purchasing power against the dollar this year. Governor Remolona left the {_dday('bsp_next_meeting')} meeting open, and says "
                 "BSP will not defend a level and intervenes only to cushion excessive moves. The PSEi "
                 f"{'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% to {MACRO['psei']:.2f} on "
                 f"{_dday('psei_date')}, back from the All Souls' Day holiday, on oil and the geopolitical risk before the US "
                 f"vote, after {'rising' if MACRO['psei_30oct_chg_pct'] > 0 else 'falling'} "
                 f"{abs(MACRO['psei_30oct_chg_pct']):.2f}% on 30 Oct; its 2026 low is "
-                f"{MACRO['psei_2026_low']}, on 8 Oct. September inflation was 7.2%, core 4.7%: against it every tenor's real "
+                f"{MACRO['psei_2026_low']}, on {_dday('psei_2026_low_date')}. September inflation was 7.2%, core 4.7%: against it every tenor's real "
                 "yield is still below zero, though the gap closed by up to 63bp in one auction. This sleeve's job - zero "
                 "duration risk and high nominal carry - is unimpaired. Its purchasing "
                 f"power is not. THREE YEARS: 5.25. BSP sees inflation at {MACRO['bsp_cpi_2026']}% this "
@@ -3129,7 +3111,7 @@ DRIVERS = [
      f"HELD at 8.0: FactSet had the S&P on {MACRO['spx_fwd_pe']}x forward earnings on 23 Oct, below its five-year "
      f"({MACRO['spx_fwd_pe_5y']}x) and ten-year ({MACRO['spx_fwd_pe_10y']}x) averages and the "
      f"{MACRO['spx_fwd_pe_q3end']:.1f}x of 30 Sep. The S&P closed at {MACRO['spx_close']:.2f} on {_dday('equity_date')}, "
-     f"{MACRO['spx_off_record_pct']}% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October "
+     f"{MACRO['spx_off_record_pct']}% below its {MACRO['spx_record_close']:.2f} record of {_dday('spx_record_date')}. Asia was on 10.5x forward before its October "
      f"fall and is cheaper on the same earnings: the KOSPI closed at {MACRO['kospi_latest']:,.2f} on "
      f"{_dday('kospi_latest_date')}, {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close. NDX at 22.4x forward on its "
      "last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree "
@@ -4209,18 +4191,23 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 # increase the drawdown of the portfolio based on macro sentiments, volatility, market
 # trends of 3, 5 and 10yrs"). FROM v77 IT SETS THE BUDGET (owner, 2026-10-28: "Use the budget
 # drawdown band to portfolio A and B"): DD_CAP is the recommended step below, which leaves
-# the owner's 25% base only when the guards allow it. It reads, at each view, three things
+# the owner's 25% base only when the guards allow it. It reads, at each view, two things
 # this model already publishes on 1-5, 3 neutral:
 #   MACRO  the driver gauge at that horizon (GAUGE_PATH) - the seven drivers' path;
-#   VOL    the forward implied volatility of the years the view covers against the
-#          long-run level every base return assumes: 3 - (forward / long-run - 1) / step,
-#          one point per DDG_VOL_STEP (10%) of the long-run level, clipped to 1-5. The
-#          step is an ASSUMPTION, stated as one;
 #   TREND  the market-trend score at that horizon, averaged over the trend markets.
-# A view's reading is the mean of the three. THE GAUGE READS THE 3- AND 5-YEAR VIEWS ONLY,
+# A view's reading is the mean of the two.
+# VOLATILITY LEFT THE READING IN v90 (owner, 2026-11-03: "Remove the volatility at the
+# drawdown band"). From v75 it was a third part - each view's forward implied volatility
+# against the long run, a point per 10% - and it read 3.13 and 3.01 on 3 Nov: the curve
+# mean-reverts to the long run within months, so at 3 and 5 years it sat near neutral by
+# construction and mostly pulled the other two toward the middle. It was also counted
+# twice: volatility already deepens every mix's drawdown estimate, which the budget is
+# measured against, and the VIX guard below blocks a raise while it is high. It stays as
+# that guard, and the forward volatility is published beside the readings as context.
+# THE GAUGE READS THE 3- AND 5-YEAR VIEWS ONLY,
 # weighted by the years of the first five each covers (3/5 and 2/5): the 10-year view is
-# neutral by construction for the drivers and the trend, and its volatility years sit at
-# the long run, so it carries no timing information - it is what the fixed budget
+# neutral by construction for the drivers and the trend, so it carries no timing
+# information - it is what the fixed budget
 # itself stands for. Weighted in, it would pin the gauge between 2 and 4 and make the
 # outer bands unreachable. It is shown beside the other two, not hidden.
 # The reading maps to a step of the budget (DDG_BANDS); a step away from 25% is acted on
@@ -4228,7 +4215,7 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 # both risk guards clear: the Geopolitics & energy reading above 2.0 (1-10) - the Hormuz
 # tail the stress grid prices - and the VIX at or below its long run. The ceiling is 27%,
 # the derived budget the owner's figure replaced; the floor 24%.
-DDG_VOL_STEP = 0.10
+DDG_READING_OF = ("macro", "trend")     # the parts a view's reading averages (v90)
 DDG_VIEWS = tuple(h for h in HZ_KEYS if h != HZ_LABEL)
 DDG_W = {h: round((_HZ_YEARS[h] - (_HZ_YEARS[DDG_VIEWS[i - 1]] if i else 0.0))
                   / _HZ_YEARS[DDG_VIEWS[-1]], 2) for i, h in enumerate(DDG_VIEWS)}
@@ -4241,26 +4228,30 @@ DDG_BANDS = [  # [lo, hi) on the 1-5 reading, the budget it points to, the actio
 DDG_GEO_FLOOR = 2.0
 DDG_REVIEWS_NEEDED = 2
 # Month-end readings on record, oldest first: (month-end, reading). Until two share a
-# band, no step is taken. October's (v88, 2026-11-03) is the reading published on the
-# month's last session, the 30 Oct closes (v86/v87): 2.89, the hold band. It is typed,
-# not recomputed, because a month-end review records what the page read at the month-end;
-# later corrections to those inputs do not rewrite it. A check requires every month-end
-# since the band began setting the budget to have its review on record.
-DDG_REVIEWS = [("2026-10-31", 2.89)]
-_VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}
-
-def _ddg_vol(h):
-    return round(min(5.0, max(1.0, 3.0 - (_VOL_FWD[h] / MACRO["vix_longrun"] - 1) / DDG_VOL_STEP)), 2)
+# band, no step is taken. October's (v88, 2026-11-03) is the reading on the month's last
+# session, the 30 Oct closes. It is typed, not recomputed, because a month-end review
+# records what the page read at the month-end; later corrections to those inputs do not
+# rewrite it. RESTATED v90 on the new rule, so the next month-end is compared like for like:
+# 2.80 without volatility (macro 2.62 / 2.90, trend 3.01 / 2.61 at 3 and 5 years, unchanged
+# since 30 Oct; readings 2.82 / 2.76, half-up), against the 2.89 published with it. Both are
+# the hold band. A check requires every month-end since the band began to have its review.
+DDG_REVIEWS = [("2026-10-31", 2.80)]
+_VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}   # context beside the readings, not in them
 
 def _ddg_trend(h):
     return round(sum(TREND[f]["score"][h] for f in TREND) / len(TREND), 2)
 
-DDG_PARTS = {h: {"macro": GAUGE_PATH[h], "vol": _ddg_vol(h), "trend": _ddg_trend(h),
+DDG_PARTS = {h: {"macro": GAUGE_PATH[h], "trend": _ddg_trend(h),
                  "vol_forward": _VOL_FWD[h]} for h in HZ_KEYS}
+# EXACT HALF-UP (v90), as every printed CAGR is from v88: the mean of two 2dp parts ends in
+# a 5 half the time, and binary round() sent 2.815 to 2.81 and 2.755 to 2.75. Next to a band
+# edge that is the difference between holding the budget and stepping it.
+def _hu2(x):
+    return float(x.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 for _h in HZ_KEYS:
     _p = DDG_PARTS[_h]
-    _p["reading"] = round((_p["macro"] + _p["vol"] + _p["trend"]) / 3, 2)
-DDG_VALUE = round(sum(DDG_PARTS[h]["reading"] * DDG_W[h] for h in DDG_VIEWS), 2)
+    _p["reading"] = _hu2(sum(Decimal(repr(_p[k])) for k in DDG_READING_OF) / len(DDG_READING_OF))
+DDG_VALUE = _hu2(sum(Decimal(repr(DDG_PARTS[h]["reading"])) * Decimal(repr(DDG_W[h])) for h in DDG_VIEWS))
 DDG_BAND = next(b for b in DDG_BANDS if b[0] <= DDG_VALUE < b[1])
 _geo_now = next(s_ for n_, _, s_, _ in DRIVERS if n_.startswith("Geopolitics"))
 DDG_GUARDS = [
@@ -5756,7 +5747,7 @@ def payload():
                       "date": DD_BUDGET_OWNER_DATE, "band_date": DD_BUDGET_BAND_DATE,
                       "derived_ref": round(DD_CAP_DERIVED, 2), "improvement": DD_BUDGET_IMPROVEMENT},
         "dd_gauge": {"value": DDG_VALUE, "views": list(DDG_VIEWS), "w": DDG_W,
-                     "parts": DDG_PARTS, "vol_step": DDG_VOL_STEP, "longrun": MACRO["vix_longrun"],
+                     "parts": DDG_PARTS, "reading_of": list(DDG_READING_OF), "longrun": MACRO["vix_longrun"],
                      "bands": [{"lo": b[0], "hi": min(b[1], 5.0), "cap": b[2], "action": b[3]}
                                for b in DDG_BANDS],
                      "band": {"lo": DDG_BAND[0], "hi": min(DDG_BAND[1], 5.0), "cap": DDG_BAND[2],
@@ -7277,19 +7268,26 @@ def report():
                    and abs(DD_BUDGET_IMPROVEMENT - round(2.0 * p["dd_model"]["horizon_scalar"], 2)) < 5e-9))
     # THE BUDGET GAUGE (v75): every part re-derived from the published inputs it reads.
     _dg = p["dd_gauge"]
-    checks.append(("the budget gauge's parts are the published driver gauge, forward vol and trend scores at each view",
+    checks.append(("the budget gauge's parts are the published driver gauge and trend scores at each view, each reading their mean",
                    all(_dg["parts"][h]["macro"] == p["gauge_path"][h]
                        and _dg["parts"][h]["trend"] == round(sum(v["score"][h] for v in p["trend"]["sleeves"].values())
                                                              / len(p["trend"]["sleeves"]), 2)
-                       and _dg["parts"][h]["vol"] == round(min(5.0, max(1.0, 3.0 - (
-                           next(v["forward"] for v in p["vol_ts"] if v["label"] == h) / p["macro"]["vix_longrun"] - 1)
-                           / _dg["vol_step"])), 2)
-                       and _dg["parts"][h]["reading"] == round((_dg["parts"][h]["macro"] + _dg["parts"][h]["vol"]
-                                                               + _dg["parts"][h]["trend"]) / 3, 2)
+                       and _dg["parts"][h]["reading"] == _hu2((Decimal(repr(_dg["parts"][h]["macro"]))
+                                                               + Decimal(repr(_dg["parts"][h]["trend"]))) / 2)
                        for h in HZ_KEYS)))
+    # v90 (owner, 2026-11-03): volatility is out of the reading. It may be published beside it
+    # as context - the curve's own forward vol - but no volatility score may come back in.
+    checks.append(("volatility is not in the budget gauge's reading: context only, and the VIX guard on a raise",
+                   _dg["reading_of"] == ["macro", "trend"]
+                   and all(set(_dg["parts"][h]) == {"macro", "trend", "reading", "vol_forward"}
+                           and _dg["parts"][h]["vol_forward"] == next(v["forward"] for v in p["vol_ts"] if v["label"] == h)
+                           for h in HZ_KEYS)
+                   and "vol_step" not in _dg
+                   and any(g["name"] == "vix" and g["applies_to"] == "raise" for g in _dg["guards"])))
     checks.append(("the budget gauge reads the 3- and 5-year views by their share of the first five years, the 10-year anchor shown but not weighted",
                    _dg["views"] == ["3Y", "5Y"] and _dg["w"] == {"3Y": 0.6, "5Y": 0.4}
-                   and _dg["value"] == round(sum(_dg["parts"][h]["reading"] * _dg["w"][h] for h in _dg["views"]), 2)
+                   and _dg["value"] == _hu2(sum(Decimal(repr(_dg["parts"][h]["reading"])) * Decimal(repr(_dg["w"][h]))
+                                                for h in _dg["views"]))
                    and 1.0 <= _dg["value"] <= 5.0 and HZ_LABEL in _dg["parts"]))
     _bands = _dg["bands"]
     # ONE NUMBER, ONE ARITHMETIC (v88): each budget step prints the CAGR its own search

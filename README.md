@@ -93,10 +93,11 @@ every update:
   holding half the money, which is what the cap is for.
 
 **The Budget tab** reads, on 1-5, whether the next three and five years justify moving the
-25% budget - from the macro drivers, the volatility curve and the market trend at each
-view - with bands for a step to 24%, 26% or 27%, guards that must also be clear, and what
-each step does to A, B and C. On 3 Nov it reads 2.89: hold at 25%, as at October's
-month-end, the first review on record. Since v77 the band sets
+25% budget - from the macro drivers and the market trend at each view (volatility left the
+reading on 3 Nov 2026 at the owner's instruction and stays as the guard on a raise) - with
+bands for a step to 24%, 26% or 27%, guards that must also be clear, and what each step does
+to A, B and C. On 3 Nov it reads 2.80: hold at 25%, as at October's month-end (restated on the
+new rule), the first review on record. Since v77 the band sets
 the budget for A and B (owner, 28 Oct), and since v82 for C, through the same guards.
 
 Portfolio C was first added on 2026-09-25, removed on 2026-10-28 (v76) and restored on

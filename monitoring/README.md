@@ -196,6 +196,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+135. A MEAN OF TWO TIES HALF THE TIME. Averaging two 2dp figures lands on a final 5 whenever their sum is
+   odd in the last digit, and binary round() sends it down. Three parts hid it; two exposed it on the first
+   build. Any figure a band or a rule reads gets exact half-up rounding, like the printed CAGRs.
+134. AN AUDIT CHECKS WHAT IT RE-DERIVES, NOTHING MORE. The audit's gauge checks read the published value
+   against the published bands - so a wrong reading inside the right band passed, and so did my claim
+   that it had rebuilt the gauge. A check that takes a published figure as its input confirms only that
+   the page agrees with itself. Re-derive from the inputs, and when describing what a check covers,
+   read the check.
 133. AN EVENT IS PRICED WHEN ITS RESULT IS, NOT WHEN IT HAPPENS. The midterms were dated to the vote,
    and the clock read them as past once New York's 3 Nov close was carried - but the polls closed
    after that close, so no number on the page had seen the result. Date an event by the first

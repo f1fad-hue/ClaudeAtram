@@ -2,6 +2,55 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-03 — v90: volatility out of the drawdown band (owner); the audit now re-derives the gauge; house cleanup; A, B and C unchanged
+
+At the owner's instruction: "Remove the volatility at the drawdown band. Do house cleanup."
+
+**The drawdown band now reads two things, not three.** Each view's reading is the mean of the
+driver gauge and the market-trend score at that horizon; volatility is out of it. It stays in two
+places: as the guard that blocks a raise while the VIX is above its long run, and as context beside
+the readings (the curve's forward volatility, 3Y 19.24 and 5Y 19.49 against 19.5). Why, as
+recommended before the change: the curve mean-reverts to its long run within months, so at 3 and 5
+years it read 3.13 and 3.01 - near neutral by construction - and mostly pulled the other two toward
+the middle; and volatility was already counted, in every mix's drawdown estimate and in the guard.
+- **The gauge reads 2.80** (3Y 2.82, 5Y 2.76), from 2.89: **hold at 25%**, unchanged, and **A, B and C
+  are unchanged** (A 7.31% on its 10-year view, B 7.10% and C 7.14% on the 3/5/10-year; −24.9% each).
+- **October's month-end review is restated on the new rule**, 2.80 from the 2.89 published, so the
+  November review is compared like for like; both are the hold band.
+- The Budget tab, the engine's checks, the claims register and the README say so.
+
+**Errors found and fixed:**
+- **The change created a rounding fault, caught before publishing.** A mean of two 2dp readings ends
+  in a 5 half the time, and Python's round() sent 2.815 to 2.81 and 2.755 to 2.75 (gauge 2.79). The
+  readings and the value are now exact half-up, the convention every printed CAGR follows from v88
+  (runbook 135).
+- **The independent audit never re-derived the gauge.** It checked the bands and the budget, not the
+  readings - and I said in this session that it rebuilt them; it did not, only the engine's own checks
+  did. It now re-derives each view's reading from the driver gauge and the trend sleeves, the value
+  from the horizon weights, each guard from what it guards, and the budget in force (runbook 134).
+- **The audit's budget check would have failed falsely.** It took the band's step as the budget, so
+  the first time a new band was read before two month-end reviews (the engine correctly holding at
+  25%) it would have reported an error. It now applies the guards itself.
+- Three planted errors test the new checks: a view reading nudged, volatility put back into the
+  value, a red guard shown clear.
+
+**House cleanup:**
+- **25 inputs retired that nothing read**: no code, no note, no page element, and not a dispute
+  record - the 11 Sep Nikkei and KOSPI levels, the 14 Oct intraday 10-year, August's core CPI,
+  September's CPI energy rate, Samsung's Q3 consensus, the previous Kpler Hormuz reading, and fifteen
+  dates of October Gulf incidents no note has described since they rotated out (the incident log
+  stays in the comments as history). 517 inputs to 492; every note's text is identical.
+- **Five dates and levels typed in the notes now read their inputs**: the peso's record date, the
+  PSEi's 2026 low date, the S&P's record close and date, BSP's decision date and next meeting.
+- The volatility step (`vol_step`) and its page text are gone with the volatility part.
+- The Budget tab's guard sentence read "none is clear and geopolitics and the VIX are not"; reworded.
+- Scratch files cleared.
+
+**Harnesses:** engine **253/253**; audit **242 checks, 0 failures**; validator **15/15**;
+mutations **43/43 caught** (40 plus the three gauge mutants), none missed or crashed.
+
+Not personal financial advice.
+
 ## 2026-11-03 — v89: Election Day closes, the 2 Nov Nikkei and 10-year resolved, the peso rolled, the midterms re-dated to their result; A, B and C unchanged
 
 At the owner's instruction, the rewritten review command: "ATRAM review: bring the dashboard up to

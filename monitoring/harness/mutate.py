@@ -1,4 +1,4 @@
-"""Fault injection for the audit (rebuilt 2026-11-03, v88).
+"""Fault injection for the audit (rebuilt 2026-11-03, v88; gauge mutants v90).
 
 Each mutant plants one error in a copy of the published payload (data.json and the page's
 embedded copy); the audit must fail on it. A mutant the audit passes is a blind spot.
@@ -36,6 +36,11 @@ def m_dscore(d): _drv(d, "Volatility")["score"] = round(_drv(d, "Volatility")["s
 def m_path(d): _drv(d, "Geopolitics")["path"]["3Y"] = 6.0                                     # a path past neutral
 def m_region(d): d["regions"]["ASIA"]["blend"] = round(d["regions"]["ASIA"]["blend"] + 0.02, 2)
 def m_band(d): d["dd_gauge"]["value"] = 3.6                                                    # the gauge outside its band
+def m_ddread(d): r = d["dd_gauge"]["parts"]["3Y"]; r["reading"] = round(r["reading"] + 0.05, 2)  # a view reading off its parts
+def m_ddvol(d):                                                                                # volatility back in the reading (v90)
+    g = d["dd_gauge"]; g["value"] = round(sum(g["w"][h] * (g["parts"][h]["macro"] + g["parts"][h]["trend"] + 3.0) / 3
+                                              for h in g["views"]), 2)
+def m_guard(d): next(g for g in d["dd_gauge"]["guards"] if g["name"] == "vix")["ok"] = True     # a red guard shown clear
 def m_stale(d): d["macro"]["equity_date"] = "2026-10-20"                                       # a close a week behind
 def m_lt(d): d["lookthrough"]["ATRQIAP"]["as_of"] = "2026-08-31"                               # holdings past 60 days
 def m_imf(d): d["macro"]["imf_weo_vintage"] = "2026-07-08"                                     # last edition back after the next
