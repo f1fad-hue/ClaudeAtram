@@ -196,6 +196,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+136. A DATE BESIDE A FIELD IS A COPY OF THAT FIELD'S DATE. "From 85% on the 28th" was right only until
+   FedWatch rolled; the prior's date was an input all along. When a sentence names the day of a figure
+   that has a *_date input, the sentence reads the input - search the notes for typed dates on every
+   review, not just the ones the roll is about to move.
 135. A MEAN OF TWO TIES HALF THE TIME. Averaging two 2dp figures lands on a final 5 whenever their sum is
    odd in the last digit, and binary round() sends it down. Three parts hid it; two exposed it on the first
    build. Any figure a band or a rule reads gets exact half-up rounding, like the printed CAGRs.

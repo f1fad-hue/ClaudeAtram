@@ -2,6 +2,48 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-03 — v91: late review on the 3 Nov close - the 30-year rolled, FedWatch and the VIX held, eight hand-typed dates wired; A, B and C unchanged
+
+At the owner's instruction, the review command. Run at 23:40 UTC, an hour after v89: no market
+session had closed since (Tokyo and Seoul open for 4 Nov at 00:00 UTC, Manila at 01:30; New
+York's 3 Nov close is carried), so this pass re-tried every held figure, then hunted errors.
+
+**Blocked from the review environment:** atram.com.ph, uitf.com.ph, schroders.com,
+investing.com, home.treasury.gov, fred.stlouisfed.org, cnbc.com, am.jpmorgan.com,
+morningstar.com, bworldonline.com (as in v89). Fund pages and the Treasury's own curve were read
+through search results only.
+
+**Updated:** the **30-year, 2 Nov, 5.28%** (−3bp; Forbes' Treasury-rates page and MarketScreener
+citing the par curve), held in v89 on one source.
+
+**Held:**
+- **FedWatch at 29 Oct (79.6%), now at its five-day limit.** Reuters' 2 Nov gold story has 77% "down
+  from 80% a week earlier" - one story, syndicated (MarketScreener, mining.com, Business Recorder);
+  on 3 Nov Schwab's open has 77% and FXStreet's afternoon item 79%. No two independent reads of one
+  day. It must roll at the next review or the freshness check fails.
+- **The VIX at 2 Nov.** 3 Nov now has two prints that disagree: AD HOC News 20.51, Yahoo's quote page
+  20.44 (`vix_disputed_3nov`).
+- **The 2- and 10-year at 2 Nov**: no 3 Nov par-curve figure yet. **PH T-bills** at 26 Oct, **the
+  Hormuz count** at 25 Oct (the 3 Nov PortWatch release is not out in any brief), **Brent's year-ago
+  base** at 31 Oct 2025 (no 1-7 Nov 2025 settle in two sources; at its three-day limit).
+- Funds, fees and holdings: nothing new since v89's check two hours earlier.
+
+**Scored, all held**; gauge 2.28; regions 3.60 / 3.29 / 2.99 / 2.46; **the drawdown band 2.80, hold
+at 25%** (3Y 2.82, 5Y 2.76; guards: one month-end review on record, geopolitics 1.5 and the VIX
+21.15 both block a raise). **A, B and C unchanged.**
+
+**Errors found and fixed (code review of the notes):**
+- **Eight dates were typed beside figures that carry their own date** (seven inputs), and one was about to be wrong:
+  "from 85% on the 28th" beside FedWatch's previous read would have printed the old date the day
+  FedWatch rolls. Now read from their inputs: FedWatch's previous read, the Fed's and the ECB's
+  October decisions, the BoJ's (it read "a day later"), the 10-year's two peaks, and the VIX's
+  intraday high (runbook 136).
+
+**Harnesses:** engine **253/253**; audit **242 checks, 0 failures**; validator **15/15**;
+mutations **43/43 caught**, none missed or crashed.
+
+Not personal financial advice.
+
 ## 2026-11-03 — v90: volatility out of the drawdown band (owner); the audit now re-derives the gauge; house cleanup; A, B and C unchanged
 
 At the owner's instruction: "Remove the volatility at the drawdown band. Do house cleanup."

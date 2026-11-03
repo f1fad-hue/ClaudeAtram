@@ -360,9 +360,11 @@ MACRO = {
     # market basis. Both rolled in v86, before Monday's roll would have put them past the
     # audit's five-day bound (the 2-year at 27 Oct, the 30-year at 26 Oct).
     # 2 Nov, par curve (StockMarketWatch; MarketScreener citing the Treasury): 2-year 4.59%
-    # (+3bp); 4.91 - 4.59 = 0.32. The 30-year's 5.28% is in MarketScreener only, so it holds.
+    # (+3bp); 4.91 - 4.59 = 0.32. The 30-year's 5.28% (-3bp), held in v89 on MarketScreener
+    # alone, ROLLED in v91 on Forbes' Treasury-rates page for 2 Nov, which has the same three
+    # levels and the 30-year 35bp lower on the month.
     "ust_2y": 4.59, "ust_2y_date": "2026-11-02",
-    "ust_30y": 5.31, "ust_30y_date": "2026-10-30",
+    "ust_30y": 5.28, "ust_30y_date": "2026-11-02",
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
 
@@ -448,6 +450,9 @@ MACRO = {
     # 2 Nov, after oil's fall, reads differ by source and hour - Reuters 76.6% (via Kitco), CNBC
     # about 75%, Tradingpedia about 73% on the 3rd against 80% a week earlier - and none is
     # in two sources, so the 29 Oct read is carried. All agree the odds fell.
+    # v91: Reuters' 2 Nov gold story has 77% "down from 80% a week earlier" (MarketScreener,
+    # mining.com, Business Recorder - one story, syndicated); on 3 Nov Schwab's open has 77% and
+    # FXStreet's afternoon item 79%. Still no two independent reads of one day: held, at its bound.
     "fed_hike_odds_dec": 79.6,   # a hike by the 9 Dec meeting (FedWatch)
     "fed_hike_odds_dec_date": "2026-10-29",
     "fed_hike_odds_dec_prev": 85, "fed_hike_odds_dec_prev_date": "2026-10-28",
@@ -1577,12 +1582,14 @@ MACRO = {
     # 20 Oct was withheld on 2026-10-20 (one source, 17.60) and RESOLVED on the 21st
     # at 17.31 by three; the record keeps both.
     # 3 Nov WITHHELD (v89): 20.51 (-0.64, -3.03%) is in AD HOC News alone - the one source that
-    # was wrong on 2 Nov; the series holds at 2 Nov.
+    # was wrong on 2 Nov; the series holds at 2 Nov. v91: Yahoo's quote page has 20.44 (-0.71,
+    # -3.36%) - two prints that disagree, so still withheld (vix_disputed_3nov).
     "vix_withheld": ["2026-11-03"],
     "vix_disputed_20oct": [17.31, 17.60],
     "vix_disputed_22oct": [18.84, 19.03],   # Investing.com's table against three sources
     "vix_disputed_26oct": [18.30, 18.39],   # AD HOC News against three sources
     "vix_disputed_2nov": [18.73, 21.15],    # AD HOC News against Cboe, Yahoo and CNBC
+    "vix_disputed_3nov": [20.44, 20.51],    # Yahoo's quote page against AD HOC News
     "vix_disputed_27oct": [17.51, 17.52],   # Doug's Daily Diary against Cboe
     "vix_disputed_28oct": [16.83, 16.91],   # one recap against Cboe, Yahoo, CNBC and PC Thematic
     "vix_disputed_28sep": [16.07, 16.30],   # the record of the resolved dispute
@@ -2912,7 +2919,7 @@ REGIONS = {
                 f"{MACRO['us_gdp_q3']}% annual rate in the third quarter against {MACRO['us_gdp_q3_consensus']}% expected, but "
                 f"September core PCE was {MACRO['us_core_pce_sep']}% on the year and producer prices rose 1.3% in the month, and "
                 f"ISM manufacturing rose to {MACRO['us_ism_mfg_oct']} in October; "
-                f"{MACRO['fed_oct_votes_hike']} Fed voters wanted a hike on 28 Oct, FedWatch has one by December at "
+                f"{MACRO['fed_oct_votes_hike']} Fed voters wanted a hike on {_dday('fed_oct_decision_date')}, FedWatch has one by December at "
                 f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, and the 10-year closed at "
                 f"{MACRO['ust_10y']:.2f}% on {_dday('ust_10y_date')}. FactSet's 23 Oct count has {MACRO['factset_beat_pct']}% of reporting "
                 f"companies beating estimates and the index on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and "
@@ -3046,19 +3053,19 @@ _brent_wk_txt = (f"{abs(MACRO['brent_wk_chg_pct'])}% {'higher' if MACRO['brent_w
 
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 2.0,
-     f"HELD at 2.0. The Fed held at {MACRO['fed_funds_lower']:.2f}-{MACRO['fed_funds_upper']:.2f}% on 28 Oct, "
+     f"HELD at 2.0. The Fed held at {MACRO['fed_funds_lower']:.2f}-{MACRO['fed_funds_upper']:.2f}% on {_dday('fed_oct_decision_date')}, "
      f"{MACRO['fed_oct_votes_hold']}-{MACRO['fed_oct_votes_hike']}, Governor Cook and Cleveland's Hammack for a hike, and "
      "the statement calls inflation elevated. September's core PCE then rose "
      f"{MACRO['us_core_pce_mom_sep']}% on the month and {MACRO['us_core_pce_sep']}% on the year, headline "
      f"{MACRO['us_pce_mom_sep']}% and {MACRO['us_pce_sep']}%, and FedWatch has a hike by the 9 Dec meeting at "
-     f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, from {MACRO['fed_hike_odds_dec_prev']}% on the "
-     f"28th. On official closes the 10-year was {_u10['2026-10-28']:.2f}% on the 28th, {_u10['2026-10-29']:.2f}% on the "
+     f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, from {MACRO['fed_hike_odds_dec_prev']}% on "
+     f"{_dday('fed_hike_odds_dec_prev_date')}. On official closes the 10-year was {_u10['2026-10-28']:.2f}% on the 28th, {_u10['2026-10-29']:.2f}% on the "
      f"29th and {_u10['2026-10-30']:.2f}% on the 30th, as the tech sell-off sent money into Treasuries, then "
      f"{MACRO['ust_10y']:.2f}% on {_dday('ust_10y_date')} as oil fell, with the 2-year at {MACRO['ust_2y']:.2f}% ({_dday('ust_2y_date')}) "
-     f"and the 30-year at {MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}). The 10-year's 7 Oct intraday high of "
-     f"{MACRO['ust_10y_peak']}%, above the 5 Oct peak of {MACRO['ust_10y_peak_prev']}%, was the highest since "
+     f"and the 30-year at {MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}). The 10-year's {_dday('ust_10y_peak_date')} intraday high of "
+     f"{MACRO['ust_10y_peak']}%, above the {_dday('ust_10y_peak_prev_date')} peak of {MACRO['ust_10y_peak_prev']}%, was the highest since "
      f"{MACRO['ust_10y_peak_since']}. "
-     f"The ECB held at {MACRO['ecb_depo']:.2f}% on 29 Oct and the BoJ, a day later, at {MACRO['boj_rate']:.2f}%, "
+     f"The ECB held at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} and the BoJ on {_dday('boj_oct_decision_date')} at {MACRO['boj_rate']:.2f}%, "
      f"{MACRO['boj_oct_vote_hold']}-{MACRO['boj_oct_vote_hike']} with a vote for {MACRO['boj_oct_dissent_rate']}% and a "
      "hike flagged for December. Manila repriced to BSP's 50bp hike to 5.50%: at the 26 Oct auction 91-day bills "
      "jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%. Held: the hold "
@@ -3127,7 +3134,7 @@ DRIVERS = [
      f"{_dday('vix_latest_date')}, after {MACRO['vix_reported_moves']['2026-10-30']}% on 30 Oct: the highest close in "
      f"this series, which starts on {_dday('vix_series_start')}, and the first above the long-run "
      f"{MACRO['vix_longrun']} since {_dday('vix_above_lr_prev_date')}, as the Nasdaq fell a third session and "
-     "hedging built into the midterms, though the Dow rose. On 30 Oct it had touched "
+     f"hedging built into the midterms, though the Dow rose. On {_dday('vix_latest_high_date')} it had touched "
      f"{MACRO['vix_latest_high']} intraday, past the {MACRO['vix_latest_high_prev']} high of "
      f"{_dday('vix_latest_high_prev_date')}. Asia took the next leg: on {_dday('kospi_latest_date')} the KOSPI "
      f"{'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}%. "
