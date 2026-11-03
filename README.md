@@ -43,19 +43,20 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 30 Oct 2026 (Friday's closes in Manila, Seoul, Tokyo
-and New York, Brent's December expiry, WTI, the VIX and the 2-, 10- and 30-year's official
-closes; FedWatch at 29 Oct), reviewed 1 Nov. Weights in the universe's order: Money Market / Nasdaq Equity Income /
+market assumptions. Market data as of 3 Nov 2026 (Seoul's and Manila's 3 Nov closes; New
+York's, Brent's January, WTI's and the VIX's 2 Nov; held at 30 Oct on conflicting or
+single-source prints, the Nikkei, the peso and the 2-, 10- and 30-year; FedWatch at 29 Oct),
+reviewed 3 Nov. Weights in the universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
 | | A · 10-year view | B · 3/5/10-year view | C · Nasdaq Income 50% |
 |---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 0 / 0 / 15 / 25 / 0 / 0 / 5 / 0 |
-| 10y net CAGR after all fees | **7.30%** | 7.10% | 7.14% |
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 0 / 0 / 20 / 20 / 0 / 0 / 5 / 0 |
+| 10y net CAGR after all fees | **7.31%** | 7.10% | 7.14% |
 | Expected max drawdown (10y) | −24.9% | −24.9% | −24.9% |
-| Return per unit of drawdown | **0.293** | 0.285 | 0.287 |
+| Return per unit of drawdown | **0.294** | 0.285 | 0.287 |
 
 Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B and
 C on the 3/5/10-year. On one basis, the 3/5/10-year view, A returns 7.11% at −25.0% against B's
@@ -72,7 +73,7 @@ band leaves the base only when two month-end reviews in a row read another band 
 raise, both risk guards are clear. It is −25% today, in place of the derived −26.97% (the
 original 20 / 30 / 25 / 25 baseline's drawdown less 2.83pp). The engine re-chooses each at
 every update:
-- **A, the 10-year view**: the rule on the four analyses read at 10 years alone (7.30% /
+- **A, the 10-year view**: the rule on the four analyses read at 10 years alone (7.31% /
   −24.9% there): 5% money market, 35% Nasdaq Equity Income, 10% Global Technology, 30%
   Global Infra Equity, 20% Asian Multi-Asset Income. On the 3/5/10-year view it prints at
   the budget (−25.0%) and sits just past it before rounding.
@@ -85,8 +86,8 @@ every update:
   atram nasdaq equity income allocation based on 3, 5, 10yrs ... Use budget drawdown band for
   portfolio C"): B's rule, inputs and band budget with Nasdaq Equity Income held at 50% - the
   one fund exempt from the 35% cap - and the rest chosen over the other ten funds (8,289
-  mixes, 3,551 inside the budget): 5% money market, 15% Global Health Care, 25% Global Infra
-  Equity, 5% Asian Multi-Asset Income. 7.14% / −24.9% on the 3/5/10-year view (7.32% /
+  mixes, 3,551 inside the budget): 5% money market, 20% Global Health Care, 20% Global Infra
+  Equity, 5% Asian Multi-Asset Income. 7.14% / −24.9% on the 3/5/10-year view (7.31% /
   −24.8% on the 10-year). It returns 0.04pp a year more than B at the same printed drawdown
   only because the pin is outside the cap: the drawdown model does not price one manager
   holding half the money, which is what the cap is for.
@@ -94,7 +95,8 @@ every update:
 **The Budget tab** reads, on 1-5, whether the next three and five years justify moving the
 25% budget - from the macro drivers, the volatility curve and the market trend at each
 view - with bands for a step to 24%, 26% or 27%, guards that must also be clear, and what
-each step does to A, B and C. On 30 Oct it reads 2.89: hold at 25%. Since v77 the band sets
+each step does to A, B and C. On 3 Nov it reads 2.89: hold at 25%, as at October's
+month-end, the first review on record. Since v77 the band sets
 the budget for A and B (owner, 28 Oct), and since v82 for C, through the same guards.
 
 Portfolio C was first added on 2026-09-25, removed on 2026-10-28 (v76) and restored on

@@ -196,6 +196,26 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+132. A CHECK WRITTEN IN ONE MONTH MUST SURVIVE THE NEXT. The trend window's check said "the last
+   month-end before AS_OF" for a window built from quarters; it held through October only because
+   30 Sep is both, and failed on the first roll into November with nothing wrong. The month-end
+   gauge review "due at the 31 Oct roll" had no check at all. When a rule is written, read it
+   against the next boundary it will cross - the month, the quarter, the contract - not this one.
+131. A ROLL DAY HAS TWO PRIORS, AND A COMMENT IS NOT A GUARD. On 2 Nov the series' previous entry was
+   December's last settle and the day's move was off January's own: taking the first printed
+   "down $12.87" for a $8.66 fall. The weekly change's comment said "same contract or None" and the
+   code never compared contracts. Derive the contract on both sides of every comparison.
+130. A DERIVED COPY MUST FOLLOW ITS SOURCE. The nets in hundredths were copied from the fund list once,
+   at import; a script that rebinds the list then read the old copy - a crash for a list one longer,
+   a silent wrong answer for one fund rebuilt. Rebuild a copy when its source changes, or do not
+   keep one.
+129. PRINT WHAT YOU RANK, EXACTLY. The rule ranks printed CAGRs, so the print is part of the rule. A
+   binary float rounds 7.305 down and 7.135 to 7.13; the exact decimal sum rounds them half-up, the
+   way the page reads. Print the exact figure, rank the same figure, and sum in a way (fsum) that no
+   interpreter version changes.
+128. KEEP THE CHECKS WITH WHAT THEY CHECK. The audit, the validator and the mutation harness lived in
+   a scratchpad, and a container reset took them twice. They live in `monitoring/harness/` now,
+   versioned with the engine, the page and the register they read.
 127. A RECORD NOBODY SEES STILL TICKS. The 21 Oct review's own pick sat in A's payload, shown only
    if A matched it, under a two-week clock that would have failed a page that never displayed it.
    When a record no longer describes anything on the page, retire it - and make the audit check

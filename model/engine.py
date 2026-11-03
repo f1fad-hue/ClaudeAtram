@@ -24,11 +24,12 @@ from itertools import combinations
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-10-30"        # newest completed session carried (Friday's closes everywhere:
-                            # Manila, Seoul, Tokyo and New York, Brent's December expiry and
-                            # WTI's settle, the VIX and the 2-, 10- and 30-year's official
-                            # closes; FedWatch at 29 Oct)
-REVIEW_DATE = "2026-11-01"  # when this review was worked through
+AS_OF = "2026-11-03"        # newest completed session carried: Seoul's and Manila's 3 Nov
+                            # closes (Tokyo shut for Culture Day; Manila was shut on 2 Nov);
+                            # New York's, Brent's, WTI's and the VIX's 2 Nov. Held at 30 Oct,
+                            # each on single-source or conflicting prints: the Nikkei, the peso
+                            # and the 2-, 10- and 30-year; FedWatch at 29 Oct
+REVIEW_DATE = "2026-11-03"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -252,7 +253,11 @@ MACRO = {
     # 6 Oct was NOT CARRIED on 7 Oct: only market-basis quotes existed (Trading
     # Economics and the CBOE ^TNX at 5.27; CNBC 5.286% mid-session). RESOLVED
     # 2026-10-10 at 5.27 when FRED DGS10 published it. The market quote is kept.
-    "ust_10y_withheld": [],
+    # 2 Nov WITHHELD (v88): one par-curve republication (StockMarketWatch, 4.91%, the 2-year
+    # 4.59%) and market closes that differ by four basis points - Investing.com 4.878, CappNotes
+    # 4.893, Trading Economics 4.92. The series, the 2-year and the 30-year hold at 30 Oct.
+    "ust_10y_withheld": ["2026-11-02"],
+    "ust_10y_disputed_2nov": [4.878, 4.893, 4.91, 4.92],
     "ust_10y_disputed_2oct": [5.27, 5.28],
     # The three figures that made 18 Sep look disputed, kept as the record of a
     # mixed-basis error rather than deleted: two were intraday market quotes.
@@ -434,6 +439,9 @@ MACRO = {
     # 29 Oct, after GDP and September PCE: 79.6% (Fox Business and IBTimes, citing the tool,
     # "down from 84.2%" the day before - another read of the 28th's afternoon than the 85%
     # carried). FXStreet's 74.9% and FXEmpire's ~83% are other hours of the same day.
+    # 2 Nov, after oil's fall, reads differ by source and hour - Reuters 76.6% (via Kitco), CNBC
+    # about 75%, Tradingpedia about 73% on the 3rd against 80% a week earlier - and none is
+    # in two sources, so the 29 Oct read is carried. All agree the odds fell.
     "fed_hike_odds_dec": 79.6,   # a hike by the 9 Dec meeting (FedWatch)
     "fed_hike_odds_dec_date": "2026-10-29",
     "fed_hike_odds_dec_prev": 85, "fed_hike_odds_dec_prev_date": "2026-10-28",
@@ -451,6 +459,11 @@ MACRO = {
     # (60k fewer in total). The first prints are kept, named as such.
     "us_payrolls_jul_rev2": -10_000,
     "us_ism_mfg_sep": 54.5, "us_ism_mfg_consensus": 54.9,   # 1 Oct
+    # ISM MANUFACTURING, October (2 Nov): 55.5 from 54.5, a tenth month of expansion;
+    # production 59.0, the highest since November 2021; prices 75.2, a ninth reading above
+    # 70; employment 52.4 (ISM via PR Newswire; Rio Times; TD Economics). The consensus is
+    # reported differently by source, so none is carried for October.
+    "us_ism_mfg_oct": 55.5, "us_ism_mfg_oct_prices": 75.2,
     # ISM SERVICES, September (5 Oct): 54.9 from 55.4, a slight miss; prices paid
     # 74.0 from 72.6, employment 50.1. Consensus is reported as 55.0 and 55.2 in
     # different places, so no consensus is carried.
@@ -640,6 +653,9 @@ MACRO = {
     # 30 Oct 63.74, 11 centavos stronger, a third straight gain from the 27 Oct record, after
     # opening at 63.67 and trading 63.61-63.77 (Tribune, BAP data; Philstar). 63.85 - 0.11 =
     # 63.74. Held in v84 while only an aggregator had it.
+    # 3 Nov HELD (v88): 63.47 appears in GMA's headline as republished by an aggregator and
+    # in a mid-market rate site, not in BusinessWorld, the Inquirer or BAP data; GMA's own
+    # "third straight gain" does not fit the run (it would be the fourth). Not carried.
     "usdphp": 63.74,           # 30 Oct
     "usdphp_date": "2026-10-30",
     "usdphp_prev": 63.85,      # 29 Oct close
@@ -704,10 +720,13 @@ MACRO = {
     # 30 Oct: -25.23 (-0.44%) to 5680.35 on oil and fears of renewed US strikes on Iran,
     # investors defensive before the long weekend - 2 Nov, All Souls' Day, is a market
     # holiday (Inquirer; Tribune; Trading Economics). 5705.58 - 25.23 = 5680.35.
-    "psei": 5680.35, "psei_chg_pts": -25.23, "psei_chg_pct": -0.44,
-    "psei_date": "2026-10-30",
-    "psei_prev": 5705.58,
-    "psei_29oct_chg_pct": 0.92,
+    # 3 Nov: -56.18 (-0.99%) to 5624.17, 79 advances to 106 declines, on oil and the
+    # geopolitical risk before the US vote (PSE Edge's index summary; Trading Economics).
+    # 5680.35 - 56.18 = 5624.17. Yahoo's 5662.65 misses the exchange's own figure.
+    "psei": 5624.17, "psei_chg_pts": -56.18, "psei_chg_pct": -0.99,
+    "psei_date": "2026-11-03",
+    "psei_prev": 5680.35,
+    "psei_30oct_chg_pct": -0.44, "psei_29oct_chg_pct": 0.92,
     "psei_2026_low": 5610.39, "psei_2026_low_date": "2026-10-08",
     # PH T-BILLS, 21 Sep auction (BusinessWorld / BusinessMirror). CORRECTED
     # 2026-09-24: 5.138 / 5.517 / 5.717 had been here since the build on 2 Sep,
@@ -799,7 +818,7 @@ MACRO = {
     # RE-RUN 2026-10-28 UNDER THE MAXIMUM-GROWTH RULE AT THE BAND'S 25% (v77;
     # model/heldout_sens.py: the fund built by build_fund(), its pairs from the factor
     # model, the rule re-run over the eleven funds plus it): at 1.20%, 20% of A and 20% of
-    # B; at 1.50%, 15% of A and none of B. (Under the 0.05pp tie of v75-v76: 20 / 20 and
+    # B; at 1.50%, 15% of A and none of B (none of either from v88). (Under the 0.05pp tie of v75-v76: 20 / 20 and
     # 0 / 0; at the derived 26.97% to v74, A / B / the since-retired C: 20 / 25 / 10 and
     # 20 / 0 / 5.)
     # GLOBAL BOND INCOME, the held-out fund that would move the picks most, the same way:
@@ -818,7 +837,10 @@ MACRO = {
     "geo_target_at_ter": 1.95,      # Allianz Thematica, retail AT class (Citywire)
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
-    "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 15, "useq_w_b_peer": 0,
+    # RE-RUN 2026-11-03 on the 3 Nov inputs (v88, after the fund-list cache fix in _uf100):
+    # every weight came back identical but one - at 1.50%, US Equity Opportunity takes none of A
+    # (15% to v87). The run's A, B and C without it are the live picks.
+    "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 0, "useq_w_b_peer": 0,
     # RE-RUN 2026-10-30 on the 30 Oct inputs (v84): every weight below came back identical.
     # Portfolio C, restored v82, re-run 2026-10-29 (heldout_sens, the same rule and budget, the
     # pin kept): US Equity Opportunity takes none of C at either fee; Global Bond Income 25% at
@@ -828,7 +850,7 @@ MACRO = {
     "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
     "gbi_w_a_low": 35, "gbi_w_b_low": 35,
     "gbi_w_a_high": 25, "gbi_w_b_high": 20,
-    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-10-30",
+    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-03",
     # ASIAN MULTI-ASSET INCOME'S DISPUTED TRUST FEE (v75 CLAIMS; on the page from v77): ATRAM's
     # page has 1.50%, carried; the October 2025 KIID and uitf.com.ph 1.20%. Re-run 2026-10-28
     # (heldout_sens.run_refee) under the maximum-growth rule at 25%: the fund's net rises
@@ -971,13 +993,22 @@ MACRO = {
         # 113.43 +2.63, +2.37% - two sources from v87) - the prior the 2 Nov roll needs, to go
         # into brent_roll_priors on that day. Brent rose 13.6% in October.
         ("2026-10-30", 117.64),
+        # 2 Nov, JANUARY now the front month: "settled $8.66, or 7.63%, lower to $104.77 a
+        # barrel" (Reuters via FinanceFeeds and Finimize; Gulf News; Zee Business), the
+        # sharpest fall in three months, as Iran and Qatar held a third day of talks on ending
+        # the war and Trump said a deal "could happen". 113.43 - 8.66 = 104.77, off January's
+        # own 30 Oct settle (brent_roll_priors). Session low $103.28 (Gulf News).
+        ("2026-11-02", 104.77),
     ],
     # ACROSS A ROLL the reported move is off the NEW contract's prior settle, which
     # is not in the front-month series. Carried here, dated by the session it is the
     # prior FOR, so the chain check uses the right base instead of failing or being
     # waived. (WTI's 22 Sep roll was handled by implying the prior; here a published
     # December settle exists, so it is typed and checked.)
-    "brent_roll_priors": {"2026-10-01": 98.03},
+    "brent_roll_priors": {"2026-10-01": 98.03, "2026-11-02": 113.43},
+    # 3 Nov, ASIAN TRADE, not a settle: January at $105.25 by 0104 GMT after reports of a US
+    # strike on Iran's Qeshm Island (Reuters via MarketScreener; The National, "cross $105").
+    "brent_3nov_asia": 105.25,
     # Reuters' like-for-like front-month weekly change to 2 Oct (December vs
     # December), the honest week-on-week figure across the roll.
     # A settle with no reported move of its own, recovered from the NEXT session's
@@ -1003,7 +1034,7 @@ MACRO = {
                              "2026-10-28": 1.3},
     # A MOVE REPORTED IN CENTS (v84) is carried in cents, not turned into a percentage no
     # source printed: CNBC's 29 Oct "fell 44 cents". Each must land on the settle exactly.
-    "brent_reported_pts": {"2026-10-29": -0.44, "2026-10-30": 2.76},
+    "brent_reported_pts": {"2026-10-29": -0.44, "2026-10-30": 2.76, "2026-11-02": -8.66},
     # 28 Sep: $108.83 intraday on the rejection - ABOVE the $108.75 SETTLE high of
     # 15 Sep (verified 2026-09-29: "Brent finished up $3.07 at $108.75 ... highest
     # close since May 19"), so the settle high stands and this is an intraday one.
@@ -1095,12 +1126,18 @@ MACRO = {
     # US-China trade hopes (Sprague Energy; Reuters via Investing.com / Oil and Gas 360).
     # 65.94 - 0.32 = 65.62, which also chains the single-source 24 Oct. EIA's spot 65.52
     # is a different basis.
+    # RE-ANCHORED 2026-11-03 (v88) for the 2 Nov settle, whose anniversary (2 Nov 2025) was a
+    # Sunday: on Friday 31 Oct 2025 "Brent crude futures settled at $65.07 a barrel ... up 7
+    # cents" (Reuters' OPEC+ story via CNBC, Yahoo and Hargreaves Lansdown), two days off. It
+    # was December 2025's last day, so the base is the front month as quoted that day, as
+    # every settle in the series is; January 2026's own quote for the 31st and the 3 Nov 2025
+    # settle (one day off) were not found in two sources.
     # The week bound let v67 compare 22 Oct 2026 with 15 Oct 2025 ($61.91) when 22 Oct
     # 2025 was $62.59: +82.8% y/y published against +80.8% on the anniversary. A base
     # one week off is fine for a slow series and wrong for one that moved 5.4% in a day.
-    "brent_yr_ago": 65.62,
-    "brent_yr_ago_date": "2025-10-27",
-    "brent_yr_ago_disputed": [65.52, 65.62],   # EIA spot against the futures settle
+    "brent_yr_ago": 65.07,
+    "brent_yr_ago_date": "2025-10-31",
+    "brent_yr_ago_disputed": [65.07, 65.44],   # the futures settle against EIA's 31 Oct 2025 spot
     # HORMUZ. Two different things get measured here and they do not agree, so both
     # are carried. VESSEL COUNTS differ ~5x across sources because they count
     # different things; OIL VOLUME is what actually reaches this portfolio, through
@@ -1506,6 +1543,11 @@ MACRO = {
         # Cboe's own page, 19.42 and +12.91%). 17.20 + 2.22 = 19.42. Investing.com's 18.97 is
         # an earlier snapshot; an intraday 23.93 (below) took out the 16 Oct high.
         ("2026-10-30", 19.42),
+        # 2 Nov 21.15, +1.73 (+8.91%), back above 20 as the Nasdaq fell and hedging rose before
+        # the midterms, though the Dow gained (Cboe's own page, 21.15 against a 19.42 close and
+        # +8.91%; Yahoo Finance's close; CNBC's quote page has it as the previous close on the
+        # 3rd). 19.42 + 1.73 = 21.15. AD HOC News' 18.73 (-3.55%) is against all three.
+        ("2026-11-02", 21.15),
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -1527,7 +1569,7 @@ MACRO = {
         "2026-10-20": -6.13,
         "2026-10-21": -3.64, "2026-10-22": 14.09, "2026-10-23": 2.21,
         "2026-10-26": -5.45, "2026-10-27": -4.7, "2026-10-28": -3.48,
-        "2026-10-29": 1.71, "2026-10-30": 12.91,
+        "2026-10-29": 1.71, "2026-10-30": 12.91, "2026-11-02": 8.91,
     },
     # 28 Sep WITHHELD: two reports, 16.07 ("+1.20, +8.07%") and 16.30 ("+1.43,
     # +9.62%), and BOTH reproduce from 14.87 - the chain cannot choose, and one
@@ -1539,6 +1581,7 @@ MACRO = {
     "vix_disputed_20oct": [17.31, 17.60],
     "vix_disputed_22oct": [18.84, 19.03],   # Investing.com's table against three sources
     "vix_disputed_26oct": [18.30, 18.39],   # AD HOC News against three sources
+    "vix_disputed_2nov": [18.73, 21.15],    # AD HOC News against Cboe, Yahoo and CNBC
     "vix_disputed_27oct": [17.51, 17.52],   # Doug's Daily Diary against Cboe
     "vix_disputed_28oct": [16.83, 16.91],   # one recap against Cboe, Yahoo, CNBC and PC Thematic
     "vix_disputed_28sep": [16.07, 16.30],   # the record of the resolved dispute
@@ -1653,17 +1696,25 @@ MACRO = {
     # straight weekly loss; Nasdaq -747.72 (-2.86%) to 25437.00; Dow -572.25 (-1.09%) to
     # 51770.31 - Intel's worst day since 1974 on its forecast, Amazon lower on its profit,
     # Nvidia down 4.2%. All three chain to the cent off the 29 Oct closes.
-    "equity_date": "2026-10-30",
-    "spx_close": 7580.07, "spx_chg_pct": -1.82, "spx_chg_pts": -140.32,
-    "nasdaq_close": 25437.00, "nasdaq_chg_pct": -2.86, "nasdaq_chg_pts": -747.72,
-    "dow_close": 51770.31, "dow_chg_pct": -1.09, "dow_chg_pts": -572.25,
+    # 2 Nov (AP via Yahoo and myMotherLode; StockTitan; TheStreet; CappNotes): S&P -0.51% to
+    # 7541.40, a third straight loss and its lowest close since 31 Jul; Nasdaq -1.07% to
+    # 25164.32; Dow +213.67 (+0.41%) to 51983.98 - oil's sharpest fall in three months on
+    # US-Iran diplomacy lifted the Dow while AI stocks pulled the Nasdaq lower (Oracle -8% on a
+    # $20bn raise; Marvell -13% on its Lumentum deal). The S&P's -38.67 and the Nasdaq's
+    # -272.68 are the closes' own differences (no source printed points); both reproduce the
+    # reported percentages. BBN Times' 25164.36 is four cents off and not carried.
+    "equity_date": "2026-11-02",
+    "spx_close": 7541.40, "spx_chg_pct": -0.51, "spx_chg_pts": -38.67,
+    "nasdaq_close": 25164.32, "nasdaq_chg_pct": -1.07, "nasdaq_chg_pts": -272.68,
+    "dow_close": 51983.98, "dow_chg_pct": 0.41, "dow_chg_pts": 213.67,
+    "spx_30oct_chg_pct": -1.82, "nasdaq_30oct_chg_pct": -2.86,
     "nasdaq_29oct_chg_pct": -1.38,
     "spx_record_close": 7818.93, "spx_record_date": "2026-10-06",
     # Previous closes, published so the CHAIN is checkable in code rather than
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7720.39, "nasdaq_prev": 26184.72, "dow_prev": 52342.56,
+    "spx_prev": 7580.07, "nasdaq_prev": 25437.00, "dow_prev": 51770.31,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -1715,10 +1766,14 @@ MACRO = {
     # 30 Oct: "WTI settled $2.12, or 2.08 percent, higher at $104.12" (Reuters via the Korea
     # Times and Rallies). 102.00 + 2.12 = 104.12; 2.12 / 102.00 is +2.08%. December - one
     # contract. WTI rose 15.2% in October.
-    "wti_settle": 104.12, "wti_chg_pct": 2.08,
-    "wti_date": "2026-10-30", "wti_contract": "2026-12",
-    "wti_prev": 102.00,            # December's own 29 Oct settle - within one contract
-    "wti_prev_date": "2026-10-29",
+    # 2 Nov: "fell $7.66, or 7.36%, to close at $96.46" (Reuters via Zee Business and
+    # FinanceFeeds); "December WTI Crude Oil Contract Closes Down $7.66 ... Settles at $96.46"
+    # (MarketScreener). 104.12 - 7.66 = 96.46; 7.66 / 104.12 is -7.36%. December - one
+    # contract (last trade 19 Nov). Babypips' "near $96.90" is a session price.
+    "wti_settle": 96.46, "wti_chg_pct": -7.36,
+    "wti_date": "2026-11-02", "wti_contract": "2026-12",
+    "wti_prev": 104.12,            # December's own 30 Oct settle - within one contract
+    "wti_prev_date": "2026-10-30",
     "wti_expired_contract": "2026-11",
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
@@ -1918,6 +1973,11 @@ MACRO = {
     # 64659.47 - 1369.36 = 63290.11. Trading Economics' 63154 (-2.33%) does not chain.
     "nikkei_disputed_29oct": [64594.0, 64659.47],
     "nikkei_disputed_30oct": [63154.0, 63290.11],
+    # 2 Nov WITHHELD (v88): two closes, and BOTH chain off 63290.11 - 63081.86 (-208.25,
+    # -0.33%; a Nasdaq.com market report, as Kioxia fell almost 16%) and Investing.com's 63108.00
+    # (-182.11, -0.29%). A chain that both pass cannot choose; Trading Economics' 62772
+    # passes neither. Tokyo was shut on 3 Nov (Culture Day), so the series holds at 30 Oct.
+    "nikkei_disputed_2nov": [62772.0, 63081.86, 63108.00],
     "nikkei_latest": 63290.11, "nikkei_latest_chg_pct": -2.12, "nikkei_latest_chg_pts": -1369.36,
     "nikkei_latest_date": "2026-10-30",
     "nikkei_latest_prev": 64659.47,
@@ -1986,8 +2046,17 @@ MACRO = {
     # 30 Oct: -206.92 (-3.48%) to 5730.74 after Alphabet's quarter revived the AI-spending
     # fear; a sell-side sidecar triggered at 10:05 and foreigners sold 1.6tn won (Seoul
     # Economic Daily; Korea Times). 5937.66 - 206.92 = 5730.74.
-    "kospi_latest": 5730.74, "kospi_latest_chg_pts": -206.92, "kospi_latest_chg_pct": -3.48,
-    "kospi_latest_date": "2026-10-30", "kospi_latest_prev": 5937.66,
+    # 2 Nov: +128.34 (+2.24%) to 5859.08 after opening at 5637.77, as investors bought the
+    # chip heavyweights back (Seoul Economic Daily; Trading Economics; CNBC has the level).
+    # 5730.74 + 128.34 = 5859.08. CNBC's "+2.38%" misses the points; Bloomingbit's "falls
+    # 1.5%" was the morning.
+    # 3 Nov: -210.29 (-3.59%) to 5648.79, as AI-spending fears hit Samsung Electronics and
+    # SK hynix and caution before the US midterms; foreigners net sold about 1.5tn won, the
+    # KOSDAQ -4.08% to 704.39 (Seoul Economic Daily; Financial News; Korea JoongAng Daily;
+    # SBS; Bloomingbit). 5859.08 - 210.29 = 5648.79.
+    "kospi_latest": 5648.79, "kospi_latest_chg_pts": -210.29, "kospi_latest_chg_pct": -3.59,
+    "kospi_latest_date": "2026-11-03", "kospi_latest_prev": 5859.08,
+    "kospi_2nov_chg_pct": 2.24, "kospi_30oct_chg_pct": -3.48,
     "kospi_29oct_chg_pct": -1.24, "kospi_28oct_chg_pct": 6.63,
     "skhynix_q3_op_tn": 83.33, "skhynix_q3_op_yoy": 632, "skhynix_returns_2026_tn": 100,
     "kospi_2oct": 7003.74,
@@ -2133,6 +2202,10 @@ MACRO["vix_episode_high"] = max(v for _, v in _VH)
 # A superlative without its date drifts the moment the window moves.
 MACRO["vix_episode_high_date"] = max(_VH, key=lambda r: r[1])[0]
 MACRO["vix_episode_low_date"] = min(_VH, key=lambda r: r[1])[0]
+MACRO["vix_series_start"] = _VH[0][0]
+# The last close before the latest above the long run (v88), derived so "the first close
+# above the long run since ..." cannot be typed and then left behind.
+MACRO["vix_above_lr_prev_date"] = next((d_ for d_, v_ in reversed(_VH[:-1]) if v_ > MACRO["vix_longrun"]), None)
 
 # The 10-year's headline level, its prior and its move, all DERIVED from the
 # series. ust_10y was a scalar with its date in a comment, and the comment was
@@ -2145,6 +2218,15 @@ MACRO["ust_10y_chg_bp"] = round((MACRO["ust_10y"] - MACRO["ust_10y_prev"]) * 100
 _BH = MACRO["brent_history"]
 MACRO["brent_date"], MACRO["brent"] = _BH[-1]
 MACRO["brent_prev_date"], MACRO["brent_prev"] = _BH[-2]
+# ON A ROLL DAY THE PRIOR IS THE NEW CONTRACT'S OWN (v88). The series' previous entry is the
+# expired contract's last settle; the day's move is off the new contract's settle that same
+# day. Until v88 the prior was always the series' previous entry, so on 2 Nov the page would
+# have printed "down $12.87" (-10.94%, December's 117.64 to January's 104.77) for a session
+# whose reported move is -$8.66 (-7.63%). The check on the pair's contract caught it.
+MACRO["brent_prev_contract"] = front_contract(MACRO["brent_prev_date"], brent_last_trade)
+if MACRO["brent_date"] in MACRO["brent_roll_priors"]:
+    MACRO["brent_prev"] = MACRO["brent_roll_priors"][MACRO["brent_date"]]
+    MACRO["brent_prev_contract"] = front_contract(MACRO["brent_date"], brent_last_trade)
 # November WTI's 22 Sep settle, implied by its reported move - see wti_contract.
 # Implied ONLY when no published prior was entered; a check requires that to
 # coincide exactly with a contract roll.
@@ -2156,8 +2238,12 @@ if MACRO["wti_prev_implied"]:
 MACRO["brent_yoy"] = round((MACRO["brent"] / MACRO["brent_yr_ago"] - 1) * 100, 2)
 # On the week: against the settle seven calendar days earlier, same contract or None.
 _wk = (_dt.date.fromisoformat(MACRO["brent_date"]) - _dt.timedelta(days=7)).isoformat()
+# Same contract only (v88): on 2 Nov the settle seven days earlier was December's and the
+# latest January's, so a "weekly change" between them would be the roll, not the market.
 MACRO["brent_wk_chg_pct"] = (round((MACRO["brent"] / dict(MACRO["brent_history"])[_wk] - 1) * 100, 1)
-                             if _wk in dict(MACRO["brent_history"]) else None)
+                             if _wk in dict(MACRO["brent_history"])
+                             and front_contract(_wk, brent_last_trade) == front_contract(MACRO["brent_date"], brent_last_trade)
+                             else None)
 # "16 of 18 dot-plot participants" - the 16 is the one-more and two-more groups
 # together, derived so the note's count has its own input rather than tracing to
 # whatever else happens to equal 16.
@@ -2247,7 +2333,9 @@ CATALYSTS = [
 # session carried, often Asia's, a day ahead of New York's. A US event is past once a US
 # session ON OR AFTER its date is carried, so it is read against the US equity date;
 # every other catalyst against AS_OF.
-CATALYST_CLOCK = {"US October jobs report": "equity_date"}
+# The midterms (3 Nov) are a US event too: on 3 Nov Asia's session is carried and New
+# York's is not, so against AS_OF they would read as past before a vote was counted.
+CATALYST_CLOCK = {"US midterm elections": "equity_date", "US October jobs report": "equity_date"}
 
 # ----------------------------------------------------------------------------
 # 2. VOLATILITY TERM STRUCTURE
@@ -2543,7 +2631,12 @@ ACWI_SP_BETA = 1.00    # global equity (MSCI ACWI), a little below the S&P's lon
 #     The peso sleeve has no trend tilt. Its "trend" is the rate path, which the
 #     rates channel already carries.
 # ----------------------------------------------------------------------------
-TREND_END = "2026-09-30"          # the last completed month-end before AS_OF
+# QUARTERLY, NOT MONTHLY (2026-11-03). The window is built from the calendar quarters
+# below (TREND_Q), so it ends on the last completed QUARTER-end before AS_OF. Until v88
+# the comment and its check said "month-end", which only held while AS_OF sat in the
+# month after a quarter-end: the first roll into November failed it, with nothing about
+# the window wrong. It rolls to 31 Dec once Q4's returns are published, in January.
+TREND_END = "2026-09-30"          # the last completed quarter-end before AS_OF
 TREND_TILT_PER_PT = 0.30
 TREND_ANCHOR = NEUTRAL_5          # the 10Y trend score: neutral, by the evidence above
 TREND_Q = ("2025Q4", "2026Q1", "2026Q2", "2026Q3")      # oldest first
@@ -2768,6 +2861,12 @@ _u10 = dict(MACRO["ust_10y_history"])
 def _brent_vs_high():
     if MACRO["brent"] >= MACRO["brent_high"]:
         return f"its highest close since {MACRO['brent_high_since']}"
+    # Across a roll the high is the OLD contract's (v88: December's 30 Oct against
+    # January's 2 Nov), and the sentence says so rather than reading as one contract's fall.
+    if MACRO["brent_high_contract"] != MACRO["brent_contract"]:
+        return (f"below the ${MACRO['brent_high']:.2f} the "
+                f"{_dt.date.fromisoformat(MACRO['brent_high_contract'] + '-01'):%B} contract settled at on "
+                f"{_dday('brent_high_date')}, the front month's highest close since {MACRO['brent_high_since']}")
     return (f"below the ${MACRO['brent_high']:.2f} of {_dday('brent_high_date')}, its highest close since "
             f"{MACRO['brent_high_since']}")
 _brent_expiry = brent_last_trade(*map(int, MACRO["brent_contract"].split("-"))).isoformat() == MACRO["brent_date"]
@@ -2777,13 +2876,18 @@ _wti_month = f"{_dt.date.fromisoformat(MACRO['wti_contract'] + '-01'):%B}"
 REGIONS = {
     "US": {
         "3Y": 5.5, "5Y": 6.25, HZ_LABEL: 6.5,
-        "why": (f"Held. On {_dday('equity_date')} the S&P fell {abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f}, its "
-                f"worst day since June and a third weekly loss, the Nasdaq {abs(MACRO['nasdaq_chg_pct']):.2f}% to "
-                f"{MACRO['nasdaq_close']:.2f} and the Dow {abs(MACRO['dow_chg_pct']):.2f}% to {MACRO['dow_close']:.2f}, as Intel "
-                "had its worst day since 1974 on a weak forecast and Amazon's profit disappointed, a day after Alphabet's "
-                "quarter revived the question of what the AI build-out earns. The economy is not the problem: GDP grew at a "
+        "why": (f"Held. On {_dday('equity_date')} the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} "
+                f"{abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f}, a third straight loss and its lowest close since "
+                f"July, and the Nasdaq {abs(MACRO['nasdaq_chg_pct']):.2f}% to {MACRO['nasdaq_close']:.2f}, while the Dow "
+                f"{'rose' if MACRO['dow_chg_pct'] > 0 else 'fell'} {abs(MACRO['dow_chg_pct']):.2f}% to {MACRO['dow_close']:.2f}: "
+                "oil's sharpest fall in three months, on US-Iran diplomacy, lifted the cyclicals, and the AI trade fell again "
+                "as Oracle set out to raise money for its build-out. On 30 Oct the S&P had its worst day since June, "
+                f"{abs(MACRO['spx_30oct_chg_pct']):.2f}%, as Intel had its worst day since 1974 on a weak forecast and Amazon's "
+                "profit disappointed, a day after Alphabet's quarter revived the question of what the AI build-out earns. "
+                "The economy is not the problem: GDP grew at a "
                 f"{MACRO['us_gdp_q3']}% annual rate in the third quarter against {MACRO['us_gdp_q3_consensus']}% expected, but "
-                f"September core PCE was {MACRO['us_core_pce_sep']}% on the year and producer prices rose 1.3% in the month; "
+                f"September core PCE was {MACRO['us_core_pce_sep']}% on the year and producer prices rose 1.3% in the month, and "
+                f"ISM manufacturing rose to {MACRO['us_ism_mfg_oct']} in October; "
                 f"{MACRO['fed_oct_votes_hike']} Fed voters wanted a hike on 28 Oct, FedWatch has one by December at "
                 f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, and the 10-year closed at "
                 f"{MACRO['ust_10y']:.2f}% on {_dday('ust_10y_date')}. FactSet's 23 Oct count has {MACRO['factset_beat_pct']}% of reporting "
@@ -2824,11 +2928,15 @@ REGIONS = {
         # It cited J.P. Morgan's EM equity assumption, which IS the Asia fund's base,
         # so the same number was counted in the base and again in the tilt.
         "3Y": 6.5, "5Y": 7.0, HZ_LABEL: 7.0,
-        "why": ("Held; the ten-year anchor at 7.0 since 21 Oct. The AI trade turned on Asia's chipmakers: on "
-                f"{_dday('kospi_latest_date')} the KOSPI fell {abs(MACRO['kospi_latest_chg_pct']):.2f}% to "
-                f"{MACRO['kospi_latest']:,.2f} and the Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}% to "
-                f"{MACRO['nikkei_latest']:,.2f} after Alphabet's quarter, and the BoJ held at {MACRO['boj_rate']:.2f}% with a "
-                f"hike flagged for December. On the 29th the KOSPI had slipped {abs(MACRO['kospi_29oct_chg_pct']):.2f}% as "
+        "why": ("Held; the ten-year anchor at 7.0 since 21 Oct. The AI trade keeps turning on Asia's chipmakers: on "
+                f"{_dday('kospi_latest_date')} the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} "
+                f"{abs(MACRO['kospi_latest_chg_pct']):.2f}% to {MACRO['kospi_latest']:,.2f} as Samsung Electronics and SK hynix "
+                "sold off on AI-spending fears before the US vote, a day after rebounding "
+                f"{MACRO['kospi_2nov_chg_pct']:.2f}%. On 30 Oct it had fallen {abs(MACRO['kospi_30oct_chg_pct']):.2f}% and the "
+                f"Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}% to {MACRO['nikkei_latest']:,.2f} after Alphabet's quarter "
+                "(the Nikkei's 2 Nov close is disputed between two prints and Tokyo was shut on the 3rd), and the BoJ held at "
+                f"{MACRO['boj_rate']:.2f}% with a hike flagged for December. On the 29th the KOSPI had slipped "
+                f"{abs(MACRO['kospi_29oct_chg_pct']):.2f}% as "
                 f"Samsung fell on its detailed quarter, while the Nikkei rose {MACRO['nikkei_29oct_chg_pct']:.2f}%; on the "
                 f"28th the KOSPI jumped {MACRO['kospi_28oct_chg_pct']:.2f}% as SK hynix reported a record quarter - operating "
                 f"profit of {MACRO['skhynix_q3_op_tn']:.1f}tn won, up {MACRO['skhynix_q3_op_yoy']}% on a year - and about "
@@ -2863,8 +2971,9 @@ REGIONS = {
                 "purchasing power against the dollar this year. Governor Remolona left the 17 Dec meeting open, and says "
                 "BSP will not defend a level and intervenes only to cushion excessive moves. The PSEi "
                 f"{'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% to {MACRO['psei']:.2f} on "
-                f"{_dday('psei_date')} on oil and fears of renewed US strikes on Iran, before the 2 Nov holiday, after "
-                f"{'rising' if MACRO['psei_29oct_chg_pct'] > 0 else 'falling'} {abs(MACRO['psei_29oct_chg_pct']):.2f}% on the 29th; its 2026 low is "
+                f"{_dday('psei_date')}, back from the All Souls' Day holiday, on oil and the geopolitical risk before the US "
+                f"vote, after {'rising' if MACRO['psei_30oct_chg_pct'] > 0 else 'falling'} "
+                f"{abs(MACRO['psei_30oct_chg_pct']):.2f}% on 30 Oct; its 2026 low is "
                 f"{MACRO['psei_2026_low']}, on 8 Oct. September inflation was 7.2%, core 4.7%: against it every tenor's real "
                 "yield is still below zero, though the gap closed by up to 63bp in one auction. This sleeve's job - zero "
                 "duration risk and high nominal carry - is unimpaired. Its purchasing "
@@ -2900,6 +3009,10 @@ for r in REGIONS.values():
 #    to endpoints, so the 1-10 neutral of 5.5 lands exactly on the 1-5 neutral of 3.0.
 # ----------------------------------------------------------------------------
 
+# Brent's weekly change, when there is a same-contract one to quote (v88).
+_brent_wk_txt = (f"{abs(MACRO['brent_wk_chg_pct'])}% {'higher' if MACRO['brent_wk_chg_pct'] > 0 else 'lower'} on the "
+                 "week and " if MACRO["brent_wk_chg_pct"] is not None else "")
+
 DRIVERS = [
     ("Monetary policy & liquidity", 0.2, 2.0,
      f"HELD at 2.0. The Fed held at {MACRO['fed_funds_lower']:.2f}-{MACRO['fed_funds_upper']:.2f}% on 28 Oct, "
@@ -2926,8 +3039,7 @@ DRIVERS = [
      f"3.7% (core 2.6%). Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, "
      f"{'up' if MACRO['brent_chg_pts'] > 0 else 'down'} ${abs(MACRO['brent_chg_pts']):.2f}"
      f"{' on the ' + _brent_month + ' contract' + chr(39) + 's last day' if _brent_expiry else ''}, {_brent_vs_high()}, "
-     f"{abs(MACRO['brent_wk_chg_pct'])}% {'higher' if MACRO['brent_wk_chg_pct'] > 0 else 'lower'} on the week and "
-     f"{MACRO['brent_yoy']:.1f}% above the ${MACRO['brent_yr_ago']:.2f} of a year earlier; {_wti_month} WTI settled at "
+     f"{_brent_wk_txt}{MACRO['brent_yoy']:.1f}% above the ${MACRO['brent_yr_ago']:.2f} of a year earlier; {_wti_month} WTI settled at "
      f"${MACRO['wti_settle']:.2f} on {_dday('wti_date')}. The euro area is at 3.8% (core 2.5%) and the Philippines at 7.2%. Held: core is firming, "
      "not running away, and most of the jump is energy passing through, not yet wages."),
     ("Growth momentum", 0.15, 4.0,
@@ -2938,9 +3050,11 @@ DRIVERS = [
      f"expected, on exports, but its September retail sales rose only 1.1% and its official factory PMI fell back to "
      f"{MACRO['china_pmi_oct']} in October, services and construction to {MACRO['china_nmpmi_oct']} from {MACRO['china_nmpmi_sep']}. Michigan sentiment ended October at "
      f"{MACRO['us_umich_oct']}, revised up from a first read of {MACRO['us_umich_oct_prelim']} but the lowest since May's "
-     f"record low of {MACRO['us_umich_record_low']}; ISM services (54.9) and manufacturing (54.5) stayed in expansion "
-     "in September. Philippine growth was 2.6% in the first half. Held: a beat built on inventories, with a stretched "
-     "consumer behind it, is not a turn in the cycle."),
+     f"record low of {MACRO['us_umich_record_low']}. ISM manufacturing rose to {MACRO['us_ism_mfg_oct']} in October from "
+     f"{MACRO['us_ism_mfg_sep']}, production at its highest since 2021, but its prices index is {MACRO['us_ism_mfg_oct_prices']} "
+     f"and the respondents cite tariffs and the war; ISM services was {MACRO['us_ism_svc_sep']} in September. Philippine "
+     "growth was 2.6% in the first half. Held: factories and inventories are carrying a beat that a stretched consumer "
+     "is not; that is not yet a turn in the cycle."),
     ("Corporate earnings", 0.2, 7.0,
      "HELD at 7.0, still the strongest pillar; the market is pricing the financing, not the profits. FactSet's "
      f"23 Oct count has {MACRO['factset_reported_pct']}% of the S&P reported and {MACRO['factset_beat_pct']}% beating "
@@ -2949,9 +3063,12 @@ DRIVERS = [
      f"{MACRO['factset_q3_growth_prev']}%; health care is the one sector with earnings down on a year. On 29 Oct "
      "Alphabet took the largest one-day fall in market value in its history after a revenue miss and negative free "
      f"cash flow on its AI spending, and the Nasdaq fell {abs(MACRO['nasdaq_29oct_chg_pct']):.2f}%; on the 30th the "
-     f"KOSPI fell {abs(MACRO['kospi_latest_chg_pct']):.2f}% and the Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}%, "
+     f"KOSPI fell {abs(MACRO['kospi_30oct_chg_pct']):.2f}% and the Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}%, "
      "then Intel had its worst day since 1974 on a weak forecast, Amazon's profit disappointed and the Nasdaq fell "
-     f"{abs(MACRO['nasdaq_chg_pct']):.2f}% more. The "
+     f"{abs(MACRO['nasdaq_30oct_chg_pct']):.2f}% more. On {_dday('equity_date')} it {'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} "
+     f"{abs(MACRO['nasdaq_chg_pct']):.2f}% again as Oracle set out to raise money for its AI build-out, and on "
+     f"{_dday('kospi_latest_date')} the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} "
+     f"{abs(MACRO['kospi_latest_chg_pct']):.2f}% on the same fear. The "
      f"suppliers' numbers are records: SK hynix's third-quarter operating profit was {MACRO['skhynix_q3_op_tn']:.1f}tn "
      f"won, up {MACRO['skhynix_q3_op_yoy']}% on a year, with about {MACRO['skhynix_returns_2026_tn']}tn won of "
      "shareholder returns planned for 2026; TSMC's net income rose 68.7% to NT$763.06bn, above the NT$746.34bn "
@@ -2969,32 +3086,42 @@ DRIVERS = [
      "is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since."),
     # RAISED 2.5 -> 2.75 (2026-10-21); HELD 2026-10-22 as the VIX eased again but
     # Asia sold off and the Gulf escalated. CUT 2.75 -> 2.5 (2026-10-23): the VIX's
-    # 14% jump on the AI sell-off undid the calm the raise rested on. HELD since.
-    ("Volatility & risk appetite", 0.1, 2.5,
-     f"HELD at 2.5. The VIX rose {MACRO['vix_latest_chg_pct']}% to {MACRO['vix_latest']:.2f} on "
-     f"{_dday('vix_latest_date')}, after {MACRO['vix_reported_moves']['2026-10-29']}% on the 29th, as the tech sell-off "
-     f"deepened; it touched {MACRO['vix_latest_high']} intraday, past the {MACRO['vix_latest_high_prev']} high of "
-     f"{_dday('vix_latest_high_prev_date')}, but closed still under the long-run {MACRO['vix_longrun']}. Asia took the "
-     f"shock first: on the 30th the KOSPI fell {abs(MACRO['kospi_latest_chg_pct']):.2f}%, tripping a sell-side sidecar, "
-     f"and the Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}%. No full futures strip after the "
+    # 14% jump on the AI sell-off undid the calm the raise rested on. HELD to v87.
+    # CUT 2.5 -> 2.25 (v88, 2026-11-03): the hold rested on closes under the long run, and
+    # 2 Nov's is above it, the highest in the series.
+    ("Volatility & risk appetite", 0.1, 2.25,
+     f"CUT to 2.25 from 2.5. The VIX rose {MACRO['vix_latest_chg_pct']}% to {MACRO['vix_latest']:.2f} on "
+     f"{_dday('vix_latest_date')}, after {MACRO['vix_reported_moves']['2026-10-30']}% on 30 Oct: the highest close in "
+     f"this series, which starts on {_dday('vix_series_start')}, and the first above the long-run "
+     f"{MACRO['vix_longrun']} since {_dday('vix_above_lr_prev_date')}, as the Nasdaq fell a third session and "
+     "hedging built into the midterms, though the Dow rose. On 30 Oct it had touched "
+     f"{MACRO['vix_latest_high']} intraday, past the {MACRO['vix_latest_high_prev']} high of "
+     f"{_dday('vix_latest_high_prev_date')}. Asia took the next leg: on {_dday('kospi_latest_date')} the KOSPI "
+     f"{'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}%. "
+     "No full futures strip after the "
      "20 Oct settlements has been reached, so the curve stays quoted there - November "
      f"{MACRO['vix_fut_sep']} and December {MACRO['vix_fut_dec']}, above that day's spot, the ordinary upward slope - "
      f"and mean-reverts to the long run beyond. Tested against that day's VIX3M of {MACRO['vix3m']} it gives "
      f"{VIX3M_MODEL:.2f} at three months, {abs(VIX3M_RESID):.2f}% {'below' if VIX3M_RESID < 0 else 'above'}, inside "
      f"the {VIX3M_BOUND_PCT:.0f}% bound; the 5 Oct strip it replaced read {abs(VIX3M_PREV_RESID):.2f}% "
      f"{'below' if VIX3M_PREV_RESID < 0 else 'above'} on the same test. On forward vol the curve sits at "
-     f"{VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} {'below' if VOL_RAMP < 0 else 'above'} the long run. Held: the close is "
-     "under the long run and 2.5 is the score the 23 Oct AI sell-off set; a spike that gave back most of its rise by "
-     "the close tests that, it does not yet make a new regime."),
+     f"{VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} {'below' if VOL_RAMP < 0 else 'above'} the long run. Cut: 2.5 was held "
+     "on closes under the long run, and the latest is above it at the series high. Part of the rise is hedging "
+     "into the vote; if it gives back after the result, the cut is undone."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "HELD at 1.5; a tanker attack on 30 Oct is confirmed, but the last confirmed count of the barrels had not shrunk. On 30 Oct "
+     "HELD at 1.5; talks have begun and the strikes have not stopped. On 2 Nov Iran said it was holding "
+     "\"intensive\" indirect talks with Washington through Qatari mediators, after its president said the Supreme "
+     "Leader had authorised them, and Trump said a deal \"could happen\" (France 24; CBS; Gulf News); the White House "
+     f"says no direct talks are under way. Brent fell {abs(MACRO['brent_chg_pct']):.2f}% to ${MACRO['brent']:.2f} on "
+     f"{_dday('brent_date')}, its sharpest fall in three months, {_brent_vs_high()}. On the 3rd reports of a US strike on Iran's Qeshm "
+     f"Island took it back to ${MACRO['brent_3nov_asia']:.2f} in Asian trade (Reuters via MarketScreener; The National). On 30 Oct "
      "UKMTO reported explosives attached to a tanker off Khasab, Oman, and the British military said a tanker had "
      "caught fire after a small boat attached two explosives to it; Iran's Revolutionary Guard claimed that tankers "
      "leaving by unauthorised routes had struck mines, which US Central Command, saying it had cleared the main "
      "transit routes, called false (CNBC; AP; Gulf News; Reuters). On the 28th the US had reportedly told "
      "Gulf states to prepare for a short, intense campaign against Iran after the 3 November midterms (the Wall "
      "Street Journal, via CNBC), and the Houthis claim new attacks on Saudi airports and oil facilities while Qatari "
-     f"mediators are in Tehran. Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {_brent_vs_high()}. "
+     "mediators are in Tehran. "
      "Read it on VOLUME, the measure this note "
      "goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at about 14 mb/d in the week to 18 Oct, 82% "
      "of pre-war on preliminary figures, and the Gulf's exports by every route above 24 mb/d against 23.3 pre-war. A "
@@ -3003,8 +3130,9 @@ DRIVERS = [
      "the Strait, and the export volumes since bear out that it runs. Vessel counts disagree and are not supply: IMF PortWatch counted "
      f"{MACRO['hormuz_transits']} transits on {_dday('hormuz_transits_date')} against "
      f"{_a_an(MACRO['hormuz_baseline'])} {MACRO['hormuz_baseline']} baseline, a {MACRO['hormuz_vessel_drop_pct']:.0f}% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over "
-     "10000 dwt; the US government around 30, on a basis it does not state. Held, not cut: one confirmed attack is "
-     "not a closure, and 1.0 is kept for full closure with Brent above $130 - strictly worse, and nearer than it was."),
+     "10000 dwt; the US government around 30, on a basis it does not state. Held, not raised: talks without a "
+     "deal, and a reported strike the next day, are not an opening of the Strait. Not cut: one confirmed attack is "
+     "not a closure, and 1.0 is kept for full closure with Brent above $130 - strictly worse."),
 ]
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -3069,15 +3197,15 @@ GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 
 SUMMARY = {
     "Monetary policy & liquidity": f"Held: September core PCE ran {MACRO['us_core_pce_sep']}% on the year after the Fed held, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}; the ECB and the BoJ held too.",
     "Inflation trajectory": f"Held: September PCE prices rose {MACRO['us_pce_sep']}% on the year, core {MACRO['us_core_pce_sep']}%; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, +{MACRO['brent_yoy']:.1f}% y/y.",
-    "Growth momentum": f"Held: US GDP grew at a {MACRO['us_gdp_q3']}% annual rate in the third quarter against {MACRO['us_gdp_q3_consensus']}% expected, on inventories, while September's real spending was flat.",
+    "Growth momentum": f"Held: US GDP grew at a {MACRO['us_gdp_q3']}% annual rate in the third quarter against {MACRO['us_gdp_q3_consensus']}% expected and ISM manufacturing rose to {MACRO['us_ism_mfg_oct']} in October, while September's real spending was flat.",
     "Corporate earnings": f"Held, the strongest pillar: {MACRO['factset_beat_pct']}% of reporting S&P companies beat (FactSet, 23 Oct), but the AI-spending scare took the Nasdaq down {abs(MACRO['nasdaq_29oct_chg_pct']):.2f}% on 29 Oct and {abs(MACRO['nasdaq_chg_pct']):.2f}% on {_dday('equity_date')}.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Held: the VIX rose {MACRO['vix_latest_chg_pct']}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')} and touched {MACRO['vix_latest_high']} intraday, but closed under its long-run {MACRO['vix_longrun']}.",
-    "Geopolitics & energy": f"Held: a tanker attack in Hormuz on 30 Oct is confirmed, but the last confirmed flows were near 14 mb/d; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {_brent_vs_high()}.",
-    "US": f"Held: the S&P fell {abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f} on {_dday('equity_date')}, its worst day since June, as Intel and Amazon disappointed, after GDP beat at {MACRO['us_gdp_q3']}%; FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
+    "Volatility & risk appetite": f"Cut to 2.25: the VIX rose {MACRO['vix_latest_chg_pct']}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, the series high and above its long-run {MACRO['vix_longrun']}, as hedging built into the midterms.",
+    "Geopolitics & energy": f"Held: Iran's indirect talks took Brent down {abs(MACRO['brent_chg_pct']):.2f}% to ${MACRO['brent']:.2f} on {_dday('brent_date')}, but a US strike was reported on the 3rd and the last confirmed flows were near 14 mb/d.",
+    "US": f"Held: the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f} on {_dday('equity_date')}, a third straight loss, as the AI trade fell again and cheaper oil lifted the Dow; GDP beat at {MACRO['us_gdp_q3']}%, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at 3.8%, and Lagarde will leave early.",
-    "ASIA": f"Held: the KOSPI fell {abs(MACRO['kospi_latest_chg_pct']):.2f}% to {MACRO['kospi_latest']:,.2f} and the Nikkei {abs(MACRO['nikkei_latest_chg_pct']):.2f}% to {MACRO['nikkei_latest']:,.2f} on {_dday('kospi_latest_date')} on the AI-spending scare, and China's factory PMI fell back to {MACRO['china_pmi_oct']}; the BoJ held at {MACRO['boj_rate']:.2f}%.",
-    "PHILIPPINES": f"Held: the peso recovered to {MACRO['usdphp']} on {_dday('usdphp_date')} from its {MACRO['usdphp_record']:.2f} record while the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}%; 91-day bills are at 6.624% after BSP's 50bp hike.",
+    "ASIA": f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% to {MACRO['kospi_latest']:,.2f} on {_dday('kospi_latest_date')} on the AI-spending scare, after {abs(MACRO['kospi_30oct_chg_pct']):.2f}% on 30 Oct, and China's factory PMI fell back to {MACRO['china_pmi_oct']}; the BoJ held at {MACRO['boj_rate']:.2f}%.",
+    "PHILIPPINES": f"Held: the peso recovered to {MACRO['usdphp']} on {_dday('usdphp_date')} from its {MACRO['usdphp_record']:.2f} record, and the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% on {_dday('psei_date')}; 91-day bills are at 6.624% after BSP's 50bp hike.",
 }
 
 GAUGE = to5(GAUGE_10)          # headline, 1-5
@@ -4058,9 +4186,13 @@ DDG_BANDS = [  # [lo, hi) on the 1-5 reading, the budget it points to, the actio
 ]
 DDG_GEO_FLOOR = 2.0
 DDG_REVIEWS_NEEDED = 2
-# Month-end readings on record, oldest first: (date, reading). The first is due at the
-# 31 Oct roll; until two share a band, no step is taken.
-DDG_REVIEWS = []
+# Month-end readings on record, oldest first: (month-end, reading). Until two share a
+# band, no step is taken. October's (v88, 2026-11-03) is the reading published on the
+# month's last session, the 30 Oct closes (v86/v87): 2.89, the hold band. It is typed,
+# not recomputed, because a month-end review records what the page read at the month-end;
+# later corrections to those inputs do not rewrite it. A check requires every month-end
+# since the band began setting the budget to have its review on record.
+DDG_REVIEWS = [("2026-10-31", 2.89)]
 _VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}
 
 def _ddg_vol(h):
@@ -4221,7 +4353,20 @@ _WI_COL10 = {k: "net10_" + v[4:] for k, v in _WI_COL.items()}
 _UN = len(UNIV_IDS)
 _UF, _US, _UC = UNIV
 _VOL = [f["vol"] for f in _UF]
-_UF100 = [{k: round(v * 100) for k, v in f.items() if k.startswith("net") and isinstance(v, float)} for f in _UF]
+# The funds' nets in hundredths, for the exact printed CAGR. A DERIVED COPY OF _UF, so it is
+# rebuilt whenever _UF is rebound or one of its funds replaced (v88): heldout_sens.py rebinds
+# _UF to the list plus a held-out fund, and to the list with one fund rebuilt at another fee.
+# A copy taken once at import (as in 7b27e41) crashed the first and would have scored the
+# second on the old fee without a sound. The source funds are held, so their ids cannot be
+# reused while the copy stands.
+_UF100_SRC, _UF100 = (), []
+def _uf100():
+    global _UF100_SRC, _UF100
+    if len(_UF100_SRC) != len(_UF) or any(a is not b for a, b in zip(_UF100_SRC, _UF)):
+        _UF100_SRC = tuple(_UF)
+        _UF100 = [{k: round(v * 100) for k, v in f.items() if k.startswith("net") and isinstance(v, float)}
+                  for f in _UF]
+    return _UF100
 _ADJ = [f["dd_k_adj"] for f in _US]
 _CASH = [f["cash_like"] for f in _US]
 _MAXU, _CASHU = round(UNIV_MAX_W * 20), round(UNIV_MIN_CASH * 20)
@@ -4266,12 +4411,13 @@ def _measure(idx, units, cols):
     else:
         k = DD_K + math.fsum(w[a] * _ADJ[i] for a, i in enumerate(idx) if not _CASH[i]) / eq
     v_d = round(v, 2)
+    uf100 = _uf100()
     out = []
     for col in cols:
         mu = math.fsum(w[a] * _UF[i][col] for a, i in enumerate(idx))
         raw = -max((k * v - DD_MU * mu) * DD_HORIZON_SCALAR, 0.0)
         # the printed CAGR exactly, as cagr2() rounds it: units of 5% x hundredths, /20
-        s_ = sum(units[a] * _UF100[i][col] for a, i in enumerate(idx))
+        s_ = sum(units[a] * uf100[i][col] for a, i in enumerate(idx))
         r_d = ((s_ + 10) // 20 if s_ >= 0 else -((-s_ + 10) // 20)) / 100
         d_d = round(-max((k * v_d - DD_MU * r_d) * DD_HORIZON_SCALAR, 0.0), 1)
         out.append((r_d, d_d, raw))
@@ -6116,8 +6262,12 @@ def report():
                    _wti_rolled or abs(MACRO["wti_prev"] * (1 + MACRO["wti_chg_pct"] / 100)
                                       - MACRO["wti_settle"])
                    <= MACRO["wti_prev"] * 0.00005 + 0.01))
-    _bfront = [front_contract(d, brent_last_trade)
-               for d in (MACRO["brent_prev_date"], MACRO["brent_date"])]
+    # The prior's contract: the previous session's front month, or on a roll day the new
+    # contract itself, whose own prior is in brent_roll_priors.
+    _bfront = [MACRO["brent_prev_contract"], front_contract(MACRO["brent_date"], brent_last_trade)]
+    checks.append(("on a Brent roll day the prior is the new contract's own, from the roll record",
+                   MACRO["brent_prev"] == (MACRO["brent_roll_priors"].get(MACRO["brent_date"])
+                                           or dict(MACRO["brent_history"])[MACRO["brent_prev_date"]])))
     checks.append((f"Brent's latest pair is one contract ({_bfront[1]}), so it can chain",
                    _bfront[0] == _bfront[1]))
     # NOT "is one of the candidates" - that passed for every candidate, the wrong
@@ -6942,10 +7092,12 @@ def report():
     # ---- the market-trend channel (added 2026-10-07) ----
     _tr = p["trend"]
     _end = _dt.date.fromisoformat(_tr["end"])
-    checks.append(("the trend window ends on the last month-end before the as-of date",
-                   (_end + _dt.timedelta(days=1)).day == 1
-                   and _end < _dt.date.fromisoformat(AS_OF)
-                   and (_end + _dt.timedelta(days=1)).month == _dt.date.fromisoformat(AS_OF).month))
+    _ao = _dt.date.fromisoformat(AS_OF)
+    _qe = lambda y, m: _dt.date(y, m, 1) - _dt.timedelta(days=1)     # the day before a quarter starts
+    _last_qe = _qe(_ao.year, 3 * ((_ao.month - 1) // 3) + 1)         # the last quarter-end before AS_OF
+    checks.append(("the trend window ends on the last quarter-end before the as-of date, the end of its last quarter",
+                   _end == _last_qe and _end < _ao
+                   and TREND_Q[-1] == f"{_end.year}Q{(_end.month - 1) // 3 + 1}"))
     def _cmp(xs):
         q_ = 1.0
         for x in xs: q_ *= 1 + x / 100
@@ -7112,6 +7264,18 @@ def report():
                                                     and _gd["persistence"]["ok"])
                    and _dg["recommended_cap"] == (_dg["band"]["cap"] if _okstep else p["dd_budget"]["base"])
                    and _dg["recommended_cap"] <= 27.0 <= p["dd_budget"]["derived_ref"] + 0.05))
+    # THE MONTH-END RECORD IS KEPT (v88): the October review was due at the 31 Oct roll and
+    # nothing would have failed had it been skipped. Every month-end from the band's first
+    # month to the as-of date has one reading, in order, on the 1-5 scale.
+    _me, _y, _m = [], *map(int, DD_BUDGET_BAND_DATE.split("-")[:2])
+    while True:
+        _d_me = (_dt.date(_y + _m // 12, _m % 12 + 1, 1) - _dt.timedelta(days=1))
+        if _d_me >= _asof: break
+        _me.append(_d_me.isoformat()); _y, _m = _y + _m // 12, _m % 12 + 1
+    checks.append(("every month-end since the band began setting the budget has its gauge review on record",
+                   [d_ for d_, _ in DDG_REVIEWS] == _me
+                   and all(1.0 <= v_ <= 5.0 for _, v_ in DDG_REVIEWS)
+                   and [list(r) for r in _dg["reviews"]] == [list(r) for r in DDG_REVIEWS]))
     _alt = _dg["alt"]
     checks.append(("the gauge's step in force is the published A, B and C, and each step's picks sit inside their own cap",
                    all(_alt[f"{DD_CAP:.0f}"][x]["weights"] == p[f"portfolio_{x}"]["weights"] for x in "abc")

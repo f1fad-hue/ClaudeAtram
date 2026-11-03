@@ -2,6 +2,108 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-03 — v88: the harnesses rebuilt in the repo, every CAGR printed exactly, the first roll into November (Brent onto January, the trend window, October's month-end gauge review), Volatility cut to 2.25; A and B unchanged, C 5pp from Infra to Health Care
+
+At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
+for any errors to record and rectify it. ... Do house cleanup."
+
+**Harnesses rebuilt, now in the repo** (`monitoring/harness/`). A container reset took the
+scratchpad's audit, validator and mutation harness for the second time. They were rewritten from
+the published rule and now live beside what they check: `audit.py` (238 checks, independent of the
+engine: fees, nets, tilts and drawdowns re-derived; every portfolio, every budget step and the rule
+itself re-run over all 322,725 mixes and the 8,289 pinned ones; freshness with days left; chains;
+prose traceability; the register; sources), `validate.js` (15 page checks at 412px and 360px),
+`mutate.py` (40 planted errors) and `rebuild.sh` (runbook 128).
+
+**Rolled (two sources or more):**
+- **US, 2 Nov**: S&P −0.51% to 7,541.40, a third straight loss and its lowest close since July;
+  Nasdaq −1.07% to 25,164.32; Dow +213.67 (+0.41%) to 51,983.98, as oil's fall lifted cyclicals and
+  the AI trade fell again (AP via Yahoo; StockTitan; TheStreet; CappNotes).
+- **Brent onto January, 2 Nov**: $104.77, −$8.66 (−7.63%) off January's own $113.43, the sharpest
+  fall in three months, on Iran's indirect talks through Qatar (Reuters via FinanceFeeds and
+  Finimize; Gulf News; Zee Business). **WTI** $96.46, −$7.66 (−7.36%), December (MarketScreener;
+  Reuters). The **year-ago base** re-anchored to 31 Oct 2025's $65.07 (Reuters via CNBC, Yahoo and
+  Hargreaves Lansdown), two days off the anniversary: **+61.01% y/y**.
+- **VIX, 2 Nov**: 21.15, +8.91% (Cboe's page; Yahoo; CNBC's quote page), above the long-run 19.5
+  for the first time since 16 Oct and the series high. AD HOC News' 18.73 is against all three.
+- **KOSPI**: 2 Nov 5,859.08 (+2.24%), 3 Nov 5,648.79 (−3.59%) on AI-spending fears before the US
+  vote (Seoul Economic Daily; Financial News; JoongAng; SBS). **PSEi** 3 Nov 5,624.17 (−0.99%), back
+  from the All Souls' Day holiday (PSE Edge; Trading Economics).
+- **ISM manufacturing, October**: 55.5 from 54.5, production 59.0, prices 75.2 (ISM via PR
+  Newswire; Rio Times; TD Economics).
+
+**Held (single-source or conflicting):** the Nikkei's 2 Nov (63,081.86 and 63,108.00 both chain
+off Friday; Tokyo shut on the 3rd); the peso's 3 Nov (63.47 in an aggregator and a rate site only);
+the 10-year's 2 Nov, withheld (one par-curve figure, market closes four basis points apart), with
+the 2- and 30-year; FedWatch (Reuters 76.6%, CNBC ~75%, Tradingpedia ~73% - three reads, none in
+two sources; all agree the odds fell).
+
+**Scored:** **Volatility & risk appetite cut 2.5 → 2.25**: its hold rested on closes under the long
+run, and 2 Nov's is above it at the series high; if the pre-vote hedging gives back after the
+result, the cut is undone. **Geopolitics held at 1.5**: talks without a deal, and reports of a US
+strike on Qeshm Island on the 3rd (Brent $105.25 in Asian trade). Growth held at 4.0 on the ISM
+beat (factories, not the consumer). The other drivers, the regions and their paths held. Gauge
+**2.29 → 2.28**; regions 3.60 / 3.29 / 2.99 / 2.46; the drawdown gauge **2.89, hold at 25%**, with
+October's month-end review now on record and the VIX guard red (it applies only to a raise).
+
+**Portfolios:** A and B are unchanged in weight; **A's 10-year CAGR prints 7.31%** (its exact sum,
+7.305, printed 7.30 under binary rounding); B 7.10%. **C moves 5pp from Global Infra Equity to Global
+Health Care** (5 / 50 / 0 / 0 / 0 / 20 / 20 / 0 / 0 / 5 / 0; 7.14% / −24.9%, vol 12.83%, 10-year
+7.31%): its exact sum, 7.135, printed 7.13 before and now ties the old pick's 7.142 at 7.14%, both
+at −24.9%, and the rule's next key, the drawdown before rounding, is shallower. Stress rows that
+moved on exact printing: A Disinflation 9.58 → 9.59; B Hawkish 5.10 → 5.11, AI capex 5.32 → 5.33;
+C's rows re-derived on its new mix. Held-out re-run on the 3 Nov inputs: every weight identical
+except US Equity Opportunity at 1.50%, now none of A (15% to v87).
+
+**Errors found and fixed:**
+- **Printed CAGRs depended on the Python version.** Portfolio sums mixed the built-in `sum` (compensated
+  from Python 3.12, plain before) with plain loops, so a CAGR at a rounding edge could print
+  differently by version and by code path. Every portfolio sum is now `math.fsum`.
+- **A CAGR at exactly x.xx5 was printed by binary rounding**, so 7.305 printed 7.30 and 7.135 printed
+  7.13. The printed CAGR is now the exact decimal sum of weight × net, rounded half-up (`cagr2`), and
+  the search ranks the same figure in integer arithmetic. It is what moved A's print, C's pick and
+  four stress rows (runbook 129).
+- **My own bug in the fix, caught before commit:** scenario net + shock was added in float before
+  the decimal sum.
+- **The search's cache of the nets was taken once, at import.** `heldout_sens.py` rebinds the fund
+  list: the held-out run crashed, and the fee re-runs would have scored the rebuilt fund on its OLD
+  fee without a sound. The cache is now rebuilt whenever the list or any fund in it changes, and the
+  held-out run was re-done on it (runbook 130).
+- **On a roll day Brent's prior was the expired contract's settle**: the page would have printed
+  "down $12.87" (−10.94%, December's $117.64 to January's $104.77) for a −$8.66 (−7.63%) session.
+  The prior is now the new contract's own, from the roll record; the pair-contract check caught it
+  (runbook 131).
+- **Brent's weekly change crossed the roll.** Its comment said "same contract or None" and its code
+  did not check: it would have printed "9.5% lower on the week" against December's 26 Oct settle.
+  It is now same-contract only, and the note drops the phrase when there is none (runbook 131).
+- **The trend window's check said "month-end" for a quarterly window**, so it failed on the first
+  roll into November with nothing wrong. It now requires the last completed quarter-end and that
+  the last quarter carried is the one ending there (runbook 132).
+- **October's month-end gauge review was due at the 31 Oct roll and nothing would have failed if it
+  were skipped.** Recorded (2.89, the hold band, the reading published on 30 Oct) and a check now
+  requires every month-end's review since the band began setting the budget (runbook 132).
+- **The midterms would have read as past against Asia's 3 Nov session.** Added to the US catalyst
+  clock (the audit already read them against the US session).
+- **Five notes read the latest move beside an earlier date** - "on the 30th the KOSPI fell" over the
+  latest change would have printed 3 Nov's −3.59% as Friday's. Each now reads its own day's field
+  (`kospi_30oct_chg_pct`, `nasdaq_30oct_chg_pct`, `spx_30oct_chg_pct`, `psei_30oct_chg_pct`).
+- **Brent's high across a roll** now names its contract ("on the December contract").
+- **The Growth note typed the ISM figures**; it reads them from inputs.
+- **I first set the VIX's 2 Nov close aside as disputed**, misreading a quote page's "close" field
+  as the day's; Cboe's and Yahoo's own pages and CNBC's previous close agree on 21.15.
+
+**Known for the next rolls:** Wednesday 4 Nov - FedWatch's 29 Oct read is at its five-day bound
+(0 days left) and must be replaced; the peso, the Nikkei and the 2-, 10- and 30-year have one day
+left (Thursday 5 Nov); the midterm results land; the VIX strip (20 Oct) is flagged overtaken and its
+30-day window closes on 19 Nov; PortWatch publishes Tuesdays; Philippine October CPI (5 Nov) and US
+October payrolls (6 Nov) follow. The trend window rolls to 31 Dec once Q4's returns are out.
+
+**Harnesses:** engine **252/252**; audit **238 checks, 0 failures**; validator **15/15** locally
+and on the live copy (published as version 88, its payload identical to the build); mutations
+**40/40 caught** on the final payload, none missed or crashed.
+
+Not personal financial advice.
+
 ## 2026-11-01 — v87: Sunday review - the Hormuz transit count refreshed on the day it expired, the 21 Oct review record retired before its clock failed, January Brent's prior confirmed; A, B and C unchanged
 
 At the owner's instruction: "Run debugging. Run code review. Run sanity check. Hunt and search
