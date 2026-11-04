@@ -56,8 +56,13 @@ def run(spec):
 
 def run_refee(fid, trust):
     """Re-run A and B with an admitted fund rebuilt at a different trust fee."""
+    return run_override(fid, fee_feeder=trust)
+
+def run_override(fid, **over):
+    """Re-run A, B and C with an admitted fund rebuilt with any fee overridden (v93: also
+    the target-fund charge, for a disputed share class)."""
     ix = E.UNIV_IDS.index(fid)
-    spec = dict(E.UNIV[1][ix], fee_feeder=trust)
+    spec = dict(E.UNIV[1][ix], **over)
     fb = E.build_fund(spec)
     E._UF = E.UNIV[0][:ix] + [fb] + E.UNIV[0][ix + 1:]
     E._US, E._UC, E._UN = E.UNIV[1], E.UNIV[2], len(E.UNIV[1])
@@ -92,6 +97,14 @@ if __name__ == "__main__":
     for k, v in out.items():
         mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
         print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
+    # Global Infra Equity's target charge (v93): 0.80% on ATRAM's fact sheet matches no HSBC class
+    # found; the IC class's 1.00% (estimated) and the BC GBP class's 1.10% are the alternatives.
+    for chg in E.MACRO["ginf_target_alt"]:
+        t = time.time(); fb, out = run_override("M_GINF", fee_target=chg)
+        print(f"ginf_{round(chg * 100)}     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
+        for k, v in out.items():
+            mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
+            print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
     # Asian Multi-Asset Income: 1.50% carried, 1.20% on the October 2025 KIID (2026-10-28).
     t = time.time(); fb, out = run_refee("ATRAMIP", E.MACRO["amip_trust_alt"])
     print(f"amip_alt     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")

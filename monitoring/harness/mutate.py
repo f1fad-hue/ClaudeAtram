@@ -40,7 +40,14 @@ def m_ddread(d): r = d["dd_gauge"]["parts"]["3Y"]; r["reading"] = round(r["readi
 def m_ddvol(d):                                                                                # volatility back in the reading (v90)
     g = d["dd_gauge"]; g["value"] = round(sum(g["w"][h] * (g["parts"][h]["macro"] + g["parts"][h]["trend"] + 3.0) / 3
                                               for h in g["views"]), 2)
-def m_guard(d): next(g for g in d["dd_gauge"]["guards"] if g["name"] == "vix")["ok"] = True     # a red guard shown clear
+def m_guard(d):                                                                                # a red guard shown clear
+    # By state, not by name (v93): this mutant set the VIX guard clear, and went a no-op the day
+    # the VIX closed under its long run. With no guard red, it shows a clear one red.
+    gs = d["dd_gauge"]["guards"]; g = next((g for g in gs if not g["ok"]), gs[0]); g["ok"] = not g["ok"]
+def m_vixg(d): g = next(g for g in d["dd_gauge"]["guards"] if g["name"] == "vix"); g["ok"] = not g["ok"]   # the VIX guard flipped
+def m_dayref(d):                                                                               # a day-keyed move beside another day
+    x = _drv(d, "Corporate"); x["note"] = x["note"].replace("on 3 Nov the KOSPI", "on 4 Nov the KOSPI", 1)
+def m_tcheck(d): _fund(d, 1)["target_check"]["date"] = "2026-10-20"                            # a target-fund check from an old review
 def m_stale(d): d["macro"]["equity_date"] = "2026-10-20"                                       # a close a week behind
 def m_lt(d): d["lookthrough"]["ATRQIAP"]["as_of"] = "2026-08-31"                               # holdings past 60 days
 def m_imf(d): d["macro"]["imf_weo_vintage"] = "2026-07-08"                                     # last edition back after the next

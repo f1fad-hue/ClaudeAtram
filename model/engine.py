@@ -24,11 +24,10 @@ from itertools import combinations
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-11-04"        # newest completed session carried: Tokyo's, Seoul's and Manila's
-                            # 4 Nov (the Nikkei, the KOSPI, the PSEi) and FedWatch's 4 Nov read;
-                            # New York's, Brent's and WTI's 3 Nov, their 4 Nov sessions not yet
-                            # closed at review. Held where 3 Nov's prints conflict or stand
-                            # alone: the VIX, the 2-, 10- and 30-year at 2 Nov, the peso at 3 Nov
+AS_OF = "2026-11-04"        # newest completed session carried, every market's 4 Nov: New York,
+                            # Brent's January and WTI's December settles, the VIX, Tokyo, Seoul,
+                            # Manila and the peso, FedWatch's morning read. The 2-, 10- and 30-year
+                            # at their 3 Nov par closes (the 4 Nov curve not yet published)
 REVIEW_DATE = "2026-11-04"  # when this review was worked through
 
 # ----------------------------------------------------------------------------
@@ -201,6 +200,9 @@ MACRO = {
         # v88 on the first source alone; the market closes (Investing.com 4.878, CappNotes 4.893,
         # Trading Economics 4.92) are kept in ust_10y_disputed_2nov.
         ("2026-11-02", 4.91),
+        # 3 Nov: 4.95, +4bp, as investors weighed the vote, jobs data and Iran (CNBC) - the par
+        # curve (StockMarketWatch; Forbes). 4.91 + 0.04 = 4.95.
+        ("2026-11-03", 4.95),
     ],
     # 23 Sep is the 5.104% market-close print (CNBC, Wolf Street: "+13.7bp to
     # 5.104") rounded to 2dp, NOT a Treasury par-curve / H.15 figure: neither was
@@ -253,12 +255,11 @@ MACRO = {
     # 2 Nov WITHHELD (v88): one par-curve republication (StockMarketWatch, 4.91%, the 2-year
     # 4.59%) and market closes that differ by four basis points - Investing.com 4.878, CappNotes
     # 4.893, Trading Economics 4.92. The series, the 2-year and the 30-year hold at 30 Oct.
-    # 3 Nov WITHHELD (v92): market closes only - CappNotes' Closing Look 4.95 (2-year 4.61,
-    # 30-year 5.32), Investing.com 4.950, CNBC 4.948 / 4.618 / 5.32 - and no par-curve republication
-    # reached: home.treasury.gov, federalreserve.gov and FRED are blocked to this review and FRED
-    # had published only to 2 Nov. On the 23 Sep rule the series and the 2- and 30-year hold at 2 Nov.
-    "ust_10y_withheld": ["2026-11-03"],
-    "ust_10y_market_3nov": [4.948, 4.95],
+    # 3 Nov withheld in v92 on market closes only; CARRIED in v93 on the par curve: 4.95%, +4bp
+    # (StockMarketWatch, "the Treasury's par yield curve"; Forbes' Treasury-rates page), with the
+    # 2-year at 4.61% (StockMarketWatch; the Fed's H.15) and the 30-year at 5.32% (H.15); FRED's
+    # 10s-2s spread reads 0.34 for the day, 4.95 - 4.61. The 4 Nov curve was not yet published.
+    "ust_10y_withheld": [],
     "ust_10y_disputed_2nov": [4.878, 4.893, 4.91, 4.92],
     "ust_10y_disputed_2oct": [5.27, 5.28],
     # The three figures that made 18 Sep look disputed, kept as the record of a
@@ -360,8 +361,11 @@ MACRO = {
     # (+3bp); 4.91 - 4.59 = 0.32. The 30-year's 5.28% (-3bp), held in v89 on MarketScreener
     # alone, ROLLED in v91 on Forbes' Treasury-rates page for 2 Nov, which has the same three
     # levels and the 30-year 35bp lower on the month.
-    "ust_2y": 4.59, "ust_2y_date": "2026-11-02",
-    "ust_30y": 5.28, "ust_30y_date": "2026-11-02",
+    # 3 Nov, par curve: 2-year 4.61% (+2bp; StockMarketWatch; the Fed's H.15), 30-year 5.32%
+    # (+4bp; H.15, with CappNotes' and CNBC's market closes at the same 5.32). 4.95 - 4.61 = 0.34,
+    # FRED's T10Y2Y for the day.
+    "ust_2y": 4.61, "ust_2y_date": "2026-11-03",
+    "ust_30y": 5.32, "ust_30y_date": "2026-11-03",
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
 
@@ -478,8 +482,10 @@ MACRO = {
     # 74.0 from 72.6, employment 50.1. Consensus is reported as 55.0 and 55.2 in
     # different places, so no consensus is carried.
     "us_ism_svc_sep": 54.9,
-    # ISM SERVICES, October (4 Nov): 54.5, prices 73.0, in ISM's own release only when this review
-    # closed - not carried until a second source reports it.
+    # ISM SERVICES, October (4 Nov): 54.5 from 54.9 against 54.8 expected; prices 73.0 from 74.0;
+    # new orders 55.9 from 59.8 (ISM via PR Newswire; investingLive; The Private Banker). Held in
+    # v92 on ISM's release alone.
+    "us_ism_svc_oct": 54.5, "us_ism_svc_oct_prices": 73.0, "us_ism_svc_oct_consensus": 54.8,
     # JOLTS, September (BLS, 3 Nov): openings about 7.52m, the most since May, from an upward-revised
     # 7.19m in August; quits rate 2.1% from 1.9% (BLS "little changed at 7.5 million"; Daily
     # Economics; FatTail). FACTORY ORDERS, September (Census, 3 Nov): +1.8% against about 1.2-1.3%
@@ -676,11 +682,14 @@ MACRO = {
     # before October's CPI, on $1.32bn traded; Trading Economics has the rate falling to 63.48.
     # 63.47 + 0.065 = 63.535 chains, but one source is not two, and the two prints differ.
     "usdphp_disputed_4nov": [63.48, 63.535],
-    "usdphp": 63.47,           # 3 Nov
-    "usdphp_date": "2026-11-03",
-    "usdphp_prev": 63.74,      # 30 Oct close (2 Nov a holiday)
-    "usdphp_prev_date": "2026-10-30",
-    "usdphp_chg": -0.27,
+    # 4 Nov ROLLED in v93: 63.535, 6.5 centavos weaker before October's CPI, on $1.32bn traded
+    # (BusinessWorld, BAP data; GMA, "shed 6.5 centavos to close at P63.535:$1"). 63.47 + 0.065
+    # = 63.535. Trading Economics' 63.48 is a session quote.
+    "usdphp": 63.535,          # 4 Nov
+    "usdphp_date": "2026-11-04",
+    "usdphp_prev": 63.47,      # 3 Nov close
+    "usdphp_prev_date": "2026-11-03",
+    "usdphp_chg": 0.065,
     "usdphp_record": 64.17,        # 27 Oct close - the weakest close on record
     "usdphp_record_date": "2026-10-27",
     # The weakest print on record is the 27 Oct intraday 64.20 (Rappler; the Manila
@@ -826,7 +835,9 @@ MACRO = {
         ["Global Natural Resources", "no fee or target fund found"],
         ["Global Gold Equity", "launched 2026; target fund not named in any document found"],
         ["Global Financials", "current 1.50% trust fee on one secondary source; target and its charge last published in 2020"],
-        ["US Multi-Asset Income", "trust fee on one listing only (1.50%, USD class)"],
+        # v93: its target switched from Allianz Income and Growth to the Franklin Income Fund, fully
+        # invested 27 Mar 2026, with a new benchmark (ATRAM's fact sheet via Investa; one source).
+        ["US Multi-Asset Income", "trust fee on one listing only (1.50%, USD class); its target switched from Allianz Income and Growth to the Franklin Income Fund on 27 Mar 2026 (ATRAM's fact sheet, one source), so its 2020 KIIDS no longer describes it"],
         ["Peso Liquid", "no current fee found; the same job as the money market"],
     ],
     # THE 21 OCT REVIEW of the ATRAM list on the JPM 2027 assumptions. Its best-worst-
@@ -885,6 +896,30 @@ MACRO = {
     # ASIA EQUITY OPPORTUNITY's mandate floor, as its look-through note quotes it (v92: the note's
     # "70%" had been traced only by coincidence, to two unrelated inputs since retired).
     "aseq_mandate_div_min_pct": 70,
+    # GLOBAL INFRA EQUITY'S TARGET CHARGE, DISPUTED (v93): ATRAM's fact sheet has 0.80%; HSBC's own
+    # documents give the IC class 1.00% (estimated, 30 Sep 2025 report) and Hargreaves Lansdown the
+    # BC GBP class 1.10% (4 Sep 2026); Citywire's ZD is 0.15%. The class the feeder holds is not
+    # published, so 0.80% is carried and the two alternatives are run (heldout_sens).
+    "ginf_target_alt": [1.00, 1.10],
+    # The run (heldout_sens, 4 Nov, at the live budget and rule): the fund's net on the 3/5/10-year
+    # view at each alternative, its weight in A, B and C, and their CAGRs on their own views.
+    "ginf_net_alt": [6.97, 6.87],
+    "ginf_w_a_alt": [15, 0], "ginf_w_b_alt": [0, 0], "ginf_w_c_alt": [20, 20],
+    "ginf_cagr_a_alt": [7.26, 7.25], "ginf_cagr_b_alt": [7.07, 7.07], "ginf_cagr_c_alt": [7.10, 7.08],
+    # OTHER TARGET-CHARGE FIGURES FOUND IN v93, recorded beside the charges carried (TARGET_CHECKS):
+    "aseq_target_alt": 1.82,          # Investing.com, an HKD class, undated (one source)
+    "aseq_mgmt_fee": 1.5,             # J.P. Morgan's HK factsheet, end-Aug 2026
+    "gall_a2_ocf": 1.77, "gall_a2_ocf_aug": 1.78,   # BlackRock SG page (30 Oct) / Aug factsheet
+    "ghcp_target_iacc": 0.89,         # Fidelity's I-Acc class
+    "geo_target_at": 1.95,            # Allianz Thematica AT (H2-SGD), 30 Oct 2026
+    "gct_target_z": 1.14, "gct_target_a_usd": 1.87,  # Invesco Z (31 Aug) / A USD (HL)
+    "ginf_target_ic": 1.00, "ginf_target_bc": 1.10, "ginf_target_zd": 0.15,
+    "amip_target_mgmt": 1.25,         # HSBC factsheet, A Acc HKD, 31 Aug 2026
+    "gldv_feeder_1y": 20.98,          # ATRAM's page, to 29 Oct 2026 (one source)
+    "gldv_feeder_1y_date": "2026-10-29",
+    # Nasdaq Equity Income's target charge as confirmed in v93 (justETF; Fidelity UK): the
+    # forecast's fee_target must equal it while the check reads "confirmed".
+    "qiap_target_confirmed": 0.35,
     "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-04",
     # ASIAN MULTI-ASSET INCOME'S DISPUTED TRUST FEE (v75 CLAIMS; on the page from v77): ATRAM's
     # page has 1.50%, carried; the October 2025 KIID and uitf.com.ph 1.20%. Re-run 2026-10-28
@@ -1038,6 +1073,12 @@ MACRO = {
         # reported US strike on Qeshm Island lifted it to about $106 in the morning, and hopes for
         # a deal through Qatar took it back. 104.77 - 1.17 = 103.60. January - one contract.
         ("2026-11-03", 103.60),
+        # 4 Nov: "settled US$8.98, or 8.7 per cent lower, at US$94.62" (Reuters via AsiaOne);
+        # $94.62, its lowest settle since 31 Aug (CNN); -$8.98 (-8.67%) (Investrade), as the
+        # midterm rebuke raised bets on an exit from the Iran war. 103.60 - 8.98 = 94.62.
+        # January - one contract. FinanceFeeds' 93.52 and World Today News' 98.80 are each in
+        # one outlet (brent_disputed_4nov); the Reuters settle, with two others, resolves it.
+        ("2026-11-04", 94.62),
     ],
     # ACROSS A ROLL the reported move is off the NEW contract's prior settle, which
     # is not in the front-month series. Carried here, dated by the session it is the
@@ -1074,7 +1115,8 @@ MACRO = {
     # A MOVE REPORTED IN CENTS (v84) is carried in cents, not turned into a percentage no
     # source printed: CNBC's 29 Oct "fell 44 cents". Each must land on the settle exactly.
     "brent_reported_pts": {"2026-10-29": -0.44, "2026-10-30": 2.76, "2026-11-02": -8.66,
-                           "2026-11-03": -1.17},
+                           "2026-11-03": -1.17, "2026-11-04": -8.98},
+    "brent_disputed_4nov": [93.52, 94.62, 98.80],
     # 28 Sep: $108.83 intraday on the rejection - ABOVE the $108.75 SETTLE high of
     # 15 Sep (verified 2026-09-29: "Brent finished up $3.07 at $108.75 ... highest
     # close since May 19"), so the settle high stands and this is an intraday one.
@@ -1175,8 +1217,13 @@ MACRO = {
     # The week bound let v67 compare 22 Oct 2026 with 15 Oct 2025 ($61.91) when 22 Oct
     # 2025 was $62.59: +82.8% y/y published against +80.8% on the anniversary. A base
     # one week off is fine for a slow series and wrong for one that moved 5.4% in a day.
+    # v93: HELD PAST ITS BOUND, AND SAID SO. With Brent at 4 Nov the 31 Oct 2025 base is four days
+    # off the anniversary, one past the three-day limit; no 1-7 Nov 2025 settle was found in two
+    # sources (investing.com and FRED, which carry the series, are blocked to the review). The
+    # check passes only while the page names the base's own date beside the y/y.
     "brent_yr_ago": 65.07,
     "brent_yr_ago_date": "2025-10-31",
+    "brent_yr_ago_bound_d": 3,
     "brent_yr_ago_disputed": [65.07, 65.44],   # the futures settle against EIA's 31 Oct 2025 spot
     # HORMUZ. Two different things get measured here and they do not agree, so both
     # are carried. VESSEL COUNTS differ ~5x across sources because they count
@@ -1552,6 +1599,16 @@ MACRO = {
         # +8.91%; Yahoo Finance's close; CNBC's quote page has it as the previous close on the
         # 3rd). 19.42 + 1.73 = 21.15. AD HOC News' 18.73 (-3.55%) is against all three.
         ("2026-11-02", 21.15),
+        # 3 Nov 20.83, -0.32 (-1.51%), RESOLVED in v93 by Cboe's own page (its "Close" 20.83 on
+        # the 4th) with Yahoo's close, StreetStats and The Industry Spread's 20.834 - and AD HOC
+        # News' own 4 Nov story chains from 20.83. 21.15 - 0.32 = 20.83. The 20.29, 20.44 and
+        # 20.51 of the v92 dispute were pre-final prints (vix_disputed_3nov keeps them).
+        ("2026-11-03", 20.83),
+        # 4 Nov 16.61, -4.22 (-20.26%), as the vote's hedges came off with stocks up and oil down
+        # (Cboe's page, 9:15 pm ET; Motley Fool via Yahoo, 16.61 -4.22). 20.83 - 4.22 = 16.61.
+        # AD HOC News' 17.89 (-14.11%) at 4:32 pm and Yahoo's "-17.27%" are against them
+        # (vix_disputed_4nov).
+        ("2026-11-04", 16.61),
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -1574,6 +1631,7 @@ MACRO = {
         "2026-10-21": -3.64, "2026-10-22": 14.09, "2026-10-23": 2.21,
         "2026-10-26": -5.45, "2026-10-27": -4.7, "2026-10-28": -3.48,
         "2026-10-29": 1.71, "2026-10-30": 12.91, "2026-11-02": 8.91,
+        "2026-11-03": -1.51, "2026-11-04": -20.26,
     },
     # 28 Sep WITHHELD: two reports, 16.07 ("+1.20, +8.07%") and 16.30 ("+1.43,
     # +9.62%), and BOTH reproduce from 14.87 - the chain cannot choose, and one
@@ -1588,12 +1646,13 @@ MACRO = {
     # Industry Spread has 20.834 - two that agree and chain off 21.15 - but AD HOC News has 20.51
     # three times, Investing.com's table 20.29 (its close equal to its low), and Yahoo's own page
     # read 20.44 a day ago. Sources that conflict are not resolved by counting them: held.
-    "vix_withheld": ["2026-11-03"],
+    "vix_withheld": [],
     "vix_disputed_20oct": [17.31, 17.60],
     "vix_disputed_22oct": [18.84, 19.03],   # Investing.com's table against three sources
     "vix_disputed_26oct": [18.30, 18.39],   # AD HOC News against three sources
     "vix_disputed_2nov": [18.73, 21.15],    # AD HOC News against Cboe, Yahoo and CNBC
-    "vix_disputed_3nov": [20.29, 20.44, 20.51, 20.83],   # Investing.com, Yahoo twice, AD HOC News
+    "vix_disputed_3nov": [20.29, 20.44, 20.51, 20.83],   # resolved at 20.83 (Cboe) in v93
+    "vix_disputed_4nov": [16.61, 17.23, 17.89],   # Cboe and Motley Fool against AD HOC News and Yahoo
     "vix_disputed_27oct": [17.51, 17.52],   # Doug's Daily Diary against Cboe
     "vix_disputed_28oct": [16.83, 16.91],   # one recap against Cboe, Yahoo, CNBC and PC Thematic
     "vix_disputed_28sep": [16.07, 16.30],   # the record of the resolved dispute
@@ -1726,10 +1785,18 @@ MACRO = {
     # 25164.32 carried (AP; AD HOC News; StockTitan; CappNotes). Kept as carried and recorded
     # (nasdaq_disputed_2nov); the +207.69 here is the closes' own difference, and the 0.04
     # moves no percentage at 2dp.
-    "equity_date": "2026-11-03",
-    "spx_close": 7568.92, "spx_chg_pct": 0.36, "spx_chg_pts": 27.52,
-    "nasdaq_close": 25372.01, "nasdaq_chg_pct": 0.83, "nasdaq_chg_pts": 207.69,
-    "dow_close": 51786.72, "dow_chg_pct": -0.38, "dow_chg_pts": -197.26,
+    # 4 Nov, the first session on the midterm result (AP via WTOP and KRMG; CNBC; Yahoo
+    # Finance's quote pages; TheStreet; Investrade): S&P +119.70 (+1.58%) to 7688.62, its best
+    # day since August; Nasdaq +364.50 (+1.44%) to 25736.51; Dow +1569.40 (+3.03%) to 53356.12,
+    # its best day since April 2025 and back above 53000 for the first time since 8 Sep, as
+    # Democrats took both chambers and oil fell 9%; Apple closed at a record, above $5tn.
+    # 7568.92 + 119.70 = 7688.62; 25372.01 + 364.50 = 25736.51; 51786.72 + 1569.40 = 53356.12.
+    # A "7,689.58" in one recap is in no other source and not carried.
+    "equity_date": "2026-11-04",
+    "spx_close": 7688.62, "spx_chg_pct": 1.58, "spx_chg_pts": 119.70,
+    "nasdaq_close": 25736.51, "nasdaq_chg_pct": 1.44, "nasdaq_chg_pts": 364.50,
+    "dow_close": 53356.12, "dow_chg_pct": 3.03, "dow_chg_pts": 1569.40,
+    "spx_3nov_chg_pct": 0.36, "nasdaq_3nov_chg_pct": 0.83, "dow_3nov_chg_pct": -0.38,
     "nasdaq_disputed_2nov": [25164.32, 25164.36],
     "nasdaq_2nov_chg_pct": -1.07, "dow_2nov_chg_pct": 0.41,
     "spx_30oct_chg_pct": -1.82, "nasdaq_30oct_chg_pct": -2.86,
@@ -1739,7 +1806,7 @@ MACRO = {
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7541.40, "nasdaq_prev": 25164.32, "dow_prev": 51983.98,
+    "spx_prev": 7568.92, "nasdaq_prev": 25372.01, "dow_prev": 51786.72,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -1794,14 +1861,18 @@ MACRO = {
     # 2 Nov: "fell $7.66, or 7.36%, to close at $96.46" (Reuters via Zee Business and
     # FinanceFeeds); "December WTI Crude Oil Contract Closes Down $7.66 ... Settles at $96.46"
     # (MarketScreener). 104.12 - 7.66 = 96.46; 7.66 / 104.12 is -7.36%. December - one
-    # contract (last trade 19 Nov). Babypips' "near $96.90" is a session price.
+    # contract (last trade 20 Nov, by cl_last_trade; this comment said 19 Nov until v93).
+    # Babypips' "near $96.90" is a session price.
     # 3 Nov: "lost 37 cents to close at $96.09" after dipping below $95 (CNBC; SBS, -0.38%), a
     # second day lower as Qatar said it was still working toward a deal. 96.46 - 0.37 = 96.09;
     # 0.37 / 96.46 is -0.38%. December - one contract.
-    "wti_settle": 96.09, "wti_chg_pct": -0.38,
-    "wti_date": "2026-11-03", "wti_contract": "2026-12",
-    "wti_prev": 96.46,             # December's own 2 Nov settle - within one contract
-    "wti_prev_date": "2026-11-02",
+    # 4 Nov: "December WTI Crude Oil Contract Closes Down $7.97, or 8.3%; Settles at $88.12"
+    # (MarketScreener); $88.12, -$7.97 (Investrade). 96.09 - 7.97 = 88.12; 7.97 / 96.09 is
+    # -8.29%. December - one contract.
+    "wti_settle": 88.12, "wti_chg_pct": -8.29,
+    "wti_date": "2026-11-04", "wti_contract": "2026-12",
+    "wti_prev": 96.09,             # December's own 3 Nov settle - within one contract
+    "wti_prev_date": "2026-11-03",
     "wti_expired_contract": "2026-11",
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
@@ -2228,6 +2299,8 @@ def vix_maturity(y, m, quote=None):
 # with itself the way separate `latest` and `prev_close` fields could.
 _VH = MACRO["vix_history"]
 MACRO["vix_latest_date"], MACRO["vix_latest"] = _VH[-1]
+# A dated close from the series, for prose that names a session other than the latest (v93).
+_vh_close = lambda d: dict(_VH)[d]
 MACRO["vix_prev_close"] = _VH[-2][1]
 # The move the PAGE prints is the REPORTED one, at the precision it was reported.
 # Until 2026-09-26 it was recomputed from the two rounded closes, which is not the
@@ -2245,9 +2318,6 @@ MACRO["vix_episode_high"] = max(v for _, v in _VH)
 # A superlative without its date drifts the moment the window moves.
 MACRO["vix_episode_high_date"] = max(_VH, key=lambda r: r[1])[0]
 MACRO["vix_series_start"] = _VH[0][0]
-# The last close before the latest above the long run (v88), derived so "the first close
-# above the long run since ..." cannot be typed and then left behind.
-MACRO["vix_above_lr_prev_date"] = next((d_ for d_, v_ in reversed(_VH[:-1]) if v_ > MACRO["vix_longrun"]), None)
 
 # The 10-year's headline level, its prior and its move, all DERIVED from the
 # series. ust_10y was a scalar with its date in a comment, and the comment was
@@ -2274,6 +2344,15 @@ MACRO["wti_prev_implied"] = "wti_prev" not in MACRO
 if MACRO["wti_prev_implied"]:
     MACRO["wti_prev"] = round(MACRO["wti_settle"] / (1 + MACRO["wti_chg_pct"] / 100), 2)
 MACRO["brent_yoy"] = round((MACRO["brent"] / MACRO["brent_yr_ago"] - 1) * 100, 2)
+# A BASE PAST ITS BOUND IS NAMED, NOT HIDDEN (v93). Inside the three-day bound the move is
+# "y/y"; past it, every quote of it names the base's own date, so no reader takes a
+# four-day-short comparison for a year.
+_yb = _dt.date.fromisoformat(MACRO["brent_yr_ago_date"])
+_ya = _dt.date.fromisoformat(MACRO["brent_date"])
+MACRO["brent_yr_ago_gap_d"] = abs((_ya.replace(year=_ya.year - 1) - _yb).days)
+MACRO["brent_yr_ago_stale"] = MACRO["brent_yr_ago_gap_d"] > MACRO["brent_yr_ago_bound_d"]
+MACRO["brent_yoy_on"] = (f"on its {_yb.day} {_yb:%b} {_yb.year} settle" if MACRO["brent_yr_ago_stale"]
+                         else "y/y")
 # On the week: against the settle seven calendar days earlier, same contract or None.
 _wk = (_dt.date.fromisoformat(MACRO["brent_date"]) - _dt.timedelta(days=7)).isoformat()
 # Same contract only (v88): on 2 Nov the settle seven days earlier was December's and the
@@ -2380,6 +2459,9 @@ CATALYSTS = [
     ("2026-11-10", "US October CPI",
      "The first consumer prices since the hold, with gasoline still carrying Brent's rise; with "
      "payrolls, what the December hike odds are waiting on."),
+    ("2026-11-16", "Japan's third-quarter GDP, first estimate",
+     "The first of two estimates of July-September growth before the BoJ's December meeting, where a "
+     "hike is flagged."),
     ("2026-12-09", "Fed decision",
      f"FedWatch has a hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, "
      f"the meeting the {_nword(MACRO['fed_oct_votes_hike'])} dissents of {_dday('fed_oct_decision_date')} pointed at."),
@@ -2930,17 +3012,23 @@ _brent_expiry = brent_last_trade(*map(int, MACRO["brent_contract"].split("-"))).
 _brent_month = f"{_dt.date.fromisoformat(MACRO['brent_contract'] + '-01'):%B}"
 _wti_month = f"{_dt.date.fromisoformat(MACRO['wti_contract'] + '-01'):%B}"
 
+# Brent's 2 Nov fall, quoted BY DATE in the geopolitics note and its summary (v89; above REGIONS from v93, which quotes it too): derived from
+# the series and the roll record, so it cannot become the latest session's move as the series rolls.
+_b2 = dict(MACRO["brent_history"])["2026-11-02"]
+MACRO["brent_2nov_chg_pct"] = round((_b2 / MACRO["brent_roll_priors"]["2026-11-02"] - 1) * 100, 2)
+
 REGIONS = {
     "US": {
         "3Y": 5.5, "5Y": 6.25, HZ_LABEL: 6.5,
-        "why": (f"Held. On {_dday('equity_date')}, Election Day, the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} "
-                f"{abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f}, snapping a three-session slide, and the Nasdaq "
+        "why": (f"Held. On {_dday('equity_date')}, the first session after Democrats won both chambers (CBS; CNN), the Dow "
+                f"{'rose' if MACRO['dow_chg_pct'] > 0 else 'fell'} {abs(MACRO['dow_chg_pct']):.2f}% to {MACRO['dow_close']:.2f}, its "
+                f"best day since April 2025, the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} "
+                f"{abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f} and the Nasdaq "
                 f"{'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% to "
-                f"{MACRO['nasdaq_close']:.2f} as the chipmakers rebounded, while the Dow "
-                f"{'rose' if MACRO['dow_chg_pct'] > 0 else 'fell'} {abs(MACRO['dow_chg_pct']):.2f}% to {MACRO['dow_close']:.2f} "
-                "as Apple's holiday-quarter margin outlook weighed. The result came after the close - Democrats won both "
-                "chambers (CBS; CNN) - and New York's first session on it is not in these numbers. On 2 Nov "
-                f"oil's sharpest fall in three months had lifted the Dow {MACRO['dow_2nov_chg_pct']:.2f}% while the Nasdaq fell "
+                f"{MACRO['nasdaq_close']:.2f}, as oil fell and Apple closed at a record (AP; CNBC). On 3 Nov, Election Day, "
+                f"the S&P had risen {MACRO['spx_3nov_chg_pct']:.2f}% and the Dow fallen {abs(MACRO['dow_3nov_chg_pct']):.2f}% on "
+                "Apple's holiday-quarter margin outlook. On 2 Nov "
+                f"a {abs(MACRO['brent_2nov_chg_pct']):.2f}% fall in Brent had lifted the Dow {MACRO['dow_2nov_chg_pct']:.2f}% while the Nasdaq fell "
                 f"{abs(MACRO['nasdaq_2nov_chg_pct']):.2f}% as Oracle set out to raise money for its build-out, and on 30 Oct the "
                 "S&P had its worst day since June, "
                 f"{abs(MACRO['spx_30oct_chg_pct']):.2f}%, as Intel had its worst day since 1974 on a weak forecast and Amazon's "
@@ -2958,7 +3046,7 @@ REGIONS = {
                 f"the lowest since May, retail sales rose {MACRO['us_retail_sep']}% in "
                 f"September, the saving rate down to {MACRO['us_saving_rate_sep']}%. The anchor holds at 6.5 on two structural "
                 "points: the US is a net energy EXPORTER, a relative tailwind with "
-                f"Brent +{MACRO['brent_yoy']:.1f}% y/y, and NDX at {MACRO['ndx_fwd_pe']}x forward on its last verified reading sat "
+                f"Brent +{MACRO['brent_yoy']:.1f}% {MACRO['brent_yoy_on']}, and NDX at {MACRO['ndx_fwd_pe']}x forward on its last verified reading sat "
                 "below its 10y and 5y averages. J.P. Morgan's "
                 f"{MACRO['ltcma_edition']} assumptions lift US large caps to "
                 f"{MACRO['ltcma_us_eq']}% from {MACRO['ltcma_us_eq_prev']}%; that is already "
@@ -2976,12 +3064,12 @@ REGIONS = {
     },
     "EUROPE": {
         "3Y": 3.75, "5Y": 4.5, HZ_LABEL: 4.5,
-        "why": f"Held. The ECB held its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')}, after the 10 Sep hike, with September inflation confirmed at {MACRO['ea_hicp_sep_final']}% (energy {MACRO['ea_energy_sep']}%, core {MACRO['ea_core_sep']}%), and made no commitment on December; Lagarde said she will step down early, in February. The October composite PMI was confirmed at {MACRO['ea_pmi_comp_oct']}, under its {MACRO['ea_pmi_comp_oct_flash']} flash and a four-month low, France the weakest. The 10-year OAT-Bund spread eased to {MACRO['fr_oat_spread_14oct']}bp on 14 Oct from about {MACRO['fr_oat_spread_bp']}bp as the Assembly took up a budget meant to cut the deficit to {MACRO['fr_deficit_target']}% of GDP from {MACRO['fr_deficit_2026']}%. Europe is the largest net energy importer here, facing Brent +" f"{MACRO['brent_yoy']:.1f}% y/y against IMF growth of {MACRO['imf_ea_2026']}% this year; the offset is real - at {MACRO['sxxp_fwd_pe']:.1f}x forward it is the cheapest large market after Asia. "
+        "why": f"Held. The ECB held its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')}, after the 10 Sep hike, with September inflation confirmed at {MACRO['ea_hicp_sep_final']}% (energy {MACRO['ea_energy_sep']}%, core {MACRO['ea_core_sep']}%), and made no commitment on December; Lagarde said she will step down early, in February. The October composite PMI was confirmed at {MACRO['ea_pmi_comp_oct']}, under its {MACRO['ea_pmi_comp_oct_flash']} flash and a four-month low, France the weakest. The 10-year OAT-Bund spread eased to {MACRO['fr_oat_spread_14oct']}bp on 14 Oct from about {MACRO['fr_oat_spread_bp']}bp as the Assembly took up a budget meant to cut the deficit to {MACRO['fr_deficit_target']}% of GDP from {MACRO['fr_deficit_2026']}%. Europe is the largest net energy importer here, facing Brent +" f"{MACRO['brent_yoy']:.1f}% {MACRO['brent_yoy_on']} against IMF growth of {MACRO['imf_ea_2026']}% this year; the offset is real - at {MACRO['sxxp_fwd_pe']:.1f}x forward it is the cheapest large market after Asia. "
                  "THREE YEARS: 3.75. The largest energy importer pays the most while oil stays "
                  f"high - December 2027 Brent was quoted at ${MACRO['brent_dec2027_hi']} on 22 Oct (another "
                  f"table has ${MACRO['brent_dec2027_lo']}) - "
                  f"and growth starts at {MACRO['imf_ea_2026']}% under an ECB that hiked into it (the IMF's October "
-                 "upgrade, too small to offset oil's new high); a 15.4x market is the offset. FIVE YEARS (years 4-5): 4.5, at the anchor, as the shock fades - on 15 Oct "
+                 f"upgrade, too small to offset oil's new high); a {MACRO['sxxp_fwd_pe']:.1f}x market is the offset. FIVE YEARS (years 4-5): 4.5, at the anchor, as the shock fades - on 15 Oct "
                  f"the Brent curve settled near ${MACRO['brent_dec2029']} for December 2029 and "
                  f"${MACRO['brent_dec2030']} for December 2030.",
     },
@@ -2997,8 +3085,8 @@ REGIONS = {
                 "Congress would restrict data-centre building, Kioxia, SoftBank Group and Tokyo Electron leading the losses; "
                 f"the same day the KOSPI swung as low as {MACRO['kospi_4nov_low']:,.2f} and closed "
                 f"{'up' if MACRO['kospi_latest_chg_pct'] > 0 else 'down'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% at "
-                f"{MACRO['kospi_latest']:,.2f} as foreigners sold {MACRO['kospi_4nov_foreign_sell_tn']:.1f}tn won, a day after "
-                f"falling {abs(MACRO['kospi_3nov_chg_pct']):.2f}% as Samsung Electronics and SK hynix sold off on AI-spending "
+                f"{MACRO['kospi_latest']:,.2f} as foreigners sold {MACRO['kospi_4nov_foreign_sell_tn']:.1f}tn won. The KOSPI "
+                f"had fallen {abs(MACRO['kospi_3nov_chg_pct']):.2f}% on 3 Nov as Samsung Electronics and SK hynix sold off on AI-spending "
                 f"fears. The Nikkei had slipped {abs(MACRO['nikkei_2nov_chg_pct']):.2f}% on 2 Nov as Kioxia fell on its outlook. On 30 Oct "
                 f"the KOSPI had fallen {abs(MACRO['kospi_30oct_chg_pct']):.2f}% and the Nikkei "
                 f"{abs(MACRO['nikkei_30oct_chg_pct']):.2f}% after Alphabet's quarter, and the BoJ held at "
@@ -3022,8 +3110,8 @@ REGIONS = {
                 "is the Asia fund's base, so it was counted twice - and the "
                 f"{MACRO['ltcma_edition']} edition cuts it to {MACRO['ltcma_em_eq']}% from "
                 f"{MACRO['ltcma_em_eq_prev']}%, below US large caps. What remains is "
-                "valuation: 10.5x forward before the fall against consensus EPS growth of "
-                "~52% and ~28% is a two-decade-wide discount. THREE YEARS: 6.5, half a point "
+                f"valuation: {MACRO['asia_fwd_pe']}x forward before the fall against consensus EPS growth of "
+                f"~{MACRO['asia_eps_2026']}% and ~{MACRO['asia_eps_2027']}% is a two-decade-wide discount. THREE YEARS: 6.5, half a point "
                 "below the 7.0 anchor - the October selling and an importer's oil bill weigh "
                 "on the first years. FIVE YEARS (years 4-5): 7.0, at the anchor, as earnings "
                 "that grew into a discounted multiple re-rate it."),
@@ -3039,11 +3127,10 @@ REGIONS = {
                 f"The {_dday('ph_tbill_next_date')} auction, partially awarded at what BusinessWorld reports as higher yields on "
                 "every tenor, is not carried: its 91-day rate does not chain to that record, whose own 91-day is now "
                 "reported two ways. The peso, "
-                f"after a record {MACRO['usdphp_record']:.2f} on {_dday('usdphp_record_date')}, kept recovering to {MACRO['usdphp']} on "
-                f"{_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos "
-                f"{'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'} than on 30 Oct, the session before the All Souls' "
-                "Day holiday, on Middle East peace hopes, after the President signalled support and the Fed held (the next "
-                "day's close is in one report only and is not carried) - still "
+                f"after a record {MACRO['usdphp_record']:.2f} on {_dday('usdphp_record_date')}, recovered to {MACRO['usdphp_prev']} on "
+                f"{_dday('usdphp_prev_date')} on Middle East peace hopes, after the President's reassurance and the Fed's hold, and "
+                f"closed at {MACRO['usdphp']} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos "
+                f"{'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}, before October's inflation figures - still "
                 f"{_a_an(MACRO['usdphp_ytd_pct'])} {MACRO['usdphp_ytd_pct']}% loss of "
                 f"purchasing power against the dollar this year. Governor Remolona left the {_dday('bsp_next_meeting')} meeting open, and says "
                 "BSP will not defend a level and intervenes only to cushion excessive moves. The PSEi "
@@ -3089,10 +3176,6 @@ for r in REGIONS.values():
 #    to endpoints, so the 1-10 neutral of 5.5 lands exactly on the 1-5 neutral of 3.0.
 # ----------------------------------------------------------------------------
 
-# Brent's 2 Nov fall, quoted BY DATE in the geopolitics note and its summary (v89): derived from
-# the series and the roll record, so it cannot become the latest session's move as the series rolls.
-_b2 = dict(MACRO["brent_history"])["2026-11-02"]
-MACRO["brent_2nov_chg_pct"] = round((_b2 / MACRO["brent_roll_priors"]["2026-11-02"] - 1) * 100, 2)
 # Brent's weekly change, when there is a same-contract one to quote (v88).
 _brent_wk_txt = (f"{abs(MACRO['brent_wk_chg_pct'])}% {'higher' if MACRO['brent_wk_chg_pct'] > 0 else 'lower'} on the "
                  "week and " if MACRO["brent_wk_chg_pct"] is not None else "")
@@ -3107,7 +3190,8 @@ DRIVERS = [
      f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, from {MACRO['fed_hike_odds_dec_prev']}% on "
      f"{_dday('fed_hike_odds_dec_prev_date')}. On official closes the 10-year was {_u10['2026-10-28']:.2f}% on the 28th, {_u10['2026-10-29']:.2f}% on the "
      f"29th and {_u10['2026-10-30']:.2f}% on the 30th, as the tech sell-off sent money into Treasuries, then "
-     f"{MACRO['ust_10y']:.2f}% on {_dday('ust_10y_date')} as oil fell, with the 2-year at {MACRO['ust_2y']:.2f}% ({_dday('ust_2y_date')}) "
+     f"{_u10['2026-11-02']:.2f}% on 2 Nov as oil fell and {MACRO['ust_10y']:.2f}% on {_dday('ust_10y_date')} as the vote and the jobs "
+     f"data neared, with the 2-year at {MACRO['ust_2y']:.2f}% ({_dday('ust_2y_date')}) "
      f"and the 30-year at {MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}). The 10-year's {_dday('ust_10y_peak_date')} intraday high of "
      f"{MACRO['ust_10y_peak']}%, above the {_dday('ust_10y_peak_prev_date')} peak of {MACRO['ust_10y_peak_prev']}%, was the highest since "
      f"{MACRO['ust_10y_peak_since']}. "
@@ -3125,7 +3209,10 @@ DRIVERS = [
      f"{MACRO['us_cpi_headline']}% (core {MACRO['us_cpi_core']}%). Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, "
      f"{'up' if MACRO['brent_chg_pts'] > 0 else 'down'} ${abs(MACRO['brent_chg_pts']):.2f}"
      f"{' on the ' + _brent_month + ' contract' + chr(39) + 's last day' if _brent_expiry else ''}, {_brent_vs_high()}, "
-     f"{_brent_wk_txt}{MACRO['brent_yoy']:.1f}% above the ${MACRO['brent_yr_ago']:.2f} of a year earlier; {_wti_month} WTI settled at "
+     f"{_brent_wk_txt}{MACRO['brent_yoy']:.1f}% above the ${MACRO['brent_yr_ago']:.2f} of "
+     + (f"{_dval(MACRO['brent_yr_ago_date'])} {MACRO['brent_yr_ago_date'][:4]}, {_nword(MACRO['brent_yr_ago_gap_d'])} days short of a year "
+        "(no 1-7 Nov 2025 settle was found in two sources)" if MACRO["brent_yr_ago_stale"] else "a year earlier")
+     + f"; {_wti_month} WTI settled at "
      f"${MACRO['wti_settle']:.2f} on {_dday('wti_date')}. The euro area is at 3.8% (core 2.5%) and the Philippines at 7.2%. Held: core is firming, "
      "not running away, and most of the jump is energy passing through, not yet wages."),
     ("Growth momentum", 0.15, 4.0,
@@ -3143,7 +3230,9 @@ DRIVERS = [
      f"{MACRO['us_umich_oct']}, revised up from a first read of {MACRO['us_umich_oct_prelim']} but the lowest since May's "
      f"record low of {MACRO['us_umich_record_low']}. ISM manufacturing rose to {MACRO['us_ism_mfg_oct']} in October from "
      f"{MACRO['us_ism_mfg_sep']}, production at its highest since 2021, but its prices index is {MACRO['us_ism_mfg_oct_prices']} "
-     f"and the respondents cite tariffs and the war; ISM services was {MACRO['us_ism_svc_sep']} in September. Philippine "
+     f"and the respondents cite tariffs and the war; ISM services eased to {MACRO['us_ism_svc_oct']} in October from "
+     f"{MACRO['us_ism_svc_sep']}, against {MACRO['us_ism_svc_oct_consensus']} expected, its prices index at "
+     f"{MACRO['us_ism_svc_oct_prices']}. Philippine "
      f"growth was {MACRO['ph_gdp_h1']}% in the first half. Held: factories, inventories and hiring are carrying a beat that a stretched consumer "
      "is not; that is not yet a turn in the cycle."),
     ("Corporate earnings", 0.2, 7.0,
@@ -3157,20 +3246,23 @@ DRIVERS = [
      f"KOSPI fell {abs(MACRO['kospi_30oct_chg_pct']):.2f}% and the Nikkei {abs(MACRO['nikkei_30oct_chg_pct']):.2f}%, "
      "then Intel had its worst day since 1974 on a weak forecast, Amazon's profit disappointed and the Nasdaq fell "
      f"{abs(MACRO['nasdaq_30oct_chg_pct']):.2f}% more. On 2 Nov it fell {abs(MACRO['nasdaq_2nov_chg_pct']):.2f}% again as "
-     f"Oracle set out to raise money for its AI build-out, and on {_dday('kospi_latest_date')} the KOSPI "
-     f"{'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% on the same "
-     f"fear, before the chipmakers took the Nasdaq back {abs(MACRO['nasdaq_chg_pct']):.2f}% that evening; Apple fell "
-     "about 2% the same day on its holiday-quarter margin outlook, after results that beat. The "
+     # Pinned to 3 Nov by its own keys (v93). It read the KOSPI's and the Nasdaq's latest moves,
+     # so v92's KOSPI roll printed "the KOSPI rose 0.62% on the same fear" and v93's US roll
+     # put Apple's 2% fall on 4 Nov, the day Apple closed at a record.
+     "Oracle set out to raise money for its AI build-out, and on 3 Nov the KOSPI fell "
+     f"{abs(MACRO['kospi_3nov_chg_pct']):.2f}% on the same fear, before the chipmakers took the Nasdaq back "
+     f"{MACRO['nasdaq_3nov_chg_pct']:.2f}% that evening, while Apple fell about 2% on its holiday-quarter margin "
+     "outlook, after results that beat; on 4 Nov Apple closed at a record. The "
      f"suppliers' numbers are records: SK hynix's third-quarter operating profit was {MACRO['skhynix_q3_op_tn']:.1f}tn "
      f"won, up {MACRO['skhynix_q3_op_yoy']}% on a year, with about {MACRO['skhynix_returns_2026_tn']}tn won of "
      f"shareholder returns planned for 2026; TSMC's net income rose {MACRO['tsmc_q3_ni_yoy']}% to NT${MACRO['tsmc_q3_ni_bn']}bn, above the NT${MACRO['tsmc_q3_consensus_bn']}bn "
-     f"expected; Samsung's quarter was a record {MACRO['samsung_q3_op_tn']}tn won. Asia ex-Japan EPS of ~+52% (2026) and ~+28% (2027) "
+     f"expected; Samsung's quarter was a record {MACRO['samsung_q3_op_tn']}tn won. Asia ex-Japan EPS of ~+{MACRO['asia_eps_2026']}% (2026) and ~+{MACRO['asia_eps_2027']}% (2027) "
      "stands. Held: the profits keep coming; what is being questioned is the return on the spending that buys them."),
     ("Valuation support", 0.1, 8.0,
      f"HELD at 8.0: FactSet had the S&P on {MACRO['spx_fwd_pe']}x forward earnings on 23 Oct, below its five-year "
      f"({MACRO['spx_fwd_pe_5y']}x) and ten-year ({MACRO['spx_fwd_pe_10y']}x) averages and the "
      f"{MACRO['spx_fwd_pe_q3end']:.1f}x of 30 Sep. The S&P closed at {MACRO['spx_close']:.2f} on {_dday('equity_date')}, "
-     f"{MACRO['spx_off_record_pct']}% below its {MACRO['spx_record_close']:.2f} record of {_dday('spx_record_date')}. Asia was on 10.5x forward before its October "
+     f"{MACRO['spx_off_record_pct']}% below its {MACRO['spx_record_close']:.2f} record of {_dday('spx_record_date')}. Asia was on {MACRO['asia_fwd_pe']}x forward before its October "
      f"fall and is cheaper on the same earnings: the KOSPI closed at {MACRO['kospi_latest']:,.2f} on "
      f"{_dday('kospi_latest_date')}, {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close. NDX at {MACRO['ndx_fwd_pe']}x forward on its "
      f"last verified reading sat below its 10y ({MACRO['ndx_fwd_pe_10y']}x) and 5y ({MACRO['ndx_fwd_pe_5y']}x) averages - two newer readings disagree "
@@ -3182,16 +3274,19 @@ DRIVERS = [
     # CUT 2.5 -> 2.25 (v88, 2026-11-03): the hold rested on closes under the long run, and
     # 2 Nov's is above it, the highest in the series.
     # HELD at 2.25 (v92): the 3 Nov closes disagree, and every print is above the long run.
-    ("Volatility & risk appetite", 0.1, 2.25,
-     f"HELD at 2.25, the cut from 2.5 of 3 Nov. The VIX rose {MACRO['vix_latest_chg_pct']}% to {MACRO['vix_latest']:.2f} on "
-     f"{_dday('vix_latest_date')}, after {MACRO['vix_reported_moves']['2026-10-30']}% on 30 Oct: the highest close in "
-     f"this series, which starts on {_dday('vix_series_start')}, and the first above the long-run "
-     f"{MACRO['vix_longrun']} since {_dday('vix_above_lr_prev_date')}, as the Nasdaq fell a third session and "
-     f"hedging built into the midterms, though the Dow rose. On {_dday('vix_latest_high_date')} it had touched "
+    # RAISED 2.25 -> 2.5 (v93, 2026-11-04), the undo the v88-v92 note pre-committed to: the first
+    # confirmed close after the vote, 16.61 on 4 Nov, is back below the long run.
+    ("Volatility & risk appetite", 0.1, 2.5,
+     f"RAISED back to 2.5, undoing the cut of 3 Nov as the note said it would. The VIX fell "
+     f"{abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')} (Cboe), back "
+     f"below the long-run {MACRO['vix_longrun']}, as the hedges built into the vote came off with stocks up and oil down; "
+     f"it had eased {abs(MACRO['vix_reported_moves']['2026-11-03'])}% to {_vh_close('2026-11-03'):.2f} on 3 Nov from "
+     f"{MACRO['vix_episode_high']:.2f} on {_dday('vix_episode_high_date')}, the highest close in this series, which "
+     f"starts on {_dday('vix_series_start')}. On {_dday('vix_latest_high_date')} it had touched "
      f"{MACRO['vix_latest_high']} intraday, past the {MACRO['vix_latest_high_prev']} high of "
-     f"{_dday('vix_latest_high_prev_date')}. The {_dval(MACRO['vix_withheld'][-1])} close is reported {_nword(len(MACRO['vix_disputed_3nov']))} ways - "
-     f"{', '.join(f'{v:.2f}' for v in MACRO['vix_disputed_3nov'][:-1])} and {MACRO['vix_disputed_3nov'][-1]:.2f} - all "
-     f"below {MACRO['vix_latest']:.2f} and all above the long run, so the series holds at {_dday('vix_latest_date')}. "
+     f"{_dday('vix_latest_high_prev_date')}. The 3 Nov close, reported {_nword(len(MACRO['vix_disputed_3nov']))} ways "
+     "in v92, is settled by Cboe's own page; for 4 Nov, AD HOC News' "
+     f"{max(MACRO['vix_disputed_4nov']):.2f} is a 4:32 pm print, below the long run too. "
      f"The one later futures board reached, The Industry Spread's {_dday('vix_futs_unconfirmed_date')} settlements - November "
      f"{MACRO['vix_futs_unconfirmed_3nov'][0]:.2f}, December {MACRO['vix_futs_unconfirmed_3nov'][1]:.2f}, January "
      f"{MACRO['vix_futs_unconfirmed_3nov'][2]:.2f} - is in no second source, so the curve stays quoted at the "
@@ -3201,24 +3296,29 @@ DRIVERS = [
      f"{VIX3M_MODEL:.2f} at three months, {abs(VIX3M_RESID):.2f}% {'below' if VIX3M_RESID < 0 else 'above'}, inside "
      f"the {VIX3M_BOUND_PCT:.0f}% bound; the 5 Oct strip it replaced read {abs(VIX3M_PREV_RESID):.2f}% "
      f"{'below' if VIX3M_PREV_RESID < 0 else 'above'} on the same test. On forward vol the curve sits at "
-     f"{VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} {'below' if VOL_RAMP < 0 else 'above'} the long run. Held: the cut "
-     "rested on a close above the long run at the series high, and any of the 3 Nov prints would leave it there. "
-     "The vote is counted; if a confirmed close gives the rise back below the long run, the cut is undone."),
+     f"{VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} {'below' if VOL_RAMP < 0 else 'above'} the long run. Raised: the cut rested "
+     "on a close above the long run at the series high, and the first confirmed close after the vote is below it. "
+     "It moves the headline gauge only: the 3- and 5-year readings, the tilts and the drawdown band read their own inputs."),
     ("Geopolitics & energy", 0.1, 1.5,
      "HELD at 1.5; the talks go on, the Strait stays shut, and the vote the standoff was waiting on is past. "
      "On 4 Nov Washington was reported to have approved a Qatari draft memorandum - a nuclear concession from Iran "
      "against the release of part of its frozen assets (Daily Times and The Destination, citing sources) - while "
      "Tehran called the US response unconvincing and said Hormuz stays shut until seven conditions are met, and "
      "Qatar said both sides were still reviewing its proposals (investingLive; the Korea Times, citing Reuters). "
+     "The draft, as reported since 31 Oct, would end the US blockade of Iran's ports and reopen the Strait within "
+     "seven days of an understanding - Iran says two - with its enriched uranium moved to a third country "
+     "(Business Standard; Dawn). "
      "On 2 Nov Iran had said it was holding "
      "\"intensive\" indirect talks with Washington through Qatari mediators, after its president said the Supreme "
      "Leader had authorised them, and Trump said a deal \"could happen\" (France 24; CBS; Gulf News); the White House "
-     f"says no direct talks are under way. Brent fell {abs(MACRO['brent_2nov_chg_pct']):.2f}% on 2 Nov, its sharpest fall "
-     "in three months. On the 3rd reports of a US strike on Iran's Qeshm Island, described by US officials as limited "
-     f"and defensive, took it to ${MACRO['brent_3nov_asia']:.2f} in Asian trade (Reuters via MarketScreener; The National), "
-     f"but it settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, "
-     f"{'up' if MACRO['brent_chg_pts'] > 0 else 'down'} ${abs(MACRO['brent_chg_pts']):.2f}, as Qatar said it was still "
-     f"working toward a deal (CNBC; SBS) - {_brent_vs_high()}. On 30 Oct "
+     f"says no direct talks are under way. Brent fell {abs(MACRO['brent_2nov_chg_pct']):.2f}% on 2 Nov. On the 3rd "
+     "reports of a US strike on Iran's Qeshm Island, described by US officials as limited "
+     f"and defensive, took it to ${MACRO['brent_3nov_asia']:.2f} in Asian trade (Reuters via MarketScreener; The National) "
+     f"before it settled at ${dict(MACRO['brent_history'])['2026-11-03']:.2f} as Qatar said it was still working toward a "
+     f"deal (CNBC; SBS); on {_dday('brent_date')} it {'rose' if MACRO['brent_chg_pts'] > 0 else 'fell'} "
+     f"${abs(MACRO['brent_chg_pts']):.2f} ({abs(MACRO['brent_chg_pts']) / MACRO['brent_prev'] * 100:.2f}%) to "
+     f"${MACRO['brent']:.2f}, its lowest settle since 31 Aug, as the midterm rebuke raised bets on an exit from the war "
+     f"(Reuters via AsiaOne; CNN) - {_brent_vs_high()}. On 30 Oct "
      "UKMTO reported explosives attached to a tanker off Khasab, Oman, and the British military said a tanker had "
      "caught fire after a small boat attached two explosives to it; Iran's Revolutionary Guard claimed that tankers "
      "leaving by unauthorised routes had struck mines, which US Central Command, saying it had cleared the main "
@@ -3236,7 +3336,8 @@ DRIVERS = [
      f"{MACRO['hormuz_transits']} transits on {_dday('hormuz_transits_date')} against "
      f"{_a_an(MACRO['hormuz_baseline'])} {MACRO['hormuz_baseline']} baseline, a {MACRO['hormuz_vessel_drop_pct']:.0f}% drop; Lloyd's List Intelligence {MACRO['hormuz_lloyds']} a day in the week to {_dday('hormuz_lloyds_asof')}, counting only cargo over "
      f"{MACRO['hormuz_lloyds_dwt']} dwt; the US government around {MACRO['hormuz_us_claim']}, on a basis it does not state. Held, not raised: a draft deal "
-     "that Iran calls unconvincing, and a strike on Qeshm on the 3rd, are not an opening of the Strait. Not cut: "
+     "that Iran calls unconvincing, a strike on Qeshm on the 3rd, and a fall in Brent that prices a settlement the "
+     "barrels have not yet seen are not an opening of the Strait. Not cut: "
      "one confirmed attack, and threats now the vote is past, are not a closure, and 1.0 is kept for full "
      "closure with Brent above $130 - strictly worse."),
 ]
@@ -3273,7 +3374,7 @@ DRIVER_PATH = {
                f"But since 1992 they forecast {MACRO['ltg_hist_fcst']}% a year and got "
                f"{MACRO['ltg_hist_real']}%: neutral by years 4-5 as margins revert."},
     "Valuation support": {"3Y": 6.5, "5Y": 5.5,
-        "why": "Asia at 10.5x and Europe at 15.4x are cheap, and the S&P's forward multiple is "
+        "why": f"Asia at {MACRO['asia_fwd_pe']}x and Europe at {MACRO['sxxp_fwd_pe']:.1f}x are cheap, and the S&P's forward multiple is "
                f"below its averages, but on ten-year earnings the S&P is on {MACRO['cape']}, near the "
                f"{MACRO['cape_high']} record: 6.5 for years 1-3, neutral for years 4-5, where the "
                "base returns already price the starting multiple."},
@@ -3302,16 +3403,16 @@ GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 
 # summary cannot drift from the reasoning it abbreviates.
 SUMMARY = {
     "Monetary policy & liquidity": f"Held: September core PCE ran {MACRO['us_core_pce_sep']}% on the year after the Fed held, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}; the ECB and the BoJ held too.",
-    "Inflation trajectory": f"Held: September PCE prices rose {MACRO['us_pce_sep']}% on the year, core {MACRO['us_core_pce_sep']}%; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, +{MACRO['brent_yoy']:.1f}% y/y.",
+    "Inflation trajectory": f"Held: September PCE prices rose {MACRO['us_pce_sep']}% on the year, core {MACRO['us_core_pce_sep']}%; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, +{MACRO['brent_yoy']:.1f}% {MACRO['brent_yoy_on']}.",
     "Growth momentum": f"Held: US GDP grew at a {MACRO['us_gdp_q3']}% annual rate in the third quarter against {MACRO['us_gdp_q3_consensus']}% expected and ISM manufacturing rose to {MACRO['us_ism_mfg_oct']} in October, while September's real spending was flat.",
     "Corporate earnings": f"Held, the strongest pillar: {MACRO['factset_beat_pct']}% of reporting S&P companies beat (FactSet, 23 Oct), but the AI-spending scare took the Nasdaq down {abs(MACRO['nasdaq_29oct_chg_pct']):.2f}% on 29 Oct and {abs(MACRO['nasdaq_2nov_chg_pct']):.2f}% on 2 Nov before the chipmakers led it back.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Held at 2.25: the VIX's {MACRO['vix_latest']:.2f} of {_dday('vix_latest_date')}, the series high, is still the last confirmed close; the next day's is reported {_nword(len(MACRO['vix_disputed_3nov']))} ways, every one above the long-run {MACRO['vix_longrun']}.",
-    "Geopolitics & energy": f"Held: a Qatari draft deal is reported approved in Washington and called unconvincing in Tehran, which keeps Hormuz shut; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')} despite a US strike on Qeshm, and the last confirmed flows were near 14 mb/d.",
-    "US": f"Held: the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f} on {_dday('equity_date')}, Election Day, and Democrats won both chambers after the close; GDP beat at {MACRO['us_gdp_q3']}%, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
+    "Volatility & risk appetite": f"Raised back to 2.5: the VIX fell {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, below its long-run {MACRO['vix_longrun']}, as the hedges built into the vote came off - the undo the 3 Nov cut was waiting for.",
+    "Geopolitics & energy": f"Held: Brent fell to ${MACRO['brent']:.2f} on {_dday('brent_date')} on bets of an exit from the war after the midterms, but the Strait stays shut and Tehran calls the draft deal unconvincing; the last confirmed flows were near 14 mb/d.",
+    "US": f"Held: the Dow {'rose' if MACRO['dow_chg_pct'] > 0 else 'fell'} {abs(MACRO['dow_chg_pct']):.2f}% and the S&P {abs(MACRO['spx_chg_pct']):.2f}% on {_dday('equity_date')}, the first session after Democrats won both chambers; GDP beat at {MACRO['us_gdp_q3']}%, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, and the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}.",
     "ASIA": f"Held: on {_dday('nikkei_latest_date')} the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% on fears a Democratic Congress would curb data-centre building, and the KOSPI closed {'up' if MACRO['kospi_latest_chg_pct'] > 0 else 'down'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% after swinging as low as {MACRO['kospi_4nov_low']:,.2f}; China's services PMI eased to {MACRO['china_svc_pmi_oct']} and the BoJ held at {MACRO['boj_rate']:.2f}%.",
-    "PHILIPPINES": f"Held: the peso recovered to {MACRO['usdphp']} on {_dday('usdphp_date')} from its {MACRO['usdphp_record']:.2f} record, and the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% on {_dday('psei_date')} before October's inflation; 91-day bills were at {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction after BSP's {MACRO['bsp_hike_bp']}bp hike.",
+    "PHILIPPINES": f"Held: the peso closed at {MACRO['usdphp']} on {_dday('usdphp_date')}, off its {MACRO['usdphp_record']:.2f} record, and the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% on {_dday('psei_date')} before October's inflation; 91-day bills were at {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction after BSP's {MACRO['bsp_hike_bp']}bp hike.",
 }
 
 GAUGE = to5(GAUGE_10)          # headline, 1-5
@@ -3446,7 +3547,7 @@ FUNDS = [
                     "trustee/admin costs may put it higher)",
         "gross_usd": round(MACRO["ltcma_em_eq"] + MACRO["asia_rerating"] - MACRO["asia_div_drag"], 2),
         "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} EM equity {MACRO['ltcma_em_eq']}% (was {MACRO['ltcma_em_eq_prev']}%) + ~{MACRO['asia_rerating']}% "
-                       f"re-rating from a 10.5x forward multiple against ~52%/~28% EPS growth, less "
+                       f"re-rating from a {MACRO['asia_fwd_pe']}x forward multiple against ~{MACRO['asia_eps_2026']}%/~{MACRO['asia_eps_2027']}% EPS growth, less "
                        f"~{MACRO['asia_div_drag']}% for the dividend tilt's lower growth capture."),
         # ASSUMPTION, not a published figure: Asia Pacific ex-Japan vol at ~1.05x
         # the S&P, times ~0.92 for the dividend tilt's lower beta. Neither leg is
@@ -3790,7 +3891,8 @@ ADD_FUNDS = [
         "fee_feeder": 1.50, "fee_target": 0.80,
         "fee_feeder_prev": 1.20, "fee_feeder_from": "2026-09-14",
         "fee_note": "1.50% ATRAM trust fee from 14 Sep 2026, up from 1.20% (uitf.com.ph A PHP units; "
-                    "the 14 Sep repricing) + 0.80% target-fund TER (PUBLISHED on the feeder's fact sheet)",
+                    "the 14 Sep repricing) + 0.80% target-fund TER (PUBLISHED on the feeder's fact sheet; DISPUTED: no "
+                    "HSBC class found charges it - see the fund's target check)",
         "gross_usd": MACRO["ltcma_global_eq"],
         "gross_note": (f"JPM LTCMA {MACRO['ltcma_edition']} global equity {MACRO['ltcma_global_eq']}%, "
                        f"with no sector premium: the LTCMA publishes no listed-infrastructure line."),
@@ -3886,7 +3988,8 @@ ADD_FUNDS = [
         "fee_note": "1.20% ATRAM trust fee (uitf.com.ph PHP and USD classes and the feeder's fact sheet; "
                     "DragonFi lists 1.50%, and the fund is not among the six repriced on 14 Sep; at "
                     "1.50% A, B and C are unchanged, as none holds it) + "
-                    "1.13% target-fund TER (PUBLISHED on the feeder's fact sheet)",
+                    "1.13% target-fund TER (PUBLISHED on the feeder's fact sheet; the A2 USD class this record "
+                    f"names is {MACRO['gall_a2_ocf']}% at BlackRock - see the fund's target check)",
         "gross_usd": round(0.6 * MACRO["ltcma_global_eq"] + 0.4 * MACRO["ltcma_global_agg"], 2),
         "gross_note": (f"Three-fifths global equity ({MACRO['ltcma_global_eq']}%) and two-fifths global "
                        f"bonds ({MACRO['ltcma_global_agg']}%, JPM LTCMA {MACRO['ltcma_edition']} global aggregate)."),
@@ -3903,6 +4006,16 @@ ADD_FUNDS = [
 ]
 F_ADD = [build_fund(f) for f in ADD_FUNDS]
 _ADD_IX = {f["id"]: i for i, f in enumerate(ADD_FUNDS)}
+
+# ---- Target-fund checks (v93) ------------------------------------------------
+# THE TARGET FUND IS CHECKED, NOT ONLY ITS CHARGE. Each feeder's target, share class, charge,
+# benchmark, holdings and events, as found at this review. The managers' own sites (J.P. Morgan,
+# Fidelity, HSBC, Allianz, Invesco, Schroders, BlackRock) and atram.com.ph / uitf.com.ph are
+# blocked to the review, so every line rests on search results; a charge is "confirmed" only
+# where two sources give the class's own figure and it is the one carried. The feeders' 1-year
+# returns sit on the blocked sites: one was found (Global Dividend), and no target's, so the
+# feeder-versus-target gap test could not run for any fund.
+_GA = lambda k, i: MACRO[k][i]
 
 # ---- Correlation matrix -----------------------------------------------------
 # Order: ATRPHMM, ATRQIAP, ATRASEQ, ATRGTEC
@@ -4198,13 +4311,15 @@ LOOKTHROUGH = {
                         "table was not reachable, so no weights are shown.",
                 "source": "Fidelity Funds - Global Healthcare Fund factsheet (Singapore edition); retry at each review"},
     "M_GINF": {"kind": "gap",
-               "note": "HSBC GIF Global Infrastructure Equity. No holdings table was reachable.",
+               "note": "HSBC GIF Global Infrastructure Equity. The newest holdings list found is a year old, "
+                       "past the 60-day limit, so no weights are shown.",
                "source": "ATRAM Global Infra Equity Feeder Fund fact sheet (target change, March 2025)"},
     "M_GEO": {"kind": "gap",
               "note": "Allianz Thematica. No holdings table was reachable.",
               "source": "ATRAM Global Equity Opportunity Feeder Fund KIID, 31 March 2026"},
     "M_GCT": {"kind": "gap",
-              "note": "Invesco Global Consumer Trends Fund. No holdings table was reachable.",
+              "note": "Invesco Global Consumer Trends Fund. The one top 10 found is for 31 August, in one "
+                      "source and past the 60-day limit, so no weights are shown.",
               "source": "ATRAM Global Consumer Trends Feeder Fund KIID"},
     "ATRAMIP": {"kind": "gap",
                 "alloc": [["equities", 50.17], ["bonds", 38.85], ["cash", 5.89]],
@@ -4215,6 +4330,80 @@ LOOKTHROUGH = {
                "note": "BlackRock Global Funds - Global Allocation Fund. No holdings table was reachable.",
                "source": "ATRAM Global Allocation Feeder Fund fact sheet"},
 }
+
+# ---- Target-fund checks (v93) -------------------------------------------------
+# One dated finding per fund, from this review's search: the target, its share class and
+# charge, its holdings, and any merger, closure or manager change. Every charge, date and
+# what-if figure reads its input, so the finding cannot drift from the forecast it checks.
+_FB = {f["id"]: f for f in F + F_ADD}
+_ft = lambda fid: f"{_FB[fid]['fee_target']:.2f}%"
+_lt = lambda fid: f"{_dval(LOOKTHROUGH[fid]['as_of'])} {LOOKTHROUGH[fid]['as_of'][:4]}"
+TARGET_CHECKS = {
+    "ATRPHMM": ("no target",
+        "No target fund: it holds Philippine deposits and bills directly. Its "
+        f"{_FB['ATRPHMM']['fee_feeder']:.2f}% all-in charge is from its KIIDS; ATRAM's page was not re-read (blocked)."),
+    "ATRQIAP": ("confirmed",
+        "Target confirmed: JPMorgan Nasdaq Equity Premium Income Active UCITS ETF, USD (dist), IE000U9J8HX9 "
+        f"(ATRAM's launch notices; justETF). Its {MACRO['qiap_target_confirmed']:.2f}% charge is confirmed (justETF; "
+        "Fidelity UK). Its benchmark is given as the Nasdaq-100 (justETF); the \"75% Nasdaq-100\" in this record is "
+        "not reconciled. The holdings shown are its US-listed sister fund's, labelled as such. The feeder launched "
+        "in 2026, so it has no 1-year return to compare. No merger, closure or manager change found."),
+    "ATRASEQ": ("estimate",
+        "Target: JPMorgan Asia Equity Dividend Fund, a Hong Kong unit trust (J.P. Morgan's factsheet, end-August). "
+        f"Its {MACRO['aseq_mgmt_fee']}% management fee is published; the {_ft('ATRASEQ')} charge carried is an "
+        f"estimate, and Investing.com lists {MACRO['aseq_target_alt']}% for an HKD class (undated, one source). None "
+        "of A, B or C holds it, so a higher charge cannot change them. Only a top five was found, past the 60-day "
+        "limit. No events found."),
+    "ATRGTEC": ("partly confirmed",
+        "Target: Fidelity Funds - Global Technology Fund (MSCI ACWI Information Technology). Holdings at "
+        f"{_lt('ATRGTEC')} are Fidelity's own. The {_ft('ATRGTEC')} charge (its Y-Acc-USD and W-Acc-GBP classes) "
+        "was not re-found at this review. No events found."),
+    "ATRGLDV": ("partly confirmed",
+        f"Target: Fidelity Funds - Global Dividend Fund. Holdings at {_lt('ATRGLDV')} match Fidelity's factsheet. "
+        f"The {_ft('ATRGLDV')} charge is its Y-Acc-USD figure; the class the feeder holds is not published. The "
+        f"feeder returned {MACRO['gldv_feeder_1y']}% in pesos in the year to {_dday('gldv_feeder_1y_date')} (ATRAM's "
+        "page, one source); no target figure was found, so the gap test could not run. No events found."),
+    "ATRGHCP": ("unconfirmed",
+        f"Target: Fidelity Funds - Global Healthcare Fund. The {_ft('ATRGHCP')} charge is the one on the feeder's "
+        f"fact sheet; Fidelity's I-Acc class is {MACRO['ghcp_target_iacc']}% and the class held is not published. "
+        "Only partial holdings lists were found, so none is shown. No events found."),
+    "M_GINF": ("disputed",
+        f"Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the {_ft('M_GINF')} charge on "
+        f"ATRAM's fact sheet matches no HSBC class found - IC {MACRO['ginf_target_ic']:.2f}% (estimated), BC GBP "
+        f"{MACRO['ginf_target_bc']:.2f}%, ZD {MACRO['ginf_target_zd']:.2f}% - and the class held is not published. "
+        f"At {_GA('ginf_target_alt', 0):.2f}% its net CAGR on the 3/5/10-year view is {_GA('ginf_net_alt', 0):.2f}%; "
+        f"A would hold {_GA('ginf_w_a_alt', 0)}% ({_GA('ginf_cagr_a_alt', 0):.2f}% on its 10-year view), B "
+        f"{_GA('ginf_w_b_alt', 0)}% ({_GA('ginf_cagr_b_alt', 0):.2f}%) and C {_GA('ginf_w_c_alt', 0)}% "
+        f"({_GA('ginf_cagr_c_alt', 0):.2f}%). At {_GA('ginf_target_alt', 1):.2f}% it nets "
+        f"{_GA('ginf_net_alt', 1):.2f}%, and A holds {_GA('ginf_w_a_alt', 1)}%, B {_GA('ginf_w_b_alt', 1)}% and C "
+        f"{_GA('ginf_w_c_alt', 1)}%. The newest holdings list found is a year old. No events found."),
+    "M_GEO": ("unconfirmed",
+        "Target: Allianz Global Investors Fund - Allianz Thematica; benchmark MSCI AC World, net (Allianz's page). "
+        f"The {_ft('M_GEO')} charge is from the feeder's KIID (31 Mar 2026); Allianz's retail AT class lists "
+        f"{MACRO['geo_target_at']}% (30 Oct 2026), and the class held is not published. No top 10 found. "
+        "No events found."),
+    "M_GCT": ("unconfirmed",
+        f"Target: Invesco Global Consumer Trends Fund. The {_ft('M_GCT')} charge is from the feeder's later KIID; "
+        f"Invesco's Z class shows {MACRO['gct_target_z']}% ongoing costs (31 Aug) and its A USD class "
+        f"{MACRO['gct_target_a_usd']}%, and the class held is not published. The one top 10 found is for 31 Aug, in "
+        "one source and past the 60-day limit. No events found."),
+    "ATRAMIP": ("manager change",
+        "Target: Schroder Asian Asset Income Fund, a Hong Kong unit trust. MANAGER CHANGE: a 14 Oct 2026 notice "
+        "appoints Schroder Investment Management Limited as an additional sub-manager; the structure, risk profile "
+        "and fees are unchanged (the notice, as copied by Taishin and HSBC), so its net CAGR does not move. The "
+        f"{_ft('ATRAMIP')} charge is an estimate; the A class's management fee is {MACRO['amip_target_mgmt']}% "
+        "(HSBC's factsheet, 31 Aug). No top 10 found."),
+    "M_GALL": ("disputed",
+        "Target: BlackRock Global Funds - Global Allocation Fund. SHARE-CLASS MISMATCH: this record names the A2 "
+        f"USD class, which BlackRock lists at {MACRO['gall_a2_ocf']}% (30 Oct 2026; {MACRO['gall_a2_ocf_aug']}% in "
+        f"August), against the {_ft('M_GALL')} on ATRAM's fact sheet carried here - the class or the charge is wrong. "
+        f"At {MACRO['gall_a2_ocf']}% its net falls {MACRO['gall_a2_ocf'] - _FB['M_GALL']['fee_target']:.2f}pp; none "
+        "of A, B or C holds it, so none can change. No events found."),
+}
+TARGET_CHECK_DATE = REVIEW_DATE
+for _f in F + F_ADD:
+    _st, _tx = TARGET_CHECKS[_f["id"]]
+    _f["target_check"] = {"date": TARGET_CHECK_DATE, "status": _st, "text": _tx}
 
 # ----------------------------------------------------------------------------
 # 6. PORTFOLIOS
@@ -4707,7 +4896,7 @@ SCENARIOS = [
      f"{MACRO['us_unemployment']}% unemployment rate; duration-heavy growth de-rates.",
      {"ATRPHMM": +0.8, "ATRQIAP": -2.5, "ATRASEQ": -2.0, "ATRGTEC": -5.0, "ATRGLDV": -1.5,
      "ATRGHCP": -1.0, "M_GINF": -2.5, "M_GEO": -3.5, "M_GCT": -4.5, "ATRAMIP": -1.5, "M_GALL": -2.0}, 1.30),
-    ("AI capex digestion", "Semis order book rolls over; the 52% Asia EPS "
+    ("AI capex digestion", f"Semis order book rolls over; the {MACRO['asia_eps_2026']}% Asia EPS "
      "estimate is cut. Hits the AI supply chain and mega-cap tech together.",
      {"ATRPHMM": 0.0, "ATRQIAP": -3.5, "ATRASEQ": -5.5, "ATRGTEC": -8.0, "ATRGLDV": -1.0,
      "ATRGHCP": 0.0, "M_GINF": -0.5, "M_GEO": -3.5, "M_GCT": -3.0, "ATRAMIP": -2.5, "M_GALL": -1.5}, 1.45),
@@ -5749,6 +5938,77 @@ SOURCES = [
      "https://www.financecalendar.com/event/bank-of-japan-rate-decision-december-2026/"),
     ("TradersWeek", "Bank of Japan meeting dates 2026 - 17-18 December",
      "https://tradersweek.com/economic-calendar/boj-rate-decision"),
+    # v93 (4 Nov, late)
+    ("Cabinet Office, ESRI", "Release schedule - July-September 2026 GDP, first preliminary estimate 16 Nov 2026 at 8:50 JST; second preliminary 8 Dec",
+     "https://www.esri.cao.go.jp/en/sna/kouhyou/kouhyou_top.html"),
+    ("Finance Calendar", "Japan GDP, November 2026 - the July-September first estimate on 16 Nov",
+     "https://www.financecalendar.com/?p=2463"),
+    ("AP via WTOP", "How major US stock indexes fared Wednesday 11/4/2026 - S&P +119.70 to 7,688.62, Dow +1,569.40 to 53,356.12, Nasdaq +364.50 to 25,736.51",
+     "https://wtop.com/national/2026/11/how-major-us-stock-indexes-fared-wednesday-11-4-2026"),
+    ("Yahoo Finance", "Stock market today: Dow surges 1,500 points in best day of 2026, S&P 500 and Nasdaq rally after the midterms, 4 Nov 2026",
+     "https://finance.yahoo.com/markets/live/stock-market-today-dow-sp-500-nasdaq-midterm-elections-091834396.html"),
+    ("TheStreet", "Stock Market Today (Nov. 4, 2026): stocks rise, oil collapses after Dems sweep midterm elections",
+     "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-nov-04-2026"),
+    ("Investrade", "Market Review, 4 Nov 2026 - WTI settled $88.12 (-$7.97), Brent $94.62 (-$8.98, -8.67%)",
+     "https://investrade.com/market-review-november-04-2026/"),
+    ("Reuters via AsiaOne", "Oil slumps after midterm election rebuke to Trump raises bets on Iran war exit - Brent settled $8.98 lower at $94.62, 4 Nov 2026",
+     "https://www.asiaone.com/money/oil-slumps-after-midterm-election-rebuke-trump-raises-bets-iran-war-exit"),
+    ("CNN", "Dow has best post-midterm elections day in 44 years as Democrats take control of Congress - Brent settled at $94.62, lowest since 31 Aug, 4 Nov 2026",
+     "https://cnn.com/2026/11/04/investing/us-markets-midterm-elections"),
+    ("FinanceFeeds", "Brent Crude Oil Price: $93.52 After a 10% Crash - one of the disputed 4 Nov prints",
+     "https://financefeeds.com/brent-crude-oil-price-93-iran-bull-105-bear-88/"),
+    ("World Today News", "Brent crude futures drop below $100 amid US midterm results - $98.80, one of the disputed 4 Nov prints",
+     "https://www.world-today-news.com/brent-crude-futures-drop-below-100-amid-us-midterm-results/"),
+    ("MarketScreener", "December WTI Crude Oil Contract Closes Down $7.97, or 8.3%; Settles at $88.12 per Barrel, 4 Nov 2026",
+     "https://www.marketscreener.com/news/december-wti-crude-oil-contract-closes-down-7-97-or-8-3-settles-at-88-12-per-barrel-january-br-ce785fdfde8df625"),
+    ("Cboe", "VIX Volatility Products - VIX 16.61, -4.22 (-20.26%), previous close 20.83, 4 Nov 2026",
+     "https://www.cboe.com/tradable-products/vix"),
+    ("StreetStats", "VIX S&P 500 Volatility and MOVE - 3 Nov close 20.83",
+     "https://streetstats.finance/markets/volatility"),
+    ("AD HOC News", "VIX ends November 4 at 17.89, down 14.11 percent - a 4:32 pm print, one of the disputed 4 Nov figures",
+     "https://www.ad-hoc-news.de/boerse/news/marktberichte/vix-ends-november-4-at-17-89-down-14-11-percent/70459805"),
+    ("GMA News", "Peso dips vs. US dollar on October inflation worries - closed P63.535:$1, 4 Nov 2026",
+     "https://gmanetwork.com/news/money/economy/1008277/peso-dips-vs-us-dollar-on-october-inflation-worries/story"),
+    ("investingLive", "October US ISM services 54.5 vs 54.8 expected; new orders 55.9 from 59.8, 4 Nov 2026",
+     "https://investinglive.com/news/october-us-ism-services-vs-54-8-expected/"),
+    ("The Private Banker", "US services growth cools to 54.5 as new orders drop almost four points, yet prices paid stay near 73, 4 Nov 2026",
+     "https://leprivatebanker.com/2026/11/04/us-services-growth-cools-to-54-5-as-new-orders-drop-almost-four-points-yet-prices-paid-stay-near-73/"),
+    ("Business Standard", "US-Iran draft proposes uranium transfer, reopening Hormuz within 7 days, 31 Oct 2026",
+     "https://www.business-standard.com/amp/world-news/us-iran-draft-proposes-uranium-transfer-reopening-hormuz-within-7-days-126103100083_1.html"),
+    ("Dawn", "Iran ready to reopen Hormuz in two days as Trump hints at deal",
+     "https://www.dawn.com/news/2041754/iran-ready-to-reopen-hormuz-in-two-days-as-trump-hints-at-deal"),
+    ("justETF", "JPMorgan Nasdaq Equity Premium Income Active UCITS ETF USD (dist), IE000U9J8HX9 - TER 0.35%, benchmark Nasdaq-100",
+     "https://www.justetf.com/en/etf-profile.html?isin=IE000U9J8HX9"),
+    ("Fidelity UK", "JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - key statistics, ongoing charge 0.35%",
+     "https://www.fidelity.co.uk/factsheet-data/factsheet/IE000U9J8HX9GBP-jpmorgan-etfs-ireland-icav/key-statistics"),
+    ("HSBC Asset Management", "HSBC GIF Global Infrastructure Equity factsheet - IC class ongoing charge 1.000% (estimated), report of 30 Sep 2025",
+     "https://www.assetmanagement.hsbc.co.uk/api/v1/download/document/lu2449327621/gb/en/factsheet"),
+    ("Hargreaves Lansdown", "HSBC GIF Global Infrastructure Equity (BC GBP) Accumulation - ongoing charge 1.10%, 4 Sep 2026",
+     "https://www.hl.co.uk/funds/fund-discounts,-prices--and--factsheets/search-results/h/hsbc-gif-global-infrastructure-equity-bc-gbp-accumulation"),
+    ("Citywire", "HSBC GIF Global Infrastructure Equity ZD - ongoing charge 0.15%",
+     "https://citywire.com/funds-insider/fund/hsbc-gif-global-infrastructure-equity-zd/c903549"),
+    ("Taishin Bank / Schroders", "Schroder Asian Asset Income Fund notice to unitholders, 14 Oct 2026 - Schroder Investment Management Limited appointed sub-manager; structure and risk profile unchanged",
+     "https://www.taishinbank.com.tw/invst/export/sites/invst/doc/public/REF20261019-1.pdf"),
+    ("HSBC / Schroders", "Schroder Asian Asset Income Fund factsheet, 31 Aug 2026 - A Acc HKD management fee 1.25%",
+     "https://www.hfi.hsbc.com.hk/data/hk/invest/unit/ut_fs_U62640_en.pdf"),
+    ("Allianz Global Investors", "Allianz Thematica AT USD - benchmark MSCI AC World Index Total Return (Net)",
+     "https://lu.allianzgi.com/en-lu/our-funds/funds/list/allianz-thematica-at-usd"),
+    ("Allianz Global Investors", "Allianz Thematica AT (H2-SGD) - total expense ratio 1.95%, 30 Oct 2026",
+     "https://sg.allianzgi.com/en-sg/retail/products-solutions/recognised-fund/allianz-thematica-at-h2-sgd-sgd"),
+    ("J.P. Morgan Asset Management", "JPMorgan Asia Equity Dividend Fund factsheet, end-Aug 2026 - management fee 1.5% p.a.",
+     "https://am.jpmorgan.com/content/dam/jpm-am-aem/asiapacific/hk/en/literature/fact-sheet/jpmorgan_asia_equity_dividend_e.pdf"),
+    ("Investing.com", "JPMorgan Asia Equity Dividend - total expenses 1.82% (HKD class, undated)",
+     "https://www.investing.com/funds/jpmorgan-asia-equity-dividend-mth-u-holdings"),
+    ("Invesco", "Invesco Global Consumer Trends Fund factsheet, 31 Aug 2026 (Z AUD Hgd) - ongoing costs 1.14%",
+     "https://dng-api.invesco.com/cache/v1/accounts/en_LU/shareclasses/LU1701683481/factsheet?idType=isin&documentType=MR&productType=GPR"),
+    ("Hargreaves Lansdown", "Invesco Global Consumer Trends A USD Accumulation - ongoing charge 1.87%",
+     "https://www.hl.co.uk/funds/fund-discounts,-prices--and--factsheets/search-results/i/invesco-consumer-trends-a-usd-accumulation-inclusive"),
+    ("BlackRock", "BGF Global Allocation Fund A2 USD - ongoing charge 1.77%, net assets at 30 Oct 2026",
+     "https://www.blackrock.com/sg/en/products/228333/bgf-global-allocation-fund-a2-usd"),
+    ("BlackRock", "BGF Global Allocation Fund A2 USD factsheet, August 2026 - ongoing charge 1.78%",
+     "https://www.blackrock.com/americas-offshore/en/literature/fact-sheet/bgf-global-allocation-fund-class-a2-usd-factsheet-lu0072462426-lm-en-individual.pdf"),
+    ("Investa / ATRAM", "ATRAM US Multi-Asset Income Feeder Fund fact sheet - fully invested in the Franklin Income Fund from 27 Mar 2026",
+     "https://storage.investa.ph/files/Fund/48/PDF/48_FundFactSheet_1787710319.pdf"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -6503,9 +6763,17 @@ def report():
     # week let a 5.4% one-day jump fall between the base and the anniversary.
     _anniv = _dt.date.fromisoformat(MACRO["brent_date"]).replace(year=_dt.date.fromisoformat(
         MACRO["brent_date"]).year - 1)
-    checks.append(("Brent's year-ago base is within three days of the anniversary",
-                   abs((_anniv - _dt.date.fromisoformat(MACRO["brent_yr_ago_date"])).days)
-                   <= 3))
+    # PAST THE BOUND IS FLAGGED, NOT FAILED QUIETLY (v93): a base more than three days off may
+    # stand only while every quote of the y/y on the page names the base's own date.
+    _yb_txt = f"{_dval(MACRO['brent_yr_ago_date'])} {MACRO['brent_yr_ago_date'][:4]}"
+    _yoy_q = [t for t in _notes_all + list(SUMMARY.values()) if f"{MACRO['brent_yoy']:.1f}%" in t]
+    _ygap = abs((_anniv - _dt.date.fromisoformat(MACRO["brent_yr_ago_date"])).days)
+    checks.append((f"Brent's year-ago base is within {MACRO['brent_yr_ago_bound_d']} days of the anniversary, or every "
+                   f"quote of the y/y names the base's own date ({_ygap}d)",
+                   _ygap == MACRO["brent_yr_ago_gap_d"]
+                   and (_ygap <= MACRO["brent_yr_ago_bound_d"]
+                        or (bool(_yoy_q) and all(_yb_txt in t for t in _yoy_q)
+                            and not any("of a year earlier" in t for t in _yoy_q)))))
     # A dispute record is only a record if it contains the settle that resolved it.
     for _dk, _ck in (("2026-09-21", "brent_disputed"), ("2026-09-23", "brent_disputed_23sep")):
         checks.append((f"the {_dk} Brent dispute record contains the settle that resolved it",
@@ -7626,6 +7894,30 @@ def report():
                    and MACRO["gbi_target_low"] < MACRO["gbi_target_high"]
                    and all(MACRO[f"gbi_w_{x}_low"] >= MACRO[f"gbi_w_{x}_high"] >= 0 for x in "abc")
                    and "ATRUSEQ" not in p["portfolio_b"]["ids"]))
+    # TARGET FUNDS (v93): every feeder's target is checked at every review, a "confirmed" charge is
+    # the one the forecast uses, and a disputed charge on a fund that A, B or C holds has its
+    # what-if on record, run in this review at the live budget, with weights inside the limits.
+    _tc_all = F + F_ADD
+    checks.append(("every fund carries a target-fund check dated this review, with a status and a finding",
+                   all(f.get("target_check", {}).get("date") == REVIEW_DATE
+                       and f["target_check"]["status"] and len(f["target_check"]["text"]) > 40 for f in _tc_all)
+                   and set(TARGET_CHECKS) == {f["id"] for f in _tc_all}))
+    checks.append((f"a target charge marked confirmed is the charge the forecast carries (Nasdaq Equity Income "
+                   f"{MACRO['qiap_target_confirmed']:.2f}%)",
+                   all(f["fee_target"] == MACRO["qiap_target_confirmed"] for f in _tc_all
+                       if f["target_check"]["status"] == "confirmed" and f["id"] == "ATRQIAP")
+                   and sum(f["target_check"]["status"] == "confirmed" for f in _tc_all) == 1))
+    _held = {fid for k in ("portfolio_a", "portfolio_b", "portfolio_c")
+             for fid, w in zip(p[k]["ids"], p[k]["weights"]) if w}
+    checks.append(("a disputed target charge on a fund A, B or C holds has its what-if on record, in limits",
+                   all(f["id"] != "M_GINF" or (
+                       len(MACRO["ginf_target_alt"]) == len(MACRO["ginf_w_a_alt"]) == len(MACRO["ginf_net_alt"]) == 2
+                       and all(0 <= w <= MACRO["pd_review_max_w"] for k in ("ginf_w_a_alt", "ginf_w_b_alt") for w in MACRO[k])
+                       and all(0 <= w <= 50 for w in MACRO["ginf_w_c_alt"])
+                       and all(a > f["fee_target"] for a in MACRO["ginf_target_alt"])
+                       and all(n < f["net_macro"] for n in MACRO["ginf_net_alt"]))
+                       for f in _tc_all if f["target_check"]["status"] == "disputed" and f["id"] in _held)
+                   and "M_GINF" in _held))
     checks.append(("the held-out funds' what-if weights were run at the live drawdown budget and rule, on or before today",
                    MACRO["heldout_run_cap"] == p["dd_budget"]["cap"] and MACRO["heldout_run_tie"] == PIN_TIE_PP
                    and AS_OF <= MACRO["heldout_run_date"] <= REVIEW_DATE   # run in this review, not after it

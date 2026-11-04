@@ -266,8 +266,15 @@ ck("Brent's move and year-on-year change follow from its levels",
    abs(round(M["brent"] - M["brent_prev"], 2) - M["brent_chg_pts"]) < 0.006
    and abs(round((M["brent"] / M["brent_yr_ago"] - 1) * 100, 2) - M["brent_yoy"]) < 0.006)
 _ann = d(M["brent_date"]).replace(year=d(M["brent_date"]).year - 1)
-ck(f"Brent's year-ago base is within three days of the anniversary ({abs((_ann - d(M['brent_yr_ago_date'])).days)}d)",
-   abs((_ann - d(M["brent_yr_ago_date"])).days) <= 3)
+# v93: past the bound the base may stand only with its own date beside every quote of the y/y,
+# re-read here from the published prose (not from the engine's flag alone).
+_yb = d(M["brent_yr_ago_date"]); _yg = abs((_ann - _yb).days); _ybt = f"{_yb.day} {_yb:%b} {_yb.year}"
+_yq = [t for t in [x["note"] for x in DR] + [x["summary"] for x in DR]
+       + [r["why"] for r in D["regions"].values()] + [r["summary"] for r in D["regions"].values()]
+       if f"{M['brent_yoy']:.1f}%" in t]
+ck(f"Brent's year-ago base is within three days of the anniversary, or past it with its own date beside every y/y quote ({_yg}d)",
+   _yg <= 3 or (M.get("brent_yr_ago_stale") is True and bool(_yq) and all(_ybt in t for t in _yq)
+                and not any("of a year earlier" in t for t in _yq)), f"{len(_yq)} quotes")
 ck("Brent's high is at or above every settle since its date, and the latest is not above it",
    all(v <= M["brent_high"] + 1e-9 for x, v in bh if x >= M["brent_high_date"]) and M["brent"] <= M["brent_high"] + 1e-9)
 ck("WTI's move reproduces from its prior", abs((M["wti_settle"] / M["wti_prev"] - 1) * 100 - M["wti_chg_pct"]) <= 0.006
@@ -289,6 +296,9 @@ for rk, r in D["regions"].items():
     TXT += [("region:" + rk, r["why"]), ("summary:" + rk, r["summary"])]
 for c in D["catalysts"]: TXT.append(("catalyst:" + c["what"], c["why"]))
 for k, v in D["lookthrough"].items(): TXT.append(("lookthrough:" + k, v.get("note", "")))
+# v93: each fund's target-fund check is prose on the page, so its numbers must trace too.
+for f_ in D["funds"] + [x for x in D["portfolio_b"]["funds"] if x["id"] not in {y["id"] for y in D["funds"]}]:
+    if f_.get("target_check"): TXT.append(("target_check:" + f_["id"], f_["target_check"]["text"]))
 TXT.append(("corr_note", D["corr_note"]))
 NUMS = []
 def walk(o):
@@ -343,6 +353,37 @@ ck("no NaN, undefined or malformed sign anywhere in the payload",
    not re.search(r"\bNaN\b|\bundefined\b|Infinity", _all) and "- +" not in _all and "+-" not in _all.replace("+-0", ""))
 
 # ---------------------------------------------------------------------------
+# v93: a figure keyed to a day (kospi_3nov_chg_pct) is quoted only in a sentence that names that
+# day. The earnings note read the KOSPI's latest move beside "on the same fear" and Apple's 3 Nov
+# fall as "the same day": true when written, false after each roll.
+_MO = "jan feb mar apr may jun jul aug sep oct nov dec".split()
+_SER = {"kospi": "KOSPI", "nikkei": "Nikkei", "nasdaq": "Nasdaq", "spx": "S&P", "dow": "Dow", "brent": "Brent",
+        "wti": "WTI", "psei": "PSEi", "vix": "VIX", "usdphp": "peso"}
+_ordn = lambda n: f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')}"
+_dk, _dq = [], 0
+for k, v in M.items():
+    m_ = re.match(r"^([a-z0-9]+?)_(\d{1,2})(" + "|".join(_MO) + r")(?:_|$)", k)
+    if not m_ or m_.group(1) not in _SER or isinstance(v, bool) or not isinstance(v, (int, float)): continue
+    _day, _mo = int(m_.group(2)), m_.group(3).capitalize()
+    for src, t in TXT:
+        for snt in re.split(r"(?<=[.])\s+(?=[A-Z(])", t):
+            if _SER[m_.group(1)] in snt and any(re.search(r"(?<![\d.,])" + re.escape(f_) + r"(?!\d)", snt)
+                                                for f_ in {f"{abs(v):,.2f}", f"{abs(v):.2f}"}):
+                _dq += 1
+                if f"{_day} {_mo}" not in snt and f"the {_ordn(_day)}" not in snt: _dk.append(f"{k} in {src}")
+ck(f"a figure keyed to a day is quoted only beside that day ({_dq} quotes)", _dq > 0 and not _dk, "; ".join(_dk[:3]))
+# v93: every fund's target-fund check is from this review, with a known status, and a charge
+# marked confirmed is the charge the forecast carries.
+_TCS = {"no target", "confirmed", "partly confirmed", "estimate", "unconfirmed", "disputed", "manager change"}
+_tcf = D["funds"] + [x for x in D["portfolio_b"]["funds"] if x["id"] not in {y["id"] for y in D["funds"]}]
+ck(f"every fund carries a target-fund check from this review, with a known status ({len(_tcf)} funds)",
+   len(_tcf) == len(D["portfolio_b"]["ids"])
+   and all(f_.get("target_check", {}).get("date") == D["review_date"] and f_["target_check"]["status"] in _TCS for f_ in _tcf),
+   f"{[(f_['id'], f_.get('target_check', {}).get('date')) for f_ in _tcf if f_.get('target_check', {}).get('date') != D['review_date']][:2]}")
+ck("a target charge marked confirmed is quoted at the charge the forecast carries",
+   all(f"{f_['fee_target']:.2f}%" in f_["target_check"]["text"] for f_ in _tcf if f_["target_check"]["status"] == "confirmed"),
+   f"{[f_['id'] for f_ in _tcf if f_['target_check']['status'] == 'confirmed']}")
+
 sec("H. THE CLAIMS REGISTER")
 _rows = [l for l in CLAIMS.splitlines() if l.startswith("|")]
 _bad = []

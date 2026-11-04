@@ -196,6 +196,21 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+141. PLANT AN ERROR BY STATE, NOT BY NAME. The guard mutant set "the VIX guard" clear, and the day the VIX
+   closed under its long run it changed nothing. The harness reports a mutant that changes nothing as
+   not caught, so the run failed instead of passing, and that is the reason it does. A mutant that names a
+   field whose value moves with the market will go quiet one day: pick its target by its state ("a guard
+   that is red"), and keep one per branch.
+140. A CHARGE BELONGS TO A SHARE CLASS. The target funds publish a charge per class - Global Infra's
+   HSBC classes run from 0.15% to 1.10% - and a feeder's fact sheet gives one figure without naming the
+   class. A charge whose class cannot be named is not confirmed, however official its document; on a fund
+   that A, B or C holds, run the alternatives (Global Infra at 1.00% takes it out of B). And a record that
+   names a class must carry that class's charge: Global Allocation's named A2 USD beside 1.13%, where A2 is
+   1.77%.
+139. A DISPUTE IS SETTLED BY THE PRIMARY SOURCE, NOT BY A COUNT. The 3 Nov VIX had two agreeing prints in v92
+   and was held, rightly: four outlets disagreed and none was the exchange. In v93 Cboe's own page gave
+   20.83 and the outlier's own next story chained from it. Resolve when the primary (the exchange, or the
+   agency carrying its settle) and one independent source agree; until then, hold and record.
 138. A NUMBER THAT TRACES BY COINCIDENCE IS NOT TRACED. The audit counts a note's number as sourced if any
    number in the payload matches it, and with five hundred inputs most small numbers match something.
    The Asia Equity Opportunity look-through's "70%" mandate floor had no input; it passed because a $70bn

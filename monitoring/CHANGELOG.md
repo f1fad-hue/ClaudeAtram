@@ -2,6 +2,121 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-04 — v93: every market to 4 Nov; the volatility cut undone; the target funds checked for the first time; a published v92 sentence corrected; A, B and C unchanged
+
+At the owner's instruction, the review command with target funds added (owner, 4 Nov: "Does cover also
+the target funds if not add it"). Run 22:00-23:10 UTC on 4 Nov, after New York's close and the oil
+settles; Asia's 5 Nov sessions had not opened.
+
+**Blocked from the review environment:** every direct fetch - the managers' sites (am.jpmorgan.com,
+fidelityinternational.com, assetmanagement.hsbc.com, allianzgi.com, invesco.com, schroders.com,
+blackrock.com), atram.com.ph, uitf.com.ph, fund databases (justetf.com, morningstar, hl.co.uk,
+fundsupermart, trustnet, citywire, storage.investa.ph, seedbox.ph, dragonfi.ph), cdn.cboe.com,
+home.treasury.gov, federalreserve.gov, FRED and the news sites. Everything was read through search
+results. Left unverified: each target's own KIID and the share class each feeder holds, the feeders'
+1-year returns, Cboe's futures settlements and the Treasury's 4 Nov curve.
+
+**Updated (two sources each, each adding up from the prior close):**
+- **New York, 4 Nov:** S&P 7688.62 (+119.70, +1.58%), Nasdaq 25736.51 (+364.50, +1.44%), Dow 53356.12
+  (+1569.40, +3.03%, its best day since April 2025) - the first session after Democrats won both chambers.
+- **Brent $94.62** (-$8.98, -8.67%; Reuters via AsiaOne, CNN, Investrade), its lowest settle since 31 Aug;
+  FinanceFeeds' $93.52 and World Today News' $98.80 are each in one outlet. **WTI $88.12** (-$7.97;
+  MarketScreener, Investrade).
+- **The VIX:** 3 Nov resolved at **20.83** by Cboe's own page (with Yahoo, StreetStats, The Industry Spread);
+  4 Nov **16.61** (-20.26%; Cboe, Motley Fool via Yahoo), against AD HOC News' 17.89 and Yahoo's -17.27%.
+- **Treasuries, 3 Nov par:** 10-year 4.95%, 2-year 4.61%, 30-year 5.32% (StockMarketWatch, Forbes, the Fed's
+  H.15). **The peso 63.535** (BusinessWorld, GMA). **ISM services** 54.5 against 54.8 expected, prices 73.0.
+- **The Gulf:** the draft as reported since 31 Oct would end the US blockade and reopen the Strait within
+  seven days of an understanding (Business Standard; Dawn); no agreement, the Strait still shut.
+
+**Scored:** **Volatility raised back 2.25 -> 2.5**, the undo the 3 Nov cut pre-committed to: the first
+confirmed close after the vote is below the long run. It moves the headline gauge only (2.28 -> 2.29);
+the 3/5/10-year paths, the tilts and the drawdown band read their own inputs. Every other score held.
+**Drawdown band 2.80, hold at 25%**; guards: one month-end review of two, geopolitics 1.5 fails, **the VIX
+guard now clear** (16.61). **A, B and C unchanged** (7.31% / 7.10% / 7.14%, -24.9% each).
+
+**Target funds (new):** a dated check per fund, shown on its slide and in the register, and three engine
+checks. Findings:
+- **Nasdaq Equity Income: confirmed** - JPMorgan Nasdaq Equity Premium Income Active UCITS ETF, 0.35%.
+- **Global Infra Equity: charge DISPUTED.** ATRAM's fact sheet says 0.80%; HSBC's classes found are 1.00%
+  (IC, estimated), 1.10% (BC GBP) and 0.15% (ZD), and the class held is unpublished. Carried at 0.80%
+  under the evidence rule. **What-if run:** at 1.00% B drops the fund (7.07%) and A halves it to 15%
+  (7.26%); at 1.10% A drops it too. The one fund-level fact this review could not settle that moves A and B.
+- **Global Allocation: share-class mismatch** - the record names A2 USD, which BlackRock lists at 1.77%,
+  against the 1.13% carried. Not held, so A, B and C cannot change.
+- **Asian Multi-Asset Income: manager change** - Schroders' 14 Oct notice adds a London sub-manager; fees,
+  structure and risk unchanged.
+- **US Multi-Asset Income (held out): target switch** found - Allianz Income and Growth to Franklin Income,
+  27 Mar 2026 - and recorded; its record had the 2020 target.
+- Health Care, Equity Opportunity and Consumer Trends: each charge is the feeder's document's and matches
+  no published retail class; the class held is unpublished. Asia Equity's estimate stands beside an
+  undated 1.82%. No merger or closure found anywhere.
+- **The feeder-versus-target 1-year test could not run** for any fund: the returns are on blocked sites.
+
+**The calendar:** nothing on it has passed since v92 (ISM services was never on it). **Added:** Japan's
+third-quarter GDP, first estimate, 16 Nov ([the Cabinet Office's schedule](https://www.esri.cao.go.jp/en/sna/kouhyou/kouhyou_top.html);
+[Finance Calendar](https://www.financecalendar.com/?p=2463)). **Not added, one source each:** the Bank of
+Korea's 26 Nov decision (QNA); Nvidia's results, 17 Nov in Nvidia's own notice, while the calendars still
+estimate 18 Nov; China's October CPI, 9 Nov (one calendar site). The PH third-quarter GDP date was not found.
+
+**Held, and why:** the 4 Nov Treasury curve (not yet published); PH T-bills at 26 Oct (the 3 Nov auction's
+91-day does not chain; bound 9 Nov); PortWatch at 25 Oct (bound 8 Nov); the VIX futures strip at 20 Oct (one
+later source; no longer overtaken, window ends 19 Nov); FedWatch at its 4 Nov morning read (post-ISM reads
+disagree). **Brent's year-ago base, FLAGGED:** 31 Oct 2025 is four days off the 4 Nov anniversary, one past
+its bound; no 1-7 Nov 2025 settle was found in two sources. Instead of failing quietly, the page now names
+the base's date beside every quote of the y/y, and the engine and the audit fail if any quote drops it.
+
+**Errors found and fixed:**
+- **A v92 sentence was published wrong, and this review's roll made it worse.** The earnings note
+  printed "on 4 Nov the KOSPI rose 0.62% on the same fear, before the chipmakers took the Nasdaq back
+  0.83% that evening; Apple fell about 2% the same day". Written in v89 for 3 Nov, it read the KOSPI's
+  and the Nasdaq's latest moves, so v92's KOSPI roll printed a rise "on the same fear", beside a
+  Nasdaq move and an Apple fall that came before it; this review's US roll would have put Apple's fall on
+  4 Nov, the day Apple closed at a record. It is now pinned to 3 Nov by its own keys
+  (`nasdaq_3nov_chg_pct` restored), and the Asia note's "a day after falling 3.59%" names its day.
+  **New audit check:** a figure keyed to a day is quoted only in a sentence that names that day (28
+  quotes), with a planted error to prove it.
+- **The planted-error test's guard mutant had gone quiet.** It flipped the VIX guard by name, and became a
+  no-op the day the VIX closed under its long run. The run failed loudly (42 of 43) rather than passing.
+  It now flips whichever guard is red, and a second mutant flips the VIX guard either way.
+- **"The equity fund here least tied to the US tech sleeves"** (Global Dividend's slide) compared it with
+  Asia Equity only. Global Health Care (0.57 and 0.64) and Global Infra Equity (0.56 and 0.63) are less
+  tied. The claim now prints only when it holds against every fund.
+- **Hand-typed figures now read their inputs.** Asia's "~52% and ~28%" EPS growth (the input is 52.5% and
+  27.5%, as the Funds tab showed), its 10.5x and Europe's 15.4x in four notes, and the AI-capex scenario's
+  "52%". Every charge and holdings date in the target-fund checks.
+- **The target-fund checks' own slips:** "C 7.1%" for 7.10%; "the KIIDS's"; Global Infra's and Consumer
+  Trends' look-through notes still said "no holdings table was reachable" beside checks that found a
+  year-old list and a 31 Aug one; the two disputed funds' fee notes did not mention the dispute. The
+  Method section now names the disputed charges beside the estimates.
+- The peso note's "after the President signalled support" now uses its source's wording, "the
+  President's reassurance".
+- **Three sentences would have pinned a day's reason on the next day's move** (runbook 137): the
+  geopolitics note's "settled at ... as Qatar said it was still working toward a deal" (3 Nov's reason, about
+  to sit beside 4 Nov's 8.7% fall), the monetary note's "then 4.95% on 3 Nov as oil fell" (yields rose that
+  day), and the peso's "kept recovering" beside a 6.5-centavo fall. The US note's "New York's first session
+  on it is not in these numbers" and "oil's sharpest fall in three months" were true until this roll.
+- **The WTI record said December last trades 19 Nov**; the exchange rule the engine applies gives 20 Nov.
+- **A target switch was missing** (US Multi-Asset Income), and **a share class and its charge disagree**
+  (Global Allocation): both recorded.
+- **Slips of this review, caught before publishing:** a 2 Nov Brent move quoted above the line that derives
+  it (KeyError); an input added and never quoted (`nasdaq_3nov_chg_pct`, the audit's orphan check).
+
+**House cleanup:** `vix_above_lr_prev_date` retired (its sentence went with the cut); the v92 3 Nov 10-year
+market-quote record retired with the par close that replaced it; the target-fund record moved below the
+look-through it now reads; the scratch files removed.
+
+**Harnesses:** engine **255/255**; audit **245 checks, 0 failures**; validator **15/15** (and on the
+live copy); mutations **46/46 caught** (three added in v93: the VIX guard flipped either way, a day-keyed move put beside another day, a target-fund check from an old review).
+
+**Due before the next review:** PH October CPI (5 Nov, 01:00 UTC) and Asia's 5 Nov sessions; US payrolls
+(6 Nov); PortWatch's bound (8 Nov); the T-bills' bound (9 Nov) and FedWatch's (9 Nov); US CPI (10 Nov); the
+VIX strip (18-19 Nov); WTI December's last trade (20 Nov); Brent January's expiry and the November
+month-end gauge review (30 Nov). Open: Brent's year-ago base; **Global Infra Equity's share class**, the
+one target-fund fact that would move A and B.
+
+Not personal financial advice.
+
 ## 2026-11-04 — v92: Asia's 4 Nov closes and FedWatch rolled; the midterm result retired from the calendar, the next events added; 109 inputs nothing read retired; A, B and C unchanged
 
 At the owner's instruction, the review command, run 14:50-15:45 UTC on 4 Nov: Tokyo, Seoul and
