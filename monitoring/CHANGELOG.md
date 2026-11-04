@@ -2,6 +2,138 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-04 — v92: Asia's 4 Nov closes and FedWatch rolled; the midterm result retired from the calendar, the next events added; 109 inputs nothing read retired; A, B and C unchanged
+
+At the owner's instruction, the review command, run 14:50-15:45 UTC on 4 Nov: Tokyo, Seoul and
+Manila had closed for the 4th; New York (opened 14:30 UTC) and the Brent and WTI settles had not.
+
+**Blocked from the review environment:** every direct fetch is refused by the proxy - cdn.cboe.com,
+home.treasury.gov, federalreserve.gov, fred.stlouisfed.org, treasury.gov.ph, finance.yahoo.com,
+bworldonline.com, pna.gov.ph, context.ph, businessmirror.com.ph, philstar.com, inquirer.net,
+manilatimes.net, straits.live, actionforex.com, benzinga.com, koreajoongangdaily.com, en.sedaily.com,
+ad-hoc-news.de, plus atram.com.ph, uitf.com.ph and the other fund hosts as in v89. Every figure
+below was cross-checked through search results only. What that left unverified: Cboe's own VIX
+close and futures settlements, the Treasury's 3 Nov par curve, the BTr's own 3 Nov auction table,
+and the fund pages (fees, holdings).
+
+**Updated (two sources each, each chaining off the prior close):**
+- **Nikkei 62,188.63 (4 Nov)**, -893.23 (-1.42%), Tokyo's first session after Culture Day and its
+  first on the US result, after touching 60,030.10 (AD HOC News; CNBC).
+- **KOSPI 5,683.80 (4 Nov)**, +35.01 (+0.62%), after a 7% swing; foreigners sold 2.5tn won (Seoul
+  Economic Daily; Korea JoongAng Daily).
+- **PSEi 5,694.92 (4 Nov)**, +70.75 (+1.26%), on bargain hunting before October's CPI
+  (BusinessWorld; Yahoo Finance; Bloomberg). GMA's "5,964.92" transposes two digits.
+- **FedWatch 79.2% (4 Nov)** for a December hike, from 79.6% on 29 Oct - rolled on the day the
+  29 Oct read would have passed its five-day bound (ActionForex; Benzinga, both before the ADP and
+  ISM releases).
+- **Releases since v91:** JOLTS September ~7.52m and factory orders +1.8% (3 Nov); ADP October
+  +86,000 against 69,000; the euro area's October composite PMI confirmed at 51.7, a four-month
+  low; China's private services PMI 50.8 from 51.6; Korea's October CPI 2.8% from 2.9% (3 Nov). No
+  central-bank decision since v91 in the US, the Philippines, the euro area, Japan, Korea or China;
+  the Bank of Korea's 3.00% hold (22 Oct) is now quoted.
+- **The Gulf:** on 4 Nov Washington was reported to have approved a Qatari draft memorandum (Daily
+  Times; The Destination, citing sources); Tehran called the response unconvincing and said Hormuz
+  stays shut until seven conditions are met (investingLive; the Korea Times, citing Reuters). The
+  midterms are counted: Democrats won both chambers (CBS; CNN).
+- **The event calendar:** the midterm result RETIRED (it is known, and Asia's carried sessions
+  traded on it); added PH October CPI (5 Nov), US October CPI (10 Nov), the Fed (9 Dec), BSP and the
+  ECB (17 Dec) and the BoJ (18 Dec), each dated by its source; US October payrolls (6 Nov) stays.
+
+**Held, and why:**
+- **New York, Brent and WTI at 3 Nov**: their 4 Nov sessions had not closed.
+- **The VIX at 2 Nov (21.15).** The 3 Nov close is reported four ways - Investing.com 20.29, Yahoo
+  20.44 then 20.83, AD HOC News 20.51 (`vix_disputed_3nov`). The Industry Spread's 20.834 agrees with
+  Yahoo's later print, but sources that conflict are not resolved by counting them.
+- **The VIX futures strip at 20 Oct, though overtaken.** The one later board, The Industry Spread's
+  3 Nov settlements (Nov 19.8993, Dec 19.5477, Jan 20.1804), is in no second source. FLAGGED: its
+  30-day window ends 19 Nov and the November contract settles on 18 Nov. Proposed fix: re-quote from
+  two settlement sources before 18 Nov, or allow cdn.cboe.com in the environment's network settings.
+- **The 2-, 10- and 30-year at 2 Nov**: 3 Nov has market closes only (CappNotes 4.95, Investing.com
+  4.950, CNBC 4.948); no par-curve republication reached (`ust_10y_withheld`).
+- **The peso at 3 Nov (63.47)**: 4 Nov's 63.535 (BusinessWorld, BAP data) chains but stands alone,
+  and Trading Economics has 63.48 (`usdphp_disputed_4nov`).
+- **PH T-bills at 26 Oct**, inside the 14-day bound (to 9 Nov): the 3 Nov auction's 182- and 364-day
+  rates chain, but its 91-day does not - BusinessWorld has 6.438% "from 6.264%", against the 6.624%
+  carried for 26 Oct, so **the 26 Oct 91-day is itself now disputed** (`ph_tbill_disputed_26oct_91`).
+  FLAGGED: proposed fix, confirm both auctions from the BTr's own table (treasury.gov.ph, blocked).
+- **PortWatch at 25 Oct** (2 transits): the 4 Nov brief still has it as the newest published day;
+  inside its 14-day bound to 8 Nov.
+- **ISM services (October, 54.5)**: in ISM's own release only at review; not carried.
+- **Brent's year-ago base (31 Oct 2025)**: at its three-day limit for a 3 Nov settle. FLAGGED: the 4 Nov
+  settle needs a 1-7 Nov 2025 base in two sources, or the check fails when Brent rolls.
+- **Funds:** no fee change, merger, closure or new fund found for November (ATRAM's and uitf.com.ph's
+  pages blocked; search results only). Look-throughs: Nasdaq Equity Income, Global Technology and
+  Global Dividend at 30 Sep (35 days of 60), Peso Money Market at 26 Oct. The held-out what-if was
+  **re-run on the 4 Nov inputs: every weight identical** (US Equity Opportunity, Global Bond Income,
+  the disputed Asian Multi-Asset Income fee, Global Allocation at 1.50%).
+
+**Scored, all held.** Gauge 2.28; regions Asia 3.60, US 3.29, Philippines 2.99, Europe 2.46. The
+Volatility note now reads "HELD at 2.25, the cut from 2.5 of 3 Nov": every 3 Nov print is above the
+19.5 long run, so the cut stands on any of them. **The drawdown band reads 2.80 (3Y 2.82, 5Y 2.76):
+hold at 25%**; guards - one month-end review on record (two needed), geopolitics 1.5 (needs above
+2.0 to raise) and the VIX 21.15 (needs 19.5 or under) - block any raise; none is in play. **A, B
+and C unchanged**: A 7.31% / -24.9% on its 10-year view, B 7.10% / -24.9%, C 7.14% / -24.9%.
+
+**Errors found and fixed:**
+- **The audit's number-tracing check passed by coincidence.** The Asia Equity Opportunity
+  look-through quoted its mandate floor, "at least 70%", with no input behind it; the check counted
+  it traced because two unrelated inputs (a $70bn five-year auction and a 70% Gulf shut-in) also read
+  70. Retiring those exposed it; the floor is an input now. The check itself still accepts any
+  matching number in the payload: proposed for the next review, tie each number to an input its
+  f-string actually reads (runbook 138).
+- **The README contradicted the engine for a review**: it said the 30-year was held at 30 Oct; v91
+  had rolled it to 2 Nov.
+- **Three sentences would have turned false on this roll**, because they described the day before in
+  relative terms beside figures that roll: the Asia note's "a day after rebounding 2.24%" (the day
+  before 4 Nov was a 3.59% fall), the volatility note's "Asia took the next leg: the KOSPI fell" (it
+  rose 0.62%), and the Philippine note's "back from the All Souls' Day holiday" on the 4 Nov move.
+  Each now reads the keyed move of its own day (runbook 137).
+- **A stale figure quoted as current**: "the yen near 158.48" in the Asia note was a 14 Oct reading.
+  Dropped; the input retired.
+- **An input lost in an earlier cleanup**: the euro area's 18.8% energy inflation was typed in the
+  Europe note while its input sat inside a comment. Restored as `ea_energy_sep`.
+- **The Volatility note still announced the cut** ("CUT to 2.25") three reviews after it.
+- **Found reading the six tabs as a user:** the Macro tab's trend note said moves since 30 September
+  "enter at the next month-end", but the trend windows roll only at quarter-ends (the engine's rule
+  since v88) - they enter on 31 December, and the page now names that date from the payload. The
+  Volatility lede said "The VIX closed 21.15 on Monday 2 November" with nothing to say 3 Nov is held
+  back; it now says the next close is not carried because its reports disagree. The Fed catalyst
+  read "the 2 dissents"; now "the two dissents". Re-reading the rendered notes: the US note's "2 Fed
+  voters" (now "two"), the volatility note's "December 18.7" beside a tab printing 18.70, and the
+  geopolitics note's "the vote that held strikes back" - the Qeshm strike came the night before the
+  vote, so it now says the vote before which Washington had pledged not to strike.
+- **Hand-typed figures with inputs, now read from them** (runbook 136, applied to figures): the Philippine note (the
+  26 Oct auction's three rates and moves, BSP's 50bp to 5.50%, "20 of 22 analysts", September CPI
+  7.2% and core 4.7%, H1 growth 2.6%); Asia (the KOSPI's 7,003.74, China's 4.5% against 4.4%, TSMC's
+  68.7%, Samsung's 107.4tn won); Europe (HICP 3.8%, energy 18.8%, core 2.5%, the OAT-Bund 135.5bp and
+  140bp, the 5.0% and 5.4% deficits, 15.4x); the US note (PPI 1.3%, retail sales 0.8%, NDX 22.4x); the
+  inflation note (PPI 6.3%, 0.5%, 5.0%; CPI 3.7%, core 2.6%); valuation (NDX 22.4x, 22.9x, 24.7x;
+  Europe 15.4x); earnings (TSMC NT$763.06bn against NT$746.34bn, Samsung); geopolitics (Lloyd's 14 a
+  day to 23 Aug over 10,000 dwt, the US's 30, Gulf exports 24 against 23.3 mb/d, the 1,200 km
+  pipeline); and the Nasdaq Equity Income return note (22.4x against 22.9x).
+- **Slips of this review, caught by its own checks before publishing:** ADP stored in thousands
+  where the audit reads "86k" as 86,000 (now stored in jobs); a source title's "- +86,000" tripping
+  the malformed-sign check; a doubled "not a closure" in the geopolitics note; apostrophes turned to
+  quotes in the new source titles; a summary saying "4 ways" where its note said "four" (both now
+  read the list they count).
+
+**House cleanup:** **109 inputs that nothing read retired** - September CPI, PCE and retail
+sub-items no note quotes, the Saudi pipeline and Yanbu detail of September, BoJ vote counts, Tankan,
+several dispute-era fields, and six derived fields (`vix_latest_chg_pct_calc`, `brent_chg_pct` and
+others); the dispute records (`*_disputed_*`, withheld lists) are kept as the record. `_dday` moved
+ahead of the catalysts so they can date themselves; `_dval` and `_nword` added. Scratch files removed.
+
+**Harnesses:** engine **254/254**; audit **242 checks, 0 failures**; validator **15/15**;
+mutations **43/43 caught**, none missed or crashed (run three times: before and after the read-through fixes).
+
+**Due before the next review:** PH October CPI (5 Nov); US payrolls (6 Nov); PortWatch's bound (8 Nov)
+and the T-bills' (9 Nov); US October CPI (10 Nov); the VIX strip (November VX settles 18 Nov, window
+ends 19 Nov); WTI's December contract last trades 20 Nov; Brent's January contract expires 30 Nov,
+the November month-end gauge review the same day; FedWatch rolls every five days or fewer; Brent's
+year-ago base before its next settle is carried.
+
+Not personal financial advice.
+
 ## 2026-11-03 — v91: late review on the 3 Nov close - the 30-year rolled, FedWatch and the VIX held, eight hand-typed dates wired; A, B and C unchanged
 
 At the owner's instruction, the review command. Run at 23:40 UTC, an hour after v89: no market

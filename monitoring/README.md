@@ -196,6 +196,17 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+138. A NUMBER THAT TRACES BY COINCIDENCE IS NOT TRACED. The audit counts a note's number as sourced if any
+   number in the payload matches it, and with five hundred inputs most small numbers match something.
+   The Asia Equity Opportunity look-through's "70%" mandate floor had no input; it passed because a $70bn
+   auction and a 70% shut-in also read 70, and retiring those two exposed it. Retiring dead inputs is
+   also a test of the tracing check: re-run the audit after every retirement and read what newly fails.
+137. RELATIVE WORDS BESIDE A ROLLING FIGURE GO STALE ON THE ROLL. "A day after rebounding 2.24%",
+   "Asia took the next leg: the KOSPI fell", "back from the holiday" were true of the session they were
+   written for and false the moment the KOSPI and the PSEi rolled - the f-strings updated the level and
+   the sign, and the words around them did not. Before rolling a series, read every sentence that quotes
+   it for "a day after", "the next", "again", "back from", "since", and make the day they refer to an
+   input with its own key.
 136. A DATE BESIDE A FIELD IS A COPY OF THAT FIELD'S DATE. "From 85% on the 28th" was right only until
    FedWatch rolled; the prior's date was an input all along. When a sentence names the day of a figure
    that has a *_date input, the sentence reads the input - search the notes for typed dates on every
