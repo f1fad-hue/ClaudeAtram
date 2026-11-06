@@ -271,7 +271,7 @@ _ann = d(M["brent_date"]).replace(year=d(M["brent_date"]).year - 1)
 _yb = d(M["brent_yr_ago_date"]); _yg = abs((_ann - _yb).days); _ybt = f"{_yb.day} {_yb:%b} {_yb.year}"
 _yq = [t for t in [x["note"] for x in DR] + [x["summary"] for x in DR]
        + [r["why"] for r in D["regions"].values()] + [r["summary"] for r in D["regions"].values()]
-       if f"{M['brent_yoy']:.1f}%" in t]
+       if f"{M['brent_yoy_1dp']:.1f}%" in t]   # the one-decimal quote the page prints (v94)
 ck(f"Brent's year-ago base is within three days of the anniversary, or past it with its own date beside every y/y quote ({_yg}d)",
    _yg <= 3 or (M.get("brent_yr_ago_stale") is True and bool(_yq) and all(_ybt in t for t in _yq)
                 and not any("of a year earlier" in t for t in _yq)), f"{len(_yq)} quotes")
@@ -372,6 +372,27 @@ for k, v in M.items():
                 _dq += 1
                 if f"{_day} {_mo}" not in snt and f"the {_ordn(_day)}" not in snt: _dk.append(f"{k} in {src}")
 ck(f"a figure keyed to a day is quoted only beside that day ({_dq} quotes)", _dq > 0 and not _dk, "; ".join(_dk[:3]))
+# v94: a move kept under its own day's key (nasdaq_5nov_chg_pct) equals the series' latest move
+# while that day is the latest session - re-read from the payload, not from the engine's verdict.
+_LAT = {"spx": ("equity_date", "spx_chg_pct"), "nasdaq": ("equity_date", "nasdaq_chg_pct"),
+        "dow": ("equity_date", "dow_chg_pct"), "kospi": ("kospi_latest_date", "kospi_latest_chg_pct"),
+        "nikkei": ("nikkei_latest_date", "nikkei_latest_chg_pct"), "psei": ("psei_date", "psei_chg_pct")}
+_dd = []
+for k, v in M.items():
+    m_ = re.match(r"^(spx|nasdaq|dow|kospi|nikkei|psei)_(\d{1,2})(" + "|".join(_MO) + r")_chg_pct$", k)
+    if not m_: continue
+    _l = d(M[_LAT[m_.group(1)][0]])
+    if (_l.month, _l.day) == (_MO.index(m_.group(3)) + 1, int(m_.group(2))):
+        _dd.append((k, v, M[_LAT[m_.group(1)][1]]))
+ck(f"a day-keyed move on the series' latest day equals the latest move ({len(_dd)} keys)",
+   all(v == w for _, v, w in _dd), f"{[x for x in _dd if x[1] != x[2]]}")
+# v94: Brent's y/y at one decimal is the EXACT ratio rounded half-up - re-derived from the two
+# settles, not read from the payload's own rounded figure (it printed 51.0% for 51.053%).
+from decimal import Decimal as _D, ROUND_HALF_UP as _HU
+_yx = ((_D(str(M["brent"])) / _D(str(M["brent_yr_ago"])) - 1) * 100).quantize(_D("0.1"), rounding=_HU)
+_yqs = [float(x) for _, t in TXT for x in re.findall(r"Brent \+(\d+\.\d)% ", t)]
+ck(f"every one-decimal Brent y/y quote is the exact ratio rounded half-up ({float(_yx)}%, {len(_yqs)} quotes)",
+   bool(_yqs) and all(abs(v - float(_yx)) < 1e-9 for v in _yqs) and M.get("brent_yoy_1dp") == float(_yx), f"{_yqs}")
 # v93: every fund's target-fund check is from this review, with a known status, and a charge
 # marked confirmed is the charge the forecast carries.
 _TCS = {"no target", "confirmed", "partly confirmed", "estimate", "unconfirmed", "disputed", "manager change"}

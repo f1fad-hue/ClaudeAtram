@@ -43,11 +43,12 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 4 Nov 2026, every market's 4 Nov close (New York, Brent's
-January and WTI's December settles, the VIX, Tokyo, Seoul, Manila and the peso) and FedWatch's 4 Nov read;
-the 2-, 10- and 30-year at their 3 Nov par closes, the 4 Nov curve not yet published. Brent's y/y is quoted
-against its 31 Oct 2025 settle, four days short of a year (flagged). Target funds checked 4 Nov,
-through search results only; reviewed 4 Nov. Weights in the universe's order: Money Market / Nasdaq Equity Income /
+market assumptions. Market data as of 6 Nov 2026: Tokyo's and Seoul's 6 Nov closes; New York, Brent's
+January and WTI's December settles, the VIX, the PSEi and the peso at 5 Nov (Manila's 6 Nov close was not
+found and the peso's is in one source); the 2-, 10- and 30-year at their 4 Nov par closes; FedWatch at its
+4 Nov read (the later reads disagree). Brent's y/y is quoted against its 31 Oct 2025 settle, five days short
+of a year (flagged). Target funds checked 4 Nov, their notices re-searched 6 Nov, through search results
+only; reviewed 6 Nov. Weights in the universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.

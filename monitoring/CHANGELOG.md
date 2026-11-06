@@ -2,6 +2,118 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-06 — v94: the AI sell-off returns - Nasdaq into correction, the VIX +70%, Seoul and Tokyo down 11% and 8%; volatility cut 2.5 -> 1.5, growth raised 4.0 -> 4.25 on 165k payrolls; A, B and C unchanged
+
+At the owner's instruction, the review command with target funds. Run 13:15-14:45 UTC on 6 Nov: Asia's 6 Nov
+sessions closed; New York's 6 Nov session not open; the US October payrolls out at 8:30 ET.
+
+**The environment:** every direct fetch is still refused by the review's network policy (cboe.com,
+bworldonline.com, reuters.com, home.treasury.gov, cmegroup.com tested at the start). A personal environment,
+**ClaudeAtram**, was created with the primary sources this review needs allowed (FRED, the Treasury, Cboe, the
+Bureau of the Treasury PH, PSA, BSP, uitf.com.ph, atram.com.ph, Investa, BusinessWorld, the managers' sites,
+justETF, Investing.com). This session could not move onto it, so everything here still rests on search
+results; a session started on it can read the primaries. Left unverified: each target's KIID and class held,
+the feeders' 1-year returns, Cboe's futures settlements, the Treasury's 5 Nov curve, the BTr's auction results.
+
+**Updated (two sources each, each adding up from the prior close):**
+- **New York, 5 Nov, the AI sell-off:** S&P 7353.73 (-334.89, -4.36%), Nasdaq 24315.00 (-5.52%, in correction),
+  Dow 51523.06 (-1833.06, -3.44%) (CNBC; Fox Business; CappNotes; StockTitan), on Qualcomm's guidance and fears
+  that a Democratic Congress would slow the data-centre build-out. One table's Nasdaq -1421.52 lands on 24314.99;
+  the move carried is the closes' own -1421.51 (`nasdaq_disputed_5nov_pts`).
+- **Brent $98.29** (+$3.67, +3.88%; Reuters via Investing.com and Yahoo; BigGo) and **WTI $90.52** (+$2.40,
+  +2.72%; Reuters; investingLive) on 5 Nov, on new tanker attacks. No roll (January Brent to 30 Nov, December
+  WTI to 20 Nov).
+- **The VIX 28.18** on 5 Nov (+11.57, +69.66%; Yahoo Finance; AD HOC News; CappNotes; Saxo); AD HOC's "22.93"
+  is an intraday print. The session high is carried at the close, the highest level two sources confirm
+  (Reuters' 28.36 is one source).
+- **Seoul 5059.69** on 6 Nov (-6.02%, a circuit breaker at the open; Seoul Economic Daily; the Korea Herald)
+  after 5383.80 on 5 Nov (-5.28%; Yonhap via FourWeekMBA; Trading Economics); Seoul suspended its margin-collateral
+  rule for three months. **Tokyo 57434.77** on 6 Nov (-5.96%; Nikkei Indexes; AP) after 61077.90 on 5 Nov
+  (-1.79%); Investing.com's automated -1.66% and -6.04% do not reproduce.
+- **The PSEi 5778.14** (+1.46%) and **the peso 62.97** (56.5 centavos stronger) on 5 Nov (BusinessWorld; the
+  Manila Times; Philstar).
+- **Treasuries, 4 Nov par:** 10-year 4.90%, 2-year 4.58%, 30-year 5.28% (Spot the Money; StockMarketWatch; FRED).
+- **Releases:** PH October CPI **7.8%** (core 5.4%, inside BSP's 7.1-8.1%; PSA; Philstar; PTV); **US October
+  payrolls +165k** against 59k expected, unemployment 4.1% (CNBC; Fox Business; Benzinga); initial claims 189k
+  (Labor Department; ActionForex); euro-area services PMI final 51.4 (FX.co; Trading and Investment News);
+  PSA's Q2 GDP revised to 2.4% (BusinessWorld; BusinessMirror); **FactSet's 30 Oct count** - Q3 growth 30.2%,
+  82% beating, the smallest surprise since late 2022 - now in a second source (GainingGreen), after v87 held it.
+- **The Gulf:** tankers struck off northern Qatar and inside the Gulf on 5 Nov, a waterline explosion east of
+  Khasab on 6 Nov (UKMTO via Breitbart and Arab News; Splash247; Al Jazeera); Iran exempts ships from India,
+  China, Iraq and Qatar (Al Jazeera; Splash247); the draft deal unsigned.
+
+**Scored:**
+- **Volatility CUT 2.5 -> 1.5**, a full point: the VIX 8.68 above its long run, the risk appetite the 4 Nov raise
+  rested on broken across three markets in two sessions. Not to 1.0: markets sold off and closed.
+- **Growth RAISED 4.0 -> 4.25**, undoing the 3 Oct cut, whose reason was September's 29k payrolls: October's
+  165k, unemployment down to 4.1%. Not more: the consumer, Europe, China and the Philippines are slowing.
+- Every other score held - earnings (growth rose to 30.2%; the sell-off is about the spending, a three-year
+  question), valuation (cheaper on prices, not earnings), geopolitics (attacks quicker, but no full closure).
+- **Effect:** both move the headline gauge only, **2.29 -> 2.26**. The 3/5/10-year paths, the tilts and the band
+  read their own inputs, so no fund's net CAGR or drawdown moves, and **A, B and C are unchanged** (7.31% /
+  7.10% / 7.14%, -24.9% each). **Drawdown band 2.80, hold at 25%**; guards: one month-end review of two,
+  geopolitics 1.5 fails, **the VIX guard red again** (28.18).
+
+**Held, and why:**
+- **The VIX futures strip (20 Oct), OVERTAKEN by 62.8%** and flagged on the page: Saxo's 5 Nov board (November
+  23.75, December 21.65, in backwardation) and Cboe's 4 Nov December settle (17.98) are one source each. Its
+  window ends 19 Nov. Fix: Cboe's settlement file (cdn.cboe.com, allowed in ClaudeAtram).
+- **PH T-bills at 26 Oct, the 14-day bound reached on 9 Nov**: the 3 Nov 91-day does not chain (its prior is
+  reported as 6.264, against the 6.624 carried). Fix: the BTr's own 26 Oct and 3 Nov results (treasury.gov.ph,
+  allowed in ClaudeAtram), then roll to the 9 Nov auction.
+- **FedWatch at its 4 Nov read** (bound 9 Nov): the 5-6 Nov reads (66%, 68.7%) disagree, and none is after the
+  payrolls. **The 5 Nov Treasury curve, Manila's 6 Nov close and the peso's** (63.055, one source).
+- **PortWatch at 25 Oct (bound 8 Nov)**: the source has published nothing newer. **Brent's year-ago base,
+  FLAGGED** (31 Oct 2025, five days off): FRED and Investing.com, allowed in ClaudeAtram, would settle it.
+- **Calendar dates in one source** (BoK 26 Nov, Nvidia 17 Nov, China CPI 9 Nov) stay off.
+
+**Target funds:** ATRAM's notices and the target managers' notices re-searched; nothing new since the 4 Nov
+checks, which stand. The page now says "Checked 4 Nov; notices re-searched 6 Nov". **Global Infra Equity's
+share class**, the one open fact that would move A and B, is still unpublished. The held-out what-if re-run:
+every weight reproduces.
+
+**The calendar:** retired PH October CPI (5 Nov) and the US October jobs report (6 Nov, out before New York's
+session on it, quoted in the growth note as the Michigan final was in v86); added **PH third-quarter GDP, 9 Nov**
+(BusinessWorld's date and its 2.7% poll; BusinessMirror).
+
+**Errors found and fixed:**
+- **A rounding of a rounding:** Brent's y/y printed "51.0%" for 51.053% - the 2dp 51.05 formatted at 1dp. Every
+  one-decimal quote now reads a half-up rounding of the exact ratio (`brent_yoy_1dp`), and the audit re-derives it
+  from the two settles.
+- **The footer said the as-of date was the "Philippine close"** while 6 Nov came from Tokyo and Seoul, with Manila
+  at 5 Nov. It now names the closes the as-of date is, from the series.
+- **The VIX misdating tripwire (40%) could not tell a real shock from a misdated print.** 5 Nov's +69.66% failed
+  it. A move past 40% now passes only as a recorded shock day whose same-session S&P move is at least 2%
+  (`vix_shock_days`), so a misdated close still fails.
+- **The intraday high fell below a close:** 23.93 (30 Oct) against 5 Nov's 28.18 close; the range check caught it.
+- **Relative words that would have gone stale on this roll** (runbook 137): the peso "recovered to {prev} on Middle
+  East peace hopes" would have put 3 Nov's reason on 4 Nov's weakening; the PSEi's "on bargain hunting" on 5 Nov's
+  rise; the Asia note's "Tokyo's first session since the Culture Day holiday" on 6 Nov. Each is pinned to its day.
+- **"Grind-on" said vol "drifts up" to the curve** with the VIX nine points above it; the direction now reads
+  the inputs. The AI-capex stress row now says it is partly running.
+- **The Report's volatility section said nothing of an overtaken curve** the Volatility tab flagged; it does now.
+- **Hand-typed figures** in the monetary note (the 26 Oct T-bills) and the inflation note (the euro area's 3.8%
+  and 2.5%, the Philippines' 7.2%) now read their inputs.
+- **The planted-error test's note mutant had gone quiet**, as the guard mutant did in v93 (runbook 141): it
+  replaced the words "HELD at" in the Growth note, and the day Growth was RAISED it changed nothing (47 of 48).
+  It now plants its number after the note's first sentence, whatever the wording.
+- **Slips of this review, caught before publishing:** a quoting script turned apostrophes into broken strings
+  in the source list; a Brent move ($3.67) sat where the prose check expects a level; the calendar was out of
+  order; the prior closes were not rolled; two inline differences (8.68, 9.48) had no input.
+
+**New checks:** a day-keyed move on its series' latest day equals the latest move (engine and audit); every
+one-decimal Brent y/y quote is the exact ratio rounded half-up (audit); the VIX tripwire's shock-day witness
+(engine). **Harnesses:** engine **256/256**; audit **247 checks, 0 failures**; validator **15/15** (and on the live
+copy); mutations **48/48 caught** (two added: a y/y rounded from its own rounding, a day-keyed copy off the latest move).
+
+**Due before the next review:** PortWatch's bound (8 Nov); PH Q3 GDP and the T-bill bound and auction (9 Nov),
+FedWatch's bound (9 Nov) and China's CPI; US CPI (10 Nov); Japan's GDP (16 Nov); Nvidia's results (17 Nov, one
+source); the VIX November settle (18 Nov) and the strip's window (19 Nov); WTI December's last trade (20 Nov);
+the Bank of Korea (26 Nov, one source); Brent January's expiry and **the November month-end gauge review (30
+Nov)**. Open: Brent's year-ago base; Global Infra Equity's share class.
+
+Not personal financial advice.
+
 ## 2026-11-04 — v93: every market to 4 Nov; the volatility cut undone; the target funds checked for the first time; a published v92 sentence corrected; A, B and C unchanged
 
 At the owner's instruction, the review command with target funds added (owner, 4 Nov: "Does cover also

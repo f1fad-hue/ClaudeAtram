@@ -47,6 +47,10 @@ def m_guard(d):                                                                 
 def m_vixg(d): g = next(g for g in d["dd_gauge"]["guards"] if g["name"] == "vix"); g["ok"] = not g["ok"]   # the VIX guard flipped
 def m_dayref(d):                                                                               # a day-keyed move beside another day
     x = _drv(d, "Corporate"); x["note"] = x["note"].replace("on 3 Nov the KOSPI", "on 4 Nov the KOSPI", 1)
+def m_yoy1(d): d["macro"]["brent_yoy_1dp"] = round(d["macro"]["brent_yoy_1dp"] - 0.1, 1)      # the y/y a rounding of a rounding (v94)
+def m_daydup(d):                                                                               # a day-keyed copy off the latest (v94)
+    k = next(k for k in d["macro"] if re.match(r"^(nasdaq|kospi)_\d{1,2}nov_chg_pct$", k)
+             and k.startswith("nasdaq_5nov")); d["macro"][k] = round(d["macro"][k] + 0.02, 2)
 def m_tcheck(d): _fund(d, 1)["target_check"]["date"] = "2026-10-20"                            # a target-fund check from an old review
 def m_stale(d): d["macro"]["equity_date"] = "2026-10-20"                                       # a close a week behind
 def m_lt(d): d["lookthrough"]["ATRQIAP"]["as_of"] = "2026-08-31"                               # holdings past 60 days
@@ -58,7 +62,9 @@ def m_brent(d): d["macro"]["brent_yoy"] = round(d["macro"]["brent_yoy"] + 0.5, 2
 def m_base(d): d["macro"]["brent_yr_ago_date"] = "2025-10-15"                                  # a year-ago base far off the anniversary
 def m_peso(d): d["macro"]["usdphp_chg"] = round(d["macro"]["usdphp_chg"] - 0.01, 3)
 def m_note(d):                                                                                 # a number in a note no input carries
-    x = _drv(d, "Growth"); x["note"] = x["note"].replace("HELD at", "HELD, after 13.37 points, at", 1)
+    # Planted by position, not by wording (v94): it replaced "HELD at" in the Growth note, and went a
+    # no-op the day Growth was RAISED. Every note has a first sentence.
+    x = _drv(d, "Growth"); x["note"] = x["note"].replace(". ", ". It moved 13.37 points. ", 1)
 def m_summ(d): x = _drv(d, "Inflation"); x["summary"] = x["summary"].rstrip(".") + ", 4.44% above target."
 def m_brhigh(d):
     x = _drv(d, "Inflation"); x["note"] = re.sub(r"(Brent settled at \$[\d.]+ on [^,]+,)", lambda m: m.group(1) + f" below the ${d['macro']['brent']:.2f} of the 23rd,", x["note"], count=1)

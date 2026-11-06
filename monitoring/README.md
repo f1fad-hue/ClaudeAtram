@@ -196,6 +196,18 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+145. A COPY UNDER A DAY'S NAME MUST EQUAL THE LATEST WHILE IT IS THE LATEST. Prose pinned to 5 Nov reads
+   nasdaq_5nov_chg_pct, the same session the rolling nasdaq_chg_pct carries; two inputs for one move drift
+   unless something holds them equal. The engine and the audit now do, for every series.
+144. THE AS-OF DATE IS SOMEBODY'S CLOSE: NAME WHOSE. The footer called 6 Nov "the Philippine close" because it
+   was written when Manila was always the last market carried. When Tokyo and Seoul run a session ahead, a
+   label that assumes which market set the date is wrong; read it from the series.
+143. A TRIPWIRE NEEDS A WITNESS, NOT AN EXCEPTION. The 40% VIX move check guards against misdated closes, and a
+   real +69.66% day tripped it. Raising the threshold would blind it; waiving the day would hide it. A
+   shock day passes only when another market's own move the same session confirms it.
+142. A ROUNDING OF A ROUNDING IS NOT A ROUNDING. 98.29 / 65.07 is +51.053%; rounded to 2dp it is 51.05, and
+   51.05 printed at 1dp is "51.0" in binary floating point, a tenth low. A figure shown at fewer places than
+   it is stored must be rounded, half-up, from the exact value, not from the stored one.
 141. PLANT AN ERROR BY STATE, NOT BY NAME. The guard mutant set "the VIX guard" clear, and the day the VIX
    closed under its long run it changed nothing. The harness reports a mutant that changes nothing as
    not caught, so the run failed instead of passing, and that is the reason it does. A mutant that names a
