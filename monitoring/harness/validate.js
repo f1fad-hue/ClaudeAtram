@@ -35,7 +35,7 @@ const file = process.argv[2], live = process.argv.includes("--live");
         dashes: [...document.querySelectorAll(".num, .lede")].filter(e => e.textContent.trim() === "—").map(e => e.id).slice(0, 8),
         http: ext.filter(u => !u.startsWith("https://")),
         hscroll: document.documentElement.scrollWidth > window.innerWidth + 1,
-        donuts: ["donutA", "donutB", "donutC"].map(i => !!document.querySelector(`#${i} svg`)),
+        donuts: ["donutA", "donutB", "donutC", "donutD"].map(i => !!document.querySelector(`#${i} svg`)),
         vs, shorts: D.portfolio_b.shorts,
         gaugenow: (document.getElementById("gaugenow") || {}).textContent,
         lede: (document.getElementById("pblede") || {}).textContent || "",
@@ -54,11 +54,11 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("no empty figure", info.emptyNum.length === 0, `${info.emptyNum.slice(0, 6)}`);
     ck("no duplicate element ids", info.dup.length === 0, `${info.dup.slice(0, 5)}`);
     ck("every external reference is https", info.http.length === 0, `${info.http.slice(0, 3)}`);
-    ck("three donuts drawn: A, B and C", info.donuts.every(Boolean), `${info.donuts}`);
-    const W = { A: D.portfolio_a.weights, B: D.portfolio_b.weights, C: D.portfolio_c.weights };
+    ck("four donuts drawn: A, B, C and D", info.donuts.length === 4 && info.donuts.every(Boolean), `${info.donuts}`);
+    const W = { A: D.portfolio_a.weights, B: D.portfolio_b.weights, C: D.portfolio_c.weights, D: D.portfolio_d.weights };
     const shown = info.vs.map(r => [r[0], r.slice(1).map(c => c === "–" ? 0 : parseInt(c))]);
-    const want = info.shorts.map((s, i) => [s, [W.A[i], W.B[i], W.C[i]]]).filter(x => x[1].some(Boolean));
-    ck("the A-B-C weights table is the payload's, row for row", JSON.stringify(shown) === JSON.stringify(want),
+    const want = info.shorts.map((s, i) => [s, [W.A[i], W.B[i], W.C[i], W.D[i]]]).filter(x => x[1].some(Boolean));
+    ck("the A-B-C-D weights table is the payload's, row for row", JSON.stringify(shown) === JSON.stringify(want),
       `${JSON.stringify(shown)} vs ${JSON.stringify(want)}`);
     ck("the Report's gauge is the payload's", info.gaugenow === D.gauge.toFixed(2), `${info.gaugenow} vs ${D.gauge}`);
     const pc = x => x.toFixed(2) + "%";
@@ -66,8 +66,8 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("Portfolio D's section draws its donut and states its mix, 3/5/10-year CAGR and drawdown",
       info.donutD && dmix.every(x => info.dlede.includes(x)) && info.dlede.includes(pc(D.portfolio_d.macro.cagr))
       && info.dlede.includes("\u2212" + Math.abs(D.portfolio_d.macro.maxdd).toFixed(1) + "%"), info.dlede.slice(0, 200));
-    ck("the Portfolios lede states A's 10-year, B's and C's 3/5/10-year CAGR",
-      [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_c.macro.cagr)].every(x => info.lede.includes(x)),
+    ck("the Portfolios lede states A's 10-year, B's, C's and D's 3/5/10-year CAGR",
+      [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_c.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
       info.lede.slice(0, 160));
     await p.close();
   }

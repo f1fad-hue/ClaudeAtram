@@ -550,8 +550,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
 <div class="panel" id="p-port" role="tabpanel" aria-labelledby="t-port">
 
   <section id="vssec">
-    <p class="eyebrow">A vs B vs C &middot; one rule, three answers</p>
-    <h2>Three portfolios, head to head</h2>
+    <p class="eyebrow">A vs B vs C vs D &middot; one rule, four answers</p>
+    <h2>Four portfolios, head to head</h2>
     <p class="lede" id="pblede">—</p>
     <div class="note" id="listnote">—</div>
     <div class="vsgrid">
@@ -573,6 +573,12 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
         <div id="donutC"></div>
         <div class="note" id="donutClr" style="text-align:center;margin-top:2px">—</div>
       </div>
+      <div class="dwrap">
+        <div class="dt2">Portfolio D</div>
+        <div class="dn">Nasdaq Income plus two</div>
+        <div id="donutD"></div>
+        <div class="note" id="donutDlr" style="text-align:center;margin-top:2px">—</div>
+      </div>
     </div>
     <div class="card" style="margin-top:12px">
       <div class="tw"><table class="dt" id="vswt"></table></div>
@@ -590,31 +596,18 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <h2 id="dhead">—</h2>
     <p class="lede" id="dlede">—</p>
     <div class="card">
-      <div class="dwrap" style="max-width:260px;margin:0 auto">
-        <div class="dt2">Portfolio D</div>
-        <div class="dn">3/5/10-year view</div>
-        <div id="donutD"></div>
-        <div class="note" id="donutDlr" style="text-align:center;margin-top:2px">—</div>
-      </div>
-      <div class="tw"><table class="dt" id="dtab"></table></div>
       <p class="note" id="dnote">—</p>
+      <p class="note" id="dwhy" style="margin-bottom:0">—</p>
     </div>
-    <details class="card how">
-      <summary>D under stress, and at each budget step</summary>
-      <div class="tw"><table class="dt" id="dstress"></table></div>
-      <p class="note" style="margin:12px 0 4px"><strong>At each budget step</strong>, D re-chosen by the same rule:</p>
-      <ul class="plain" id="dsteps"></ul>
-      <p class="note" id="dwhy">—</p>
-    </details>
   </section>
 
   <section id="hlsec">
-    <p class="eyebrow">Headline forecast &middot; A vs B vs C</p>
+    <p class="eyebrow">Headline forecast &middot; A vs B vs C vs D</p>
     <div class="card">
       <div class="tw"><table class="dt" id="ptab"></table></div>
-      <p class="note">Each on its own horizon &mdash; A on the 10-year forecasts, B and C on the
+      <p class="note">Each on its own horizon &mdash; A on the 10-year forecasts, B, C and D on the
         3/5/10-year &mdash; from the same fund forecasts and drawdown budget; the last two rows put
-        all three on one basis. The best figure in each row is marked.</p>
+        all four on one basis. The best figure in each row is marked.</p>
     </div>
     <div class="card" id="deltacard"></div>
     <details class="card how">
@@ -660,7 +653,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <h2>What breaks it</h2>
     <div class="card">
       <div class="tw"><table class="dt" id="stab"></table></div>
-      <p class="note">A on its 10-year view, B and C on the 3/5/10-year view. CAGR above, drawdown below.</p>
+      <p class="note">A on its 10-year view, B, C and D on the 3/5/10-year view. CAGR above, drawdown below.</p>
     </div>
     <details class="card how">
       <summary>What each scenario assumes</summary>
@@ -673,7 +666,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <div class="card">
       <h3>&#8369;1,000,000 over ten years</h3>
       <div class="tw"><table class="dt" id="pesotab"></table></div>
-      <p class="note">Each on its own horizon (A 10-year, B and C 3/5/10-year). Value compounds the
+      <p class="note">Each on its own horizon (A 10-year; B, C and D 3/5/10-year). Value compounds the
         net CAGR for ten years; the worst case applies the expected drawdown to the
         <em>opening</em> &#8369;1,000,000.</p>
     </div>
@@ -714,11 +707,10 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
 
   <section>
     <p class="eyebrow">What each step buys</p>
-    <h2>A, B and C at 24% to 27%</h2>
+    <h2>A, B, C and D at 24% to 27%</h2>
     <div class="card">
       <div class="tw"><table class="dt" id="ddsteps"></table></div>
       <p class="note" id="ddstepnote">—</p>
-      <p class="note" id="ddstepd" style="margin-bottom:0">—</p>
     </div>
   </section>
 
@@ -1058,6 +1050,14 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    [
     "2026-11-04",
     4.9
+   ],
+   [
+    "2026-11-05",
+    4.84
+   ],
+   [
+    "2026-11-06",
+    4.86
    ]
   ],
   "ust_10y_provisional": [],
@@ -1088,10 +1088,19 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "ust_10y_peak_since": "April 2002",
   "ust_10y_peak_prev": 5.349,
   "ust_10y_peak_prev_date": "2026-10-05",
-  "ust_2y": 4.58,
-  "ust_2y_date": "2026-11-04",
-  "ust_30y": 5.28,
-  "ust_30y_date": "2026-11-04",
+  "ust_2y": 4.46,
+  "ust_2y_date": "2026-11-05",
+  "ust_2y_disputed_6nov": [
+   4.51,
+   4.524,
+   4.53
+  ],
+  "ust_30y": 5.26,
+  "ust_30y_date": "2026-11-06",
+  "ust_30y_disputed_5nov": [
+   5.25,
+   5.31
+  ],
   "ust_30y_high": 5.733,
   "ust_30y_high_date": "2026-10-07",
   "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
@@ -1956,11 +1965,14 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "vix_withheld": [
    "2026-11-06"
   ],
-  "vix_disputed_6nov": [
-   23.67,
-   23.72,
-   23.86
-  ],
+  "vix_6nov_reports": {
+   "Benzinga": 23.67,
+   "AD HOC News": 23.72,
+   "Yahoo Finance in the session": 23.86,
+   "Cboe page snapshot": 24.77,
+   "CappNotes and Yahoo Finance": 25.64,
+   "Investing.com": 25.81
+  },
   "vix_disputed_20oct": [
    17.31,
    17.6
@@ -2241,8 +2253,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "vix_episode_high": 28.18,
   "vix_episode_high_date": "2026-11-05",
   "vix_series_start": "2026-09-02",
-  "ust_10y_date": "2026-11-04",
-  "ust_10y": 4.9,
+  "ust_10y_date": "2026-11-06",
+  "ust_10y": 4.86,
   "brent_date": "2026-11-06",
   "brent": 98.32,
   "brent_prev_date": "2026-11-05",
@@ -2287,6 +2299,14 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "ph_cpi_latest_key": "ph_cpi_oct",
   "ph_cpi_latest": 7.8,
   "ph_cpi_latest_month": "October",
+  "vix_disputed_6nov": [
+   23.67,
+   23.72,
+   23.86,
+   24.77,
+   25.64,
+   25.81
+  ],
   "vix_withheld_lo_lr_gap": 4.17,
   "brent_2nov_chg_pct": -7.63
  },
@@ -2328,7 +2348,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "3Y": 3.0,
    "5Y": 3.33,
    "10Y": 3.44,
-   "why": "Held. On 6 Nov the Nasdaq rose 1.09% to 24579.42, the S&P rose 0.31% to 7376.86 and the Dow fell 0.46% to 51285.73 (CNBC; the Motley Fool; UPI), as the chipmakers bounced and October's payrolls beat. On 5 Nov the AI sell-off had come back harder: the Nasdaq fell 5.52% into correction against its October record, the S&P 4.36% and the Dow 3.44% (CNBC; Fox Business), as Qualcomm's guidance and fears that a Democratic Congress would slow the data-centre build-out took the chipmakers down (Reuters, via Investing.com). That undid the first session after the vote: on 4 Nov the Dow had risen 3.03%, its best day since April 2025, and the S&P 1.58%, as oil fell and Apple closed at a record (AP; CNBC). On 3 Nov, Election Day, the S&P had risen 0.36% and the Dow fallen 0.38% on Apple's holiday-quarter margin outlook. On 2 Nov a 7.63% fall in Brent had lifted the Dow 0.41% while the Nasdaq fell 1.07% as Oracle set out to raise money for its build-out, and on 30 Oct the S&P had its worst day since June, 1.82%, as Intel had its worst day since 1974 on a weak forecast and Amazon's profit disappointed, a day after Alphabet's quarter revived the question of what the AI build-out earns. The economy is not the problem: GDP grew at a 3.4% annual rate in the third quarter against 3.1% expected, but September core PCE was 3.1% on the year and producer prices rose 1.3% in the month, and ISM manufacturing rose to 55.5 in October, job openings to about 7.52m in September, and ADP's private payrolls by 86k in October against 69k expected, with initial claims down to 189k in the week to 31 Oct and the BLS's October payrolls at 165k against 59k expected, unemployment 4.1%; two Fed voters wanted a hike on 28 Oct, FedWatch has one by December at 79.2% on 4 Nov, and the 10-year closed at 4.90% on 4 Nov. FactSet's 30 Oct count has 82% of reporting companies beating estimates and the index on 18.7x forward earnings, below its five- and ten-year averages. The consumer is the weak point: Michigan sentiment ended October at 48.0, the lowest since May, retail sales rose 0.8% in September, the saving rate down to 3.8%. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +51.1% on its 31 Oct 2025 settle, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate through all three - 4.1% at the end of 2026 and 2027, 3.9% at end-2028 - and the cyclically adjusted P/E is 40.7, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost the next years' returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): 6.25, as policy reaches neutral (3.6% at end-2029) and the AI spending has either paid or been digested. Most houses' decade forecasts favour non-US over US equities on the same valuation.",
+   "why": "Held. On 6 Nov the Nasdaq rose 1.09% to 24579.42, the S&P rose 0.31% to 7376.86 and the Dow fell 0.46% to 51285.73 (CNBC; the Motley Fool; UPI), as the chipmakers bounced and October's payrolls beat. On 5 Nov the AI sell-off had come back harder: the Nasdaq fell 5.52% into correction against its October record, the S&P 4.36% and the Dow 3.44% (CNBC; Fox Business), as Qualcomm's guidance and fears that a Democratic Congress would slow the data-centre build-out took the chipmakers down (Reuters, via Investing.com). That undid the first session after the vote: on 4 Nov the Dow had risen 3.03%, its best day since April 2025, and the S&P 1.58%, as oil fell and Apple closed at a record (AP; CNBC). On 3 Nov, Election Day, the S&P had risen 0.36% and the Dow fallen 0.38% on Apple's holiday-quarter margin outlook. On 2 Nov a 7.63% fall in Brent had lifted the Dow 0.41% while the Nasdaq fell 1.07% as Oracle set out to raise money for its build-out, and on 30 Oct the S&P had its worst day since June, 1.82%, as Intel had its worst day since 1974 on a weak forecast and Amazon's profit disappointed, a day after Alphabet's quarter revived the question of what the AI build-out earns. The economy is not the problem: GDP grew at a 3.4% annual rate in the third quarter against 3.1% expected, but September core PCE was 3.1% on the year and producer prices rose 1.3% in the month, and ISM manufacturing rose to 55.5 in October, job openings to about 7.52m in September, and ADP's private payrolls by 86k in October against 69k expected, with initial claims down to 189k in the week to 31 Oct and the BLS's October payrolls at 165k against 59k expected, unemployment 4.1%; two Fed voters wanted a hike on 28 Oct, FedWatch has one by December at 79.2% on 4 Nov, and the 10-year closed at 4.86% on 6 Nov. FactSet's 30 Oct count has 82% of reporting companies beating estimates and the index on 18.7x forward earnings, below its five- and ten-year averages. The consumer is the weak point: Michigan sentiment ended October at 48.0, the lowest since May, retail sales rose 0.8% in September, the saving rate down to 3.8%. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +51.1% on its 31 Oct 2025 settle, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate through all three - 4.1% at the end of 2026 and 2027, 3.9% at end-2028 - and the cyclically adjusted P/E is 40.7, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost the next years' returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): 6.25, as policy reaches neutral (3.6% at end-2029) and the AI spending has either paid or been digested. Most houses' decade forecasts favour non-US over US equities on the same valuation.",
    "blend_10": 6.15,
    "3Y_10": 5.5,
    "5Y_10": 6.25,
@@ -2423,10 +2443,10 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "weight": 0.2,
    "score": 1.44,
    "score_10": 2.0,
-   "note": "HELD at 2.0. The Fed held at 3.75-4.00% on 28 Oct, 10-2, Governor Cook and Cleveland's Hammack for a hike, and the statement calls inflation elevated. September's core PCE then rose 0.3% on the month and 3.1% on the year, headline 0.5% and 3.6%, and FedWatch has a hike by the 9 Dec meeting at 79.2% on 4 Nov, from 79.6% on 29 Oct; the reads since have swung and disagree - 66% and 68.7% after the 5 Nov sell-off, 75.1% to 79.1% after the 6 Nov payrolls, no two alike - so that read is carried. On official closes the 10-year was 5.05% on the 28th, 4.98% on the 29th and 4.94% on the 30th, as the tech sell-off sent money into Treasuries, then 4.91% on 2 Nov as oil fell, 4.95% on 3 Nov as the vote neared and 4.90% on 4 Nov, the first session on the result, with the 2-year at 4.58% (4 Nov) and the 30-year at 5.28% (4 Nov); no later par close is in two sources yet. The 10-year's 7 Oct intraday high of 5.365%, above the 5 Oct peak of 5.349%, was the highest since April 2002. The ECB held at 2.50% on 29 Oct and the BoJ on 30 Oct at 1.25%, 8-1 with a vote for 1.5% and a hike flagged for December. Manila repriced to BSP's 50bp hike to 5.50%: at the 26 Oct auction 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%. Held: the hold and a firm core were both in the December-hike path the score assumed, and odds that swing with stocks and one payrolls report, before October's CPI, are not a turn in policy.",
+   "note": "HELD at 2.0. The Fed held at 3.75-4.00% on 28 Oct, 10-2, Governor Cook and Cleveland's Hammack for a hike, and the statement calls inflation elevated. September's core PCE then rose 0.3% on the month and 3.1% on the year, headline 0.5% and 3.6%, and FedWatch has a hike by the 9 Dec meeting at 79.2% on 4 Nov, from 79.6% on 29 Oct; the reads since have swung and disagree - 66% and 68.7% after the 5 Nov sell-off, 75.1% to 79.1% after the 6 Nov payrolls, no two alike - so that read is carried. On official closes the 10-year was 5.05% on the 28th, 4.98% on the 29th and 4.94% on the 30th, as the tech sell-off sent money into Treasuries, then 4.91% on 2 Nov as oil fell, 4.95% on 3 Nov as the vote neared and 4.90% on 4 Nov, the first session on the result, 4.84% on 5 Nov as the AI sell-off sent money back into Treasuries and 4.86% on 6 Nov after the payrolls, with the 2-year at 4.46% (5 Nov) and the 30-year at 5.26% (6 Nov); the 2-year's 6 Nov close is reported three ways (4.51%, 4.524%, 4.53%) and not carried. The 10-year's 7 Oct intraday high of 5.365%, above the 5 Oct peak of 5.349%, was the highest since April 2002. The ECB held at 2.50% on 29 Oct and the BoJ on 30 Oct at 1.25%, 8-1 with a vote for 1.5% and a hike flagged for December. Manila repriced to BSP's 50bp hike to 5.50%: at the 26 Oct auction 91-day bills jumped 63.2bp to 6.624%, 182-day bills 20.1bp to 6.43% and 364-day bills 13.9bp to 6.583%. Held: the hold and a firm core were both in the December-hike path the score assumed, and odds that swing with stocks and one payrolls report, before October's CPI, are not a turn in policy.",
    "summary": "Held: September core PCE ran 3.1% on the year after the Fed held, and FedWatch has a December hike at 79.2% on 4 Nov; the ECB and the BoJ held too.",
    "prev_score_10": 2.0,
-   "prev_review": "v94",
+   "prev_review": "v96",
    "path": {
     "3Y": 3.5,
     "5Y": 5.0,
@@ -2449,7 +2469,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "note": "HELD at 2.0. September PCE prices rose 0.5% on the month and 3.6% on the year, from 3.4% in August; core rose 0.3% and 3.1%, from 3.0%, in line with forecasts. That followed September PPI up 1.3%, the largest monthly rise since March 2022, and 6.3% on the year (core 0.5% and 5.0%), and CPI of 3.7% (core 2.6%). Brent settled at $98.32 on 6 Nov, up $0.03, below the $117.64 the December contract settled at on 30 Oct, the front month's highest close since the end of April, 13.3% lower than the January contract's own settle a week earlier and 51.1% above the $65.07 of 31 Oct 2025, six days short of a year (no 1-7 Nov 2025 settle was found in two sources); December WTI settled at $90.83 on 6 Nov. The euro area is at 3.8% (core 2.5%), and Philippine inflation rose to 7.8% in October from 7.2%, inside BSP's 7.1-8.1% range, core 5.4% and transport 20.1% (PSA; Philstar). Held: core is firming, not running away, and most of the jump is energy passing through, not yet wages.",
    "summary": "Held: September PCE prices rose 3.6% on the year, core 3.1%, and Philippine inflation rose to 7.8% in October; Brent settled at $98.32 on 6 Nov, +51.1% on its 31 Oct 2025 settle.",
    "prev_score_10": 2.0,
-   "prev_review": "v94",
+   "prev_review": "v96",
    "path": {
     "3Y": 3.75,
     "5Y": 5.25,
@@ -2472,7 +2492,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "note": "HELD at 4.25, where the last review raised it, undoing the 3 Oct cut, whose reason was September's 29k payrolls: the BLS counted 165k in October against 59k expected, unemployment fell to 4.1% and hourly earnings rose 0.4% on the month (CNBC; Fox Business; Benzinga). US GDP grew at a 3.4% annual rate in the third quarter, against 3.1% expected and 2.2% in the second, on inventories, equipment and consumer and government spending - but September's real spending was flat and the saving rate fell to 3.8%, the lowest in almost four years. September's job openings rose to about 7.52m and factory orders 1.8%; ADP counted 86k private jobs in October against 69k expected; initial jobless claims fell to 189k in the week to 31 Oct against 197k expected. China grew 4.5% on the year against 4.4% expected, on exports, but its September retail sales rose only 1.1% and its official factory PMI fell back to 49.3 in October, services and construction to 49.7 from 50.2, and the private services PMI to 50.8. The euro area's composite PMI was confirmed at 51.7 for October, a four-month low, from 53.1, its services PMI revised down to 51.4 from a 51.7 flash, and its September retail volumes fell 0.7% on the month against a 0.1% fall expected (Eurostat; Sharecast). Michigan sentiment ended October at 48.0, revised up from a first read of 46.3 but the lowest since May's record low of 44.8. ISM manufacturing rose to 55.5 in October from 54.5, production at its highest since 2021, but its prices index is 75.2 and the respondents cite tariffs and the war; ISM services eased to 54.5 in October from 54.9, against 54.8 expected, its prices index at 73.0. Philippine growth was 2.6% in the first half, the second quarter revised up to 2.4%, and BusinessWorld's poll has the third at 2.7%. Held: hiring has joined factories and inventories in carrying the beat, but a stretched consumer has not, and Europe, its shoppers now among them, China and the Philippines are slowing.",
    "summary": "Held at 4.25: US payrolls rose 165k in October against 59k expected and unemployment fell to 4.1%, after GDP grew at a 3.4% rate in the third quarter; euro-area retail volumes fell 0.7% in September, and the consumer is still the weak point.",
    "prev_score_10": 4.25,
-   "prev_review": "v94",
+   "prev_review": "v96",
    "path": {
     "3Y": 4.5,
     "5Y": 5.25,
@@ -2495,7 +2515,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "note": "HELD at 7.0, still the strongest pillar; the market is pricing the financing and the politics, not the profits. FactSet's 30 Oct count has 60% of the S&P reported and 82% beating estimates - by 1.9% in aggregate, the smallest surprise since late 2022 if it holds, against a 7.5% five-year average - with third-quarter growth blended at 30.2%, from 29.5% a week earlier. On 29 Oct Alphabet took the largest one-day fall in market value in its history after a revenue miss and negative free cash flow on its AI spending, and the Nasdaq fell 1.38%; on the 30th the KOSPI fell 3.48% and the Nikkei 2.12%, then Intel had its worst day since 1974 on a weak forecast, Amazon's profit disappointed and the Nasdaq fell 2.86% more. On 2 Nov it fell 1.07% again as Oracle set out to raise money for its AI build-out, and on 3 Nov the KOSPI fell 3.59% on the same fear, before the chipmakers took the Nasdaq back 0.83% that evening, while Apple fell about 2% on its holiday-quarter margin outlook, after results that beat; on 4 Nov Apple closed at a record. Then the sell-off came back harder: after Qualcomm's guidance disappointed and Arm's outlook barely beat (Reuters, via Investing.com; SiliconANGLE), the Nasdaq fell 5.52% on 5 Nov into correction (CNBC; Fox Business), on fears that a Democratic Congress would slow the data-centre build-out, and the KOSPI fell 5.28% on 5 Nov and 6.02% on 6 Nov. The suppliers' numbers are records: SK hynix's third-quarter operating profit was 83.3tn won, up 632% on a year, with about 100tn won of shareholder returns planned for 2026; TSMC's net income rose 68.7% to NT$763.06bn, above the NT$746.34bn expected; Samsung's quarter was a record 107.4tn won. Asia ex-Japan EPS of ~+52.5% (2026) and ~+27.5% (2027) stands. Held: the profits keep coming and the quarter's growth estimate rose again; what is being questioned is whether the spending that buys them goes on, which is the three-year reading's question, not this quarter's.",
    "summary": "Held, the strongest pillar: third-quarter growth is blended at 30.2% with 82% beating (FactSet, 30 Oct); the AI sell-off took the Nasdaq down 5.52% on 5 Nov into correction, on fears for the build-out rather than this quarter's profits.",
    "prev_score_10": 7.0,
-   "prev_review": "v94",
+   "prev_review": "v96",
    "path": {
     "3Y": 6.5,
     "5Y": 5.5,
@@ -2518,7 +2538,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "note": "HELD at 8.0: FactSet had the S&P on 18.7x forward earnings on 30 Oct, below its five-year (19.8x) and ten-year (19.1x) averages and the 19.0x of 30 Sep. The S&P closed at 7376.86 on 6 Nov, 5.7% below its 7818.93 record of 6 Oct. Asia was on 10.5x forward before its October fall and is cheaper on the same earnings: the KOSPI closed at 5,059.69 on 6 Nov, 27.8% below its 2 Oct close. NDX at 22.4x forward on its last verified reading sat below its 10y (22.9x) and 5y (24.7x) averages - two newer readings disagree (20.5x and 23.3x) and are not carried; Europe is at 15.4x. Held: cheaper than its averages on the one multiple re-verified, and the rest only cheaper since; not raised, because the discount widened on a fall in prices, not a rise in earnings, and 8.0 already scores it.",
    "summary": "Held: the S&P is on 18.7x forward earnings, below its five- and ten-year averages; the KOSPI is 27.8% below its 2 Oct close.",
    "prev_score_10": 8.0,
-   "prev_review": "v94",
+   "prev_review": "v96",
    "path": {
     "3Y": 6.5,
     "5Y": 5.5,
@@ -2538,10 +2558,10 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "weight": 0.1,
    "score": 1.22,
    "score_10": 1.5,
-   "note": "HELD at 1.5, where the last review cut it a full point. The VIX rose 69.66% to 28.18 on 5 Nov (Yahoo Finance; AD HOC News; CappNotes), 8.68 points above the long-run 19.5, as the AI sell-off took the Nasdaq into correction - the highest close in this series, which starts on 2 Sep; it had fallen 20.26% to 16.61 on 4 Nov as the hedges built into the vote came off. AD HOC News' 22.93 for 5 Nov is an intraday print, and the session's high is at least the close: Reuters' higher figure is in one source. The 6 Nov close is reported three ways - 23.67, 23.72 and 23.86 (Benzinga; AD HOC News; Yahoo Finance) - none in two sources, so 5 Nov's is carried; the lowest is still 4.17 points above the long run. The curve is OVERTAKEN: the 20 Oct settlements still carried - November 18.49 and December 18.70, above that day's spot - sit 9.48 points under the latest close. Saxo's 5 Nov board, in backwardation - November 23.75, December 21.65 - is in no second source, so the strip is held, flagged, to the end of its window on 19 Nov, and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; on forward vol it sits at 19.42, 0.08 below the long run, so the forecasts still carry the curve the market priced before the sell-off. Held: the cut was for risk appetite that broke in the chipmakers of New York, Seoul and Tokyo within two sessions, and one partial rebound in New York does not restore it; not to 1.0, because markets that sold off and closed are repricing the AI trade, not failing to clear. It moves the headline gauge only: the 3- and 5-year readings, the tilts and the drawdown band read their own inputs.",
-   "summary": "Held at 1.5: the VIX's 6 Nov close is reported three ways, so its 28.18 of 5 Nov is carried, 8.68 points above its long-run 19.5; the futures curve carried is overtaken and held to its window.",
+   "note": "HELD at 1.5, where the last review cut it a full point. The VIX rose 69.66% to 28.18 on 5 Nov (Yahoo Finance; AD HOC News; CappNotes), 8.68 points above the long-run 19.5, as the AI sell-off took the Nasdaq into correction - the highest close in this series, which starts on 2 Sep; it had fallen 20.26% to 16.61 on 4 Nov as the hedges built into the vote came off. AD HOC News' 22.93 for 5 Nov is an intraday print, and the session's high is at least the close: Reuters' higher figure is in one source. The 6 Nov close is reported six ways, from 23.67 to 25.81: CappNotes and Yahoo Finance now agree on 25.64, which adds up from 5 Nov's 28.18, but Benzinga's 23.67, AD HOC News' 23.72, Cboe's page snapshot of 24.77 and Investing.com's 25.81 do not, and a dispute is settled only with Cboe's own close, which this review cannot reach; so 5 Nov's is carried. The lowest report is still 4.17 points above the long run. The curve is OVERTAKEN: the 20 Oct settlements still carried - November 18.49 and December 18.70, above that day's spot - sit 9.48 points under the latest close. Saxo's 5 Nov board, in backwardation - November 23.75, December 21.65 - is in no second source, so the strip is held, flagged, to the end of its window on 19 Nov, and mean-reverts to the long run beyond. Tested against that day's VIX3M of 18.99 it gives 18.29 at three months, 3.66% below, inside the 10% bound; on forward vol it sits at 19.42, 0.08 below the long run, so the forecasts still carry the curve the market priced before the sell-off. Held: the cut was for risk appetite that broke in the chipmakers of New York, Seoul and Tokyo within two sessions, and one partial rebound in New York does not restore it; not to 1.0, because markets that sold off and closed are repricing the AI trade, not failing to clear. It moves the headline gauge only: the 3- and 5-year readings, the tilts and the drawdown band read their own inputs.",
+   "summary": "Held at 1.5: the VIX's 6 Nov close is reported six ways, so its 28.18 of 5 Nov is carried, 8.68 points above its long-run 19.5; the futures curve carried is overtaken and held to its window.",
    "prev_score_10": 1.5,
-   "prev_review": "v94",
+   "prev_review": "v96",
    "path": {
     "3Y": 4.5,
     "5Y": 5.5,
@@ -2564,7 +2584,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "note": "HELD at 1.5; the attacks have quickened, the Strait stays shut, and the talks have not closed. On 6 Nov Trump said the talks with Iran were going on (TASS; the Times of Israel) while Washington weighed renewed strikes, Central Command preparing options (Fox News; Kurdistan24), and Brent settled at $98.32 on hopes of a deal after the midterms (CNBC; Bloomberg, via Rigzone). On 5 Nov UKMTO reported a tanker struck by projectiles off northern Qatar (via Breitbart), a Greek-operated tanker was hit inside the Gulf with a seafarer missing (Splash247), and Iran's Revolutionary Guard said tankers on unauthorised routes had struck mines and caught fire (Al Jazeera; Energy News); on 6 Nov a tanker reported an explosion at its waterline east of Khasab, Oman, its crew safe (UKMTO, via Arab News). Iran has exempted ships from India, China, Iraq and Qatar from its restrictions (Al Jazeera; Splash247). Brent settled at $98.29 on 5 Nov, up $3.67, on the attacks (Reuters, via Investing.com and Yahoo Finance; BigGo Finance). On 4 Nov Washington was reported to have approved a Qatari draft memorandum - a nuclear concession from Iran against the release of part of its frozen assets (Daily Times and The Destination, citing sources) - while Tehran called the US response unconvincing and said Hormuz stays shut until seven conditions are met, and Qatar said both sides were still reviewing its proposals (investingLive; the Korea Times, citing Reuters). The draft, as reported since 31 Oct, would end the US blockade of Iran's ports and reopen the Strait within seven days of an understanding - Iran says two - with its enriched uranium moved to a third country (Business Standard; Dawn). On 2 Nov Iran had said it was holding \"intensive\" indirect talks with Washington through Qatari mediators, after its president said the Supreme Leader had authorised them, and Trump said a deal \"could happen\" (France 24; CBS; Gulf News); the White House says no direct talks are under way. Brent fell 7.63% on 2 Nov. On the 3rd reports of a US strike on Iran's Qeshm Island, described by US officials as limited and defensive, took it to $105.25 in Asian trade (Reuters via MarketScreener; The National) before it settled at $103.60 as Qatar said it was still working toward a deal (CNBC; SBS); on 4 Nov it fell $8.98 to $94.62, its lowest settle since 31 Aug, as the midterm rebuke raised bets on an exit from the war (Reuters via AsiaOne; CNN). Brent is now below the $117.64 the December contract settled at on 30 Oct, the front month's highest close since the end of April. On 30 Oct UKMTO reported explosives attached to a tanker off Khasab, Oman, and the British military said a tanker had caught fire after a small boat attached two explosives to it; Iran's Revolutionary Guard claimed that tankers leaving by unauthorised routes had struck mines, which US Central Command, saying it had cleared the main transit routes, called false (CNBC; AP; Gulf News; Reuters). On the 28th the US had reportedly told Gulf states to prepare for a short, intense campaign against Iran after the 3 November midterms (the Wall Street Journal, via CNBC) - the vote before which Washington had pledged not to strike is now counted, Democrats taking both chambers (CBS; CNN) - and the Houthis claim new attacks on Saudi airports and oil facilities. Read it on VOLUME, the measure this note goes by: Kpler had oil through Hormuz, with Gulf of Oman transfers, at about 14 mb/d in the week to 18 Oct, 82% of pre-war on preliminary figures, and the Gulf's exports by every route above 24 mb/d against 23.3 pre-war. A lower figure for a later week is in one report only and October's average differs by source, so neither is carried. On 22 Sep Saudi Arabia restarted the 1200 km East-West pipeline that bypasses the Strait, and the export volumes since bear out that it runs. Vessel counts disagree and are not supply: IMF PortWatch counted 2 transits on 25 Oct against an 85 baseline, a 98% drop; Lloyd's List Intelligence 14 a day in the week to 23 Aug, counting only cargo over 10000 dwt; the US government around 30, on a basis it does not state. Held, not raised: talks that go on while strikes are prepared, a draft deal that Iran calls unconvincing and a fall in Brent that prices a settlement the barrels have not yet seen are not an opening of the Strait. Not cut: attacks at a faster pace, with the Strait open to four countries' ships, are not a full closure, and 1.0 is kept for full closure with Brent above $130 - strictly worse.",
    "summary": "Held: Trump says the talks go on while Washington weighs strikes, tanker attacks quickened off Qatar and Khasab, and Brent settled at $98.32 on 6 Nov; the Strait stays shut, Iran exempts four countries' ships, the draft deal is unsigned, and the last confirmed flows were near 14 mb/d.",
    "prev_score_10": 1.5,
-   "prev_review": "v94",
+   "prev_review": "v96",
    "path": {
     "3Y": 3.0,
     "5Y": 5.0,
@@ -9534,6 +9554,51 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "org": "BlackRock",
    "what": "BlackRock Global Funds Singapore prospectus, 24 Sep 2026 - Global Allocation Fund listed",
    "url": "https://www.blackrock.com/sg/en/literature/prospectus/bgf-singapore-prospectus-sg.pdf"
+  },
+  {
+   "org": "CappNotes",
+   "what": "Closing Look, Friday 6 November 2026 - the VIX 25.64 (-9.01%), the 10-year 4.86%, the 30-year 5.26% (vix_disputed_6nov)",
+   "url": "https://cappnotes.substack.com/p/closing-look-friday-november-6-2026"
+  },
+  {
+   "org": "Benzinga",
+   "what": "Nasdaq's 5.5% wipeout and AI's next reality check - the 10-year to 4.84% from 4.90%, the 2-year to 4.46% from 4.58%, 5 Nov 2026",
+   "url": "https://www.benzinga.com/opinion/26/11/62970305/nasdaq-wipeout-ai-next-reality-check-irs-new-tax-brackets"
+  },
+  {
+   "org": "dshort via ETF Trends",
+   "what": "Treasury Yields Snapshot, 6 Nov 2026 - the 10-year 4.86%, the 2-year 4.51%, on the Treasury's par curve",
+   "url": "https://www.etftrends.com/fixed-income-content-hub/treasury-yields-snapshot-november-6-2026/"
+  },
+  {
+   "org": "Yahoo Finance",
+   "what": "Stock market today, Friday 6 November 2026 - Nasdaq and S&P rebound, Dow slips to cap a bruising week for AI stocks",
+   "url": "https://finance.yahoo.com/markets/live/stock-market-today-friday-november-6-dow-sp-500-nasdaq-jobs-report-earnings-135953863.html"
+  },
+  {
+   "org": "Trading Economics",
+   "what": "US 2-year note yield - 4.53% on 6 Nov 2026 (ust_2y_disputed_6nov)",
+   "url": "https://tradingeconomics.com/united-states/2-year-note-yield"
+  },
+  {
+   "org": "Briefs",
+   "what": "Treasury yields jump after hot jobs report - the 2-year 4.524%, 6 Nov 2026 (ust_2y_disputed_6nov)",
+   "url": "https://www.briefs.co/news/treasury-yields-climb-as-a-hotter-jobs-report-resets-rate-hi/"
+  },
+  {
+   "org": "Stocktwits",
+   "what": "The weekly spread: what shaped US Treasury yields and the dollar this week - the 30-year 5.31% on 5 Nov (ust_30y_disputed_5nov)",
+   "url": "https://stocktwits.com/news-articles/markets/equity/the-weekly-spread-what-shaped-us-treasury-yields-and-the-dollar-this-week/cNGlQjfR94M"
+  },
+  {
+   "org": "Al Jazeera",
+   "what": "Iran war live, 6 Nov 2026 - the IRGC says a US drone was downed over Qeshm and tankers hit (one source, not carried)",
+   "url": "https://www.aljazeera.com/amp/news/liveblog/2026/11/6/iran-war-live-trump-warns-us-may-have-to-destroy-rest-of-iran"
+  },
+  {
+   "org": "Trading Economics",
+   "what": "China balance of trade - October data scheduled for 10 Nov 2026 (one source, not listed)",
+   "url": "https://tradingeconomics.com/china/balance-of-trade"
   }
  ]
 }
@@ -9939,10 +10004,10 @@ $("#corrnote").textContent = D.corr_note;
     : `The reading and every guard agree: the budget has moved to ${cap.toFixed(0)}%.`;
   /* the steps */
   const st = $("#ddsteps"), AL = G.alt, caps = Object.keys(AL).sort((a, b) => +a - +b);
-  st.appendChild(el("thead", null, `<tr><th>Budget</th><th>A</th><th>B</th><th>C</th><th>B, Hormuz</th></tr>`));
+  st.appendChild(el("thead", null, `<tr><th>Budget</th><th>A</th><th>B</th><th>C</th><th>D</th><th>B, Hormuz</th></tr>`));
   const sb = el("tbody");
   caps.forEach(c => sb.appendChild(el("tr", +c === cap ? { style: "font-weight:700" } : null,
-    `<td>${c}%${+c === cap ? "<br><span class=\"note\">now</span>" : ""}</td>` + ["a", "b", "c"].map(x =>
+    `<td>${c}%${+c === cap ? "<br><span class=\"note\">now</span>" : ""}</td>` + ["a", "b", "c", "d"].map(x =>
       `<td>${pc(AL[c][x].cagr)}<br><span class="neg">${pc1(AL[c][x].maxdd)}</span></td>`).join("") +
     `<td class="neg">${pc1(AL[c].b.hormuz_dd)}</td>`)));
   st.appendChild(sb);
@@ -9953,8 +10018,8 @@ $("#corrnote").textContent = D.corr_note;
   const dC = x => Math.abs(AL[nx][x].cagr - AL[c0][x].cagr), dD = x => Math.abs(Math.abs(AL[nx][x].maxdd) - Math.abs(AL[c0][x].maxdd));
   $("#ddstepnote").innerHTML =
     `${HYN[0].toUpperCase() + HYN.slice(1)} net CAGR after fees (above) and expected maximum drawdown (below), A on
-     its ${HYN} view, B and C on the 3/5/10-year, each mix chosen by the one rule inside that budget. A step ${goUp ? "up" : "down"} to ${nx}% ${goUp ? "adds" : "gives up"} ${and3(["a", "b", "c"].map(x =>
-       `${x.toUpperCase()} ${f2(dC(x))}pp`))} a year for ${and3(["a", "b", "c"].map(x =>
+     its ${HYN} view, B, C and D on the 3/5/10-year, each mix chosen by the one rule inside that budget. A step ${goUp ? "up" : "down"} to ${nx}% ${goUp ? "adds" : "gives up"} ${and3(["a", "b", "c", "d"].map(x =>
+       `${x.toUpperCase()} ${f2(dC(x))}pp`))} a year for ${and3(["a", "b", "c", "d"].map(x =>
        `${dD(x).toFixed(1)}pp`))} ${goUp ? "more" : "less"} drawdown; ${top}% is the derived budget the owner's
      ${base.toFixed(0)}% replaced. Last column: B's modelled fall if Hormuz closes outright, what the
      geopolitics guard protects.`;
@@ -10725,14 +10790,6 @@ function donut(host, w, title, cagr, dd) {
      (dC > 0 ? " above" : " below")} C's ${num(pc(Cm.cagr))} / ${num(pc1(Cm.maxdd))} on the same view.`;
   donut($("#donutD"), P.weights, "Portfolio D", M.cagr, M.maxdd);
   $("#donutDlr").innerHTML = `On the ${HYN} view: <b class="num">${pc(T.cagr)}</b> / <b class="num">${pc1(T.maxdd)}</b>`;
-  $("#dtab").innerHTML = `<thead><tr><th>Portfolio D</th><th class="r">3/5/10-year view</th></tr></thead><tbody>` +
-    held.map(([w, j]) => `<tr><td>${SH[j]}</td><td class="r num">${w}%</td></tr>`).join("") +
-    `<tr><td>Net CAGR after all fees</td><td class="r num">${pc(M.cagr)}</td></tr>` +
-    `<tr><td>Expected max drawdown</td><td class="r num">${pc1(M.maxdd)}</td></tr>` +
-    `<tr><td>Volatility</td><td class="r num">${M.vol.toFixed(2)}%</td></tr>` +
-    `<tr><td>On the ${HYN} view</td><td class="r num">${pc(T.cagr)} / ${pc1(T.maxdd)}</td></tr>` +
-    `<tr><td>&#8369;1,000,000 after ten years</td><td class="r num">${peso(M.terminal_1m)}</td></tr>` +
-    `<tr><td>Worst case for money invested today</td><td class="r num">${peso(M.worst_1m_from_open)}</td></tr></tbody>`;
   const noCash = !P.weights[PBq.ids.indexOf("ATRPHMM")];
   $("#dnote").innerHTML =
     `Chosen from ${num(P.n_total.toLocaleString("en-US"))} mixes of ${SH[iq]} and two others in 5% steps,
@@ -10742,13 +10799,10 @@ function donut(host, w, title, cagr, dd) {
      ${num(Math.min(...fxd).toFixed(1))} points a year` : ``) +
     `; ${num(top[0] + "%")} in ${SH[top[1]]} is past the ${D.universe.limits.max_w}% cap A and B keep` +
     (top[0] > D.portfolio_c.pin_pct ? ` and C's ${D.portfolio_c.pin_pct}%` : ``) +
-    `. The drawdown model does not price one manager holding that much of the money.`;
-  $("#dstress").innerHTML = `<thead><tr><th>Scenario</th><th class="r">CAGR</th><th class="r">Drawdown</th></tr></thead><tbody>` +
-    P.scenarios.map(r => `<tr><td>${r.name}</td><td class="r num">${pc(r.cagr)}</td><td class="r num">${pc1(r.maxdd)}</td></tr>`).join("") +
-    `</tbody>`;
-  const G = D.dd_gauge, steps = Object.keys(G.alt).sort((a, b) => +a - +b);
-  $("#dsteps").innerHTML = steps.map(c => { const e = G.alt[c].d;
-    return `<li><b>${c}%${+c === cap ? " (now)" : ""}</b>: ${num(pc(e.cagr))} / ${num(pc1(e.maxdd))} &mdash; ${mixS(e.weights)}</li>`; }).join("");
+    `. The drawdown model does not price one manager holding that much of the money. Its stress rows, its
+     &#8369;1,000,000 and its weights sit beside A, B and C's above and below, and its mix at each budget step
+     on the Budget tab.`;
+  const G = D.dd_gauge;
   $("#dwhy").innerHTML =
     `Why these two: a partner earns its place by cushioning ${SH[iq]}'s falls at the least cost in return. ` +
     partners.map(([, j]) => `${SH[j]} moves with it at a correlation of ${num(CR[iq][j].toFixed(2))} and nets
@@ -10772,9 +10826,10 @@ function donut(host, w, title, cagr, dd) {
   const PC = D.portfolio_c, Cm = PC.macro;
   donut($("#donutC"), PC.weights, "Portfolio C", Cm.cagr, Cm.maxdd);
   $("#pindn").textContent = PC.pin_pct + "%";
-  /* WHO HOLDS WHAT, A vs B vs C (owner, 2026-10-23: "make all portfolios to be versus").
-     A row for every fund either holds, a column per portfolio. */
-  const P4 = [PA, PB, PC], P4L = ["A", "B", "C"];
+  /* WHO HOLDS WHAT, A vs B vs C vs D (owner, 2026-10-23: "make all portfolios to be versus";
+     D from v96, 2026-11-07: "All portfolio vs"). A row for every fund any holds, a column each. */
+  const PDq = D.portfolio_d, Dm = PDq.macro;
+  const P4 = [PA, PB, PC, PDq], P4L = ["A", "B", "C", "D"];
   const vw = $("#vswt");
   vw.appendChild(el("thead", null, `<tr><th>Fund</th>` + P4L.map(x => `<th>${x}</th>`).join("") + `</tr>`));
   const vwb = el("tbody");
@@ -10783,7 +10838,7 @@ function donut(host, w, title, cagr, dd) {
     P4.map(q => `<td>${q.weights[i] ? q.weights[i] + "%" : "&ndash;"}</td>`).join(""))); });
   vw.appendChild(vwb);
   $("#pblede").innerHTML =
-    `One rule for all three, maximum growth: the highest ${HYN} net CAGR after fees inside the drawdown
+    `One rule for all four, maximum growth: the highest ${HYN} net CAGR after fees inside the drawdown
      budget (a shallower drawdown breaks only exact ties), over the ${NUW} funds: at most ${L6.max_funds} funds,
      ${L6.max_w}% in any one, at least ${L6.min_cash}% cash. <strong>A</strong> reads the four analyses
      at ${HYL} alone:
@@ -10794,7 +10849,9 @@ function donut(host, w, title, cagr, dd) {
      <b class="num">${pc1(Bm.maxdd)}</b>, ${PB.band_n === 1 ? "the one mix" : wn(PB.band_n) + " mixes"} at that CAGR.
      <strong>C</strong> holds Nasdaq Equity Income at ${PC.pin_pct}% &mdash; the one exemption from the
      ${L6.max_w}% cap &mdash; and chooses the rest by the same rule on B's view: <b class="num">${pc(Cm.cagr)}</b> at
-     <b class="num">${pc1(Cm.maxdd)}</b>. All three are re-chosen at every update.`;
+     <b class="num">${pc1(Cm.maxdd)}</b>. <strong>D</strong>, at the owner's choice, is ${SH[PB.ids.indexOf(PDq.fund)]} and exactly
+     two other funds with no single-fund cap and no cash floor, by the same rule on B's view: <b class="num">${pc(Dm.cagr)}</b> at
+     <b class="num">${pc1(Dm.maxdd)}</b>. All four are re-chosen at every update.`;
   /* THE 22-FUND LIST, SEARCHED (2026-10-22): every fund whose fees are confirmed is in
      the search; the rest are held out, each with what is missing. */
   const M_ = D.macro, HO = D.universe.held_out;
@@ -10855,7 +10912,14 @@ function donut(host, w, title, cagr, dd) {
       return ` C returns ` +
         (Math.abs(g) < 0.005 ? `the same as B` : `${Math.abs(g).toFixed(2)}pp ${g > 0 ? "more" : "less"} than B`) +
         ` with ${Math.abs(dd) < 0.05 ? "the same" : Math.abs(dd).toFixed(1) + "pp " + (dd > 0 ? "less" : "more")} drawdown` +
-        (g > 0 ? `, only because its ${PC.pin_pct}% Nasdaq Equity Income is exempt from the ${L6.max_w}% cap.` : `.`); })();
+        (g > 0 ? `, only because its ${PC.pin_pct}% Nasdaq Equity Income is exempt from the ${L6.max_w}% cap.` : `.`); })() +
+    /* D against B on the same view (v97): its rule differs by the owner's choice of limits. */
+    (() => { const Dm_ = D.portfolio_d.macro, g = Dm_.cagr - Bm.cagr, dd = Math.abs(Bm.maxdd) - Math.abs(Dm_.maxdd);
+      const nD = D.portfolio_d.weights.filter(x => x).length;
+      return ` D returns ` +
+        (Math.abs(g) < 0.005 ? `the same as B` : `${Math.abs(g).toFixed(2)}pp ${g > 0 ? "more" : "less"} than B`) +
+        ` with ${Math.abs(dd) < 0.05 ? "the same" : Math.abs(dd).toFixed(1) + "pp " + (dd > 0 ? "less" : "more")} drawdown from
+        ${wn(nD)} funds, with neither the ${L6.max_w}% cap nor the ${L6.min_cash}% cash floor.`; })();
   /* A ROW PER FUND since 2026-10-22: seven added funds would not fit as columns. */
   const ft = $("#addfunds"), FD = PB.funds, i0 = D.funds.length;
   ft.appendChild(el("thead", null, `<tr><th>Fund</th><th>Fees</th><th>Strategic</th><th>Tilt</th>
@@ -10877,7 +10941,7 @@ function donut(host, w, title, cagr, dd) {
   /* HEAD TO HEAD (owner, 2026-10-23: "make all portfolios to be versus"). Both on
      one table, the best in each row marked - the highest return, the shallowest
      drawdown, the lowest volatility - every tie marked, none named in advance. */
-  const PS = [PA, PB, PC], PM = [Ao, Bm, Cm];   /* own horizons (v80); C on B's view */
+  const PS = [PA, PB, PC, PDq], PM = [Ao, Bm, Cm, Dm];   /* own horizons (v80); C and D on B's view */
   const hi = v => Math.max(...v), lo = v => Math.min(...v),
         shallow = v => v.reduce((a, b) => Math.abs(b) < Math.abs(a) ? b : a);
   const ht = $("#ptab");
@@ -10886,7 +10950,7 @@ function donut(host, w, title, cagr, dd) {
   const hrow = (lab, vals, fm, best) => { const b = best(vals);
     hb.appendChild(el("tr", null, `<td>${lab}</td>` + vals.map(v =>
       `<td${v === b ? ' class="pos" style="font-weight:700"' : ''}>${fm(v)}</td>`).join(""))); };
-  hb.appendChild(el("tr", null, `<td>Horizon</td><td>${HYN}</td><td>3/5/10-year</td><td>3/5/10-year</td>`));
+  hb.appendChild(el("tr", null, `<td>Horizon</td><td>${HYN}</td><td>3/5/10</td><td>3/5/10</td><td>3/5/10</td>`));
   hrow(`${HYL} net CAGR`, PM.map(m => m.cagr), pc, hi);
   hrow("Expected max drawdown", PM.map(m => m.maxdd), pc1, shallow);
   hrow("Volatility σ", PM.map(m => m.vol), pc, lo);
@@ -10966,7 +11030,7 @@ function donut(host, w, title, cagr, dd) {
     fill:"none",stroke:"#3670D6","stroke-width":2,"stroke-linejoin":"round"}));
   P.forEach(p => s.appendChild(sel("circle",{cx:X(-p.dd),cy:Y(p.cagr),r:3.2,
     fill:"#3670D6",stroke:"#FFFFFF","stroke-width":1.5})));
-  const A = D.portfolio_a.macro, B = D.portfolio_b.macro, Cp = D.portfolio_c.macro;
+  const A = D.portfolio_a.macro, B = D.portfolio_b.macro, Cp = D.portfolio_c.macro, Dp = D.portfolio_d.macro;
   const mark = (dd, cg, lab, col, dy) => {
     s.appendChild(sel("circle",{cx:X(Math.abs(dd)),cy:Y(cg),r:7,fill:"none",
       stroke:col,"stroke-width":2.5}));
@@ -10978,6 +11042,7 @@ function donut(host, w, title, cagr, dd) {
   mark(A.maxdd, A.cagr, "A", HEX[2], -13);
   mark(B.maxdd, B.cagr, "B", HEX[5], 22);
   mark(Cp.maxdd, Cp.cagr, "C", HEX[1], -13);
+  mark(Dp.maxdd, Dp.cagr, "D", HEX[9], 22);
   /* How far below the line each pick sits at its own drawdown, read from the frontier:
      B is chosen from this set, so it should sit on it; A is chosen on the 10-year
      view, so it may sit below. */
@@ -10991,7 +11056,11 @@ function donut(host, w, title, cagr, dd) {
     (() => { const up = Cp.cagr - line(Cp.maxdd);
       return up > D.universe.tie_pp + 1e-9
         ? ` C sits ${up.toFixed(2)}pp above it: its ${D.portfolio_c.pin_pct}% Nasdaq Equity Income is outside the ${D.universe.limits.max_w}% cap every mix on the line obeys.`
-        : ` C sits ${where(Cp)}.`; })();
+        : ` C sits ${where(Cp)}.`; })() +
+    (() => { const up = Dp.cagr - line(Dp.maxdd);
+      return up > D.universe.tie_pp + 1e-9
+        ? ` D sits ${up.toFixed(2)}pp above it: it has no cap and no cash floor, which every mix on the line keeps.`
+        : ` D sits ${where(Dp)}.`; })();
   const host = $("#frontier"); host.appendChild(s);
   const tp = tipper(host);
   P.forEach(p => {
@@ -11009,14 +11078,14 @@ function donut(host, w, title, cagr, dd) {
 (function () {
   /* A on its 10-year view, B and C on the 3/5/10-year (v80; C from v82): CAGR over drawdown,
      so three portfolios fit a phone. */
-  const A = D.portfolio_a.scenarios, B = D.portfolio_b.scenarios, C = D.portfolio_c.scenarios;
+  const A = D.portfolio_a.scenarios, B = D.portfolio_b.scenarios, C = D.portfolio_c.scenarios, Dd = D.portfolio_d.scenarios;
   const t = $("#stab");
-  t.appendChild(el("thead", null, `<tr><th>Scenario</th><th>A</th><th>B</th><th>C</th></tr>`));
+  t.appendChild(el("thead", null, `<tr><th>Scenario</th><th>A</th><th>B</th><th>C</th><th>D</th></tr>`));
   const tb = el("tbody");
   B.forEach((b, i) => {
     const base = b.name === "Grind-on base case";
     tb.appendChild(el("tr", null,
-      `<td${base?' style="font-weight:700"':''}>${b.name}</td>` + [A[i], b, C[i]].map(r =>
+      `<td${base?' style="font-weight:700"':''}>${b.name}</td>` + [A[i], b, C[i], Dd[i]].map(r =>
         `<td>${pc(r.cagr)}<br><span class="neg">${pc1(r.maxdd)}</span></td>`).join("")));
   });
   t.appendChild(tb);
@@ -11027,13 +11096,13 @@ function donut(host, w, title, cagr, dd) {
 /* ---------------- peso illustration ---------------- */
 (function () {
   /* own horizons (v80); C, on B's view, from v82 - three columns, the delta column retired */
-  const PP = [D.portfolio_a.ten, D.portfolio_b.macro, D.portfolio_c.macro];
+  /* D from v96: four columns of pesos do not fit a phone, so a row each, the figures across */
+  const PP = [["A", D.portfolio_a.ten], ["B", D.portfolio_b.macro], ["C", D.portfolio_c.macro], ["D", D.portfolio_d.macro]];
   const t = $("#pesotab");
-  t.appendChild(el("thead", null, `<tr><th></th><th>A</th><th>B</th><th>C</th></tr>`));
+  t.appendChild(el("thead", null, `<tr><th></th><th>After 10 years</th><th>Worst case</th><th>Gain</th></tr>`));
   const tb = el("tbody");
-  [["Value after 10 years", m => m.terminal_1m], ["Worst case for money invested today", m => m.worst_1m_from_open],
-   ["Total gain over 10 years", m => m.terminal_1m - 1000000]].forEach(([lab, f]) =>
-    tb.appendChild(el("tr", null, `<td>${lab}</td>` + PP.map(m => `<td>${peso(f(m))}</td>`).join(""))));
+  PP.forEach(([lab, m]) => tb.appendChild(el("tr", null, `<td>${lab}</td><td>${peso(m.terminal_1m)}</td>` +
+    `<td>${peso(m.worst_1m_from_open)}</td><td>${peso(m.terminal_1m - 1000000)}</td>`)));
   t.appendChild(tb);
 })();
 
@@ -11164,8 +11233,6 @@ function donut(host, w, title, cagr, dd) {
   const mixS = ws => ws.map((w, j) => [w, j]).filter(x => x[0]).sort((a, b) => b[0] - a[0])
                        .map(([w, j]) => `${w}% ${SH[j]}`).join(", ");
   const steps = Object.keys(G.alt).sort((a, b) => +a - +b);
-  $("#ddstepd").innerHTML = `<strong>D</strong>, ${SH[D.portfolio_b.ids.indexOf(P.fund)]} and two others on the 3/5/10-year view: ` +
-    steps.map(c => `${num(c + "%")}${+c === P.dd_cap ? " (now)" : ""} ${num(pc(G.alt[c].d.cagr))} / ${num(pc1(G.alt[c].d.maxdd))}`).join(" &middot; ") + `.`;
   const top = Math.max(...P.weights);
   $("#rdcard").innerHTML =
     `D, the owner's three-fund portfolio, holds ${num(mixS(P.weights))} for ${num(pc(M.cagr))} at ${num(pc1(M.maxdd))} on the

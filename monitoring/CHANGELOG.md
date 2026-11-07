@@ -2,6 +2,72 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-07 — v97: Saturday review - Treasuries rolled to 5-6 Nov; the VIX's 6 Nov close reported six ways and still held; D in every versus view; A, B, C and D unchanged
+
+At the owner's instruction, the review command, and "All portfolio vs". **Cut-off 07:51 UTC on Sat 7 Nov.**
+No market has traded since Friday 6 Nov's closes (New York, oil and the VIX; Manila, Tokyo and Seoul), so every
+market is where v95 left it except the figures held then.
+
+**The environment:** the 18 primary hosts refused again - cboe.com, cdn.cboe.com, home.treasury.gov,
+fred.stlouisfed.org, treasury.gov.ph, psa.gov.ph, bsp.gov.ph, uitf.com.ph, atram.com.ph, am.jpmorgan.com,
+fidelityinternational.com, assetmanagement.hsbc.co.uk, blackrock.com, lu.allianzgi.com, dng-api.invesco.com,
+schroders.com, justetf.com, bworldonline.com; the ClaudeAtram environment that allows them cannot be used from
+this session. Left unverified: Cboe's 6 Nov VIX close and futures settlements, the Treasury's own par curve, the
+BTr's auctions, PSA's and BSP's pages, each target's KIID and class, the feeders' 1-year returns.
+
+**Updated (two sources each, each adding up from the prior close):**
+- **The 10-year: 4.84% on 5 Nov** (-6bp; CappNotes; Benzinga, "fell to 4.84% from 4.90%"; the par close Forbes'
+  +2bp implies; FRED's T10Y2Y 0.38) and **4.86% on 6 Nov** (+2bp; dshort's par-curve snapshot via ETF Trends;
+  Forbes' Treasury-rates page; CappNotes). **The 2-year 4.46% on 5 Nov** (-12bp; CappNotes; Benzinga). **The
+  30-year 5.26% on 6 Nov** (+1bp; CappNotes; Forbes).
+
+**Held, and why:**
+- **The VIX at 5 Nov's 28.18.** Its 6 Nov close is now reported six ways: 23.67 (Benzinga), 23.72 (AD HOC
+  News), 23.86 (Yahoo in the session), 24.77 (Cboe's page snapshot), **25.64 (CappNotes and Yahoo Finance's
+  close, -9.01%, which chains)** and 25.81 (Investing.com). Two non-primary sources now agree, but a recorded
+  dispute is settled only with the primary and one independent source, and Cboe is unreachable. Every report is
+  above the long-run 19.5, so the VIX guard is red on any of them. Fix: cdn.cboe.com (allowed in ClaudeAtram).
+- **The 2-year's 6 Nov close** (4.51 / 4.524 / 4.53) and **the 30-year's 5 Nov** (5.25 / 5.31): disputes recorded.
+- **FedWatch at 4 Nov's 79.2% - its five-day bound is 9 Nov, within two days.** The post-payroll reads still
+  run 73-79% with no two alike. Fix: CME's FedWatch page itself (add cmegroup.com to ClaudeAtram) or two reads
+  stamped the same hour.
+- **PH T-bills at 26 Oct - the 14-day bound is 9 Nov, within two days**; Monday's auction is the next roll. Fix:
+  the BTr's own results (treasury.gov.ph, allowed in ClaudeAtram).
+- **PortWatch at 25 Oct - the bound is 8 Nov, tomorrow.** If it publishes nothing newer before the next review,
+  the vessel count is flagged stale on the page; fix: PortWatch itself, or two of Windward, hormuz.now and the
+  Straits Daily Brief counting the same day. The volume read (Kpler) is unaffected.
+- **The VIX futures strip (20 Oct), overtaken**: no 6 Nov settlement found; window ends 19 Nov.
+  **Brent's year-ago base, flagged** (31 Oct 2025).
+- **The Gulf:** the IRGC's 6 Nov claims - a US drone downed over Qeshm, more tankers hit - are in one source
+  (Al Jazeera's live blog) and not carried; no 7 Nov development found. **Releases:** none since v95; China's
+  October trade data is due on 10 Nov in one source (Trading Economics) and stays off the calendar.
+
+**Scored - every score held:** the Treasury rolls sit inside the monetary view (a December hike still the
+likely path), and the VIX is held. Gauge 2.26; band 2.80, hold at 25%; guards unchanged. No fund's net CAGR or
+drawdown moved, and **A, B, C and D are unchanged** (7.31% / 7.10% / 7.14% / 7.13%, -24.9% each).
+
+**Target funds:** not the first review of the week (the full check was 4 Nov; Global Consumer Trends' on 7 Nov),
+so notices only: nothing new from ATRAM or the managers. **The held-out what-if, re-run: every weight
+reproduces, D's included.**
+
+**All versus (owner: "All portfolio vs"):** D joins A, B and C in every head-to-head: the donut grid (2x2), who
+holds what, the headline forecast, the three lenses, who wins where and all six pairs, the frontier chart (D
+marked, 0.03pp above the line - it keeps neither the cap nor the cash floor), the stress test, the peso table (a
+row per portfolio now, so four fit a phone), a D-against-B sentence, and a D column in the Budget tab's steps.
+D's own section keeps its rule, its caveats and why its two partners.
+
+**Errors found and fixed:**
+- **DRIVER_PREV still named v94** through v95 and v96: the label of the scores the verb check compares with.
+  Now v96 (the scores were the same, so no verdict changed).
+- **The volatility note typed its six 6 Nov figures** into the sentence; they now read a named input
+  (`vix_6nov_reports`), from which the dispute list is derived.
+- A first draft quoted 5 Nov's 28.18 beside "6 Nov"; the engine's date check failed it before publishing.
+- The page check of the weights table compared three portfolios; with D a column it compares four.
+- The four-column peso table overflowed a phone's width; transposed.
+
+**Checks:** engine 262/262; audit 263/263 (the last-review scores against the committed release run again, as
+the notes changed); page 16/16; mutants 53/53.
+
 ## 2026-11-07 — v96: Portfolio D - Nasdaq Equity Income plus two other funds on the 3/5/10-year view inside the band (55 / 25 / 20, 7.13% / −24.9%); A, B and C unchanged
 
 At the owner's instruction: "Make portfolio D with atram nasdaq equity income plus 2 other fund with 3, 5, 10yrs

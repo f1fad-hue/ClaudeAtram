@@ -26,8 +26,8 @@ from itertools import combinations
 # that nobody updates. Both weekdays are derived and checked below instead.
 AS_OF = "2026-11-06"        # newest completed session carried: 6 Nov in New York, Manila, Tokyo
                             # and Seoul; Brent's January and WTI's December 6 Nov settles; the VIX
-                            # at 5 Nov (its 6 Nov close is reported three ways); the 2-, 10- and
-                            # 30-year at their 4 Nov par closes (5 Nov's is in one source);
+                            # at 5 Nov (its 6 Nov close is reported six ways); the 10- and 30-year
+                            # at their 6 Nov closes, the 2-year at 5 Nov (6 Nov's reported three ways);
                             # FedWatch's 4 Nov read (the reads after the 6 Nov payrolls disagree)
 REVIEW_DATE = "2026-11-07"  # when this review was worked through (cut-off 23:32 UTC on 6 Nov; finished on the 7th)
 
@@ -208,6 +208,13 @@ MACRO = {
         # citing the Treasury), and FRED's DGS10 has 4.90. 5 Nov NOT ROLLED: CNBC's 4.839% at
         # midday and Investing.com's 4.877% are market quotes; the par close is in no source yet.
         ("2026-11-04", 4.90),
+        # v97 (7 Nov): 5 Nov 4.84, -6bp, as the AI sell-off sent money into Treasuries (CappNotes;
+        # Benzinga, "fell to 4.84% from 4.90%"), the par close Forbes' page implies with its +2bp on
+        # the 6th, and FRED's T10Y2Y of 0.38 against the 2-year's 4.46. 4.90 - 0.06 = 4.84.
+        ("2026-11-05", 4.84),
+        # 6 Nov 4.86, +2bp after the payrolls (dshort's Treasury Yields Snapshot, on the Treasury's par
+        # curve; Forbes' Treasury-rates page; CappNotes). 4.84 + 0.02 = 4.86.
+        ("2026-11-06", 4.86),
     ],
     # 23 Sep is the 5.104% market-close print (CNBC, Wolf Street: "+13.7bp to
     # 5.104") rounded to 2dp, NOT a Treasury par-curve / H.15 figure: neither was
@@ -371,8 +378,15 @@ MACRO = {
     # FRED's T10Y2Y for the day.
     # 4 Nov, par curve (Spot the Money and StockMarketWatch, citing the Treasury): 2-year 4.58%
     # (-3bp), 30-year 5.28% (-4bp). 4.90 - 4.58 = 0.32.
-    "ust_2y": 4.58, "ust_2y_date": "2026-11-04",
-    "ust_30y": 5.28, "ust_30y_date": "2026-11-04",
+    # v97: 2-year 4.46% on 5 Nov, -12bp (CappNotes; Benzinga, "dropped to 4.46% from 4.58%"); its 6 Nov
+    # close is reported as 4.51 (dshort), 4.524 (Briefs) and 4.53 (Trading Economics) and not carried.
+    # 30-year 5.26% on 6 Nov, +1bp (CappNotes; Forbes' par page); 5 Nov is reported as 5.25 (CappNotes)
+    # and 5.31 (Stocktwits' weekly) - a dispute, though the 6 Nov level stands on two sources and
+    # 5.28 - 0.03 + 0.01 = 5.26 by CappNotes' moves.
+    "ust_2y": 4.46, "ust_2y_date": "2026-11-05",
+    "ust_2y_disputed_6nov": [4.51, 4.524, 4.53],
+    "ust_30y": 5.26, "ust_30y_date": "2026-11-06",
+    "ust_30y_disputed_5nov": [5.25, 5.31],
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
 
@@ -1726,7 +1740,12 @@ MACRO = {
     # v95: 6 Nov withheld - Benzinga 23.67, AD HOC News 23.72, Yahoo Finance 23.86; three
     # numbers, none in two sources, so 5 Nov's close is carried (every one is above the long run).
     "vix_withheld": ["2026-11-06"],
-    "vix_disputed_6nov": [23.67, 23.72, 23.86],
+    # v97: CappNotes' Closing Look and Yahoo Finance now both close 6 Nov at 25.64 (-2.54, -9.01%, which
+    # chains from 28.18), against Benzinga's 23.67, AD HOC News' 23.72, Yahoo's earlier 23.86, Cboe's
+    # page snapshot of 24.77 and Investing.com's 25.81. A recorded dispute is settled only by the
+    # primary (Cboe, unreachable here) and one independent source: still held.
+    "vix_6nov_reports": {"Benzinga": 23.67, "AD HOC News": 23.72, "Yahoo Finance in the session": 23.86,
+                         "Cboe page snapshot": 24.77, "CappNotes and Yahoo Finance": 25.64, "Investing.com": 25.81},
     "vix_disputed_20oct": [17.31, 17.60],
     "vix_disputed_22oct": [18.84, 19.03],   # Investing.com's table against three sources
     "vix_disputed_26oct": [18.30, 18.39],   # AD HOC News against three sources
@@ -2574,6 +2593,8 @@ MACRO["ph_cpi_latest_key"] = min((k for k in MACRO if re.fullmatch(r"ph_cpi_(" +
                                  key=lambda k: (_asm - (_MONS3.index(k[7:]) + 1)) % 12 or 12)
 MACRO["ph_cpi_latest"] = MACRO[MACRO["ph_cpi_latest_key"]]
 MACRO["ph_cpi_latest_month"] = _dt.date(2000, _MONS3.index(MACRO["ph_cpi_latest_key"][7:]) + 1, 1).strftime("%B")
+# v97: the 6 Nov reports by source; the dispute list is read from them, so the prose and the list agree.
+MACRO["vix_disputed_6nov"] = sorted(MACRO["vix_6nov_reports"].values())
 # The lowest of a withheld session's reports against the long run (v95): the note says even that
 # one is above it, so the guard's colour does not hang on which report is right.
 MACRO["vix_withheld_lo_lr_gap"] = round(min(MACRO["vix_disputed_6nov"]) - MACRO["vix_longrun"], 2)
@@ -3407,9 +3428,11 @@ DRIVERS = [
      f"{_u10['2026-10-28']:.2f}% on the 28th, {_u10['2026-10-29']:.2f}% on the "
      f"29th and {_u10['2026-10-30']:.2f}% on the 30th, as the tech sell-off sent money into Treasuries, then "
      f"{_u10['2026-11-02']:.2f}% on 2 Nov as oil fell, {_u10['2026-11-03']:.2f}% on 3 Nov as the vote neared and "
-     f"{_u10['2026-11-04']:.2f}% on 4 Nov, the first session on the result, with the 2-year at {MACRO['ust_2y']:.2f}% "
-     f"({_dday('ust_2y_date')}) "
-     f"and the 30-year at {MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}); no later par close is in two sources yet. "
+     f"{_u10['2026-11-04']:.2f}% on 4 Nov, the first session on the result, {_u10['2026-11-05']:.2f}% on 5 Nov as the "
+     f"AI sell-off sent money back into Treasuries and {_u10['2026-11-06']:.2f}% on 6 Nov after the payrolls, with the "
+     f"2-year at {MACRO['ust_2y']:.2f}% ({_dday('ust_2y_date')}) and the 30-year at {MACRO['ust_30y']:.2f}% "
+     f"({_dday('ust_30y_date')}); the 2-year's 6 Nov close is reported three ways "
+     f"({', '.join(f'{v:g}%' for v in MACRO['ust_2y_disputed_6nov'])}) and not carried. "
      f"The 10-year's {_dday('ust_10y_peak_date')} intraday high of "
      f"{MACRO['ust_10y_peak']}%, above the {_dday('ust_10y_peak_prev_date')} peak of {MACRO['ust_10y_peak_prev']}%, was the highest since "
      f"{MACRO['ust_10y_peak_since']}. "
@@ -3535,9 +3558,15 @@ DRIVERS = [
      + f"; it had fallen {abs(MACRO['vix_reported_moves']['2026-11-04'])}% to {_vh_close('2026-11-04'):.2f} on 4 Nov as "
      "the hedges built into the vote came off. AD HOC News' "
      f"{min(MACRO['vix_disputed_5nov']):.2f} for 5 Nov is an intraday print, and the session's high is at least the close: "
-     "Reuters' higher figure is in one source. The 6 Nov close is reported three ways - "
-     f"{MACRO['vix_disputed_6nov'][0]:.2f}, {MACRO['vix_disputed_6nov'][1]:.2f} and {MACRO['vix_disputed_6nov'][2]:.2f} "
-     "(Benzinga; AD HOC News; Yahoo Finance) - none in two sources, so 5 Nov's is carried; the lowest is still "
+     "Reuters' higher figure is in one source. The 6 Nov close is reported "
+     f"{_nword(len(MACRO['vix_disputed_6nov']))} ways, from {min(MACRO['vix_disputed_6nov']):.2f} to "
+     f"{max(MACRO['vix_disputed_6nov']):.2f}: CappNotes and Yahoo Finance now agree on "
+     f"{MACRO['vix_6nov_reports']['CappNotes and Yahoo Finance']:.2f}, which adds up from "
+     f"{_dval(MACRO['vix_latest_date'])}'s {MACRO['vix_latest']:.2f}, but Benzinga's {MACRO['vix_6nov_reports']['Benzinga']:.2f}, "
+     f"AD HOC News' {MACRO['vix_6nov_reports']['AD HOC News']:.2f}, Cboe's page snapshot of "
+     f"{MACRO['vix_6nov_reports']['Cboe page snapshot']:.2f} and "
+     f"Investing.com's {MACRO['vix_6nov_reports']['Investing.com']:.2f} do not, and a dispute is settled only with Cboe's own close, which this review cannot "
+     "reach; so 5 Nov's is carried. The lowest report is still "
      f"{MACRO['vix_withheld_lo_lr_gap']:.2f} points above the long run. The curve is OVERTAKEN: the "
      f"{_dval(VIX_QUOTE_DATE)} settlements still carried - November {MACRO['vix_fut_sep']:.2f} and December "
      f"{MACRO['vix_fut_dec']:.2f}, above that day's spot - sit {MACRO['vix_strip_gap']:.2f} points "
@@ -3611,7 +3640,7 @@ DRIVERS = [
 # review's scores before rescoring; the verb check reads it, and the audit compares it with the
 # committed release. v95 opened with the growth note still saying "RAISED to 4.25" and the
 # volatility note "CUT to 1.5" - v94's moves - in a review that held both.
-DRIVER_PREV = ("v94", {"Monetary policy & liquidity": 2.0, "Inflation trajectory": 2.0,
+DRIVER_PREV = ("v96", {"Monetary policy & liquidity": 2.0, "Inflation trajectory": 2.0,
                        "Growth momentum": 4.25, "Corporate earnings": 7.0, "Valuation support": 8.0,
                        "Volatility & risk appetite": 1.5, "Geopolitics & energy": 1.5})
 
@@ -3682,7 +3711,7 @@ SUMMARY = {
     "Growth momentum": f"Held at 4.25: US payrolls rose {MACRO['us_payrolls_oct'] // 1000}k in October against {MACRO['us_payrolls_oct_consensus'] // 1000}k expected and unemployment fell to {MACRO['us_unemployment']}%, after GDP grew at a {MACRO['us_gdp_q3']}% rate in the third quarter; euro-area retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}% in September, and the consumer is still the weak point.",
     "Corporate earnings": f"Held, the strongest pillar: third-quarter growth is blended at {MACRO['factset_q3_growth']}% with {MACRO['factset_beat_pct']}% beating (FactSet, {_dday('factset_date')}); the AI sell-off took the Nasdaq down {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% on 5 Nov into correction, on fears for the build-out rather than this quarter's profits.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Held at 1.5: the VIX's 6 Nov close is reported three ways, so its {MACRO['vix_latest']:.2f} of {_dday('vix_latest_date')} is carried, {MACRO['vix_lr_gap']:.2f} points above its long-run {MACRO['vix_longrun']}; the futures curve carried is overtaken and held to its window.",
+    "Volatility & risk appetite": f"Held at 1.5: the VIX's 6 Nov close is reported {_nword(len(MACRO['vix_disputed_6nov']))} ways, so its {MACRO['vix_latest']:.2f} of {_dday('vix_latest_date')} is carried, {MACRO['vix_lr_gap']:.2f} points above its long-run {MACRO['vix_longrun']}; the futures curve carried is overtaken and held to its window.",
     "Geopolitics & energy": f"Held: Trump says the talks go on while Washington weighs strikes, tanker attacks quickened off Qatar and Khasab, and Brent settled at ${dict(MACRO['brent_history'])['2026-11-06']:.2f} on 6 Nov; the Strait stays shut, Iran exempts four countries' ships, the draft deal is unsigned, and the last confirmed flows were near 14 mb/d.",
     "US": f"Held: the Nasdaq {'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% and the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% on {_dday('equity_date')}, after the {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% fall of 5 Nov took the Nasdaq into correction; GDP beat at {MACRO['us_gdp_q3']}%, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
@@ -6547,6 +6576,25 @@ SOURCES = [
      "https://www.blackrock.com/uk/literature/prospectus/blackrock-global-funds-prospectus-en.pdf"),
     ("BlackRock", "BlackRock Global Funds Singapore prospectus, 24 Sep 2026 - Global Allocation Fund listed",
      "https://www.blackrock.com/sg/en/literature/prospectus/bgf-singapore-prospectus-sg.pdf"),
+    # v97 (7 Nov, cut-off 07:51 UTC)
+    ("CappNotes", "Closing Look, Friday 6 November 2026 - the VIX 25.64 (-9.01%), the 10-year 4.86%, the 30-year 5.26% (vix_disputed_6nov)",
+     "https://cappnotes.substack.com/p/closing-look-friday-november-6-2026"),
+    ("Benzinga", "Nasdaq's 5.5% wipeout and AI's next reality check - the 10-year to 4.84% from 4.90%, the 2-year to 4.46% from 4.58%, 5 Nov 2026",
+     "https://www.benzinga.com/opinion/26/11/62970305/nasdaq-wipeout-ai-next-reality-check-irs-new-tax-brackets"),
+    ("dshort via ETF Trends", "Treasury Yields Snapshot, 6 Nov 2026 - the 10-year 4.86%, the 2-year 4.51%, on the Treasury's par curve",
+     "https://www.etftrends.com/fixed-income-content-hub/treasury-yields-snapshot-november-6-2026/"),
+    ("Yahoo Finance", "Stock market today, Friday 6 November 2026 - Nasdaq and S&P rebound, Dow slips to cap a bruising week for AI stocks",
+     "https://finance.yahoo.com/markets/live/stock-market-today-friday-november-6-dow-sp-500-nasdaq-jobs-report-earnings-135953863.html"),
+    ("Trading Economics", "US 2-year note yield - 4.53% on 6 Nov 2026 (ust_2y_disputed_6nov)",
+     "https://tradingeconomics.com/united-states/2-year-note-yield"),
+    ("Briefs", "Treasury yields jump after hot jobs report - the 2-year 4.524%, 6 Nov 2026 (ust_2y_disputed_6nov)",
+     "https://www.briefs.co/news/treasury-yields-climb-as-a-hotter-jobs-report-resets-rate-hi/"),
+    ("Stocktwits", "The weekly spread: what shaped US Treasury yields and the dollar this week - the 30-year 5.31% on 5 Nov (ust_30y_disputed_5nov)",
+     "https://stocktwits.com/news-articles/markets/equity/the-weekly-spread-what-shaped-us-treasury-yields-and-the-dollar-this-week/cNGlQjfR94M"),
+    ("Al Jazeera", "Iran war live, 6 Nov 2026 - the IRGC says a US drone was downed over Qeshm and tankers hit (one source, not carried)",
+     "https://www.aljazeera.com/amp/news/liveblog/2026/11/6/iran-war-live-trump-warns-us-may-have-to-destroy-rest-of-iran"),
+    ("Trading Economics", "China balance of trade - October data scheduled for 10 Nov 2026 (one source, not listed)",
+     "https://tradingeconomics.com/china/balance-of-trade"),
 ]
 
 # ----------------------------------------------------------------------------

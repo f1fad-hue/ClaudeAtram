@@ -43,9 +43,10 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 6 Nov 2026 (cut-off 23:32 UTC): New York, Manila, Tokyo and Seoul at
-their 6 Nov closes, Brent's January and WTI's December settles at 6 Nov; the VIX at 5 Nov (its 6 Nov close
-is reported three ways); the 2-, 10- and 30-year at their 4 Nov par closes; FedWatch at its 4 Nov read (the
+market assumptions. Market data as of 6 Nov 2026 (reviewed 7 Nov, cut-off 07:51 UTC): New York, Manila,
+Tokyo and Seoul at their 6 Nov closes, Brent's January and WTI's December settles at 6 Nov; the 10- and
+30-year at their 6 Nov closes and the 2-year at 5 Nov (its 6 Nov close is reported three ways); the VIX at
+5 Nov (its 6 Nov close is reported six ways and only Cboe can settle it); FedWatch at its 4 Nov read (the
 reads after the 6 Nov payrolls disagree). Brent's y/y is quoted against its 31 Oct 2025 settle, six days
 short of a year (flagged). Target funds checked 4 Nov, their notices re-searched 6-7 Nov and Global Consumer
 Trends re-checked in full on a mandate notice, through search results only; reviewed 7 Nov. Weights in the
