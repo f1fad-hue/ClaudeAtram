@@ -196,6 +196,24 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+150. A WEEK THAT SPANS A ROLL HAS ONE HONEST CHANGE. On 6 Nov the settle seven days earlier was December
+   Brent's last, so the engine quoted no weekly change, though January's own 30 Oct settle was on record as the
+   roll prior. Read the new contract's roll prior, and name the contract: the continuous front month's fall is
+   a different, larger number, and a reader comparing them needs to know why they differ.
+149. A CHECK OR A MUTANT PINNED TO "THE LATEST DAY" GOES BLIND WHEN THE SERIES ROLLS. The VIX tripwire's witness
+   compared the S&P's move only while the shock day was the latest; the day-copy mutant planted its error in a
+   5 Nov key. Both went quiet the session New York rolled to 6 Nov. Witnesses read day-keyed records; mutants
+   pick their target by state.
+148. A CARD THAT NAMES A MONTH'S KEY GOES STALE ON THE NEXT RELEASE. The real-yield card read ph_cpi_sep for two
+   days after October's print, the same failure its own comment recorded for August. Read the newest month on
+   record (ph_cpi_latest), and let the audit re-derive the choice. A range across tenors spans all of them.
+147. AN F-STRING SPLIT ACROSS LITERALS NEEDS ITS f ON EACH. The monetary note printed "{_dday(...)}" because the
+   second half of a split sentence lost its prefix. The engine scans every published text and the audit every
+   payload string for an unformatted placeholder.
+146. THE VERB IS THIS REVIEW'S MOVE. A note that opens RAISED or CUT announces a change; carried into the next
+   review that holds the score, it announces a move that did not happen. Before rescoring, set DRIVER_PREV to
+   the scores the last published review carried; the engine and the audit read each note's first word against
+   it, and the audit checks DRIVER_PREV against the committed release.
 145. A COPY UNDER A DAY'S NAME MUST EQUAL THE LATEST WHILE IT IS THE LATEST. Prose pinned to 5 Nov reads
    nasdaq_5nov_chg_pct, the same session the rolling nasdaq_chg_pct carries; two inputs for one move drift
    unless something holds them equal. The engine and the audit now do, for every series.

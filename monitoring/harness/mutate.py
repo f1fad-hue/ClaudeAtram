@@ -49,8 +49,15 @@ def m_dayref(d):                                                                
     x = _drv(d, "Corporate"); x["note"] = x["note"].replace("on 3 Nov the KOSPI", "on 4 Nov the KOSPI", 1)
 def m_yoy1(d): d["macro"]["brent_yoy_1dp"] = round(d["macro"]["brent_yoy_1dp"] - 0.1, 1)      # the y/y a rounding of a rounding (v94)
 def m_daydup(d):                                                                               # a day-keyed copy off the latest (v94)
-    k = next(k for k in d["macro"] if re.match(r"^(nasdaq|kospi)_\d{1,2}nov_chg_pct$", k)
-             and k.startswith("nasdaq_5nov")); d["macro"][k] = round(d["macro"][k] + 0.02, 2)
+    # By state (v95): it moved nasdaq_5nov, and went blind the day New York rolled to 6 Nov. It now
+    # moves whichever day-keyed copy sits on its series' latest day.
+    M = d["macro"]; mon = "jan feb mar apr may jun jul aug sep oct nov dec".split()
+    lat = {"spx": "equity_date", "nasdaq": "equity_date", "dow": "equity_date", "kospi": "kospi_latest_date",
+           "nikkei": "nikkei_latest_date", "psei": "psei_date"}
+    def on_latest(k):
+        g = re.match(r"^(spx|nasdaq|dow|kospi|nikkei|psei)_(\d{1,2})([a-z]{3})_chg_pct$", k)
+        return bool(g) and M[lat[g.group(1)]][5:] == f"{mon.index(g.group(3)) + 1:02d}-{int(g.group(2)):02d}"
+    k = next(k for k in M if on_latest(k)); M[k] = round(M[k] + 0.02, 2)
 def m_tcheck(d): _fund(d, 1)["target_check"]["date"] = "2026-10-20"                            # a target-fund check from an old review
 def m_stale(d): d["macro"]["equity_date"] = "2026-10-20"                                       # a close a week behind
 def m_lt(d): d["lookthrough"]["ATRQIAP"]["as_of"] = "2026-08-31"                               # holdings past 60 days
@@ -76,6 +83,11 @@ def m_opt(d): d["optimized"] = d["portfolio_b"]                                 
 def m_cat(d): d["catalysts"].append({"date": "2026-10-01", "what": "Old event", "why": "past"})
 def m_step(d):                                                                                 # a budget step printing a CAGR its search did not rank on
     e = next(iter(d["dd_gauge"]["alt"].values()))["b"]; e["cagr"] = round(e["cagr"] - 0.01, 2)
+def m_verb(d):                                                                                 # a note announcing a move not made (v95)
+    x = _drv(d, "Growth"); w = x["note"].split(" ", 1)
+    x["note"] = {"HELD": "RAISED", "RAISED": "HELD", "CUT": "HELD"}[w[0]] + " " + w[1]
+def m_brace(d): x = _drv(d, "Monetary"); x["note"] = x["note"].replace(". ", ". The {_dday('x')} high. ", 1)   # an f lost (v95)
+def m_rycpi(d): d["real_yield"]["cpi"] = d["macro"]["ph_cpi_sep"]; d["real_yield"]["month"] = "September"   # the stale month (v95)
 def m_grind(d):
     r = next(r for r in d["portfolio_b"]["scenarios"] if r["name"].startswith("Grind")); r["cagr"] = round(r["cagr"] + 0.01, 2)
 

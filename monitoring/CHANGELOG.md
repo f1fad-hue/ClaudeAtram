@@ -2,6 +2,117 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-07 — v95: New York steadies on 6 Nov and Brent ends 13.3% lower on the week; the VIX's 6 Nov close disputed and held; Invesco's mandate change for Global Consumer Trends found; every score held; A, B and C unchanged
+
+At the owner's instruction, the revised review command. **Cut-off 23:32 UTC on Fri 6 Nov**; the work finished on
+the 7th, so REVIEW_DATE is 7 Nov. Closed by the cut-off: New York, oil and the VIX on 6 Nov; Manila, Tokyo and
+Seoul on 6 Nov.
+
+**The environment:** all 18 primary hosts tested at the start were refused - cboe.com, cdn.cboe.com,
+home.treasury.gov, fred.stlouisfed.org, treasury.gov.ph, psa.gov.ph, bsp.gov.ph, uitf.com.ph, atram.com.ph,
+am.jpmorgan.com, fidelityinternational.com, assetmanagement.hsbc.co.uk, blackrock.com, lu.allianzgi.com,
+dng-api.invesco.com, schroders.com, justetf.com, bworldonline.com. The **ClaudeAtram** environment allows them;
+this session cannot be moved onto it while it runs, so everything rests on search results. Left unverified:
+Cboe's VIX close and futures settlements, the Treasury's 5-6 Nov par curve, the BTr's auction results, PSA's and
+BSP's own pages, each target's KIID and class, the feeders' 1-year returns.
+
+**Updated (two sources each, each adding up from the prior close):**
+- **New York, 6 Nov:** S&P 7376.86 (+23.13, +0.31%), Nasdaq 24579.42 (+264.42, +1.09%), Dow 51285.73 (-237.33,
+  -0.46%) (CNBC; the Motley Fool; UPI; AP), the chipmakers bouncing as October's payrolls beat. The 5 Nov
+  sell-off is kept under its own keys (spx_5nov, dow_5nov, nasdaq_5nov).
+- **Brent $98.32** (+$0.03) and **WTI $90.83** (+$0.31, +0.34%) on 6 Nov (CNBC; Bloomberg via Rigzone;
+  EnergyNow). No roll: January Brent to 30 Nov, December WTI to 20 Nov. Brent is 13.3% below January's own
+  30 Oct settle (see the errors).
+- **The PSEi 5761.95** (-16.19, -0.28%; the Tribune; the Manila Times; PNA) and **the peso 63.055** (8.5 centavos
+  weaker; the Manila Times; the Tribune) on 6 Nov; a Tribune sidebar's 62.75 matches neither (`usdphp_disputed_6nov`).
+- **Releases:** euro-area September retail volumes **-0.7%** on the month against -0.1% expected (Eurostat;
+  Sharecast; Quartz), out at 10:00 UTC on 6 Nov, which v94 missed. No US, PH, Japanese, Korean or Chinese release
+  or central-bank decision fell between v94's run and the cut-off; China's October trade data was not out.
+- **The Gulf, 6 Nov:** Trump said the talks with Iran go on (TASS; the Times of Israel) while Washington weighs
+  renewed strikes, Central Command preparing options (Fox News; Kurdistan24). Qatar's 48-hour, two-stage plan
+  (Axios, via House of Saud) and the IRGC's claim of fires on two tankers and a tug (Straits Daily Brief) are one
+  report each. No UKMTO incident after the Khasab explosion v94 carried. PortWatch has published nothing after
+  25 Oct; Straits Daily Brief's 136 vessels holding position on 6 Nov is one source.
+
+**Held, and why:**
+- **The VIX at 5 Nov's 28.18; 6 Nov WITHHELD.** Benzinga has 23.67, AD HOC News 23.72 (-15.83%), Yahoo's quote
+  page 23.86: three numbers, none in two sources (`vix_withheld`, `vix_disputed_6nov`). Every one is above the
+  long-run 19.5, the lowest by 4.17, so the VIX guard is red on any of them. The page says so.
+- **The VIX futures strip (20 Oct), OVERTAKEN by 62.8%**: Saxo's 5 Nov board (November 23.75, December 21.65)
+  and a newsletter's 25.55 front month disagree, and nothing is published for 6 Nov. Its window ends 19 Nov.
+  Fix: Cboe's settlement file (cdn.cboe.com, allowed in ClaudeAtram).
+- **Treasuries at the 4 Nov par close**: the 5 Nov close is in one source (10-year 4.84%, 2-year 4.46%; FRED's
+  T10Y2Y of 0.38 agrees but is a spread); 6 Nov has session readings only (4.83-4.88%). Bound **9 Nov**.
+- **FedWatch at 4 Nov's 79.2%**: after the payrolls, 75.1% (Daily Economics), 76.8% (Fox Business), 77.7%
+  (BlockBeats), 79.1% (Real Estate News) and "near 70%" (The Private Banker) - no two alike. Bound **9 Nov**.
+- **PH T-bills at 26 Oct**: the 3 Nov results still do not chain. Bound **9 Nov**. Fix: the BTr's own results.
+- **PortWatch at 25 Oct: bound 8 Nov - within two days of its limit.** If PortWatch publishes nothing newer, the
+  next review flags the vessel count stale. The volume read (Kpler, week to 18 Oct) is unaffected.
+- **Brent's year-ago base, FLAGGED** (31 Oct 2025, six days off): FRED and Investing.com would settle it.
+
+**Scored - every score held; gauge 2.26:**
+- **Volatility 1.5**: one partial rebound in New York does not restore the risk appetite the cut was about, and
+  every report of the 6 Nov VIX is above the long run. **Growth 4.25**: the payrolls are counted; Europe's
+  shoppers joined the slowdown. **Monetary 2.0**: odds that swing between 70% and 79% after one report, before
+  October's CPI, are not a turn in policy. **Geopolitics 1.5**: talks that go on while strikes are prepared are
+  not an opening of the Strait. Inflation 2.0, earnings 7.0 and valuation 8.0 had no new evidence.
+- **No fund's net CAGR or drawdown moved** (Nasdaq Equity Income 7.56% / -32.1%). **A, B and C are unchanged**:
+  A 7.31%, B 7.10%, C 7.14%, -24.9% each. **Drawdown band 2.80, hold at 25%**; guards: one month-end review of
+  two (the next is due 30 Nov), geopolitics 1.5 fails, the VIX fails.
+- The trend window stays at 30 Sep until the quarter closes; the correlation and driver-to-fund checks pass.
+
+**Target funds - notices searched (ATRAM, JPMorgan, Fidelity, HSBC, Allianz, Invesco, BlackRock, Schroders):**
+- **Global Consumer Trends - MANDATE CHANGE, missed on 4 Nov.** Invesco's 28 Aug notice (Manulife IM's copy) and
+  the fund's key facts (Hang Seng's copy): from 28 Sep the target may hold up to 10% in China A-shares through
+  Stock Connect; management, risk profile and fees unchanged. **Its net CAGR does not move**, its global-equity
+  base still matches its asset class and region, and none of A, B or C holds it. Its full check was redone: the
+  1.50% trust fee from 14 Sep stands, the class held is unpublished, the 31 Aug top 10 is now in two sources but
+  past the 60-day limit, and **the 1-year test was not run**: the feeder's return is in one source (uitf.com.ph,
+  -20.88% to 3 Nov, which does not square with its -4.09% of 7 Oct without a 16% fall in a month) and the
+  target's in none.
+- **Cleared:** a UK fund named Allianz Thematica was converted into Allianz Best Styles Global AC Equity on
+  6 Mar 2026 - not the Luxembourg fund the feeder holds, which Allianz still prices (30 Oct). BlackRock's 17 Sep
+  prospectus liquidates two other Global Funds sub-funds; Global Allocation continues.
+- Nothing else: no fee change, merger, closure, manager change, target switch or new fund; no 2026 notice for
+  JPMorgan's Nasdaq Equity Premium Income UCITS ETF. **The held-out what-if, re-run: every weight reproduces.**
+
+**The calendar:** nothing retired (nothing scheduled fell between the two 6 Nov reviews). **Added**, each date in
+two sources: China's October CPI, 9 Nov (Lundgreen's Investor Insights; Trading Economics); Nvidia's
+third-quarter results, 17 Nov after the close (Investing.com; MarketBeat); the Bank of Korea, 26 Nov
+(Investing.com; Robinhood). US October PPI, 13 Nov, is in one source and stays off.
+
+**Errors found and fixed:**
+- **The verbs were last review's.** The growth note opened "RAISED to 4.25" and the volatility note "CUT to
+  1.5" - v94's moves - in a review that held both, and nothing tied a verb to a move. New check, engine and audit:
+  each note's and summary's first word must be the move its score made since the last review (`DRIVER_PREV`,
+  published as `prev_score_10`); the audit also checks those scores against the committed release.
+- **A dropped f prefix.** Splitting a monetary-note sentence across two literals printed
+  "{_dday('ust_10y_peak_date')}" on the page; no check looked for one. New check: the engine scans every
+  published text and the audit every payload string (2,580) for an unformatted placeholder.
+- **The real-yield card read September's CPI.** The Report's cash card set the T-bills against 7.2% for two days
+  after October's 7.8% was out - the second time (August's 6.1% in October) - because the payload named one
+  month's key. It now reads the newest PH CPI on record (`ph_cpi_latest`), which the audit re-derives. Its range
+  also skipped the 182-day bill, the lowest: now 6.43-6.62%, real -1.37 to -1.18pp (was "6.62% to 6.58%",
+  -0.58 to -0.62pp).
+- **The VIX tripwire's witness went blind on the roll.** It confirmed a shock day's S&P move only while that day
+  was the latest; with New York at 6 Nov it compared nothing. It now reads the day-keyed spx_5nov_chg_pct.
+- **The day-copy mutant went blind too.** It planted its error in nasdaq_5nov, no longer the latest day, so the
+  check it tests could not see it; it now picks a day-keyed copy on its series' latest day.
+- **Brent's week across a roll.** The settle seven days before 6 Nov was December's last, so no weekly change
+  was quoted, though January's own 30 Oct settle is on record as the roll prior. Now quoted - 13.3% below the
+  same contract - with the contract named, since the continuous front month fell 16.4%. The audit re-derives it
+  from the roll record.
+- **Euro-area retail sales**, out before v94's run, were missed. Added.
+- **"No events found" for Global Consumer Trends** (v93, v94) was wrong. Corrected in the record and the register.
+- A computed gap ("4.17") in the volatility note had no input: now `vix_withheld_lo_lr_gap`. An input added
+  this review that nothing read (`ea_retail_sep_yoy`) was retired before publishing.
+- Wording: the US note's "On 6 Nov ...; on 6 Nov" (6 Nov's reason now prints only while it is the latest session),
+  the peso's "and eased ..., and rebounded".
+
+**Checks:** engine 256 -> 259 (the withheld session, the verb, the placeholder); audit 247 -> 252 (the verb, the
+last-review scores against the release, Brent's week, the placeholder, the real-yield card); mutants 48 -> 51
+(m_verb, m_brace, m_rycpi; m_daydup by state). Runbook 146-150.
+
 ## 2026-11-06 — v94: the AI sell-off returns - Nasdaq into correction, the VIX +70%, Seoul and Tokyo down 11% and 8%; volatility cut 2.5 -> 1.5, growth raised 4.0 -> 4.25 on 165k payrolls; A, B and C unchanged
 
 At the owner's instruction, the review command with target funds. Run 13:15-14:45 UTC on 6 Nov: Asia's 6 Nov

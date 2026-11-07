@@ -265,6 +265,17 @@ ck("Brent's prior is the previous settle, or the new contract's own prior on a r
 ck("Brent's move and year-on-year change follow from its levels",
    abs(round(M["brent"] - M["brent_prev"], 2) - M["brent_chg_pts"]) < 0.006
    and abs(round((M["brent"] / M["brent_yr_ago"] - 1) * 100, 2) - M["brent_yoy"]) < 0.006)
+# BRENT ON THE WEEK (v95): against the same contract's settle seven days earlier - the history's own
+# when no roll falls in the week, the new contract's recorded roll prior when the week-ago day was the
+# old contract's last, and nothing otherwise - read from the roll record, not the engine's calendar.
+_wkd = (d(M["brent_date"]) - dt.timedelta(days=7)).isoformat()
+_bhd = dict(bh); _nx = next((x for x, _ in bh if x > _wkd), None)
+_rolls = [r for r in M["brent_roll_priors"] if _wkd < r <= M["brent_date"]]
+_wb = (_bhd.get(_wkd) if not _rolls else M["brent_roll_priors"][_nx] if _rolls == [_nx] and _wkd in _bhd else None)
+_wq = None if _wb is None else round((M["brent"] / _wb - 1) * 100, 1)
+ck("Brent's weekly change is against the same contract a week earlier, and the inflation note quotes it",
+   M["brent_wk_chg_pct"] == _wq and (_wq is None or f"{abs(_wq)}% " in next(x["note"] for x in DR if x["name"].startswith("Inflation"))),
+   f"{M['brent_wk_chg_pct']} vs {_wq} (base {_wb})")
 _ann = d(M["brent_date"]).replace(year=d(M["brent_date"]).year - 1)
 # v93: past the bound the base may stand only with its own date beside every quote of the y/y,
 # re-read here from the published prose (not from the engine's flag alone).
@@ -300,6 +311,25 @@ for k, v in D["lookthrough"].items(): TXT.append(("lookthrough:" + k, v.get("not
 for f_ in D["funds"] + [x for x in D["portfolio_b"]["funds"] if x["id"] not in {y["id"] for y in D["funds"]}]:
     if f_.get("target_check"): TXT.append(("target_check:" + f_["id"], f_["target_check"]["text"]))
 TXT.append(("corr_note", D["corr_note"]))
+# v95: THE REAL-YIELD CARD reads the newest PH CPI on record (it read September's for two days after
+# October's was out) and spans all three T-bill tenors.
+_MO = "jan feb mar apr may jun jul aug sep oct nov dec".split(); _am = d(D["as_of"]).month
+_lk = min((k for k in M if re.fullmatch(r"ph_cpi_(" + "|".join(_MO) + ")", k)), key=lambda k: (_am - (_MO.index(k[7:]) + 1)) % 12 or 12)
+_RY = D["real_yield"]; _tbs = [M["ph_tbill_91"], M["ph_tbill_182"], M["ph_tbill_364"]]
+ck("the real-yield card reads the newest PH CPI on record, against every T-bill tenor",
+   _RY["cpi"] == M[_lk] and _RY["month"].lower().startswith(_lk[7:]) and _RY["lo"] == min(_tbs) and _RY["hi"] == max(_tbs)
+   and abs(_RY["ry_lo"] - (min(_tbs) - M[_lk])) < 0.006 and abs(_RY["ry_hi"] - (max(_tbs) - M[_lk])) < 0.006,
+   f"{_RY} vs {_lk}")
+# v95: an f-string split across two literals dropped the second one's f, and the monetary note printed
+# "{_dday('ust_10y_peak_date')}". Every string in the payload is scanned, not only the prose above.
+STRS = []
+def walk_s(o, p_=""):
+    if isinstance(o, str): STRS.append((p_, o))
+    elif isinstance(o, dict): [walk_s(v, p_ + "." + str(k)) for k, v in o.items()]
+    elif isinstance(o, list): [walk_s(v, p_) for v in o]
+walk_s(D)
+_br = [(p_, m.group(0)) for p_, t in STRS for m in re.finditer(r"\{[^{}\s][^{}]{0,79}\}", t)]
+ck(f"no string in the payload carries an unformatted placeholder ({len(STRS)} scanned)", not _br, f"{_br[:2]}")
 NUMS = []
 def walk(o):
     if isinstance(o, bool): return
@@ -395,7 +425,8 @@ ck(f"every one-decimal Brent y/y quote is the exact ratio rounded half-up ({floa
    bool(_yqs) and all(abs(v - float(_yx)) < 1e-9 for v in _yqs) and M.get("brent_yoy_1dp") == float(_yx), f"{_yqs}")
 # v93: every fund's target-fund check is from this review, with a known status, and a charge
 # marked confirmed is the charge the forecast carries.
-_TCS = {"no target", "confirmed", "partly confirmed", "estimate", "unconfirmed", "disputed", "manager change"}
+_TCS = {"no target", "confirmed", "partly confirmed", "estimate", "unconfirmed", "disputed", "manager change",
+        "mandate change"}
 _tcf = D["funds"] + [x for x in D["portfolio_b"]["funds"] if x["id"] not in {y["id"] for y in D["funds"]}]
 ck(f"every fund carries a target-fund check from this review, with a known status ({len(_tcf)} funds)",
    len(_tcf) == len(D["portfolio_b"]["ids"])
@@ -448,10 +479,23 @@ def used(k, v):
     if isinstance(v, (int, float)) and not isinstance(v, bool):
         return any(re.search(r"(?<![\d.])%s(?![\d])" % re.escape(f_), _prose.replace(",", "")) for f_ in {"%g" % v, "%g" % abs(v)})
     return False
+# THE VERB IS THE MOVE (v95): each driver's note and summary open with HELD, RAISED or CUT, and that
+# word must be what its score did against the last review's score the payload records.
+_vw = lambda t: (re.match(r"(HELD|RAISED|CUT)\b", t.upper()) or [None, None])[1]
+_vexp = lambda x: "HELD" if x["score_10"] == x["prev_score_10"] else "RAISED" if x["score_10"] > x["prev_score_10"] else "CUT"
+_vbad = [x["name"] for x in D["drivers"] if "prev_score_10" not in x or _vw(x["note"]) != _vexp(x) or _vw(x["summary"]) != _vexp(x)]
+ck("each driver's note and summary open with the move its score made since the last review", not _vbad, f"{_vbad}")
 try:
     ref = os.environ.get("BASELINE_REF", "HEAD")
-    base = json.loads(subprocess.run(["git", "-C", ROOT if os.path.isdir(os.path.join(ROOT, ".git")) else os.path.dirname(__file__),
-                                      "show", f"{ref}:model/data.json"], capture_output=True, text=True, check=True).stdout)["macro"]
+    _bfull = json.loads(subprocess.run(["git", "-C", ROOT if os.path.isdir(os.path.join(ROOT, ".git")) else os.path.dirname(__file__),
+                                      "show", f"{ref}:model/data.json"], capture_output=True, text=True, check=True).stdout)
+    base = _bfull["macro"]
+    # When the baseline is the PREVIOUS release (its notes differ from these), its scores are the
+    # "last review" scores this payload records; once this release is committed, it is skipped.
+    _bd = {x["name"]: x for x in _bfull["drivers"]}
+    if [x["note"] for x in D["drivers"]] != [_bd.get(x["name"], {}).get("note") for x in D["drivers"]]:
+        _pbad = [x["name"] for x in D["drivers"] if _bd.get(x["name"], {}).get("score_10") != x.get("prev_score_10")]
+        ck(f"the last-review scores recorded are {ref}'s published scores", not _pbad, f"{_pbad}")
     new = [k for k, v in M.items() if k not in base and not isinstance(v, (list, dict, bool)) and v is not None and not used(k, v)]
     ck(f"no input added since {ref} that nothing reads", not new, ", ".join(new))
 except Exception as e:
