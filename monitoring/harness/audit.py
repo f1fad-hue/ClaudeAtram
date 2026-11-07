@@ -36,9 +36,9 @@ ck("the page embeds exactly one payload", m_ is not None and HTML.count('<script
 ck("the embedded payload is model/data.json", m_ is not None and json.loads(m_.group(1)) == D)
 ck("the review date is on or after the data date", REV >= AS_OF, f"{REV} vs {AS_OF}")
 ck("the data date is a weekday", AS_OF.weekday() < 5, f"{AS_OF:%A}")
-for k in ("optimized", "portfolio_d"):
+for k in ("optimized",):
     ck(f"retired key '{k}' is absent", k not in D)
-PAA, PBB, PCC = D["portfolio_a"], D["portfolio_b"], D["portfolio_c"]
+PAA, PBB, PCC, PDD = D["portfolio_a"], D["portfolio_b"], D["portfolio_c"], D["portfolio_d"]
 ck("the 21 Oct review record stays retired (no review, match flag or outside list on A; no pa_review_*)",
    not {"review", "is_review_pick", "review_outside"} & set(PAA) and not any(k.startswith("pa_review_") for k in M))
 
@@ -46,7 +46,7 @@ ck("the 21 Oct review record stays retired (no review, match flag or outside lis
 sec("B. FUNDS: fees, nets, tilts and drawdowns")
 FU = D["funds"] + PBB["funds"]
 IDS = [f["id"] for f in FU]
-ck("the universe is the payload's ids, in order", IDS == PBB["ids"] == PAA["ids"] == PCC["ids"], f"{IDS}")
+ck("the universe is the payload's ids, in order", IDS == PBB["ids"] == PAA["ids"] == PCC["ids"] == PDD["ids"], f"{IDS}")
 DM = D["dd_model"]; K0, MU, SC = DM["k"], DM["mu_coef"], DM["horizon_scalar"]
 ck("the drawdown horizon scalar is sqrt(horizon / calibration)", abs(SC - math.sqrt(DM["horizon_y"] / DM["calib_y"])) < 1e-6)
 CASH = {i for i, f in enumerate(FU) if f["id"] == "ATRPHMM"}
@@ -148,6 +148,47 @@ for lab, P, key, pin in (("A", PAA, "net_10y", None), ("B", PBB, "net_macro", No
        f"{w_} ({nf}, {nb}) vs {P['weights']} ({P['n_feasible']}, {P['band_n']})")
     if lab == "B": ck(f"the universe's mix count is the payload's ({nt})", nt == D["universe"]["n_total"], f"{D['universe']['n_total']}")
     if lab == "C": ck(f"C's pinned mix count is the payload's ({nt})", nt == PCC["n_total"], f"{PCC['n_total']}")
+
+# PORTFOLIO D (v96, owner 2026-11-07): Nasdaq Equity Income and exactly two other funds, each at
+# least 5%, with no single-fund cap and no cash floor - re-checked and re-picked here from its own
+# generator, not the engine's.
+wD = [int(x) for x in PDD["weights"]]
+ck("D: 11 weights on the 5% grid summing to 100", len(wD) == NU and sum(wD) == 100 and all(x % 5 == 0 for x in wD), f"{wD}")
+ck("D: Nasdaq Equity Income and exactly two other funds, each at least 5%",
+   PDD["fund"] == "ATRQIAP" and wD[PIN] >= 5 and sum(1 for x in wD if x) == 3 == 1 + PDD["partners"], f"{wD}")
+for view, key in (("macro", "net_macro"), ("base", "net_base"), ("ten", "net_10y")):
+    rd, vd, dd_, _, _ = figures(wD, key); S = PDD[view]
+    ck(f"D {view}: CAGR / vol / drawdown re-derive ({rd} / {vd} / {dd_})",
+       (rd, vd, dd_) == (S["cagr"], S["vol"], S["maxdd"]), f"vs {S['cagr']} / {S['vol']} / {S['maxdd']}")
+    ck(f"D {view}: return per drawdown and the 10-year peso value follow from the printed figures",
+       abs(S["ret_per_dd"] - round(S["cagr"] / abs(S["maxdd"]), 3)) < 0.0011
+       and abs(S["terminal_1m"] - 1e6 * (1 + S["cagr"] / 100) ** 10) < 2, f"{S['ret_per_dd']} / {S['terminal_1m']}")
+ck("D: inside the drawdown budget on its 3/5/10-year view", abs(PDD["macro"]["maxdd"]) <= CAP + 1e-9 and PDD["dd_cap"] == CAP,
+   f"{PDD['macro']['maxdd']} vs {CAP}")
+_gD = [r_ for r_ in PDD["scenarios"] if r_["name"].startswith("Grind")]
+ck("D: its grind-on stress row is its own-horizon headline", len(_gD) == 1
+   and (_gD[0]["cagr"], _gD[0]["vol"], _gD[0]["maxdd"]) == (PDD["macro"]["cagr"], PDD["macro"]["vol"], PDD["macro"]["maxdd"]))
+ck("D: its drawdown coefficient is its own mix", abs(D["dd_model"]["d_k"] - round(pk(wD), 5)) < 1e-6)
+def d_mixes_audit():
+    for a_, b_ in itertools.combinations([i for i in range(NU) if i != PIN], 2):
+        for x in range(5, 91, 5):
+            for y in range(5, 96 - x, 5):
+                z = 100 - x - y
+                if z < 5: continue
+                w = [0] * NU; w[PIN] = x; w[a_] = y; w[b_] = z
+                yield w
+_fD, _nD = [], 0
+for w in d_mixes_audit():
+    _nD += 1
+    rd, vd, dd_, r, v = figures(w, "net_macro")
+    ddr = max((pk(w) * v - MU * r) * SC, 0.0)
+    if ddr > CAP + 1e-9 or abs(dd_) > CAP + 1e-9: continue
+    _fD.append((rd, abs(dd_), ddr, w))
+_tD = max(x[0] for x in _fD); _bD = [x for x in _fD if x[0] >= _tD - 1e-9]
+_wD = min(_bD, key=lambda x: (x[1], x[2]))[3]
+ck(f"D is the rule's pick on the 3/5/10-year view, re-run over all {_nD} of its mixes ({len(_fD)} feasible, {len(_bD)} at the best CAGR)",
+   _wD == wD and len(_fD) == PDD["n_feasible"] and len(_bD) == PDD["band_n"] and _nD == PDD["n_total"],
+   f"{_wD} ({len(_fD)}, {len(_bD)}, {_nD}) vs {wD} ({PDD['n_feasible']}, {PDD['band_n']}, {PDD['n_total']})")
 
 # ---------------------------------------------------------------------------
 sec("D. THE MACRO GAUGE, THE DRIVER PATHS AND THE REGIONS")

@@ -196,6 +196,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+151. A RETIRED KEY IS REUSED ONLY BY REWRITING ITS GUARD. The engine and the audit both held `portfolio_d`
+   absent since v74. The owner's new D (v96) reuses the key for a different portfolio, so those checks were
+   replaced by D's own - its set, its rule, its re-derived figures - not deleted, and the register keeps the
+   old D as history beside the new one.
 150. A WEEK THAT SPANS A ROLL HAS ONE HONEST CHANGE. On 6 Nov the settle seven days earlier was December
    Brent's last, so the engine quoted no weekly change, though January's own 30 Oct settle was on record as the
    roll prior. Read the new contract's roll prior, and name the contract: the continuous front month's fall is

@@ -88,6 +88,12 @@ def m_verb(d):                                                                  
     x["note"] = {"HELD": "RAISED", "RAISED": "HELD", "CUT": "HELD"}[w[0]] + " " + w[1]
 def m_brace(d): x = _drv(d, "Monetary"); x["note"] = x["note"].replace(". ", ". The {_dday('x')} high. ", 1)   # an f lost (v95)
 def m_rycpi(d): d["real_yield"]["cpi"] = d["macro"]["ph_cpi_sep"]; d["real_yield"]["month"] = "September"   # the stale month (v95)
+def m_dshift(d):                                                                               # D moved 5% off its pick (v96)
+    w = d["portfolio_d"]["weights"]; i = w.index(max(w)); j = next(k for k in range(len(w)) if w[k] and k != i)
+    w[i] -= 5; w[j] += 5
+def m_dfour(d):                                                                                # D holding a fourth fund (v96)
+    w = d["portfolio_d"]["weights"]; i = w.index(max(w)); j = next(k for k in range(len(w)) if not w[k])
+    w[i] -= 5; w[j] += 5
 def m_grind(d):
     r = next(r for r in d["portfolio_b"]["scenarios"] if r["name"].startswith("Grind")); r["cagr"] = round(r["cagr"] + 0.01, 2)
 

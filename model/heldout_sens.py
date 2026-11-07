@@ -48,8 +48,11 @@ def run(spec):
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
     for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
         pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
+    pk["d"] = E._Pick()                      # v96: D, Nasdaq Equity Income and two others
+    for seq, (idx, u) in enumerate(E.d_mixes()):
+        pk["d"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
     out = {}
-    for k in "abc":
+    for k in "abcd":
         w, band, win = pk[k].result()
         out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "new_w": round(w[-1] * 100)}
     return fb, out
@@ -59,8 +62,8 @@ def run_refee(fid, trust):
     return run_override(fid, fee_feeder=trust)
 
 def run_override(fid, **over):
-    """Re-run A, B and C with an admitted fund rebuilt with any fee overridden (v93: also
-    the target-fund charge, for a disputed share class)."""
+    """Re-run A, B, C and D with an admitted fund rebuilt with any fee overridden (v93: also
+    the target-fund charge, for a disputed share class; D from v96)."""
     ix = E.UNIV_IDS.index(fid)
     spec = dict(E.UNIV[1][ix], **over)
     fb = E.build_fund(spec)
@@ -74,8 +77,11 @@ def run_override(fid, **over):
         pk["a"].add(ms[0] + (seq, idx, u)); pk["b"].add(ms[1] + (seq, idx, u))
     for seq, (idx, u) in enumerate(E.univ_mixes(pinned=True)):
         pk["c"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
+    pk["d"] = E._Pick()                      # v96: D, Nasdaq Equity Income and two others
+    for seq, (idx, u) in enumerate(E.d_mixes()):
+        pk["d"].add(E._measure(idx, u, ["net_macro"])[0] + (seq, idx, u))
     out = {}
-    for k in "abc":
+    for k in "abcd":
         w, band, win = pk[k].result()
         out[k] = {"w": [round(x * 100) for x in w], "cagr": win[0], "dd": win[1], "fund_w": round(w[ix] * 100)}
     E._UF = E.UNIV[0]

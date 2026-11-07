@@ -2,6 +2,44 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-07 — v96: Portfolio D - Nasdaq Equity Income plus two other funds on the 3/5/10-year view inside the band (55 / 25 / 20, 7.13% / −24.9%); A, B and C unchanged
+
+At the owner's instruction: "Make portfolio D with atram nasdaq equity income plus 2 other fund with 3, 5, 10yrs
+horizon and with in the drawdown band", then "... based on macroeconomic sentiment, market trend, volatility,
+regional rankings deep analysis of 3, 5, 10yrs and with in the drawdown band". No market input changed; the
+data stay at v95's 6 Nov.
+
+**The rule, and the owner's choice of limits:** D is Nasdaq Equity Income and exactly two other funds of the
+eleven, each at least 5%, in 5% steps, chosen by B's rule on B's inputs - the highest net CAGR after all fees on
+the 3/5/10-year view (the macro drivers, the market trend, the volatility curve and the regional ranking, each at
+3, 5 and 10 years) whose drawdown is inside the band's budget, as computed and as shown. The review's limits (35%
+in any one fund, 50% for C's Nasdaq, at least 5% peso cash) would have made one of D's two partners the money
+market, so the owner was asked first and chose **no single-fund cap and no cash floor**; A, B and C keep every
+limit. (The options offered: Nasdaq up to 50% with no cash floor, 7.11%; C's limits with cash, 6.95%; A and B's
+35% cap, 6.48%.)
+
+**D:** 55% Nasdaq Equity Income, 25% Global Infra Equity, 20% Asian Multi-Asset Income - **7.13% / −24.9%** on
+the 3/5/10-year view, 7.34% / −24.8% on the 10-year, 0.01pp below C. 7,695 mixes; 1,951 inside the budget; one at
+the best CAGR. Its partners are the two that cushion the Nasdaq fund's falls at the least cost: correlations of
+0.56 and 0.49 with it. At the band's steps: 24% 7.05% / −24.0%, 26% 7.22% / −25.9%, 27% 7.32% / −27.0% (Global
+Health Care replaces Asian Multi-Asset Income at 27%). Stress: Hormuz 3.56% / −45.4%, AI capex 4.58% / −40.2%.
+It holds no peso cash; all three funds are unhedged.
+
+**Re-runs:** D is re-chosen on every universe what-if (it keeps its weights without the trend, with the drags
+at neutral and with a flat curve; it changes only without Asia Equity's re-rating credit) and in the held-out and
+disputed-fee re-runs: Global Bond Income at its institutional charge would take 55% of it; at Global Infra's 1.00%
+or 1.10% charge D swaps Global Infra for Global Health Care (7.10%); at Asian Multi-Asset Income's 1.20% trust fee
+it keeps its weights at 7.19%.
+
+**The page:** a Portfolio D section on the Portfolios tab (donut, figures, stress, steps, why these two); D's line
+under the Budget tab's steps; a D card and D in every what-if on the Report; "Weight in A / B / C / D" on each fund.
+
+**Checks:** engine 259 -> 262 (D's grid and fund count, its set of 7,695 each once, the rule on it inside the
+budget, its CAGR from its funds; the checks that held the retired v74 D's key absent are replaced, not deleted);
+audit 252 -> 262 (D re-derived on three views, its budget, its grind row, its coefficient, and its pick re-run
+from the audit's own generator); page 15 -> 16 (D's donut and lede); mutants 51 -> 53 (m_dshift, m_dfour).
+Runbook 151.
+
 ## 2026-11-07 — v95: New York steadies on 6 Nov and Brent ends 13.3% lower on the week; the VIX's 6 Nov close disputed and held; Invesco's mandate change for Global Consumer Trends found; every score held; A, B and C unchanged
 
 At the owner's instruction, the revised review command. **Cut-off 23:32 UTC on Fri 6 Nov**; the work finished on

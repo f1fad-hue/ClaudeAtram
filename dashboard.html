@@ -585,6 +585,29 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     </details>
   </section>
 
+  <section id="dsec">
+    <p class="eyebrow">Portfolio D &middot; Nasdaq Equity Income plus two</p>
+    <h2 id="dhead">—</h2>
+    <p class="lede" id="dlede">—</p>
+    <div class="card">
+      <div class="dwrap" style="max-width:260px;margin:0 auto">
+        <div class="dt2">Portfolio D</div>
+        <div class="dn">3/5/10-year view</div>
+        <div id="donutD"></div>
+        <div class="note" id="donutDlr" style="text-align:center;margin-top:2px">—</div>
+      </div>
+      <div class="tw"><table class="dt" id="dtab"></table></div>
+      <p class="note" id="dnote">—</p>
+    </div>
+    <details class="card how">
+      <summary>D under stress, and at each budget step</summary>
+      <div class="tw"><table class="dt" id="dstress"></table></div>
+      <p class="note" style="margin:12px 0 4px"><strong>At each budget step</strong>, D re-chosen by the same rule:</p>
+      <ul class="plain" id="dsteps"></ul>
+      <p class="note" id="dwhy">—</p>
+    </details>
+  </section>
+
   <section id="hlsec">
     <p class="eyebrow">Headline forecast &middot; A vs B vs C</p>
     <div class="card">
@@ -695,6 +718,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <div class="card">
       <div class="tw"><table class="dt" id="ddsteps"></table></div>
       <p class="note" id="ddstepnote">—</p>
+      <p class="note" id="ddstepd" style="margin-bottom:0">—</p>
     </div>
   </section>
 
@@ -770,6 +794,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
         inflation of <b class="num" id="rycpi">—</b> the real yield is
         <b class="num" id="rylo">—</b> to <b class="num" id="ryhi">—</b>. It is
         zero-duration dry powder for rebalancing into a drawdown.</p>
+    </div>
+
+    <div class="card">
+      <h3>6 &middot; Portfolio D, three funds</h3>
+      <p style="margin-bottom:0" id="rdcard">—</p>
     </div>
 
     <div class="card">
@@ -1289,6 +1318,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "gbi_w_c_low": 25,
   "gbi_w_c_high": 0,
   "amip_w_c_alt": 5,
+  "useq_w_d_listed": 0,
+  "useq_w_d_peer": 0,
+  "gbi_w_d_low": 55,
+  "gbi_w_d_high": 15,
+  "amip_w_d_alt": 20,
   "gbi_trust_listed": 0.9,
   "gbi_target_low": 0.69,
   "gbi_target_high": 1.59,
@@ -1328,6 +1362,14 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "ginf_cagr_c_alt": [
    7.1,
    7.08
+  ],
+  "ginf_w_d_alt": [
+   0,
+   0
+  ],
+  "ginf_cagr_d_alt": [
+   7.1,
+   7.1
   ],
   "aseq_target_alt": 1.82,
   "aseq_mgmt_fee": 1.5,
@@ -3691,6 +3733,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "a_k": 1.66579,
   "b_k": 1.65833,
   "c_k": 1.65,
+  "d_k": 1.65,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
  "baseline": {
@@ -4079,6 +4122,28 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "n_feasible": 2748,
      "best": 7.03,
      "hormuz_dd": -43.3
+    },
+    "d": {
+     "weights": [
+      0,
+      50,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      25,
+      0
+     ],
+     "cagr": 7.05,
+     "maxdd": -24.0,
+     "vol": 12.42,
+     "ret_per_dd": 0.294,
+     "n_feasible": 1707,
+     "best": 7.05,
+     "hormuz_dd": -43.9
     }
    },
    "25": {
@@ -4147,6 +4212,28 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "n_feasible": 3551,
      "best": 7.14,
      "hormuz_dd": -45.1
+    },
+    "d": {
+     "weights": [
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.13,
+     "maxdd": -24.9,
+     "vol": 12.84,
+     "ret_per_dd": 0.286,
+     "n_feasible": 1951,
+     "best": 7.13,
+     "hormuz_dd": -45.4
     }
    },
    "26": {
@@ -4215,6 +4302,28 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "n_feasible": 4347,
      "best": 7.21,
      "hormuz_dd": -46.4
+    },
+    "d": {
+     "weights": [
+      0,
+      60,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      15,
+      0
+     ],
+     "cagr": 7.22,
+     "maxdd": -25.9,
+     "vol": 13.28,
+     "ret_per_dd": 0.279,
+     "n_feasible": 2216,
+     "best": 7.22,
+     "hormuz_dd": -47.1
     }
    },
    "27": {
@@ -4282,6 +4391,28 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "ret_per_dd": 0.271,
      "n_feasible": 5008,
      "best": 7.3,
+     "hormuz_dd": -48.5
+    },
+    "d": {
+     "weights": [
+      0,
+      45,
+      0,
+      0,
+      0,
+      20,
+      35,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.32,
+     "maxdd": -27.0,
+     "vol": 13.78,
+     "ret_per_dd": 0.271,
+     "n_feasible": 2510,
+     "best": 7.32,
      "hormuz_dd": -48.5
     }
    }
@@ -4888,6 +5019,23 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "cagr": 7.15,
      "maxdd": -24.9
     },
+    "d": {
+     "weights": [
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.14,
+     "maxdd": -24.9
+    },
     "a": {
      "cagr": 7.31,
      "maxdd": -24.9
@@ -4926,6 +5074,23 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       0
      ],
      "cagr": 7.2,
+     "maxdd": -24.9
+    },
+    "d": {
+     "weights": [
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.21,
      "maxdd": -24.9
     },
     "a": {
@@ -4968,6 +5133,23 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "cagr": 7.12,
      "maxdd": -24.9
     },
+    "d": {
+     "weights": [
+      0,
+      45,
+      0,
+      0,
+      0,
+      0,
+      20,
+      0,
+      0,
+      0,
+      35
+     ],
+     "cagr": 7.04,
+     "maxdd": -24.9
+    },
     "a": {
      "cagr": 7.21,
      "maxdd": -24.9
@@ -5006,6 +5188,23 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       0
      ],
      "cagr": 7.14,
+     "maxdd": -24.9
+    },
+    "d": {
+     "weights": [
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.13,
      "maxdd": -24.9
     },
     "a": {
@@ -5049,6 +5248,23 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "cagr": 7.16,
      "maxdd": -24.9
     },
+    "d": {
+     "weights": [
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.16,
+     "maxdd": -24.9
+    },
     "a": {
      "cagr": 7.31,
      "maxdd": -24.9
@@ -5087,6 +5303,23 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       0
      ],
      "cagr": 7.14,
+     "maxdd": -24.9
+    },
+    "d": {
+     "weights": [
+      0,
+      55,
+      0,
+      0,
+      0,
+      0,
+      25,
+      0,
+      0,
+      20,
+      0
+     ],
+     "cagr": 7.13,
      "maxdd": -24.9
     },
     "a": {
@@ -5361,7 +5594,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "date": "2026-11-07",
      "first": "2026-11-04",
      "status": "disputed",
-     "text": "Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the 0.80% charge on ATRAM's fact sheet matches no HSBC class found - IC 1.00% (estimated), BC GBP 1.10%, ZD 0.15% - and the class held is not published. At 1.00% its net CAGR on the 3/5/10-year view is 6.97%; A would hold 15% (7.26% on its 10-year view), B 0% (7.07%) and C 20% (7.10%). At 1.10% it nets 6.87%, and A holds 0%, B 0% and C 20%. The newest holdings list found is a year old. No events found."
+     "text": "Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the 0.80% charge on ATRAM's fact sheet matches no HSBC class found - IC 1.00% (estimated), BC GBP 1.10%, ZD 0.15% - and the class held is not published. At 1.00% its net CAGR on the 3/5/10-year view is 6.97%; A would hold 15% (7.26% on its 10-year view), B 0% (7.07%), C 20% (7.10%) and D 0% (7.10%). At 1.10% it nets 6.87%, and A holds 0%, B 0%, C 20% and D 0% (7.10%). The newest holdings list found is a year old. No events found."
     },
     "net_novol": 7.17,
     "net_neutral": 7.25,
@@ -5544,7 +5777,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "region": "ASIA",
     "target": "Target fund: Schroder Asian Asset Income Fund (named at launch, Sep 2022). Benchmark: 50% MSCI AC Asia Pacific ex Japan + 50% Bloomberg EM Asia.",
     "target_verified": true,
-    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%, and C the 5% it holds at 1.50%",
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%, C the 5% it holds at 1.50% and D its 20%",
     "gross_note": "Half equity, half bonds, as its benchmark: the Asia equity build (JPM LTCMA 2027 EM equity 7.1% + 1.0% re-rating - 0.5% dividend drag) and 6.1% for Asian credit (the LTCMA's US investment-grade figure, a proxy).",
     "code": "ATRAMIP",
     "fee_feeder": 1.5,
@@ -6156,6 +6389,145 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "desc": "Vol settles back to the 19-20 the futures curve priced on 20 Oct, earnings hold, no policy accident. The modelled path.",
     "cagr": 7.14,
     "vol": 12.83,
+    "maxdd": -24.9
+   }
+  ],
+  "dd_cap": 25.0,
+  "in_budget": true
+ },
+ "portfolio_d": {
+  "weights": [
+   0,
+   55,
+   0,
+   0,
+   0,
+   0,
+   25,
+   0,
+   0,
+   20,
+   0
+  ],
+  "ids": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRASEQ",
+   "ATRGTEC",
+   "ATRGLDV",
+   "ATRGHCP",
+   "M_GINF",
+   "M_GEO",
+   "M_GCT",
+   "ATRAMIP",
+   "M_GALL"
+  ],
+  "macro": {
+   "weights": [
+    0.0,
+    55.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    25.0,
+    0.0,
+    0.0,
+    20.0,
+    0.0
+   ],
+   "cagr": 7.13,
+   "vol": 12.84,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.286,
+   "sharpe_like": 0.043,
+   "terminal_1m": 1991182,
+   "worst_1m_from_open": 751000
+  },
+  "base": {
+   "weights": [
+    0.0,
+    55.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    25.0,
+    0.0,
+    0.0,
+    20.0,
+    0.0
+   ],
+   "cagr": 7.09,
+   "vol": 12.84,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.285,
+   "sharpe_like": 0.039,
+   "terminal_1m": 1983760,
+   "worst_1m_from_open": 751000
+  },
+  "ten": {
+   "weights": [
+    0.0,
+    55.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    25.0,
+    0.0,
+    0.0,
+    20.0,
+    0.0
+   ],
+   "cagr": 7.34,
+   "vol": 12.84,
+   "maxdd": -24.8,
+   "ret_per_dd": 0.296,
+   "sharpe_like": 0.059,
+   "terminal_1m": 2030560,
+   "worst_1m_from_open": 752000
+  },
+  "column": "net_macro",
+  "fund": "ATRQIAP",
+  "partners": 2,
+  "band_n": 1,
+  "n_feasible": 1951,
+  "n_total": 7695,
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $98. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 3.56,
+    "vol": 20.54,
+    "maxdd": -45.4
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
+    "cagr": 4.83,
+    "vol": 16.69,
+    "maxdd": -35.5
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Partly running since 5 Nov: the Nasdaq fell 5.52% into correction on 5 Nov, and the KOSPI 5.28% on 5 Nov and 6.02% on 6 Nov, on fears for the AI build-out, before any earnings cut. This row models the cut: the semis order book rolls over and the 52.5% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 4.58,
+    "vol": 18.62,
+    "maxdd": -40.2
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 9.41,
+    "vol": 10.27,
+    "maxdd": -17.3
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol settles back to the 19-20 the futures curve priced on 20 Oct, earnings hold, no policy accident. The modelled path.",
+    "cagr": 7.13,
+    "vol": 12.84,
     "maxdd": -24.9
    }
   ],
@@ -9391,25 +9763,27 @@ $("#corrnote").textContent = D.corr_note;
      column, A re-measured on it (A is chosen on the 10-year view, which reads none of
      the near-horizon inputs these change). */
   const WI = D.universe.what_if, fa = FX.ATRASEQ, iAS = IDS.indexOf("ATRASEQ");
-  $("#wikey").textContent = `Each re-chooses B and C by the same rule on the changed input and re-measures A on its ${HYN} view.`;
-  const CW = D.portfolio_c.weights;
+  $("#wikey").textContent = `Each re-chooses B, C and D by the same rule on the changed input and re-measures A on its ${HYN} view.`;
+  const CW = D.portfolio_c.weights, DW = D.portfolio_d.weights;
   /* v83, concise: a mix the previous what-if already spelled out is not spelled out again. */
   let lastB = null;
   const BC = x => { const rep_ = lastB && same(x.b.weights, lastB); lastB = x.b.weights;
     return (rep_ ? `B holds the same mix for ${num(pc(x.b.cagr))}` : `B holds ${num(wj(x.b.weights))} for ${num(pc(x.b.cagr))}`) +
     (same(x.b.weights, W) ? ` (unchanged)` : ``) +
-    `; C ` + (same(x.c.weights, CW) ? `keeps its weights, at ${num(pc(x.c.cagr))}` : `holds ${num(wj(x.c.weights))} for ${num(pc(x.c.cagr))}`) + `; A ` +
+    `; C ` + (same(x.c.weights, CW) ? `keeps its weights, at ${num(pc(x.c.cagr))}` : `holds ${num(wj(x.c.weights))} for ${num(pc(x.c.cagr))}`) +
+    `; D ` + (same(x.d.weights, DW) ? `keeps its weights, at ${num(pc(x.d.cagr))}` : `holds ${num(wj(x.d.weights))} for ${num(pc(x.d.cagr))}`) + `; A ` +
     (x.a.cagr === Ao.cagr ? `stays at ${num(pc(x.a.cagr))} on its ${HYN} view` : `returns ${num(pc(x.a.cagr))} on its ${HYN} view`); };
   /* v83: C in both Asia cases - it moves without the re-rating credit, and v82 left it out. */
   const mvs = r => {
-    const ph = ["b", "c"].map(x => [x, same(r[x].weights, x === "b" ? W : CW) ? null
+    const ph = ["b", "c", "d"].map(x => [x, same(r[x].weights, x === "b" ? W : x === "c" ? CW : DW) ? null
       : `${x.toUpperCase()} holds ${num(wj(r[x].weights))} for ${num(pc(r[x].cagr))}`]);
     const still = ph.filter(p => !p[1]).map(p => p[0].toUpperCase());
-    return [still.length ? `${still.join(" and ")} ${still.length > 1 ? "do" : "does"} not move` : ``]
+    const jn = xs => xs.length < 3 ? xs.join(" and ") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1];
+    return [still.length ? `${jn(still)} ${still.length > 1 ? "do" : "does"} not move` : ``]
       .concat(ph.filter(p => p[1]).map(p => p[1])).filter(Boolean).join("; ");
   };
   $("#wiasia").innerHTML =
-    (W[iAS] || WA[iAS] || CW[iAS] ? `` : `None of A, B or C holds it. `) +
+    (W[iAS] || WA[iAS] || CW[iAS] || DW[iAS] ? `` : `None of A, B, C or D holds it. `) +
     `Its target-fund charge (${num(fa.fee_target.toFixed(2) + "%")}) may be higher for a Hong
      Kong unit trust: ${num(WI.asia_fee_hi.stress_pp ? WI.asia_fee_hi.stress_pp.toFixed(2) + "pp" : "0.25pp")} more and ` +
     mvs(WI.asia_fee_hi) + (WI.asia_fee_hi.a.cagr === Ao.cagr ? `` : `; A returns ${num(pc(WI.asia_fee_hi.a.cagr))} on its ${HYN} view`) + `.` +
@@ -10136,10 +10510,10 @@ const noteFor = f => {
   const NF = wn(FALL.length);
   $("#fundsh").textContent = `${NF[0].toUpperCase() + NF.slice(1)} funds, ${NF} jobs`;
   /* Who holds what, from the weights: A, B and C draw on the same funds. */
-  const WTS = { A: D.portfolio_a.weights, B: PB_.weights, C: D.portfolio_c.weights };
-  const holders = f => { const j = PB_.ids.indexOf(f.id); return ["A", "B", "C"].filter(x => WTS[x][j] > 0); };
+  const WTS = { A: D.portfolio_a.weights, B: PB_.weights, C: D.portfolio_c.weights, D: D.portfolio_d.weights };
+  const holders = f => { const j = PB_.ids.indexOf(f.id); return ["A", "B", "C", "D"].filter(x => WTS[x][j] > 0); };
   const and2 = xs => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1];
-  $("#fundsheld").textContent = `A, B and C draw on these ${NF}. ` + FALL.filter(f => !holders(f).length)
+  $("#fundsheld").textContent = `A, B, C and D draw on these ${NF}. ` + FALL.filter(f => !holders(f).length)
     .map(f => f.short).concat([]).reduce((s, n, k, arr) => k ? s : (arr.length ? `None holds ${and2(arr).replace(/ and ([^,]*)$/, " or $1")}.` : ``), "");
   FALL.forEach((f, i) => {
     const grossUsd = +(f.gross_php - f.fx_drift).toFixed(2);
@@ -10157,7 +10531,8 @@ const noteFor = f => {
     build.push(["Macro tilt", f.tilt_total, f.tilt_total >= 0 ? "pos" : "neg"]);
     build.push([`Net ${HYL} CAGR — macro-adjusted`, f.net_macro, "final"]);
 
-    const j = PB_.ids.indexOf(f.id), wA = D.portfolio_a.weights[j], wB = PB_.weights[j], wC = D.portfolio_c.weights[j];
+    const j = PB_.ids.indexOf(f.id), wA = D.portfolio_a.weights[j], wB = PB_.weights[j], wC = D.portfolio_c.weights[j],
+          wD = D.portfolio_d.weights[j];
     const s = el("article", { class:"slide" });
     s.innerHTML =
       `<div class="sh" style="background:${HEX[i]}">
@@ -10178,7 +10553,7 @@ const noteFor = f => {
            <div class="kv"><dt>Volatility σ</dt><dd>${f.vol.toFixed(2)}%</dd></div>
            <div class="kv"><dt>All-in fees</dt><dd>${f.fee_total.toFixed(2)}%</dd></div>
            <div class="kv"><dt>Regional score</dt><dd>${f.regional_score.toFixed(2)} / 5</dd></div>
-           <div class="kv"><dt>Weight in A / B / C</dt><dd style="color:${HEX[i]};font-weight:700">${wA}% / ${wB}% / ${wC}%</dd></div>
+           <div class="kv"><dt>Weight in A / B / C / D</dt><dd style="color:${HEX[i]};font-weight:700">${wA}% / ${wB}% / ${wC}% / ${wD}%</dd></div>
          </dl>
          <!-- v79: the stated target folds behind its one-line figure, to keep each slide short -->
          <!-- v93: each target fund's check at this review - its status in the summary line,
@@ -10324,6 +10699,62 @@ function donut(host, w, title, cagr, dd) {
   d.textContent = pc1(dd); s.appendChild(d);
   host.appendChild(s);
 }
+/* PORTFOLIO D (owner, 2026-11-07): Nasdaq Equity Income and exactly two other funds, chosen by
+   the one rule on the 3/5/10-year view inside the band's budget; asked which limits it keeps, the
+   owner chose no single-fund cap and no cash floor. Everything below reads the payload. */
+(function () {
+  const P = D.portfolio_d, M = P.macro, T = P.ten, PBq = D.portfolio_b, Cm = D.portfolio_c.macro;
+  const SH = PBq.shorts, CR = PBq.corr, iq = PBq.ids.indexOf(P.fund), cap = P.dd_cap;
+  const FALL = D.funds.concat(PBq.funds.filter(f => !D.funds.some(g => g.id === f.id)));
+  const FX = Object.fromEntries(FALL.map(f => [f.id, f]));
+  const num = t => `<b class="num">${t}</b>`, peso = v => "\u20B1" + Math.round(v).toLocaleString("en-US");
+  const held = P.weights.map((w, j) => [w, j]).filter(x => x[0]).sort((a, b) => b[0] - a[0]);
+  const partners = held.filter(([, j]) => j !== iq);
+  const mixS = ws => ws.map((w, j) => [w, j]).filter(x => x[0]).sort((a, b) => b[0] - a[0])
+                       .map(([w, j]) => `${w}% ${SH[j]}`).join(", ");
+  const top = held[0], fxd = held.map(([, j]) => FX[PBq.ids[j]].fx_drift || 0);
+  $("#dhead").textContent = `${SH[iq]} with ${partners.map(([, j]) => SH[j]).join(" and ")}`;
+  const dC = +(M.cagr - Cm.cagr).toFixed(2);
+  $("#dlede").innerHTML =
+    `The owner's three-fund portfolio: ${SH[iq]} and exactly two other funds of the eleven, chosen on the four
+     analyses &mdash; macro drivers, market trend, volatility and regional rankings &mdash; read at 3, 5 and 10 years,
+     the 3/5/10-year view B and C use, by the one rule: the highest net CAGR after all fees inside the
+     ${num(cap.toFixed(0) + "%")} drawdown budget the band sets, with no single-fund cap and no cash floor.
+     D holds ${num(mixS(P.weights))}:
+     ${num(pc(M.cagr))} a year at ${num(pc1(M.maxdd))}, ${dC === 0 ? "level with" : num(Math.abs(dC).toFixed(2) + "pp") +
+     (dC > 0 ? " above" : " below")} C's ${num(pc(Cm.cagr))} / ${num(pc1(Cm.maxdd))} on the same view.`;
+  donut($("#donutD"), P.weights, "Portfolio D", M.cagr, M.maxdd);
+  $("#donutDlr").innerHTML = `On the ${HYN} view: <b class="num">${pc(T.cagr)}</b> / <b class="num">${pc1(T.maxdd)}</b>`;
+  $("#dtab").innerHTML = `<thead><tr><th>Portfolio D</th><th class="r">3/5/10-year view</th></tr></thead><tbody>` +
+    held.map(([w, j]) => `<tr><td>${SH[j]}</td><td class="r num">${w}%</td></tr>`).join("") +
+    `<tr><td>Net CAGR after all fees</td><td class="r num">${pc(M.cagr)}</td></tr>` +
+    `<tr><td>Expected max drawdown</td><td class="r num">${pc1(M.maxdd)}</td></tr>` +
+    `<tr><td>Volatility</td><td class="r num">${M.vol.toFixed(2)}%</td></tr>` +
+    `<tr><td>On the ${HYN} view</td><td class="r num">${pc(T.cagr)} / ${pc1(T.maxdd)}</td></tr>` +
+    `<tr><td>&#8369;1,000,000 after ten years</td><td class="r num">${peso(M.terminal_1m)}</td></tr>` +
+    `<tr><td>Worst case for money invested today</td><td class="r num">${peso(M.worst_1m_from_open)}</td></tr></tbody>`;
+  const noCash = !P.weights[PBq.ids.indexOf("ATRPHMM")];
+  $("#dnote").innerHTML =
+    `Chosen from ${num(P.n_total.toLocaleString("en-US"))} mixes of ${SH[iq]} and two others in 5% steps,
+     ${num(P.n_feasible.toLocaleString("en-US"))} inside the budget. ` +
+    (noCash ? `It holds no peso cash` : `It holds ${P.weights[PBq.ids.indexOf("ATRPHMM")]}% peso cash`) +
+    (fxd.every(x => x > 0) ? `, and all three funds are unhedged foreign funds whose forecasts assume the peso weakens
+     ${num(Math.min(...fxd).toFixed(1))} points a year` : ``) +
+    `; ${num(top[0] + "%")} in ${SH[top[1]]} is past the ${D.universe.limits.max_w}% cap A and B keep` +
+    (top[0] > D.portfolio_c.pin_pct ? ` and C's ${D.portfolio_c.pin_pct}%` : ``) +
+    `. The drawdown model does not price one manager holding that much of the money.`;
+  $("#dstress").innerHTML = `<thead><tr><th>Scenario</th><th class="r">CAGR</th><th class="r">Drawdown</th></tr></thead><tbody>` +
+    P.scenarios.map(r => `<tr><td>${r.name}</td><td class="r num">${pc(r.cagr)}</td><td class="r num">${pc1(r.maxdd)}</td></tr>`).join("") +
+    `</tbody>`;
+  const G = D.dd_gauge, steps = Object.keys(G.alt).sort((a, b) => +a - +b);
+  $("#dsteps").innerHTML = steps.map(c => { const e = G.alt[c].d;
+    return `<li><b>${c}%${+c === cap ? " (now)" : ""}</b>: ${num(pc(e.cagr))} / ${num(pc1(e.maxdd))} &mdash; ${mixS(e.weights)}</li>`; }).join("");
+  $("#dwhy").innerHTML =
+    `Why these two: a partner earns its place by cushioning ${SH[iq]}'s falls at the least cost in return. ` +
+    partners.map(([, j]) => `${SH[j]} moves with it at a correlation of ${num(CR[iq][j].toFixed(2))} and nets
+      ${num(pc(FX[PBq.ids[j]].net_macro))}`).join("; ") +
+    `.`;
+})();
 (function () {
   /* ONE RULE, THREE PICKS: the engine chooses A, B and C itself, over the funds it models
      in full - A on the 10-year view (since 2026-10-26), B on the 3/5/10-year view, C on B's
@@ -10369,8 +10800,9 @@ function donut(host, w, title, cagr, dd) {
   const M_ = D.macro, HO = D.universe.held_out;
   /* "20% of A and 20% of B"; "30% of A and none of B"; "none of A or B" */
   const joinW = (xs, w) => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + ` ${w} ` + xs[xs.length - 1];
-  const duo = (a, b, c) => {
-    const v = [[a, "A"], [b, "B"]].concat(c === undefined ? [] : [[c, "C"]]), off = v.filter(x => !x[0]).map(x => x[1]);
+  const duo = (a, b, c, d) => {
+    const v = [[a, "A"], [b, "B"]].concat(c === undefined ? [] : [[c, "C"]]).concat(d === undefined ? [] : [[d, "D"]]),
+          off = v.filter(x => !x[0]).map(x => x[1]);
     const parts = v.filter(x => x[0]).map(x => `${x[0]}% of ${x[1]}`);
     if (off.length) parts.push(`none of ${joinW(off, "or")}`);
     return joinW(parts, "and");
@@ -10379,12 +10811,12 @@ function donut(host, w, title, cagr, dd) {
     `<strong>Searched over the ATRAM list of ${D.universe.n_list}</strong> (the two peso bond funds removed on
      21 October): the ${NUW} whose fees are confirmed; ${wn(HO.length)} are held out until theirs are.
      US Equity Opportunity at its listed ${M_.useq_trust_listed.toFixed(2)}% would take
-     ${duo(M_.useq_w_a_listed, M_.useq_w_b_listed, M_.useq_w_c_listed)};
+     ${duo(M_.useq_w_a_listed, M_.useq_w_b_listed, M_.useq_w_c_listed, M_.useq_w_d_listed)};
      at ${M_.useq_trust_peer.toFixed(2)}%, where ATRAM moved its sister feeders on 14 September,
-     ${duo(M_.useq_w_a_peer, M_.useq_w_b_peer, M_.useq_w_c_peer)}.
+     ${duo(M_.useq_w_a_peer, M_.useq_w_b_peer, M_.useq_w_c_peer, M_.useq_w_d_peer)}.
      Global Bond Income would move them most: at its listed ${D.macro.gbi_trust_listed.toFixed(2)}% trust fee,
-     ${duo(D.macro.gbi_w_a_low, D.macro.gbi_w_b_low, D.macro.gbi_w_c_low)} if its target
-     charges the ${D.macro.gbi_target_low.toFixed(2)}% institutional rate; ${duo(D.macro.gbi_w_a_high, D.macro.gbi_w_b_high, D.macro.gbi_w_c_high)}
+     ${duo(D.macro.gbi_w_a_low, D.macro.gbi_w_b_low, D.macro.gbi_w_c_low, D.macro.gbi_w_d_low)} if its target
+     charges the ${D.macro.gbi_target_low.toFixed(2)}% institutional rate; ${duo(D.macro.gbi_w_a_high, D.macro.gbi_w_b_high, D.macro.gbi_w_c_high, D.macro.gbi_w_d_high)}
      at the ${D.macro.gbi_target_high.toFixed(2)}% retail rate.
      <details class="more"><summary>The ${wn(HO.length)} held out, and what each is missing</summary>
      <ul class="plain">` + HO.map(x => `<li><b>${x.short}</b> &mdash; ${x.why}</li>`).join("") + `</ul></details>`;
@@ -10724,6 +11156,22 @@ function donut(host, w, title, cagr, dd) {
   set("rylo",      mn(RY.ry_lo));
   set("ryhi",      mn(RY.ry_hi));
   set("tiltpp",    D.regional_tilt_per_pt.toFixed(3) + "pp");
+})();
+/* D at each budget step, and the Report's card for it (v96) */
+(function () {
+  const P = D.portfolio_d, G = D.dd_gauge, SH = D.portfolio_b.shorts, Cm = D.portfolio_c.macro, M = P.macro;
+  const num = t => `<b class="num">${t}</b>`;
+  const mixS = ws => ws.map((w, j) => [w, j]).filter(x => x[0]).sort((a, b) => b[0] - a[0])
+                       .map(([w, j]) => `${w}% ${SH[j]}`).join(", ");
+  const steps = Object.keys(G.alt).sort((a, b) => +a - +b);
+  $("#ddstepd").innerHTML = `<strong>D</strong>, ${SH[D.portfolio_b.ids.indexOf(P.fund)]} and two others on the 3/5/10-year view: ` +
+    steps.map(c => `${num(c + "%")}${+c === P.dd_cap ? " (now)" : ""} ${num(pc(G.alt[c].d.cagr))} / ${num(pc1(G.alt[c].d.maxdd))}`).join(" &middot; ") + `.`;
+  const top = Math.max(...P.weights);
+  $("#rdcard").innerHTML =
+    `D, the owner's three-fund portfolio, holds ${num(mixS(P.weights))} for ${num(pc(M.cagr))} at ${num(pc1(M.maxdd))} on the
+     3/5/10-year view, against C's ${num(pc(Cm.cagr))} / ${num(pc1(Cm.maxdd))} from ${wn(D.portfolio_c.weights.filter(x => x).length)} funds. It is chosen by the same rule
+     inside the same budget, but by the owner's choice without the single-fund cap or the cash floor: ${num(top + "%")} in one
+     fund and ` + (P.weights[D.portfolio_b.ids.indexOf("ATRPHMM")] ? `some` : `no`) + ` peso cash.`;
 })();
 
 /* ---------------- volatility: curve vs latest spot ---------------- */

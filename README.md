@@ -54,15 +54,15 @@ Asia Equity / Global Technology / Global Dividend / Global Health Care / Global 
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · 10-year view | B · 3/5/10-year view | C · Nasdaq Income 50% |
-|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 0 / 0 / 20 / 20 / 0 / 0 / 5 / 0 |
-| 10y net CAGR after all fees | **7.31%** | 7.10% | 7.14% |
-| Expected max drawdown (10y) | −24.9% | −24.9% | −24.9% |
-| Return per unit of drawdown | **0.294** | 0.285 | 0.287 |
+| | A · 10-year view | B · 3/5/10-year view | C · Nasdaq Income 50% | D · Nasdaq Income + 2 |
+|---|---|---|---|---|
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 0 / 0 / 20 / 20 / 0 / 0 / 5 / 0 | 0 / 55 / 0 / 0 / 0 / 0 / 25 / 0 / 0 / 20 / 0 |
+| 10y net CAGR after all fees | **7.31%** | 7.10% | 7.14% | 7.13% |
+| Expected max drawdown (10y) | −24.9% | −24.9% | −24.9% | −24.9% |
+| Return per unit of drawdown | **0.294** | 0.285 | 0.287 | 0.286 |
 
-Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B and
-C on the 3/5/10-year. On one basis, the 3/5/10-year view, A returns 7.11% at −25.0% against B's
+Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C
+and D on the 3/5/10-year. On one basis, the 3/5/10-year view, A returns 7.11% at −25.0% against B's
 7.10% at −24.9%; on the 10-year view B returns 7.26% at −24.8%. Every portfolio is built from four analyses -
 the macro drivers, the market trend, the regional ranking and the volatility curve - each
 read at **3, 5 and 10 years** and weighted by the share of the ten-year holding it governs
@@ -94,6 +94,16 @@ every update:
   −24.8% on the 10-year). It returns 0.04pp a year more than B at the same printed drawdown
   only because the pin is outside the cap: the drawdown model does not price one manager
   holding half the money, which is what the cap is for.
+- **D, Nasdaq Equity Income plus two** (owner, 7 Nov 2026, v96: "Make portfolio D with atram
+  nasdaq equity income plus 2 other fund based on macroeconomic sentiment, market trend,
+  volatility, regional rankings deep analysis of 3, 5, 10yrs and with in the drawdown band"):
+  B's rule, inputs and band budget over Nasdaq Equity Income and exactly two other funds, each
+  at least 5%. Asked which limits it keeps, the owner chose **no single-fund cap and no cash
+  floor**, so D is the one portfolio outside the review's limits (7,695 mixes, 1,951 inside
+  the budget): 55% Nasdaq Equity Income, 25% Global Infra Equity, 20% Asian Multi-Asset
+  Income. 7.13% / −24.9% on the 3/5/10-year view (7.34% / −24.8% on the 10-year), 0.01pp
+  below C. It holds no peso cash, and all three funds are unhedged; at the band's steps it
+  holds 7.05% / −24.0% (24%), 7.22% / −25.9% (26%) and 7.32% / −27.0% (27%).
 
 **The Budget tab** reads, on 1-5, whether the next three and five years justify moving the
 25% budget - from the macro drivers and the market trend at each view (volatility left the
