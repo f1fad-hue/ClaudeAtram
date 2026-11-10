@@ -57,7 +57,13 @@ def m_daydup(d):                                                                
     def on_latest(k):
         g = re.match(r"^(spx|nasdaq|dow|kospi|nikkei|psei)_(\d{1,2})([a-z]{3})_chg_pct$", k)
         return bool(g) and M[lat[g.group(1)]][5:] == f"{mon.index(g.group(3)) + 1:02d}-{int(g.group(2)):02d}"
-    k = next(k for k in M if on_latest(k)); M[k] = round(M[k] + 0.02, 2)
+    ks = [k for k in M if on_latest(k)]
+    if ks: M[ks[0]] = round(M[ks[0]] + 0.02, 2)
+    else:
+        # v98: no day-keyed copy sat on any series' latest day (every copy was a session behind), and
+        # the mutant crashed the run instead of testing anything. With none to move, it plants one
+        # that disagrees with the latest move - the same defect, made rather than found.
+        e = M["equity_date"]; M[f"spx_{int(e[8:])}{mon[int(e[5:7]) - 1]}_chg_pct"] = round(M["spx_chg_pct"] + 0.02, 2)
 def m_tcheck(d): _fund(d, 1)["target_check"]["date"] = "2026-10-20"                            # a target-fund check from an old review
 def m_stale(d): d["macro"]["equity_date"] = "2026-10-20"                                       # a close a week behind
 def m_lt(d): d["lookthrough"]["ATRQIAP"]["as_of"] = "2026-08-31"                               # holdings past 60 days
@@ -71,7 +77,21 @@ def m_peso(d): d["macro"]["usdphp_chg"] = round(d["macro"]["usdphp_chg"] - 0.01,
 def m_note(d):                                                                                 # a number in a note no input carries
     # Planted by position, not by wording (v94): it replaced "HELD at" in the Growth note, and went a
     # no-op the day Growth was RAISED. Every note has a first sentence.
-    x = _drv(d, "Growth"); x["note"] = x["note"].replace(". ", ". It moved 13.37 points. ", 1)
+    # v98: the planted "13.37" became a real input (a target fund's 1-year return) and the mutant
+    # went quiet - the audit cannot flag a number an input carries. The number is now chosen by
+    # state: the first of a run of candidates that appears nowhere in the payload.
+    def nums(o):
+        if isinstance(o, bool): return
+        if isinstance(o, (int, float)): yield round(float(o), 2)
+        elif isinstance(o, dict):
+            for v in o.values(): yield from nums(v)
+        elif isinstance(o, (list, tuple)):
+            for v in o: yield from nums(v)
+        elif isinstance(o, str):
+            for t in re.findall(r"\d+(?:\.\d+)?", o): yield round(float(t), 2)
+    have = set(nums(d))
+    c = next(v for v in (round(913.37 + 101.01 * i, 2) for i in range(200)) if v not in have)
+    x = _drv(d, "Growth"); x["note"] = x["note"].replace(". ", f". It moved {c} points. ", 1)
 def m_summ(d): x = _drv(d, "Inflation"); x["summary"] = x["summary"].rstrip(".") + ", 4.44% above target."
 def m_brhigh(d):
     x = _drv(d, "Inflation"); x["note"] = re.sub(r"(Brent settled at \$[\d.]+ on [^,]+,)", lambda m: m.group(1) + f" below the ${d['macro']['brent']:.2f} of the 23rd,", x["note"], count=1)
@@ -94,6 +114,11 @@ def m_dshift(d):                                                                
 def m_dfour(d):                                                                                # D holding a fourth fund (v96)
     w = d["portfolio_d"]["weights"]; i = w.index(max(w)); j = next(k for k in range(len(w)) if not w[k])
     w[i] -= 5; w[j] += 5
+def m_gap(d): d["macro"]["gtec_gap_1y_pp"] = round(d["macro"]["gtec_gap_1y_pp"] + 0.5, 2)      # a 1-year gap off its inputs (v98)
+def m_over(d): d["vol_channel"]["overtaken"] = not d["vol_channel"]["overtaken"]              # the overtaken flag flipped (v98)
+def m_retr(d): d["macro"]["vix_spike_retraced_pct"] += 5                                       # the retrace off the series (v98)
+def m_holds(d):                                                                                # "none holds it" said of a fund A and B hold (v98)
+    f = next(f for f in d["funds"] if f["id"] == "ATRGTEC"); f["target_check"]["text"] += " And none of A, B, C or D holds it."
 def m_grind(d):
     r = next(r for r in d["portfolio_b"]["scenarios"] if r["name"].startswith("Grind")); r["cagr"] = round(r["cagr"] + 0.01, 2)
 

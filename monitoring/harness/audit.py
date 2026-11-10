@@ -477,6 +477,34 @@ ck("a target charge marked confirmed is quoted at the charge the forecast carrie
    all(f"{f_['fee_target']:.2f}%" in f_["target_check"]["text"] for f_ in _tcf if f_["target_check"]["status"] == "confirmed"),
    f"{[f_['id'] for f_ in _tcf if f_['target_check']['status'] == 'confirmed']}")
 
+# v98: derived figures the notes quote, re-derived here from their inputs (the engine is not imported).
+_ALLF = D["funds"] + D["portfolio_b"]["funds"]
+_f1 = M["feeder_1y"]
+_fx = round(((1 + _f1["ATRGLDV"] / 100) / (1 + M["gldv_feeder_usd_1y"] / 100) - 1) * 100, 2)
+_tp = round(((1 + M["gtec_target_1y"] / 100) * (1 + _fx / 100) - 1) * 100, 2)
+_gtec = next(f for f in _ALLF if f["id"] == "ATRGTEC")
+ck("the 1-year gap test re-derives: the dollar's implied move, the target in pesos, and a gap no wider than the trust fee plus half a point",
+   abs(_fx - M["fx_1y_implied_pct"]) < 1e-9 and abs(_tp - M["gtec_target_1y_php"]) < 1e-9
+   and abs(round(_tp - _f1["ATRGTEC"], 2) - M["gtec_gap_1y_pp"]) < 1e-9
+   and 0 <= M["gtec_gap_1y_pp"] <= _gtec["fee_feeder"] + 0.5
+   and f"a gap of {M['gtec_gap_1y_pp']} points" in _gtec["target_check"]["text"],
+   f"{_fx} {_tp} {M['gtec_gap_1y_pp']}")
+_vhd = dict(M["vix_history"])
+ck("the VIX's retrace of its 5 Nov jump is the series' own",
+   round((_vhd["2026-11-05"] - M["vix_history"][-1][1]) / (_vhd["2026-11-05"] - _vhd["2026-11-04"]) * 100)
+   == M["vix_spike_retraced_pct"], f"{M['vix_spike_retraced_pct']}")
+_over = abs(M["vix_latest"] / M["vix_spot"] - 1) * 100 > D["vol_channel"]["overtaken_pct"]
+_vnote = next(x for x in D["drivers"] if x["name"].startswith("Volatility"))["note"]
+ck("the curve is flagged overtaken, on the page and in the volatility note, exactly when the latest close is past the flag",
+   D["vol_channel"]["overtaken"] == _over and ("OVERTAKEN" in _vnote) == _over
+   and ("no longer overtaken" in _vnote) == (not _over), f"{_over}")
+_pids = D["portfolio_a"]["ids"]
+_none = [f for f in _ALLF if "none of A, B, C or D holds it" in f["target_check"]["text"]]
+ck("a target check that says none of A, B, C or D holds its fund is true of all four",
+   bool(_none) and all(D[k]["weights"][_pids.index(f["id"])] == 0
+                       for f in _none for k in ("portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d")),
+   f"{[f['id'] for f in _none]}")
+
 sec("H. THE CLAIMS REGISTER")
 _rows = [l for l in CLAIMS.splitlines() if l.startswith("|")]
 _bad = []

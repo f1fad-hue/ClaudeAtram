@@ -97,9 +97,11 @@ if __name__ == "__main__":
         for k, v in out.items():
             mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts + [fb["short"]]) if x)
             print(f"   {k.upper()}: {v['new_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
-    # Global Allocation: 1.20% on two listings, 1.50% on DragonFi (2026-10-22).
-    t = time.time(); fb, out = run_refee("M_GALL", 1.50)
-    print(f"gall_150     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
+    # Asia Equity Opportunity's trust fee (v98): 1.18% carried from its KIIDS, 1.50% on ATRAM's fund
+    # page (one source). Global Allocation's 1.50% case, run here from 2026-10-22, is now the fee
+    # the engine carries, so it left this script.
+    t = time.time(); fb, out = run_refee("ATRASEQ", E.MACRO["aseq_trust_page"])
+    print(f"aseq_150     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
     for k, v in out.items():
         mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
         print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")

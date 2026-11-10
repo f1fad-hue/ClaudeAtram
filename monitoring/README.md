@@ -196,6 +196,25 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+156. A PAUSED REVIEW MOVES ITS CUT-OFF. v98 was cut off at 04:29 UTC and then paused for eight hours, in which
+   Manila, Tokyo and Seoul closed. Publishing the first cut-off would have shipped Asia a session behind on a
+   page dated that day. Roll what has closed, re-quote what the new data date puts past its limit (FedWatch
+   was), and state the cut-off that was actually used.
+155. THE PRIMARY SOURCE CAN OFTEN BE READ THROUGH SEARCH. Cboe, FRED, uitf.com.ph and atram.com.ph are blocked
+   to the review, but a search restricted to the site returns a dated snapshot of the page. Cboe's own
+   "previous close" settled the VIX's 6 Nov dispute after two reviews; FRED's DGS30 settled the 30-year's.
+   Say "read through search", keep the snapshot's time, and still prefer the allowed environment.
+154. A FEE IS READ FROM THE MANAGER'S OWN PAGE EVERY WEEK. Global Allocation's 1.20% trust fee was carried for
+   weeks against a listing that said 1.50%, on the reasoning that the fund was not among the six repriced on
+   14 Sep. ATRAM's own fund page said 1.50% all along. The weekly check reads each fund's page first; an
+   older fact sheet and a stale listing do not outvote it.
+153. THE 1-YEAR TEST NEEDS THREE DATED FIGURES. uitf.com.ph's daily table gives every feeder's 1-year peso
+   return; a fund with both a peso and a dollar class on that table gives the exchange-rate move by division;
+   the target's own 1-year return must be dated within a few days of the feeder's. Where the third is
+   missing, record the test as not run and say which figure is missing.
+152. A CHECK THAT COUNTS A PHRASE BREAKS WHEN THE PROSE IS REWORDED. The 10-year run check looked for "on the
+   28th"; a note that said "on 2 Nov" left it nothing to test, and it failed on its count. Parse the sentence
+   the figures live in and test every figure in it, so a rewording cannot empty the check.
 151. A RETIRED KEY IS REUSED ONLY BY REWRITING ITS GUARD. The engine and the audit both held `portfolio_d`
    absent since v74. The owner's new D (v96) reuses the key for a different portfolio, so those checks were
    replaced by D's own - its set, its rule, its re-derived figures - not deleted, and the register keeps the

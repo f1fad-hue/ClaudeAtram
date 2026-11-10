@@ -43,13 +43,15 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 6 Nov 2026 (reviewed 7 Nov, cut-off 07:51 UTC): New York, Manila,
-Tokyo and Seoul at their 6 Nov closes, Brent's January and WTI's December settles at 6 Nov; the 10- and
-30-year at their 6 Nov closes and the 2-year at 5 Nov (its 6 Nov close is reported three ways); the VIX at
-5 Nov (its 6 Nov close is reported six ways and only Cboe can settle it); FedWatch at its 4 Nov read (the
-reads after the 6 Nov payrolls disagree). Brent's y/y is quoted against its 31 Oct 2025 settle, six days
-short of a year (flagged). Target funds checked 4 Nov, their notices re-searched 6-7 Nov and Global Consumer
-Trends re-checked in full on a mandate notice, through search results only; reviewed 7 Nov. Weights in the
+market assumptions. Market data as of 10 Nov 2026 (reviewed 10 Nov, cut-off 12:45 UTC): Manila, Tokyo
+and Seoul at their 10 Nov closes; New York at 9 Nov, with Brent's January and WTI's December settles, the
+VIX (19.92; Cboe's own page settles the disputed 6 Nov close at 25.64) and the 10-, 2- and 30-year at their
+9 Nov closes (the 2-year's 6 Nov close stays disputed); FedWatch re-quoted at 9 Nov (84%); the 9 Nov T-bill
+auction. Brent's y/y is quoted against its 10 Nov 2025 settle, one day off the anniversary. US October CPI,
+due at 13:30 UTC on 10 Nov, is after the cut-off. Target funds checked in full on 10 Nov, the first review
+of the week, through search results only: Global Allocation's trust fee corrected to 1.50%, Asia Equity
+Opportunity's recorded as disputed, and the first 1-year feeder-against-target test run (Global Technology).
+Weights in the
 universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
@@ -90,7 +92,7 @@ every update:
   atram nasdaq equity income allocation based on 3, 5, 10yrs ... Use budget drawdown band for
   portfolio C"): B's rule, inputs and band budget with Nasdaq Equity Income held at 50% - the
   one fund exempt from the 35% cap - and the rest chosen over the other ten funds (8,289
-  mixes, 3,551 inside the budget): 5% money market, 20% Global Health Care, 20% Global Infra
+  mixes, 3,544 inside the budget): 5% money market, 20% Global Health Care, 20% Global Infra
   Equity, 5% Asian Multi-Asset Income. 7.14% / −24.9% on the 3/5/10-year view (7.31% /
   −24.8% on the 10-year). It returns 0.04pp a year more than B at the same printed drawdown
   only because the pin is outside the cap: the drawdown model does not price one manager
@@ -100,7 +102,7 @@ every update:
   volatility, regional rankings deep analysis of 3, 5, 10yrs and with in the drawdown band"):
   B's rule, inputs and band budget over Nasdaq Equity Income and exactly two other funds, each
   at least 5%. Asked which limits it keeps, the owner chose **no single-fund cap and no cash
-  floor**, so D is the one portfolio outside the review's limits (7,695 mixes, 1,951 inside
+  floor**, so D is the one portfolio outside the review's limits (7,695 mixes, 1,941 inside
   the budget): 55% Nasdaq Equity Income, 25% Global Infra Equity, 20% Asian Multi-Asset
   Income. 7.13% / −24.9% on the 3/5/10-year view (7.34% / −24.8% on the 10-year), 0.01pp
   below C. It holds no peso cash, and all three funds are unhedged; at the band's steps it
