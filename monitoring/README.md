@@ -199,7 +199,9 @@ truth; the artifact is a rendering of it.
 156. A PAUSED REVIEW MOVES ITS CUT-OFF. v98 was cut off at 04:29 UTC and then paused for eight hours, in which
    Manila, Tokyo and Seoul closed. Publishing the first cut-off would have shipped Asia a session behind on a
    page dated that day. Roll what has closed, re-quote what the new data date puts past its limit (FedWatch
-   was), and state the cut-off that was actually used.
+   was), and state the cut-off that was actually used. But a cut-off cannot chase the clock: after a
+   second move, if the review pauses again, publish the verified build with its cut-off stated and the
+   sessions it misses named, and let the next review roll them (v98 did, on 11 Nov).
 155. THE PRIMARY SOURCE CAN OFTEN BE READ THROUGH SEARCH. Cboe, FRED, uitf.com.ph and atram.com.ph are blocked
    to the review, but a search restricted to the site returns a dated snapshot of the page. Cboe's own
    "previous close" settled the VIX's 6 Nov dispute after two reviews; FRED's DGS30 settled the 30-year's.

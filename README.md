@@ -43,14 +43,15 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 10 Nov 2026 (reviewed 10 Nov, cut-off 12:45 UTC): Manila, Tokyo
-and Seoul at their 10 Nov closes; New York at 9 Nov, with Brent's January and WTI's December settles, the
-VIX (19.92; Cboe's own page settles the disputed 6 Nov close at 25.64) and the 10-, 2- and 30-year at their
-9 Nov closes (the 2-year's 6 Nov close stays disputed); FedWatch re-quoted at 9 Nov (84%); the 9 Nov T-bill
-auction. Brent's y/y is quoted against its 10 Nov 2025 settle, one day off the anniversary. US October CPI,
-due at 13:30 UTC on 10 Nov, is after the cut-off. Target funds checked in full on 10 Nov, the first review
-of the week, through search results only: Global Allocation's trust fee corrected to 1.50%, Asia Equity
-Opportunity's recorded as disputed, and the first 1-year feeder-against-target test run (Global Technology).
+market assumptions. Market data as of 10 Nov 2026 (reviewed 10 Nov, cut-off 23:50 UTC): Manila, Tokyo,
+Seoul and New York at their 10 Nov closes, with Brent's January and WTI's December settles and the 10- and
+2-year; the VIX at 9 Nov (19.92: its 10 Nov close is reported three ways; Cboe's own page settled the
+disputed 6 Nov close at 25.64) and the 30-year at 9 Nov (10 Nov in one source); FedWatch re-quoted at 9 Nov
+(84%); the 9 Nov T-bill auction. Brent's y/y is quoted against its 10 Nov 2025 settle, the exact
+anniversary. US October CPI (10 Nov: +0.4% on the month, core +0.3%, no 12-month rate published) is in.
+Target funds checked in full on 10 Nov, the first review of the week, through search results only: Global
+Allocation's trust fee corrected to 1.50%, Asia Equity Opportunity's recorded as disputed, and the first
+1-year feeder-against-target test run (Global Technology).
 Weights in the
 universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra

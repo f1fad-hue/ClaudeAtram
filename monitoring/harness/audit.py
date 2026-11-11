@@ -431,6 +431,11 @@ _MO = "jan feb mar apr may jun jul aug sep oct nov dec".split()
 _SER = {"kospi": "KOSPI", "nikkei": "Nikkei", "nasdaq": "Nasdaq", "spx": "S&P", "dow": "Dow", "brent": "Brent",
         "wti": "WTI", "psei": "PSEi", "vix": "VIX", "usdphp": "peso"}
 _ordn = lambda n: f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')}"
+_SNAMES = sorted(set(_SER.values()))
+def _owner(snt, pos):
+    """The series named nearest before `pos` in the sentence, or None if none is."""
+    best = max(((snt.rfind(nm, 0, pos), nm) for nm in _SNAMES), default=(-1, None))
+    return best[1] if best[0] >= 0 else None
 _dk, _dq = [], 0
 for k, v in M.items():
     m_ = re.match(r"^([a-z0-9]+?)_(\d{1,2})(" + "|".join(_MO) + r")(?:_|$)", k)
@@ -438,10 +443,18 @@ for k, v in M.items():
     _day, _mo = int(m_.group(2)), m_.group(3).capitalize()
     for src, t in TXT:
         for snt in re.split(r"(?<=[.])\s+(?=[A-Z(])", t):
-            if _SER[m_.group(1)] in snt and any(re.search(r"(?<![\d.,])" + re.escape(f_) + r"(?!\d)", snt)
-                                                for f_ in {f"{abs(v):,.2f}", f"{abs(v):.2f}"}):
-                _dq += 1
-                if f"{_day} {_mo}" not in snt and f"the {_ordn(_day)}" not in snt: _dk.append(f"{k} in {src}")
+            if _SER[m_.group(1)] not in snt: continue
+            # v98: THE NUMBER MUST BELONG TO THIS SERIES. On 10 Nov the S&P fell 0.38%, the Dow's move
+            # of 3 Nov, and the sentence "the S&P fell 0.38% ... and the Dow fell 0.30%" was flagged for
+            # quoting the Dow's 3 Nov figure away from its day. A figure is this key's when the series
+            # named nearest before it is this key's series (or none is named before it).
+            for f_ in {f"{abs(v):,.2f}", f"{abs(v):.2f}"}:
+                hits = [h for h in re.finditer(r"(?<![\d.,])" + re.escape(f_) + r"(?!\d)", snt)
+                        if _owner(snt, h.start()) in (None, _SER[m_.group(1)])]
+                if hits: break
+            else: continue
+            _dq += 1
+            if f"{_day} {_mo}" not in snt and f"the {_ordn(_day)}" not in snt: _dk.append(f"{k} in {src}")
 ck(f"a figure keyed to a day is quoted only beside that day ({_dq} quotes)", _dq > 0 and not _dk, "; ".join(_dk[:3]))
 # v94: a move kept under its own day's key (nasdaq_5nov_chg_pct) equals the series' latest move
 # while that day is the latest session - re-read from the payload, not from the engine's verdict.

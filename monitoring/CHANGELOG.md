@@ -2,57 +2,76 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
-## 2026-11-10 — v98: the week's first review - New York's rebound and Asia's, oil at $92.57, the VIX dispute settled on Cboe's own page; Volatility raised to 2.0; Global Allocation's trust fee corrected; A, B, C and D unchanged
+## 2026-11-10 — v98: the week's first review - markets to 10 Nov, a hot October CPI, the VIX's 6 Nov dispute settled on Cboe's own page; Volatility raised to 2.0; Global Allocation's trust fee corrected; A, B, C and D unchanged
 
-At the owner's instruction, the review command. **Cut-off 12:45 UTC on Tue 10 Nov** (first set at 04:29 UTC; the
-review was paused and the cut-off moved forward rather than publish Asia a session behind). Sessions closed by
-then: 10 Nov in Manila, Tokyo and Seoul; 9 Nov in New York, with oil, the VIX and Treasuries. US October CPI
-(13:30 UTC, 10 Nov) is after the cut-off and stays on the calendar.
+At the owner's instruction, the review command. **Cut-off 23:50 UTC on Tue 10 Nov.** The review was paused
+twice, and each time the cut-off moved forward rather than publish a page a session behind: 04:29 UTC (New
+York's 9 Nov close), 12:45 UTC (Asia's 10 Nov closes; committed as a checkpoint, never published), then
+New York's 10 Nov close. Sessions closed by the cut-off: 10 Nov in Manila, Tokyo, Seoul and New York, with
+oil's settles, the VIX and Treasuries. 11 Nov (Asia) had not closed; US bonds are shut on the 11th.
+**Published at about 20:30 UTC on Wed 11 Nov**, after a third pause (a worker restart). By then Manila, Tokyo
+and Seoul had closed their 11 Nov sessions; they are NOT in this build, and New York's 11 Nov session was
+still open. This time the cut-off was not moved: each move restarts research, scoring and the full check
+cycle, and the build at 23:50 UTC on 10 Nov had passed every check. The next review rolls 11 Nov onward.
 
 **The environment:** all 18 primary hosts refused again - cboe.com, cdn.cboe.com, home.treasury.gov,
 fred.stlouisfed.org, treasury.gov.ph, psa.gov.ph, bsp.gov.ph, uitf.com.ph, atram.com.ph, am.jpmorgan.com,
 fidelityinternational.com, assetmanagement.hsbc.co.uk, blackrock.com, lu.allianzgi.com, dng-api.invesco.com,
 schroders.com, justetf.com, bworldonline.com (and investing.com, storage.investa.ph). The ClaudeAtram
 environment allows them; this session still cannot be moved to it. Everything was read through search
-results, which this time included snapshots of Cboe's VIX page, FRED's series pages, uitf.com.ph's daily
-table and ATRAM's own fund pages. Left unverified: Cboe's futures settlements, the Treasury's own curve
-(the 2-year's 6 Nov close), the BTr's auction tables, each target's KIID and share class.
+results, which this time included snapshots of Cboe's VIX page, FRED's series pages, the BLS release,
+uitf.com.ph's daily table and ATRAM's own fund pages. Left unverified: Cboe's 10 Nov VIX close and its
+futures settlements, the Treasury's own curve (10 Nov; the 2-year's 6 Nov close), the BTr's auction tables,
+each target's KIID and share class.
 
 **Rolled (two independent sources each, each adding up from the prior close):**
-- New York, 9 Nov: S&P 7,549.94 (+173.08, +2.35%, its best day since April), Nasdaq 25,253.14 (+2.74%),
-  Dow 52,389.75 (+1,104.02).
-- Oil, 9 Nov: January Brent $92.57 (-$5.75, -5.85%), December WTI $86.85 (-4.38%), one contract each; no roll.
+- New York: 9 Nov S&P 7,549.94 (+2.35%, its best day since April), Nasdaq 25,253.14, Dow 52,389.75; 10 Nov
+  S&P 7,520.93 (-29.01, -0.38%), Nasdaq 25,065.88 (-0.74%), Dow 52,231.89 (-0.30%) on the hot CPI.
+- Oil: January Brent $92.57 on 9 Nov (-5.85%) and $91.49 on 10 Nov (-1.17%, after a low of $89.16);
+  December WTI $86.85 and $86.04. One contract each; no roll.
 - VIX: 19.92 on 9 Nov (-22.31%). **The 6 Nov dispute is settled at 25.64**: Cboe's own page gives it as the
-  previous close, with CappNotes, Yahoo Finance and Saxo. Nothing is withheld now.
-- Treasuries, 9 Nov: 10-year 4.88% (+2bp), 2-year 4.56% (+5bp), 30-year 5.26% (flat). The 30-year's 5 Nov
-  dispute is settled at 5.25 (FRED's DGS30 with CappNotes).
-- FedWatch: re-quoted at 84% on 9 Nov (FXStreet; Forexuro's 84.2%), the day the 4 Nov read passed its limit.
+  previous close, with CappNotes, Yahoo Finance and Saxo.
+- Treasuries: 10-year 4.88% on 9 Nov and 4.99% on 10 Nov (+11bp); 2-year 4.56% and 4.74% (+18bp); 30-year
+  5.26% on 9 Nov. The 30-year's 5 Nov dispute is settled at 5.25 (FRED's DGS30 with CappNotes).
+- FedWatch: re-quoted at 84% on 9 Nov (FXStreet; Forexuro's 84.2%; Reuters' "84% on Monday").
 - Asia, 10 Nov: Nikkei 60,459.58 (+2.87%; +2.33% on the 9th), KOSPI 5,239.13 (+4.39%; -0.81% on the 9th),
   PSEi 5,716.15 (+0.67%; -1.46% on the 9th), the peso 62.91 (63.31 on the 9th).
 - PH T-bills: the 9 Nov auction, 6.493% / 6.719% / 6.855%, chained off the 3 Nov one.
 - Hormuz transits: PortWatch's 1 Nov count (1 against 85), two days after the old reading's bound.
 - Brent's year-ago base: re-anchored to 10 Nov 2025 ($64.06, two sources), ending the flag carried since v93.
 
-**Held, and why:** the 2-year's 6 Nov close (4.51 in two sources now, but a recorded dispute needs the
-Treasury's own table); FedWatch's 10 Nov reads after Governor Waller's speech (84.4%, 96.3%, about 99%); the
-VIX futures curve (Saxo's 6 Nov board, November 22.25 and December 21.10, is one source; the 20 Oct strip is
-no longer overtaken - 15.1% from its spot against a 20% flag - and its window ends 19 Nov).
+**Held, and why:** the VIX's 10 Nov close - CNN and CappNotes have 19.46, AD HOC News 20.17, Cboe's own
+page (5:15 pm ET) 20.57; two sources agree, but the primary's page does not, and the figures straddle the
+19.5 long run the budget's VIX guard reads, so 9 Nov's stands; the 30-year's 10 Nov close (5.352%, one
+feed); the 2-year's 6 Nov close (still needs the Treasury's own table); FedWatch after the CPI (fully
+priced for a quarter-point, a half-point at 11% to 15.3% by read); the VIX futures curve (Saxo's 6 Nov
+board is one source; the 20 Oct strip is no longer overtaken - 15.1% from its spot against a 20% flag -
+and its window ends 19 Nov).
 
-**Releases and events added:** Philippine third-quarter GDP, 2.1% against 2.7% polled (9 Nov); China's
-October CPI 0.7% and PPI 5.7% (9 Nov) and trade, exports +35.2%, imports +41.6% (10 Nov); the BoJ's Summary
-of Opinions (10 Nov); Waller's London speech (10 Nov); the Gulf - two tankers hit and a bulker disabled on
-7 Nov, the East-West pipeline attacked on 9 Nov, Trump's meeting with Qatar's prime minister and the reported
-$8bn framework, which Tehran denies. Calendar: Philippine GDP and China's CPI retired; US producer prices
-(13 Nov), US retail sales (17 Nov) and the APEC leaders' meeting (18-19 Nov) added, two sources each.
+**Releases and events added:** **US October CPI (10 Nov): +0.4% on the month against 0.3% expected, core
++0.3% against 0.2%; the BLS published no 12-month rate** (no October 2025 prices were collected in last
+year's shutdown), so September's 3.7% and 2.6% stay the last annual figures. Governor Waller's London
+speech the same morning set core at 0.3% as his test for considering a half-point in December; it was met.
+Philippine third-quarter GDP, 2.1% against 2.7% polled (9 Nov); China's October CPI 0.7% and PPI 5.7%
+(9 Nov) and trade, exports +35.2%, imports +41.6% (10 Nov); the BoJ's Summary of Opinions (10 Nov); the
+Gulf - two tankers hit and a bulker disabled on 7 Nov, the East-West pipeline attacked on 9 Nov, Trump's
+meeting with Qatar's prime minister and the reported $8bn framework, which Tehran denies, its top security
+official saying on 10 Nov that no talks are under way. Calendar: Philippine GDP, China's CPI and the US CPI
+retired; US producer prices (13 Nov), US retail sales (17 Nov) and the APEC leaders' meeting (18-19 Nov)
+added, two sources each.
 
-**Scored:** **Volatility & risk appetite RAISED 1.5 -> 2.0**, half of v94's cut restored: the VIX gave back
-71% of its 5 Nov jump and closed under 20, 0.42 above its long run, on the S&P's best day since April; not
-2.5 while it is above the long run and the last futures board found was inverted. Effect: the headline gauge
-2.26 -> 2.28 and nothing else - volatility is not in the 3- or 5-year readings, the tilts or the band, so no
-fund's net CAGR or drawdown and no portfolio moves. Every other driver and all four regions held (the
-Philippines on the GDP miss: the money-market sleeve is paid the bill rate, which rose again). The trend
-window is unchanged (no quarter closed). Band: 2.80, hold at 25%; guards - persistence 1 of 2 (next
-month-end 30 Nov), geopolitics 1.5 against 2.0, the VIX 19.92 against 19.5 - all still fail.
+**Scored:** **Volatility & risk appetite RAISED 1.5 -> 2.0**, half of v94's cut restored: on 9 Nov the VIX
+gave back 71% of its 5 Nov jump and closed under 20, 0.42 above its long run, on the S&P's best day since
+April; not 2.5 while its last confirmed close is above the long run and the last futures board found was
+inverted. Effect: the headline gauge 2.26 -> 2.28 and nothing else - volatility is not in the 3- or 5-year
+readings, the tilts or the band, so no fund's net CAGR or drawdown and no portfolio moves. **Monetary and
+Inflation HELD at 2.0** through the hot CPI: a December hike is the path the monetary score assumed and is
+now fully priced, a half-point a minority price; core a tenth above forecast is more than energy passing
+through, but 2.0 already scores an inflation problem and oil's fall has not reached a price index. Every
+other driver and all four regions held (the Philippines on the GDP miss: the money-market sleeve is paid
+the bill rate, which rose again). The trend window is unchanged (no quarter closed). Band: 2.80, hold at
+25%; guards - persistence 1 of 2 (next month-end 30 Nov), geopolitics 1.5 against 2.0, the VIX 19.92
+against 19.5 - all still fail.
 
 **Funds, the week's full check:**
 - **Global Allocation's trust fee corrected 1.20% -> 1.50%** (ATRAM's own fund page, DragonFi and
@@ -71,7 +90,7 @@ month-end 30 Nov), geopolitics 1.5 against 2.0, the VIX 19.92 against 19.5 - all
 
 **Portfolios:** A (5/35/10/30/20 in Money Market, Nasdaq Equity Income, Global Technology, Global Infra,
 Asian Multi-Asset) 7.31% / -24.9% on the 10-year view; B 7.10% / -24.9%; C 7.14% / -24.9%; D 7.13% / -24.9%
-- all unchanged. The stress rows' oil levels ($130 closure, $65 disinflation) still bracket a $92.57 Brent.
+- all unchanged. The stress rows' oil levels ($130 closure, $65 disinflation) still bracket a $91.49 Brent.
 
 **Errors found and fixed:**
 1. The 26 Oct 91-day T-bill rate carried since v84, 6.624% (+63.2bp), is contradicted by both papers' 3 Nov
@@ -94,13 +113,23 @@ Asian Multi-Asset) 7.31% / -24.9% on the 10-year view; B 7.10% / -24.9%; C 7.14%
 10. A held-out fund's line still said "none of A, B or C"; it names D too.
 11. The feasible-mix counts in the README and the register moved (D's 1,951 to 1,941, C's 3,551 to 3,544)
     when Global Allocation's corrected fee deepened its drawdown by 0.2pp; both documents were updated.
+12. The planted-error test missed one mutant: the number it plants in a note, 13.37, had become a real
+    input (a target fund's 1-year return), and the audit cannot flag a number an input carries. The mutant
+    now chooses a number that appears nowhere in the payload.
+13. The engine's check on Brent levels in prose knew only the latest settle and the one before it, so a
+    dated earlier settle ("$98.32 on 6 Nov") failed once the series had moved two sessions on. It now
+    accepts any settle in the series to the cent.
+14. The audit's day-keyed check flagged "the S&P fell 0.38% ... and the Dow fell 0.30%" because the Dow's
+    3 Nov move was also 0.38%. It now attributes a figure to the series named nearest before it.
+15. A summary called 10 Nov's fall "the S&P's best day since April" for one build (the phrase belonged to
+    9 Nov); caught on the read-through and reworded.
 
 **Cleanup:** retired vix_withheld_lo_lr_gap, vix_futs_unconfirmed_3nov / _5nov / _date, ph_tbill_next_date,
 ph_gdp_h1, gldv_feeder_1y / _date and brent_yr_ago_disputed (nothing read them); the Brent weekly, the
 real-yield line and the overtaken wording read their inputs.
 
-**Verified:** engine 261/261 (one check fewer: the withheld-session check exists only while a session is
-withheld), audit 267/267, page 16/16, mutants 57/57.
+**Verified:** engine 262/262, audit 267/267 (against v97, the last published release; the checkpoint
+commit was never published), page 16/16, mutants 57/57.
 
 ## 2026-11-07 — v97: Saturday review - Treasuries rolled to 5-6 Nov; the VIX's 6 Nov close reported six ways and still held; D in every versus view; A, B, C and D unchanged
 
