@@ -197,6 +197,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+161. A TIGHTER EVIDENCE RULE RE-OPENS WHAT IT WOULD HAVE REFUSED. When the owner's command started counting
+   a rewrite of a wire as the wire (12 Nov), the 11 Nov oil settles - carried on Reuters and MLQ, a rewrite -
+   were re-checked the same day and re-sourced to an independent second (Vantage Markets' settlement table).
+   A rule change applies to the figures on the page, not only to the next ones.
 160. A RETIRED PORTFOLIO IS HELD GONE, NOT JUST DELETED. Removing C's code is half the job: a check in the
    engine and one in the audit assert it is absent from the payload, the what-ifs, the budget steps and the
    coefficients, and a mutant plants it back. Every loop or sentence written "A, B and C" is re-read, not

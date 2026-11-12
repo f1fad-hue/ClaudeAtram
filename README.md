@@ -43,15 +43,16 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 12 Nov 2026 (reviewed 12 Nov, cut-off 07:15 UTC): Seoul at its 12 Nov
-close; Tokyo, Manila and the peso at 11 Nov (Tokyo's 12 Nov close is reported two ways; Manila's had no report
-by the cut-off); New York, the VIX (17.49, under its 19.5 long run; Cboe's own page settled the withheld
-10 Nov close at 19.46), Brent's January and WTI's December settles at 11 Nov; the 10- and 2-year at 10 Nov
-(the bond market shut for Veterans Day on the 11th) and the 30-year at 9 Nov; FedWatch re-quoted at 10 Nov
-after the CPI (a hike 100% priced); the 9 Nov T-bill auction; PortWatch's Hormuz count at 8 Nov. Brent's
-y/y is quoted against its 10 Nov 2025 settle, a day off the anniversary. Volatility raised 2.0 → 2.5 (the
-headline gauge only). Target funds were checked in full on 10 Nov, the first review of the week, through
-search results only; on 12 Nov ATRAM's and the managers' notices were searched again and nothing new was found.
+market assumptions. Market data as of 12 Nov 2026 (reviewed 12 Nov, cut-off 15:45 UTC): Seoul, Manila and
+the peso at their 12 Nov closes; Tokyo at 11 Nov (its 12 Nov close is reported three ways); New York, the VIX
+(17.49), Brent's January and WTI's December settles at 11 Nov, New York's 12 Nov session being open at the
+cut-off; the 10- and 2-year at 10 Nov (Veterans Day shut the bond market on the 11th) and the 30-year at 9 Nov;
+FedWatch at 10 Nov after the CPI (a hike 100% priced); the 9 Nov T-bill auction; PortWatch's Hormuz count at
+8 Nov. Brent's y/y is quoted against its 10 Nov 2025 settle, a day off the anniversary. On 12 Nov Nvidia's
+Jensen Huang resigned as chief executive (the company's release and 8-K); its shares were about 10% lower
+before New York opened, a move not yet in any close here. Target funds were checked in full on 10 Nov, the
+first review of the week, through search results only; on 12 Nov ATRAM's and the managers' notices were
+searched twice and nothing new was found.
 Weights in the
 universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra

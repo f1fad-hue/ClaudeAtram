@@ -2,6 +2,60 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-12 — v102: Manila's 12 Nov closes in; the oil settles re-sourced under the tightened wire rule; jobless claims, Japan's producer prices, the G7 statement and Nvidia's CEO change added; A, B and D unchanged
+
+The first review under the updated command (`REVIEW_COMMAND.md`). Cut-off **15:45 UTC on Thu 12 Nov**, eight
+and a half hours after v100's. Closed by then: Seoul's, Tokyo's and Manila's 12 Nov sessions. Not closed: New
+York's 12 Nov session (it opened at 14:30 UTC) and the Treasury market's. Every primary site tested - Cboe,
+CME, ICE, PSE, KRX, JPX, the US Treasury, the Fed, BLS, FRED, IMF PortWatch, the Bureau of the Treasury, PSA,
+BSP, uitf.com.ph, atram.com.ph and the managers' sites - returned no connection; this session runs on the
+Default environment and cannot be moved to the ClaudeAtram one. Periodic items: none due (the weekly full
+check ran on 10 Nov; the month-end band review is 30 Nov; the trend window rolls after 31 Dec). Contract
+dates ahead: the VIX's November future settles 18 Nov, WTI's December last trades 20 Nov, Brent's January
+expires 30 Nov.
+
+**Rolled.** PSEi 5,660.55 (−0.57%) and the peso 63.70 (45 centavos weaker) on 12 Nov (the Inquirer; the
+Daily Tribune). **Held:** the Nikkei at 11 Nov - its 12 Nov close is reported three ways (60,816.00,
+60,758.34, about 60,819); New York, the VIX and the oil settles at 11 Nov; Treasuries at 10 Nov; FedWatch's
+10 Nov read (100%, good to 15 Nov); the 9 Nov T-bill auction; the VIX futures strip to its 19 Nov window.
+
+**Re-sourced.** The owner's command now counts a rewrite of a wire story as the wire. v100 carried the
+11 Nov Brent and WTI settles on Reuters and MLQ; MLQ is a rewrite, so it no longer counts. Vantage Markets'
+own settlement table gives the same $92.76 and $86.53, so the settles stand on Reuters and Vantage.
+
+**Added.** US initial claims 200,000 in the week to 7 Nov, against 195,000 expected (Reuters; FXStreet),
+replacing the week to 31 Oct. Japan's corporate goods prices +7.1% on the year in October, against 6.5%
+expected (the BoJ; Reuters). The G7 foreign ministers' 11 Nov call on Iran to stop attacking ships (the Media
+Line; Iran International). **Nvidia: Jensen Huang resigned as chief executive on 12 Nov**, Colette Kress
+interim (Nvidia's release and 8-K; Axios); the shares were about 10% lower before New York opened - not yet a
+close, so no figure moves on it. It is the event that matters most for Nasdaq Equity Income: Nvidia was its
+target's largest holding at the last look-through (7.4% of the US sister fund, 30 Sep).
+
+**Scores.** DRIVER_PREV set to v101's published scores. Every score HELD; Volatility at 2.5 (its raise
+stands; a VIX close above 19.5 would undo it, and New York's 12 Nov session had not closed). Gauge 2.31; band
+2.80, hold at 25%; guards as v100 (persistence 1 of 2, geopolitics 1.5, the VIX clear at 17.49).
+
+**Portfolios (re-run, unchanged).** A 7.31% / −24.9% (10-year view); B 7.10% / −24.9%; D 7.16% / −24.9%,
+four funds. The held-out what-if re-ran and every weight came back identical.
+
+**Funds.** Not the week's first review. No ATRAM or target-manager notice found.
+
+**Errors found and fixed (recorded before fixing).**
+1. Rolling the peso and the PSEi to 12 Nov would have printed 11 Nov's reasons ("after the hot US CPI";
+   "on the hot US CPI ... lower foreign direct investment") beside 12 Nov's moves. Each reason now sits with
+   its own date, the latest behind a date guard.
+2. A source description written in this review, "(preliminary) - +7.1%", tripped the audit's malformed-sign
+   check; reworded.
+3. Read at phone width: the Asia note said Tokyo's 12 Nov close "is reported two ways" - three since this
+   review; it now counts the dispute list.
+4. The peso's latest close printed as "63.7" in the Philippines note and its summary - the raw float, which
+   dropped the trailing zero; both now print two decimals.
+5. The volatility note said the 10 Nov VIX close was "withheld in the last review" - true in v100, false once
+   v101 and v102 followed; it now names the 10 Nov review.
+
+Checks: engine 259/259; audit 255/255; page 16/16 at phone width; mutation test 59/59 caught, re-run after
+the last wording fixes. All six tabs read at phone width.
+
 ## 2026-11-12 — v101: Portfolio C retired at the owner's request; A, B and D unchanged
 
 At the owner's instruction: "Remove and clean up the portfolio C". **Market data is unchanged** (the v100
