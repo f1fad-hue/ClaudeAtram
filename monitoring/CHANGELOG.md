@@ -2,6 +2,84 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-12 — v100: markets rolled to 11-12 Nov; the VIX's 10 Nov close settled at 19.46 and 11 Nov's 17.49 under the long run; Volatility raised 2.0 → 2.5; FedWatch re-quoted at 100%; A, B, C and D unchanged
+
+Cut-off **07:15 UTC on Thu 12 Nov**. Closed by then: New York's 11 Nov session (stocks only - the bond market
+shut for Veterans Day), Brent's and WTI's 11 Nov settles, Seoul's and Tokyo's 12 Nov sessions, Manila's 12 Nov
+session (closed 07:00 UTC; no report by the cut-off). Every primary host tested (Cboe, treasury.gov, FRED,
+treasury.gov.ph, PSA, BSP, uitf.com.ph, atram.com.ph, the managers' sites, bls.gov, investing.com) returned no
+connection; everything below was read through search results, Cboe's and ATRAM's pages included.
+
+**Rolled.** S&P 7,619.38 (+1.31%), Nasdaq 25,466.19 (+1.60%), Dow 52,486.49 (+0.49%) on 11 Nov as CoreWeave's
+results lifted the AI names (CappNotes; Yahoo Finance; CNBC); AP's 25,375.96 for the Nasdaq is recorded as a
+dispute. Brent $92.76 (+$1.27, January) and WTI $86.53 (+$0.49, December) on 11 Nov (Reuters via The Star;
+MLQ), after Iran's security chief said its enriched material stays in Iran; JournalArta's $92.81 recorded.
+VIX **17.49** on 11 Nov (−10.12%), under the 19.5 long run (CappNotes; Yahoo; AD HOC News; Cboe Insights).
+KOSPI 5,375.36 (+2.60%) on 11 Nov and **5,342.73 (−0.61%) on 12 Nov** (Seoul Economic Daily; Yonhap). Nikkei
+61,248.59 (+1.31%) on 11 Nov. PSEi 5,693.20 (−0.40%) and the peso 63.25 (34 centavos weaker) on 11 Nov.
+PortWatch's Hormuz count to 8 Nov: 3 transits (Straits Daily Brief; hormuz.now), three days before the 1 Nov
+reading's limit.
+
+**Settled.** The VIX's 10 Nov close, withheld in v98 on three reports: Cboe's own page at 9:15 pm ET reads
+19.46 (−0.46, −2.31%), with CNN, CappNotes and Saxo - the primary and an independent source, as the rule asks.
+
+**Re-quoted.** FedWatch, a hike by 9 Dec: **100% on 10 Nov after the CPI** (from 84% on 9 Nov). Investing.com
+("no longer pricing in the possibility of a December hold"), Bloomingbit ("unchanged 0%"), Reuters ("fully
+priced") and the Manila Times ("112-percent chance" of a quarter-point) agree no weight is left on a hold. The
+quarter/half split is still not carried (a half-point at 11% to 15.3% by read).
+
+**Held.** Treasuries at 10 Nov (no 11 Nov session); the 30-year at 9 Nov. Tokyo's 12 Nov close, reported as
+60,816.00 (Investing.com) and 60,758.34 (Business Upturn). Manila's and the peso's 12 Nov closes (no report by the
+cut-off). The VIX futures strip (20 Oct settlements) - Saxo's 11 Nov board (November 19.20, December 19.77, in
+contango) and Cboe's 10 Nov November settle (19.9067) are one source each and not the same session; flagged, to
+its 19 Nov window. The 9 Nov T-bill auction (the next is 16 Nov).
+
+**Scores.** DRIVER_PREV set to v99's published scores first. **Volatility RAISED 2.0 → 2.5**, the rest of
+v94's cut restored, on both conditions v98's note set: the VIX closed under its long run (19.46, then 17.49 -
+92% of the 5 Nov jump given back) and Seoul stopped selling (+4.39%, +2.60%); the newest board found is in
+contango. It moves the headline gauge only: **2.28 → 2.31**. Every other score HELD; Monetary at 2.0 on a hike
+now fully priced (the score already assumed it), Geopolitics at 1.5 (Tehran calls the talks reports "pure lies"
+and keeps the Strait shut until its conditions are met; the IRGC claims two more tankers hit mines, unconfirmed).
+No fund's net CAGR or drawdown moves: the 3- and 5-year paths, the tilts and the band read their own inputs.
+
+**Budget band.** 2.80 → hold at 25% (unchanged). Guards: persistence 1 of 2 (the next month-end review is
+30 Nov); geopolitics 1.5, under its 2.0 floor; **the VIX guard clears** (17.49 ≤ 19.5) for the first time
+since 4 Nov. Steps: 24% A 7.20 / −23.8, B 7.02 / −23.8, C 7.03 / −23.7, D 7.07 / −24.0; 26% A 7.39 / −25.9,
+B 7.18 / −25.8, C 7.21 / −25.7, D 7.24 / −25.8; 27% A 7.48 / −26.8, B 7.28 / −26.9, C 7.30 / −26.9, D 7.33 / −26.9.
+
+**Portfolios (re-run, unchanged).** A 7.31% / −24.9%; B 7.10% / −24.9%; C 7.14% / −24.9%; D 7.16% / −24.9%
+(four funds). The held-out what-if re-ran (model/heldout_sens.py) and every weight came back identical.
+
+**Funds.** Not the week's first review (the full check was 10 Nov). ATRAM's and the target managers' notices
+were searched again: nothing new - no fee change, merger, closure, manager change, target switch or new fund.
+
+**Calendar.** Nothing passed (the PPI is 13 Nov). Added the FOMC minutes, 18 Nov 2 pm ET (the Fed's own page;
+fedratecalc). Nvidia's 17 Nov date re-confirmed; its note now mentions the 11 Nov reports on Jensen Huang.
+
+**Errors found and fixed (recorded before fixing).**
+1. The US one-line summary said the Nasdaq and S&P rose "on 11 Nov on a hot October CPI" - a reason typed
+   beside the moves, which rolled while it did not. Now behind the same date guard as the long note's
+   (runbook 159).
+2. The volatility note said the strip's settlements "sit X points under" the latest close, with the gap's sign
+   unread: with the VIX at 17.49 under December's 18.70 it would have printed "-1.21 points under". Direction
+   now read from the sign.
+3. The geopolitics summary said "Brent fell to" the latest settle, which rose on 11 Nov; and the geopolitics note
+   put 10 Nov's session low beside the latest settle. Both now read the series by date.
+4. The Budget tab's lede gave the budget "for A, B and C"; D is chosen inside the same budget. Now names D.
+5. In this review's own edits, caught by the checks before publishing: 11 Nov's Brent move entered both in cents
+   and as a percentage (the house rule allows one); a sentence "Brent rose $1.27 to..." that the prose-level
+   check read as a $1.27 Brent level; two sources entered twice (Cboe's VIX page, Nvidia's date notice) -
+   merged into their existing rows.
+
+**Due before the next review.** The VIX futures strip: November settles 18 Nov and the window ends 19 Nov -
+re-quote December and January or flag. WTI's December contract last trades 20 Nov - roll to January. FedWatch's
+10 Nov read reaches its five-day limit on 15 Nov. US PPI (13 Nov), Japan's Q3 GDP (16 Nov), retail sales and
+Nvidia (17 Nov), FOMC minutes and APEC (18 Nov). The month-end band review on 30 Nov. Treasuries roll on the
+12 Nov session.
+
+Checks: engine 262/262 (the per-session "withheld" check drops out with nothing withheld); audit 268/268;
+page 16/16 at phone width; mutation test below.
+
 ## 2026-11-12 — v99: Portfolio D re-set - Nasdaq Equity Income as the main fund, the number of funds chosen by the rule: four, 7.16% / −24.9%
 
 At the owner's instruction: "Update portfolio D as the atram nasdaq equity income as main fund with best and

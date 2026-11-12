@@ -196,6 +196,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+159. A REASON IS DATED LIKE A NUMBER. The US one-line summary said the Nasdaq and the S&P rose "on 11 Nov on
+   a hot October CPI": the moves rolled to 11 Nov and the reason, typed beside them, stayed on 10 Nov's fall.
+   The long note had its reason behind an `equity_date ==` guard; the summary did not. A reason for the
+   latest session is written behind the same date guard as the note's, or not at all.
+158. A HELD READING IS RE-QUOTED WHEN THE EVENT IT WAITED FOR HAS HAPPENED. FedWatch's 9 Nov 84% was carried
+   past a CPI that four sources agree took a hold to zero, because the quarter/half split after it disagreed.
+   The figure carried is "a hike by the meeting"; when sources agree on that, it rolls, and the disagreement
+   about its split is recorded beside it, not used to hold the whole.
 157. A NUMBER THAT IS CHOSEN IS SEARCHED, NOT FIXED. "Best and recommended number of funds" is an output, so
    D's set spans every count the limits allow and the one rule picks the count with the mix; each count's
    own best is published beside it so the reader sees the price of one fund more or fewer. With no tie band,
