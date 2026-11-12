@@ -2,6 +2,52 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-12 — v101: Portfolio C retired at the owner's request; A, B and D unchanged
+
+At the owner's instruction: "Remove and clean up the portfolio C". **Market data is unchanged** (the v100
+review, cut-off 07:15 UTC on 12 Nov). C - Nasdaq Equity Income held at exactly 50%, the one exemption from
+the 35% cap, the rest by B's rule on the 3/5/10-year view - was first added on 25 Sep, retired in v76,
+restored in v82 and is now retired again. Its last pick, for the record: 5% Peso Money Market, 50% Nasdaq
+Equity Income, 20% Global Health Care, 20% Global Infra Equity, 5% Asian Multi-Asset Income, 7.14% / −24.9%.
+
+**Nothing else moves.** C had its own pinned search (8,289 mixes); A, B and D read nothing of it. A stays
+7.31% / −24.9% (10-year view), B 7.10% / −24.9% and D 7.16% / −24.9% (3/5/10-year view); the budget is 25%,
+the band 2.80. The held-out what-if re-ran without C and every A, B and D weight came back identical.
+D keeps its own names and rule (Nasdaq Equity Income the largest of two to five funds, no cap, no cash
+floor): the letters are not reshuffled, so "D" means what it meant yesterday.
+
+**Removed.**
+- **Engine:** C's pinned search pass and its `univ_mixes(pinned=...)` branch, `PIN_W`, its picks
+  (live, every what-if, every budget step), `PC_*`, the `portfolio_c` payload and `c_k`; the held-out
+  inputs `useq_w_c_*`, `gbi_w_c_*`, `amip_w_c_alt`, `ginf_w_c_alt` and `ginf_cagr_c_alt`, and the prose
+  that quoted them. Its five checks went with it; a new one holds it gone, and no note may name C as a
+  portfolio.
+- **Page:** C's donut, its column in the versus, headline, stress, peso and budget-step tables, its mark
+  on the frontier, its line in every what-if, the fund slides' "Weight in A / B / C / D", and every sentence
+  comparing D or B with C. Where a comparison carried information it now reads against B or D: D's lede
+  sets it beside B (0.06pp above, the same drawdown), the one-sentence verdict names D's trade-off (no cap
+  or cash floor) in place of C's, the conclusion gives D's return per drawdown, and the cash note says D
+  holds none. Section titles read "A vs B vs D" and "three portfolios".
+- **Audit:** C's re-derivations, limits, pin and pick re-run, its mix count, and C in the budget check
+  and the "none holds it" check; a new check holds C absent from the payload, the what-ifs, the steps and
+  the coefficients. **Validator:** three donuts, none for C; the A-B-D table; the lede's three CAGRs.
+  **Mutants:** `m_pin` (C off its pin) retired; `m_cback` plants C back in the payload and must be caught;
+  `m_vol` now perturbs D's volatility.
+- **heldout_sens.py:** C's pinned pass; A, B and D are re-run.
+
+**Errors found and fixed while cleaning up (recorded before fixing).**
+1. Six engine check loops written over A, B and C had never covered D - each portfolio's zero-shock
+   stress row, its scenario drawdowns (labelled "of A and B" since v56), its drawdown re-derivation from
+   the coefficient, its peso values and its coefficient's provenance: they now run over A, B and D, and D
+   passes each.
+2. The payload's comment on `portfolio_d` still said "exactly two other funds", the v96 rule replaced in
+   v99. Corrected.
+
+Checks: engine 259/259 (C's five gone, one added); audit 254/254 (C's rows gone, one added); page 16/16 at
+phone width; mutation test 59/59 caught, `m_cback` (C planted back) among them. All six tabs read at phone
+width: no sentence names C as a portfolio, and the Portfolios tab lays A and B side by side with D centred
+beneath.
+
 ## 2026-11-12 — v100: markets rolled to 11-12 Nov; the VIX's 10 Nov close settled at 19.46 and 11 Nov's 17.49 under the long run; Volatility raised 2.0 → 2.5; FedWatch re-quoted at 100%; A, B, C and D unchanged
 
 Cut-off **07:15 UTC on Thu 12 Nov**. Closed by then: New York's 11 Nov session (stocks only - the bond market

@@ -58,15 +58,16 @@ Asia Equity / Global Technology / Global Dividend / Global Health Care / Global 
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · 10-year view | B · 3/5/10-year view | C · Nasdaq Income 50% | D · Nasdaq Income-led |
-|---|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** | 5 / 50 / 0 / 0 / 0 / 20 / 20 / 0 / 0 / 5 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 20 / 0 / 0 / 15 / 0 |
-| 10y net CAGR after all fees | **7.31%** | 7.10% | 7.14% | 7.16% |
-| Expected max drawdown (10y) | −24.9% | −24.9% | −24.9% | −24.9% |
-| Return per unit of drawdown | **0.294** | 0.285 | 0.287 | 0.288 |
+| | A · 10-year view | B · 3/5/10-year view | D · Nasdaq Income-led |
+|---|---|---|---|
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **10 / 35 / 0 / 5 / 0 / 20 / 30 / 0 / 0 / 0 / 0** | 0 / 50 / 0 / 0 / 0 / 15 / 20 / 0 / 0 / 15 / 0 |
+| 10y net CAGR after all fees | **7.31%** | 7.10% | 7.16% |
+| Expected max drawdown (10y) | −24.9% | −24.9% | −24.9% |
+| Return per unit of drawdown | **0.294** | 0.285 | 0.288 |
 
-Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C
-and D on the 3/5/10-year. On one basis, the 3/5/10-year view, A returns 7.11% at −25.0% against B's
+Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B and D
+on the 3/5/10-year. Portfolio C (Nasdaq Equity Income pinned at 50%) was retired on 12 Nov 2026
+(v101) at the owner's request. On one basis, the 3/5/10-year view, A returns 7.11% at −25.0% against B's
 7.10% at −24.9%; on the 10-year view B returns 7.26% at −24.8%. Every portfolio is built from four analyses -
 the macro drivers, the market trend, the regional ranking and the volatility curve - each
 read at **3, 5 and 10 years** and weighted by the share of the ten-year holding it governs
@@ -89,15 +90,6 @@ every update:
   Equity - the highest 3/5/10-year CAGR inside the budget, 0.01pp below A there for 0.1pp
   less drawdown. Maximum growth added 0.04pp a year to A and 0.05pp to B against the v76
   rule, for 0.4pp and 0.6pp more drawdown, both inside the budget.
-- **C, Nasdaq Equity Income at 50%** (owner, 29 Oct 2026, v82: "Make portfolio C with 50%
-  atram nasdaq equity income allocation based on 3, 5, 10yrs ... Use budget drawdown band for
-  portfolio C"): B's rule, inputs and band budget with Nasdaq Equity Income held at 50% - the
-  one fund exempt from the 35% cap - and the rest chosen over the other ten funds (8,289
-  mixes, 3,544 inside the budget): 5% money market, 20% Global Health Care, 20% Global Infra
-  Equity, 5% Asian Multi-Asset Income. 7.14% / −24.9% on the 3/5/10-year view (7.31% /
-  −24.8% on the 10-year). It returns 0.04pp a year more than B at the same printed drawdown
-  only because the pin is outside the cap: the drawdown model does not price one manager
-  holding half the money, which is what the cap is for.
 - **D, Nasdaq Equity Income-led** (owner, 7 Nov 2026, v96; re-set 12 Nov 2026, v99: "Update
   portfolio D as the atram nasdaq equity income as main fund with best and recommended number of
   allocations in a portfolio based on the macroeconomic sentiment, market trend, volatility,
@@ -106,8 +98,8 @@ every update:
   funds, each at least 5%, with **no single-fund cap and no cash floor** (the owner's choice of
   7 Nov). The rule picks the number of funds (174,390 mixes, 36,898 inside the budget): **four** -
   50% Nasdaq Equity Income, 20% Global Infra Equity, 15% Global Health Care, 15% Asian Multi-Asset
-  Income. 7.16% / −24.9% on the 3/5/10-year view (7.34% / −24.7% on the 10-year), 0.02pp above
-  C. Each count's best: two funds 6.98% / −24.3%, three 7.13% / −24.9% (the v96-v98 D), four
+  Income. 7.16% / −24.9% on the 3/5/10-year view (7.34% / −24.7% on the 10-year), 0.06pp above
+  B at the same drawdown, by giving up the cap and the cash floor. Each count's best: two funds 6.98% / −24.3%, three 7.13% / −24.9% (the v96-v98 D), four
   7.16% / −24.9%, five 7.16% / −25.0% (the same return, more drawdown); six and seven, outside the
   review's five-fund limit, return less (7.14%, 7.12%). It holds no peso cash, and all four funds
   are unhedged; at the band's steps it holds 7.07% / −24.0% (24%), 7.24% / −25.8% (26%) and
@@ -117,15 +109,18 @@ every update:
 25% budget - from the macro drivers and the market trend at each view (volatility left the
 reading on 3 Nov 2026 at the owner's instruction and stays as the guard on a raise) - with
 bands for a step to 24%, 26% or 27%, guards that must also be clear, and what each step does
-to A, B and C. On 3 Nov it reads 2.80: hold at 25%, as at October's month-end (restated on the
+to A, B and D. On 12 Nov it reads 2.80: hold at 25%, as at October's month-end (restated on the
 new rule), the first review on record. Since v77 the band sets
-the budget for A and B (owner, 28 Oct), and since v82 for C, through the same guards.
+the budget for A and B (owner, 28 Oct), and since v96 for D, through the same guards.
 
-Portfolio C was first added on 2026-09-25, removed on 2026-10-28 (v76) and restored on
-2026-10-29 (v82); its pinned search is separate from A's and B's, so neither change moved
-them. Portfolio D - C on four funds only (Money Market, Nasdaq
-Equity Income, Asia Equity and Global Technology), added on 2026-10-23 - was removed on
-2026-10-27 (v74), for the same reason changing nothing else.
+Portfolio C - Nasdaq Equity Income held at exactly 50%, the one exemption from the 35% cap, the
+rest by B's rule - was first added on 2026-09-25, removed on 2026-10-28 (v76), restored on
+2026-10-29 (v82) and **retired on 2026-11-12 (v101)** at the owner's request ("Remove and clean up
+the portfolio C"). Its pinned search was separate from A's, B's and D's, so no other pick moved:
+at its retirement it held 5% money market, 50% Nasdaq Equity Income, 20% Global Health Care, 20%
+Global Infra Equity and 5% Asian Multi-Asset Income for 7.14% / −24.9%. An earlier Portfolio D -
+C on four funds only (Money Market, Nasdaq Equity Income, Asia Equity and Global Technology),
+added on 2026-10-23 - was removed on 2026-10-27 (v74), for the same reason changing nothing else.
 
 What moved them (v71): each analysis is now researched year by year - years 1-3, then
 years 4-5 - from the Fed's projected rates (4.1% at the end of 2026 and 2027, 3.9% in 2028,

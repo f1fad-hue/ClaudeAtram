@@ -437,7 +437,7 @@
   "list22_held_out": [
    [
     "US Equity Opportunity",
-    "trust fee not confirmed: uitf.com.ph's listings read 1.20% (about 17 months old) and, in a 3 Nov search, 1.50% (USD class); at 1.50% it takes none of A, B, C or D (owner's hold, 2026-10-21)"
+    "trust fee not confirmed: uitf.com.ph's listings read 1.20% (about 17 months old) and, in a 3 Nov search, 1.50% (USD class); at 1.50% it takes none of A, B or D (owner's hold, 2026-10-21)"
    ],
    [
     "Global Bond Income",
@@ -501,11 +501,6 @@
   "useq_w_b_listed": 20,
   "useq_w_a_peer": 0,
   "useq_w_b_peer": 0,
-  "useq_w_c_listed": 0,
-  "useq_w_c_peer": 0,
-  "gbi_w_c_low": 25,
-  "gbi_w_c_high": 0,
-  "amip_w_c_alt": 5,
   "useq_w_d_listed": 15,
   "useq_w_d_peer": 0,
   "gbi_w_d_low": 35,
@@ -535,10 +530,6 @@
    0,
    0
   ],
-  "ginf_w_c_alt": [
-   20,
-   20
-  ],
   "ginf_cagr_a_alt": [
    7.26,
    7.25
@@ -546,10 +537,6 @@
   "ginf_cagr_b_alt": [
    7.07,
    7.07
-  ],
-  "ginf_cagr_c_alt": [
-   7.1,
-   7.08
   ],
   "ginf_w_d_alt": [
    20,
@@ -2116,7 +2103,7 @@
     "date": "2026-11-12",
     "first": "2026-11-10",
     "status": "disputed",
-    "text": "TRUST FEE DISPUTED, found at this review: ATRAM's fund page now shows 1.50% a year, beside a July 2026 KIIDS and a Declaration of Trust dated 16 Jul, against the 1.18% carried from the earlier KIIDS; uitf.com.ph's listing still has 1.20%. It is one source, so the figure carried is kept; at 1.50% its net CAGR falls 0.32pp, and none of A, B, C or D holds it, so none can change. Target: JPMorgan Asia Equity Dividend Fund, a Hong Kong unit trust (J.P. Morgan's factsheet, 30 Sep). Its 1.5% management fee is published; the 1.55% charge carried is an estimate, and Investing.com lists 1.82% for an HKD class (undated, one source). Only a top five was found, past the 60-day limit. The feeder returned 18.23% in pesos in the year to 5 Nov (uitf.com.ph); no dated target figure was found, so the gap test was not run. No events found."
+    "text": "TRUST FEE DISPUTED, found at this review: ATRAM's fund page now shows 1.50% a year, beside a July 2026 KIIDS and a Declaration of Trust dated 16 Jul, against the 1.18% carried from the earlier KIIDS; uitf.com.ph's listing still has 1.20%. It is one source, so the figure carried is kept; at 1.50% its net CAGR falls 0.32pp, and none of A, B or D holds it, so none can change. Target: JPMorgan Asia Equity Dividend Fund, a Hong Kong unit trust (J.P. Morgan's factsheet, 30 Sep). Its 1.5% management fee is published; the 1.55% charge carried is an estimate, and Investing.com lists 1.82% for an HKD class (undated, one source). Only a top five was found, past the 60-day limit. The feeder returned 18.23% in pesos in the year to 5 Nov (uitf.com.ph); no dated target figure was found, so the gap test was not run. No events found."
    },
    "net_novol": 7.19,
    "net_neutral": 7.27,
@@ -3033,7 +3020,6 @@
   "baseline_k": 1.7125,
   "a_k": 1.66579,
   "b_k": 1.65833,
-  "c_k": 1.65,
   "d_k": 1.65,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
@@ -3402,28 +3388,6 @@
      "best": 7.02,
      "hormuz_dd": -43.1
     },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      5,
-      25,
-      0,
-      0,
-      15,
-      0
-     ],
-     "cagr": 7.03,
-     "maxdd": -23.7,
-     "vol": 12.3,
-     "ret_per_dd": 0.297,
-     "n_feasible": 2740,
-     "best": 7.03,
-     "hormuz_dd": -43.3
-    },
     "d": {
      "weights": [
       0,
@@ -3491,28 +3455,6 @@
      "n_feasible": 163965,
      "best": 7.1,
      "hormuz_dd": -44.9
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      20,
-      20,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.14,
-     "maxdd": -24.9,
-     "vol": 12.83,
-     "ret_per_dd": 0.287,
-     "n_feasible": 3544,
-     "best": 7.14,
-     "hormuz_dd": -45.1
     },
     "d": {
      "weights": [
@@ -3582,28 +3524,6 @@
      "best": 7.18,
      "hormuz_dd": -46.8
     },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      15,
-      30,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.21,
-     "maxdd": -25.7,
-     "vol": 13.21,
-     "ret_per_dd": 0.281,
-     "n_feasible": 4342,
-     "best": 7.21,
-     "hormuz_dd": -46.4
-    },
     "d": {
      "weights": [
       0,
@@ -3672,28 +3592,6 @@
      "best": 7.28,
      "hormuz_dd": -48.8
     },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      5,
-      0,
-      20,
-      20,
-      0,
-      0,
-      0,
-      0
-     ],
-     "cagr": 7.3,
-     "maxdd": -26.9,
-     "vol": 13.66,
-     "ret_per_dd": 0.271,
-     "n_feasible": 5002,
-     "best": 7.3,
-     "hormuz_dd": -48.5
-    },
     "d": {
      "weights": [
       0,
@@ -3730,7 +3628,7 @@
   "held_out": [
    {
     "short": "US Equity Opportunity",
-    "why": "trust fee not confirmed: uitf.com.ph's listings read 1.20% (about 17 months old) and, in a 3 Nov search, 1.50% (USD class); at 1.50% it takes none of A, B, C or D (owner's hold, 2026-10-21)"
+    "why": "trust fee not confirmed: uitf.com.ph's listings read 1.20% (about 17 months old) and, in a 3 Nov search, 1.50% (USD class); at 1.50% it takes none of A, B or D (owner's hold, 2026-10-21)"
    },
    {
     "short": "Global Bond Income",
@@ -4303,23 +4201,6 @@
      "cagr": 7.12,
      "maxdd": -25.0
     },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      20,
-      20,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.15,
-     "maxdd": -24.9
-    },
     "d": {
      "weights": [
       0,
@@ -4355,23 +4236,6 @@
       0,
       0,
       20,
-      0
-     ],
-     "cagr": 7.2,
-     "maxdd": -24.9
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      15,
-      25,
-      0,
-      0,
-      5,
       0
      ],
      "cagr": 7.2,
@@ -4417,23 +4281,6 @@
      "cagr": 7.1,
      "maxdd": -24.9
     },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      15,
-      25,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.12,
-     "maxdd": -25.0
-    },
     "d": {
      "weights": [
       5,
@@ -4472,23 +4319,6 @@
       0
      ],
      "cagr": 7.1,
-     "maxdd": -24.9
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      20,
-      20,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.14,
      "maxdd": -24.9
     },
     "d": {
@@ -4532,23 +4362,6 @@
      "cagr": 7.14,
      "maxdd": -25.0
     },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      15,
-      25,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.16,
-     "maxdd": -24.9
-    },
     "d": {
      "weights": [
       0,
@@ -4587,23 +4400,6 @@
       0
      ],
      "cagr": 7.1,
-     "maxdd": -24.9
-    },
-    "c": {
-     "weights": [
-      5,
-      50,
-      0,
-      0,
-      0,
-      20,
-      20,
-      0,
-      0,
-      5,
-      0
-     ],
-     "cagr": 7.14,
      "maxdd": -24.9
     },
     "d": {
@@ -4895,7 +4691,7 @@
      "date": "2026-11-12",
      "first": "2026-11-10",
      "status": "disputed",
-     "text": "Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the 0.80% charge on ATRAM's fact sheet matches no HSBC class found - IC 1.00% (estimated), BC GBP 1.10%, ZD 0.15% - and the class held is not published. At 1.00% its net CAGR on the 3/5/10-year view is 6.97%; A would hold 15% (7.26% on its 10-year view), B 0% (7.07%), C 20% (7.10%) and D 20% (7.12%). At 1.10% it nets 6.87%, and A holds 0%, B 0%, C 20% and D 10% (7.11%). The newest full holdings list found is a year old. The feeder returned 19.35% in pesos in the year to 5 Nov (uitf.com.ph); the one target figure found is undated, so the gap test was not run. No events found."
+     "text": "Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the 0.80% charge on ATRAM's fact sheet matches no HSBC class found - IC 1.00% (estimated), BC GBP 1.10%, ZD 0.15% - and the class held is not published. At 1.00% its net CAGR on the 3/5/10-year view is 6.97%; A would hold 15% (7.26% on its 10-year view), B 0% (7.07%) and D 20% (7.12%). At 1.10% it nets 6.87%, and A holds 0%, B 0% and D 10% (7.11%). The newest full holdings list found is a year old. The feeder returned 19.35% in pesos in the year to 5 Nov (uitf.com.ph); the one target figure found is undated, so the gap test was not run. No events found."
     },
     "net_novol": 7.17,
     "net_neutral": 7.25,
@@ -5078,7 +4874,7 @@
     "region": "ASIA",
     "target": "Target fund: Schroder Asian Asset Income Fund (named at launch, Sep 2022). Benchmark: 50% MSCI AC Asia Pacific ex Japan + 50% Bloomberg EM Asia.",
     "target_verified": true,
-    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%, C the 5% it holds at 1.50% and D its 30%",
+    "fee_note": "1.50% ATRAM trust fee incl. distribution fee (ATRAM's fund page; DragonFi) + ~1.54% target-fund charge (ESTIMATE: Schroders' published class A figure, Mar 2025; the class the feeder holds is not published). DISPUTED: the October 2025 KIID and uitf.com.ph list a 1.20% trust fee; at it, A would hold 35% of this fund and B 30%, and D its 30%",
     "gross_note": "Half equity, half bonds, as its benchmark: the Asia equity build (JPM LTCMA 2027 EM equity 7.1% + 1.0% re-rating - 0.5% dividend drag) and 6.1% for Asian credit (the LTCMA's US investment-grade figure, a proxy).",
     "code": "ATRAMIP",
     "fee_feeder": 1.5,
@@ -5211,7 +5007,7 @@
      "date": "2026-11-12",
      "first": "2026-11-10",
      "status": "disputed",
-     "text": "TRUST FEE CORRECTED at this review: 1.50% on ATRAM's fund page, DragonFi and uitf.com.ph's A PHP class, against the 1.20% carried from an older fact sheet; its net CAGR falls 0.30pp, and none of A, B, C or D holds it, so none changes. Target: BlackRock Global Funds - Global Allocation Fund. SHARE-CLASS MISMATCH: this record names the A2 USD class, which BlackRock lists at 1.77% (30 Oct 2026; 1.78% in August), against the 1.13% on ATRAM's fact sheet carried here - the class or the charge is wrong. At 1.77% its net falls 0.64pp more. BlackRock's September prospectus liquidates two other Global Funds sub-funds and merges a third; this one continues (its UK and Singapore prospectuses). The feeder returned 13.55% in pesos in the year to 4 Nov (ATRAM's page); the target's figure on BlackRock's page is unlabelled, so the gap test was not run. No events found."
+     "text": "TRUST FEE CORRECTED at this review: 1.50% on ATRAM's fund page, DragonFi and uitf.com.ph's A PHP class, against the 1.20% carried from an older fact sheet; its net CAGR falls 0.30pp, and none of A, B or D holds it, so none changes. Target: BlackRock Global Funds - Global Allocation Fund. SHARE-CLASS MISMATCH: this record names the A2 USD class, which BlackRock lists at 1.77% (30 Oct 2026; 1.78% in August), against the 1.13% on ATRAM's fact sheet carried here - the class or the charge is wrong. At 1.77% its net falls 0.64pp more. BlackRock's September prospectus liquidates two other Global Funds sub-funds and merges a third; this one continues (its UK and Singapore prospectuses). The feeder returned 13.55% in pesos in the year to 4 Nov (ATRAM's page); the target's figure on BlackRock's page is unlabelled, so the gap test was not run. No events found."
     },
     "net_novol": 5.99,
     "net_neutral": 6.05,
@@ -5556,145 +5352,6 @@
    "max_w": 35,
    "min_cash": 5
   }
- },
- "portfolio_c": {
-  "weights": [
-   5,
-   50,
-   0,
-   0,
-   0,
-   20,
-   20,
-   0,
-   0,
-   5,
-   0
-  ],
-  "ids": [
-   "ATRPHMM",
-   "ATRQIAP",
-   "ATRASEQ",
-   "ATRGTEC",
-   "ATRGLDV",
-   "ATRGHCP",
-   "M_GINF",
-   "M_GEO",
-   "M_GCT",
-   "ATRAMIP",
-   "M_GALL"
-  ],
-  "macro": {
-   "weights": [
-    5.0,
-    50.0,
-    0.0,
-    0.0,
-    0.0,
-    20.0,
-    20.0,
-    0.0,
-    0.0,
-    5.0,
-    0.0
-   ],
-   "cagr": 7.14,
-   "vol": 12.83,
-   "maxdd": -24.9,
-   "ret_per_dd": 0.287,
-   "sharpe_like": 0.022,
-   "terminal_1m": 1993042,
-   "worst_1m_from_open": 751000
-  },
-  "base": {
-   "weights": [
-    5.0,
-    50.0,
-    0.0,
-    0.0,
-    0.0,
-    20.0,
-    20.0,
-    0.0,
-    0.0,
-    5.0,
-    0.0
-   ],
-   "cagr": 7.09,
-   "vol": 12.83,
-   "maxdd": -24.9,
-   "ret_per_dd": 0.285,
-   "sharpe_like": 0.018,
-   "terminal_1m": 1983760,
-   "worst_1m_from_open": 751000
-  },
-  "ten": {
-   "weights": [
-    5.0,
-    50.0,
-    0.0,
-    0.0,
-    0.0,
-    20.0,
-    20.0,
-    0.0,
-    0.0,
-    5.0,
-    0.0
-   ],
-   "cagr": 7.31,
-   "vol": 12.83,
-   "maxdd": -24.8,
-   "ret_per_dd": 0.295,
-   "sharpe_like": 0.035,
-   "terminal_1m": 2024892,
-   "worst_1m_from_open": 752000
-  },
-  "column": "net_macro",
-  "fund": "ATRQIAP",
-  "pin_pct": 50,
-  "band_n": 2,
-  "n_feasible": 3544,
-  "n_total": 8289,
-  "scenarios": [
-   {
-    "name": "Hormuz escalation",
-    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $93. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.96,
-    "vol": 20.52,
-    "maxdd": -45.1
-   },
-   {
-    "name": "Hawkish repricing",
-    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.15,
-    "vol": 16.68,
-    "maxdd": -35.3
-   },
-   {
-    "name": "AI capex digestion",
-    "desc": "Partly running since 5 Nov: the Nasdaq fell 5.52% into correction on 5 Nov, and the KOSPI 5.28% on 5 Nov and 6.02% on 6 Nov, on fears for the AI build-out, before any earnings cut. This row models the cut: the semis order book rolls over and the 52.5% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 5.16,
-    "vol": 18.6,
-    "maxdd": -39.8
-   },
-   {
-    "name": "Disinflation restart",
-    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 9.04,
-    "vol": 10.26,
-    "maxdd": -17.5
-   },
-   {
-    "name": "Grind-on base case",
-    "desc": "Vol drifts up to the 19-20 the futures curve already prices, earnings hold, no policy accident. The modelled path.",
-    "cagr": 7.14,
-    "vol": 12.83,
-    "maxdd": -24.9
-   }
-  ],
-  "dd_cap": 25.0,
-  "in_budget": true
  },
  "portfolio_d": {
   "weights": [

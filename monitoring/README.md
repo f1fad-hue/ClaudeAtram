@@ -196,6 +196,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+160. A RETIRED PORTFOLIO IS HELD GONE, NOT JUST DELETED. Removing C's code is half the job: a check in the
+   engine and one in the audit assert it is absent from the payload, the what-ifs, the budget steps and the
+   coefficients, and a mutant plants it back. Every loop or sentence written "A, B and C" is re-read, not
+   renamed: six engine checks over "abc" had never covered D, and now do. The letters of the portfolios that
+   remain are kept, so a name means the same thing across reviews.
 159. A REASON IS DATED LIKE A NUMBER. The US one-line summary said the Nasdaq and the S&P rose "on 11 Nov on
    a hot October CPI": the moves rolled to 11 Nov and the reason, typed beside them, stayed on 10 Nov's fall.
    The long note had its reason behind an `equity_date ==` guard; the summary did not. A reason for the

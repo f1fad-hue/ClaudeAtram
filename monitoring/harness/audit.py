@@ -38,7 +38,13 @@ ck("the review date is on or after the data date", REV >= AS_OF, f"{REV} vs {AS_
 ck("the data date is a weekday", AS_OF.weekday() < 5, f"{AS_OF:%A}")
 for k in ("optimized",):
     ck(f"retired key '{k}' is absent", k not in D)
-PAA, PBB, PCC, PDD = D["portfolio_a"], D["portfolio_b"], D["portfolio_c"], D["portfolio_d"]
+PAA, PBB, PDD = D["portfolio_a"], D["portfolio_b"], D["portfolio_d"]
+# PORTFOLIO C RETIRED (owner, 2026-11-12, v101): nothing of it left in the payload.
+ck("Portfolio C is retired: no payload entry, what-if entry, budget step or drawdown coefficient",
+   "portfolio_c" not in D and "c_k" not in D["dd_model"]
+   and all("c" not in v for v in D["universe"]["what_if"].values())
+   and all("c" not in a_ for a_ in D["dd_gauge"]["alt"].values())
+   and not any(re.fullmatch(r"[a-z]+_(w|cagr)_c_[a-z]+", k) for k in D["macro"]))
 ck("the 21 Oct review record stays retired (no review, match flag or outside list on A; no pa_review_*)",
    not {"review", "is_review_pick", "review_outside"} & set(PAA) and not any(k.startswith("pa_review_") for k in M))
 
@@ -46,7 +52,7 @@ ck("the 21 Oct review record stays retired (no review, match flag or outside lis
 sec("B. FUNDS: fees, nets, tilts and drawdowns")
 FU = D["funds"] + PBB["funds"]
 IDS = [f["id"] for f in FU]
-ck("the universe is the payload's ids, in order", IDS == PBB["ids"] == PAA["ids"] == PCC["ids"] == PDD["ids"], f"{IDS}")
+ck("the universe is the payload's ids, in order", IDS == PBB["ids"] == PAA["ids"] == PDD["ids"], f"{IDS}")
 DM = D["dd_model"]; K0, MU, SC = DM["k"], DM["mu_coef"], DM["horizon_scalar"]
 ck("the drawdown horizon scalar is sqrt(horizon / calibration)", abs(SC - math.sqrt(DM["horizon_y"] / DM["calib_y"])) < 1e-6)
 CASH = {i for i, f in enumerate(FU) if f["id"] == "ATRPHMM"}
@@ -87,13 +93,11 @@ def figures(w, key):
     vd = round(v, 2)
     return rd, vd, round(-max((pk(w) * vd - MU * rd) * SC, 0.0), 1), r, v
 PIN = IDS.index("ATRQIAP")
-for lab, P in (("A", PAA), ("B", PBB), ("C", PCC)):
+for lab, P in (("A", PAA), ("B", PBB)):
     w = [int(x) for x in P["weights"]]
     ck(f"{lab}: {NU} weights on the 5% grid summing to 100", len(w) == NU and sum(w) == 100 and all(x % 5 == 0 for x in w), f"{w}")
-    caps = [x for i, x in enumerate(w) if not (lab == "C" and i == PIN)]
-    ck(f"{lab}: at most {LIM['max_funds']} funds, {LIM['max_w']}% in any one, {LIM['min_cash']}% cash"
-       + (" (C's pin excepted from the cap)" if lab == "C" else ""),
-       sum(1 for x in w if x) <= LIM["max_funds"] and max(caps) <= LIM["max_w"] and w[0] >= LIM["min_cash"], f"{w}")
+    ck(f"{lab}: at most {LIM['max_funds']} funds, {LIM['max_w']}% in any one, {LIM['min_cash']}% cash",
+       sum(1 for x in w if x) <= LIM["max_funds"] and max(w) <= LIM["max_w"] and w[0] >= LIM["min_cash"], f"{w}")
     for view, key in (("macro", "net_macro"), ("base", "net_base"), ("ten", "net_10y")):
         rd, vd, dd_, _, _ = figures(w, key)
         S = P[view]
@@ -108,7 +112,6 @@ for lab, P in (("A", PAA), ("B", PBB), ("C", PCC)):
     ck(f"{lab}: its grind-on stress row is its own-horizon headline", len(g_) == 1
        and (g_[0]["cagr"], g_[0]["vol"], g_[0]["maxdd"]) == (own["cagr"], own["vol"], own["maxdd"]), f"{g_[:1]} vs {own['cagr']}")
     ck(f"{lab}: its drawdown coefficient is its own mix", abs(D["dd_model"][lab.lower() + "_k"] - round(pk(w), 5)) < 1e-6)
-ck("C holds Nasdaq Equity Income at its pin", PCC["weights"][PIN] == PCC["pin_pct"] == 50, f"{PCC['weights'][PIN]}")
 _alt = [(c_, x, e) for c_, a_ in D["dd_gauge"]["alt"].items() for x, e in a_.items()]
 ck("every budget step prints the CAGR its own search ranked on, and re-derives from its weights",
    all(e["cagr"] == e["best"] and figures(e["weights"], "net_10y" if x == "a" else "net_macro")[0] == e["cagr"] for _, x, e in _alt),
@@ -116,23 +119,22 @@ ck("every budget step prints the CAGR its own search ranked on, and re-derives f
 
 # The rule, re-run: maximum growth on the portfolio's own view inside the budget (raw
 # drawdown), a shallower drawdown breaking exact ties - over every mix the limits allow.
-def mixes(pin=None):
-    others = [i for i in range(1, NU) if i != pin]
-    slots = LIM["max_funds"] - 1 - (1 if pin is not None else 0)
+def mixes():
+    others = list(range(1, NU))
+    slots = LIM["max_funds"] - 1
     for n in range(0, slots + 1):
         for combo in itertools.combinations(others, n):
             for ws in itertools.product(range(5, LIM["max_w"] + 1, 5), repeat=n):
-                rest = 100 - sum(ws) - (PCC["pin_pct"] if pin is not None else 0)
+                rest = 100 - sum(ws)
                 if rest < LIM["min_cash"] or rest > LIM["max_w"]: continue   # cash is capped like any fund
                 w = [0] * NU; w[0] = rest
-                if pin is not None: w[pin] = PCC["pin_pct"]
                 for i, x in zip(combo, ws): w[i] = x
                 yield w
-def pick(key, pin=None):
+def pick(key):
     """The published rule: feasible if both the raw and the printed drawdown are inside the
     budget; the best printed CAGR; within it the shallowest printed, then raw, drawdown."""
     feas, n_tot = [], 0
-    for w in mixes(pin):
+    for w in mixes():
         n_tot += 1
         rd, vd, dd_, r, v = figures(w, key)
         ddr = max((pk(w) * v - MU * r) * SC, 0.0)
@@ -141,13 +143,12 @@ def pick(key, pin=None):
     top = max(x[0] for x in feas)
     band = [x for x in feas if x[0] >= top - 1e-9]
     return min(band, key=lambda x: (x[1], x[2]))[3], len(feas), len(band), n_tot
-for lab, P, key, pin in (("A", PAA, "net_10y", None), ("B", PBB, "net_macro", None), ("C", PCC, "net_macro", PIN)):
-    w_, nf, nb, nt = pick(key, pin)
+for lab, P, key in (("A", PAA, "net_10y"), ("B", PBB, "net_macro")):
+    w_, nf, nb, nt = pick(key)
     ck(f"{lab} is the rule's pick on its own view, re-run over all {nt} mixes ({nf} feasible, {nb} at the best CAGR)",
        w_ == [int(x) for x in P["weights"]] and nf == P["n_feasible"] and nb == P["band_n"],
        f"{w_} ({nf}, {nb}) vs {P['weights']} ({P['n_feasible']}, {P['band_n']})")
     if lab == "B": ck(f"the universe's mix count is the payload's ({nt})", nt == D["universe"]["n_total"], f"{D['universe']['n_total']}")
-    if lab == "C": ck(f"C's pinned mix count is the payload's ({nt})", nt == PCC["n_total"], f"{PCC['n_total']}")
 
 # PORTFOLIO D (v96, owner 2026-11-07; re-set v99, owner 2026-11-12): Nasdaq Equity Income as the
 # largest holding of two to five funds, each at least 5%, with no single-fund cap and no cash floor;
@@ -274,7 +275,7 @@ ck("each guard reads what it guards: two month-end reviews in the band, geopolit
    all(_gz[n]["ok"] == _ok[n] for n in _ok) and _gz["vix"]["reading"] == M["vix_latest"] and _gz["geopolitics"]["reading"] == _geo,
    f"{ {n: (_gz[n]['ok'], _ok[n]) for n in _ok} }")
 ck(f"the budget in force is the band's step only when every guard that applies is clear ({_rec:.0f}%), and the picks ran at it",
-   D["dd_budget"]["cap"] == G["recommended_cap"] == _rec and all(P["dd_cap"] == CAP == _rec for P in (PAA, PBB, PCC)),
+   D["dd_budget"]["cap"] == G["recommended_cap"] == _rec and all(P["dd_cap"] == CAP == _rec for P in (PAA, PBB, PDD)),
    f"{D['dd_budget']['cap']} / {G['recommended_cap']} vs {_rec}")
 
 # ---------------------------------------------------------------------------
@@ -537,10 +538,10 @@ ck("the curve is flagged overtaken, on the page and in the volatility note, exac
    D["vol_channel"]["overtaken"] == _over and ("OVERTAKEN" in _vnote) == _over
    and ("no longer overtaken" in _vnote) == (not _over), f"{_over}")
 _pids = D["portfolio_a"]["ids"]
-_none = [f for f in _ALLF if "none of A, B, C or D holds it" in f["target_check"]["text"]]
-ck("a target check that says none of A, B, C or D holds its fund is true of all four",
+_none = [f for f in _ALLF if "none of A, B or D holds it" in f["target_check"]["text"]]
+ck("a target check that says none of A, B or D holds its fund is true of all three",
    bool(_none) and all(D[k]["weights"][_pids.index(f["id"])] == 0
-                       for f in _none for k in ("portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d")),
+                       for f in _none for k in ("portfolio_a", "portfolio_b", "portfolio_d")),
    f"{[f['id'] for f in _none]}")
 
 sec("H. THE CLAIMS REGISTER")

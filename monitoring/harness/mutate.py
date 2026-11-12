@@ -23,13 +23,13 @@ def m_cap(d):                                                                   
     w[i] += 5; w[j] -= 5
 def m_cash(d): w = d["portfolio_a"]["weights"]; i = max(range(1, len(w)), key=lambda k: w[k]); w[0] -= 5; w[i] += 5   # cash under 5%
 def m_cagr(d): d["portfolio_b"]["macro"]["cagr"] = round(d["portfolio_b"]["macro"]["cagr"] + 0.01, 2)   # a headline CAGR 0.01 off
-def m_vol(d): d["portfolio_c"]["macro"]["vol"] = round(d["portfolio_c"]["macro"]["vol"] + 0.02, 2)
+def m_vol(d): d["portfolio_d"]["macro"]["vol"] = round(d["portfolio_d"]["macro"]["vol"] + 0.02, 2)
 def m_dd(d): d["portfolio_a"]["ten"]["maxdd"] = round(d["portfolio_a"]["ten"]["maxdd"] + 0.1, 1)
 def m_swap(d):                                                                                 # A swapped for another mix in the budget
     w = d["portfolio_a"]["weights"]; i = next(k for k in range(1, len(w)) if w[k] >= 10); j = next(k for k in range(1, len(w)) if not w[k])
     w[i] -= 5; w[j] += 5
 def m_feas(d): d["portfolio_b"]["n_feasible"] += 1
-def m_pin(d): w = d["portfolio_c"]["weights"]; w[1] -= 5; w[0] += 5                           # C off its 50% pin
+def m_cback(d): d["portfolio_c"] = json.loads(json.dumps(d["portfolio_b"]))                  # the retired C back in the payload (v101)
 def m_cap_k(d): d["dd_model"]["b_k"] = round(d["dd_model"]["b_k"] + 0.01, 5)
 def m_gauge(d): d["gauge"] = round(d["gauge"] + 0.01, 2)
 def m_dscore(d): _drv(d, "Volatility")["score"] = round(_drv(d, "Volatility")["score"] + 0.05, 2)
@@ -122,7 +122,7 @@ def m_gap(d): d["macro"]["gtec_gap_1y_pp"] = round(d["macro"]["gtec_gap_1y_pp"] 
 def m_over(d): d["vol_channel"]["overtaken"] = not d["vol_channel"]["overtaken"]              # the overtaken flag flipped (v98)
 def m_retr(d): d["macro"]["vix_spike_retraced_pct"] += 5                                       # the retrace off the series (v98)
 def m_holds(d):                                                                                # "none holds it" said of a fund A and B hold (v98)
-    f = next(f for f in d["funds"] if f["id"] == "ATRGTEC"); f["target_check"]["text"] += " And none of A, B, C or D holds it."
+    f = next(f for f in d["funds"] if f["id"] == "ATRGTEC"); f["target_check"]["text"] += " And none of A, B or D holds it."
 def m_grind(d):
     r = next(r for r in d["portfolio_b"]["scenarios"] if r["name"].startswith("Grind")); r["cagr"] = round(r["cagr"] + 0.01, 2)
 
