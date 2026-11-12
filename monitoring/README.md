@@ -8,7 +8,8 @@ the artifact on its own, and no figure on the page refreshes itself. The page
 carries an as-of date; once that date is more than a week old, treat every
 forward-looking number as a forecast built on stale inputs.
 
-This file is what to do when you sit down to review it. `CLAIMS.md` is the
+This file is what to do when you sit down to review it. `REVIEW_COMMAND.md` is the
+owner's standing review command - what each review must cover, tab by tab. `CLAIMS.md` is the
 checklist of every figure and where it came from. `CHANGELOG.md` is the history,
 including every bug found so far and how it was fixed — read it before changing
 anything, because several of the traps are subtle and already documented.
