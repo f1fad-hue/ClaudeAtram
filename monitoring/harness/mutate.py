@@ -111,9 +111,13 @@ def m_rycpi(d): d["real_yield"]["cpi"] = d["macro"]["ph_cpi_sep"]; d["real_yield
 def m_dshift(d):                                                                               # D moved 5% off its pick (v96)
     w = d["portfolio_d"]["weights"]; i = w.index(max(w)); j = next(k for k in range(len(w)) if w[k] and k != i)
     w[i] -= 5; w[j] += 5
-def m_dfour(d):                                                                                # D holding a fourth fund (v96)
+def m_dextra(d):                                                                               # D holding one fund more than its pick (v96; v99)
     w = d["portfolio_d"]["weights"]; i = w.index(max(w)); j = next(k for k in range(len(w)) if not w[k])
     w[i] -= 5; w[j] += 5
+def m_dlead(d):                                                                                # D's main fund no longer the largest (v99)
+    w = d["portfolio_d"]["weights"]; i = w.index(max(w)); j = max((k for k in range(len(w)) if k != i), key=lambda k: w[k])
+    g = (w[i] - w[j]) // 10 * 5 + (5 if (w[i] - w[j]) % 10 else 0); w[i] -= g; w[j] += g
+def m_dcount(d): b = d["portfolio_d"]["by_count"][0]; b["cagr"] = round(b["cagr"] + 0.01, 2)   # a count's best off its re-run (v99)
 def m_gap(d): d["macro"]["gtec_gap_1y_pp"] = round(d["macro"]["gtec_gap_1y_pp"] + 0.5, 2)      # a 1-year gap off its inputs (v98)
 def m_over(d): d["vol_channel"]["overtaken"] = not d["vol_channel"]["overtaken"]              # the overtaken flag flipped (v98)
 def m_retr(d): d["macro"]["vix_spike_retraced_pct"] += 5                                       # the retrace off the series (v98)

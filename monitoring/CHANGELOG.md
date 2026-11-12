@@ -2,6 +2,63 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-12 — v99: Portfolio D re-set - Nasdaq Equity Income as the main fund, the number of funds chosen by the rule: four, 7.16% / −24.9%
+
+At the owner's instruction: "Update portfolio D as the atram nasdaq equity income as main fund with best and
+recommended number of allocations in a portfolio based on the macroeconomic sentiment, market trend,
+volatility, regional rankings deep analysis of 3, 5, 10yrs and with in the drawdown band". **Market data is
+unchanged** (to 10 Nov, the v98 review); only D's rule, and everything that reads it, moved.
+
+**The rule.** D was Nasdaq Equity Income and exactly two other funds (v96-v98). It is now every mix with Nasdaq
+Equity Income strictly the largest holding (the main fund) of two to five funds, each at least 5%, on the 5%
+grid - still with no single-fund cap and no cash floor (the owner's choice of 7 Nov), and within the review's
+five-fund limit, which the owner has not waived. B's rule (the highest net CAGR on the 3/5/10-year view, from
+the four analyses at 3, 5 and 10 years, inside the band's budget; a shallower drawdown decides exact ties)
+picks over the whole set, so **the best number of funds is the number in the best mix**, and the
+recommendation is that same number: the house rule since v77 admits no tolerance band, so a fund earns its
+place by adding return, however small. 174,390 mixes, 36,898 inside the 25% budget.
+
+**The answer: four funds.** 50% Nasdaq Equity Income, 20% Global Infra Equity, 15% Global Health Care, 15%
+Asian Multi-Asset Income: **7.16% / −24.9%** on the 3/5/10-year view (7.34% / −24.7% on the 10-year), 0.03pp
+above the old D and 0.02pp above C. Each count's best inside the budget, now on the page:
+
+| Funds | Best mix | Net CAGR | Drawdown |
+|---|---|---|---|
+| 2 | Nasdaq 65, Asian Multi-Asset 35 | 6.98% | −24.3% |
+| 3 | Nasdaq 55, Global Infra 25, Asian Multi-Asset 20 (the v96-v98 D) | 7.13% | −24.9% |
+| **4** | **Nasdaq 50, Global Infra 20, Global Health Care 15, Asian Multi-Asset 15** | **7.16%** | **−24.9%** |
+| 5 | Nasdaq 40, Global Infra 25, Asian Multi-Asset 20, Global Health Care 10, Global Technology 5 | 7.16% | −25.0% |
+
+Five ties four on return with 0.1pp more drawdown, so four wins the tie. Six (7.14%) and seven (7.12%) were
+checked once, outside the limit, and return less: each extra 5% minimum forces money into weaker funds.
+Budget steps: 24% 7.07% / −24.0%, 26% 7.24% / −25.8%, 27% 7.33% / −26.9%. A, B and C are unchanged.
+
+**What-ifs re-run (12 Nov) under the new rule:** D's universe what-ifs and budget steps come out of the same
+search; the held-out re-run gives US Equity Opportunity at 1.20% 15% of D, Global Bond Income 35% (0.69%
+target) or 15% (1.59%), Asian Multi-Asset Income at 1.20% 30%, Global Infra at 1.00% 20% (7.12%) and at 1.10%
+10% (7.11%). A, B and C's what-if weights are unchanged.
+
+**Built:** the engine's D generator, its per-count picks (`portfolio_d.by_count`, `n_funds`, `min_funds`,
+`max_funds`, `rule_date`; `partners` retired), and four checks - the shape (Nasdaq strictly largest, two to
+five funds), the set counted a second way (brute force over every split), the rule's pick, and the best count
+(each count's best re-run, D the best of them). The held-out run date may now follow the review up to an
+owner's rule change. The audit re-derives D from its own generator (Nasdaq's weight the outer loop) and each
+count's best. The page's D section has a table of the best mix at each count and a note on why the chosen
+count wins; every sentence about D reads the count (the versus lede, the Report card, the B-against-D note).
+Mutants: `m_dfour` became `m_dextra` (one fund more than the pick); `m_dlead` (Nasdaq no longer the largest)
+and `m_dcount` (a count's best off its re-run) added.
+
+**Errors found and fixed:**
+1. The first page build passed a class name where the table helper takes an attributes object; caught on
+   reading the code before the first render, not in production.
+2. The count note opened a sentence in lower case ("three funds return...").
+3. The count table, built as four columns, ran off a phone's width: the mix column scrolled out of view and
+   rows two and three looked empty. Each count is now two lines - the figures, then the mix wrapping
+   beneath - found on the 390px read-through before publication.
+
+**Verified:** engine 263/263, audit 267/267 (against v98; its cross-check of the last review's scores is skipped,
+as the driver notes are unchanged), page 16/16 (the live copy too), mutants 59/59.
+
 ## 2026-11-10 — v98: the week's first review - markets to 10 Nov, a hot October CPI, the VIX's 6 Nov dispute settled on Cboe's own page; Volatility raised to 2.0; Global Allocation's trust fee corrected; A, B, C and D unchanged
 
 At the owner's instruction, the review command. **Cut-off 23:50 UTC on Tue 10 Nov.** The review was paused

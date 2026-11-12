@@ -196,6 +196,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+157. A NUMBER THAT IS CHOSEN IS SEARCHED, NOT FIXED. "Best and recommended number of funds" is an output, so
+   D's set spans every count the limits allow and the one rule picks the count with the mix; each count's
+   own best is published beside it so the reader sees the price of one fund more or fewer. With no tie band,
+   a fund earns its place by adding return; a shallower drawdown settles only exact ties. If a materiality
+   band is ever wanted (fewest funds within X pp of the best), it is the owner's rule to set, not the model's.
 156. A PAUSED REVIEW MOVES ITS CUT-OFF. v98 was cut off at 04:29 UTC and then paused for eight hours, in which
    Manila, Tokyo and Seoul closed. Publishing the first cut-off would have shipped Asia a session behind on a
    page dated that day. Roll what has closed, re-quote what the new data date puts past its limit (FedWatch

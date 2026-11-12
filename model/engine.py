@@ -14,7 +14,7 @@ Run:  python3 engine.py            -> human-readable audit report
 import datetime as _dt
 import json, math, re, sys
 from decimal import Decimal, ROUND_HALF_UP
-from itertools import combinations
+from itertools import combinations, product
 
 # Two different dates, which this model had been conflating. AS_OF is the market
 # data date - the last trading session every price, yield and level comes from.
@@ -1052,7 +1052,8 @@ MACRO = {
     # Income fee C holds the 5% it holds at 1.50%. A's and B's re-ran to the figures carried.
     "useq_w_c_listed": 0, "useq_w_c_peer": 0, "gbi_w_c_low": 25, "gbi_w_c_high": 0, "amip_w_c_alt": 5,
     # v96: Portfolio D in the same re-runs (model/heldout_sens.py, 7 Nov).
-    "useq_w_d_listed": 0, "useq_w_d_peer": 0, "gbi_w_d_low": 55, "gbi_w_d_high": 15, "amip_w_d_alt": 20,
+    # v99: re-run 12 Nov under D's new rule (Nasdaq the largest of two to five funds).
+    "useq_w_d_listed": 15, "useq_w_d_peer": 0, "gbi_w_d_low": 35, "gbi_w_d_high": 15, "amip_w_d_alt": 30,
     "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
     "gbi_w_a_low": 35, "gbi_w_b_low": 35,
     "gbi_w_a_high": 25, "gbi_w_b_high": 20,
@@ -1069,7 +1070,7 @@ MACRO = {
     "ginf_net_alt": [6.97, 6.87],
     "ginf_w_a_alt": [15, 0], "ginf_w_b_alt": [0, 0], "ginf_w_c_alt": [20, 20],
     "ginf_cagr_a_alt": [7.26, 7.25], "ginf_cagr_b_alt": [7.07, 7.07], "ginf_cagr_c_alt": [7.10, 7.08],
-    "ginf_w_d_alt": [0, 0], "ginf_cagr_d_alt": [7.10, 7.10],   # v96: D swaps it for Global Health Care
+    "ginf_w_d_alt": [20, 10], "ginf_cagr_d_alt": [7.12, 7.11],   # v99: D keeps it at 1.00%, trims it at 1.10%
     # OTHER TARGET-CHARGE FIGURES FOUND IN v93, recorded beside the charges carried (TARGET_CHECKS):
     "aseq_target_alt": 1.82,          # Investing.com, an HKD class, undated (one source)
     "aseq_mgmt_fee": 1.5,             # J.P. Morgan's HK factsheet, end-Aug 2026
@@ -1103,7 +1104,7 @@ MACRO = {
     # Nasdaq Equity Income's target charge as confirmed in v93 (justETF; Fidelity UK): the
     # forecast's fee_target must equal it while the check reads "confirmed".
     "qiap_target_confirmed": 0.35,
-    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-10",
+    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-12",
     # ASIAN MULTI-ASSET INCOME'S DISPUTED TRUST FEE (v75 CLAIMS; on the page from v77): ATRAM's
     # page has 1.50%, carried; the October 2025 KIID and uitf.com.ph 1.20%. Re-run 2026-10-28
     # (heldout_sens.run_refee) under the maximum-growth rule at 25%: the fund's net rises
@@ -5478,24 +5479,43 @@ for _seq, (_idx, _u) in enumerate(univ_mixes(pinned=True)):
 # budget, as computed and as shown; a shallower drawdown decides only exact ties. Its own pass,
 # at the live budget, at every gauge step and on every what-if column; A, B and C read nothing
 # of it. (The D of v66-v73, C's set over four funds, was retired on 27 Oct and is unrelated.)
-D_PARTNERS = 2
+# D RE-SET (owner, 2026-11-12, v99: "Update portfolio D as the atram nasdaq equity income as main fund
+# with best and recommended number of allocations in a portfolio based on the macroeconomic sentiment,
+# market trend, volatility, regional rankings deep analysis of 3, 5, 10yrs and with in the drawdown
+# band"). The number of funds is no longer fixed at three: the rule chooses it. D's set is every mix
+# of Nasdaq Equity Income, as the LARGEST holding (strictly - it is the main fund), with one to four
+# other funds, each at least 5%, on the 5% grid; still no single-fund cap and no cash floor (the
+# owner's choice of 7 Nov), and at most five funds, the review's own limit, which the owner has not
+# waived. The one rule then picks over the whole set, so the best number of funds is the number in
+# the best mix: the highest net CAGR on the 3/5/10-year view inside the band's budget, a shallower
+# drawdown deciding exact ties - and, should two counts still tie, the enumeration order (fewer funds
+# first) does. Each count's own best is published beside it, so the reader sees what one fund more
+# or fewer would return. Six and seven funds, outside the limit, were checked when the rule was set
+# (7.14% and 7.12% on 12 Nov, both below five's) and are not searched.
+D_MIN_FUNDS, D_MAX_FUNDS = 2, UNIV_MAX_FUNDS
+D_RULE_DATE = "2026-11-12"
 def d_mixes():
-    """Every D mix as (indices ascending, units of 5%): Nasdaq Equity Income and exactly
-    D_PARTNERS other funds, each at least one unit - no cap and no cash floor."""
+    """Every D mix as (indices ascending, units of 5%): Nasdaq Equity Income and one to four other
+    funds, each at least one unit, Nasdaq strictly the largest - no cap and no cash floor."""
     others = [i for i in range(_UN) if i != _IQ]
-    for pair in combinations(others, D_PARTNERS):
-        idx = tuple(sorted((_IQ,) + pair))
-        for comp in _comps(20, len(idx), 1, 20):
-            yield idx, comp
+    for k in range(D_MIN_FUNDS - 1, D_MAX_FUNDS):
+        for sup in combinations(others, k):
+            idx = tuple(sorted((_IQ,) + sup)); qa = idx.index(_IQ)
+            for comp in _comps(20, len(idx), 1, 20):
+                if all(x < comp[qa] for a, x in enumerate(comp) if a != qa):
+                    yield idx, comp
 _PK["d"] = _Pick()
+_PK.update({("dn", n): _Pick() for n in range(D_MIN_FUNDS, D_MAX_FUNDS + 1)})   # each count's own best
+UNIV_N_D_BY = {n: 0 for n in range(D_MIN_FUNDS, D_MAX_FUNDS + 1)}
 _PK.update({("d", k): _Pick() for k in _WI_KEYS})
 _PKX.update({("d", c): _Pick(c) for c in DDG_STEPS})
 UNIV_N_D = 0
 for _seq, (_idx, _u) in enumerate(d_mixes()):
     _ms = _measure(_idx, _u, _COLS_U)
-    UNIV_N_D += 1
+    UNIV_N_D += 1; UNIV_N_D_BY[len(_idx)] += 1
     _dm = _ms[1] + (_seq, _idx, _u)
     _PK["d"].add(_dm)
+    _PK[("dn", len(_idx))].add(_dm)
     for _c in DDG_STEPS:
         _PKX[("d", _c)].add(_dm)
     for _k, _m in zip(_WI_KEYS, _ms[2:]):
@@ -5504,7 +5524,14 @@ for _seq, (_idx, _u) in enumerate(d_mixes()):
 PA_W, PA_BAND, _ = _PK["a"].result()
 PB_W, PB_BAND, _ = _PK["b"].result()        # Portfolio B
 PC_W, PC_BAND, _ = _PK["c"].result()        # Portfolio C, Nasdaq Equity Income at 50%
-PD_W, PD_BAND, _ = _PK["d"].result()        # Portfolio D, Nasdaq Equity Income and two others
+PD_W, PD_BAND, _ = _PK["d"].result()        # Portfolio D, Nasdaq-led, its number of funds chosen by the rule
+PD_N = sum(1 for x in PD_W if x)
+# Each count's best, for the table the page prints beside D: the rule run within that count alone.
+D_BY_COUNT = []
+for _n in range(D_MIN_FUNDS, D_MAX_FUNDS + 1):
+    _w, _b, _win = _PK[("dn", _n)].result()
+    D_BY_COUNT.append({"n": _n, "weights": [round(x * 100) for x in _w], "cagr": _win[0], "maxdd": _win[1],
+                       "n_feasible": _PK[("dn", _n)].n, "n_total": UNIV_N_D_BY[_n]})
 PA_BAND_N, PB_BAND_N, PC_BAND_N, PD_BAND_N = len(PA_BAND), len(PB_BAND), len(PC_BAND), len(PD_BAND)
 UNIV_N_FEAS = {x: _PK[x].n for x in "abcd"}
 UNIV_BEST = {x: _PK[x].best for x in "abcd"}
@@ -7329,7 +7356,8 @@ def payload():
         # no cap and no cash floor, by the same rule on the 3/5/10-year view inside the budget.
         "portfolio_d": {"weights": [round(x * 100) for x in PD_W], "ids": UNIV_IDS,
                         "macro": PD, "base": PD_BASE, "ten": PD_10, "column": "net_macro",
-                        "fund": "ATRQIAP", "partners": D_PARTNERS,
+                        "fund": "ATRQIAP", "n_funds": PD_N, "min_funds": D_MIN_FUNDS, "max_funds": D_MAX_FUNDS,
+                        "by_count": D_BY_COUNT, "rule_date": D_RULE_DATE,
                         "band_n": PD_BAND_N, "n_feasible": UNIV_N_FEAS["d"], "n_total": UNIV_N_D,
                         "scenarios": run_scenarios(PD_W, "net_macro", UNIV),
                         "dd_cap": round(DD_CAP, 2),
@@ -7403,7 +7431,7 @@ def report():
       f"{p['universe']['n_total']} mixes under the limits")
     for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the 10-year view"), ("PORTFOLIO B", "portfolio_b", "the 3/5/10-year view"),
                            ("PORTFOLIO C", "portfolio_c", "the 3/5/10-year view, Nasdaq Equity Income at 50%"),
-                           ("PORTFOLIO D", "portfolio_d", "the 3/5/10-year view, Nasdaq Equity Income and two other funds")):
+                           ("PORTFOLIO D", "portfolio_d", "the 3/5/10-year view, Nasdaq Equity Income the largest of two to five funds")):
         pq = p[key]
         A(f"    {lab} weights {pq['weights']}   (the rule on {rule}; {pq['n_feasible']} feasible, {pq['band_n']} in band)")
         if "ten" in pq:
@@ -9051,13 +9079,38 @@ def report():
     # over its own set, which is every such mix and nothing else.
     _pd = p["portfolio_d"]; _dw = _pd["weights"]; _iq = UNIV_IDS.index(_pd["fund"])
     _dset = list(d_mixes())
-    checks.append(("Portfolio D holds Nasdaq Equity Income and exactly two other funds, each at least 5%, on the 5% grid",
-                   len(_dw) == _nu and sum(_dw) == 100 and all(x % 5 == 0 for x in _dw) and _dw[_iq] >= 5
-                   and sum(1 for x in _dw if x) == 1 + D_PARTNERS == 1 + _pd["partners"]
+    _dlead = lambda w: (len(w) == _nu and sum(w) == 100 and all(x % 5 == 0 for x in w) and w[_iq] >= 5
+                        and D_MIN_FUNDS <= sum(1 for x in w if x) <= D_MAX_FUNDS
+                        and all(x < w[_iq] for j, x in enumerate(w) if j != _iq))
+    checks.append(("Portfolio D holds Nasdaq Equity Income as its largest holding among two to five funds, each at least 5%, on the 5% grid",
+                   _dlead(_dw) and sum(1 for x in _dw if x) == _pd["n_funds"]
+                   and (_pd["min_funds"], _pd["max_funds"]) == (D_MIN_FUNDS, D_MAX_FUNDS) == (2, MACRO["pd_review_max_funds"])
                    and _pd["fund"] == "ATRQIAP" and _pd["column"] == "net_macro" and p["dd_model"]["d_k"] == round(port_k(PD_W, UNIV), 5)))
-    checks.append((f"D's set is every Nasdaq-plus-two mix on the grid, each exactly once ({len(_dset)})",
-                   len(_dset) == _pd["n_total"] == len(set(_dset)) == math.comb(_nu - 1, D_PARTNERS) * math.comb(19, D_PARTNERS)
-                   and all(_iq in i_ and len(i_) == 1 + D_PARTNERS and sum(u_) == 20 and min(u_) >= 1 for i_, u_ in _dset)))
+    # The set's size, counted a second way: for each number of funds, the ways to choose the
+    # others times the 5%-step splits with Nasdaq strictly the largest, found by brute force over
+    # every split rather than by the generator's own loop.
+    def _lead_splits(parts):
+        return sum(1 for c in product(range(1, 21), repeat=parts)
+                   if sum(c) == 20 and all(x < c[0] for x in c[1:]))
+    _d_expect = {n: math.comb(_nu - 1, n - 1) * _lead_splits(n) for n in range(D_MIN_FUNDS, D_MAX_FUNDS + 1)}
+    checks.append((f"D's set is every Nasdaq-led mix of two to five funds on the grid, each exactly once ({len(_dset)})",
+                   len(_dset) == _pd["n_total"] == len(set(_dset)) == sum(_d_expect.values())
+                   and all(b_["n_total"] == _d_expect[b_["n"]] for b_ in _pd["by_count"])
+                   and all(_iq in i_ and D_MIN_FUNDS <= len(i_) <= D_MAX_FUNDS and sum(u_) == 20 and min(u_) >= 1
+                           and all(x < u_[i_.index(_iq)] for a_, x in enumerate(u_) if i_[a_] != _iq) for i_, u_ in _dset)))
+    # THE BEST NUMBER OF FUNDS is the number in the rule's pick, and each count's own best stands
+    # beside it: the pick is the best of the counts' bests, by the same order (CAGR, then the
+    # shallower drawdown, then fewer funds), and no count beats it.
+    _bc = _pd["by_count"]
+    _bc_best = max(_bc, key=lambda b_: (b_["cagr"], -abs(b_["maxdd"]), -b_["n"]))
+    checks.append((f"D's number of funds, {_pd['n_funds']}, is the best count: each count's best is the rule within that count, "
+                   "and D is the best of them",
+                   [b_["n"] for b_ in _bc] == list(range(D_MIN_FUNDS, D_MAX_FUNDS + 1))
+                   and all(b_["cagr"] == _PK[("dn", b_["n"])].best and sum(1 for x in b_["weights"] if x) == b_["n"]
+                           and _dlead(b_["weights"]) and abs(b_["maxdd"]) <= DD_CAP + 1e-9 for b_ in _bc)
+                   and sum(b_["n_feasible"] for b_ in _bc) == _pd["n_feasible"]
+                   and _bc_best["n"] == _pd["n_funds"] and _bc_best["weights"] == _dw
+                   and _bc_best["cagr"] == _pd["macro"]["cagr"]))
     checks.append(("Portfolio D is the highest 3/5/10-year net CAGR the budget allows over its set, inside it on both routes",
                    _PK["d"].best == _pd["macro"]["cagr"] and _rule_ok("d", _dw)
                    and _pd["in_budget"] and abs(_pd["macro"]["maxdd"]) <= DD_CAP + 1e-9
@@ -9091,7 +9144,8 @@ def report():
     checks.append(("every universe what-if re-chooses B, C and D and re-measures A",
                    all({"a", "b", "c", "d"} <= set(v) and len(v["b"]["weights"]) == _nu and len(v["c"]["weights"]) == _nu
                        and v["c"]["weights"][_ip] == _pc["pin_pct"] and len(v["d"]["weights"]) == _nu
-                       and sum(1 for x in v["d"]["weights"] if x) == 1 + D_PARTNERS and v["d"]["weights"][_ip] >= 5
+                       and D_MIN_FUNDS <= sum(1 for x in v["d"]["weights"] if x) <= D_MAX_FUNDS
+                       and all(x < v["d"]["weights"][_ip] for j, x in enumerate(v["d"]["weights"]) if j != _ip)
                        for v in p["universe"]["what_if"].values())
                    and _wi_entry("live")["c"]["weights"] == _cw
                    and _wi_entry("live")["d"]["weights"] == p["portfolio_d"]["weights"]))
@@ -9144,7 +9198,8 @@ def report():
                    and "M_GINF" in _held))
     checks.append(("the held-out funds' what-if weights were run at the live drawdown budget and rule, on or before today",
                    MACRO["heldout_run_cap"] == p["dd_budget"]["cap"] and MACRO["heldout_run_tie"] == PIN_TIE_PP
-                   and AS_OF <= MACRO["heldout_run_date"] <= REVIEW_DATE   # run in this review, not after it
+                   # run in this review, or on the date of an owner's rule change after it (v99: D's)
+                   and AS_OF <= MACRO["heldout_run_date"] <= max(REVIEW_DATE, D_RULE_DATE)
                    # the disputed-fee re-run (same run, same budget and rule): a lower fee than the
                    # one carried, weights inside the limits, and the note on the page quoting them
                    and MACRO["amip_trust_alt"] < next(f["fee_feeder"] for f in UNIV[1] if f["id"] == "ATRAMIP")
