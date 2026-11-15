@@ -1393,6 +1393,16 @@
   "imf_world_2027": 3.4,
   "imf_ph_2026": 3.4,
   "imf_ph_2027": 5.1,
+  "fed_mkt_2027_lo": 4.73,
+  "fed_mkt_2027_hi": 4.78,
+  "us_pce_2027": 2.3,
+  "us_core_pce_2027": 2.4,
+  "eia_brent_2027": 85.78,
+  "eia_brent_2027_prev": 83.74,
+  "eia_hormuz_h1_2027": 1.9,
+  "eia_hormuz_h2_2027": 1.3,
+  "spx_eps_2027_lo": 15.0,
+  "spx_eps_2027_hi": 16.1,
   "bsp_cpi_2026": 6.1,
   "bsp_cpi_2027": 6.0,
   "bsp_cpi_2028": 3.3,
@@ -3254,30 +3264,152 @@
  "dd_gauge": {
   "value": 2.8,
   "views": [
+   "1Y",
    "3Y",
    "5Y"
   ],
   "w": {
-   "3Y": 0.6,
+   "1Y": 0.2,
+   "3Y": 0.4,
    "5Y": 0.4
   },
-  "parts": {
+  "spans": {
+   "1Y": [
+    0.0,
+    1.0
+   ],
+   "3Y": [
+    1.0,
+    3.0
+   ],
+   "5Y": [
+    3.0,
+    5.0
+   ]
+  },
+  "rule_date": "2026-11-15",
+  "drivers": [
+   {
+    "name": "Monetary policy & liquidity",
+    "weight": 0.2,
+    "now": 2.0,
+    "y1": 2.0,
+    "why": "The futures price the Fed to about 4.73-4.78% by late 2027, above its own 4.1% median for the end of 2027 (RateProbability; SOFR futures), BSP is at 5.50% after its 50bp hike and the BoJ has a December hike flagged: the next twelve months are the hiking end of the cycle, as hostile as now - 2.0.",
+    "y23": 4.25,
+    "y3_avg": 3.5,
+    "y45": 5.0
+   },
+   {
+    "name": "Inflation trajectory",
+    "weight": 0.15,
+    "now": 2.0,
+    "y1": 2.75,
+    "why": "US PCE inflation is forecast at 2.3% in 2027, core 2.4% (the Philadelphia Fed's forecasters; the FOMC's June median), and the EIA has Brent averaging $85.78 in 2027 ($83.74 a month earlier), below this year's; but BSP sees 6.0% in the Philippines in 2027 and Japan's producer prices rose 7.1% in October - 2.75, easing from 2.0 now.",
+    "y23": 4.25,
+    "y3_avg": 3.75,
+    "y45": 5.25
+   },
+   {
+    "name": "Growth momentum",
+    "weight": 0.15,
+    "now": 4.25,
+    "y1": 4.5,
+    "why": "The IMF has the world growing 3.4% in 2027, from 3.1%, and the Philippines 5.1% from 3.4%, and US jobless claims are 200k - better than now, held back by the hikes: 4.5.",
+    "y23": 4.5,
+    "y3_avg": 4.5,
+    "y45": 5.25
+   },
+   {
+    "name": "Corporate earnings",
+    "weight": 0.2,
+    "now": 7.0,
+    "y1": 7.0,
+    "why": "Analysts expect S&P 500 earnings to grow about 15-16.1% in 2027 (LSEG I/B/E/S, via Reuters; FactSet) and Asia ex-Japan about 27.5%: as strong as now - 7.0.",
+    "y23": 6.25,
+    "y3_avg": 6.5,
+    "y45": 5.5
+   },
+   {
+    "name": "Valuation support",
+    "weight": 0.1,
+    "now": 8.0,
+    "y1": 7.5,
+    "why": "The S&P is on 18.7x forward, below its averages, and Asia on 10.5x; a year is too short for the 40.7 cyclically adjusted multiple to bite, but the discount narrows as prices recover: 7.5.",
+    "y23": 6.0,
+    "y3_avg": 6.5,
+    "y45": 5.5
+   },
+   {
+    "name": "Volatility & risk appetite",
+    "weight": 0.1,
+    "now": 2.5,
+    "y1": 3.5,
+    "why": "The VIX closed at 17.49 on 11 Nov, under its 19.5 long run, and the curve's own one-year implied volatility is 18.87; but the hiking cycle, the Gulf and Nvidia's change of chief executive keep risk appetite below neutral - 3.5.",
+    "y23": 5.0,
+    "y3_avg": 4.5,
+    "y45": 5.5
+   },
+   {
+    "name": "Geopolitics & energy",
+    "weight": 0.1,
+    "now": 1.5,
+    "y1": 2.0,
+    "why": "The EIA assumes the Hormuz disruption eases to 1.9 mb/d in the first half of 2027 and 1.3 mb/d in the second; the Strait stays shut and Tehran denies talks: 2.0, a little better than now.",
+    "y23": 3.5,
+    "y3_avg": 3.0,
+    "y45": 5.0
+   }
+  ],
+  "trend_spans": {
+   "1Y": {
+    "ATRQIAP": 3.67,
+    "ATRASEQ": 4.17,
+    "ATRGTEC": 4.08,
+    "ATRGHCP": 3.62,
+    "M_GEO": 3.52
+   },
    "3Y": {
-    "macro": 2.62,
-    "trend": 3.01,
-    "vol_forward": 19.24,
-    "reading": 2.82
+    "ATRQIAP": 2.44,
+    "ATRASEQ": 2.61,
+    "ATRGTEC": 2.41,
+    "ATRGHCP": 3.07,
+    "M_GEO": 2.53
+   },
+   "5Y": {
+    "ATRQIAP": 2.44,
+    "ATRASEQ": 2.61,
+    "ATRGTEC": 2.41,
+    "ATRGHCP": 3.07,
+    "M_GEO": 2.53
+   }
+  },
+  "parts": {
+   "1Y": {
+    "macro": 2.42,
+    "trend": 3.81,
+    "vol_forward": 18.87,
+    "years": "Year 1",
+    "reading": 3.12
+   },
+   "3Y": {
+    "macro": 2.72,
+    "trend": 2.61,
+    "vol_forward": 19.42,
+    "years": "Years 2-3",
+    "reading": 2.67
    },
    "5Y": {
     "macro": 2.9,
     "trend": 2.61,
     "vol_forward": 19.49,
+    "years": "Years 4-5",
     "reading": 2.76
    },
    "10Y": {
     "macro": 3.0,
     "trend": 3.0,
     "vol_forward": 19.5,
+    "years": "Years 6-10",
     "reading": 3.0
    }
   },
@@ -9359,6 +9491,56 @@
    "org": "Iran International",
    "what": "G7 warns Iran of continued pressure if diplomacy fails, 11 Nov 2026",
    "url": "https://www.iranintl.com/en/202611111088"
+  },
+  {
+   "org": "RateProbability",
+   "what": "Fed funds futures meeting table - about 4.73% priced for September 2027",
+   "url": "https://rateprobability.com/fed"
+  },
+  {
+   "org": "UCL Financial Journalism",
+   "what": "Is the market pricing one Fed hike? - the December 2027 SOFR future implies about 4.78%",
+   "url": "https://uclfinancialjournalism.substack.com/p/is-the-market-pricing-one-fed-hike"
+  },
+  {
+   "org": "Federal Reserve",
+   "what": "FOMC summary of economic projections, 17 Jun 2026 - PCE inflation 2.3% in 2027",
+   "url": "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm"
+  },
+  {
+   "org": "Federal Reserve Bank of Philadelphia",
+   "what": "Third Quarter 2026 Survey of Professional Forecasters - PCE 2.3%, core 2.4% in 2027",
+   "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q3-2026"
+  },
+  {
+   "org": "US Energy Information Administration",
+   "what": "Short-Term Energy Outlook, November 2026 - global oil markets",
+   "url": "https://www.eia.gov/outlooks/steo/report/global_oil.php"
+  },
+  {
+   "org": "Rigzone",
+   "what": "EIA raises 2026, 2027 oil price forecasts yet again - Brent $85.78 in 2027, from $83.74, 12 Nov 2026",
+   "url": "https://www.rigzone.com/news/eia_raises_2026_2027_oil_price_forecasts_yet_again-12-nov-2026-185067-article/"
+  },
+  {
+   "org": "Anadolu Agency",
+   "what": "EIA raises oil price forecast for 4th straight month amid Mideast disruptions, Nov 2026",
+   "url": "https://www.aa.com.tr/en/energy/oil/eia-raises-oil-price-forecast-for-4th-straight-month-amid-mideast-disruptions/60877"
+  },
+  {
+   "org": "Oil & Gas Journal",
+   "what": "EIA sees Brent near $100/bbl through year-end 2026 - Hormuz disruption easing to 1.9 and 1.3 mb/d in 2027",
+   "url": "https://www.ogj.com/general-interest/economics-markets/news/55418180/eia-sees-brent-near-100-bbl-through-yearend-2026-as-middle-east-supply-constraints-persist"
+  },
+  {
+   "org": "FactSet",
+   "what": "Earnings Insight, 6 Nov 2026 - CY2027 S&P 500 earnings growth 16.1%",
+   "url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_110626A.pdf"
+  },
+  {
+   "org": "24/7 Wall St. (Reuters, LSEG I/B/E/S)",
+   "what": "Wall Street expects S&P 500 profit growth to slow from 35% to 15% in 2027, 3 Oct 2026",
+   "url": "https://247wallst.com/investing/2026/10/03/wall-street-expects-sp-500-profit-growth-to-collapse-from-35-to-15-in-2027/"
   }
  ]
 }

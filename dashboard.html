@@ -676,7 +676,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
 <div class="panel" id="p-budget" role="tabpanel" aria-labelledby="t-budget">
 
   <section>
-    <p class="eyebrow">Drawdown budget &middot; 3Y / 5Y / 10Y</p>
+    <p class="eyebrow">Drawdown budget &middot; 1Y / 3Y / 5Y / 10Y</p>
     <h2 id="ddhead">—</h2>
     <p class="lede" id="ddlede">—</p>
     <div class="card">
@@ -691,6 +691,23 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <div class="card">
       <div class="tw"><table class="dt" id="ddtab"></table></div>
       <p class="note" id="ddtabnote">—</p>
+    </div>
+  </section>
+
+  <!-- v103 (owner, 15 Nov 2026): the year-1 research behind the gauge's 1-year view -->
+  <section>
+    <p class="eyebrow">The year ahead &middot; macro sentiment and market trend</p>
+    <h2>What the research says, year by year</h2>
+    <div class="card">
+      <h3 style="margin-top:0">Macro drivers, 1&ndash;10 (5.5 neutral)</h3>
+      <div class="tw"><table class="dt" id="ddy1"></table></div>
+      <p class="note" id="ddy1note">—</p>
+      <details class="how"><summary>The evidence for each year-1 reading</summary><div id="ddy1why"></div></details>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Market trend, 1&ndash;5 (3 neutral)</h3>
+      <div class="tw"><table class="dt" id="ddtr"></table></div>
+      <p class="note" id="ddtrnote">—</p>
     </div>
   </section>
 
@@ -2283,6 +2300,16 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "imf_world_2027": 3.4,
   "imf_ph_2026": 3.4,
   "imf_ph_2027": 5.1,
+  "fed_mkt_2027_lo": 4.73,
+  "fed_mkt_2027_hi": 4.78,
+  "us_pce_2027": 2.3,
+  "us_core_pce_2027": 2.4,
+  "eia_brent_2027": 85.78,
+  "eia_brent_2027_prev": 83.74,
+  "eia_hormuz_h1_2027": 1.9,
+  "eia_hormuz_h2_2027": 1.3,
+  "spx_eps_2027_lo": 15.0,
+  "spx_eps_2027_hi": 16.1,
   "bsp_cpi_2026": 6.1,
   "bsp_cpi_2027": 6.0,
   "bsp_cpi_2028": 3.3,
@@ -4144,30 +4171,152 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
  "dd_gauge": {
   "value": 2.8,
   "views": [
+   "1Y",
    "3Y",
    "5Y"
   ],
   "w": {
-   "3Y": 0.6,
+   "1Y": 0.2,
+   "3Y": 0.4,
    "5Y": 0.4
   },
-  "parts": {
+  "spans": {
+   "1Y": [
+    0.0,
+    1.0
+   ],
+   "3Y": [
+    1.0,
+    3.0
+   ],
+   "5Y": [
+    3.0,
+    5.0
+   ]
+  },
+  "rule_date": "2026-11-15",
+  "drivers": [
+   {
+    "name": "Monetary policy & liquidity",
+    "weight": 0.2,
+    "now": 2.0,
+    "y1": 2.0,
+    "why": "The futures price the Fed to about 4.73-4.78% by late 2027, above its own 4.1% median for the end of 2027 (RateProbability; SOFR futures), BSP is at 5.50% after its 50bp hike and the BoJ has a December hike flagged: the next twelve months are the hiking end of the cycle, as hostile as now - 2.0.",
+    "y23": 4.25,
+    "y3_avg": 3.5,
+    "y45": 5.0
+   },
+   {
+    "name": "Inflation trajectory",
+    "weight": 0.15,
+    "now": 2.0,
+    "y1": 2.75,
+    "why": "US PCE inflation is forecast at 2.3% in 2027, core 2.4% (the Philadelphia Fed's forecasters; the FOMC's June median), and the EIA has Brent averaging $85.78 in 2027 ($83.74 a month earlier), below this year's; but BSP sees 6.0% in the Philippines in 2027 and Japan's producer prices rose 7.1% in October - 2.75, easing from 2.0 now.",
+    "y23": 4.25,
+    "y3_avg": 3.75,
+    "y45": 5.25
+   },
+   {
+    "name": "Growth momentum",
+    "weight": 0.15,
+    "now": 4.25,
+    "y1": 4.5,
+    "why": "The IMF has the world growing 3.4% in 2027, from 3.1%, and the Philippines 5.1% from 3.4%, and US jobless claims are 200k - better than now, held back by the hikes: 4.5.",
+    "y23": 4.5,
+    "y3_avg": 4.5,
+    "y45": 5.25
+   },
+   {
+    "name": "Corporate earnings",
+    "weight": 0.2,
+    "now": 7.0,
+    "y1": 7.0,
+    "why": "Analysts expect S&P 500 earnings to grow about 15-16.1% in 2027 (LSEG I/B/E/S, via Reuters; FactSet) and Asia ex-Japan about 27.5%: as strong as now - 7.0.",
+    "y23": 6.25,
+    "y3_avg": 6.5,
+    "y45": 5.5
+   },
+   {
+    "name": "Valuation support",
+    "weight": 0.1,
+    "now": 8.0,
+    "y1": 7.5,
+    "why": "The S&P is on 18.7x forward, below its averages, and Asia on 10.5x; a year is too short for the 40.7 cyclically adjusted multiple to bite, but the discount narrows as prices recover: 7.5.",
+    "y23": 6.0,
+    "y3_avg": 6.5,
+    "y45": 5.5
+   },
+   {
+    "name": "Volatility & risk appetite",
+    "weight": 0.1,
+    "now": 2.5,
+    "y1": 3.5,
+    "why": "The VIX closed at 17.49 on 11 Nov, under its 19.5 long run, and the curve's own one-year implied volatility is 18.87; but the hiking cycle, the Gulf and Nvidia's change of chief executive keep risk appetite below neutral - 3.5.",
+    "y23": 5.0,
+    "y3_avg": 4.5,
+    "y45": 5.5
+   },
+   {
+    "name": "Geopolitics & energy",
+    "weight": 0.1,
+    "now": 1.5,
+    "y1": 2.0,
+    "why": "The EIA assumes the Hormuz disruption eases to 1.9 mb/d in the first half of 2027 and 1.3 mb/d in the second; the Strait stays shut and Tehran denies talks: 2.0, a little better than now.",
+    "y23": 3.5,
+    "y3_avg": 3.0,
+    "y45": 5.0
+   }
+  ],
+  "trend_spans": {
+   "1Y": {
+    "ATRQIAP": 3.67,
+    "ATRASEQ": 4.17,
+    "ATRGTEC": 4.08,
+    "ATRGHCP": 3.62,
+    "M_GEO": 3.52
+   },
    "3Y": {
-    "macro": 2.62,
-    "trend": 3.01,
-    "vol_forward": 19.24,
-    "reading": 2.82
+    "ATRQIAP": 2.44,
+    "ATRASEQ": 2.61,
+    "ATRGTEC": 2.41,
+    "ATRGHCP": 3.07,
+    "M_GEO": 2.53
+   },
+   "5Y": {
+    "ATRQIAP": 2.44,
+    "ATRASEQ": 2.61,
+    "ATRGTEC": 2.41,
+    "ATRGHCP": 3.07,
+    "M_GEO": 2.53
+   }
+  },
+  "parts": {
+   "1Y": {
+    "macro": 2.42,
+    "trend": 3.81,
+    "vol_forward": 18.87,
+    "years": "Year 1",
+    "reading": 3.12
+   },
+   "3Y": {
+    "macro": 2.72,
+    "trend": 2.61,
+    "vol_forward": 19.42,
+    "years": "Years 2-3",
+    "reading": 2.67
    },
    "5Y": {
     "macro": 2.9,
     "trend": 2.61,
     "vol_forward": 19.49,
+    "years": "Years 4-5",
     "reading": 2.76
    },
    "10Y": {
     "macro": 3.0,
     "trend": 3.0,
     "vol_forward": 19.5,
+    "years": "Years 6-10",
     "reading": 3.0
    }
   },
@@ -10249,6 +10398,56 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "org": "Iran International",
    "what": "G7 warns Iran of continued pressure if diplomacy fails, 11 Nov 2026",
    "url": "https://www.iranintl.com/en/202611111088"
+  },
+  {
+   "org": "RateProbability",
+   "what": "Fed funds futures meeting table - about 4.73% priced for September 2027",
+   "url": "https://rateprobability.com/fed"
+  },
+  {
+   "org": "UCL Financial Journalism",
+   "what": "Is the market pricing one Fed hike? - the December 2027 SOFR future implies about 4.78%",
+   "url": "https://uclfinancialjournalism.substack.com/p/is-the-market-pricing-one-fed-hike"
+  },
+  {
+   "org": "Federal Reserve",
+   "what": "FOMC summary of economic projections, 17 Jun 2026 - PCE inflation 2.3% in 2027",
+   "url": "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm"
+  },
+  {
+   "org": "Federal Reserve Bank of Philadelphia",
+   "what": "Third Quarter 2026 Survey of Professional Forecasters - PCE 2.3%, core 2.4% in 2027",
+   "url": "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q3-2026"
+  },
+  {
+   "org": "US Energy Information Administration",
+   "what": "Short-Term Energy Outlook, November 2026 - global oil markets",
+   "url": "https://www.eia.gov/outlooks/steo/report/global_oil.php"
+  },
+  {
+   "org": "Rigzone",
+   "what": "EIA raises 2026, 2027 oil price forecasts yet again - Brent $85.78 in 2027, from $83.74, 12 Nov 2026",
+   "url": "https://www.rigzone.com/news/eia_raises_2026_2027_oil_price_forecasts_yet_again-12-nov-2026-185067-article/"
+  },
+  {
+   "org": "Anadolu Agency",
+   "what": "EIA raises oil price forecast for 4th straight month amid Mideast disruptions, Nov 2026",
+   "url": "https://www.aa.com.tr/en/energy/oil/eia-raises-oil-price-forecast-for-4th-straight-month-amid-mideast-disruptions/60877"
+  },
+  {
+   "org": "Oil & Gas Journal",
+   "what": "EIA sees Brent near $100/bbl through year-end 2026 - Hormuz disruption easing to 1.9 and 1.3 mb/d in 2027",
+   "url": "https://www.ogj.com/general-interest/economics-markets/news/55418180/eia-sees-brent-near-100-bbl-through-yearend-2026-as-middle-east-supply-constraints-persist"
+  },
+  {
+   "org": "FactSet",
+   "what": "Earnings Insight, 6 Nov 2026 - CY2027 S&P 500 earnings growth 16.1%",
+   "url": "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_110626A.pdf"
+  },
+  {
+   "org": "24/7 Wall St. (Reuters, LSEG I/B/E/S)",
+   "what": "Wall Street expects S&P 500 profit growth to slow from 35% to 15% in 2027, 3 Oct 2026",
+   "url": "https://247wallst.com/investing/2026/10/03/wall-street-expects-sp-500-profit-growth-to-collapse-from-35-to-15-in-2027/"
   }
  ]
 }
@@ -10553,6 +10752,7 @@ $("#corrnote").textContent = D.corr_note;
 /* ---------------- drawdown budget gauge (v75) ---------------- */
 (function () {
   const G = D.dd_gauge, BU = D.dd_budget, P = G.parts, V = G.views, HY = HYL;
+  const yl = h => P[h].years.toLowerCase().replace("-", "&ndash;");   /* "years 2-3", in running text */
   const dlong = iso => new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   const num = t => `<b class="num">${t}</b>`;
   /* v77: the band sets the budget. cap is the budget in force (the band's step), base the
@@ -10566,8 +10766,8 @@ $("#corrnote").textContent = D.corr_note;
   $("#ddlede").innerHTML =
     `The drawdown budget is <b class="num">${cap.toFixed(0)}%</b>: this gauge's band step from the owner's
      ${base.toFixed(0)}% base, since ${dlong(BU.band_date)}. The gauge reads the macro drivers and the market trend
-     over the next three and five years on 1&ndash;5, 3 neutral (volatility left the reading on 3 November 2026 and
-     stays as the guard on a raise):
+     over ${and3(V.map(yl))} on 1&ndash;5, 3 neutral (the 1-year view
+     from ${dlong(G.rule_date)}; volatility left the reading on 3 November 2026 and stays as the guard on a raise):
      <b class="num">${f2(G.value)}</b>, ${B.action.toLowerCase()}` +
     (hold ? `.` : rec === base ? `, but ${blocked.length > 1 ? "guards" : "a guard"} below
        ${blocked.length > 1 ? "hold" : "holds"} the budget at ${cap.toFixed(0)}% for now.` : `.`) +
@@ -10599,6 +10799,7 @@ $("#corrnote").textContent = D.corr_note;
   const t = $("#ddtab"), HZA = Object.keys(P);
   t.appendChild(el("thead", null, `<tr><th>Reading</th>` + HZA.map(h => `<th>${h}</th>`).join("") + `</tr>`));
   const tb = el("tbody"), cls5 = v => v > 3.005 ? "pos" : v < 2.995 ? "neg" : "";
+  tb.appendChild(el("tr", null, `<td>Years covered</td>` + HZA.map(h => `<td>${P[h].years.replace("-", "&ndash;")}</td>`).join("")));
   /* v90 (owner, 3 Nov 2026): the reading is the mean of the parts in G.reading_of - the macro
      drivers and the trend. Forward volatility is shown below it as context, not scored. */
   const PL = { macro: "Macro drivers", trend: "Market trend" };
@@ -10611,18 +10812,60 @@ $("#corrnote").textContent = D.corr_note;
   tb.appendChild(el("tr", null, `<td>Forward volatility<br><span class="note">context, not in the reading</span></td>` +
     HZA.map(h => `<td>${f2(P[h].vol_forward)}</td>`).join("")));
   t.appendChild(tb);
+  const lowM = V.filter(h => P[h].macro < 2.995), lowT = V.filter(h => P[h].trend < 2.995), hiT = V.filter(h => P[h].trend > 3.005);
   $("#ddtabnote").innerHTML =
-    `<b>Macro</b>: the driver gauge (${V.map(h => `${h} ${f2(P[h].macro)}`).join(", ")})` +
-    (V.every(h => P[h].macro < 3) ? `, below neutral at both${P[V[0]].macro < P[V[1]].macro ? ", closing on it by the fifth year" : ""}.`
-      : V.every(h => P[h].macro > 3) ? `, above neutral at both.` : `, either side of neutral.`) +
-    ` <b>Trend</b>: the market-trend score averaged over the trend markets
-     (${V.map(h => `${h} ${f2(P[h].trend)}`).join(", ")})` +
-    (P[V[1]].trend < 3 - 0.005 ? `, reversal after strong runs pulling ${V[1]} below 3.` : P[V[1]].trend > 3 + 0.005 ? `, past laggards lifting ${V[1]} above 3.` : `.`) +
-    ` Weights ${V.map(h => `${h} ${(G.w[h] * 100).toFixed(0)}%`).join(", ")}, the years of the first five each covers. ${HY} is
+    `<b>Macro</b>: the seven drivers weighted into one gauge for each span (${V.map(h => `${yl(h)} ${f2(P[h].macro)}`).join(", ")})` +
+    (lowM.length === V.length ? `, below neutral in every span` : lowM.length ? `, below neutral in ${and3(lowM.map(yl))}` : `, at or above neutral throughout`) +
+    (P[V[0]].macro < P[V[V.length - 1]].macro ? `, closing on it by the fifth year.` : `.`) +
+    ` <b>Trend</b>: the market-trend score averaged over the trend markets (${V.map(h => `${yl(h)} ${f2(P[h].trend)}`).join(", ")})` +
+    (hiT.length && lowT.length ? `: the past year's momentum lifts ${and3(hiT.map(yl))} above 3, and reversal after strong
+       runs pulls ${and3(lowT.map(yl))} below it.` : `.`) +
+    ` Weights: ${V.map(h => `${yl(h)} ${(G.w[h] * 100).toFixed(0)}%`).join(", ")}, the years of the first five each covers. ${HY} is
      shown, not weighted: neutral by construction, it is what the ${base.toFixed(0)}% base stands for.
      <b>Volatility</b> is not in the reading: the curve's forward volatility
-     (${V.map(h => `${h} ${P[h].vol_forward.toFixed(2)}`).join(", ")} against the long-run ${num(G.longrun.toFixed(1))})
+     (${V.map(h => `${yl(h)} ${P[h].vol_forward.toFixed(2)}`).join(", ")} against the long-run ${num(G.longrun.toFixed(1))})
      is shown for context.`;
+  /* v103: the year-1 research - each driver now, in year 1, years 2-3 (implied) and years 4-5 */
+  const yt = $("#ddy1"), GD = G.drivers, f10 = v => (+v).toFixed(2).replace(/0$/, "");
+  yt.appendChild(el("thead", null, `<tr><th>Driver</th><th>Weight</th><th>Now</th><th>Year 1</th><th>Years 2&ndash;3</th><th>Years 4&ndash;5</th></tr>`));
+  const ytb = el("tbody"), c10 = v => v > 5.505 ? "pos" : v < 5.495 ? "neg" : "";
+  GD.forEach(r => ytb.appendChild(el("tr", null, `<td>${r.name}</td><td>${(r.weight * 100).toFixed(0)}%</td>` +
+    [r.now, r.y1, r.y23, r.y45].map(v => `<td class="${c10(v)}">${f10(v)}</td>`).join(""))));
+  ytb.appendChild(el("tr", { style: "font-weight:700" }, `<td>Gauge, 1&ndash;5</td><td></td><td>${f2(D.gauge)}</td>` +
+    V.map(h => `<td class="${cls5(P[h].macro)}">${f2(P[h].macro)}</td>`).join("")));
+  yt.appendChild(ytb);
+  const movers = GD.filter(r => Math.abs(r.y1 - r.now) > 1e-9);
+  $("#ddy1note").innerHTML =
+    `Year 1 is researched from the year-ahead evidence; years 2&ndash;3 are implied by it and the 3-year reading the
+     portfolios use, which is the average of years 1&ndash;3 (3 &times; the 3-year reading, less year 1, halved), so the split
+     moves no fund forecast and no pick, and year 1 is not counted twice. ` +
+    (movers.length ? (() => {
+      const nm = r => r.name.split(" & ")[0].toLowerCase(), still = GD.filter(r => Math.abs(r.y1 - r.now) <= 1e-9);
+      const t = and3(movers.map(r => `${nm(r)} ${r.y1 > r.now ? "improves" : "worsens"} from ${f10(r.now)} to ${f10(r.y1)}`));
+      return `In the year ahead ${t}` + (still.length ? `; ${and3(still.map(nm))} ${still.length > 1 ? "stay" : "stays"} where ${still.length > 1 ? "they are" : "it is"}.` : `.`);
+    })() : ``);
+  $("#ddy1why").innerHTML = GD.map(r => `<p><b>${r.name}</b>, year 1 ${f10(r.y1)}. ${r.why}</p>`).join("");
+  /* the trend by span, each market's own */
+  const tt = $("#ddtr"), TS = G.trend_spans, SL = D.trend.sleeves;
+  tt.appendChild(el("thead", null, `<tr><th>Market</th>` + V.map(h => `<th>${P[h].years.replace("-", "&ndash;")}</th>`).join("") + `</tr>`));
+  const ttb = el("tbody");
+  Object.keys(TS[V[0]]).forEach(f => ttb.appendChild(el("tr", null, `<td>${SL[f].market}</td>` +
+    V.map(h => `<td class="${cls5(TS[h][f])}">${f2(TS[h][f])}</td>`).join(""))));
+  ttb.appendChild(el("tr", { style: "font-weight:700" }, `<td>Average</td>` + V.map(h => `<td class="${cls5(P[h].trend)}">${f2(P[h].trend)}</td>`).join("")));
+  tt.appendChild(ttb);
+  $("#ddtrnote").innerHTML =
+    `Year 1 is momentum: each market's past four quarters against its long-run return, in its own volatility (z). Years
+     2&ndash;3 and 4&ndash;5 are reversal, read from the trailing 3- and 5-year runs together, so the two spans read the same:
+     strong runs tend to give some back. ` +
+    (() => {
+      const fs = Object.keys(TS[V[0]]), mk = f => SL[f].market.split(",")[0];
+      const up1 = fs.filter(f => TS[V[0]][f] > 3.005), upL = fs.filter(f => TS[V[1]][f] > 3.005);
+      const one = upL.length === 1;
+      return (up1.length ? `${up1.length === fs.length ? "Every market" : and3(up1.map(mk))} ${up1.length === 1 || up1.length === fs.length ? "reads" : "read"} above 3 for
+        the year ahead on the past year's gains` : `No market reads above 3 for the year ahead`) +
+        (upL.length ? `; ${and3(upL.map(mk))} ${one ? "reads" : "read"} above 3 after it too, ${one ? "its" : "their"} 3- and
+          5-year runs having trailed ${one ? "its" : "their"} long-run return.` : `.`);
+    })();
   /* the bands */
   const bt = $("#ddbands");
   bt.appendChild(el("thead", null, `<tr><th>Reading</th><th>Action</th><th>Budget</th></tr>`));
@@ -10690,11 +10933,13 @@ $("#corrnote").textContent = D.corr_note;
        moves which funds are held, not how much risk the whole portfolio takes, so it is not in the gauge.</p>
      <p><b>Why volatility is not.</b> It was a third part until 3 November 2026, when the owner removed it. Every
        mix's expected drawdown is already built from its volatility, so a higher curve already tightens what fits
-       the budget; the VIX guard already blocks a raise while volatility is high; and at three and five years the
+       the budget; the VIX guard already blocks a raise while volatility is high; and beyond the first year the
        options curve sits near its long run by construction, so it mostly pulled the other two readings toward
        the middle.</p>
-     <p><b>Why 3 and 5 years weigh in, and 10 does not.</b> Each view counts for the share of the first five
-       years it covers (${V.map(h => `${h} ${(G.w[h] * 100).toFixed(0)}%`).join(", ")}). Over ten years the cycle averages
+     <p><b>Why 1, 3 and 5 years weigh in, and 10 does not.</b> Each view counts for the share of the first five
+       years it covers (${V.map(h => `${yl(h)} ${(G.w[h] * 100).toFixed(0)}%`).join(", ")}). The year ahead is read on
+       its own (owner, ${dlong(G.rule_date)}), from its own evidence; years 2&ndash;3 are what the 3-year reading leaves
+       once year 1 is taken out, so no year counts twice. Over ten years the cycle averages
        out &mdash; that is the ${base.toFixed(0)}% base itself.</p>
      <p><b>Why the steps stop at ${Math.max(...G.bands.map(b => b.cap)).toFixed(0)}% and ${Math.min(...G.bands.map(b => b.cap)).toFixed(0)}%.</b>
        ${Math.max(...G.bands.map(b => b.cap)).toFixed(0)}% is the derived budget (${BU.derived_ref.toFixed(2)}%) the owner's base replaced; past

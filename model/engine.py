@@ -2380,6 +2380,26 @@ MACRO = {
     "fed_sep_2027": 4.1, "fed_sep_2028": 3.9, "fed_sep_2029": 3.6, "fed_sep_longrun": 3.2,
     "be_5y_6oct": 2.37, "be_5y": 2.48, "be_5y5y": 2.20,
     "imf_world_2026": 3.1, "imf_world_2027": 3.4, "imf_ph_2026": 3.4, "imf_ph_2027": 5.1,
+    # THE YEAR-1 EVIDENCE (v103, 15 Nov 2026), for the budget gauge's 1-year view (owner, 15 Nov:
+    # "Update drawdown budget with 1, 3, 5, 10yrs deep research and analysis of macro economics
+    # sentiments and market trends"). Each pair is two sources; a range where they differ.
+    # The policy rate the futures price for late 2027: RateProbability's meeting table, 4.73% for
+    # September 2027; the December 2027 SOFR future's implied rate, 4.78% (UCL Financial
+    # Journalism) - against the Fed's own 4.1% median for the end of 2027. A range, not a figure.
+    "fed_mkt_2027_lo": 4.73, "fed_mkt_2027_hi": 4.78,
+    # US PCE inflation in 2027: 2.3% in the Philadelphia Fed's Q3 2026 survey of forecasters and in
+    # the FOMC's June projections (core 2.4% in the survey).
+    "us_pce_2027": 2.3, "us_core_pce_2027": 2.4,
+    # The EIA's November STEO (inputs finalised 5 Nov; the EIA's release; Rigzone; Anadolu): Brent
+    # $85.78 on average in 2027, from $83.74 a month earlier; Hormuz disruption easing to 1.9 mb/d
+    # in the first half of 2027 and 1.3 mb/d in the second (the STEO, via Oil & Gas Journal).
+    "eia_brent_2027": 85.78, "eia_brent_2027_prev": 83.74,
+    "eia_hormuz_h1_2027": 1.9, "eia_hormuz_h2_2027": 1.3,
+    # S&P 500 earnings growth expected for 2027: 15% (LSEG I/B/E/S, via Reuters on 1 Oct, carried by
+    # 24/7 Wall St.) and 16.1% (FactSet, 6 Nov) - a range, not a figure. The same FactSet report has
+    # the forward P/E at 17.7 on 5 Nov; spx_fwd_pe stays at 30 Oct's 18.7 until the next review rolls
+    # the FactSet block with a second source (CHANGELOG v103, due list).
+    "spx_eps_2027_lo": 15.0, "spx_eps_2027_hi": 16.1,
     "bsp_cpi_2026": 6.1, "bsp_cpi_2027": 6.0, "bsp_cpi_2028": 3.3,
     "cape": 40.7, "cape_high": 44.2, "cape_median": 16.6,
     "ltg_eps": 16.7, "ltg_hist_fcst": 22.3, "ltg_hist_real": 9.5,
@@ -4132,6 +4152,49 @@ DRIVER_PATH = {
 }
 for _n, _, _s, _ in DRIVERS:
     DRIVER_PATH[_n][HZ_LABEL] = DRIVER_NEUTRAL_10
+
+# THE 1-YEAR VIEW (owner, 2026-11-15, v103), for the drawdown budget gauge. Each driver's reading
+# for the next twelve months, researched from the year-ahead evidence. The 3-year reading above is
+# the average of years 1-3 and stays what the portfolios read, so YEARS 2-3 are IMPLIED by it:
+# (3 x the 3-year reading - the year-1 reading) / 2. Splitting the view this way moves no fund
+# forecast and no pick; it lets the gauge read the year ahead on its own evidence. A check holds each
+# path moving from the reading now toward neutral, year by year, never past it.
+VOL_1Y = round(horizon_vol(1.0), 2)
+VOL_FWD_Y23 = round(math.sqrt((3 * horizon_vol(3.0) ** 2 - VOL_1Y ** 2) / 2), 2)
+DRIVER_Y1 = {
+    "Monetary policy & liquidity": (2.0,
+        f"The futures price the Fed to about {MACRO['fed_mkt_2027_lo']}-{MACRO['fed_mkt_2027_hi']}% by late 2027, "
+        f"above its own {MACRO['fed_sep_2027']}% median for the end of 2027 (RateProbability; SOFR futures), BSP "
+        f"is at {MACRO['bsp_rrp']:.2f}% after its {MACRO['bsp_hike_bp']}bp hike and the BoJ has a December hike flagged: "
+        "the next twelve months are the hiking end of the cycle, as hostile as now - 2.0."),
+    "Inflation trajectory": (2.75,
+        f"US PCE inflation is forecast at {MACRO['us_pce_2027']}% in 2027, core {MACRO['us_core_pce_2027']}% (the "
+        f"Philadelphia Fed's forecasters; the FOMC's June median), and the EIA has Brent averaging "
+        f"${MACRO['eia_brent_2027']:.2f} in 2027 (${MACRO['eia_brent_2027_prev']:.2f} a month earlier), below this year's; but BSP sees {MACRO['bsp_cpi_2027']}% in the "
+        f"Philippines in 2027 and Japan's producer prices rose {MACRO['jp_cgpi_oct']}% in October - 2.75, easing "
+        "from 2.0 now."),
+    "Growth momentum": (4.5,
+        f"The IMF has the world growing {MACRO['imf_world_2027']}% in 2027, from {MACRO['imf_world_2026']}%, and "
+        f"the Philippines {MACRO['imf_ph_2027']}% from {MACRO['imf_ph_2026']}%, and US jobless claims are "
+        f"{MACRO['us_claims_nov7'] // 1000}k - better than now, held back by the hikes: 4.5."),
+    "Corporate earnings": (7.0,
+        f"Analysts expect S&P 500 earnings to grow about {MACRO['spx_eps_2027_lo']:.0f}-{MACRO['spx_eps_2027_hi']}% "
+        f"in 2027 (LSEG I/B/E/S, via Reuters; FactSet) and Asia ex-Japan about {MACRO['asia_eps_2027']}%: as "
+        "strong as now - 7.0."),
+    "Valuation support": (7.5,
+        f"The S&P is on {MACRO['spx_fwd_pe']}x forward, below its averages, and Asia on {MACRO['asia_fwd_pe']}x; a "
+        f"year is too short for the {MACRO['cape']} cyclically adjusted multiple to bite, but the discount narrows "
+        "as prices recover: 7.5."),
+    "Volatility & risk appetite": (3.5,
+        f"The VIX closed at {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, under its {MACRO['vix_longrun']} "
+        f"long run, and the curve's own one-year implied volatility is {VOL_1Y:.2f}; but the hiking cycle, the Gulf "
+        "and Nvidia's change of chief executive keep risk appetite below neutral - 3.5."),
+    "Geopolitics & energy": (2.0,
+        f"The EIA assumes the Hormuz disruption eases to {MACRO['eia_hormuz_h1_2027']} mb/d in the first half of 2027 "
+        f"and {MACRO['eia_hormuz_h2_2027']} mb/d in the second; the Strait stays shut and Tehran denies talks: 2.0, "
+        "a little better than now."),
+}
+DRIVER_Y23 = {n: round((3 * DRIVER_PATH[n]["3Y"] - DRIVER_Y1[n][0]) / 2, 3) for n in DRIVER_Y1}
 # Each driver's path averaged over the ten years (the reading its tilts take), and the
 # gauge at each horizon - the headline GAUGE stays the reading now.
 DRIVER_BLEND_10 = {n: round(sum(DRIVER_PATH[n][h] * w for h, w in HZ_W.items()), 2)
@@ -5273,9 +5336,15 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 # tail the stress grid prices - and the VIX at or below its long run. The ceiling is 27%,
 # the derived budget the owner's figure replaced; the floor 24%.
 DDG_READING_OF = ("macro", "trend")     # the parts a view's reading averages (v90)
-DDG_VIEWS = tuple(h for h in HZ_KEYS if h != HZ_LABEL)
-DDG_W = {h: round((_HZ_YEARS[h] - (_HZ_YEARS[DDG_VIEWS[i - 1]] if i else 0.0))
-                  / _HZ_YEARS[DDG_VIEWS[-1]], 2) for i, h in enumerate(DDG_VIEWS)}
+# 1, 3, 5 AND 10 YEARS (owner, 2026-11-15, v103). The gauge reads three views of the first five years
+# - year 1, years 2-3 and years 4-5 - each weighted by the years it covers (20 / 40 / 40); the 10-year
+# view stays the anchor, shown and not weighted. Until v103 it read 3 and 5 years at 60 / 40, the
+# 3-year view covering years 1-3. Years 2-3 are implied by that 3-year reading and the researched
+# year 1 (DRIVER_Y1), so the split refines the reading without counting year 1 twice.
+DDG_SPANS = {"1Y": (0.0, 1.0), "3Y": (1.0, 3.0), "5Y": (3.0, 5.0)}
+DDG_SPAN_LABEL = {"1Y": "Year 1", "3Y": "Years 2-3", "5Y": "Years 4-5", HZ_LABEL: "Years 6-10"}
+DDG_VIEWS = tuple(DDG_SPANS)
+DDG_W = {h: round((b - a) / DDG_SPANS[DDG_VIEWS[-1]][1], 2) for h, (a, b) in DDG_SPANS.items()}
 DDG_BANDS = [  # [lo, hi) on the 1-5 reading, the budget it points to, the action
     (1.0, 2.5, 24.0, "Tighten to 24%"),
     (2.5, 3.5, 25.0, "Hold at 25%"),
@@ -5292,20 +5361,42 @@ DDG_REVIEWS_NEEDED = 2
 # 2.80 without volatility (macro 2.62 / 2.90, trend 3.01 / 2.61 at 3 and 5 years, unchanged
 # since 30 Oct; readings 2.82 / 2.76, half-up), against the 2.89 published with it. Both are
 # the hold band. A check requires every month-end since the band began to have its review.
+# RESTATED v103 on the 1/3/5 rule: unchanged at 2.80. Splitting years 1-3 into year 1 and years 2-3
+# preserves the 3-year average by construction, and no trend score sits at a bound, so the weighted
+# reading is the same; the check below recomputes both rules and holds them equal to the cent.
 DDG_REVIEWS = [("2026-10-31", 2.80)]
+DDG_RULE_DATE = "2026-11-15"
 _VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}   # context beside the readings, not in them
 
 def _ddg_trend(h):
     return round(sum(TREND[f]["score"][h] for f in TREND) / len(TREND), 2)
 
-DDG_PARTS = {h: {"macro": GAUGE_PATH[h], "trend": _ddg_trend(h),
-                 "vol_forward": _VOL_FWD[h]} for h in HZ_KEYS}
+def _trend_span(fid, a, b):
+    """One sleeve's trend score for the years a-b: momentum's and reversal's shares of those years,
+    as TREND_W gives the portfolio views - so years 4-5 reproduce the 5-year score exactly."""
+    t = TREND[fid]
+    wm = _overlap(a, b, *TREND_MOM_YEARS) / (b - a); wr = _overlap(a, b, *TREND_REV_YEARS) / (b - a)
+    return round(min(5.0, max(1.0, 3.0 + wm * t["z"][TREND_H[0][0]] - wr * TREND_REVERSAL * t["z_rev"])), 2)
+TREND_SPAN = {h: {f: _trend_span(f, a, b) for f in TREND} for h, (a, b) in DDG_SPANS.items()}
+
+GAUGE_Y1 = to5(sum(w * DRIVER_Y1[n][0] for n, w, _, _ in DRIVERS))
+GAUGE_Y23 = to5(sum(w * DRIVER_Y23[n] for n, w, _, _ in DRIVERS))
+DDG_PARTS = {
+    "1Y": {"macro": GAUGE_Y1, "trend": round(sum(TREND_SPAN["1Y"].values()) / len(TREND), 2),
+           "vol_forward": VOL_1Y},
+    "3Y": {"macro": GAUGE_Y23, "trend": round(sum(TREND_SPAN["3Y"].values()) / len(TREND), 2),
+           "vol_forward": VOL_FWD_Y23},
+    "5Y": {"macro": GAUGE_PATH["5Y"], "trend": _ddg_trend("5Y"), "vol_forward": _VOL_FWD["5Y"]},
+    HZ_LABEL: {"macro": GAUGE_PATH[HZ_LABEL], "trend": _ddg_trend(HZ_LABEL), "vol_forward": _VOL_FWD[HZ_LABEL]},
+}
+for _h, _p in DDG_PARTS.items():
+    _p["years"] = DDG_SPAN_LABEL[_h]
 # EXACT HALF-UP (v90), as every printed CAGR is from v88: the mean of two 2dp parts ends in
 # a 5 half the time, and binary round() sent 2.815 to 2.81 and 2.755 to 2.75. Next to a band
 # edge that is the difference between holding the budget and stepping it.
 def _hu2(x):
     return float(x.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
-for _h in HZ_KEYS:
+for _h in DDG_PARTS:
     _p = DDG_PARTS[_h]
     _p["reading"] = _hu2(sum(Decimal(repr(_p[k])) for k in DDG_READING_OF) / len(DDG_READING_OF))
 DDG_VALUE = _hu2(sum(Decimal(repr(DDG_PARTS[h]["reading"])) * Decimal(repr(DDG_W[h])) for h in DDG_VIEWS))
@@ -7363,6 +7454,27 @@ SOURCES = [
      "https://themedialine.org/mideast-daily-news/g7-demands-end-to-iranian-shipping-attacks-calls-for-hezbollah-disarmament/"),
     ("Iran International", "G7 warns Iran of continued pressure if diplomacy fails, 11 Nov 2026",
      "https://www.iranintl.com/en/202611111088"),
+    # v103: the year-1 evidence behind the budget gauge's 1-year view
+    ("RateProbability", "Fed funds futures meeting table - about 4.73% priced for September 2027",
+     "https://rateprobability.com/fed"),
+    ("UCL Financial Journalism", "Is the market pricing one Fed hike? - the December 2027 SOFR future implies about 4.78%",
+     "https://uclfinancialjournalism.substack.com/p/is-the-market-pricing-one-fed-hike"),
+    ("Federal Reserve", "FOMC summary of economic projections, 17 Jun 2026 - PCE inflation 2.3% in 2027",
+     "https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm"),
+    ("Federal Reserve Bank of Philadelphia", "Third Quarter 2026 Survey of Professional Forecasters - PCE 2.3%, core 2.4% in 2027",
+     "https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/spf-q3-2026"),
+    ("US Energy Information Administration", "Short-Term Energy Outlook, November 2026 - global oil markets",
+     "https://www.eia.gov/outlooks/steo/report/global_oil.php"),
+    ("Rigzone", "EIA raises 2026, 2027 oil price forecasts yet again - Brent $85.78 in 2027, from $83.74, 12 Nov 2026",
+     "https://www.rigzone.com/news/eia_raises_2026_2027_oil_price_forecasts_yet_again-12-nov-2026-185067-article/"),
+    ("Anadolu Agency", "EIA raises oil price forecast for 4th straight month amid Mideast disruptions, Nov 2026",
+     "https://www.aa.com.tr/en/energy/oil/eia-raises-oil-price-forecast-for-4th-straight-month-amid-mideast-disruptions/60877"),
+    ("Oil & Gas Journal", "EIA sees Brent near $100/bbl through year-end 2026 - Hormuz disruption easing to 1.9 and 1.3 mb/d in 2027",
+     "https://www.ogj.com/general-interest/economics-markets/news/55418180/eia-sees-brent-near-100-bbl-through-yearend-2026-as-middle-east-supply-constraints-persist"),
+    ("FactSet", "Earnings Insight, 6 Nov 2026 - CY2027 S&P 500 earnings growth 16.1%",
+     "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_110626A.pdf"),
+    ("24/7 Wall St. (Reuters, LSEG I/B/E/S)", "Wall Street expects S&P 500 profit growth to slow from 35% to 15% in 2027, 3 Oct 2026",
+     "https://247wallst.com/investing/2026/10/03/wall-street-expects-sp-500-profit-growth-to-collapse-from-35-to-15-in-2027/"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -7523,6 +7635,13 @@ def payload():
                       "date": DD_BUDGET_OWNER_DATE, "band_date": DD_BUDGET_BAND_DATE,
                       "derived_ref": round(DD_CAP_DERIVED, 2), "improvement": DD_BUDGET_IMPROVEMENT},
         "dd_gauge": {"value": DDG_VALUE, "views": list(DDG_VIEWS), "w": DDG_W,
+                     "spans": {h: list(v) for h, v in DDG_SPANS.items()}, "rule_date": DDG_RULE_DATE,
+                     # the 1-year research (v103): each driver now, in year 1, years 2-3 (implied) and
+                     # years 4-5, and each trend market in each span
+                     "drivers": [{"name": n, "weight": w, "now": s_, "y1": DRIVER_Y1[n][0], "why": DRIVER_Y1[n][1],
+                                  "y23": DRIVER_Y23[n], "y3_avg": DRIVER_PATH[n]["3Y"], "y45": DRIVER_PATH[n]["5Y"]}
+                                 for n, w, s_, _ in DRIVERS],
+                     "trend_spans": {h: v for h, v in TREND_SPAN.items()},
                      "parts": DDG_PARTS, "reading_of": list(DDG_READING_OF), "longrun": MACRO["vix_longrun"],
                      "bands": [{"lo": b[0], "hi": min(b[1], 5.0), "cap": b[2], "action": b[3]}
                                for b in DDG_BANDS],
@@ -9119,27 +9238,61 @@ def report():
                    and abs(DD_BUDGET_IMPROVEMENT - round(2.0 * p["dd_model"]["horizon_scalar"], 2)) < 5e-9))
     # THE BUDGET GAUGE (v75): every part re-derived from the published inputs it reads.
     _dg = p["dd_gauge"]
-    checks.append(("the budget gauge's parts are the published driver gauge and trend scores at each view, each reading their mean",
+    # Years 4-5 and the 10-year anchor are the published driver gauge and trend at those views; year 1
+    # and years 2-3 are the spans' own (v103, checked below). Every part reads the mean of its two.
+    checks.append(("the budget gauge's parts are the published driver gauge and trend scores where the views coincide, each reading their mean",
                    all(_dg["parts"][h]["macro"] == p["gauge_path"][h]
                        and _dg["parts"][h]["trend"] == round(sum(v["score"][h] for v in p["trend"]["sleeves"].values())
                                                              / len(p["trend"]["sleeves"]), 2)
-                       and _dg["parts"][h]["reading"] == _hu2((Decimal(repr(_dg["parts"][h]["macro"]))
+                       for h in ("5Y", HZ_LABEL))
+                   and all(_dg["parts"][h]["reading"] == _hu2((Decimal(repr(_dg["parts"][h]["macro"]))
                                                                + Decimal(repr(_dg["parts"][h]["trend"]))) / 2)
-                       for h in HZ_KEYS)))
+                           for h in _dg["parts"])))
     # v90 (owner, 2026-11-03): volatility is out of the reading. It may be published beside it
     # as context - the curve's own forward vol - but no volatility score may come back in.
     checks.append(("volatility is not in the budget gauge's reading: context only, and the VIX guard on a raise",
                    _dg["reading_of"] == ["macro", "trend"]
-                   and all(set(_dg["parts"][h]) == {"macro", "trend", "reading", "vol_forward"}
-                           and _dg["parts"][h]["vol_forward"] == next(v["forward"] for v in p["vol_ts"] if v["label"] == h)
-                           for h in HZ_KEYS)
+                   and all(set(_dg["parts"][h]) == {"macro", "trend", "reading", "vol_forward", "years"}
+                           for h in _dg["parts"])
+                   and all(_dg["parts"][h]["vol_forward"] == next(v["forward"] for v in p["vol_ts"] if v["label"] == h)
+                           for h in ("5Y", HZ_LABEL))
+                   and _dg["parts"]["1Y"]["vol_forward"] == round(horizon_vol(1.0), 2)
                    and "vol_step" not in _dg
                    and any(g["name"] == "vix" and g["applies_to"] == "raise" for g in _dg["guards"])))
-    checks.append(("the budget gauge reads the 3- and 5-year views by their share of the first five years, the 10-year anchor shown but not weighted",
-                   _dg["views"] == ["3Y", "5Y"] and _dg["w"] == {"3Y": 0.6, "5Y": 0.4}
+    checks.append(("the budget gauge reads year 1, years 2-3 and years 4-5 by their share of the first five years (20/40/40), the 10-year anchor shown but not weighted",
+                   _dg["views"] == ["1Y", "3Y", "5Y"] and _dg["w"] == {"1Y": 0.2, "3Y": 0.4, "5Y": 0.4}
+                   and _dg["spans"] == {"1Y": [0.0, 1.0], "3Y": [1.0, 3.0], "5Y": [3.0, 5.0]}
                    and _dg["value"] == _hu2(sum(Decimal(repr(_dg["parts"][h]["reading"])) * Decimal(repr(_dg["w"][h]))
                                                 for h in _dg["views"]))
                    and 1.0 <= _dg["value"] <= 5.0 and HZ_LABEL in _dg["parts"]))
+    # THE 1-YEAR VIEW (v103). Years 2-3 are implied, so year 1 and years 2-3 average back to the
+    # 3-year reading the portfolios read; every path moves from the reading now toward neutral, year by
+    # year, never past it; the macro parts are the weighted drivers on 1-5; the trend parts are each
+    # sleeve's span score, and years 4-5 reproduce the 5-year trend exactly.
+    _ddr = _dg["drivers"]
+    _toward = lambda xs: all((a - DRIVER_NEUTRAL_10) * (b - DRIVER_NEUTRAL_10) >= 0
+                             and abs(b - DRIVER_NEUTRAL_10) <= abs(a - DRIVER_NEUTRAL_10) + 1e-9
+                             for a, b in zip(xs, xs[1:]))
+    checks.append(("each driver's year-1 reading is researched and dated, years 2-3 are implied by the 3-year average, and the path moves toward neutral",
+                   len(_ddr) == len(DRIVERS) and AS_OF <= _dg["rule_date"]
+                   and all(1.0 <= r["y1"] <= 10.0 and len(r["why"]) > 60
+                           and abs((r["y1"] + 2 * r["y23"]) / 3 - r["y3_avg"]) < 1e-9
+                           and r["y3_avg"] == DRIVER_PATH[r["name"]]["3Y"] and r["y45"] == DRIVER_PATH[r["name"]]["5Y"]
+                           and _toward([r["now"], r["y1"], r["y23"], r["y45"], DRIVER_NEUTRAL_10]) for r in _ddr)))
+    checks.append(("the gauge's macro parts are the weighted drivers for each span, on 1-5",
+                   _dg["parts"]["1Y"]["macro"] == to5(sum(r["weight"] * r["y1"] for r in _ddr))
+                   and _dg["parts"]["3Y"]["macro"] == to5(sum(r["weight"] * r["y23"] for r in _ddr))
+                   and _dg["parts"]["5Y"]["macro"] == p["gauge_path"]["5Y"]))
+    checks.append(("the gauge's trend parts average each sleeve's span score, and years 4-5 are the 5-year trend",
+                   all(_dg["parts"][h]["trend"] == round(sum(_dg["trend_spans"][h].values()) / len(TREND), 2)
+                       for h in _dg["views"])
+                   and all(_dg["trend_spans"]["5Y"][f] == TREND[f]["score"]["5Y"] for f in TREND)))
+    # The split cannot move the reading: the same inputs read on the pre-v103 rule (3 and 5 years at
+    # 60 / 40) land within a rounding step of it - the restated month-end review rests on this.
+    _old = _hu2(sum(Decimal(repr(_hu2((Decimal(repr(GAUGE_PATH[h])) + Decimal(repr(_ddg_trend(h)))) / 2))) * Decimal(w)
+                    for h, w in (("3Y", "0.6"), ("5Y", "0.4"))))
+    checks.append((f"splitting year 1 out leaves the reading where the 3-and-5-year rule puts it ({_dg['value']} vs {_old})",
+                   abs(_dg["value"] - _old) <= 0.011))
     _bands = _dg["bands"]
     # ONE NUMBER, ONE ARITHMETIC (v88): each budget step prints the CAGR its own search
     # ranked on. Two summation routes printed 7.20 beside a "best" of 7.21 on Python 3.13.

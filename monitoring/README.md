@@ -197,6 +197,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+162. SPLITTING A VIEW MUST NOT COUNT A YEAR TWICE. Asked to read the budget at 1, 3, 5 and 10 years, a
+   first answer reused the 1-3-year average for "years 2-3" beside a researched year 1 and got 2.76 - year 1
+   counted twice. The 3-year reading IS the average of years 1-3, so years 2-3 = (3 x it - year 1) / 2; the
+   gauge then reads 2.80 on the same inputs, as the old rule did. When a span is cut out of a view, derive
+   the remainder from the view and check the pieces re-average to it (the engine and the audit both do).
 161. A TIGHTER EVIDENCE RULE RE-OPENS WHAT IT WOULD HAVE REFUSED. When the owner's command started counting
    a rewrite of a wire as the wire (12 Nov), the 11 Nov oil settles - carried on Reuters and MLQ, a rewrite -
    were re-checked the same day and re-sourced to an independent second (Vantage Markets' settlement table).

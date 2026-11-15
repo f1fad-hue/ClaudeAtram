@@ -4,7 +4,7 @@ The owner's standing instruction for every review, kept here so a session can be
 "Run the ATRAM review in monitoring/REVIEW_COMMAND.md" and every change to it is versioned.
 Updated 2026-11-12 (after v101): Portfolio C retired, so the command covers A, B and D; the
 Report tab has its own step; periodic items, contract rolls and the runbook's evidence lessons
-are named. The runbook (`README.md`) says how; this file says what.
+are named. Updated 2026-11-15 (v103): the Budget tab reads 1, 3, 5 and 10 years. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -92,8 +92,11 @@ Evidence rules (apply to everything below)
   drawdown calibration, peso volatility) only when its source updates; say if none did.
 
 4. Drawdown budget band (Budget tab)
-• Recompute the gauge: macro drivers + market trend at 3 and 5 years, weighted 60/40;
-  the 10-year view is neutral by construction and shown as the anchor. Check its guards
+• Recompute the gauge: macro drivers + market trend over year 1, years 2-3 and years 4-5,
+  weighted 20/40/40; years 6-10 are neutral by construction and shown as the anchor.
+  Re-research each driver's year-1 reading (the year-ahead forecasts: Fed and SOFR futures,
+  the Philadelphia Fed survey, FOMC projections, the EIA's STEO, the IMF, 2027 earnings),
+  and say which moved. Check its guards
   (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or
   under its long run before any raise). Record the month-end review when one is due.
 • Report the budget in force and what each step (24% to 27%) does to A, B and D, and to
@@ -112,7 +115,8 @@ Evidence rules (apply to everything below)
   disinflation restart rows); and re-run the what-ifs, the efficient-mix chart and the
   peso table.
 • Ask me before changing any rule: the 25% base, the band and its guards, the limits,
-  D's rule, the selection rule, the 3/5/10-year weights or the fund list.
+  D's rule, the selection rule, the 3/5/10-year weights, the budget gauge's 1/3/5-year
+  spans and their 20/40/40 weights, or the fund list.
 
 6. Report tab
 • Read the rationale report, the conclusion and the what-ifs against the other tabs, and

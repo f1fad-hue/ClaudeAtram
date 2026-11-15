@@ -245,19 +245,52 @@ ck("the drawdown gauge's bands tile 1-5 and its value sits in the band it report
 # THE GAUGE RE-DERIVED (v90). Until v90 the audit checked only the bands and the budget, not
 # the readings - and its budget check took the band's step as the budget, which would have
 # failed falsely the first time a new band was read before two month-end reviews.
-_w3 = HZ["3Y"] / (HZ["3Y"] + HZ["5Y"]); _wv = {"3Y": round(_w3, 2), "5Y": round(1 - _w3, 2)}
-_trp = {h: round(sum(v["score"][h] for v in D["trend"]["sleeves"].values()) / len(D["trend"]["sleeves"]), 2) for h in ("3Y", "5Y", "10Y")}
+# v103 (owner, 15 Nov 2026): the gauge reads year 1, years 2-3 and years 4-5, each weighted by
+# the share of the first five years it covers. Re-derived here from the drivers' own paths and
+# year-1 scores and from each trend sleeve's z-scores - nothing is read back from the parts.
+_sp = G["spans"]; _wv = {h: round((b - a) / 5.0, 2) for h, (a, b) in _sp.items()}
+ck("the budget gauge's spans tile years 0-5 and each weighs its share of them (1Y 20%, 3Y 40%, 5Y 40%)",
+   G["views"] == ["1Y", "3Y", "5Y"] and list(_sp) == G["views"] and _sp["1Y"][0] == 0 and _sp["5Y"][1] == 5
+   and all(_sp[a][1] == _sp[b][0] for a, b in zip(G["views"], G["views"][1:]))
+   and G["w"] == _wv == {"1Y": 0.2, "3Y": 0.4, "5Y": 0.4}, f"{_sp} {G['w']}")
+_GD = {r["name"]: r for r in G["drivers"]}
+ck("the year-1 table lists the seven drivers at their weights, now as the published score, years 4-5 as the 5-year path",
+   [x["name"] for x in DR] == list(_GD)
+   and all(_GD[x["name"]]["weight"] == x["weight"] and _GD[x["name"]]["now"] == x["score_10"]
+           and _GD[x["name"]]["y45"] == x["path"]["5Y"] and _GD[x["name"]]["y3_avg"] == x["path"]["3Y"]
+           and 1 <= _GD[x["name"]]["y1"] <= 10 and len(_GD[x["name"]]["why"]) > 60 for x in DR), f"{list(_GD)}")
+_y23 = {x["name"]: round((3 * x["path"]["3Y"] - _GD[x["name"]]["y1"]) / 2, 3) for x in DR}
+ck("years 2-3 are what the 3-year path leaves once year 1 is taken out, so year 1 is not counted twice",
+   all(abs(_GD[n]["y23"] - v) < 1e-9 and 1 <= v <= 10 for n, v in _y23.items()), f"{ {n: (_GD[n]['y23'], v) for n, v in _y23.items()} }")
+_mac = {"1Y": to5(sum(x["weight"] * _GD[x["name"]]["y1"] for x in DR)),
+        "3Y": to5(sum(x["weight"] * _y23[x["name"]] for x in DR)),
+        "5Y": D["gauge_path"]["5Y"], "10Y": D["gauge_path"]["10Y"]}
+_TR = D["trend"]; _ov = lambda a, b, c, e: max(0.0, min(b, e) - max(a, c))
+def _tsp(v, a, b):
+    wm = _ov(a, b, *_TR["mom_years"]) / (b - a); wr = _ov(a, b, *_TR["rev_years"]) / (b - a)
+    return round(min(5.0, max(1.0, 3.0 + wm * v["z"]["1Y"] - wr * _TR["reversal"] * v["z_rev"])), 2)
+_ts = {h: {f: _tsp(v, a, b) for f, v in _TR["sleeves"].items()} for h, (a, b) in _sp.items()}
+ck("each market's trend in each span is momentum over year 1 and reversal after it, from its own z-scores; years 4-5 equal its 5-year score",
+   G["trend_spans"] == _ts and all(_ts["5Y"][f] == v["score"]["5Y"] for f, v in _TR["sleeves"].items()), f"{G['trend_spans']} vs {_ts}")
+_trp = {h: round(sum(_ts[h].values()) / len(_ts[h]), 2) for h in _sp}
+_trp["10Y"] = round(sum(v["score"]["10Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)
 from decimal import Decimal as _D, ROUND_HALF_UP as _HU
 _q2 = lambda x: float(x.quantize(_D("0.01"), rounding=_HU))      # exact half-up, the page's convention
-_rd = {h: _q2((_D(str(D["gauge_path"][h])) + _D(str(_trp[h]))) / 2) for h in ("3Y", "5Y", "10Y")}
-ck("each budget-gauge view reads the mean of the driver gauge and the trend score at that horizon - volatility not in it",
-   G["reading_of"] == ["macro", "trend"]
-   and all(G["parts"][h]["macro"] == D["gauge_path"][h] and G["parts"][h]["trend"] == _trp[h]
-           and G["parts"][h]["reading"] == _rd[h] and "vol" not in G["parts"][h] for h in ("3Y", "5Y", "10Y")),
-   f"{ {h: (G['parts'][h]['macro'], G['parts'][h]['trend'], G['parts'][h]['reading']) for h in G['parts']} } vs {_rd}")
-_val = _q2(sum(_D(str(_rd[h])) * _D(str(_wv[h])) for h in ("3Y", "5Y")))
-ck(f"the budget gauge is the 3- and 5-year readings weighted by their share of the first five years ({_val})",
-   G["views"] == ["3Y", "5Y"] and G["w"] == _wv and G["value"] == _val, f"{G['value']} vs {_val}")
+_rd = {h: _q2((_D(str(_mac[h])) + _D(str(_trp[h]))) / 2) for h in _mac}
+ck("each budget-gauge view reads the mean of the driver gauge and the trend score over its span - volatility not in it",
+   G["reading_of"] == ["macro", "trend"] and list(G["parts"]) == ["1Y", "3Y", "5Y", "10Y"]
+   and all(G["parts"][h]["macro"] == _mac[h] and G["parts"][h]["trend"] == _trp[h]
+           and G["parts"][h]["reading"] == _rd[h] and "vol" not in G["parts"][h] for h in _mac),
+   f"{ {h: (G['parts'][h]['macro'], G['parts'][h]['trend'], G['parts'][h]['reading']) for h in G['parts']} } vs {_mac} {_trp} {_rd}")
+_val = _q2(sum(_D(str(_rd[h])) * _D(str(_wv[h])) for h in G["views"]))
+ck(f"the budget gauge is the year-1, years 2-3 and years 4-5 readings weighted by their share of the first five years ({_val})",
+   G["value"] == _val, f"{G['value']} vs {_val}")
+# The split must not move the gauge beyond rounding: the old 3- and 5-year rule (60/40 on the
+# 3-year average and years 4-5) read from the same inputs.
+_old3 = _q2((_D(str(D["gauge_path"]["3Y"])) + _D(str(round(sum(v["score"]["3Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)))) / 2)
+_old = _q2(_D(str(_old3)) * _D("0.6") + _D(str(_rd["5Y"])) * _D("0.4"))
+ck(f"splitting year 1 out leaves the gauge where the 3- and 5-year rule reads it, to rounding ({_old})",
+   abs(G["value"] - _old) <= 0.011, f"{G['value']} vs {_old}")
 _me = lambda x: (d(x) + dt.timedelta(days=1)).day == 1
 ck("every month-end review on record is a month-end before the data date, read on 1-5",
    all(_me(r[0]) and d(r[0]) < AS_OF and 1 <= r[1] <= 5 for r in G["reviews"]), f"{G['reviews']}")

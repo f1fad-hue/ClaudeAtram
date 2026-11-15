@@ -47,6 +47,8 @@ def m_guard(d):                                                                 
 def m_vixg(d): g = next(g for g in d["dd_gauge"]["guards"] if g["name"] == "vix"); g["ok"] = not g["ok"]   # the VIX guard flipped
 def m_dayref(d):                                                                               # a day-keyed move beside another day
     x = _drv(d, "Corporate"); x["note"] = x["note"].replace("on 3 Nov the KOSPI", "on 4 Nov the KOSPI", 1)
+def m_y1(d): r = d["dd_gauge"]["drivers"][1]; r["y1"] = round(r["y1"] + 0.5, 2)               # a year-1 score that no longer splits the 3-year path (v103)
+def m_tspan(d): t = d["dd_gauge"]["trend_spans"]["1Y"]; k = next(iter(t)); t[k] = round(t[k] + 0.1, 2)   # a market's year-1 trend off its z (v103)
 def m_yoy1(d): d["macro"]["brent_yoy_1dp"] = round(d["macro"]["brent_yoy_1dp"] - 0.1, 1)      # the y/y a rounding of a rounding (v94)
 def m_daydup(d):                                                                               # a day-keyed copy off the latest (v94)
     # By state (v95): it moved nasdaq_5nov, and went blind the day New York rolled to 6 Nov. It now

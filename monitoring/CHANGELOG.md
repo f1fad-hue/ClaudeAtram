@@ -2,6 +2,89 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-15 — v103: the drawdown budget reads 1, 3, 5 and 10 years, with a researched year ahead; the gauge holds at 2.80, 25%; A, B and D unchanged
+
+At the owner's instruction: "Update drawdown budget with 1, 3, 5, 10yrs deep research and analysis of macro
+economics sentiments and market trends." **Market data is unchanged** (v102, cut-off 15:45 UTC on 12 Nov);
+this change adds evidence about the year ahead, not new closes. B and D keep their 3/5/10-year view, A its
+10-year view: the owner's instruction names the budget.
+
+**The rule.** The gauge read the 3- and 5-year views at 60 / 40. It now reads three spans of the first five
+years, each weighted by the years it covers: **year 1 (20%), years 2-3 (40%) and years 4-5 (40%)**, with years
+6-10 shown as the neutral anchor. Year 1 is researched on its own. Years 2-3 are implied: the 3-year reading the
+portfolios use is the average of years 1-3, so years 2-3 = (3 x the 3-year reading - year 1) / 2. That keeps
+every fund forecast and pick where it was and counts no year twice. The trend splits the same way: year 1 is
+momentum (the past four quarters' z) and the later spans are reversal (the trailing 3- and 5-year runs).
+
+**The year-1 research, on 1-10 (5.5 neutral), now → year 1.**
+- Monetary policy 2.0 → 2.0. The futures price about 4.73-4.78% for late 2027 (RateProbability; the December
+  2027 SOFR future, UCL Financial Journalism), above the Fed's own 4.1% median. BSP is at 5.50% and the BoJ
+  has a December hike flagged.
+- Inflation 2.0 → 2.75. US PCE inflation is forecast at 2.3% in 2027, core 2.4% (Philadelphia Fed survey,
+  Q3 2026; FOMC June). The EIA has Brent averaging $85.78 in 2027, up from $83.74 a month earlier (EIA STEO;
+  Rigzone; Anadolu). Against that, BSP sees 6.0% in the Philippines and Japan's producer prices rose 7.1%.
+- Growth 4.25 → 4.5. The IMF has the world at 3.4% in 2027 and the Philippines at 5.1%.
+- Earnings 7.0 → 7.0. S&P 500 growth of 15-16.1% in 2027 (LSEG I/B/E/S via Reuters; FactSet, 6 Nov).
+- Valuation 8.0 → 7.5. The discount narrows as prices recover.
+- Volatility 2.5 → 3.5. The curve's one-year implied volatility is 18.87, under the 19.5 long run.
+- Geopolitics 1.5 → 2.0. The EIA assumes the Hormuz disruption eases to 1.9 then 1.3 mb/d in 2027; the
+  Strait stays shut.
+
+**Readings (1-5).**
+| Span | Macro | Trend | Reading |
+| --- | --- | --- | --- |
+| Year 1 | 2.42 | 3.81 | 3.12 |
+| Years 2-3 | 2.72 | 2.61 | 2.67 |
+| Years 4-5 | 2.90 | 2.61 | 2.76 |
+
+**The gauge is 2.80: hold at 25%.** On the old rule it also read 2.80; the engine and the audit both check
+that the split lands within a rounding step of it. The 31 Oct month-end review is restated on the new rule,
+unchanged at 2.80. The guards are unchanged:
+- persistence: 1 of 2 reviews on record; the next is 30 Nov.
+- geopolitics: 1.5, which must be above 2.0 before any raise; this guard fails.
+- the VIX: clear, at 17.49.
+
+**Portfolios: A, B and D are unchanged**, with every weight identical:
+- A: 7.31% / −24.9%
+- B: 7.10% / −24.9%
+- D: 7.16% / −24.9%, four funds
+
+**Page.** The Budget tab's readings table gains a "Years covered" row. A new section, "The year ahead", shows
+each driver now, in year 1, in years 2-3 and in years 4-5, with the evidence for each year-1 reading, and each
+market's trend by span. Ten sources were added to the Report tab's list, each with its link.
+
+**Errors found and fixed (recorded before fixing).**
+1. In this session's earlier hypothetical answer, a 1/3/5/10 gauge was given as 2.76. That figure
+   double-counted year 1, because it reused the 1-3-year average for years 2-3. On the correct split the
+   gauge is 2.80.
+2. The new check dated the rule against the data date (`rule_date <= REVIEW_DATE`). The rule is dated
+   15 Nov and the data 12 Nov, so the check failed. It now requires `AS_OF <= rule_date`.
+3. The parts check compared every view's macro reading with the 3- and 5-year driver gauge. It is now
+   restricted to the views where the two coincide (years 4-5, years 6-10). The year-1 and years 2-3 parts are
+   re-derived from the drivers instead.
+4. The audit flagged a new input that nothing read (the EIA's previous 2027 Brent forecast). The inflation
+   note now quotes it.
+5. Read at phone width:
+   - The spans printed capitalised and hyphenated mid-sentence ("Years 2-3"); they now print as "years 2–3".
+   - A draft trend note would have said every market reads below 3 after year 1. Global health care reads
+     3.07, so the note is now built from the scores.
+   - "Every market read" now reads "Every market reads".
+6. Found while researching: FactSet's 6 Nov Earnings Insight has the S&P 500's forward P/E at 17.7 on 5 Nov,
+   from 18.7 on 30 Oct. The v100 and v102 reviews kept the 30 Oct figures. They stay held here, because this
+   change is not a market review; see the due list below.
+
+**Due before the next review.**
+- FactSet's 6 Nov update (forward P/E 17.7) and its 13 Nov update. Roll the FactSet block once a second
+  source is found.
+- The Philadelphia Fed's Q4 2026 survey, due mid-November. Re-read year 1's inflation evidence when it is out.
+- The month-end band review on 30 Nov, the first under the new rule.
+- Carried from v102: the VIX futures strip (November settles 18 Nov; the window ends 19 Nov), WTI December's
+  last trade on 20 Nov and Brent January's expiry on 30 Nov.
+
+Checks: engine 263/263; audit 259/259; page 16/16 at phone width; mutation test 61/61 caught (two new
+mutants: a year-1 score that no longer splits the 3-year path, and a market's year-1 trend off its z). The
+Budget tab was read at phone width.
+
 ## 2026-11-12 — v102: Manila's 12 Nov closes in; the oil settles re-sourced under the tightened wire rule; jobless claims, Japan's producer prices, the G7 statement and Nvidia's CEO change added; A, B and D unchanged
 
 The first review under the updated command (`REVIEW_COMMAND.md`). Cut-off **15:45 UTC on Thu 12 Nov**, eight
