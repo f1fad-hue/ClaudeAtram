@@ -1111,6 +1111,12 @@ MACRO = {
     "geo_target_at_ter": 1.95,      # Allianz Thematica, retail AT class (Citywire)
     "useq_trust_listed": 1.20, "useq_trust_peer": 1.50,
     "useq_ocf_clean": 0.85, "useq_ocf_retail": 1.81,
+    # RE-RUN 2026-11-16 (v107) on the new forecasts - no volatility tilt, a valuation tilt for years
+    # 1-5 - at the live 25% budget: A's weights come back identical (its 10-year view did not move);
+    # B and D moved: US Equity Opportunity at 1.20% takes 15% of B (20%) and 10% of D (15%); Global
+    # Bond Income at its high charge 10% of D (15%); Asian Multi-Asset Income at 1.20% 20% of B (30%);
+    # Global Infra at a 1.10% charge 15% of D (10%). The live picks reproduce (A 7.31% / -24.9%, B
+    # 7.20% / -24.9%, D 7.25% / -24.8%).
     # RE-RUN 2026-11-12 on the 11-12 Nov inputs (v100): every weight below came back identical, and
     # the live picks reproduce (A 7.31% / -24.9%, B 7.1% / -24.9%, C 7.14% / -24.9%, D 7.16% / -24.9%).
     # RE-RUN 2026-11-04 on the 4 Nov inputs (v92): every weight below came back identical, and
@@ -1118,13 +1124,13 @@ MACRO = {
     # RE-RUN 2026-11-03 on the 3 Nov inputs (v88, after the fund-list cache fix in _uf100):
     # every weight came back identical but one - at 1.50%, US Equity Opportunity takes none of A
     # (15% to v87). The run's A, B and C without it are the live picks.
-    "useq_w_a_listed": 20, "useq_w_b_listed": 20, "useq_w_a_peer": 0, "useq_w_b_peer": 0,
+    "useq_w_a_listed": 20, "useq_w_b_listed": 15, "useq_w_a_peer": 0, "useq_w_b_peer": 0,
     # RE-RUN 2026-10-30 on the 30 Oct inputs (v84): every weight below came back identical.
     # (Portfolio C's weights in these runs - useq_w_c_*, gbi_w_c_*, amip_w_c_alt, ginf_w_c_alt and
     # ginf_cagr_c_alt - RETIRED in v101 with C itself.)
     # v96: Portfolio D in the same re-runs (model/heldout_sens.py, 7 Nov).
     # v99: re-run 12 Nov under D's new rule (Nasdaq the largest of two to five funds).
-    "useq_w_d_listed": 15, "useq_w_d_peer": 0, "gbi_w_d_low": 35, "gbi_w_d_high": 15, "amip_w_d_alt": 30,
+    "useq_w_d_listed": 10, "useq_w_d_peer": 0, "gbi_w_d_low": 35, "gbi_w_d_high": 10, "amip_w_d_alt": 30,
     "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
     "gbi_w_a_low": 35, "gbi_w_b_low": 35,
     "gbi_w_a_high": 25, "gbi_w_b_high": 20,
@@ -1136,12 +1142,12 @@ MACRO = {
     # BC GBP class 1.10% (4 Sep 2026); Citywire's ZD is 0.15%. The class the feeder holds is not
     # published, so 0.80% is carried and the two alternatives are run (heldout_sens).
     "ginf_target_alt": [1.00, 1.10],
-    # The run (heldout_sens, 4 Nov, at the live budget and rule): the fund's net on the 3/5/10-year
-    # view at each alternative, its weight in A, B and C, and their CAGRs on their own views.
-    "ginf_net_alt": [6.97, 6.87],
+    # The run (heldout_sens, 16 Nov - v107's forecasts - at the live budget and rule): the fund's net on
+    # the 1/3/5/10-year view at each alternative, its weight in A, B and D, and their CAGRs on their own views.
+    "ginf_net_alt": [7.06, 6.96],
     "ginf_w_a_alt": [15, 0], "ginf_w_b_alt": [0, 0],
-    "ginf_cagr_a_alt": [7.26, 7.25], "ginf_cagr_b_alt": [7.07, 7.07],
-    "ginf_w_d_alt": [20, 10], "ginf_cagr_d_alt": [7.12, 7.11],   # v99: D keeps it at 1.00%, trims it at 1.10%
+    "ginf_cagr_a_alt": [7.26, 7.25], "ginf_cagr_b_alt": [7.14, 7.14],
+    "ginf_w_d_alt": [20, 15], "ginf_cagr_d_alt": [7.21, 7.20],   # D keeps it at 1.00%, trims it at 1.10%
     # OTHER TARGET-CHARGE FIGURES FOUND IN v93, recorded beside the charges carried (TARGET_CHECKS):
     "aseq_target_alt": 1.82,          # Investing.com, an HKD class, undated (one source)
     "aseq_mgmt_fee": 1.5,             # J.P. Morgan's HK factsheet, end-Aug 2026
@@ -1179,9 +1185,9 @@ MACRO = {
     # ASIAN MULTI-ASSET INCOME'S DISPUTED TRUST FEE (v75 CLAIMS; on the page from v77): ATRAM's
     # page has 1.50%, carried; the October 2025 KIID and uitf.com.ph 1.20%. Re-run 2026-10-28
     # (heldout_sens.run_refee) under the maximum-growth rule at 25%: the fund's net rises
-    # 0.30pp, and A holds 35% of it (7.39% on its 10-year view), B 30% (7.18%) - against 20%
-    # and none at 1.50%. Results of a run, at the run's budget and rule above.
-    "amip_trust_alt": 1.20, "amip_w_a_alt": 35, "amip_w_b_alt": 30,
+    # 0.30pp, and A holds 35% of it (7.39% on its 10-year view), B 20% (7.26%; 30% before v107) -
+    # against 20% and none at 1.50%. Results of a run, at the run's budget and rule above.
+    "amip_trust_alt": 1.20, "amip_w_a_alt": 35, "amip_w_b_alt": 20,
     # BRENT NOW CARRIES ITS OWN DATE, which it never had - the date lived in this
     # comment, so nothing could check the level's age or say a session was missing.
     # That is the same gap the 10-year had, and the 10-year's cost two days of a
@@ -3271,36 +3277,18 @@ VOL_BLEND = sum(v["forward"] * HZ_W[v["label"]] for v in VOL_TS)
 # converges to. Measuring the ramp from TODAY's low spot credited the covered-call
 # sleeve (+0.96pp) and charged Global Technology (-0.56pp) for volatility rising to
 # a level both bases already assume: the rise was counted in the base and again in
-# the tilt. The tilt is now the deviation of the horizon-blended curve from the
-# long-run level - what the cycle view adds to, or takes from, a no-view base.
+# the tilt. The ramp is the deviation of the horizon-blended curve from the long-run level.
+# From v107 it tilts no forecast (the volatility tilt retired with the Volatility tab); it is
+# published as context in the volatility driver's note.
 # ROUNDED TO THE PUBLISHED 2dp before any tilt is taken from it (2026-10-21): the
 # unrounded -0.454 gave Global Technology +0.06 where the printed -0.45 x -0.122
 # gives +0.05, so the page's own figures did not reproduce its tilt.
 VOL_RAMP  = round(VOL_BLEND - MACRO["vix_longrun"], 2)
-# The ramp the 10-year view alone reads: years 6-10 of the curve (Portfolio A's column).
-VOL_RAMP_10 = round(VOL_TS[-1]["forward"] - MACRO["vix_longrun"], 2)
 VOL_RAMP_REF = "long-run"
 
-# Per-fund sensitivity, in pp of net CAGR per point of vol ramp. These are
-# structural properties of each sleeve, not judgements about the current market:
-#   ATRQIAP  +0.210  writes calls on ~78% of a Nasdaq-100 book whose own vol is
-#                    ~1.22x the market; premium scales with implied vol, so a curve
-#                    ABOVE the long-run level its base assumes is extra income, and
-#                    one below it is less.
-#   ATRGTEC  -0.122  highest vol beta (1.30) and the longest-duration equity
-#                    here; a higher vol regime lifts the discount rate on distant
-#                    cash flows and compresses the multiple.
-#   ATRASEQ   0.000  the two effects cancel - a higher discount rate hurts, but
-#                    at 10.5x forward the multiple is already compressed and the
-#                    dividend tilt shortens effective duration.
-#   ATRPHMM  +0.035  cash gains marginally as risk-off keeps the front end bid.
-VOL_SENS = {"ATRPHMM": 0.035, "ATRQIAP": 0.210, "ATRASEQ": 0.000, "ATRGTEC": -0.122,
-            # Global Dividend: no volatility channel is claimed
-            "ATRGLDV": 0.000,
-            # The six added 2026-10-22: none is built on selling or buying volatility,
-            # and none is claimed - the channel is structural, not a view.
-            "ATRGHCP": 0.000, "M_GINF": 0.000, "M_GEO": 0.000, "M_GCT": 0.000,
-            "ATRAMIP": 0.000, "M_GALL": 0.000}
+# VOL_SENS RETIRED v107 (owner, 2026-11-16: "Remove volatility tab"): the fund forecasts read
+# macro sentiment, market trend and market valuation only. The curve still sets each fund's
+# volatility (SP_VOL_LT, the drawdown model) and the VIX still guards a budget raise.
 
 
 
@@ -4668,6 +4656,20 @@ def combine_fx(sig_asset):
     """Total PHP-denominated vol for an unhedged USD asset."""
     return math.sqrt(sig_asset**2 + FX_VOL**2 + 2 * FX_CORR * sig_asset * FX_VOL)
 
+# THE VALUATION CHANNEL (v107, owner 2026-11-16: "Update portfolio B and D based on 1, 3, 5, 10yrs
+# macroeconomics sentiments, market trends and market valuations"). The valuation driver's own
+# path, on 1-5, read over the ten years as years 1, 2-3, 4-5 and 6-10 (10 / 20 / 20 / 50, the
+# share of the ten each covers - the 3-year view's 30% split into year 1 and years 2-3), at the
+# regional rankings' rate per point, on a fund's equity share; cash carries none. Years 6-10 are
+# neutral, because the J.P. Morgan base returns already price today's multiples - so the
+# 10-year view (Portfolio A's) carries no valuation tilt and nothing is counted twice.
+VAL_DRIVER = "Valuation support"
+VAL_SPAN_W = {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, HZ_LABEL: 0.5}
+VAL_PATH_5 = {"1Y": to5(DRIVER_Y1[VAL_DRIVER][0]), "3Y": to5(DRIVER_Y23[VAL_DRIVER]),
+              "5Y": to5(DRIVER_PATH[VAL_DRIVER]["5Y"]), HZ_LABEL: to5(DRIVER_NEUTRAL_10)}
+VAL_BLEND_5 = round(sum(w * VAL_PATH_5[h] for h, w in VAL_SPAN_W.items()), 4)
+VAL_TILT_PER_PT = REGIONAL_TILT_PER_PT
+
 def build_fund(f):
     fee = f["fee_feeder"] + f["fee_target"]
     if f["fx_exposed"]:
@@ -4691,7 +4693,8 @@ def build_fund(f):
     share = f.get("equity_share", 1.0)
     reg_tilt = rnd((rs - NEUTRAL) * REGIONAL_TILT_PER_PT * share if share != 1.0
                    else (rs - NEUTRAL) * REGIONAL_TILT_PER_PT)
-    vol_tilt = rnd(VOL_RAMP * VOL_SENS[f["id"]]) + 0.0   # derived, not hand-set; + 0.0 drops a -0.0
+    vshare = 0.0 if f["cash_like"] else share
+    val_tilt = rnd((VAL_BLEND_5 - NEUTRAL) * VAL_TILT_PER_PT * vshare) + 0.0   # market valuation, years 1-5
     rates_tilt = rnd(t["rates"] * RATES_SCALE)     # derived from the Monetary driver
     energy_tilt = rnd(t["energy"] * ENERGY_SCALE)  # derived from Geopolitics & energy
     # The market whose 1/3/5-year trend the fund carries: its own by default, or another
@@ -4699,18 +4702,18 @@ def build_fund(f):
     mkt = f.get("trend_market", f["id"])
     trend_tilt = (rnd(TREND[mkt]["tilt"] * share) + 0.0 if mkt in TREND and share != 1.0
                   else TREND[mkt]["tilt"] if mkt in TREND else 0.0)   # 1/3/5-year market trend
-    tilt_total = rnd(reg_tilt + vol_tilt + rates_tilt + energy_tilt + trend_tilt)
+    tilt_total = rnd(reg_tilt + rates_tilt + energy_tilt + trend_tilt + val_tilt)
     macro_net = base_net + tilt_total
     # THE 10-YEAR VIEW ALONE (2026-10-26), Portfolio A's column: the same channels read
-    # at the 10-year horizon only - the regional score's 10-year anchor, the volatility
-    # curve's years 6-10, the drivers' 10-year readings and the trend's neutral anchor.
+    # at the 10-year horizon only - the regional score's 10-year anchor, the drivers' 10-year
+    # readings, the trend's neutral anchor and valuation's (neutral: the base prices it).
     rs10 = regional_score(f["region"], HZ_LABEL)
     reg10 = rnd((rs10 - NEUTRAL) * REGIONAL_TILT_PER_PT * share if share != 1.0
                 else (rs10 - NEUTRAL) * REGIONAL_TILT_PER_PT) + 0.0
-    vol10 = rnd(VOL_RAMP_10 * VOL_SENS[f["id"]]) + 0.0
+    val10 = rnd((VAL_PATH_5[HZ_LABEL] - NEUTRAL) * VAL_TILT_PER_PT * vshare) + 0.0
     rates10 = rnd(t["rates"] * RATES_SCALE_10) + 0.0
     energy10 = rnd(t["energy"] * ENERGY_SCALE_10) + 0.0
-    tilt10 = rnd(reg10 + vol10 + rates10 + energy10)
+    tilt10 = rnd(reg10 + rates10 + energy10 + val10)
     net10 = base_net + tilt10
 
     k = DD_K + f["dd_k_adj"]
@@ -4739,7 +4742,7 @@ def build_fund(f):
         "net_base": round(base_net, 2),
         "regional_score": round(rs, 2),
         "tilt_regional": round(reg_tilt, 2),
-        "tilt_vol": vol_tilt, "tilt_rates": rates_tilt, "tilt_energy": energy_tilt,
+        "tilt_rates": rates_tilt, "tilt_energy": energy_tilt, "tilt_valuation": val_tilt,
         "tilt_trend": trend_tilt,
         "equity_share": share, "trend_market": mkt if mkt in TREND else None,
         # the regional mix the score is read from (None for a single-region fund), so the
@@ -4751,7 +4754,7 @@ def build_fund(f):
         "tilt_total": round(tilt_total, 2),
         "net_macro": round(macro_net, 2),
         "regional_score_10y": round(rs10, 2), "tilt_regional_10y": reg10,
-        "tilt_vol_10y": vol10, "tilt_rates_10y": rates10, "tilt_energy_10y": energy10,
+        "tilt_rates_10y": rates10, "tilt_energy_10y": energy10, "tilt_valuation_10y": val10,
         "tilt_total_10y": round(tilt10, 2), "net_10y": round(net10, 2),
         "vol": round(sig, 2), "vol_beta": f["vol_beta"],
         "dd_k": round(k, 2), "dd_k_why": f["dd_k_why"],
@@ -5343,7 +5346,7 @@ TARGET_CHECKS = {
         f"Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the {_ft('M_GINF')} charge on "
         f"ATRAM's fact sheet matches no HSBC class found - IC {MACRO['ginf_target_ic']:.2f}% (estimated), BC GBP "
         f"{MACRO['ginf_target_bc']:.2f}%, ZD {MACRO['ginf_target_zd']:.2f}% - and the class held is not published. "
-        f"At {_GA('ginf_target_alt', 0):.2f}% its net CAGR on the 3/5/10-year view is {_GA('ginf_net_alt', 0):.2f}%; "
+        f"At {_GA('ginf_target_alt', 0):.2f}% its net CAGR on the 1/3/5/10-year view is {_GA('ginf_net_alt', 0):.2f}%; "
         f"A would hold {_GA('ginf_w_a_alt', 0)}% ({_GA('ginf_cagr_a_alt', 0):.2f}% on its 10-year view), B "
         f"{_GA('ginf_w_b_alt', 0)}% ({_GA('ginf_cagr_b_alt', 0):.2f}%) and D {_GA('ginf_w_d_alt', 0)}% "
         f"({_GA('ginf_cagr_d_alt', 0):.2f}%). "
@@ -5506,7 +5509,7 @@ DDG_PARTS_DATE = "2026-11-16"
 # 3-year view covering years 1-3. Years 2-3 are implied by that 3-year reading and the researched
 # year 1 (DRIVER_Y1), so the split refines the reading without counting year 1 twice.
 DDG_SPANS = {"1Y": (0.0, 1.0), "3Y": (1.0, 3.0), "5Y": (3.0, 5.0)}
-DDG_SPAN_LABEL = {"1Y": "Year 1", "3Y": "Years 2-3", "5Y": "Years 4-5", HZ_LABEL: "Years 6-10"}
+DDG_SPAN_LABEL = {"1Y": "Year 1", "3Y": "Years 2-3", "5Y": "Years 4-5"}
 DDG_VIEWS = tuple(DDG_SPANS)
 DDG_W = {h: round((b - a) / DDG_SPANS[DDG_VIEWS[-1]][1], 2) for h, (a, b) in DDG_SPANS.items()}
 DDG_RULE_WIDE_DATE = "2026-11-16"
@@ -5552,8 +5555,6 @@ def _trend_span(fid, a, b):
     return round(min(5.0, max(1.0, 3.0 + wm * t["z"][TREND_H[0][0]] - wr * TREND_REVERSAL * t["z_rev"])), 2)
 TREND_SPAN = {h: {f: _trend_span(f, a, b) for f in TREND} for h, (a, b) in DDG_SPANS.items()}
 
-GAUGE_Y1 = to5(sum(w * DRIVER_Y1[n][0] for n, w, _, _ in DRIVERS))      # all seven: the Budget tab's driver table
-GAUGE_Y23 = to5(sum(w * DRIVER_Y23[n] for n, w, _, _ in DRIVERS))
 _MACW = sum(w for n, w, _, _ in DRIVERS if n != DDG_VAL)
 DDG_MACRO_W = {n: w / _MACW for n, w, _, _ in DRIVERS if n != DDG_VAL}
 def _macro_part(v):
@@ -5568,9 +5569,10 @@ DDG_PARTS = {
            "valuation": to5(_DV["3Y"][DDG_VAL]), "vol_forward": VOL_FWD_Y23},
     "5Y": {"macro": _macro_part(_DV["5Y"]), "trend": _ddg_trend("5Y"), "valuation": to5(_DV["5Y"][DDG_VAL]),
            "vol_forward": _VOL_FWD["5Y"]},
-    HZ_LABEL: {"macro": _macro_part(_DV[HZ_LABEL]), "trend": _ddg_trend(HZ_LABEL),
-               "valuation": to5(_DV[HZ_LABEL][DDG_VAL]), "vol_forward": _VOL_FWD[HZ_LABEL]},
 }
+# 1, 3 AND 5 YEARS ONLY (owner, 2026-11-16: "...based on deep researchs and analysis of 1, 3, and
+# 5yrs"): the 10-year anchor, shown beside the three weighted views from v75 to v106 and neutral by
+# construction (3.00 on every part), is dropped from the gauge. It still sets Portfolio A's view.
 for _h, _p in DDG_PARTS.items():
     _p["years"] = DDG_SPAN_LABEL[_h]
 # EXACT HALF-UP (v90), as every printed CAGR is from v88: the mean of two 2dp parts ends in
@@ -5621,7 +5623,7 @@ PIN_TIE_PP = 0.0
 
 # PORTFOLIO C, RETIRED (owner, 2026-11-12, v101: "Remove and clean up the portfolio C"). It was the
 # owner's pinned variant - Nasdaq Equity Income held at exactly 50%, the one exemption from the 35%
-# cap, the rest chosen by the one rule on the 3/5/10-year view - from 2026-09-25 to v75 and again
+# cap, the rest chosen by the one rule on the 1/3/5/10-year view - from 2026-09-25 to v75 and again
 # from v82 (restored 2026-10-29) to v100. Its own pass over the pinned set is gone with it; A, B and
 # D read nothing of it, so no other pick moves. D, the owner's Nasdaq-led portfolio, keeps its own
 # rule (Nasdaq Equity Income the largest holding of two to five funds). A check holds C gone.
@@ -5636,11 +5638,14 @@ PIN_TIE_PP = 0.0
 # and six before), under the review's limits: at most 5 funds, 35% in any one, at
 # least 5% peso cash. What differs is the COLUMN the rule reads:
 #   A  net_10y    the four analyses read at the 10-year horizon alone (2026-10-26; the
-#                 long-run assumptions with no view, net_base, until v67)
+#                 long-run assumptions with no view, net_base, until v67); from v107
+#                 (owner, 2026-11-16) the four are the regional ranking, macro
+#                 sentiment, market trend and market valuation
 #   B  net_macro  the four analyses at every horizon - the regional ranking, the
-#                 market trend and the drivers' rates and energy tilts at 3, 5 and 10
-#                 years (5 and 10 in v70; 1, 3, 5 and 10 in v68-v69), and the
-#                 volatility curve over the same years
+#                 market trend and the drivers' rates and energy tilts over years
+#                 1-3, 4-5 and 6-10, and the valuation path at 1, 3, 5 and 10 years
+#                 weighted 10/20/20/50 by the years each covers (v107; the volatility
+#                 curve tilted it until v106)
 # (C, B with Nasdaq Equity Income held at 50%, was retired in v76; D, C over four funds,
 # in v74.)
 # Until v56 A and B were FIXED weights from the review; the engine now chooses both
@@ -5661,7 +5666,7 @@ UNIV_MIN_CASH = MACRO["pd_review_min_cash"] / 100
 # counterfactual here is the SAME rule on an alternative return column, inside the
 # SAME drawdown budget (DD_CAP), so the only thing that differs is the input named.
 for _f in F + F_ADD:
-    _f["net_novol"] = round(_f["net_macro"] - _f["tilt_vol"], 2)       # flat VIX curve
+    _f["net_noval"] = round(_f["net_macro"] - _f["tilt_valuation"], 2)  # no valuation channel (v107)
     _f["net_neutral"] = round(_f["net_macro"] - _f["tilt_rates"]
                               - _f["tilt_energy"], 2)                  # drags at neutral
     _f["net_notrend"] = round(_f["net_macro"] - _f["tilt_trend"], 2)   # no trend channel
@@ -5689,7 +5694,7 @@ for _f in F + F_ADD:
     _f["net_asia_norerate"] = round(_f["net_macro"] - MACRO["asia_rerating"] * _f["asia_rerating_share"], 2)
     _f["net_asia_fee_hi"] = round(_f["net_macro"] - (ASIA_FEE_STRESS if _aseq else 0.0), 2)
 # The alternative columns the universe what-ifs are run on.
-_WI_COL = {"vol_flat": "net_novol", "drags_neutral": "net_neutral",
+_WI_COL = {"valuation_off": "net_noval", "drags_neutral": "net_neutral",
            "asia_no_rerating": "net_asia_norerate", "asia_fee_hi": "net_asia_fee_hi",
            "trend_off": "net_notrend", "trend_alt": "net_trend_alt"}
 # EACH PORTFOLIO ON ITS OWN HORIZON (owner, 2026-10-28: "Update portfolio A to 10yrs
@@ -5698,7 +5703,7 @@ _WI_COL = {"vol_flat": "net_novol", "drags_neutral": "net_neutral",
 # That view carries no rates, energy or trend tilt and the curve's years 6-10, so four
 # of the six leave A where it is by construction - which is the finding, not a gap.
 for _f in F + F_ADD:
-    _f["net10_novol"] = round(_f["net_10y"] - _f["tilt_vol_10y"], 2)
+    _f["net10_noval"] = round(_f["net_10y"] - _f["tilt_valuation_10y"], 2)
     _f["net10_neutral"] = round(_f["net_10y"] - _f["tilt_rates_10y"] - _f["tilt_energy_10y"], 2)
     _f["net10_notrend"] = _f["net_10y"]          # the 10-year trend anchor is neutral
     _f["net10_trend_alt"] = _f["net_10y"]
@@ -5860,7 +5865,7 @@ for _seq, (_idx, _u) in enumerate(univ_mixes()):
 # fund with 3, 5, 10yrs horizon and with in the drawdown band"). Asked which limits it keeps, the
 # owner chose "No caps, no cash floor": Nasdaq Equity Income and exactly two other funds of the
 # eleven, each at least 5%, on the 5% grid, with no single-fund cap and no cash floor. Otherwise
-# the one rule: the highest net CAGR on the 3/5/10-year view whose drawdown is inside the band's
+# the one rule: the highest net CAGR on the 1/3/5/10-year view whose drawdown is inside the band's
 # budget, as computed and as shown; a shallower drawdown decides only exact ties. Its own pass,
 # at the live budget, at every gauge step and on every what-if column; A, B and C read nothing
 # of it. (The D of v66-v73, the since-retired C's set over four funds, was retired on 27 Oct and is
@@ -5873,7 +5878,7 @@ for _seq, (_idx, _u) in enumerate(univ_mixes()):
 # other funds, each at least 5%, on the 5% grid; still no single-fund cap and no cash floor (the
 # owner's choice of 7 Nov), and at most five funds, the review's own limit, which the owner has not
 # waived. The one rule then picks over the whole set, so the best number of funds is the number in
-# the best mix: the highest net CAGR on the 3/5/10-year view inside the band's budget, a shallower
+# the best mix: the highest net CAGR on the 1/3/5/10-year view inside the band's budget, a shallower
 # drawdown deciding exact ties - and, should two counts still tie, the enumeration order (fewer funds
 # first) does. Each count's own best is published beside it, so the reader sees what one fund more
 # or fewer would return. Six and seven funds, outside the limit, were checked when the rule was set
@@ -5919,7 +5924,6 @@ for _n in range(D_MIN_FUNDS, D_MAX_FUNDS + 1):
                        "n_feasible": _PK[("dn", _n)].n, "n_total": UNIV_N_D_BY[_n]})
 PA_BAND_N, PB_BAND_N, PD_BAND_N = len(PA_BAND), len(PB_BAND), len(PD_BAND)
 UNIV_N_FEAS = {x: _PK[x].n for x in "abd"}
-UNIV_BEST = {x: _PK[x].best for x in "abd"}
 PA, PA_BASE = summarise(PA_W, "net_macro", UNIV), summarise(PA_W, "net_base", UNIV)
 # Each on the 10-year view alone too: A's own column, and the second lens for B.
 PA_10, PB_10 = (summarise(w, "net_10y", UNIV) for w in (PA_W, PB_W))
@@ -6334,7 +6338,7 @@ SOURCES = [
      "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260723~29f24d99bc.en.html"),
     ("BSP Monetary Policy Report", "February 2026 economic outlook and inflation path",
      "https://www.bsp.gov.ph/Price%20Stability/MonetaryPolicyReport/FullReport-February2026.pdf"),
-    ("CNBC", "VIX hits 14.18 on 17 August, reported at the time as the 2026 low. It was, until 4 September, when the index slid to 13.80 before the payrolls print. The volatility tilt is measured from the long-run level, not from either low",
+    ("CNBC", "VIX hits 14.18 on 17 August, reported at the time as the 2026 low. It was, until 4 September, when the index slid to 13.80 before the payrolls print. The curve is read against the long-run level, not either low",
      "https://www.cnbc.com/2026/08/17/stock-market-volatility-vix-wall-street.html"),
     ("Reuters (via KFGO)", "ECB to raise a second time on 10 Sep then stop - all 65 economists polled 31 Aug-3 Sep forecast 2.50%, 91% see it held to year end",
      "https://kfgo.com/2026/09/03/ecb-to-raise-rates-a-second-time-in-september-but-then-done-say-economists-reuters-poll/"),
@@ -7773,14 +7777,17 @@ def payload():
         "sp_vol_lt": SP_VOL_LT,
         "regions": {k: {**v, "summary": SUMMARY[k]} for k, v in REGIONS.items()},
         "hz_weights": HZ_W,
+        # v107: the 3-year view's 30% is years 1-3, read as year 1 (10%) and years 2-3 (20%)
+        "hz_split": {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, HZ_LABEL: 0.5},
+        "val_channel": {"driver": VAL_DRIVER, "w": VAL_SPAN_W, "path_5": VAL_PATH_5, "blend_5": VAL_BLEND_5,
+                        "per_pt": VAL_TILT_PER_PT, "date": "2026-11-16"},
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
                         "longrun": MACRO["vix_longrun"], "ramp_ref": VOL_RAMP_REF,
                         "quote_date": VIX_QUOTE_DATE,
                         "latest": MACRO["vix_latest"],
                         "latest_date": MACRO["vix_latest_date"],
                         "latest_gap": round(MACRO["vix_latest"] - MACRO["vix_spot"], 2),
-                        "ramp": round(VOL_RAMP, 2), "sens": VOL_SENS,
-                        "ramp_10y": VOL_RAMP_10, "basis": "forward",
+                        "ramp": round(VOL_RAMP, 2), "basis": "forward",
                         "kappa": KAPPA, "vrp": MACRO["variance_risk_premium"],
                         # How far the latest close has moved from the curve's own
                         # spot. Past 20% the strip is flagged on the page as
@@ -7810,7 +7817,7 @@ def payload():
         "drivers": [{"name": n, "weight": w,
                      "score": to5(s), "score_10": s, "note": t, "summary": SUMMARY[n],
                      "prev_score_10": DRIVER_PREV[1][n], "prev_review": DRIVER_PREV[0],
-                     # the 3/5/10-year path on the research scale, its reasoning, and
+                     # the 1/3/5/10-year path on the research scale, its reasoning, and
                      # its ten-year average - the reading the rates and energy tilts take
                      "path": {h: DRIVER_PATH[n][h] for h in HZ_KEYS},
                      "path_5": {h: to5(DRIVER_PATH[n][h]) for h in HZ_KEYS},
@@ -7908,7 +7915,7 @@ def payload():
                         "band_n": PA_BAND_N, "n_feasible": UNIV_N_FEAS["a"],
                         "scenarios": run_scenarios(PA_W, "net_10y", UNIV),   # its own horizon (v80)
                         "dd_cap": round(DD_CAP, 2),
-                        # inside the budget on the 3/5/10-year view AS COMPUTED AND AS SHOWN
+                        # inside the budget on the 1/3/5/10-year view AS COMPUTED AND AS SHOWN
                         # (v77: the printed figure alone called A inside at -25.0% while its true
                         # drawdown there was 25.0035%)
                         "in_budget": abs(PA["maxdd"]) <= DD_CAP + 1e-9
@@ -7928,7 +7935,7 @@ def payload():
                      "macro_w": {n: round(w, 6) for n, w in DDG_MACRO_W.items()},
                      "valuation": {"name": DDG_VAL, "now": next(s_ for n_, _, s_, _ in DRIVERS if n_ == DDG_VAL),
                                    "y1": DRIVER_Y1[DDG_VAL][0], "y23": DRIVER_Y23[DDG_VAL],
-                                   "y45": DRIVER_PATH[DDG_VAL]["5Y"], "y10": DRIVER_NEUTRAL_10,
+                                   "y45": DRIVER_PATH[DDG_VAL]["5Y"],
                                    "why_y1": DRIVER_Y1[DDG_VAL][1], "why_path": DRIVER_PATH[DDG_VAL]["why"],
                                    "cape": MACRO["cape"], "cape_date": MACRO["cape_date"],
                                    "spx_fwd_pe": MACRO["spx_fwd_pe"], "spx_fwd_pe_date": MACRO["spx_fwd_pe_date"],
@@ -7969,7 +7976,7 @@ def payload():
                                      and abs(port_dd(PB_W, "net_macro", UNIV)) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pd_review_")}},
         # PORTFOLIO D (v96, owner 2026-11-07; re-set v99, 2026-11-12): Nasdaq Equity Income the largest
-        # of two to five funds, no cap and no cash floor, by the same rule on the 3/5/10-year view
+        # of two to five funds, no cap and no cash floor, by the same rule on the 1/3/5/10-year view
         # inside the budget. (This comment said "exactly two other funds" from v99 to v100.)
         "portfolio_d": {"weights": [round(x * 100) for x in PD_W], "ids": UNIV_IDS,
                         "macro": PD, "base": PD_BASE, "ten": PD_10, "column": "net_macro",
@@ -7996,8 +8003,7 @@ def report():
     for v in p["vol_ts"]:
         A(f"    {v['label']:<5}{v['implied']:>9.2f}%{v['forward']:>9.2f}%{v['realised']:>9.2f}%"
           f"{v['move_1sd']:>10.2f}%{v['move_2sd']:>10.2f}%")
-    A(f"    forward-vol blend {p['vol_channel']['blend']}  ramp {p['vol_channel']['ramp']:+.2f}"
-      f"  (10-year view: years 6-10 ramp {p['vol_channel']['ramp_10y']:+.2f})")
+    A(f"    forward-vol blend {p['vol_channel']['blend']}  (context and the drawdown model; no return tilt from v107)")
     A("\n[2] REGIONAL MACRO-DRIVER RANKING (1-5, neutral 3.0)")
     A(f"    {'region':<14}" + "".join(f"{h:>6}" for h in HZ_KEYS) + f"{'blend':>8}")
     for k, v in sorted(p["regions"].items(), key=lambda t: -t[1]["blend"]):
@@ -8046,8 +8052,8 @@ def report():
       f"budget gauge {DDG_VALUE} -> {DDG_BAND[3]}, recommended {DDG_RECOMMENDED:.0f}%; "
       f"rule: best CAGR in budget, then lowest DD within {p['universe']['tie_pp']:.2f}pp; "
       f"{p['universe']['n_total']} mixes under the limits")
-    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the 10-year view"), ("PORTFOLIO B", "portfolio_b", "the 3/5/10-year view"),
-                           ("PORTFOLIO D", "portfolio_d", "the 3/5/10-year view, Nasdaq Equity Income the largest of two to five funds")):
+    for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the 10-year view"), ("PORTFOLIO B", "portfolio_b", "the 1/3/5/10-year view"),
+                           ("PORTFOLIO D", "portfolio_d", "the 1/3/5/10-year view, Nasdaq Equity Income the largest of two to five funds")):
         pq = p[key]
         A(f"    {lab} weights {pq['weights']}   (the rule on {rule}; {pq['n_feasible']} feasible, {pq['band_n']} in band)")
         if "ten" in pq:
@@ -9218,7 +9224,7 @@ def report():
                    _live["b"]["weights"] == p["portfolio_b"]["weights"]
                    and _live["a"]["cagr"] == p["portfolio_a"]["ten"]["cagr"]))
     checks.append(("each what-if column differs from the live one by exactly the tilt it removes",
-                   all(abs(f2["net_macro"] - f2["net_novol"] - f2["tilt_vol"]) < 0.0051
+                   all(abs(f2["net_macro"] - f2["net_noval"] - f2["tilt_valuation"]) < 0.0051
                        and abs(f2["net_macro"] - f2["net_neutral"] - f2["tilt_rates"]
                                - f2["tilt_energy"]) < 0.0051
                    and abs(f2["net_macro"] - f2["net_notrend"] - f2["tilt_trend"]) < 0.0051
@@ -9301,12 +9307,20 @@ def report():
                 and abs(1_000_000 * (1 + m["maxdd"] / 100)
                         - m["worst_1m_from_open"]) < 1.0)
     vc = p["vol_channel"]
-    checks.append(("the volatility tilt's reference is the long-run level every base assumes",
+    checks.append(("the curve's forward-vol blend (context and the fund volatilities; no return tilt) is read against the long-run level",
                    vc["ramp_ref"] == "long-run"
                    and abs(vc["blend"] - vc["longrun"] - vc["ramp"]) < 0.011))
-    checks.append(("every volatility tilt is derived from the ramp, not hand-set",
-                   all(abs(f2["tilt_vol"] - rnd(vc["ramp"] * vc["sens"][f2["id"]])) < 1e-9
-                       for f2 in p["funds"])))
+    # v107: no volatility tilt; the valuation tilt is the valuation path over years 1, 2-3, 4-5 and
+    # 6-10 at 10/20/20/50, at the regional rate per point, on the equity share, none for cash.
+    _vc = p["val_channel"]; _dv = next(d for d in p["drivers"] if d["name"] == VAL_DRIVER)
+    _vb = round(0.1 * to5(DRIVER_Y1[VAL_DRIVER][0]) + 0.2 * to5(DRIVER_Y23[VAL_DRIVER])
+                + 0.2 * to5(_dv["path"]["5Y"]) + 0.5 * to5(_dv["path"][HZ_LABEL]), 4)
+    checks.append(("every fund's valuation tilt reproduces from the valuation path (years 1, 2-3, 4-5, 6-10 at 10/20/20/50), none for cash and none at 10 years; no volatility tilt",
+                   _vc["blend_5"] == _vb and _vc["w"] == {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, HZ_LABEL: 0.5}
+                   and all(f2["tilt_valuation"] == rnd((_vb - NEUTRAL) * _vc["per_pt"]
+                                                       * (0.0 if f2["id"] == "ATRPHMM" else f2["equity_share"])) + 0.0
+                           and f2["tilt_valuation_10y"] == 0.0 and "tilt_vol" not in f2 and "tilt_vol_10y" not in f2
+                           for f2 in p["funds"] + p["portfolio_b"]["funds"])))
     # THE DRIVERS REACH THE RETURNS. The check that was missing for three weeks
     # is not "are the tilts plausible" - constant tilts are perfectly plausible -
     # but "does a driver score MOVE them". Each tilt must reproduce from its
@@ -9348,13 +9362,10 @@ def report():
                    all(abs(f2["regional_score_10y"] - round(_rs10(f2), 2)) < 1e-9
                        and f2["tilt_regional_10y"] == rnd((_rs10(f2) - NEUTRAL) * REGIONAL_TILT_PER_PT
                                                           * (f2["equity_share"] if f2["equity_share"] != 1.0 else 1.0)) + 0.0
-                       and f2["tilt_vol_10y"] == rnd(vc["ramp_10y"] * vc["sens"][f2["id"]]) + 0.0
                        and f2["tilt_rates_10y"] == 0.0 and f2["tilt_energy_10y"] == 0.0
-                       and f2["tilt_total_10y"] == rnd(f2["tilt_regional_10y"] + f2["tilt_vol_10y"])
+                       and f2["tilt_total_10y"] == rnd(f2["tilt_regional_10y"] + f2["tilt_valuation_10y"])
                        and abs(f2["net_10y"] - round(f2["net_base"] + f2["tilt_total_10y"], 2)) < 0.006
                        for f2 in _all_f)))
-    checks.append(("the 10-year view's vol ramp is the curve's years 6-10 against the long run",
-                   vc["ramp_10y"] == round(p["vol_ts"][-1]["forward"] - vc["longrun"], 2)))
     # THE FORWARD VOLS reproduce from the printed implied column, segment by segment,
     # and the blend the vol channel reads is their horizon-weighted average.
     _fw_ok, _pv = True, (0.0, 0.0)
@@ -9399,8 +9410,8 @@ def report():
                    p["hz_weights"] == {"3Y": 0.3, "5Y": 0.2, HZ_LABEL: 0.5}
                    and abs(sum(p["hz_weights"].values()) - 1) < 1e-9))
     checks.append(("every fund's tilt column adds up to its published total",
-                   all(rnd(f2["tilt_regional"] + f2["tilt_vol"] + f2["tilt_rates"]
-                             + f2["tilt_energy"] + f2["tilt_trend"]) == f2["tilt_total"]
+                   all(rnd(f2["tilt_regional"] + f2["tilt_rates"] + f2["tilt_energy"]
+                             + f2["tilt_trend"] + f2["tilt_valuation"]) == f2["tilt_total"]
                        for f2 in p["funds"])))
     # ---- the market-trend channel (added 2026-10-07) ----
     _tr = p["trend"]
@@ -9459,9 +9470,6 @@ def report():
                    and abs(FUNDS[3]["vol_beta"] - TREND_INPUTS["ATRGTEC"]["beta"]) < 1e-12
                    and abs(ADD_FUNDS[_ADD_IX["ATRGHCP"]]["vol_beta"] - TREND_INPUTS["ATRGHCP"]["beta"]) < 1e-12
                    and abs(ADD_FUNDS[_ADD_IX["M_GEO"]]["vol_beta"] - TREND_INPUTS["M_GEO"]["beta"] * 1.15) < 1e-12))
-    checks.append(("the covered-call sleeve is the one most paid when the curve sits above long-run",
-                   max(p["funds"], key=lambda f2: f2["tilt_vol"])["id"] == "ATRQIAP"
-                   or vc["ramp"] <= 0))
     # EVERY GROSS RETURN REPRODUCES FROM ITS NAMED COMPONENTS, and every component
     # it uses is quoted in its own note. The typed-7.2 defect is exactly the case
     # this catches: a number that its documented recipe does not produce.
@@ -9546,7 +9554,7 @@ def report():
                        and _dg["parts"][h]["valuation"] == to5(_vd["path"][h])
                        and _dg["parts"][h]["trend"] == round(sum(v["score"][h] for v in p["trend"]["sleeves"].values())
                                                              / len(p["trend"]["sleeves"]), 2)
-                       for h in ("5Y", HZ_LABEL))
+                       for h in ("5Y",))
                    and all(_dg["parts"][h]["reading"] == _hu2(sum(Decimal(repr(_dg["parts"][h][k])) for k in _dg["reading_of"])
                                                               / len(_dg["reading_of"]))
                            for h in _dg["parts"])
@@ -9558,16 +9566,16 @@ def report():
                    and all(set(_dg["parts"][h]) == {"macro", "trend", "valuation", "reading", "vol_forward", "years"}
                            for h in _dg["parts"])
                    and all(_dg["parts"][h]["vol_forward"] == next(v["forward"] for v in p["vol_ts"] if v["label"] == h)
-                           for h in ("5Y", HZ_LABEL))
+                           for h in ("5Y",))
                    and _dg["parts"]["1Y"]["vol_forward"] == round(horizon_vol(1.0), 2)
                    and "vol_step" not in _dg
                    and any(g["name"] == "vix" and g["applies_to"] == "raise" for g in _dg["guards"])))
-    checks.append(("the budget gauge reads year 1, years 2-3 and years 4-5 by their share of the first five years (20/40/40), the 10-year anchor shown but not weighted",
+    checks.append(("the budget gauge reads year 1, years 2-3 and years 4-5 only, by their share of the first five years (20/40/40)",
                    _dg["views"] == ["1Y", "3Y", "5Y"] and _dg["w"] == {"1Y": 0.2, "3Y": 0.4, "5Y": 0.4}
                    and _dg["spans"] == {"1Y": [0.0, 1.0], "3Y": [1.0, 3.0], "5Y": [3.0, 5.0]}
                    and _dg["value"] == _hu2(sum(Decimal(repr(_dg["parts"][h]["reading"])) * Decimal(repr(_dg["w"][h]))
                                                 for h in _dg["views"]))
-                   and 1.0 <= _dg["value"] <= 5.0 and HZ_LABEL in _dg["parts"]))
+                   and 1.0 <= _dg["value"] <= 5.0 and list(_dg["parts"]) == ["1Y", "3Y", "5Y"]))
     # THE 1-YEAR VIEW (v103). Years 2-3 are implied, so year 1 and years 2-3 average back to the
     # 3-year reading the portfolios read; every path moves from the reading now toward neutral, year by
     # year, never past it; the macro parts are the weighted drivers on 1-5; the trend parts are each
@@ -9590,7 +9598,7 @@ def report():
                    and _dg["parts"]["5Y"]["macro"] == to5(sum(r["weight"] * r["y45"] for r in _ddn) / _w6)))
     checks.append(("the gauge's valuation parts are the valuation driver's own path, year by year, on 1-5, and the Budget tab's record of it is that path",
                    _dg["parts"]["1Y"]["valuation"] == to5(_ddv["y1"]) and _dg["parts"]["3Y"]["valuation"] == to5(_ddv["y23"])
-                   and _dg["parts"]["5Y"]["valuation"] == to5(_ddv["y45"]) and _dg["parts"][HZ_LABEL]["valuation"] == 3.0
+                   and _dg["parts"]["5Y"]["valuation"] == to5(_ddv["y45"])
                    and (_dg["valuation"]["now"], _dg["valuation"]["y1"], _dg["valuation"]["y23"], _dg["valuation"]["y45"])
                        == (_ddv["now"], _ddv["y1"], _ddv["y23"], _ddv["y45"])))
     checks.append(("the gauge's trend parts average each sleeve's span score, and years 4-5 are the 5-year trend",
@@ -9656,17 +9664,16 @@ def report():
                    and all(abs(_alt[c][x]["maxdd"]) <= float(c) + 1e-9 for c in _alt for x in "abd")
                    and all(set(_alt[c]) == {"a", "b", "d"} for c in _alt)))
     # EACH ON ITS OWN HORIZON (v80): the step in force reports A on its 10-year view and B
-    # on the 3/5/10-year view, and so do A's what-ifs - and on the 10-year view the four
+    # on the 1/3/5/10-year view, and so do A's what-ifs - and on the 10-year view the four
     # near-horizon what-ifs (volatility, drags, trend twice) cannot move A at all.
     _wiu = p["universe"]["what_if"]
-    checks.append(("A and B are reported on their own horizons: the step in force and A's what-ifs on the 10-year view, B's on 3/5/10",
+    checks.append(("A and B are reported on their own horizons: the step in force and A's what-ifs on the 10-year view, B's on 1/3/5/10",
                    _alt[f"{DD_CAP:.0f}"]["a"]["cagr"] == p["portfolio_a"]["ten"]["cagr"]
                    and _alt[f"{DD_CAP:.0f}"]["a"]["maxdd"] == p["portfolio_a"]["ten"]["maxdd"]
                    and _alt[f"{DD_CAP:.0f}"]["b"]["cagr"] == p["portfolio_b"]["macro"]["cagr"]
                    and _alt[f"{DD_CAP:.0f}"]["d"]["cagr"] == p["portfolio_d"]["macro"]["cagr"]
                    and all(_wiu[k]["a"]["cagr"] == p["portfolio_a"]["ten"]["cagr"]
-                           for k in ("vol_flat", "drags_neutral", "trend_off", "trend_alt")
-                           if all(abs(f2["tilt_vol_10y"]) < 1e-9 for f2 in p["funds"] + p["portfolio_b"]["funds"]) or k != "vol_flat")))
+                           for k in ("valuation_off", "drags_neutral", "trend_off", "trend_alt"))))
     checks.append(("a looser step never lowers the best return the rule can reach",
                    all(_alt[a][x]["best"] <= _alt[b][x]["best"] + 1e-9
                        for x in "abd" for a, b in zip(sorted(_alt, key=float), sorted(_alt, key=float)[1:]))))
@@ -9742,11 +9749,11 @@ def report():
                 and not any(abs(m[1]) < abs(mine["maxdd"]) - 1e-9 for m in band)
                 and any(_full_units(m[4], m[5]) == [v // 5 for v in w] and m[0] == mine["cagr"]
                         and m[1] == mine["maxdd"] for m in band))
-    checks.append(("A and B are each the rule's pick on their own column: A the 10-year view, B the 3/5/10-year blend",
+    checks.append(("A and B are each the rule's pick on their own column: A the 10-year view, B the 1/3/5/10-year blend",
                    _rule_ok("a", _aw) and _rule_ok("b", _bw)))
     # PORTFOLIO D (owner, 2026-11-07; the D of v66-v73, retired on 27 Oct, is unrelated). Nasdaq
     # Equity Income and exactly two other funds, each at least 5%, no cap and no cash floor (the
-    # owner's choice when asked); the same rule on the 3/5/10-year view inside the same budget,
+    # owner's choice when asked); the same rule on the 1/3/5/10-year view inside the same budget,
     # over its own set, which is every such mix and nothing else.
     _pd = p["portfolio_d"]; _dw = _pd["weights"]; _iq = UNIV_IDS.index(_pd["fund"])
     _dset = list(d_mixes())
@@ -9782,7 +9789,7 @@ def report():
                    and sum(b_["n_feasible"] for b_ in _bc) == _pd["n_feasible"]
                    and _bc_best["n"] == _pd["n_funds"] and _bc_best["weights"] == _dw
                    and _bc_best["cagr"] == _pd["macro"]["cagr"]))
-    checks.append(("Portfolio D is the highest 3/5/10-year net CAGR the budget allows over its set, inside it on both routes",
+    checks.append(("Portfolio D is the highest 1/3/5/10-year net CAGR the budget allows over its set, inside it on both routes",
                    _PK["d"].best == _pd["macro"]["cagr"] and _rule_ok("d", _dw)
                    and _pd["in_budget"] and abs(_pd["macro"]["maxdd"]) <= DD_CAP + 1e-9
                    and abs(port_dd(PD_W, "net_macro", UNIV)) <= DD_CAP + 1e-9))

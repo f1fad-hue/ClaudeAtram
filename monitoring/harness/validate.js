@@ -48,7 +48,9 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck(`[${width}px] no JavaScript errors after opening every tab`, errs.length === 0, errs.slice(0, 3).join(" | "));
     ck(`[${width}px] no horizontal scroll`, !info.hscroll);
     if (width !== 412) { await p.close(); continue; }
-    ck("six tabs, six panels, the tab bar fixed to the bottom", tabs.length === 6 && info.panels === 6 && info.nav, `${tabs}`);
+    // v107 (owner, 16 Nov): the Volatility tab retired - five tabs, its drawdown model on the Portfolios tab
+    ck("five tabs, five panels, no Volatility tab, the tab bar fixed to the bottom",
+      tabs.length === 5 && info.panels === 5 && info.nav && !tabs.includes("vol"), `${tabs}`);
     ck("viewport meta present" + (live ? "" : " (required only on the live copy)"), info.viewport || !live);
     ck("no NaN, undefined, Invalid Date or malformed sign in any panel", info.bad.length === 0, `${info.bad}`);
     ck("no placeholder dash left in a figure or lede", info.dashes.length === 0, `${info.dashes}`);
@@ -65,10 +67,10 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("the Report's gauge is the payload's", info.gaugenow === D.gauge.toFixed(2), `${info.gaugenow} vs ${D.gauge}`);
     const pc = x => x.toFixed(2) + "%";
     const dmix = D.portfolio_d.weights.map((w, j) => [w, j]).filter(x => x[0]).map(([w, j]) => `${w}% ${D.portfolio_b.shorts[j]}`);
-    ck("Portfolio D's section draws its donut and states its mix, 3/5/10-year CAGR and drawdown",
+    ck("Portfolio D's section draws its donut and states its mix, 1/3/5/10-year CAGR and drawdown",
       info.donutD && dmix.every(x => info.dlede.includes(x)) && info.dlede.includes(pc(D.portfolio_d.macro.cagr))
       && info.dlede.includes("\u2212" + Math.abs(D.portfolio_d.macro.maxdd).toFixed(1) + "%"), info.dlede.slice(0, 200));
-    ck("the Portfolios lede states A's 10-year, B's and D's 3/5/10-year CAGR",
+    ck("the Portfolios lede states A's 10-year, B's and D's 1/3/5/10-year CAGR",
       [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
       info.lede.slice(0, 160));
     await p.close();

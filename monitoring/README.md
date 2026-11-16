@@ -32,13 +32,19 @@ evidence or the reading now moves far enough to change them.
 Drivers and regions are researched on 1–10; both the headline gauge and the regional
 rankings are reported on 1–5. The horizon weights are each view's share of the ten
 years (30 / 20 / 50) and are not to be tuned. Every portfolio is built from the
-same inputs — the drivers' rates and energy tilts (read on each driver's ten-year
-path), the **volatility gap** (the curve's FORWARD vol over each horizon's years,
-weighted, minus the LONG-RUN 19.5 every base return already assumes), the regional
-rankings and the **market trend**: each equity sleeve's market over the past year
+same four analyses (owner, 16 Nov 2026, v107) — the regional rankings, macro sentiment
+(the drivers' rates and energy tilts, read on each driver's ten-year path), **market
+valuation** (the valuation driver's path at year 1, years 2-3, years 4-5 and years 6-10,
+weighted 10 / 20 / 20 / 50 by the years each covers, `VAL_BLEND_5`, at the regional rate per
+point on each fund's equity share; neutral at 10, where the long-run base prices it) and the
+**market trend**: each equity sleeve's market over the past year
 (momentum, for year 1 ahead) and the past 3 and 5 years annualised (reversal, for years
 2-5), each view taking them by the share of its years inside each window, z-scored against its own long-run drift and volatility, with the 10Y
-score held neutral. A reads them at 10 years alone; B at 3, 5 and 10. Refresh `TREND_INPUTS` (quarters and
+score held neutral. A reads them at 10 years alone; B and D at 1, 3, 5 and 10 (the ranking,
+macro and trend read year 1 inside years 1-3). The volatility curve tilts no forecast from
+v107 (the `VOL_SENS` tilt and the Volatility tab are retired): its ten-year level sets each
+fund's volatility and so its expected drawdown (Portfolios tab, "How each drawdown is
+estimated"), and the VIX guards a raise of the budget. Refresh `TREND_INPUTS` (quarters and
 `trail_ann`) and `TREND_END` at each month-end; a check fails once the window is a
 month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
@@ -202,6 +208,18 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+168. TWO PICKS THAT AGREE NEED THEIR OWN SENTENCE. When the valuation tilt moved B onto A's mix, every
+   sentence written for a gap between them still ran: "moving from A to B ... cutting expected maximum
+   drawdown from −24.9% to −24.9%", "the same return, with less risk", "0.0pp more drawdown". The
+   numbers were right and the sentences false. Each A-against-B sentence now tests for the same weights
+   first and says so; read the Portfolios and Report tabs whenever a pick lands on another's mix.
+167. A RETIRED TAB HANDS ON ITS INPUTS' OTHER JOBS. Removing the Volatility tab could not remove the
+   volatility curve: it still sets every fund's volatility, so every drawdown, the budget and the picks.
+   Only its tilt on the forecasts was retired (it moved them -0.02 to +0.01pp); the drawdown model
+   moved to the Portfolios tab, the validator now requires five tabs and no Volatility tab, and a
+   mutant puts `tilt_vol` back on a fund. A scan for classes and ids nothing uses found four rules
+   the tab left (legend, lgi, stat, stats) and six older ones; the engine's dead names (two gauge
+   readings v106 replaced, an unused best-mix table) went too.
 166. A PART PROMOTED OUT OF A COMPOSITE LEAVES THE COMPOSITE. When valuation became the gauge's own part, it
    was already a tenth of the macro drivers; reading both would have counted it twice. The macro part now
    re-weights the other six to one, the Macro tab's headline keeps all seven, and the engine and the audit
@@ -439,7 +457,7 @@ truth; the artifact is a rendering of it.
    Wherever a source prints points, carry them and chain on them to the cent; the S&P, the Nasdaq
    and the Nikkei now do, as the KOSPI, the PSEi and the Dow already did.
 110. A FLAG IS A CLAIM, AND IT IS COMPUTED THE WAY THE CLAIM IS. A's `in_budget` read the printed
-   drawdown alone. Under the maximum-growth rule A prints −25.0% on the 3/5/10-year view against a
+   drawdown alone. Under the maximum-growth rule A prints −25.0% on the 1/3/5/10-year view against a
    25% budget and sits 0.0035pp past it before rounding, so the flag said inside while the search
    (raw AND printed, runbook 27) correctly treated A as outside - which is why B, picked on that
    view, returns 0.01pp less than A there. Every flag that restates a constraint uses the

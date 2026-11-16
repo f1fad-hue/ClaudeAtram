@@ -32,7 +32,6 @@ def spec_gbi(target):
 LOAD = {"X_USEQ": {"G": 17.5, "GW": 11.0, "RG": 4.5}, "X_GBI": {"G": 1.5, "CY": 1.0, "RG": 4.0}}
 
 def run(spec):
-    E.VOL_SENS[spec["id"]] = 0.0
     E.FACTOR_LOADINGS[spec["id"]] = LOAD[spec["id"]]
     fb = E.build_fund(spec)
     specs = E.FUNDS + E.ADD_FUNDS + [spec]

@@ -5,7 +5,9 @@ The owner's standing instruction for every review, kept here so a session can be
 Updated 2026-11-12 (after v101): Portfolio C retired, so the command covers A, B and D; the
 Report tab has its own step; periodic items, contract rolls and the runbook's evidence lessons
 are named. Updated 2026-11-15 (v103): the Budget tab reads 1, 3, 5 and 10 years. Updated 2026-11-16 (v105):
-the budget band runs 20% to 30%. The runbook (`README.md`) says how; this file says what.
+the budget band runs 20% to 30%. Updated 2026-11-16 (v107): the Volatility tab is removed (its drawdown
+model is on the Portfolios tab); the four analyses are the regional ranking, macro sentiment, market trend
+and market valuation, A on 10 years and B and D on 1, 3, 5 and 10; the gauge reads 1, 3 and 5 years. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -44,7 +46,7 @@ Evidence rules (apply to everything below)
 • If a site is blocked, name it and list what it left unverified. Don't fill gaps from memory.
 • Cite sources as links in the report.
 
-1. Market data and events (Macro, Volatility and Report tabs)
+1. Market data and events (Macro and Report tabs)
 • Roll each market to its newest completed session: the S&P 500, Nasdaq and Dow; PSEi;
   KOSPI; Nikkei; the peso; Brent and WTI settles (front contract; watch expiries, rolls and
   the year-ago base); the VIX; the 2-, 10- and 30-year Treasury closes; FedWatch's odds for
@@ -79,23 +81,27 @@ Evidence rules (apply to everything below)
 • For each held-out fund, say what still blocks it, including any target fund not yet
   named. Re-run the held-out what-if for A, B and D and record its weights.
 
-3. The four analyses at 3, 5 and 10 years (Macro and Volatility tabs)
-• Macro drivers (seven scores now, their 3- and 5-year paths, neutral at 10), regional
-  rankings (US, Europe, Asia, Philippines), market trend and volatility. Keep each score
+3. The four analyses at 1, 3, 5 and 10 years (Macro, Funds and Portfolios tabs)
+• Regional rankings (US, Europe, Asia, Philippines), macro sentiment (seven driver scores
+  now, their year-1, 3- and 5-year paths, neutral at 10), market trend and market valuation
+  (the valuation driver's path; it tilts years 1-5 only, weighted 10/20/20 of the ten years, and
+  is neutral at 10, where the long-run base prices it). Volatility tilts no forecast: it sets each
+  fund's volatility and expected drawdown, and the VIX guards a raise. Keep each score
   unless the evidence moves it, measured against the last published scores. When one
   moves, give the evidence and its effect on the headline gauge and on each fund's and
   portfolio's net 10-year CAGR and drawdown (say so when it moves only the gauge).
 • Roll the trend window when a quarter closes and its returns are published. Check that
   the correlations (Correlated sentiment), the driver-to-fund tilts, each fund's volatility
-  beta and drawdown coefficient, and the curve's tilt on each fund still follow from
-  their inputs.
+  beta and drawdown coefficient (Portfolios tab, "How each drawdown is estimated"), and the
+  valuation tilt on each fund still follow from their inputs.
 • Re-check a modelled assumption (the VIX long run, the variance risk premium, the
   drawdown calibration, peso volatility) only when its source updates; say if none did.
 
 4. Drawdown budget band (Budget tab)
 • Recompute the gauge: macro drivers (without valuation) + market trend + market valuation
-  over year 1, years 2-3 and years 4-5, weighted 20/40/40; years 6-10 are neutral by
-  construction and shown as the anchor. Re-read the valuation evidence (forward P/E for the
+  over year 1, years 2-3 and years 4-5, weighted 20/40/40 (owner, 16 Nov 2026: 1, 3 and 5
+  years; years 6-10 are neutral by construction, are what the 25% base stands for, and are
+  not read here). Re-read the valuation evidence (forward P/E for the
   S&P, Nasdaq-100, Asia and Europe; the CAPE; ten-year return forecasts).
   Re-research each driver's year-1 reading (the year-ahead forecasts: Fed and SOFR futures,
   the Philadelphia Fed survey, FOMC projections, the EIA's STEO, the IMF, 2027 earnings),
@@ -103,22 +109,24 @@ Evidence rules (apply to everything below)
   (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or
   under its long run before any raise). Record the month-end review when one is due.
 • Report the budget in force and what each step (20% to 30%, one point a step; owner,
-  16 Nov 2026) does to A, B and D, and to B in a Hormuz closure.
+  16 Nov 2026) does to A, B and D, and to B in a Hormuz closure. The band's budget is every
+  portfolio's budget (owner, 16 Nov 2026: "All portfolio still use the budget drawdown band").
 
 5. Portfolios A, B and D (Portfolios tab)
 • Re-run the selection under the current rules: the highest net CAGR after all fees
   inside the drawdown budget, a shallower drawdown breaking only exact ties.
   ◦ A and B: at most 5 funds, 35% in any one, at least 5% peso money market, 5% steps;
-    A on the 10-year view, B on the 3/5/10-year view.
+    A on the 10-year view, B on the 1/3/5/10-year view.
   ◦ D: Nasdaq Equity Income strictly the largest of two to five funds, each at least 5%,
-    5% steps, no single-fund cap and no cash floor, on the 3/5/10-year view; the rule
+    5% steps, no single-fund cap and no cash floor, on the 1/3/5/10-year view; the rule
     picks the number of funds, and each count's best is shown.
 • Check the head-to-head tables, the lenses and "who wins where"; the stress scenarios
   against today's markets (for example the oil levels in the Hormuz escalation and
   disinflation restart rows); and re-run the what-ifs, the efficient-mix chart and the
   peso table.
 • Ask me before changing any rule: the 25% base, the band and its guards, the limits,
-  D's rule, the selection rule, the 3/5/10-year weights, the budget gauge's 1/3/5-year
+  D's rule, the selection rule, the 1/3/5/10-year weights (10/20/20/50 by years covered), the
+  valuation tilt's years 1-5 only, the budget gauge's 1/3/5-year
   spans and their 20/40/40 weights, or the fund list.
 
 6. Report tab

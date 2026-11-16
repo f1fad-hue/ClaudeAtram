@@ -2,6 +2,116 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-16 — v107: A on 10 years, B and D on 1, 3, 5 and 10, from regional ranking, macro, trend and valuation; the Volatility tab removed; the gauge reads 1, 3 and 5 years; B moves to A's mix (7.20%), D rises to 7.25%
+
+At the owner's instructions:
+- "Update portfolio A based on 10yrs macroeconomics sentiments, market trends and market valuations from the 22
+  atrams lists selections. Update portfolio B and D based on 1, 3, 5, 10yrs macroeconomics sentiments, market
+  trends and market valuations from the 22 atrams lists selections. Remove volatility tab and do a house cleanup."
+- "All portfolio still use the budget drawdown band."
+- "Update also the drawdown budget gauge macroeconomic sentiments, market trends and market valuations based on
+  deep researchs and analysis of 1, 3, and 5yrs."
+
+**Market data is unchanged** (v104, closes to 13 Nov); the research is v106's. Three choices the instructions left
+open were made as recommended and are recorded here for the owner to overrule:
+1. The volatility tilt leaves every forecast, not just the tab. Volatility still sets each fund's volatility, so
+   its drawdown.
+2. Valuation tilts years 1-5 only. At 10 years it is neutral, because J.P. Morgan's long-run base already prices
+   valuation.
+3. B and D weight the years 10 / 20 / 20 / 50 by the years each reading covers. This is the old 30 / 20 / 50 split
+   with year 1 read on its own.
+
+**The four analyses** are now the regional ranking, macro sentiment (the rates and energy tilts), the market trend
+and market valuation. Volatility is no longer one of them.
+- **A** reads all four at 10 years alone. There macro, trend and valuation are neutral by construction, so A is
+  unchanged: 5 / 35 / 10 / 30 / 20 (MM / Nasdaq Income / Tech / Infra / Asian Multi-Asset), **7.31% / −24.9%**.
+- **B and D** read them at 1, 3, 5 and 10 years: year 1 10%, years 2-3 20%, years 4-5 20%, years 6-10 50%.
+  - The ranking, macro and trend already read year 1 inside years 1-3 (30%), so for them nothing changes.
+  - Valuation reads year 1 on its own: the valuation driver's path on 1-5 is 3.89 / 3.22 / 3.00 / 3.00, which
+    blends to **3.133**.
+  - At the regional rate, 0.675pp a point, that adds **+0.09pp to each equity fund**, +0.04pp to Asian
+    Multi-Asset Income and +0.05pp to Global Allocation, on their equity shares. Cash gets nothing.
+- **The volatility tilt is retired.** It had moved the forecasts −0.02 to +0.01pp (Nasdaq Equity Income −0.02).
+  Nasdaq Equity Income nets 7.67% (from 7.56%).
+
+**What moved.**
+
+| | v106 | v107 |
+| --- | --- | --- |
+| A (10-year view) | 7.31% / −24.9% | 7.31% / −24.9%, unchanged |
+| B (1/3/5/10-year view) | 10 / 35 / 5 / 20 GHC / 30, 7.10% / −24.9% | **5 / 35 / 10 / 30 / 20 AMAI = A's mix, 7.20% / −24.9%** |
+| D (Nasdaq-led) | 50 / 20 / 15 / 15, 7.16% / −24.9% | same weights, **7.25% / −24.8%** |
+| Budget | 25% (band 20-30%) | 25%, the band's budget for A, B and D |
+| Gauge | 2.93 on 1/3/5 with a 10-year anchor | **2.93 on 1/3/5 only** |
+
+- **Why B moved.** The valuation tilt lifts the equity funds by more than the multi-asset fund. Asian Multi-Asset
+  Income (20%) replaces Global Health Care, and 5pp moves from cash to Global Technology. On B's view A and B are
+  now one mix: the rule picks there what it picks on A's.
+- **D** keeps its four funds. Each count's best: two 7.07%, three 7.22%, four 7.25%, five 7.25% at −24.9% (four wins
+  the tie).
+- **Budget steps.** Every step still applies to all three portfolios (CAGR / drawdown):
+
+  | Step | A | B | D |
+  | --- | --- | --- | --- |
+  | 20% | 6.81 / −19.9 | 6.76 / −20.0 | 6.76 / −20.0 |
+  | 30% | 7.75 / −29.9 | 7.64 / −30.0 | 7.67 / −29.8 |
+
+- **What-ifs.** Without the valuation tilt, B holds the same mix for 7.12% and D its weights for 7.17%.
+- **Held out, re-run.**
+  - US Equity Opportunity at its listed 1.20% would take 20% of A, **15% of B** (was 20%) and **10% of D** (was 15%).
+  - Global Bond Income at 1.59% would take **10% of D** (was 15%).
+  - Asian Multi-Asset Income at the disputed 1.20% would take **20% of B**, as now (was 30% against none).
+  - Global Infra at a 1.00% / 1.10% target charge: B 7.14% / 7.14%, and D 20% / **15%** (7.21% / 7.20%).
+
+**The gauge** reads year 1, years 2-3 and years 4-5 only, at 20 / 40 / 40, each the mean of macro, trend and
+valuation. The 10-year anchor (3.00) is no longer read or shown: it is neutral by construction, it is what the 25%
+base stands for, and it sets A's forecasts. It never entered the value, so the value holds: **2.93, hold at 25%**.
+- The payload's `dd_gauge.parts` has three spans.
+- The Budget tab says why 10 years is not read.
+
+**The Volatility tab is removed.** Five tabs remain: Macro, Funds, Portfolios, Budget and Report.
+- Its drawdown model moved to the Portfolios tab: "How each drawdown is estimated". That covers each fund's
+  volatility, k, calibration and the money-market floor.
+- The vol chart, the tilt tables and the horizon-weight and curve sentences went with it.
+- The Report's section 2 now reads "Volatility, in the drawdowns only".
+
+**Errors found and fixed (recorded before fixing).**
+1. **A second `m_band` mutant silently replaced the first** (the v105 one).
+   - Python keeps the last definition, so the run counted 63 mutants where 64 were written.
+   - Renamed to `m_band30`, and `mutate.py` now asserts every mutant name is defined once.
+2. **The new engine check used `_all_f` before its definition.** It now reads the payload's own fund lists.
+3. **The audit's valuation re-derivation called `to5` before the audit defines it.** It now uses a local rescale.
+4. **`heldout_sens.py` crashed on the retired `VOL_SENS`.** The line is removed.
+5. **The engine's log line printed the retired `ramp_10y`.** It is rewritten.
+6. **The Portfolios lede still said B "reads them at 3Y, 5Y and 10Y (3Y 30% / 5Y 20% / 10Y 50%)".**
+   - It read the old `hz_weights`.
+   - It now reads `hz_split`: year 1, years 2-3, years 4-5 and years 6-10.
+7. **D's lede listed "volatility" among the four analyses, "read at 3, 5 and 10 years".** Corrected.
+8. **With B on A's mix, the A-against-B sentences went false.**
+   - The Report's conclusion read "cutting expected maximum drawdown from −24.9% to −24.9%".
+   - Its lede said "the same return ... with less risk", and the one-sentence verdict "0.0pp more drawdown".
+   - The Portfolios note said "level with A's 7.20%, with 0.0pp less drawdown".
+   - Each now tests for the same weights first and says A and B are one mix (runbook 168).
+
+**House cleanup.**
+- **CSS.** Removed the four rules the Volatility tab left (`.legend`, `.lgi`, `.stat`, `.stats`) and six older
+  dead ones (`.callout`, `.chip.neu`, `tr.tot`, `.kv dd.wrap`, `.vsbadge`, `.mon .idx`). A scan now finds no
+  unused class.
+- **Engine.** Removed the dead names `GAUGE_Y1`, `GAUGE_Y23` (replaced by v106's parts) and `UNIV_BEST`.
+- **Payload.** The `jepq_vol`, `ndx_vol`, `jepq_beta` and `acwi_it_mix` fields were published but read nowhere.
+  The audit now re-derives the covered-call factor from them and checks the tech sleeve's mix.
+- **Comments.** The A/B column comment in the engine now names the four analyses and the year split.
+- **Audit.** It re-derives every fund's valuation tilt from the driver path and checks the published channel
+  (blend, weights = `hz_split`).
+- **Validator.** It requires five tabs and no Volatility tab.
+- **Mutants.** Four new ones: a valuation tilt moved with its total and net, the blend off its path, `tilt_vol`
+  back on a fund, and the covered-call factor off its inputs.
+
+**Checks.** Engine 262/262 · audit 274/274 · page 16/16 · mutants 68/68 caught. All five tabs read at 390px with no
+script errors and no horizontal scroll.
+
+A model's reading, not personal financial advice.
+
 ## 2026-11-16 — v106: market valuation becomes the budget gauge's third part, researched at 1, 3, 5 and 10 years; the gauge reads 2.93, hold at 25%; A, B and D unchanged
 
 At the owner's instruction: "Update also the drawdown budget gauge macroeconomic sentiments, market trends and

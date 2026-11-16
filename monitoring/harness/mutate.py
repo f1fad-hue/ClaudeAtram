@@ -106,6 +106,12 @@ def m_opt(d): d["optimized"] = d["portfolio_b"]                                 
 def m_cat(d): d["catalysts"].append({"date": "2026-10-01", "what": "Old event", "why": "past"})
 def m_valpart(d): q = d["dd_gauge"]["parts"]["1Y"]; q["valuation"] = round(q["valuation"] + 0.1, 2)   # a valuation part off its path (v106)
 def m_band30(d): d["dd_gauge"]["bands"][-1]["cap"] = 31.0                                # a band past the owner's 30% (v105)
+def m_valtilt(d):                                                                              # a valuation tilt off its blend, total and net moved with it (v107)
+    f = _fund(d, 1); f["tilt_valuation"] = round(f["tilt_valuation"] + 0.05, 2)
+    f["tilt_total"] = round(f["tilt_total"] + 0.05, 2); f["net_macro"] = round(f["net_macro"] + 0.05, 2)
+def m_valblend(d): d["val_channel"]["blend_5"] = round(d["val_channel"]["blend_5"] + 0.1, 3)  # the valuation blend off its path (v107)
+def m_volback(d): _fund(d, 2)["tilt_vol"] = 0.0                                               # the retired volatility tilt back on a fund (v107)
+def m_ccvol(d): d["cc_vol_factor"] = round(d["cc_vol_factor"] + 0.02, 4)                      # the covered-call factor off its inputs (v107)
 def m_step(d):                                                                                 # a budget step printing a CAGR its search did not rank on
     e = next(iter(d["dd_gauge"]["alt"].values()))["b"]; e["cagr"] = round(e["cagr"] - 0.01, 2)
 def m_verb(d):                                                                                 # a note announcing a move not made (v95)

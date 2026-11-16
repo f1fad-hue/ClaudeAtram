@@ -61,15 +61,31 @@ for f in FU:
     ck(f"{i_}: total fee = feeder + target", abs(round(f["fee_feeder"] + f["fee_target"], 2) - f["fee_total"]) < 0.006,
        f"{f['fee_feeder']} + {f['fee_target']} vs {f['fee_total']}")
     ck(f"{i_}: net base = gross - fees", abs(round(f["gross_php"] - f["fee_total"], 2) - f["net_base"]) < 0.006)
-    tt = f["tilt_regional"] + f["tilt_vol"] + f["tilt_rates"] + f["tilt_energy"] + f["tilt_trend"]
-    ck(f"{i_}: the 3/5/10-year tilt is the sum of its five parts", abs(tt - f["tilt_total"]) < 0.011, f"{tt:.3f} vs {f['tilt_total']}")
-    ck(f"{i_}: net 3/5/10-year = base + tilt; net 10-year = base + 10-year tilt",
+    tt = f["tilt_regional"] + f["tilt_rates"] + f["tilt_energy"] + f["tilt_trend"] + f["tilt_valuation"]
+    ck(f"{i_}: the 1/3/5/10-year tilt is the sum of its five parts - region, rates, energy, trend, valuation; no volatility tilt",
+       abs(tt - f["tilt_total"]) < 0.011 and "tilt_vol" not in f, f"{tt:.3f} vs {f['tilt_total']}")
+    # v107: the valuation tilt re-derived from the valuation driver's path - year 1, years 2-3 (implied),
+    # years 4-5 and years 6-10 at 10/20/20/50, at the regional rate per point, on the equity share, none for cash
+    _VD = next(x for x in D["drivers"] if x["name"] == "Valuation support")
+    _vy1 = next(r for r in D["dd_gauge"]["drivers"] if r["name"] == "Valuation support")["y1"]
+    _vy23 = round((3 * _VD["path"]["3Y"] - _vy1) / 2, 3)
+    _t5 = lambda v: round(1 + (v - 1) * 4 / 9, 2)          # the 1-10 to 1-5 rescale (to5, defined below)
+    _vb = round(0.1 * _t5(_vy1) + 0.2 * _t5(_vy23) + 0.2 * _t5(_VD["path"]["5Y"]) + 0.5 * _t5(_VD["path"]["10Y"]), 4)
+    _vt = 0.0 if f["id"] == "ATRPHMM" else (_vb - 3.0) * D["regional_tilt_per_pt"] * f["equity_share"]
+    ck(f"{i_}: the valuation tilt reproduces from the valuation path, and is none at 10 years",
+       abs(f["tilt_valuation"] - _vt) < 0.0051 and f["tilt_valuation_10y"] == 0.0, f"{f['tilt_valuation']} vs {_vt:.4f}")
+    ck(f"{i_}: net 1/3/5/10-year = base + tilt; net 10-year = base + 10-year tilt",
        abs(f["net_base"] + f["tilt_total"] - f["net_macro"]) < 0.011 and abs(f["net_base"] + f["tilt_total_10y"] - f["net_10y"]) < 0.011)
     if f["id"] not in ("ATRPHMM",):
         for col, ddk in (("net_macro", "dd_macro"), ("net_10y", "dd_10y"), ("net_base", "dd_base")):
             dd_ = round(-max((f["dd_k"] * f["vol"] - MU * f[col]) * SC, 0.0), 1)
             ck(f"{i_}: {ddk} reproduces from k, vol and {col}", abs(dd_ - f[ddk]) <= 0.11, f"{dd_} vs {f[ddk]}")
     ck(f"{i_}: fees and volatility are positive and sane", 0 < f["fee_total"] < 5 and 0 < f["vol"] < 40)
+# v107: the published valuation channel is the one re-derived above, on B and D's year split.
+_VC = D["val_channel"]
+ck("the valuation channel's blend is its path on the 10/20/20/50 year split", abs(_VC["blend_5"] - _vb) < 0.0006
+   and _VC["w"] == D["hz_split"] == {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, "10Y": 0.5}
+   and abs(sum(_VC["w"][h] * _VC["path_5"][h] for h in _VC["w"]) - _VC["blend_5"]) < 0.0006, f"{_VC['blend_5']} vs {_vb}")
 
 # ---------------------------------------------------------------------------
 sec("C. PORTFOLIOS: weights, limits, re-derived figures and the rule")
@@ -106,7 +122,7 @@ for lab, P in (("A", PAA), ("B", PBB)):
         ck(f"{lab} {view}: return per drawdown and the 10-year peso value follow from the printed figures",
            abs(S["ret_per_dd"] - round(S["cagr"] / abs(S["maxdd"]), 3)) < 0.0011
            and abs(S["terminal_1m"] - 1e6 * (1 + S["cagr"] / 100) ** 10) < 2, f"{S['ret_per_dd']} / {S['terminal_1m']}")
-    ck(f"{lab}: inside the drawdown budget on its 3/5/10-year view", abs(P["macro"]["maxdd"]) <= CAP + 1e-9, f"{P['macro']['maxdd']} vs {CAP}")
+    ck(f"{lab}: inside the drawdown budget on its 1/3/5/10-year view", abs(P["macro"]["maxdd"]) <= CAP + 1e-9, f"{P['macro']['maxdd']} vs {CAP}")
     own = P["ten"] if P["column"] == "net_10y" else P["macro"]
     g_ = [r_ for r_ in P["scenarios"] if r_["name"].startswith("Grind")]
     ck(f"{lab}: its grind-on stress row is its own-horizon headline", len(g_) == 1
@@ -167,7 +183,7 @@ for view, key in (("macro", "net_macro"), ("base", "net_base"), ("ten", "net_10y
     ck(f"D {view}: return per drawdown and the 10-year peso value follow from the printed figures",
        abs(S["ret_per_dd"] - round(S["cagr"] / abs(S["maxdd"]), 3)) < 0.0011
        and abs(S["terminal_1m"] - 1e6 * (1 + S["cagr"] / 100) ** 10) < 2, f"{S['ret_per_dd']} / {S['terminal_1m']}")
-ck("D: inside the drawdown budget on its 3/5/10-year view", abs(PDD["macro"]["maxdd"]) <= CAP + 1e-9 and PDD["dd_cap"] == CAP,
+ck("D: inside the drawdown budget on its 1/3/5/10-year view", abs(PDD["macro"]["maxdd"]) <= CAP + 1e-9 and PDD["dd_cap"] == CAP,
    f"{PDD['macro']['maxdd']} vs {CAP}")
 _gD = [r_ for r_ in PDD["scenarios"] if r_["name"].startswith("Grind")]
 ck("D: its grind-on stress row is its own-horizon headline", len(_gD) == 1
@@ -200,7 +216,7 @@ def _pickD(rows):
     t_ = max(x[0] for x in rows); b_ = [x for x in rows if x[0] >= t_ - 1e-9]
     return min(b_, key=lambda x: (x[1], x[2], x[4])), b_
 _winD, _bD = _pickD(_fD); _wD = _winD[3]
-ck(f"D is the rule's pick on the 3/5/10-year view, re-run over all {_nD} of its mixes ({len(_fD)} feasible, {len(_bD)} at the best CAGR)",
+ck(f"D is the rule's pick on the 1/3/5/10-year view, re-run over all {_nD} of its mixes ({len(_fD)} feasible, {len(_bD)} at the best CAGR)",
    _wD == wD and len(_fD) == PDD["n_feasible"] and len(_bD) == PDD["band_n"] and _nD == PDD["n_total"],
    f"{_wD} ({len(_fD)}, {len(_bD)}, {_nD}) vs {wD} ({PDD['n_feasible']}, {PDD['band_n']}, {PDD['n_total']})")
 _bcD = {b_["n"]: b_ for b_ in PDD["by_count"]}
@@ -280,9 +296,8 @@ _VALN = "Valuation support"; _DR6 = [x for x in DR if x["name"] != _VALN]; _W6 =
 _xv = next(x for x in DR if x["name"] == _VALN)
 _mac = {"1Y": to5(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6),
         "3Y": to5(sum(x["weight"] * _y23[x["name"]] for x in _DR6) / _W6),
-        "5Y": to5(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6),
-        "10Y": to5(sum(x["weight"] * x["path"]["10Y"] for x in _DR6) / _W6)}
-_vlp = {"1Y": to5(_GD[_VALN]["y1"]), "3Y": to5(_y23[_VALN]), "5Y": to5(_xv["path"]["5Y"]), "10Y": to5(_xv["path"]["10Y"])}
+        "5Y": to5(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6)}
+_vlp = {"1Y": to5(_GD[_VALN]["y1"]), "3Y": to5(_y23[_VALN]), "5Y": to5(_xv["path"]["5Y"])}
 _TR = D["trend"]; _ov = lambda a, b, c, e: max(0.0, min(b, e) - max(a, c))
 def _tsp(v, a, b):
     wm = _ov(a, b, *_TR["mom_years"]) / (b - a); wr = _ov(a, b, *_TR["rev_years"]) / (b - a)
@@ -291,12 +306,12 @@ _ts = {h: {f: _tsp(v, a, b) for f, v in _TR["sleeves"].items()} for h, (a, b) in
 ck("each market's trend in each span is momentum over year 1 and reversal after it, from its own z-scores; years 4-5 equal its 5-year score",
    G["trend_spans"] == _ts and all(_ts["5Y"][f] == v["score"]["5Y"] for f, v in _TR["sleeves"].items()), f"{G['trend_spans']} vs {_ts}")
 _trp = {h: round(sum(_ts[h].values()) / len(_ts[h]), 2) for h in _sp}
-_trp["10Y"] = round(sum(v["score"]["10Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)
+# v107 (owner, 16 Nov): the gauge reads 1, 3 and 5 years only - no 10-year anchor in its parts
 from decimal import Decimal as _D, ROUND_HALF_UP as _HU
 _q2 = lambda x: float(x.quantize(_D("0.01"), rounding=_HU))      # exact half-up, the page's convention
 _rd = {h: _q2((_D(str(_mac[h])) + _D(str(_trp[h])) + _D(str(_vlp[h]))) / 3) for h in _mac}
 ck("each budget-gauge view reads the mean of macro (six drivers), trend and valuation over its span - volatility not in it",
-   G["reading_of"] == ["macro", "trend", "valuation"] and list(G["parts"]) == ["1Y", "3Y", "5Y", "10Y"]
+   G["reading_of"] == ["macro", "trend", "valuation"] and list(G["parts"]) == ["1Y", "3Y", "5Y"]
    and all(G["parts"][h]["macro"] == _mac[h] and G["parts"][h]["trend"] == _trp[h]
            and G["parts"][h]["valuation"] == _vlp[h]
            and G["parts"][h]["reading"] == _rd[h] and "vol" not in G["parts"][h] for h in _mac),
@@ -642,6 +657,12 @@ def used(k, v):
     if isinstance(v, (int, float)) and not isinstance(v, bool):
         return any(re.search(r"(?<![\d.])%s(?![\d])" % re.escape(f_), _prose.replace(",", "")) for f_ in {"%g" % v, "%g" % abs(v)})
     return False
+# THE PUBLISHED VOLATILITY INPUTS ARE THE ONES USED (v107 cleanup): the covered-call factor the
+# Funds tab prints is JEPQ's volatility over the index's, and the tech sleeve's regional mix sums to 1.
+ck("the covered-call volatility factor is the published JEPQ / Nasdaq-100 ratio",
+   D["cc_vol_factor"] == round(D["jepq_vol"] / D["ndx_vol"], 4) and 0 < D["jepq_beta"] <= 1,
+   f"{D['cc_vol_factor']} vs {D['jepq_vol']}/{D['ndx_vol']}")
+ck("the tech sleeve's regional mix sums to 1", abs(sum(D["acwi_it_mix"].values()) - 1) < 1e-9, f"{D['acwi_it_mix']}")
 # THE VERB IS THE MOVE (v95): each driver's note and summary open with HELD, RAISED or CUT, and that
 # word must be what its score did against the last review's score the payload records.
 _vw = lambda t: (re.match(r"(HELD|RAISED|CUT)\b", t.upper()) or [None, None])[1]
