@@ -93,8 +93,10 @@ Evidence rules (apply to everything below)
   drawdown calibration, peso volatility) only when its source updates; say if none did.
 
 4. Drawdown budget band (Budget tab)
-• Recompute the gauge: macro drivers + market trend over year 1, years 2-3 and years 4-5,
-  weighted 20/40/40; years 6-10 are neutral by construction and shown as the anchor.
+• Recompute the gauge: macro drivers (without valuation) + market trend + market valuation
+  over year 1, years 2-3 and years 4-5, weighted 20/40/40; years 6-10 are neutral by
+  construction and shown as the anchor. Re-read the valuation evidence (forward P/E for the
+  S&P, Nasdaq-100, Asia and Europe; the CAPE; ten-year return forecasts).
   Re-research each driver's year-1 reading (the year-ahead forecasts: Fed and SOFR futures,
   the Philadelphia Fed survey, FOMC projections, the EIA's STEO, the IMF, 2027 earnings),
   and say which moved. Check its guards

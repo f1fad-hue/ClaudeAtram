@@ -2,6 +2,78 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-16 — v106: market valuation becomes the budget gauge's third part, researched at 1, 3, 5 and 10 years; the gauge reads 2.93, hold at 25%; A, B and D unchanged
+
+At the owner's instruction: "Update also the drawdown budget gauge macroeconomic sentiments, market trends and
+market valuations based on deep researchs and analysis of 1, 3, 5, and 10yrs." **Market data is unchanged** (v104,
+closes to 13 Nov).
+
+**The rule.** Each view now reads the mean of three parts, where it read two (macro drivers and market trend):
+1. **Macro sentiment** - the six drivers other than valuation, their weights scaled to sum to one.
+2. **Market trend** - unchanged.
+3. **Market valuation** - the valuation driver's own path, on 1-5.
+
+Valuation was already a tenth of the macro drivers. Reading it beside them unchanged would have counted it twice,
+so the macro part leaves it out. The Macro tab's headline gauge (2.31) keeps all seven drivers. The spans and
+weights (year 1 20%, years 2-3 40%, years 4-5 40%; years 6-10 the anchor), the 20-30% band and the guards are
+unchanged.
+
+**The readings (1-5).**
+
+| Span | Macro (six) | Trend | Valuation | Reading |
+| --- | --- | --- | --- | --- |
+| Year 1 | 2.25 | 3.81 | 3.89 | 3.32 |
+| Years 2-3 | 2.66 | 2.61 | 3.22 | 2.83 |
+| Years 4-5 | 2.89 | 2.61 | 3.00 | 2.83 |
+| Years 6-10 | 3.00 | 3.00 | 3.00 | 3.00 |
+
+**Gauge 2.93**, from 2.80: valuation lifts it, because forward multiples sit below their averages. It stays in the
+hold band (2.50-3.50), so the budget stays at 25% and A (7.31% / −24.9%), B (7.10% / −24.9%) and D (7.16% / −24.9%)
+do not move. The 31 Oct month-end review is restated at 2.93: the paths, the valuation path and the trend window
+are unchanged since 30 Oct, so the same inputs give the same reading. Guards: one month-end review of two;
+geopolitics 1.5 fails; the VIX clear at 19.30.
+
+**The research, span by span.**
+- **Valuation.**
+  - Now 8.0 (on 1-10). The S&P 500 is on 17.7x forward earnings (5 Nov), the lowest since 2023 and below its
+    19.8x and 19.1x averages (FactSet; FX News Group).
+  - **The CAPE has eased to 38.9 (6 Nov) from 40.7 in October** (HistoryOfMarket; the Buffett Indicator), still
+    near the 44.2 record. Other November prints - 38.43, 38.8 and 39.86 - are recorded as disputes.
+  - Year 1, 7.5: too short for the CAPE to bite, while the discount narrows as prices recover.
+  - Years 1-3, 6.5, so years 2-3 6.0: Asia and Europe cheap, the S&P below its forward averages, the CAPE near a
+    record.
+  - Years 4-5 and 6-10, 5.5: the funds' ten-year base returns already price the starting multiple. Vanguard's
+    model has US stocks at 4.8-6.8% a year for the decade, against J.P. Morgan's 7.5%.
+  - Every valuation score held: the CAPE's fall and the lower forward P/E confirm it, and neither moves it.
+  - Not re-read in two sources, so held: Nasdaq-100 forward P/E (22.4x carried; MacroMicro 24.53 and
+    HistoryOfMarket 19.2-22.4 disagree), Asia ex-Japan (10.5x), Europe (15.4x, from 5 Sep) and the PSEi.
+- **Macro sentiment.** Every score held at each span.
+  - The new evidence since 15 Nov reinforces the readings without moving them: October PPI +6.5% on the year,
+    Japan's Q3 contraction, FedWatch's 100% December hike, the 10-year at 5.15%, Michigan's 51.0.
+  - The 5y5y inflation forward is 2.17% on 12 Nov in FRED only; 23 Oct's 2.20 is kept.
+- **Market trend.** Held. The window is the four quarters to 30 Sep and the trailing 3- and 5-year runs to that
+  date; it rolls after 31 Dec, when the fourth quarter closes.
+
+**Page.**
+- The readings table gains a "Market valuation" row, and labels the macro row "six, without valuation".
+- The research section gains a market-valuation card: now, year 1, years 2-3, years 4-5 and years 6-10 on 1-10
+  and on 1-5, with the evidence.
+- The driver table marks valuation as read on its own, and its total row is the six-driver macro part.
+- "Why these two" is now "Why these three".
+
+**Checks.**
+- The engine and the audit re-derive the six-driver macro part from the drivers' own weights, and the valuation
+  part from its path.
+- The restatement check reads the three parts.
+- A new mutant (a valuation part off its path).
+- Seven sources added: the CAPE readings and the Vanguard reports.
+
+**Due:** a November forward P/E in two sources for the Nasdaq-100, Asia ex-Japan, Europe (15.4x is from 5 Sep) and
+the PSEi; a second source for the 5y5y.
+
+Checks: engine 264/264; audit 260/260; page 16/16 at phone width; mutation test 64/64 caught. The Budget tab was
+read at phone width.
+
 ## 2026-11-16 — v105: the drawdown budget band widened to 20-30% at the owner's instruction; budget 25%, A, B and D unchanged
 
 At the owner's instruction: "Wider the band of budget drawdown to 20-30%". **Market data is unchanged** (v104,

@@ -79,8 +79,10 @@ move, and update `useq_w_*` / `gbi_w_*` with `heldout_run_cap` and `heldout_run_
 check fails while the recorded cap is not the live one.
 
 **2c. Read the drawdown-budget gauge** (`dd_gauge`, the Budget tab) at each month-end.
-Each view reads 1-5 as the mean of two parts (volatility left the reading in v90): the driver
-gauge over its span and the mean trend score of the five trend markets over the same span.
+Each view reads 1-5 as the mean of three parts (v106; volatility left the reading in v90): the
+macro drivers other than valuation, their weights scaled to one; the mean trend score of the five
+trend markets; and market valuation, the valuation driver's own path on 1-5 - each over the span.
+Valuation is left out of the macro part so it counts once (lesson 166).
 From v103 the views are year 1, years 2-3 and years 4-5, weighted 20 / 40 / 40 by the years
 of the first five each covers; years 6-10 are shown as the anchor and not weighted (neutral by
 construction, lesson 107). Year 1 is researched (`DRIVER_Y1`); years 2-3 are implied by it and
@@ -200,6 +202,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+166. A PART PROMOTED OUT OF A COMPOSITE LEAVES THE COMPOSITE. When valuation became the gauge's own part, it
+   was already a tenth of the macro drivers; reading both would have counted it twice. The macro part now
+   re-weights the other six to one, the Macro tab's headline keeps all seven, and the engine and the audit
+   both re-derive the six-driver part from the drivers' own weights.
 165. A WIDER BAND IS A FINER ONE, AND THE PERSISTENCE GUARD READS BANDS. Widening the budget to 20-30% in
    one-point steps cut the reading into 0.30-wide bands outside the hold band, so "two month-end reviews in
    the same band" now asks two readings to land within 0.30 of each other: a move from 3.6 to 3.9 is two

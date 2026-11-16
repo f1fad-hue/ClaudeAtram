@@ -2482,11 +2482,19 @@ MACRO = {
     "eia_hormuz_h1_2027": 1.9, "eia_hormuz_h2_2027": 1.3,
     # S&P 500 earnings growth expected for 2027: 15% (LSEG I/B/E/S, via Reuters on 1 Oct, carried by
     # 24/7 Wall St.) and 16.1% (FactSet, 6 Nov) - a range, not a figure. The same FactSet report has
-    # the forward P/E at 17.7 on 5 Nov; spx_fwd_pe stays at 30 Oct's 18.7 until the next review rolls
-    # the FactSet block with a second source (CHANGELOG v103, due list).
+    # the forward P/E at 17.7 on 5 Nov, carried from v104 as spx_fwd_pe with its own date.
     "spx_eps_2027_lo": 15.0, "spx_eps_2027_hi": 16.1,
     "bsp_cpi_2026": 6.1, "bsp_cpi_2027": 6.0, "bsp_cpi_2028": 3.3,
-    "cape": 40.7, "cape_high": 44.2, "cape_median": 16.6,
+    # v106 RE-READ: the cyclically adjusted P/E has eased to 38.9 in November, from October's 40.7, as
+    # prices fell from the 6 Oct record (HistoryOfMarket, 38.9 at 6 Nov; the Buffett Indicator tracker,
+    # 38.9); other November prints are 38.43 (MacroMicro), 38.8 (Chartrow, 12 Nov) and 39.86 (GuruFocus,
+    # 1 Nov) - cape_disputed_nov. Still above every month but the 1999-2000 peak's.
+    "cape": 38.9, "cape_date": "2026-11-06", "cape_prev": 40.7, "cape_high": 44.2, "cape_median": 16.6,
+    "cape_disputed_nov": [38.43, 38.8, 38.9, 39.86],
+    # Ten-year US equity return forecasts, for the valuation part's years 6-10 (v106): Vanguard 4.8-6.8%
+    # a year (raised in the third quarter from 4.2-6.2%, on elevated valuations; Morningstar's and
+    # Beinsure's reports of its model) against J.P. Morgan's 7.5% for US large caps (ltcma_edition).
+    "vanguard_us_10y_lo": 4.8, "vanguard_us_10y_hi": 6.8,
     "ltg_eps": 16.7, "ltg_hist_fcst": 22.3, "ltg_hist_real": 9.5,
     "brent_dec2029": 72.32, "brent_dec2030": 69.16, "brent_front_15oct": 105.92,
     # December 2027 Brent, for the 3-year view (2026-10-27): $87.82 on a 22 Oct quote
@@ -4265,10 +4273,12 @@ DRIVER_PATH = {
                f"But since 1992 they forecast {MACRO['ltg_hist_fcst']}% a year and got "
                f"{MACRO['ltg_hist_real']}%: neutral by years 4-5 as margins revert."},
     "Valuation support": {"3Y": 6.5, "5Y": 5.5,
-        "why": f"Asia at {MACRO['asia_fwd_pe']}x and Europe at {MACRO['sxxp_fwd_pe']:.1f}x are cheap, and the S&P's forward multiple is "
-               f"below its averages, but on ten-year earnings the S&P is on {MACRO['cape']}, near the "
-               f"{MACRO['cape_high']} record: 6.5 for years 1-3, neutral for years 4-5, where the "
-               "base returns already price the starting multiple."},
+        "why": f"Asia at {MACRO['asia_fwd_pe']}x and Europe at {MACRO['sxxp_fwd_pe']:.1f}x are cheap, and the S&P's forward multiple, "
+               f"{MACRO['spx_fwd_pe']}x, is below its averages, but on ten-year earnings the S&P is on {MACRO['cape']} "
+               f"({_dday('cape_date')}), from {MACRO['cape_prev']} in October and near the {MACRO['cape_high']} record: 6.5 "
+               "for years 1-3, neutral for years 4-5, where the base returns already price the starting multiple - "
+               f"Vanguard's model puts US stocks at {MACRO['vanguard_us_10y_lo']}-{MACRO['vanguard_us_10y_hi']}% a year for "
+               f"the decade on those valuations, against the {MACRO['ltcma_us_eq']}% J.P. Morgan assumption the funds are built on."},
     "Volatility & risk appetite": {"3Y": 4.5, "5Y": 5.5,
         "why": f"The VIX curve's own 3-year implied volatility, on the {_dval(VIX_QUOTE_DATE)} strip held to its window, "
                "is a little under the long run, "
@@ -5482,7 +5492,14 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 # rest of 1-5 cut into equal 0.30 widths, so a step is as far in the reading on either side.
 # The guards and the two-review rule are unchanged; the derived 26.97% now sits inside the band,
 # at its 27% step.
-DDG_READING_OF = ("macro", "trend")     # the parts a view's reading averages (v90)
+# THREE PARTS FROM v106 (owner, 2026-11-16: "Update also the drawdown budget gauge macroeconomic
+# sentiments, market trends and market valuations based on deep researchs and analysis of 1, 3, 5,
+# and 10yrs"): market valuation is read as its own part, beside the macro drivers and the market
+# trend. So that it is not counted twice, the macro part is the other six drivers, their weights
+# scaled to sum to one; the Macro tab's headline gauge keeps all seven.
+DDG_READING_OF = ("macro", "trend", "valuation")   # the parts a view's reading averages (v90; v106)
+DDG_VAL = "Valuation support"
+DDG_PARTS_DATE = "2026-11-16"
 # 1, 3, 5 AND 10 YEARS (owner, 2026-11-15, v103). The gauge reads three views of the first five years
 # - year 1, years 2-3 and years 4-5 - each weighted by the years it covers (20 / 40 / 40); the 10-year
 # view stays the anchor, shown and not weighted. Until v103 it read 3 and 5 years at 60 / 40, the
@@ -5516,7 +5533,11 @@ DDG_REVIEWS_NEEDED = 2
 # RESTATED v103 on the 1/3/5 rule: unchanged at 2.80. Splitting years 1-3 into year 1 and years 2-3
 # preserves the 3-year average by construction, and no trend score sits at a bound, so the weighted
 # reading is the same; the check below recomputes both rules and holds them equal to the cent.
-DDG_REVIEWS = [("2026-10-31", 2.80)]
+# RESTATED v106 on the three-part rule (macro without valuation, trend, valuation): 2.93, from 2.80.
+# The paths, the valuation path and the trend window are unchanged since 30 Oct, so the 30 Oct
+# inputs read on the new rule give what today's do - 3-year view 2.52 / 3.01 / 3.44, reading 2.99;
+# years 4-5 2.89 / 2.61 / 3.00, reading 2.83; 60 / 40, 2.93. Still the hold band.
+DDG_REVIEWS = [("2026-10-31", 2.93)]
 DDG_RULE_DATE = "2026-11-15"
 _VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}   # context beside the readings, not in them
 
@@ -5531,15 +5552,24 @@ def _trend_span(fid, a, b):
     return round(min(5.0, max(1.0, 3.0 + wm * t["z"][TREND_H[0][0]] - wr * TREND_REVERSAL * t["z_rev"])), 2)
 TREND_SPAN = {h: {f: _trend_span(f, a, b) for f in TREND} for h, (a, b) in DDG_SPANS.items()}
 
-GAUGE_Y1 = to5(sum(w * DRIVER_Y1[n][0] for n, w, _, _ in DRIVERS))
+GAUGE_Y1 = to5(sum(w * DRIVER_Y1[n][0] for n, w, _, _ in DRIVERS))      # all seven: the Budget tab's driver table
 GAUGE_Y23 = to5(sum(w * DRIVER_Y23[n] for n, w, _, _ in DRIVERS))
+_MACW = sum(w for n, w, _, _ in DRIVERS if n != DDG_VAL)
+DDG_MACRO_W = {n: w / _MACW for n, w, _, _ in DRIVERS if n != DDG_VAL}
+def _macro_part(v):
+    """The gauge's macro part: the six drivers other than valuation, re-weighted, on 1-5."""
+    return to5(sum(w * v[n] for n, w in DDG_MACRO_W.items()))
+_DV = {"1Y": {n: DRIVER_Y1[n][0] for n in DRIVER_Y1}, "3Y": DRIVER_Y23,
+       "5Y": {n: DRIVER_PATH[n]["5Y"] for n in DRIVER_PATH}, HZ_LABEL: {n: DRIVER_NEUTRAL_10 for n in DRIVER_PATH}}
 DDG_PARTS = {
-    "1Y": {"macro": GAUGE_Y1, "trend": round(sum(TREND_SPAN["1Y"].values()) / len(TREND), 2),
-           "vol_forward": VOL_1Y},
-    "3Y": {"macro": GAUGE_Y23, "trend": round(sum(TREND_SPAN["3Y"].values()) / len(TREND), 2),
-           "vol_forward": VOL_FWD_Y23},
-    "5Y": {"macro": GAUGE_PATH["5Y"], "trend": _ddg_trend("5Y"), "vol_forward": _VOL_FWD["5Y"]},
-    HZ_LABEL: {"macro": GAUGE_PATH[HZ_LABEL], "trend": _ddg_trend(HZ_LABEL), "vol_forward": _VOL_FWD[HZ_LABEL]},
+    "1Y": {"macro": _macro_part(_DV["1Y"]), "trend": round(sum(TREND_SPAN["1Y"].values()) / len(TREND), 2),
+           "valuation": to5(_DV["1Y"][DDG_VAL]), "vol_forward": VOL_1Y},
+    "3Y": {"macro": _macro_part(_DV["3Y"]), "trend": round(sum(TREND_SPAN["3Y"].values()) / len(TREND), 2),
+           "valuation": to5(_DV["3Y"][DDG_VAL]), "vol_forward": VOL_FWD_Y23},
+    "5Y": {"macro": _macro_part(_DV["5Y"]), "trend": _ddg_trend("5Y"), "valuation": to5(_DV["5Y"][DDG_VAL]),
+           "vol_forward": _VOL_FWD["5Y"]},
+    HZ_LABEL: {"macro": _macro_part(_DV[HZ_LABEL]), "trend": _ddg_trend(HZ_LABEL),
+               "valuation": to5(_DV[HZ_LABEL][DDG_VAL]), "vol_forward": _VOL_FWD[HZ_LABEL]},
 }
 for _h, _p in DDG_PARTS.items():
     _p["years"] = DDG_SPAN_LABEL[_h]
@@ -7712,6 +7742,21 @@ SOURCES = [
      "https://endowus.com/en-hk/fund-notices/notice-to-shareholders-from-fidelity-inv-intl-lu---22-10-2026"),
     ("NVIDIA", "NVIDIA sets conference call for third-quarter financial results - 17 Nov 2026",
      "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/"),
+    # v106: the valuation part - November CAPE readings and ten-year return forecasts
+    ("HistoryOfMarket", "Shiller PE ratio today - 38.9 on 6 Nov 2026 (cape_disputed_nov)",
+     "https://historyofmarket.com/sp500/pe/"),
+    ("Buffett Indicator", "S&P 500 P/E ratio - live Shiller PE 38.9, trailing P/E 25.1, Nov 2026",
+     "https://buffettindicator.org/pe-ratio"),
+    ("Chartrow", "Shiller PE ratio today - 38.8 on 12 Nov 2026 (cape_disputed_nov)",
+     "https://chartrow.com/sp500/shiller-pe"),
+    ("GuruFocus", "S&P 500 Shiller CAPE ratio - 39.86, 1 Nov 2026 (cape_disputed_nov)",
+     "https://www.gurufocus.com/economic_indicators/56/sp-500-shiller-cape-ratio"),
+    ("MacroMicro", "US S&P 500 cyclically adjusted price-earnings ratio - 38.43 for Nov 2026 (cape_disputed_nov)",
+     "https://en.macromicro.me/series/1632/us-shiller-cape"),
+    ("Morningstar", "Are investors expecting too much from the stock market? - Vanguard's 4.8-6.8% ten-year US equity range",
+     "https://www.morningstar.com/markets/are-investors-expecting-too-much-stock-market"),
+    ("Beinsure", "Stock market return forecast: Fidelity and Vanguard predict slower growth - Vanguard 4.8-6.8% a year",
+     "https://beinsure.com/stock-market-return-forecast-fidelity-vanguard-prediction/"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -7879,6 +7924,19 @@ def payload():
                                   "y23": DRIVER_Y23[n], "y3_avg": DRIVER_PATH[n]["3Y"], "y45": DRIVER_PATH[n]["5Y"]}
                                  for n, w, s_, _ in DRIVERS],
                      "trend_spans": {h: v for h, v in TREND_SPAN.items()},
+                     "parts_date": DDG_PARTS_DATE,
+                     "macro_w": {n: round(w, 6) for n, w in DDG_MACRO_W.items()},
+                     "valuation": {"name": DDG_VAL, "now": next(s_ for n_, _, s_, _ in DRIVERS if n_ == DDG_VAL),
+                                   "y1": DRIVER_Y1[DDG_VAL][0], "y23": DRIVER_Y23[DDG_VAL],
+                                   "y45": DRIVER_PATH[DDG_VAL]["5Y"], "y10": DRIVER_NEUTRAL_10,
+                                   "why_y1": DRIVER_Y1[DDG_VAL][1], "why_path": DRIVER_PATH[DDG_VAL]["why"],
+                                   "cape": MACRO["cape"], "cape_date": MACRO["cape_date"],
+                                   "spx_fwd_pe": MACRO["spx_fwd_pe"], "spx_fwd_pe_date": MACRO["spx_fwd_pe_date"],
+                                   "spx_fwd_pe_5y": MACRO["spx_fwd_pe_5y"], "spx_fwd_pe_10y": MACRO["spx_fwd_pe_10y"],
+                                   "ndx_fwd_pe": MACRO["ndx_fwd_pe"], "asia_fwd_pe": MACRO["asia_fwd_pe"],
+                                   "sxxp_fwd_pe": MACRO["sxxp_fwd_pe"], "cape_high": MACRO["cape_high"],
+                                   "cape_median": MACRO["cape_median"], "ltcma_us_eq": MACRO["ltcma_us_eq"],
+                                   "vanguard_us_10y": [MACRO["vanguard_us_10y_lo"], MACRO["vanguard_us_10y_hi"]]},
                      "parts": DDG_PARTS, "reading_of": list(DDG_READING_OF), "longrun": MACRO["vix_longrun"],
                      "bands": [{"lo": b[0], "hi": min(b[1], 5.0), "cap": b[2], "action": b[3]}
                                for b in DDG_BANDS], "band_rule_date": DDG_RULE_WIDE_DATE,
@@ -9480,19 +9538,24 @@ def report():
     _dg = p["dd_gauge"]
     # Years 4-5 and the 10-year anchor are the published driver gauge and trend at those views; year 1
     # and years 2-3 are the spans' own (v103, checked below). Every part reads the mean of its two.
-    checks.append(("the budget gauge's parts are the published driver gauge and trend scores where the views coincide, each reading their mean",
-                   all(_dg["parts"][h]["macro"] == p["gauge_path"][h]
+    # v106: three parts - the six drivers other than valuation, re-weighted; the trend; valuation alone.
+    _ndv = [d for d in p["drivers"] if d["name"] != DDG_VAL]; _wsum = sum(d["weight"] for d in _ndv)
+    _vd = next(d for d in p["drivers"] if d["name"] == DDG_VAL)
+    checks.append(("the budget gauge's parts are the six non-valuation drivers' paths, the trend scores and the valuation path where the views coincide, each reading their mean",
+                   all(_dg["parts"][h]["macro"] == to5(sum(d["weight"] * d["path"][h] for d in _ndv) / _wsum)
+                       and _dg["parts"][h]["valuation"] == to5(_vd["path"][h])
                        and _dg["parts"][h]["trend"] == round(sum(v["score"][h] for v in p["trend"]["sleeves"].values())
                                                              / len(p["trend"]["sleeves"]), 2)
                        for h in ("5Y", HZ_LABEL))
-                   and all(_dg["parts"][h]["reading"] == _hu2((Decimal(repr(_dg["parts"][h]["macro"]))
-                                                               + Decimal(repr(_dg["parts"][h]["trend"]))) / 2)
-                           for h in _dg["parts"])))
+                   and all(_dg["parts"][h]["reading"] == _hu2(sum(Decimal(repr(_dg["parts"][h][k])) for k in _dg["reading_of"])
+                                                              / len(_dg["reading_of"]))
+                           for h in _dg["parts"])
+                   and abs(sum(_dg["macro_w"].values()) - 1) < 1e-5 and DDG_VAL not in _dg["macro_w"]))
     # v90 (owner, 2026-11-03): volatility is out of the reading. It may be published beside it
     # as context - the curve's own forward vol - but no volatility score may come back in.
     checks.append(("volatility is not in the budget gauge's reading: context only, and the VIX guard on a raise",
-                   _dg["reading_of"] == ["macro", "trend"]
-                   and all(set(_dg["parts"][h]) == {"macro", "trend", "reading", "vol_forward", "years"}
+                   _dg["reading_of"] == ["macro", "trend", "valuation"]
+                   and all(set(_dg["parts"][h]) == {"macro", "trend", "valuation", "reading", "vol_forward", "years"}
                            for h in _dg["parts"])
                    and all(_dg["parts"][h]["vol_forward"] == next(v["forward"] for v in p["vol_ts"] if v["label"] == h)
                            for h in ("5Y", HZ_LABEL))
@@ -9519,17 +9582,26 @@ def report():
                            and abs((r["y1"] + 2 * r["y23"]) / 3 - r["y3_avg"]) < 1e-9
                            and r["y3_avg"] == DRIVER_PATH[r["name"]]["3Y"] and r["y45"] == DRIVER_PATH[r["name"]]["5Y"]
                            and _toward([r["now"], r["y1"], r["y23"], r["y45"], DRIVER_NEUTRAL_10]) for r in _ddr)))
-    checks.append(("the gauge's macro parts are the weighted drivers for each span, on 1-5",
-                   _dg["parts"]["1Y"]["macro"] == to5(sum(r["weight"] * r["y1"] for r in _ddr))
-                   and _dg["parts"]["3Y"]["macro"] == to5(sum(r["weight"] * r["y23"] for r in _ddr))
-                   and _dg["parts"]["5Y"]["macro"] == p["gauge_path"]["5Y"]))
+    _ddn = [r for r in _ddr if r["name"] != DDG_VAL]; _ddv = next(r for r in _ddr if r["name"] == DDG_VAL)
+    _w6 = sum(r["weight"] for r in _ddn)
+    checks.append(("the gauge's macro parts are the six non-valuation drivers for each span, re-weighted, on 1-5",
+                   _dg["parts"]["1Y"]["macro"] == to5(sum(r["weight"] * r["y1"] for r in _ddn) / _w6)
+                   and _dg["parts"]["3Y"]["macro"] == to5(sum(r["weight"] * r["y23"] for r in _ddn) / _w6)
+                   and _dg["parts"]["5Y"]["macro"] == to5(sum(r["weight"] * r["y45"] for r in _ddn) / _w6)))
+    checks.append(("the gauge's valuation parts are the valuation driver's own path, year by year, on 1-5, and the Budget tab's record of it is that path",
+                   _dg["parts"]["1Y"]["valuation"] == to5(_ddv["y1"]) and _dg["parts"]["3Y"]["valuation"] == to5(_ddv["y23"])
+                   and _dg["parts"]["5Y"]["valuation"] == to5(_ddv["y45"]) and _dg["parts"][HZ_LABEL]["valuation"] == 3.0
+                   and (_dg["valuation"]["now"], _dg["valuation"]["y1"], _dg["valuation"]["y23"], _dg["valuation"]["y45"])
+                       == (_ddv["now"], _ddv["y1"], _ddv["y23"], _ddv["y45"])))
     checks.append(("the gauge's trend parts average each sleeve's span score, and years 4-5 are the 5-year trend",
                    all(_dg["parts"][h]["trend"] == round(sum(_dg["trend_spans"][h].values()) / len(TREND), 2)
                        for h in _dg["views"])
                    and all(_dg["trend_spans"]["5Y"][f] == TREND[f]["score"]["5Y"] for f in TREND)))
     # The split cannot move the reading: the same inputs read on the pre-v103 rule (3 and 5 years at
     # 60 / 40) land within a rounding step of it - the restated month-end review rests on this.
-    _old = _hu2(sum(Decimal(repr(_hu2((Decimal(repr(GAUGE_PATH[h])) + Decimal(repr(_ddg_trend(h)))) / 2))) * Decimal(w)
+    _vp = {h: {n: DRIVER_PATH[n][h] for n in DRIVER_PATH} for h in ("3Y", "5Y")}
+    _old = _hu2(sum(Decimal(repr(_hu2((Decimal(repr(_macro_part(_vp[h]))) + Decimal(repr(_ddg_trend(h)))
+                                       + Decimal(repr(to5(_vp[h][DDG_VAL])))) / 3))) * Decimal(w)
                     for h, w in (("3Y", "0.6"), ("5Y", "0.4"))))
     checks.append((f"splitting year 1 out leaves the reading where the 3-and-5-year rule puts it ({_dg['value']} vs {_old})",
                    abs(_dg["value"] - _old) <= 0.011))

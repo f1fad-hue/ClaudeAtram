@@ -105,14 +105,15 @@ every update:
 
 **The Budget tab** reads, on 1-5, whether the next five years justify moving the 25% budget -
 year 1 (20%), years 2-3 (40%) and years 4-5 (40%), with years 6-10 the neutral anchor (owner,
-15 Nov 2026) - from the macro drivers and the market trend over each span (volatility left the
-reading on 3 Nov 2026 at the owner's instruction and stays as the guard on a raise), with
+15 Nov 2026) - from three parts over each span: the macro drivers other than valuation, the
+market trend and market valuation (its own part from 16 Nov 2026, so it counts once; volatility
+left the reading on 3 Nov 2026 and stays as the guard on a raise), with
 bands for a step anywhere from 20% to 30%, one point at a time (owner, 16 Nov 2026; 24-27%
 until then), guards that must also be clear, and what each step does to A, B and D. Year 1 is researched on its own (the section "The year ahead" gives each
 driver's reading and its evidence); years 2-3 are what the 3-year reading leaves once year 1
-is taken out, so no year counts twice and no pick moves. On 15 Nov it reads 2.80 (year 1 3.12,
-years 2-3 2.67, years 4-5 2.76): hold at 25%, as at October's month-end (restated on the
-new rule), the first review on record. Since v77 the band sets
+is taken out, so no year counts twice and no pick moves. On 16 Nov it reads 2.93 (year 1 3.32,
+years 2-3 2.83, years 4-5 2.83): hold at 25%, as at October's month-end (restated on the
+three-part rule), the first review on record. Since v77 the band sets
 the budget for A and B (owner, 28 Oct), and since v96 for D, through the same guards.
 
 Portfolio C - Nasdaq Equity Income held at exactly 50%, the one exemption from the 35% cap, the

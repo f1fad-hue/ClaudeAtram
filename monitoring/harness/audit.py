@@ -274,9 +274,15 @@ ck("the year-1 table lists the seven drivers at their weights, now as the publis
 _y23 = {x["name"]: round((3 * x["path"]["3Y"] - _GD[x["name"]]["y1"]) / 2, 3) for x in DR}
 ck("years 2-3 are what the 3-year path leaves once year 1 is taken out, so year 1 is not counted twice",
    all(abs(_GD[n]["y23"] - v) < 1e-9 and 1 <= v <= 10 for n, v in _y23.items()), f"{ {n: (_GD[n]['y23'], v) for n, v in _y23.items()} }")
-_mac = {"1Y": to5(sum(x["weight"] * _GD[x["name"]]["y1"] for x in DR)),
-        "3Y": to5(sum(x["weight"] * _y23[x["name"]] for x in DR)),
-        "5Y": D["gauge_path"]["5Y"], "10Y": D["gauge_path"]["10Y"]}
+# v106 (owner, 16 Nov): valuation is its own part, so the macro part is the other six drivers,
+# their weights scaled to one - re-derived here from the drivers' own weights and paths.
+_VALN = "Valuation support"; _DR6 = [x for x in DR if x["name"] != _VALN]; _W6 = sum(x["weight"] for x in _DR6)
+_xv = next(x for x in DR if x["name"] == _VALN)
+_mac = {"1Y": to5(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6),
+        "3Y": to5(sum(x["weight"] * _y23[x["name"]] for x in _DR6) / _W6),
+        "5Y": to5(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6),
+        "10Y": to5(sum(x["weight"] * x["path"]["10Y"] for x in _DR6) / _W6)}
+_vlp = {"1Y": to5(_GD[_VALN]["y1"]), "3Y": to5(_y23[_VALN]), "5Y": to5(_xv["path"]["5Y"]), "10Y": to5(_xv["path"]["10Y"])}
 _TR = D["trend"]; _ov = lambda a, b, c, e: max(0.0, min(b, e) - max(a, c))
 def _tsp(v, a, b):
     wm = _ov(a, b, *_TR["mom_years"]) / (b - a); wr = _ov(a, b, *_TR["rev_years"]) / (b - a)
@@ -288,18 +294,21 @@ _trp = {h: round(sum(_ts[h].values()) / len(_ts[h]), 2) for h in _sp}
 _trp["10Y"] = round(sum(v["score"]["10Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)
 from decimal import Decimal as _D, ROUND_HALF_UP as _HU
 _q2 = lambda x: float(x.quantize(_D("0.01"), rounding=_HU))      # exact half-up, the page's convention
-_rd = {h: _q2((_D(str(_mac[h])) + _D(str(_trp[h]))) / 2) for h in _mac}
-ck("each budget-gauge view reads the mean of the driver gauge and the trend score over its span - volatility not in it",
-   G["reading_of"] == ["macro", "trend"] and list(G["parts"]) == ["1Y", "3Y", "5Y", "10Y"]
+_rd = {h: _q2((_D(str(_mac[h])) + _D(str(_trp[h])) + _D(str(_vlp[h]))) / 3) for h in _mac}
+ck("each budget-gauge view reads the mean of macro (six drivers), trend and valuation over its span - volatility not in it",
+   G["reading_of"] == ["macro", "trend", "valuation"] and list(G["parts"]) == ["1Y", "3Y", "5Y", "10Y"]
    and all(G["parts"][h]["macro"] == _mac[h] and G["parts"][h]["trend"] == _trp[h]
+           and G["parts"][h]["valuation"] == _vlp[h]
            and G["parts"][h]["reading"] == _rd[h] and "vol" not in G["parts"][h] for h in _mac),
-   f"{ {h: (G['parts'][h]['macro'], G['parts'][h]['trend'], G['parts'][h]['reading']) for h in G['parts']} } vs {_mac} {_trp} {_rd}")
+   f"{ {h: (G['parts'][h]['macro'], G['parts'][h]['trend'], G['parts'][h]['valuation'], G['parts'][h]['reading']) for h in G['parts']} } vs {_mac} {_trp} {_vlp} {_rd}")
 _val = _q2(sum(_D(str(_rd[h])) * _D(str(_wv[h])) for h in G["views"]))
 ck(f"the budget gauge is the year-1, years 2-3 and years 4-5 readings weighted by their share of the first five years ({_val})",
    G["value"] == _val, f"{G['value']} vs {_val}")
 # The split must not move the gauge beyond rounding: the old 3- and 5-year rule (60/40 on the
 # 3-year average and years 4-5) read from the same inputs.
-_old3 = _q2((_D(str(D["gauge_path"]["3Y"])) + _D(str(round(sum(v["score"]["3Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)))) / 2)
+_old3 = _q2((_D(str(to5(sum(x["weight"] * x["path"]["3Y"] for x in _DR6) / _W6)))
+             + _D(str(round(sum(v["score"]["3Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)))
+             + _D(str(to5(_xv["path"]["3Y"])))) / 3)
 _old = _q2(_D(str(_old3)) * _D("0.6") + _D(str(_rd["5Y"])) * _D("0.4"))
 ck(f"splitting year 1 out leaves the gauge where the 3- and 5-year rule reads it, to rounding ({_old})",
    abs(G["value"] - _old) <= 0.011, f"{G['value']} vs {_old}")

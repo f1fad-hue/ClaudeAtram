@@ -1476,9 +1476,19 @@
   "bsp_cpi_2026": 6.1,
   "bsp_cpi_2027": 6.0,
   "bsp_cpi_2028": 3.3,
-  "cape": 40.7,
+  "cape": 38.9,
+  "cape_date": "2026-11-06",
+  "cape_prev": 40.7,
   "cape_high": 44.2,
   "cape_median": 16.6,
+  "cape_disputed_nov": [
+   38.43,
+   38.8,
+   38.9,
+   39.86
+  ],
+  "vanguard_us_10y_lo": 4.8,
+  "vanguard_us_10y_hi": 6.8,
   "ltg_eps": 16.7,
   "ltg_hist_fcst": 22.3,
   "ltg_hist_real": 9.5,
@@ -1701,7 +1711,7 @@
    "3Y": 3.0,
    "5Y": 3.33,
    "10Y": 3.44,
-   "why": "Held. On 13 Nov the Nasdaq fell 0.91% to 25136.27, the S&P fell 0.40% to 7561.67 and the Dow rose 0.10% to 52347.55 (CappNotes; AP; TheStreet), as the Nvidia turmoil weighed on tech and October's producer prices rose 6.5% on the year; on 12 Nov the Nasdaq had fallen 0.39% and the S&P 0.35% after Nvidia said Jensen Huang had resigned, the S&P erasing a sharp opening drop (CappNotes; AP; StockTitan), and on 11 Nov risen 1.60% and 1.31% as CoreWeave's results lifted the AI names (CappNotes; Yahoo Finance); the S&P still gained 2.5% on the week, its first weekly gain since early October. On 10 Nov the Nasdaq had fallen 0.74% and the S&P 0.38% as October's core CPI beat forecasts and yields jumped (AP; Kiplinger). On 9 Nov the Nasdaq had risen 2.74% and the S&P 2.35%, its best day since April, as oil fell and the chipmakers recovered (CNBC; the Motley Fool). On 6 Nov the Nasdaq had risen 1.09% and the S&P 0.31% as October's payrolls beat. On 5 Nov the AI sell-off had come back harder: the Nasdaq fell 5.52% into correction against its October record, the S&P 4.36% and the Dow 3.44% (CNBC; Fox Business), as Qualcomm's guidance and fears that a Democratic Congress would slow the data-centre build-out took the chipmakers down (Reuters, via Investing.com). That undid the first session after the vote: on 4 Nov the Dow had risen 3.03%, its best day since April 2025, and the S&P 1.58%, as oil fell and Apple closed at a record (AP; CNBC). On 3 Nov, Election Day, the S&P had risen 0.36% and the Dow fallen 0.38% on Apple's holiday-quarter margin outlook. On 2 Nov a 7.63% fall in Brent had lifted the Dow 0.41% while the Nasdaq fell 1.07% as Oracle set out to raise money for its build-out, and on 30 Oct the S&P had its worst day since June, 1.82%, as Intel had its worst day since 1974 on a weak forecast and Amazon's profit disappointed, a day after Alphabet's quarter revived the question of what the AI build-out earns. The economy is not the problem: GDP grew at a 3.4% annual rate in the third quarter against 3.1% expected, but September core PCE was 3.1% on the year, October's consumer prices rose 0.4%, core 0.3%, each a tenth above forecast, and its producer prices 0.3%, 6.5% on the year, and ISM manufacturing rose to 55.5 in October, job openings to about 7.52m in September, and ADP's private payrolls by 86k in October against 69k expected, with initial claims at 200k in the week to 7 Nov and the BLS's October payrolls at 165k against 59k expected, unemployment 4.1%; two Fed voters wanted a hike on 28 Oct, FedWatch has one by December at 100% on 13 Nov, and the 10-year closed at 5.15% on 13 Nov. FactSet's 30 Oct count has 82% of reporting companies beating estimates, and its next update has the index on 17.7x forward earnings on 5 Nov, below its five- and ten-year averages. The consumer is the weak point: Michigan sentiment's first November read is 51.0, a three-month high but still low, after October's 48.0, retail sales rose 0.8% in September, the saving rate down to 3.8%. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +49.6% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate through all three - 4.1% at the end of 2026 and 2027, 3.9% at end-2028 - and the cyclically adjusted P/E is 40.7, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost the next years' returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): 6.25, as policy reaches neutral (3.6% at end-2029) and the AI spending has either paid or been digested. Most houses' decade forecasts favour non-US over US equities on the same valuation.",
+   "why": "Held. On 13 Nov the Nasdaq fell 0.91% to 25136.27, the S&P fell 0.40% to 7561.67 and the Dow rose 0.10% to 52347.55 (CappNotes; AP; TheStreet), as the Nvidia turmoil weighed on tech and October's producer prices rose 6.5% on the year; on 12 Nov the Nasdaq had fallen 0.39% and the S&P 0.35% after Nvidia said Jensen Huang had resigned, the S&P erasing a sharp opening drop (CappNotes; AP; StockTitan), and on 11 Nov risen 1.60% and 1.31% as CoreWeave's results lifted the AI names (CappNotes; Yahoo Finance); the S&P still gained 2.5% on the week, its first weekly gain since early October. On 10 Nov the Nasdaq had fallen 0.74% and the S&P 0.38% as October's core CPI beat forecasts and yields jumped (AP; Kiplinger). On 9 Nov the Nasdaq had risen 2.74% and the S&P 2.35%, its best day since April, as oil fell and the chipmakers recovered (CNBC; the Motley Fool). On 6 Nov the Nasdaq had risen 1.09% and the S&P 0.31% as October's payrolls beat. On 5 Nov the AI sell-off had come back harder: the Nasdaq fell 5.52% into correction against its October record, the S&P 4.36% and the Dow 3.44% (CNBC; Fox Business), as Qualcomm's guidance and fears that a Democratic Congress would slow the data-centre build-out took the chipmakers down (Reuters, via Investing.com). That undid the first session after the vote: on 4 Nov the Dow had risen 3.03%, its best day since April 2025, and the S&P 1.58%, as oil fell and Apple closed at a record (AP; CNBC). On 3 Nov, Election Day, the S&P had risen 0.36% and the Dow fallen 0.38% on Apple's holiday-quarter margin outlook. On 2 Nov a 7.63% fall in Brent had lifted the Dow 0.41% while the Nasdaq fell 1.07% as Oracle set out to raise money for its build-out, and on 30 Oct the S&P had its worst day since June, 1.82%, as Intel had its worst day since 1974 on a weak forecast and Amazon's profit disappointed, a day after Alphabet's quarter revived the question of what the AI build-out earns. The economy is not the problem: GDP grew at a 3.4% annual rate in the third quarter against 3.1% expected, but September core PCE was 3.1% on the year, October's consumer prices rose 0.4%, core 0.3%, each a tenth above forecast, and its producer prices 0.3%, 6.5% on the year, and ISM manufacturing rose to 55.5 in October, job openings to about 7.52m in September, and ADP's private payrolls by 86k in October against 69k expected, with initial claims at 200k in the week to 7 Nov and the BLS's October payrolls at 165k against 59k expected, unemployment 4.1%; two Fed voters wanted a hike on 28 Oct, FedWatch has one by December at 100% on 13 Nov, and the 10-year closed at 5.15% on 13 Nov. FactSet's 30 Oct count has 82% of reporting companies beating estimates, and its next update has the index on 17.7x forward earnings on 5 Nov, below its five- and ten-year averages. The consumer is the weak point: Michigan sentiment's first November read is 51.0, a three-month high but still low, after October's 48.0, retail sales rose 0.8% in September, the saving rate down to 3.8%. The anchor holds at 6.5 on two structural points: the US is a net energy EXPORTER, a relative tailwind with Brent +49.6% y/y, and NDX at 22.4x forward on its last verified reading sat below its 10y and 5y averages. J.P. Morgan's 2027 assumptions lift US large caps to 7.5% from 6.7%; that is already in every US fund's base return, so it does not move the anchor as well. THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps policy above its 3.2% long-run rate through all three - 4.1% at the end of 2026 and 2027, 3.9% at end-2028 - and the cyclically adjusted P/E is 38.9, against a 44.2 record and a 16.6 long-run median: a valuation that has historically cost the next years' returns, whatever the forward multiple says. Against them, earnings growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): 6.25, as policy reaches neutral (3.6% at end-2029) and the AI spending has either paid or been digested. Most houses' decade forecasts favour non-US over US equities on the same valuation.",
    "blend_10": 6.15,
    "3Y_10": 5.5,
    "5Y_10": 6.25,
@@ -1903,7 +1913,7 @@
     "10Y": 3.0
    },
    "blend_5": 3.13,
-   "path_why": "Asia at 10.5x and Europe at 15.4x are cheap, and the S&P's forward multiple is below its averages, but on ten-year earnings the S&P is on 40.7, near the 44.2 record: 6.5 for years 1-3, neutral for years 4-5, where the base returns already price the starting multiple.",
+   "path_why": "Asia at 10.5x and Europe at 15.4x are cheap, and the S&P's forward multiple, 17.7x, is below its averages, but on ten-year earnings the S&P is on 38.9 (6 Nov), from 40.7 in October and near the 44.2 record: 6.5 for years 1-3, neutral for years 4-5, where the base returns already price the starting multiple - Vanguard's model puts US stocks at 4.8-6.8% a year for the decade on those valuations, against the 7.5% J.P. Morgan assumption the funds are built on.",
    "blend_10": 5.8
   },
   {
@@ -3325,7 +3335,7 @@
   "improvement": 2.83
  },
  "dd_gauge": {
-  "value": 2.8,
+  "value": 2.93,
   "views": [
    "1Y",
    "3Y",
@@ -3397,7 +3407,7 @@
     "weight": 0.1,
     "now": 8.0,
     "y1": 7.5,
-    "why": "The S&P is on 17.7x forward, below its averages, and Asia on 10.5x; a year is too short for the 40.7 cyclically adjusted multiple to bite, but the discount narrows as prices recover: 7.5.",
+    "why": "The S&P is on 17.7x forward, below its averages, and Asia on 10.5x; a year is too short for the 38.9 cyclically adjusted multiple to bite, but the discount narrows as prices recover: 7.5.",
     "y23": 6.0,
     "y3_avg": 6.5,
     "y45": 5.5
@@ -3446,31 +3456,70 @@
     "M_GEO": 2.53
    }
   },
+  "parts_date": "2026-11-16",
+  "macro_w": {
+   "Monetary policy & liquidity": 0.222222,
+   "Inflation trajectory": 0.166667,
+   "Growth momentum": 0.166667,
+   "Corporate earnings": 0.222222,
+   "Volatility & risk appetite": 0.111111,
+   "Geopolitics & energy": 0.111111
+  },
+  "valuation": {
+   "name": "Valuation support",
+   "now": 8.0,
+   "y1": 7.5,
+   "y23": 6.0,
+   "y45": 5.5,
+   "y10": 5.5,
+   "why_y1": "The S&P is on 17.7x forward, below its averages, and Asia on 10.5x; a year is too short for the 38.9 cyclically adjusted multiple to bite, but the discount narrows as prices recover: 7.5.",
+   "why_path": "Asia at 10.5x and Europe at 15.4x are cheap, and the S&P's forward multiple, 17.7x, is below its averages, but on ten-year earnings the S&P is on 38.9 (6 Nov), from 40.7 in October and near the 44.2 record: 6.5 for years 1-3, neutral for years 4-5, where the base returns already price the starting multiple - Vanguard's model puts US stocks at 4.8-6.8% a year for the decade on those valuations, against the 7.5% J.P. Morgan assumption the funds are built on.",
+   "cape": 38.9,
+   "cape_date": "2026-11-06",
+   "spx_fwd_pe": 17.7,
+   "spx_fwd_pe_date": "2026-11-05",
+   "spx_fwd_pe_5y": 19.8,
+   "spx_fwd_pe_10y": 19.1,
+   "ndx_fwd_pe": 22.4,
+   "asia_fwd_pe": 10.5,
+   "sxxp_fwd_pe": 15.37,
+   "cape_high": 44.2,
+   "cape_median": 16.6,
+   "ltcma_us_eq": 7.5,
+   "vanguard_us_10y": [
+    4.8,
+    6.8
+   ]
+  },
   "parts": {
    "1Y": {
-    "macro": 2.42,
+    "macro": 2.25,
     "trend": 3.81,
+    "valuation": 3.89,
     "vol_forward": 18.87,
     "years": "Year 1",
-    "reading": 3.12
+    "reading": 3.32
    },
    "3Y": {
-    "macro": 2.72,
+    "macro": 2.66,
     "trend": 2.61,
+    "valuation": 3.22,
     "vol_forward": 19.42,
     "years": "Years 2-3",
-    "reading": 2.67
+    "reading": 2.83
    },
    "5Y": {
-    "macro": 2.9,
+    "macro": 2.89,
     "trend": 2.61,
+    "valuation": 3.0,
     "vol_forward": 19.49,
     "years": "Years 4-5",
-    "reading": 2.76
+    "reading": 2.83
    },
    "10Y": {
     "macro": 3.0,
     "trend": 3.0,
+    "valuation": 3.0,
     "vol_forward": 19.5,
     "years": "Years 6-10",
     "reading": 3.0
@@ -3478,7 +3527,8 @@
   },
   "reading_of": [
    "macro",
-   "trend"
+   "trend",
+   "valuation"
   ],
   "longrun": 19.5,
   "bands": [
@@ -3584,7 +3634,7 @@
   "reviews": [
    [
     "2026-10-31",
-    2.8
+    2.93
    ]
   ],
   "alt": {
@@ -10333,6 +10383,41 @@
    "org": "NVIDIA",
    "what": "NVIDIA sets conference call for third-quarter financial results - 17 Nov 2026",
    "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/"
+  },
+  {
+   "org": "HistoryOfMarket",
+   "what": "Shiller PE ratio today - 38.9 on 6 Nov 2026 (cape_disputed_nov)",
+   "url": "https://historyofmarket.com/sp500/pe/"
+  },
+  {
+   "org": "Buffett Indicator",
+   "what": "S&P 500 P/E ratio - live Shiller PE 38.9, trailing P/E 25.1, Nov 2026",
+   "url": "https://buffettindicator.org/pe-ratio"
+  },
+  {
+   "org": "Chartrow",
+   "what": "Shiller PE ratio today - 38.8 on 12 Nov 2026 (cape_disputed_nov)",
+   "url": "https://chartrow.com/sp500/shiller-pe"
+  },
+  {
+   "org": "GuruFocus",
+   "what": "S&P 500 Shiller CAPE ratio - 39.86, 1 Nov 2026 (cape_disputed_nov)",
+   "url": "https://www.gurufocus.com/economic_indicators/56/sp-500-shiller-cape-ratio"
+  },
+  {
+   "org": "MacroMicro",
+   "what": "US S&P 500 cyclically adjusted price-earnings ratio - 38.43 for Nov 2026 (cape_disputed_nov)",
+   "url": "https://en.macromicro.me/series/1632/us-shiller-cape"
+  },
+  {
+   "org": "Morningstar",
+   "what": "Are investors expecting too much from the stock market? - Vanguard's 4.8-6.8% ten-year US equity range",
+   "url": "https://www.morningstar.com/markets/are-investors-expecting-too-much-stock-market"
+  },
+  {
+   "org": "Beinsure",
+   "what": "Stock market return forecast: Fidelity and Vanguard predict slower growth - Vanguard 4.8-6.8% a year",
+   "url": "https://beinsure.com/stock-market-return-forecast-fidelity-vanguard-prediction/"
   }
  ]
 }

@@ -104,6 +104,7 @@ def m_nan(d): _drv(d, "Valuation")["note"] += " NaN"
 def m_retired(d): d["portfolio_a"]["is_review_pick"] = True                                    # the retired review flag back
 def m_opt(d): d["optimized"] = d["portfolio_b"]                                                # the retired optimiser key back
 def m_cat(d): d["catalysts"].append({"date": "2026-10-01", "what": "Old event", "why": "past"})
+def m_valpart(d): q = d["dd_gauge"]["parts"]["1Y"]; q["valuation"] = round(q["valuation"] + 0.1, 2)   # a valuation part off its path (v106)
 def m_band30(d): d["dd_gauge"]["bands"][-1]["cap"] = 31.0                                # a band past the owner's 30% (v105)
 def m_step(d):                                                                                 # a budget step printing a CAGR its search did not rank on
     e = next(iter(d["dd_gauge"]["alt"].values()))["b"]; e["cagr"] = round(e["cagr"] - 0.01, 2)
