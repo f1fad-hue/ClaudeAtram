@@ -2,6 +2,110 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-16 — v104: New York, oil, the VIX, Treasuries, Seoul, Tokyo and Manila roll to 13 Nov; October PPI, November Michigan and Japan's Q3 GDP added; FactSet's 17.7x forward P/E carried; the week's fund check; A, B and D unchanged
+
+A full review at the owner's instruction (debug, code review, sanity check, error hunt, cleanup, and a re-check
+of the data, the 22 funds, the portfolios, the budget gauge and the four analyses). Cut-off **02:00 UTC on Mon
+16 Nov**. Closed by then: New York's, the VIX's, the oil settles' and the Treasury market's 12 and 13 Nov sessions;
+Seoul's, Tokyo's and Manila's 13 Nov sessions. No Asian 16 Nov session had closed. Every primary site tested -
+Cboe, CME, ICE, PSE, KRX, JPX, the US Treasury, the Fed, BLS, FRED, IMF PortWatch, the Bureau of the Treasury, PSA,
+BSP, uitf.com.ph and atram.com.ph - returned no connection (the Default environment); primary figures were read
+through search results. Periodic items: **the weekly full fund check** (this is the week's first review); no
+month-end (30 Nov) or quarter-end. Contract dates: the VIX's November future settles 18 Nov and the strip's window
+ends 19 Nov; WTI December's last trade is 20 Nov; Brent January expires 30 Nov.
+
+**Rolled.**
+- S&P 500 7,561.67 (−0.40%), Nasdaq 25,136.27 (−0.91%), Dow 52,347.55 (+0.10%) on 13 Nov, after 12 Nov's falls
+  (−0.35%, −0.39%, −0.36%) as Nvidia said Jensen Huang had resigned (CappNotes; AP; TheStreet; StockTitan).
+- VIX 18.70 (+6.92%) on 12 Nov and 19.30 (+3.21%) on 13 Nov, still 0.20 under the 19.5 long run (CappNotes;
+  FRED; CNBC; Hollowpoint).
+- Brent January $95.82 (+3.30%) on 12 Nov, on unconfirmed Houthi claims against Saudi oil sites and Iranian
+  reports of tanker blasts, and $95.84 (+$0.02) on 13 Nov; WTI December $88.74 and $88.56 (Reuters; EnergyNow;
+  FinanceFeeds; Rigzone).
+- Treasury par curve: 10-year 5.10% (12 Nov) and 5.15% (13 Nov); 2-year 4.86% and 4.88%; 30-year 5.47% (the
+  Treasury's table; the Fed's H.15; Stockinsky; StockMarketWatch; Forbes).
+- KOSPI 5,290.53 (−0.98%); Nikkei 61,142.35 (+0.53%) after 60,819.36 (−0.70%) on 12 Nov, which now chains both
+  ways (the 12 Nov dispute stays open for Nikkei's own figure); PSEi 5,593.49 (−1.18%), **a new 2026 low**.
+- FedWatch re-quoted at 13 Nov: a December hike still 100% priced (Stocktwits; KuCoin).
+
+**Held:** the peso at 12 Nov's 63.70 (13 Nov reported as 63.72 and 63.68); the 9 Nov T-bill auction (16 Nov's
+results come after the cut-off); PortWatch's 8 Nov count (its latest publication); the VIX futures strip, flagged,
+to the end of its window on 19 Nov; FactSet's 30 Oct season counts (its 6 Nov counts are in FactSet's own pages
+only).
+
+**Added.** US October PPI: +0.3% on the month against 0.4% expected, 6.5% on the year, the most since November
+2022 (BLS; Babypips; Economy.com). Michigan's November first read, 51.0 against 48.0 expected (see error 1).
+Japan's Q3 GDP, −0.1% at an annual rate against +0.3% expected (Xinhua; AP). FactSet's forward P/E: 17.7x on
+5 Nov, from 18.7x, the lowest since November 2023 (FactSet; FX News Group). The Gulf: the 12 Nov claims, the IEA's
+surplus call, the stalled talks. Calendar: US PPI and Japan's GDP retired; nothing new in two sources. 42 sources
+added to the Report tab's list, each with its link.
+
+**Funds - the week's full check.**
+- ATRAM's notices: none new; the 14 Sep trust-fee rise stands.
+- Target managers' notices: one found - Fidelity's 22 Oct notice amending its umbrella's articles, which names
+  Global Technology's classes. It is no fee or mandate change, so no forecast moves.
+- Nasdaq Equity Income's target charge reconfirmed at 0.35% (justETF; finanzen.net).
+- No 31 Oct holdings were found in two sources, so the 30 Sep lists stay; their limit is 29 Nov.
+- The 1-year test could not be refreshed: uitf.com.ph is blocked and not indexed, so the 5 Nov figures stand.
+- Held-out what-if re-run: every weight identical.
+
+**Scores.** Every score HELD (DRIVER_PREV unchanged). Volatility stays at 2.5: its undo was set at a VIX close
+above the long run, and 19.30 is under it, though the VIX rose two sessions running and Seoul fell twice. Gauge
+2.31. The budget gauge holds at 2.80 (year 1 3.12, years 2-3 2.67, years 4-5 2.76). Hold at 25%; guards: one
+month-end review of two, geopolitics 1.5 (fails), the VIX clear at 19.30.
+
+**Portfolios (re-run, unchanged).** A 7.31% / −24.9% (10-year view); B 7.10% / −24.9%; D 7.16% / −24.9%, four
+funds. The futures strip the volatility model reads is unchanged, so no fund's drawdown moved.
+
+**Errors found and fixed (recorded before fixing).**
+1. **Michigan's November first read (6 Nov, 51.0) was missed by the v94-v103 reviews.** The check only asked
+   whether October's reading was final. The reading is now carried, and the check requires the newest edition
+   (a reading no more than 21 days old), with a planted-error test for it.
+2. FactSet's 6 Nov update (forward P/E 17.7) was not rolled by v100 or v102. It is now carried under its own date.
+3. The volatility note and summary hard-coded "fell" beside the latest move. They would have printed "fell 3.21%"
+   for a rise; the engine's sign check caught it. The verb now comes from the move's sign.
+4. **The geopolitics note bound the latest Brent settle to 11 Nov's move and sources** ("$95.84 on 13 Nov, up
+   $1.27 (Reuters, via The Star; Vantage Markets)"), and no check caught it. Each Brent figure in that note is now
+   read by its own date.
+5. The monetary note had static text beside rolling figures:
+   - "after October's CPI, from 100% on 10 Nov"
+   - "the last close carried"
+   - the 2-year's 10 Nov sources beside a 13 Nov figure
+   - "its 10 Nov close being in one source" beside the 30-year
+   Its summary also said the CPI came "then", after a 13 Nov read. All rewritten.
+6. Other notes printed one day's wording beside another day's figure:
+   - The Asia note called the 13 Nov Nikkei "a third straight gain", after a fall, with 11 Nov's sources.
+   - It explained 13 Nov's KOSPI with "Nvidia's fall in New York's after-hours".
+   - The US note printed fixed sources beside whichever session was latest.
+   All are now date-guarded or rewritten.
+7. The Philippine note restated "its 2026 low" after the PSEi had just set it. Removed.
+8. The valuation note's reasoning, "the discount widened on a fall in prices, not a rise in earnings", is wrong for
+   the year: FactSet's forward EPS rose 33.6% against the price's 7.4%. It now cites only the 30 Oct-5 Nov step,
+   which did come with the sell-off.
+9. Made in this review and caught by the engine's placeholder check before publishing: a line of the valuation note
+   lost its f-string prefix. Fixed.
+10. The audit flagged a new Michigan input that nothing read. Removed.
+
+**Within two days of a limit:** FedWatch's 13 Nov read (five-day limit, 18 Nov). Also near: the VIX futures strip
+(window ends 19 Nov), WTI December's last trade (20 Nov), PortWatch (22 Nov) and the T-bill auction (23 Nov).
+
+**Due before the next review.**
+- New York's 16 Nov session.
+- Asia's 16 Nov closes.
+- The 16 Nov T-bill auction.
+- US retail sales and Nvidia's results (17 Nov).
+- The FOMC minutes (18 Nov).
+- A new VIX futures board in two sources before 19 Nov.
+- The WTI roll to January (20 Nov).
+- Michigan's final (20 Nov).
+- FactSet's 13 Nov update.
+- The Philadelphia Fed's Q4 survey.
+- A Brent settle nearer 13 Nov 2025 for the y/y base.
+- The month-end band review (30 Nov).
+
+Checks: engine 263/263; audit 260/260; page 16/16 at phone width; mutation test 62/62 caught (one new mutant: a
+final Michigan reading past its next edition). All six tabs read at phone width.
+
 ## 2026-11-15 — v103: the drawdown budget reads 1, 3, 5 and 10 years, with a researched year ahead; the gauge holds at 2.80, 25%; A, B and D unchanged
 
 At the owner's instruction: "Update drawdown budget with 1, 3, 5, 10yrs deep research and analysis of macro

@@ -70,7 +70,8 @@ def m_tcheck(d): _fund(d, 1)["target_check"]["date"] = "2026-10-20"             
 def m_stale(d): d["macro"]["equity_date"] = "2026-10-20"                                       # a close a week behind
 def m_lt(d): d["lookthrough"]["ATRQIAP"]["as_of"] = "2026-08-31"                               # holdings past 60 days
 def m_imf(d): d["macro"]["imf_weo_vintage"] = "2026-07-08"                                     # last edition back after the next
-def m_umich(d): d["macro"]["us_umich_oct_final"] = False; d["macro"]["us_umich_oct_date"] = "2026-10-09"
+def m_umich2(d): d["macro"]["us_umich_latest_final"] = True; d["macro"]["us_umich_latest_date"] = "2026-10-23"   # a final past its next edition (v104)
+def m_umich(d): d["macro"]["us_umich_latest_final"] = False; d["macro"]["us_umich_latest_date"] = "2026-10-09"
 def m_chain(d): d["macro"]["spx_chg_pts"] = round(d["macro"]["spx_chg_pts"] - 0.05, 2)         # a move 0.05 off its prior
 def m_vix(d): d["macro"]["vix_latest"] = d["macro"]["vix_history"][-2][1]                      # the VIX a session behind
 def m_brent(d): d["macro"]["brent_yoy"] = round(d["macro"]["brent_yoy"] + 0.5, 2)

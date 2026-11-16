@@ -337,7 +337,8 @@ _due = max(dt.date(y, m, 1) for y in (REV.year - 1, REV.year)
 ck("the IMF edition carried is the newest whose release window has closed", _due <= d(M["imf_weo_vintage"]) <= REV,
    f"{M['imf_weo_vintage']} vs due {_due}")
 ck("Michigan sentiment is the final reading, or its first read is under two weeks old",
-   M["us_umich_oct_final"] is True or (REV - d(M["us_umich_oct_date"])).days < 14)
+   (M["us_umich_latest_final"] is True or (REV - d(M["us_umich_latest_date"])).days < 14)
+   and (REV - d(M["us_umich_latest_date"])).days <= 21)
 _US = re.compile(r"^(FOMC\b|US .*\b(GDP|PCE|CPI|PPI|payrolls|jobs report|retail sales|midterm))")
 ck("every catalyst is after the last session of its own market carried (US events against the US session)",
    all(d(c["date"]) > (d(M["equity_date"]) if _US.search(c["what"]) else AS_OF) for c in D["catalysts"]),

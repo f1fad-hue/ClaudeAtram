@@ -197,6 +197,15 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+164. A CHECK THAT ASKS "IS IT FINAL?" MUST ALSO ASK "IS THERE A NEWER ONE?". Michigan's November first read sat
+   unread for ten days behind October's final because the check asked only whether October's reading was final.
+   A monthly series is checked for its age against its release rhythm (no reading older than one cycle and a
+   half), not only for its own status.
+163. THE SOURCES, THE VERB AND THE COMPARISON ARE DATED TOO. Rolling a session moved every figure, and the words
+   around them stayed: "the VIX fell" beside a rise, "a third straight gain" beside a gain after a fall, 11 Nov's
+   sources beside 13 Nov's close, and the latest Brent settle beside 11 Nov's move. Lesson 159 dates the reason;
+   the verb comes from the sign, and the sources, the move and any streak go behind the same date guard as the
+   reason, or are read by the figure's own date key.
 162. SPLITTING A VIEW MUST NOT COUNT A YEAR TWICE. Asked to read the budget at 1, 3, 5 and 10 years, a
    first answer reused the 1-3-year average for "years 2-3" beside a researched year 1 and got 2.76 - year 1
    counted twice. The 3-year reading IS the average of years 1-3, so years 2-3 = (3 x it - year 1) / 2; the
