@@ -40,8 +40,11 @@ point on each fund's equity share; neutral at 10, where the long-run base prices
 **market trend**: each equity sleeve's market over the past year
 (momentum, for year 1 ahead) and the past 3 and 5 years annualised (reversal, for years
 2-5), each view taking them by the share of its years inside each window, z-scored against its own long-run drift and volatility, with the 10Y
-score held neutral. A reads them at 10 years alone; B and D at 1, 3, 5 and 10 (the ranking,
-macro and trend read year 1 inside years 1-3). The volatility curve tilts no forecast from
+score held neutral. A reads them at 10 years alone; B and D at 1, 3, 5 and 10. Year 1 is
+researched on its own for every analysis (the regions' `REGION_Y1` from v108, the drivers'
+`DRIVER_Y1` from v103); years 2-3 are implied by each three-year reading, so the blends do not
+change. Re-judge each region's year 1 with its three-year score: a check holds years 2-3 between
+year 1 and years 4-5. The volatility curve tilts no forecast from
 v107 (the `VOL_SENS` tilt and the Volatility tab are retired): its ten-year level sets each
 fund's volatility and so its expected drawdown (Portfolios tab, "How each drawdown is
 estimated"), and the VIX guards a raise of the budget. Refresh `TREND_INPUTS` (quarters and
@@ -208,6 +211,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+169. SHOWING A YEAR IS NOT COUNTING IT AGAIN. Asked to read the regional rankings at 1, 3, 5 and 10 years,
+   the tempting move is a fourth column weighted 10% beside the 3-year score's 30%; but the 3-year score
+   already averages years 1-3, so year 1 would count twice and every forecast would move for no new
+   evidence. Year 1 is researched on its own and years 2-3 implied, as the drivers' were in v103; the
+   four printed spans at 10/20/20/50 reproduce every region's blend exactly, the engine and the audit
+   both check it, and A, B and D re-derive unchanged. The table that shows all four analyses year by
+   year is checked cell by cell against the blends the forecasts use, so it cannot drift from them.
 168. TWO PICKS THAT AGREE NEED THEIR OWN SENTENCE. When the valuation tilt moved B onto A's mix, every
    sentence written for a gap between them still ran: "moving from A to B ... cutting expected maximum
    drawdown from −24.9% to −24.9%", "the same return, with less risk", "0.0pp more drawdown". The

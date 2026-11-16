@@ -156,6 +156,7 @@ table.dt td{text-align:right;padding:8px 0 8px 10px;border-bottom:1px solid var(
 table.dt td:first-child{text-align:left;padding-left:0;font-family:var(--body);
   font-weight:500;white-space:normal;line-height:1.3}
 table.dt tr:last-child td{border-bottom:0}
+table.dt tr.grp td{background:var(--surface-2);color:var(--ink-2);font-size:11px;padding-top:6px;padding-bottom:4px}
 .pos{color:var(--good)} .neg{color:var(--bad)}
 .swatch{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;
   vertical-align:1px;flex:none}
@@ -331,9 +332,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   </section>
 
   <section>
-    <p class="eyebrow">Regional ranking &middot; 3Y / 5Y / 10Y</p>
+    <p class="eyebrow">Regional ranking &middot; 1Y / 3Y / 5Y / 10Y</p>
     <h2 id="rhead">—</h2>
-    <p>Blended <span class="num" id="hzw1">—</span>; each point above
+    <p>Blended by the years each span covers, <span class="num" id="hzw1">—</span>; each point above
       <span class="num">3.0</span> adds <span class="num" id="tiltpp">—</span> a year to
       a sleeve's forecast.</p>
     <div class="card">
@@ -343,7 +344,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   </section>
 
   <section>
-    <p class="eyebrow">Market trend &middot; 3Y / 5Y / 10Y</p>
+    <p class="eyebrow">Market trend &middot; 1Y / 3Y / 5Y / 10Y</p>
     <h2>Momentum for a year, reversal for four</h2>
     <p id="trendlede">—</p>
     <div class="card">
@@ -454,6 +455,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <div class="card" style="margin-top:12px">
       <div class="tw"><table class="dt" id="vswt"></table></div>
       <p class="note" id="pbnote">—</p>
+    </div>
+    <!-- v108 (owner, 2026-11-16): what A, B and D read - the four analyses, year by year -->
+    <div class="card" style="margin-top:12px">
+      <h3>The four analyses, year by year</h3>
+      <p class="note" id="abylede" style="margin-top:0">—</p>
+      <div class="tw"><table class="dt" id="abytab"></table></div>
+      <p class="note" id="abynote">—</p>
     </div>
     <details class="card how">
       <summary>The funds beyond the original four</summary>
@@ -2253,6 +2261,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "variance_risk_premium": 3.5,
   "imf_weo_vintage": "2026-10-13",
   "imf_ea_2026": 1.1,
+  "imf_ea_2027": 1.2,
+  "imf_us_2026": 2.3,
+  "imf_us_2027": 2.3,
   "spx_fwd_pe": 17.7,
   "spx_fwd_pe_date": "2026-11-05",
   "spx_fwd_pe_prev": 18.7,
@@ -2533,6 +2544,12 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "5Y_10": 6.25,
    "10Y_10": 6.5,
    "blend": 3.29,
+   "1Y_10": 5.0,
+   "1Y": 2.78,
+   "y1_why": "The year ahead is the hiking end of the cycle: the futures price the Fed to about 4.73-4.78% by late 2027, above its own 4.1% median (RateProbability; SOFR futures), with the 10-year at 5.15%. Against it, analysts expect S&P 500 earnings to grow about 15-16.1% in 2027 (LSEG I/B/E/S; FactSet), the S&P is on 17.7x forward, below its 19.8x and 19.1x averages, and the IMF has growth holding at 2.3% in 2026 and 2027 (IMF; IANS): 5.0, half a point under the three-year 5.5; years 2-3 read 5.75 as policy eases.",
+   "Y23_10": 5.75,
+   "Y23": 3.11,
+   "blend_split": 3.29,
    "summary": "Held: the Nasdaq fell 0.91% and the S&P fell 0.40% on 13 Nov and 0.39% and 0.35% on 12 Nov, as Nvidia's chief executive resigned, after rises of 1.60% and 1.31% on 11 Nov; the 5.52% fall of 5 Nov took the Nasdaq into correction; GDP beat at 3.4%, producer prices rose 6.5% on the year, and FedWatch has a December hike at 100% on 13 Nov."
   },
   "EUROPE": {
@@ -2545,6 +2562,12 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "5Y_10": 4.5,
    "10Y_10": 4.5,
    "blend": 2.46,
+   "1Y_10": 3.25,
+   "1Y": 2.0,
+   "y1_why": "The largest energy importer here meets the year with Brent still averaging $85.78 in the EIA's 2027 forecast (EIA; Rigzone), the ECB at 2.50% with inflation at 3.8%, a composite PMI of 51.7 and the IMF's euro area growing 1.2% in 2027 after 1.1% (IMF; Yahoo Finance UK); 15.4x forward is the offset, and oil costs most in year 1: 3.25, half a point under the three-year 3.75; years 2-3 read 4.0 as the oil curve falls.",
+   "Y23_10": 4.0,
+   "Y23": 2.33,
+   "blend_split": 2.46,
    "summary": "Held: the ECB kept its deposit rate at 2.50% on 29 Oct with inflation at 3.8%, the October composite PMI was confirmed at a four-month low of 51.7, and September's retail volumes fell 0.7%."
   },
   "ASIA": {
@@ -2557,6 +2580,12 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "5Y_10": 7.0,
    "10Y_10": 7.0,
    "blend": 3.6,
+   "1Y_10": 6.0,
+   "1Y": 3.22,
+   "y1_why": "Asia ex-Japan earnings are forecast to grow about 27.5% in 2027 on 10.5x forward, but year 1 carries the importers' oil bill (Brent $85.78 on the EIA's 2027 average), a Bank of Japan with a December hike in view after Japan's economy shrank at a 0.1% annual rate in the third quarter, and the selling since October: 6.0, half a point under the three-year 6.5; years 2-3 read 6.75 as earnings re-rate the multiple.",
+   "Y23_10": 6.75,
+   "Y23": 3.56,
+   "blend_split": 3.6,
    "summary": "Held: the KOSPI fell 0.98% on 13 Nov and 0.61% on 12 Nov on the Nvidia news, after rising 2.60% on 11 Nov and 4.39% on 10 Nov, and the Nikkei rose 0.53% on 13 Nov after a 0.70% fall on 12 Nov; Japan's economy shrank at a 0.1% annual rate in the third quarter, and China's October exports rose 35.2%."
   },
   "PHILIPPINES": {
@@ -2569,6 +2598,12 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "5Y_10": 5.75,
    "10Y_10": 5.5,
    "blend": 2.99,
+   "1Y_10": 4.75,
+   "1Y": 2.67,
+   "y1_why": "The cash sleeve earns the bill rate, 6.49-6.86% at the 9 Nov auction, with BSP at 5.50%; BSP sees inflation at 6.0% in 2027, from 7.8% in October, so the year's real carry is thin, and the IMF's 5.1% growth moves neither the bill rate nor the unit price: 4.75, half a point under the three-year 5.25; years 2-3 read 5.5, neutral, as inflation nears 3.3% in 2028.",
+   "Y23_10": 5.5,
+   "Y23": 3.0,
+   "blend_split": 2.99,
    "summary": "Held: third-quarter growth slowed to 2.1% against 2.7% expected, with October inflation at 7.8%; the PSEi closed at 5,593.49 on 13 Nov, its lowest of 2026, the peso at 63.70 on 12 Nov, 45 centavos weaker, and 91-day bills rose to 6.493% at the 9 Nov auction."
   }
  },
@@ -2582,6 +2617,124 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "3Y": 0.2,
   "5Y": 0.2,
   "10Y": 0.5
+ },
+ "analyses_by_year": {
+  "spans": [
+   "Year 1",
+   "Years 2-3",
+   "Years 4-5",
+   "Years 6-10"
+  ],
+  "w_bd": [
+   0.1,
+   0.2,
+   0.2,
+   0.5
+  ],
+  "w_a": [
+   0.0,
+   0.0,
+   0.0,
+   1.0
+  ],
+  "rows": [
+   {
+    "analysis": "Regional ranking",
+    "name": "United States",
+    "v": [
+     2.78,
+     3.11,
+     3.33,
+     3.44
+    ],
+    "bd": 3.29,
+    "a": 3.44
+   },
+   {
+    "analysis": "Regional ranking",
+    "name": "Europe",
+    "v": [
+     2.0,
+     2.33,
+     2.56,
+     2.56
+    ],
+    "bd": 2.46,
+    "a": 2.56
+   },
+   {
+    "analysis": "Regional ranking",
+    "name": "Asia ex-Japan",
+    "v": [
+     3.22,
+     3.56,
+     3.67,
+     3.67
+    ],
+    "bd": 3.6,
+    "a": 3.67
+   },
+   {
+    "analysis": "Regional ranking",
+    "name": "Philippines (cash)",
+    "v": [
+     2.67,
+     3.0,
+     3.11,
+     3.0
+    ],
+    "bd": 2.99,
+    "a": 3.0
+   },
+   {
+    "analysis": "Macro sentiment",
+    "name": "Monetary (rates tilt)",
+    "v": [
+     1.44,
+     2.44,
+     2.78,
+     3.0
+    ],
+    "bd": 2.69,
+    "a": 3.0
+   },
+   {
+    "analysis": "Macro sentiment",
+    "name": "Geopolitics (energy tilt)",
+    "v": [
+     1.44,
+     2.11,
+     2.78,
+     3.0
+    ],
+    "bd": 2.62,
+    "a": 3.0
+   },
+   {
+    "analysis": "Market trend",
+    "name": "Five markets, average",
+    "v": [
+     3.81,
+     2.61,
+     2.61,
+     3.0
+    ],
+    "bd": 2.92,
+    "a": 3.0
+   },
+   {
+    "analysis": "Market valuation",
+    "name": "Multiples vs averages",
+    "v": [
+     3.89,
+     3.22,
+     3.0,
+     3.0
+    ],
+    "bd": 3.13,
+    "a": 3.0
+   }
+  ]
  },
  "val_channel": {
   "driver": "Valuation support",
@@ -7852,6 +8005,16 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "url": "https://www.imf.org/en/publications/weo/issues/2026/10/13/world-economic-outlook-october-2026"
   },
   {
+   "org": "IMF",
+   "what": "World Economic Outlook, October 2026, Chapter 1 - United States 2.3% in 2026 and 2.3% in 2027",
+   "url": "https://www.imf.org/-/media/files/publications/weo/2026/october/english/ch1.pdf.md"
+  },
+  {
+   "org": "IANS via Social News XYZ",
+   "what": "IMF sees US growth at 2.3 pc through 2027, 12 Oct 2026",
+   "url": "https://www.socialnews.xyz/2026/10/12/imf-sees-us-growth-at-2-3-pc-through-2027/"
+  },
+  {
    "org": "Yahoo Finance UK",
    "what": "IMF forecasts 3.1% global growth in 2026, with eurozone at 1.1%",
    "url": "https://uk.finance.yahoo.com/news/imf-forecasts-3-1-global-024937434.html"
@@ -11517,9 +11680,8 @@ $("#corrnote").textContent = D.corr_note;
   $("#tbd").textContent = new Date(M.ph_tbill_date + "T00:00:00")
     .toLocaleDateString("en-GB", { day: "numeric", month: "long" });
   ["#ntotal","#ntotal2","#ntotal3"].forEach(id => { $(id).textContent = D.universe.n_total.toLocaleString("en-US"); });
-  const hzTxt = HZK
-    .map(k => `${k} ${(D.hz_weights[k]*100).toFixed(0)}%`).join(" / ");
-  $("#hzw1").textContent = hzTxt;
+  /* v108: the regions read year 1, years 2-3, 4-5 and 6-10 (hz_split), as B and D do. */
+  $("#hzw1").textContent = HZS.map((h, i) => `${HZY[i]} ${(D.hz_split[h]*100).toFixed(0)}%`).join(" / ");
   /* Bound 2026-10-17: the formula, anchor and both calibration points were typed
      here; the engine now publishes them and checks that k reproduces the anchors. */
   const DMC = D.dd_model;
@@ -11896,7 +12058,9 @@ $("#corrnote").textContent = D.corr_note;
     `${HZK[0]} is each driver's expected average over years 1&ndash;3 and ${HZK[1]} over years
      4&ndash;5, from the evidence in each <em>Why</em>; at ${HYL} all are neutral, as the base returns
      carry the average cycle. The rates and energy tilts use Monetary and Geopolitics averaged on the
-     ${HZK.map(h => `${h} ${(D.hz_weights[h]*100).toFixed(0)}%`).join(" / ")} weights &mdash;
+     ${HZK.map(h => `${h} ${(D.hz_weights[h]*100).toFixed(0)}%`).join(" / ")} weights (the same as year 1 10%,
+     years 2&ndash;3 20%, 4&ndash;5 20% and 6&ndash;10 50%, with year 1 researched on its own: Budget tab, and the
+     Portfolios tab's four analyses year by year) &mdash;
      <b class="num">${TC.monetary_blend.toFixed(2)}</b> and
      <b class="num">${TC.geopolitics_blend.toFixed(2)}</b> on the research scale, against
      <b class="num">${mo.score_10.toFixed(1)}</b> and <b class="num">${ge.score_10.toFixed(1)}</b> now &mdash;
@@ -11908,8 +12072,11 @@ $("#corrnote").textContent = D.corr_note;
   const order = Object.entries(D.regions).sort((a,b) => b[1].blend - a[1].blend);
   const NAME = { US:"United States", EUROPE:"Europe", ASIA:"Asia ex-Japan", PHILIPPINES:"Philippines (cash)" };
   const t = $("#rtab");
+  /* v108 (owner, 2026-11-16): year 1 researched on its own, years 2-3 implied by the 3-year score
+     (the average of years 1-3), then years 4-5 and 6-10; the blend is these four at 10/20/20/50. */
+  const RSP = ["1Y", "Y23", "5Y", HYL], RSL = ["1Y", "2–3Y", "4–5Y", "6–10Y"];
   t.appendChild(el("thead", null,
-    `<tr><th>Region</th>` + HZK.map(h => `<th>${h}</th>`).join("") + `<th>Blend</th></tr>`));
+    `<tr><th>Region</th>` + RSL.map(h => `<th>${h}</th>`).join("") + `<th>Blend</th></tr>`));
   const tb = el("tbody");
   // shading anchors rescaled from the 1-10 research scale: 2.5 -> 1.67, span 6 -> 2.67
   const shade = v => { const a = Math.max(0, Math.min(1, (v - 1.67) / 2.67));
@@ -11922,7 +12089,7 @@ $("#corrnote").textContent = D.corr_note;
          2.6/2.8/3.0/3.4 against the printed horizon weights gives 3.13, beside a
          blend printed 3.14. The blend is DEFINED as the weighted average of these
          four, so they have to be shown at the precision that average is taken at. */
-      HZK.map(h => `<td><span class="cell" style="${shade(v[h])}">${v[h].toFixed(2)}</span></td>`).join("") +
+      RSP.map(h => `<td><span class="cell" style="${shade(v[h])}">${v[h].toFixed(2)}</span></td>`).join("") +
       `<td><span class="cell" style="background:var(--navy);color:#fff">${v.blend.toFixed(2)}</span></td>`));
   });
   t.appendChild(tb);
@@ -11931,7 +12098,34 @@ $("#corrnote").textContent = D.corr_note;
   order.forEach(([k,v]) => w.appendChild(el("div", { class:"rwhy" },
     `<b>${NAME[k]} &middot; ${v.blend.toFixed(2)}</b>${v.summary}` +
     `<details class="more"><summary>Why</summary><span class="scalenote">research scale ` +
-    `${v.blend_10.toFixed(2)} / 10</span>${v.why}</details>`)));
+    `${v.blend_10.toFixed(2)} / 10</span><p><b>Year 1.</b> ${v.y1_why}</p>${v.why}</details>`)));
+})();
+
+/* ---------------- the four analyses, year by year (v108) ---------------- */
+(function () {
+  const AB = D.analyses_by_year, t = $("#abytab");
+  t.appendChild(el("thead", null, `<tr><th>Analysis</th>` +
+    AB.spans.map((h, i) => `<th>${h.replace("Years", "Yrs").replace("Year", "Yr").replace("-", "–")}<br>${(AB.w_bd[i]*100).toFixed(0)}%</th>`).join("") +
+    `<th>B &amp; D</th></tr>`));
+  const tb = el("tbody");
+  let last = null;
+  AB.rows.forEach(r => {
+    if (r.analysis !== last) { tb.appendChild(el("tr", { class: "grp" }, `<td colspan="6"><b>${r.analysis}</b></td>`)); last = r.analysis; }
+    tb.appendChild(el("tr", null, `<td>${r.name}</td>` + r.v.map(x => `<td class="num">${x.toFixed(2)}</td>`).join("") +
+      `<td class="num"><b>${r.bd.toFixed(2)}</b></td>`));
+  });
+  t.appendChild(tb);
+  const nR = AB.rows.filter(r => r.analysis === "Regional ranking").length;
+  $("#abylede").innerHTML =
+    `On 1&ndash;5, 3 neutral. <strong>A</strong> reads the last span alone (years 6&ndash;10, its ${HYN} view);
+     <strong>B</strong> and <strong>D</strong> read all four, weighted by the years each covers
+     (${AB.w_bd.map(w => (w*100).toFixed(0) + "%").join(" / ")}): the right-hand column.`;
+  $("#abynote").innerHTML =
+    `Year 1 is researched on its own for every analysis; years 2&ndash;3 are what each three-year reading
+     (the average of years 1&ndash;3) leaves once year 1 is taken out, so no year counts twice. Macro, trend and
+     valuation are neutral at years 6&ndash;10 by construction (the long-run base returns carry the average
+     cycle and today's multiples); the ${wn(nR)} regional rankings are not, and they are all A's view adds to the base.
+     Each B-and-D reading is the blend the fund forecasts use (Macro and Funds tabs).`;
 })();
 
 /* ---------------- market trend (1Y momentum, 3Y / 5Y reversal, 10Y neutral) ----------------
@@ -12506,7 +12700,7 @@ function donut(host, w, title, cagr, dd) {
      <b class="num">${pc(PA.ten.cagr)}</b> at <b class="num">${pc1(PA.ten.maxdd)}</b> there` +
     `. <strong>B</strong> reads them at ${HZS.join(", ").replace(/, (?=[^,]*$)/, " and ")}, weighted by the
      years each covers (${HZS.map((h, i) => `${HZY[i]} ${(D.hz_split[h]*100).toFixed(0)}%`).join(" / ")}
-     of the ten; ranking, macro and trend read year 1 inside years 1&ndash;3):
+     of the ten; year 1 researched on its own for each, the table below):
      <b class="num">${pc(Bm.cagr)}</b> at
      <b class="num">${pc1(Bm.maxdd)}</b>, ${PB.band_n === 1 ? "the one mix" : wn(PB.band_n) + " mixes"} at that CAGR.
      <strong>D</strong>, at the owner's choice, is ${SH[PB.ids.indexOf(PDq.fund)]} as the

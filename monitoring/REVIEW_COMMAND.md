@@ -7,7 +7,8 @@ Report tab has its own step; periodic items, contract rolls and the runbook's ev
 are named. Updated 2026-11-15 (v103): the Budget tab reads 1, 3, 5 and 10 years. Updated 2026-11-16 (v105):
 the budget band runs 20% to 30%. Updated 2026-11-16 (v107): the Volatility tab is removed (its drawdown
 model is on the Portfolios tab); the four analyses are the regional ranking, macro sentiment, market trend
-and market valuation, A on 10 years and B and D on 1, 3, 5 and 10; the gauge reads 1, 3 and 5 years. The runbook (`README.md`) says how; this file says what.
+and market valuation, A on 10 years and B and D on 1, 3, 5 and 10; the gauge reads 1, 3 and 5 years.
+Updated 2026-11-16 (v108): every analysis, the regional rankings included, has a researched year-1 reading. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -82,7 +83,8 @@ Evidence rules (apply to everything below)
   named. Re-run the held-out what-if for A, B and D and record its weights.
 
 3. The four analyses at 1, 3, 5 and 10 years (Macro, Funds and Portfolios tabs)
-• Regional rankings (US, Europe, Asia, Philippines), macro sentiment (seven driver scores
+• Regional rankings (US, Europe, Asia, Philippines; each with a researched year-1 reading
+  from v108, years 2-3 implied), macro sentiment (seven driver scores
   now, their year-1, 3- and 5-year paths, neutral at 10), market trend and market valuation
   (the valuation driver's path; it tilts years 1-5 only, weighted 10/20/20 of the ten years, and
   is neutral at 10, where the long-run base prices it). Volatility tilts no forecast: it sets each
@@ -93,7 +95,8 @@ Evidence rules (apply to everything below)
 • Roll the trend window when a quarter closes and its returns are published. Check that
   the correlations (Correlated sentiment), the driver-to-fund tilts, each fund's volatility
   beta and drawdown coefficient (Portfolios tab, "How each drawdown is estimated"), and the
-  valuation tilt on each fund still follow from their inputs.
+  valuation tilt on each fund still follow from their inputs, and that the Portfolios tab's
+  "four analyses, year by year" table matches the blends the forecasts use.
 • Re-check a modelled assumption (the VIX long run, the variance risk premium, the
   drawdown calibration, peso volatility) only when its source updates; say if none did.
 

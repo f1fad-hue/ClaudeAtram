@@ -2430,6 +2430,10 @@ MACRO = {
     # update's global and emerging-market fields, which nothing read, are retired.
     "imf_weo_vintage": "2026-10-13",
     "imf_ea_2026": 1.1,
+    # v108, for the regions' year-1 readings: the same October WEO's 2027 figures. Euro area 1.2%
+    # (IMF; Yahoo Finance UK - unchanged from July's 1.2%); the US 2.3% in 2026 and 2027 (the IMF's
+    # own Chapter 1; IANS, 12 Oct 2026).
+    "imf_ea_2027": 1.2, "imf_us_2026": 2.3, "imf_us_2027": 2.3,
     # FactSet Earnings Insight, 23 Oct: forward 12-month P/E 18.7 for the S&P 500, below
     # its five-year (19.8) and ten-year (19.1) averages and the 19.0 of 30 Sep; 24% of
     # the index reported, 83% beating EPS estimates by 2.1% in aggregate (five-year
@@ -3866,6 +3870,64 @@ REGIONS = {
                 "neutral, as a policy rate set against 6% inflation meets inflation back near 3%."),
     },
 }
+# THE YEAR AHEAD, BY REGION (owner, 2026-11-16, v108: "Update portfolio B and D based on 1, 3, 5,
+# 10yrs macroeconomics sentiments, regional rankings, market trends and market valuations"). Each
+# region's reading for the next twelve months, researched from the year-ahead evidence, as the drivers'
+# was in v103. The 3-year score above is the average of years 1-3 and stays what the blend reads, so
+# YEARS 2-3 are IMPLIED: (3 x the 3-year score - year 1) / 2. Read as year 1, years 2-3, years 4-5 and
+# years 6-10 at 10 / 20 / 20 / 50 - the years each covers - the blend is the one the 3/5/10 weights
+# give, so no year counts twice and no forecast moves; the page shows the path. A check holds each
+# path moving from year 1 toward the 5-year score, never past it.
+REGION_Y1 = {
+    "US": (5.0,
+        f"The year ahead is the hiking end of the cycle: the futures price the Fed to about "
+        f"{MACRO['fed_mkt_2027_lo']}-{MACRO['fed_mkt_2027_hi']}% by late 2027, above its own {MACRO['fed_sep_2027']}% "
+        f"median (RateProbability; SOFR futures), with the 10-year at {MACRO['ust_10y']:.2f}%. Against it, analysts "
+        f"expect S&P 500 earnings to grow about {MACRO['spx_eps_2027_lo']:.0f}-{MACRO['spx_eps_2027_hi']}% in 2027 "
+        f"(LSEG I/B/E/S; FactSet), the S&P is on {MACRO['spx_fwd_pe']}x forward, below its {MACRO['spx_fwd_pe_5y']}x "
+        f"and {MACRO['spx_fwd_pe_10y']}x averages, and the IMF has growth "
+        + (f"holding at {MACRO['imf_us_2027']}% in 2026 and 2027" if MACRO['imf_us_2026'] == MACRO['imf_us_2027']
+           else f"at {MACRO['imf_us_2026']}% this year and {MACRO['imf_us_2027']}% in 2027") + " (IMF; IANS)",
+        "as policy eases"),
+    "EUROPE": (3.25,
+        f"The largest energy importer here meets the year with Brent still averaging ${MACRO['eia_brent_2027']:.2f} "
+        f"in the EIA's 2027 forecast (EIA; Rigzone), the ECB at {MACRO['ecb_depo']:.2f}% with inflation at "
+        f"{MACRO['ea_hicp_sep_final']}%, a composite PMI of {MACRO['ea_pmi_comp_oct']} and the IMF's euro area growing "
+        f"{MACRO['imf_ea_2027']}% in 2027 after {MACRO['imf_ea_2026']}% (IMF; Yahoo Finance UK); "
+        f"{MACRO['sxxp_fwd_pe']:.1f}x forward is the offset, and oil costs most in year 1",
+        "as the oil curve falls"),
+    "ASIA": (6.0,
+        f"Asia ex-Japan earnings are forecast to grow about {MACRO['asia_eps_2027']}% in 2027 on "
+        f"{MACRO['asia_fwd_pe']}x forward, but year 1 carries the importers' oil bill (Brent "
+        f"${MACRO['eia_brent_2027']:.2f} on the EIA's 2027 average), a Bank of Japan with a December hike in view after "
+        f"Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and the "
+        "selling since October",
+        "as earnings re-rate the multiple"),
+    "PHILIPPINES": (4.75,
+        f"The cash sleeve earns the bill rate, {MACRO['ph_tbill_91']:.2f}-{MACRO['ph_tbill_364']:.2f}% at the "
+        f"{_dday('ph_tbill_date')} auction, with BSP at {MACRO['bsp_rrp']:.2f}%; BSP sees inflation at "
+        f"{MACRO['bsp_cpi_2027']}% in 2027, from {MACRO['ph_cpi_oct']}% in October, so the year's real carry is thin, "
+        f"and the IMF's {MACRO['imf_ph_2027']}% growth moves neither the bill rate nor the unit price",
+        f"as inflation nears {MACRO['bsp_cpi_2028']}% in 2028"),
+}
+REGION_Y23 = {k: round((3 * REGIONS[k]["3Y"] - REGION_Y1[k][0]) / 2, 3) for k in REGION_Y1}
+def _gap_words(d):
+    """How far year 1 sits from the 3-year score, in words: 'half a point under', 'level with'."""
+    a = abs(d); w = {0.25: "a quarter point", 0.5: "half a point", 0.75: "three quarters of a point", 1.0: "a point"}
+    return "level with" if a < 1e-9 else f"{w.get(round(a, 2), f'{a:g} points')} {'under' if d < 0 else 'over'}"
+def _sc(x):
+    """A research-scale score as the notes print it: 5.0, 3.25, 5.75."""
+    t = f"{x:.2f}".rstrip("0")
+    return t + "0" if t.endswith(".") else t
+def _y1_text(k):
+    """Called once the 1-5 rescale has run, so it reads the research-basis 3-year score."""
+    sc, ev, why23 = REGION_Y1[k]; t3 = REGIONS[k]["3Y_10"]; y23 = REGION_Y23[k]
+    return (f"{ev}: {_sc(sc)}, {_gap_words(sc - t3)} the three-year {_sc(t3)}; years 2-3 read {_sc(y23)}"
+            + (", neutral," if to5(y23) == NEUTRAL_5 else "") + f" {why23}.")
+assert set(REGION_Y1) == set(REGIONS)
+assert all(min(REGION_Y1[k][0], REGIONS[k]["5Y"]) <= REGION_Y23[k] <= max(REGION_Y1[k][0], REGIONS[k]["5Y"])
+           for k in REGIONS), "a region's years 2-3 must lie between its year 1 and its years 4-5"
+
 # to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
 # then blending - EXACTLY. It stops being true the moment either side is rounded,
 # and to5() rounds to 2dp. Blending on the research scale and rescaling the result
@@ -3882,6 +3944,14 @@ for r in REGIONS.values():
         r[h + "_10"] = r[h]      # research basis, kept so the rescale stays auditable
         r[h] = to5(r[h])         # reported value, 1-5
     r["blend"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
+# v108: each region's year 1 and implied years 2-3, research basis and reported, and the year-1 reasoning.
+REGION_SPLIT_W = {"1Y": 0.1, "Y23": 0.2, "5Y": 0.2, HZ_LABEL: 0.5}
+for _k, r in REGIONS.items():
+    r["1Y_10"], r["1Y"], r["y1_why"] = REGION_Y1[_k][0], to5(REGION_Y1[_k][0]), _y1_text(_k)
+    r["Y23_10"], r["Y23"] = REGION_Y23[_k], to5(REGION_Y23[_k])
+    # the reader's route on the four printed spans gives the published blend
+    r["blend_split"] = round(sum(r[h] * w for h, w in REGION_SPLIT_W.items()), 2)
+    assert r["blend_split"] == r["blend"], (_k, r["blend_split"], r["blend"])
 
 # ----------------------------------------------------------------------------
 # 4. BROAD MACRO GAUGE (1-5) - weighted composite of seven drivers
@@ -5555,6 +5625,35 @@ def _trend_span(fid, a, b):
     return round(min(5.0, max(1.0, 3.0 + wm * t["z"][TREND_H[0][0]] - wr * TREND_REVERSAL * t["z_rev"])), 2)
 TREND_SPAN = {h: {f: _trend_span(f, a, b) for f in TREND} for h, (a, b) in DDG_SPANS.items()}
 
+# THE FOUR ANALYSES, YEAR BY YEAR (v108, owner 2026-11-16): what each portfolio reads, on 1-5 (3
+# neutral), at year 1, years 2-3, years 4-5 and years 6-10. A reads the last column alone; B and D
+# weight the four by the years each covers (10 / 20 / 20 / 50). The macro rows are the two drivers
+# whose paths set the rates and energy tilts; the trend row is the five markets' average; each row's
+# B-and-D reading is checked against the blend the forecasts actually use.
+_AB_W = [0.1, 0.2, 0.2, 0.5]
+_RNAME = {"US": "United States", "EUROPE": "Europe", "ASIA": "Asia ex-Japan", "PHILIPPINES": "Philippines (cash)"}
+def _ab_row(analysis, name, v):
+    return {"analysis": analysis, "name": name, "v": v,
+            "bd": round(sum(w * x for w, x in zip(_AB_W, v)), 2), "a": v[-1]}
+_MDRV = (("Monetary policy & liquidity", "Monetary (rates tilt)"), ("Geopolitics & energy", "Geopolitics (energy tilt)"))
+ANALYSES_BY_YEAR = {
+    "spans": ["Year 1", "Years 2-3", "Years 4-5", "Years 6-10"], "w_bd": _AB_W, "w_a": [0.0, 0.0, 0.0, 1.0],
+    "rows": [_ab_row("Regional ranking", _RNAME[k], [r["1Y"], r["Y23"], r["5Y"], r[HZ_LABEL]]) for k, r in REGIONS.items()]
+          + [_ab_row("Macro sentiment", lbl, [to5(DRIVER_Y1[n][0]), to5(DRIVER_Y23[n]), to5(DRIVER_PATH[n]["5Y"]),
+                                              to5(DRIVER_PATH[n][HZ_LABEL])]) for n, lbl in _MDRV]
+          + [_ab_row("Market trend", "Five markets, average",
+                     [round(sum(TREND_SPAN[h].values()) / len(TREND), 2) for h in DDG_SPANS] + [NEUTRAL])]
+          + [_ab_row("Market valuation", "Multiples vs averages",
+                     [VAL_PATH_5[h] for h in ("1Y", "3Y", "5Y", HZ_LABEL)])],
+}
+# Each B-and-D reading is the blend the forecasts use, within a rounding step: the regions' published
+# blend, the drivers' 3/5/10 blend rescaled, the trend sleeves' mean blend, the valuation channel's blend.
+_ABR = {r["name"]: r for r in ANALYSES_BY_YEAR["rows"]}
+assert all(abs(_ABR[_RNAME[k]]["bd"] - REGIONS[k]["blend"]) < 0.0051 for k in REGIONS)
+assert all(abs(_ABR[lbl]["bd"] - to5(DRIVER_BLEND_10[n])) < 0.0101 for n, lbl in _MDRV)
+assert abs(_ABR["Five markets, average"]["bd"] - sum(TREND[f]["blend"] for f in TREND) / len(TREND)) < 0.0101
+assert abs(_ABR["Multiples vs averages"]["bd"] - VAL_BLEND_5) < 0.0051
+
 _MACW = sum(w for n, w, _, _ in DRIVERS if n != DDG_VAL)
 DDG_MACRO_W = {n: w / _MACW for n, w, _, _ in DRIVERS if n != DDG_VAL}
 def _macro_part(v):
@@ -6351,6 +6450,11 @@ SOURCES = [
     ("IMF", "World Economic Outlook, October 2026 - 'Resilience Under Strain, Urgent Choices': world 3.1% "
      "(2026) / 3.4% (2027), euro area 1.1% / 1.2% (July: 0.9% / 1.2%), 13 Oct 2026",
      "https://www.imf.org/en/publications/weo/issues/2026/10/13/world-economic-outlook-october-2026"),
+    # v108: the US 2027 figure behind the regions' year-1 readings
+    ("IMF", "World Economic Outlook, October 2026, Chapter 1 - United States 2.3% in 2026 and 2.3% in 2027",
+     "https://www.imf.org/-/media/files/publications/weo/2026/october/english/ch1.pdf.md"),
+    ("IANS via Social News XYZ", "IMF sees US growth at 2.3 pc through 2027, 12 Oct 2026",
+     "https://www.socialnews.xyz/2026/10/12/imf-sees-us-growth-at-2-3-pc-through-2027/"),
     ("Yahoo Finance UK", "IMF forecasts 3.1% global growth in 2026, with eurozone at 1.1%",
      "https://uk.finance.yahoo.com/news/imf-forecasts-3-1-global-024937434.html"),
     ("Cboe", "VIX index and VIX futures term structure - the page's 9 Nov 2026 snapshot (9:15 pm ET): spot 19.92, -5.72 (-22.31%), previous close 25.64; its 10 Nov snapshot (9:15 pm ET): 19.46, -0.46 (-2.31%), the settled 10 Nov close (read through search; the site is blocked to the review)",
@@ -7779,6 +7883,7 @@ def payload():
         "hz_weights": HZ_W,
         # v107: the 3-year view's 30% is years 1-3, read as year 1 (10%) and years 2-3 (20%)
         "hz_split": {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, HZ_LABEL: 0.5},
+        "analyses_by_year": ANALYSES_BY_YEAR,
         "val_channel": {"driver": VAL_DRIVER, "w": VAL_SPAN_W, "path_5": VAL_PATH_5, "blend_5": VAL_BLEND_5,
                         "per_pt": VAL_TILT_PER_PT, "date": "2026-11-16"},
         "vol_channel": {"blend": round(VOL_BLEND, 2), "spot": MACRO["vix_spot"],
@@ -9321,6 +9426,22 @@ def report():
                                                        * (0.0 if f2["id"] == "ATRPHMM" else f2["equity_share"])) + 0.0
                            and f2["tilt_valuation_10y"] == 0.0 and "tilt_vol" not in f2 and "tilt_vol_10y" not in f2
                            for f2 in p["funds"] + p["portfolio_b"]["funds"])))
+    # v108: each region's year 1 is researched, its years 2-3 implied by the 3-year score, the path
+    # monotone to years 4-5, and the four printed spans at 10/20/20/50 give the published blend.
+    checks.append(("every region reads year 1 (researched), years 2-3 (implied), 4-5 and 6-10, and those four printed spans at 10/20/20/50 give its blend",
+                   all(r["Y23_10"] == round((3 * r["3Y_10"] - r["1Y_10"]) / 2, 3)
+                       and min(r["1Y_10"], r["5Y_10"]) <= r["Y23_10"] <= max(r["1Y_10"], r["5Y_10"])
+                       and r["1Y"] == to5(r["1Y_10"]) and r["Y23"] == to5(r["Y23_10"]) and len(r["y1_why"]) > 80
+                       and r["blend"] == round(0.1 * r["1Y"] + 0.2 * r["Y23"] + 0.2 * r["5Y"] + 0.5 * r[HZ_LABEL], 2)
+                       for r in p["regions"].values())))
+    _ab = p["analyses_by_year"]
+    checks.append(("the four analyses' year-by-year table: A reads years 6-10 alone, B and D the four spans at 10/20/20/50, each row its forecasts' blend",
+                   _ab["w_bd"] == [0.1, 0.2, 0.2, 0.5] and _ab["w_a"] == [0.0, 0.0, 0.0, 1.0]
+                   and [r["analysis"] for r in _ab["rows"]].count("Regional ranking") == len(p["regions"])
+                   and {r["analysis"] for r in _ab["rows"]} == {"Regional ranking", "Macro sentiment", "Market trend", "Market valuation"}
+                   and all(r["bd"] == round(sum(w * x for w, x in zip(_ab["w_bd"], r["v"])), 2) and r["a"] == r["v"][-1]
+                           for r in _ab["rows"])
+                   and all(r["v"][-1] == NEUTRAL for r in _ab["rows"] if r["analysis"] != "Regional ranking")))
     # THE DRIVERS REACH THE RETURNS. The check that was missing for three weeks
     # is not "are the tilts plausible" - constant tilts are perfectly plausible -
     # but "does a driver score MOVE them". Each tilt must reproduce from its

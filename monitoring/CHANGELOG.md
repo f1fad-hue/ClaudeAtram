@@ -2,6 +2,71 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-16 — v108: the regional rankings read year 1 on their own, so all four analyses are read at 1, 3, 5 and 10 years; A, B and D re-derive unchanged
+
+At the owner's instruction: "Update portfolio A based on 10yrs macroeconomics sentiments, regional rankings, market
+trends and market valuations from the 22 atrams lists selections. Update portfolio B and D based on 1, 3, 5, 10yrs
+macroeconomics sentiments, regional rankings, market trends and market valuations from the 22 atrams lists
+selections." **Market data is unchanged** (v104, closes to 13 Nov).
+
+**What was missing.** The regional rankings were already one of v107's four analyses, but they were read at 3, 5
+and 10 years only, with year 1 inside the 3-year score. Macro sentiment (v103), the market trend (momentum) and
+market valuation (v107) each had a year-1 reading; the regions did not.
+
+**The year-1 readings (1-10).** Each is researched from year-ahead evidence and sits half a point under its
+three-year score. Years 2-3 are implied as (3 × the 3-year score − year 1) / 2.
+
+| Region | Year 1 | Years 2-3 | Years 4-5 | Years 6-10 | Why year 1 is lower |
+| --- | --- | --- | --- | --- | --- |
+| US | 5.0 | 5.75 | 6.25 | 6.5 | The hiking end of the cycle (futures 4.73-4.78% by late 2027 against the Fed's 4.1%; 10-year 5.15%), against 15-16.1% earnings growth, 17.7x forward and IMF growth of 2.3% |
+| Europe | 3.25 | 4.0 | 4.5 | 4.5 | Oil costs most in year 1 (EIA Brent $85.78 for 2027); ECB 2.50%, inflation 3.8%, PMI 51.7, IMF 1.2% growth; 15.4x forward the offset |
+| Asia ex-Japan | 6.0 | 6.75 | 7.0 | 7.0 | Importers' oil bill, Japan's −0.1% third quarter and a BoJ hike in view, against ~27.5% earnings growth on 10.5x |
+| Philippines (cash) | 4.75 | 5.5 | 5.75 | 5.5 | Thin real carry: bills 6.49-6.86% against BSP's 6.0% inflation for 2027 |
+
+New sources: the IMF's October 2026 WEO, Chapter 1, and IANS (12 Oct 2026), for US growth of 2.3% in 2026 and 2027.
+Not used for want of a second source: a euro-area 2027 earnings figure (Bloomberg Intelligence's 9%), and a China
+2027 IMF figure whose vintage could not be confirmed.
+
+**Why nothing moves.** On 1-5, the four spans at 10 / 20 / 20 / 50 reproduce every region's published blend exactly:
+US 3.29, Europe 2.46, Asia 3.60 and Philippines 2.99. So every fund forecast and every pick re-derives unchanged:
+- **A**, 10-year view: 7.31% / −24.9%.
+- **B**, 1/3/5/10-year view: A's mix, 7.20% / −24.9%.
+- **D**: 7.25% / −24.8%.
+- **Budget**: 25%, gauge 2.93.
+
+A 10% year-1 column beside the 3-year score's 30% would have counted year 1 twice and moved every forecast with no
+new evidence (runbook 169).
+
+**On the page.**
+- **Macro tab.** The regional ranking shows year 1, years 2-3, years 4-5 and years 6-10, and the blend. Each
+  region's *Why* opens with its year-1 reasoning. The eyebrows read 1Y / 3Y / 5Y / 10Y.
+- **Portfolios tab.** A new table, "The four analyses, year by year", shows every reading A, B and D take, on 1-5:
+  the four regions, the two macro drivers behind the rates and energy tilts, the five markets' trend and market
+  valuation. Each is shown at year 1, years 2-3, years 4-5 and years 6-10, with B and D's 10/20/20/50 reading
+  beside it. A reads the last span alone.
+- **Wording.** The Portfolios summary and the drivers' note say year 1 is researched on its own.
+
+**Checks added.**
+- **Engine** (264): every region's year 1, implied years 2-3, monotone path and four-span blend; and the
+  year-by-year table's weights, rows and readings.
+- **Audit** (279): the same for each region, independently, including that its note states both readings; and the
+  table re-derived cell by cell from the drivers, trend sleeves, valuation path and regions, each row within a
+  rounding step of the blend the forecasts use.
+- **Mutants** (70): a region's year 1 moved without re-implying years 2-3; a table cell moved with its reading.
+
+**Errors found and fixed.**
+1. **The year-1 notes first typed their own scores** ("5.0, half a point under the three-year 5.5"). They now
+   derive them.
+2. **The first derivation read the 3-year score after the 1-5 rescale** and printed "5, 2 points over the
+   three-year 3". It now reads the research-basis score.
+3. **At 390px the region table's headers ran together** ("YRS 2–3YRS 4–5"). Shortened to 1Y / 2–3Y / 4–5Y / 6–10Y.
+4. **An unused input (`imf_us_2026`) failed the audit's orphan check.** The US note now quotes it.
+
+**Checks.** Engine 264/264 · audit 279/279 · page 16/16 · mutants 70/70 caught. All five tabs read at 390px with no
+script errors and no horizontal scroll.
+
+A model's reading, not personal financial advice.
+
 ## 2026-11-16 — v107: A on 10 years, B and D on 1, 3, 5 and 10, from regional ranking, macro, trend and valuation; the Volatility tab removed; the gauge reads 1, 3 and 5 years; B moves to A's mix (7.20%), D rises to 7.25%
 
 At the owner's instructions:

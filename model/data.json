@@ -1437,6 +1437,9 @@
   "variance_risk_premium": 3.5,
   "imf_weo_vintage": "2026-10-13",
   "imf_ea_2026": 1.1,
+  "imf_ea_2027": 1.2,
+  "imf_us_2026": 2.3,
+  "imf_us_2027": 2.3,
   "spx_fwd_pe": 17.7,
   "spx_fwd_pe_date": "2026-11-05",
   "spx_fwd_pe_prev": 18.7,
@@ -1717,6 +1720,12 @@
    "5Y_10": 6.25,
    "10Y_10": 6.5,
    "blend": 3.29,
+   "1Y_10": 5.0,
+   "1Y": 2.78,
+   "y1_why": "The year ahead is the hiking end of the cycle: the futures price the Fed to about 4.73-4.78% by late 2027, above its own 4.1% median (RateProbability; SOFR futures), with the 10-year at 5.15%. Against it, analysts expect S&P 500 earnings to grow about 15-16.1% in 2027 (LSEG I/B/E/S; FactSet), the S&P is on 17.7x forward, below its 19.8x and 19.1x averages, and the IMF has growth holding at 2.3% in 2026 and 2027 (IMF; IANS): 5.0, half a point under the three-year 5.5; years 2-3 read 5.75 as policy eases.",
+   "Y23_10": 5.75,
+   "Y23": 3.11,
+   "blend_split": 3.29,
    "summary": "Held: the Nasdaq fell 0.91% and the S&P fell 0.40% on 13 Nov and 0.39% and 0.35% on 12 Nov, as Nvidia's chief executive resigned, after rises of 1.60% and 1.31% on 11 Nov; the 5.52% fall of 5 Nov took the Nasdaq into correction; GDP beat at 3.4%, producer prices rose 6.5% on the year, and FedWatch has a December hike at 100% on 13 Nov."
   },
   "EUROPE": {
@@ -1729,6 +1738,12 @@
    "5Y_10": 4.5,
    "10Y_10": 4.5,
    "blend": 2.46,
+   "1Y_10": 3.25,
+   "1Y": 2.0,
+   "y1_why": "The largest energy importer here meets the year with Brent still averaging $85.78 in the EIA's 2027 forecast (EIA; Rigzone), the ECB at 2.50% with inflation at 3.8%, a composite PMI of 51.7 and the IMF's euro area growing 1.2% in 2027 after 1.1% (IMF; Yahoo Finance UK); 15.4x forward is the offset, and oil costs most in year 1: 3.25, half a point under the three-year 3.75; years 2-3 read 4.0 as the oil curve falls.",
+   "Y23_10": 4.0,
+   "Y23": 2.33,
+   "blend_split": 2.46,
    "summary": "Held: the ECB kept its deposit rate at 2.50% on 29 Oct with inflation at 3.8%, the October composite PMI was confirmed at a four-month low of 51.7, and September's retail volumes fell 0.7%."
   },
   "ASIA": {
@@ -1741,6 +1756,12 @@
    "5Y_10": 7.0,
    "10Y_10": 7.0,
    "blend": 3.6,
+   "1Y_10": 6.0,
+   "1Y": 3.22,
+   "y1_why": "Asia ex-Japan earnings are forecast to grow about 27.5% in 2027 on 10.5x forward, but year 1 carries the importers' oil bill (Brent $85.78 on the EIA's 2027 average), a Bank of Japan with a December hike in view after Japan's economy shrank at a 0.1% annual rate in the third quarter, and the selling since October: 6.0, half a point under the three-year 6.5; years 2-3 read 6.75 as earnings re-rate the multiple.",
+   "Y23_10": 6.75,
+   "Y23": 3.56,
+   "blend_split": 3.6,
    "summary": "Held: the KOSPI fell 0.98% on 13 Nov and 0.61% on 12 Nov on the Nvidia news, after rising 2.60% on 11 Nov and 4.39% on 10 Nov, and the Nikkei rose 0.53% on 13 Nov after a 0.70% fall on 12 Nov; Japan's economy shrank at a 0.1% annual rate in the third quarter, and China's October exports rose 35.2%."
   },
   "PHILIPPINES": {
@@ -1753,6 +1774,12 @@
    "5Y_10": 5.75,
    "10Y_10": 5.5,
    "blend": 2.99,
+   "1Y_10": 4.75,
+   "1Y": 2.67,
+   "y1_why": "The cash sleeve earns the bill rate, 6.49-6.86% at the 9 Nov auction, with BSP at 5.50%; BSP sees inflation at 6.0% in 2027, from 7.8% in October, so the year's real carry is thin, and the IMF's 5.1% growth moves neither the bill rate nor the unit price: 4.75, half a point under the three-year 5.25; years 2-3 read 5.5, neutral, as inflation nears 3.3% in 2028.",
+   "Y23_10": 5.5,
+   "Y23": 3.0,
+   "blend_split": 2.99,
    "summary": "Held: third-quarter growth slowed to 2.1% against 2.7% expected, with October inflation at 7.8%; the PSEi closed at 5,593.49 on 13 Nov, its lowest of 2026, the peso at 63.70 on 12 Nov, 45 centavos weaker, and 91-day bills rose to 6.493% at the 9 Nov auction."
   }
  },
@@ -1766,6 +1793,124 @@
   "3Y": 0.2,
   "5Y": 0.2,
   "10Y": 0.5
+ },
+ "analyses_by_year": {
+  "spans": [
+   "Year 1",
+   "Years 2-3",
+   "Years 4-5",
+   "Years 6-10"
+  ],
+  "w_bd": [
+   0.1,
+   0.2,
+   0.2,
+   0.5
+  ],
+  "w_a": [
+   0.0,
+   0.0,
+   0.0,
+   1.0
+  ],
+  "rows": [
+   {
+    "analysis": "Regional ranking",
+    "name": "United States",
+    "v": [
+     2.78,
+     3.11,
+     3.33,
+     3.44
+    ],
+    "bd": 3.29,
+    "a": 3.44
+   },
+   {
+    "analysis": "Regional ranking",
+    "name": "Europe",
+    "v": [
+     2.0,
+     2.33,
+     2.56,
+     2.56
+    ],
+    "bd": 2.46,
+    "a": 2.56
+   },
+   {
+    "analysis": "Regional ranking",
+    "name": "Asia ex-Japan",
+    "v": [
+     3.22,
+     3.56,
+     3.67,
+     3.67
+    ],
+    "bd": 3.6,
+    "a": 3.67
+   },
+   {
+    "analysis": "Regional ranking",
+    "name": "Philippines (cash)",
+    "v": [
+     2.67,
+     3.0,
+     3.11,
+     3.0
+    ],
+    "bd": 2.99,
+    "a": 3.0
+   },
+   {
+    "analysis": "Macro sentiment",
+    "name": "Monetary (rates tilt)",
+    "v": [
+     1.44,
+     2.44,
+     2.78,
+     3.0
+    ],
+    "bd": 2.69,
+    "a": 3.0
+   },
+   {
+    "analysis": "Macro sentiment",
+    "name": "Geopolitics (energy tilt)",
+    "v": [
+     1.44,
+     2.11,
+     2.78,
+     3.0
+    ],
+    "bd": 2.62,
+    "a": 3.0
+   },
+   {
+    "analysis": "Market trend",
+    "name": "Five markets, average",
+    "v": [
+     3.81,
+     2.61,
+     2.61,
+     3.0
+    ],
+    "bd": 2.92,
+    "a": 3.0
+   },
+   {
+    "analysis": "Market valuation",
+    "name": "Multiples vs averages",
+    "v": [
+     3.89,
+     3.22,
+     3.0,
+     3.0
+    ],
+    "bd": 3.13,
+    "a": 3.0
+   }
+  ]
  },
  "val_channel": {
   "driver": "Valuation support",
@@ -7034,6 +7179,16 @@
    "org": "IMF",
    "what": "World Economic Outlook, October 2026 - 'Resilience Under Strain, Urgent Choices': world 3.1% (2026) / 3.4% (2027), euro area 1.1% / 1.2% (July: 0.9% / 1.2%), 13 Oct 2026",
    "url": "https://www.imf.org/en/publications/weo/issues/2026/10/13/world-economic-outlook-october-2026"
+  },
+  {
+   "org": "IMF",
+   "what": "World Economic Outlook, October 2026, Chapter 1 - United States 2.3% in 2026 and 2.3% in 2027",
+   "url": "https://www.imf.org/-/media/files/publications/weo/2026/october/english/ch1.pdf.md"
+  },
+  {
+   "org": "IANS via Social News XYZ",
+   "what": "IMF sees US growth at 2.3 pc through 2027, 12 Oct 2026",
+   "url": "https://www.socialnews.xyz/2026/10/12/imf-sees-us-growth-at-2-3-pc-through-2027/"
   },
   {
    "org": "Yahoo Finance UK",

@@ -254,6 +254,20 @@ for rk, r in D["regions"].items():
     ck(f"{rk}: each horizon's 1-5 score is its research score rescaled, the blend the horizon-weighted average",
        ok and abs(r["blend"] - round(sum(r[h] * w for h, w in HZ.items()), 2)) < 0.006
        and abs(r["blend_10"] - round(sum(r[h + "_10"] * w for h, w in HZ.items()), 2)) < 0.006, f"{r['blend']}")
+# v108 (owner, 16 Nov): each region reads year 1 (researched) and years 2-3 (implied by its 3-year score,
+# the average of years 1-3); the path runs monotone to years 4-5, and the four printed spans at
+# 10/20/20/50 give the published blend, so no year counts twice. The note states both readings.
+def _sc(x):
+    t = f"{x:.2f}".rstrip("0")
+    return t + "0" if t.endswith(".") else t
+for rk, r in D["regions"].items():
+    _y23r = round((3 * r["3Y_10"] - r["1Y_10"]) / 2, 3)
+    ck(f"{rk}: year 1 rescaled, years 2-3 implied by the 3-year score and between year 1 and years 4-5, the four spans give the blend, the note states them",
+       r["1Y"] == to5(r["1Y_10"]) and r["Y23_10"] == _y23r and r["Y23"] == to5(_y23r)
+       and min(r["1Y_10"], r["5Y_10"]) <= _y23r <= max(r["1Y_10"], r["5Y_10"])
+       and r["blend"] == round(0.1 * r["1Y"] + 0.2 * r["Y23"] + 0.2 * r["5Y"] + 0.5 * r["10Y"], 2)
+       and f": {_sc(r['1Y_10'])}, " in r["y1_why"] and f"years 2-3 read {_sc(_y23r)}" in r["y1_why"],
+       f"{r['1Y_10']} / {_y23r} / {r['5Y_10']} -> {r['blend']}")
 G = D["dd_gauge"]; band = [b for b in G["bands"] if b["lo"] <= G["value"] < b["hi"] or (b["hi"] == 5 and G["value"] == 5)]
 ck("the drawdown gauge's bands tile 1-5 and its value sits in the band it reports",
    G["bands"][0]["lo"] == 1 and G["bands"][-1]["hi"] == 5 and all(a["hi"] == b["lo"] for a, b in zip(G["bands"], G["bands"][1:]))
@@ -306,6 +320,24 @@ _ts = {h: {f: _tsp(v, a, b) for f, v in _TR["sleeves"].items()} for h, (a, b) in
 ck("each market's trend in each span is momentum over year 1 and reversal after it, from its own z-scores; years 4-5 equal its 5-year score",
    G["trend_spans"] == _ts and all(_ts["5Y"][f] == v["score"]["5Y"] for f, v in _TR["sleeves"].items()), f"{G['trend_spans']} vs {_ts}")
 _trp = {h: round(sum(_ts[h].values()) / len(_ts[h]), 2) for h in _sp}
+# v108: THE FOUR ANALYSES, YEAR BY YEAR, re-derived cell by cell from their own inputs: the regions'
+# spans, the two tilt drivers' year 1 / implied years 2-3 / paths, the five markets' trend spans and the
+# valuation path; A reads the last span, B and D all four at 10/20/20/50, each the blend the forecasts use.
+_AB = D["analyses_by_year"]; _abw = [0.1, 0.2, 0.2, 0.5]
+_DRn = {x["name"]: x for x in DR}
+_drow = lambda n: [to5(_GD[n]["y1"]), to5(_y23[n]), to5(_DRn[n]["path"]["5Y"]), to5(_DRn[n]["path"]["10Y"])]
+_abx = ([("Regional ranking", [r["1Y"], r["Y23"], r["5Y"], r["10Y"]], r["blend"]) for r in D["regions"].values()]
+        + [("Macro sentiment", _drow(n), to5(round(sum(_DRn[n]["path"][h] * w for h, w in HZ.items()), 2)))
+           for n in ("Monetary policy & liquidity", "Geopolitics & energy")]
+        + [("Market trend", [_trp["1Y"], _trp["3Y"], _trp["5Y"], 3.0],
+            sum(v["blend"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]))]
+        + [("Market valuation", [_vlp["1Y"], _vlp["3Y"], _vlp["5Y"], to5(_xv["path"]["10Y"])], D["val_channel"]["blend_5"])])
+ck("the four analyses year by year: every cell from its inputs, A on years 6-10 alone, B and D at 10/20/20/50, each row its forecasts' blend",
+   len(_AB["rows"]) == len(_abx) and _AB["w_bd"] == _abw and _AB["w_a"] == [0.0, 0.0, 0.0, 1.0]
+   and all(r["analysis"] == an and r["v"] == v and r["a"] == v[-1]
+           and r["bd"] == round(sum(w * x for w, x in zip(_abw, v)), 2) and abs(r["bd"] - bl) < 0.0101
+           for r, (an, v, bl) in zip(_AB["rows"], _abx)),
+   f"{[(r['name'], r['v'], r['bd']) for r in _AB['rows']]} vs {_abx}")
 # v107 (owner, 16 Nov): the gauge reads 1, 3 and 5 years only - no 10-year anchor in its parts
 from decimal import Decimal as _D, ROUND_HALF_UP as _HU
 _q2 = lambda x: float(x.quantize(_D("0.01"), rounding=_HU))      # exact half-up, the page's convention

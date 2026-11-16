@@ -72,7 +72,12 @@ macro sentiment (the drivers' rates and energy tilts), the market trend and mark
 **A** reads them at 10 years alone, where macro, trend and valuation are neutral by construction
 and valuation is already priced in the long-run assumptions. **B and D** read them at **1, 3, 5
 and 10 years**, weighted by the years each covers: year 1 10%, years 2-3 20%, years 4-5 20%,
-years 6-10 50% (the ranking, macro and trend read year 1 inside years 1-3, 30%, as before).
+years 6-10 50%. Year 1 is researched on its own for every analysis - the regional rankings'
+from 16 Nov 2026 (v108): US 5.0, Europe 3.25, Asia 6.0, Philippines 4.75 on 1-10, each half a point under
+its three-year score - and years 2-3 are what each three-year reading (the average of years 1-3)
+leaves once year 1 is taken out, so no year counts twice and the blends, forecasts and picks are
+unchanged by the split. The Portfolios tab's table "The four analyses, year by year" shows every
+reading A, B and D take.
 Valuation tilts years 1-5 only: its 1-5 blend, 3.133, sits 0.133 above neutral, which at the
 regional rate (0.675pp a point) adds 0.09pp to every equity fund and 0.04-0.05pp to the two
 multi-asset funds. The volatility curve no longer tilts any return (it moved them -0.02 to +0.01pp);
