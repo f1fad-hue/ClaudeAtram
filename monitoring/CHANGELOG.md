@@ -2,6 +2,75 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-16 — v105: the drawdown budget band widened to 20-30% at the owner's instruction; budget 25%, A, B and D unchanged
+
+At the owner's instruction: "Wider the band of budget drawdown to 20-30%". **Market data is unchanged** (v104,
+cut-off 02:00 UTC on 16 Nov, closes to 13 Nov).
+
+**The rule.** The band ran 24-27% in four bands: under 2.50 → 24%, 2.50-3.50 → 25%, 3.50-4.25 → 26%, 4.25 and
+over → 27%. It now runs **20% to 30% in one-point steps**. The 25% base still holds from 2.50 to 3.50, and the rest
+of the 1-5 reading is cut into equal 0.30 widths on each side:
+
+| Reading | Budget |
+| --- | --- |
+| 1.00-1.30 | 20% |
+| 1.30-1.60 | 21% |
+| 1.60-1.90 | 22% |
+| 1.90-2.20 | 23% |
+| 2.20-2.50 | 24% |
+| 2.50-3.50 | 25% (hold) |
+| 3.50-3.80 | 26% |
+| 3.80-4.10 | 27% |
+| 4.10-4.40 | 28% |
+| 4.40-4.70 | 29% |
+| 4.70-5.00 | 30% |
+
+**Unchanged**, because the instruction names only the band:
+- the guards (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or under its long run
+  before a raise);
+- the rule that the budget moves to the band's step once they clear.
+
+The derived 26.97% the 25% base replaced now sits inside the band, at its 27% step.
+
+**Effect today: none.** The gauge reads 2.80, inside the unchanged hold band, so the budget stays at 25% and A
+(7.31% / −24.9%), B (7.10% / −24.9%) and D (7.16% / −24.9%) do not move. The steps (CAGR / drawdown):
+
+| Budget | A | B | D | B, Hormuz |
+| --- | --- | --- | --- | --- |
+| 20% | 6.81 / −19.9 | 6.67 / −20.0 | 6.67 / −20.0 | −36.8 |
+| 25% | 7.31 / −24.9 | 7.10 / −24.9 | 7.16 / −24.9 | −44.9 |
+| 30% | 7.75 / −29.9 | 7.53 / −29.9 | 7.57 / −29.9 | −53.7 |
+
+Each point of drawdown buys B 0.07-0.11pp a year across the band, with no step where the trade-off turns. B's
+Hormuz loss deepens about 1.7 points per point of budget.
+
+**What the finer band changes.** The persistence guard reads bands. Outside the hold band, two month-end readings
+must now land within 0.30 of each other to count as the same band (runbook 165).
+
+**Page.** The Budget tab's bar, band table, step table (now eleven rows) and notes read the bands from the
+payload. "Why the steps stop at 27% and 24%" is replaced by "Why 20% to 30%". The sentence "by one step at a time"
+is corrected to "to the band's step": the budget has always moved straight to the band's step once the guards
+clear (error 1).
+
+**Checks.**
+- The engine's band check now asserts the eleven steps and equal widths.
+- Its ceiling check asserts the band instead of 27%.
+- The audit re-derives the band from the owner's three facts.
+- A new mutant (a band past 30%) is caught.
+
+**Errors found and fixed (recorded before fixing).**
+1. The page and the claims register said the budget moves "by one step at a time". The engine has always moved
+   it straight to the band's step. With four bands the difference was at most two points; with eleven it would be
+   five. The text now says what the rule does.
+2. The runbook's gauge section still described three parts (volatility included), 3Y/5Y/10Y views and 60/40
+   weights - stale since v90 and v103. Rewritten.
+3. Made in this change: the new mutant was named `m_band`, a name already taken by the "gauge outside its band"
+   mutant. Python kept the second definition, silently dropping the first, and the run counted 62 mutants where 63
+   were written. Renamed `m_band30`, and the harness now refuses to run if any mutant name is defined twice.
+
+Checks: engine 263/263; audit 260/260; page 16/16 at phone width; mutation test 63/63 caught. The Budget tab was
+read at phone width.
+
 ## 2026-11-16 — v104: New York, oil, the VIX, Treasuries, Seoul, Tokyo and Manila roll to 13 Nov; October PPI, November Michigan and Japan's Q3 GDP added; FactSet's 17.7x forward P/E carried; the week's fund check; A, B and D unchanged
 
 A full review at the owner's instruction (debug, code review, sanity check, error hunt, cleanup, and a re-check

@@ -100,15 +100,15 @@ every update:
   B at the same drawdown, by giving up the cap and the cash floor. Each count's best: two funds 6.98% / −24.3%, three 7.13% / −24.9% (the v96-v98 D), four
   7.16% / −24.9%, five 7.16% / −25.0% (the same return, more drawdown); six and seven, outside the
   review's five-fund limit, return less (7.14%, 7.12%). It holds no peso cash, and all four funds
-  are unhedged; at the band's steps it holds 7.07% / −24.0% (24%), 7.24% / −25.8% (26%) and
-  7.33% / −26.9% (27%).
+  are unhedged; across the band's steps it runs from 6.67% / −20.0% (20%) through 7.07% / −24.0%
+  (24%) and 7.24% / −25.8% (26%) to 7.57% / −29.9% (30%).
 
 **The Budget tab** reads, on 1-5, whether the next five years justify moving the 25% budget -
 year 1 (20%), years 2-3 (40%) and years 4-5 (40%), with years 6-10 the neutral anchor (owner,
 15 Nov 2026) - from the macro drivers and the market trend over each span (volatility left the
 reading on 3 Nov 2026 at the owner's instruction and stays as the guard on a raise), with
-bands for a step to 24%, 26% or 27%, guards that must also be clear, and what each step does
-to A, B and D. Year 1 is researched on its own (the section "The year ahead" gives each
+bands for a step anywhere from 20% to 30%, one point at a time (owner, 16 Nov 2026; 24-27%
+until then), guards that must also be clear, and what each step does to A, B and D. Year 1 is researched on its own (the section "The year ahead" gives each
 driver's reading and its evidence); years 2-3 are what the 3-year reading leaves once year 1
 is taken out, so no year counts twice and no pick moves. On 15 Nov it reads 2.80 (year 1 3.12,
 years 2-3 2.67, years 4-5 2.76): hold at 25%, as at October's month-end (restated on the

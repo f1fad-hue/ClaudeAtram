@@ -4,7 +4,8 @@ The owner's standing instruction for every review, kept here so a session can be
 "Run the ATRAM review in monitoring/REVIEW_COMMAND.md" and every change to it is versioned.
 Updated 2026-11-12 (after v101): Portfolio C retired, so the command covers A, B and D; the
 Report tab has its own step; periodic items, contract rolls and the runbook's evidence lessons
-are named. Updated 2026-11-15 (v103): the Budget tab reads 1, 3, 5 and 10 years. The runbook (`README.md`) says how; this file says what.
+are named. Updated 2026-11-15 (v103): the Budget tab reads 1, 3, 5 and 10 years. Updated 2026-11-16 (v105):
+the budget band runs 20% to 30%. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -99,8 +100,8 @@ Evidence rules (apply to everything below)
   and say which moved. Check its guards
   (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or
   under its long run before any raise). Record the month-end review when one is due.
-• Report the budget in force and what each step (24% to 27%) does to A, B and D, and to
-  B in a Hormuz closure.
+• Report the budget in force and what each step (20% to 30%, one point a step; owner,
+  16 Nov 2026) does to A, B and D, and to B in a Hormuz closure.
 
 5. Portfolios A, B and D (Portfolios tab)
 • Re-run the selection under the current rules: the highest net CAGR after all fees

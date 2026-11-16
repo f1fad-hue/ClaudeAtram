@@ -104,6 +104,7 @@ def m_nan(d): _drv(d, "Valuation")["note"] += " NaN"
 def m_retired(d): d["portfolio_a"]["is_review_pick"] = True                                    # the retired review flag back
 def m_opt(d): d["optimized"] = d["portfolio_b"]                                                # the retired optimiser key back
 def m_cat(d): d["catalysts"].append({"date": "2026-10-01", "what": "Old event", "why": "past"})
+def m_band30(d): d["dd_gauge"]["bands"][-1]["cap"] = 31.0                                # a band past the owner's 30% (v105)
 def m_step(d):                                                                                 # a budget step printing a CAGR its search did not rank on
     e = next(iter(d["dd_gauge"]["alt"].values()))["b"]; e["cagr"] = round(e["cagr"] - 0.01, 2)
 def m_verb(d):                                                                                 # a note announcing a move not made (v95)
@@ -130,6 +131,10 @@ def m_grind(d):
     r = next(r for r in d["portfolio_b"]["scenarios"] if r["name"].startswith("Grind")); r["cagr"] = round(r["cagr"] + 0.01, 2)
 
 MUTS = [(n, f) for n, f in sorted(globals().items()) if n.startswith("m_") and callable(f)]
+# v105: a second "def m_band" silently replaced the first - Python keeps the last - and the run
+# reported 62 mutants where 63 were written. Every mutant name must be defined once.
+_defs = re.findall(r"^def (m_\w+)\(", open(__file__).read(), re.M)
+assert len(_defs) == len(set(_defs)) == len(MUTS), sorted({n for n in _defs if _defs.count(n) > 1})
 
 def run(name, fn):
     tmp = tempfile.mkdtemp(prefix="mut_")

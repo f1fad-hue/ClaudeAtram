@@ -79,12 +79,15 @@ move, and update `useq_w_*` / `gbi_w_*` with `heldout_run_cap` and `heldout_run_
 check fails while the recorded cap is not the live one.
 
 **2c. Read the drawdown-budget gauge** (`dd_gauge`, the Budget tab) at each month-end.
-Each of the 3Y, 5Y and 10Y views reads 1-5 as the mean of three parts: the driver
-gauge on that view's path, the forward vol against the long-run 19.5 (3 at the long
-run, one point per 10% the curve prices below it, clipped 1-5) and the mean trend score
-of the five trend markets. The gauge is 60% of the 3Y view and 40% of the 5Y; the 10Y is
-shown as the anchor and not weighted (it is neutral by construction, lesson 107). The
-bands: under 2.5 → 24%, 2.5-3.5 → 25%, 3.5-4.25 → 26%, 4.25 and over → 27%. A step is
+Each view reads 1-5 as the mean of two parts (volatility left the reading in v90): the driver
+gauge over its span and the mean trend score of the five trend markets over the same span.
+From v103 the views are year 1, years 2-3 and years 4-5, weighted 20 / 40 / 40 by the years
+of the first five each covers; years 6-10 are shown as the anchor and not weighted (neutral by
+construction, lesson 107). Year 1 is researched (`DRIVER_Y1`); years 2-3 are implied by it and
+the 3-year path (lesson 162). The bands (owner, 2026-11-16, v105): one-point steps from 20% to
+30% - 2.50-3.50 holds at 25%, each 0.30 below 2.50 tightens a point (20% under 1.30) and each
+0.30 above 3.50 raises a point (30% from 4.70). Until v105 they were under 2.5 → 24%, 2.5-3.5 →
+25%, 3.5-4.25 → 26%, 4.25 and over → 27%. A step is
 recommended only when (a) two month-end reviews running land in the same band - append
 each review's reading to `DDG_REVIEWS` with its date, never a mid-month one - and, for
 a raise, (b) Geopolitics scores above 2.0 and (c) the VIX closes at or under its
@@ -197,6 +200,10 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+165. A WIDER BAND IS A FINER ONE, AND THE PERSISTENCE GUARD READS BANDS. Widening the budget to 20-30% in
+   one-point steps cut the reading into 0.30-wide bands outside the hold band, so "two month-end reviews in
+   the same band" now asks two readings to land within 0.30 of each other: a move from 3.6 to 3.9 is two
+   bands, not one. The guard was left as the owner set it; say so when a reading straddles a band edge.
 164. A CHECK THAT ASKS "IS IT FINAL?" MUST ALSO ASK "IS THERE A NEWER ONE?". Michigan's November first read sat
    unread for ten days behind October's final because the check asked only whether October's reading was final.
    A monthly series is checked for its age against its release rhythm (no reading older than one cycle and a

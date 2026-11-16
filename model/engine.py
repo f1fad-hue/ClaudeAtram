@@ -5475,8 +5475,13 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 # The reading maps to a step of the budget (DDG_BANDS); a step away from 25% is acted on
 # only when two consecutive month-end reviews read the same band, and a RAISE also needs
 # both risk guards clear: the Geopolitics & energy reading above 2.0 (1-10) - the Hormuz
-# tail the stress grid prices - and the VIX at or below its long run. The ceiling is 27%,
-# the derived budget the owner's figure replaced; the floor 24%.
+# tail the stress grid prices - and the VIX at or below its long run. Until v105 the ceiling
+# was 27%, the derived budget the owner's figure replaced, and the floor 24%.
+# WIDENED TO 20-30% (owner, 2026-11-16, v105: "Wider the band of budget drawdown to 20-30%"):
+# five one-point steps each side of the 25% base, the hold band 2.50-3.50 unchanged and the
+# rest of 1-5 cut into equal 0.30 widths, so a step is as far in the reading on either side.
+# The guards and the two-review rule are unchanged; the derived 26.97% now sits inside the band,
+# at its 27% step.
 DDG_READING_OF = ("macro", "trend")     # the parts a view's reading averages (v90)
 # 1, 3, 5 AND 10 YEARS (owner, 2026-11-15, v103). The gauge reads three views of the first five years
 # - year 1, years 2-3 and years 4-5 - each weighted by the years it covers (20 / 40 / 40); the 10-year
@@ -5487,12 +5492,17 @@ DDG_SPANS = {"1Y": (0.0, 1.0), "3Y": (1.0, 3.0), "5Y": (3.0, 5.0)}
 DDG_SPAN_LABEL = {"1Y": "Year 1", "3Y": "Years 2-3", "5Y": "Years 4-5", HZ_LABEL: "Years 6-10"}
 DDG_VIEWS = tuple(DDG_SPANS)
 DDG_W = {h: round((b - a) / DDG_SPANS[DDG_VIEWS[-1]][1], 2) for h, (a, b) in DDG_SPANS.items()}
-DDG_BANDS = [  # [lo, hi) on the 1-5 reading, the budget it points to, the action
-    (1.0, 2.5, 24.0, "Tighten to 24%"),
-    (2.5, 3.5, 25.0, "Hold at 25%"),
-    (3.5, 4.25, 26.0, "Raise to 26%"),
-    (4.25, 5.0001, 27.0, "Raise to 27%"),
-]
+DDG_RULE_WIDE_DATE = "2026-11-16"
+DDG_HOLD = (2.5, 3.5)            # the hold band at the owner's 25%, unchanged
+DDG_FLOOR, DDG_CEIL = 20.0, 30.0  # owner, 2026-11-16
+_n_dn = int(DD_BUDGET_OWNER - DDG_FLOOR); _n_up = int(DDG_CEIL - DD_BUDGET_OWNER)
+_w_dn = (DDG_HOLD[0] - 1.0) / _n_dn; _w_up = (5.0 - DDG_HOLD[1]) / _n_up
+DDG_BANDS = (  # [lo, hi) on the 1-5 reading, the budget it points to, the action
+    [(round(1.0 + i * _w_dn, 2), round(1.0 + (i + 1) * _w_dn, 2), DDG_FLOOR + i, f"Tighten to {DDG_FLOOR + i:.0f}%")
+     for i in range(_n_dn)]
+    + [(DDG_HOLD[0], DDG_HOLD[1], DD_BUDGET_OWNER, f"Hold at {DD_BUDGET_OWNER:.0f}%")]
+    + [(round(DDG_HOLD[1] + i * _w_up, 2), round(DDG_HOLD[1] + (i + 1) * _w_up, 2) if i < _n_up - 1 else 5.0001,
+        DD_BUDGET_OWNER + 1 + i, f"Raise to {DD_BUDGET_OWNER + 1 + i:.0f}%") for i in range(_n_up)])
 DDG_GEO_FLOOR = 2.0
 DDG_REVIEWS_NEEDED = 2
 # Month-end readings on record, oldest first: (month-end, reading). Until two share a
@@ -7871,7 +7881,7 @@ def payload():
                      "trend_spans": {h: v for h, v in TREND_SPAN.items()},
                      "parts": DDG_PARTS, "reading_of": list(DDG_READING_OF), "longrun": MACRO["vix_longrun"],
                      "bands": [{"lo": b[0], "hi": min(b[1], 5.0), "cap": b[2], "action": b[3]}
-                               for b in DDG_BANDS],
+                               for b in DDG_BANDS], "band_rule_date": DDG_RULE_WIDE_DATE,
                      "band": {"lo": DDG_BAND[0], "hi": min(DDG_BAND[1], 5.0), "cap": DDG_BAND[2],
                               "action": DDG_BAND[3]},
                      "guards": DDG_GUARDS, "recommended_cap": DDG_RECOMMENDED,
@@ -9528,28 +9538,34 @@ def report():
     # ranked on. Two summation routes printed 7.20 beside a "best" of 7.21 on Python 3.13.
     checks.append(("every budget step's printed CAGR is the best its search found",
                    all(e["cagr"] == e["best"] for alt in p["dd_gauge"]["alt"].values() for e in alt.values())))
-    checks.append(("the gauge's bands tile 1-5 without a gap, step 1pp from 24% to 27%, and hold at the owner's 25%",
+    checks.append(("the gauge's bands tile 1-5 without a gap, step 1pp from 20% to 30% (owner, 16 Nov), and hold at the owner's 25% from 2.50 to 3.50",
                    _bands[0]["lo"] == 1.0 and _bands[-1]["hi"] == 5.0
                    and all(a["hi"] == b["lo"] for a, b in zip(_bands, _bands[1:]))
-                   and [b["cap"] for b in _bands] == [24.0, 25.0, 26.0, 27.0]
+                   and [b["cap"] for b in _bands] == [float(c) for c in range(20, 31)]
+                   and any(b["cap"] == p["dd_budget"]["base"] and (b["lo"], b["hi"]) == (2.5, 3.5) for b in _bands)
+                   # equal widths on each side of the hold band
+                   and len({round(b["hi"] - b["lo"], 2) for b in _bands if b["cap"] < p["dd_budget"]["base"]}) == 1
+                   and len({round(b["hi"] - b["lo"], 2) for b in _bands if b["cap"] > p["dd_budget"]["base"]}) == 1
                    and any(b["cap"] == p["dd_budget"]["base"] and b["lo"] <= 3.0 < b["hi"] for b in _bands)
                    and _dg["band"]["lo"] <= _dg["value"] < _dg["band"]["hi"] + (1e-9 if _dg["band"]["hi"] == 5.0 else 0)))
     # runbook 107: a weighted view that is neutral by construction pins the gauge inside
     # its outer bands. Drive the weighted views to 1 and to 5, the 10-year held where it is.
     _ext = lambda v: round(sum((v if h != HZ_LABEL else _dg["parts"][h]["reading"]) * w
                                for h, w in _dg["w"].items()), 2)
-    checks.append(("every band of the gauge is reachable: the weighted views at 1 and at 5 cross the 24% and 27% bands",
+    checks.append(("every band of the gauge is reachable: the weighted views at 1 and at 5 reach the 20% and 30% bands",
                    _ext(1.0) < _bands[0]["hi"] and _ext(5.0) >= _bands[-1]["lo"]))
     _gd = {g["name"]: g for g in _dg["guards"]}
     _rz = _dg["band"]["cap"] > p["dd_budget"]["base"]
     _okstep = all(g["ok"] for g in _dg["guards"] if g["applies_to"] == "any step" or (_rz and g["applies_to"] == "raise"))
-    checks.append(("the recommendation follows the band only when every guard that applies is clear, never past 27% or the derived reference",
+    checks.append(("the recommendation follows the band only when every guard that applies is clear, never past the 20-30% band",
                    _gd["geopolitics"]["ok"] == (_gd["geopolitics"]["reading"] > _gd["geopolitics"]["floor"])
                    and _gd["vix"]["ok"] == (p["macro"]["vix_latest"] <= p["macro"]["vix_longrun"])
                    and _gd["persistence"]["ok"] == (_gd["persistence"]["reviews"] >= _gd["persistence"]["needed"]
                                                     and _gd["persistence"]["ok"])
                    and _dg["recommended_cap"] == (_dg["band"]["cap"] if _okstep else p["dd_budget"]["base"])
-                   and _dg["recommended_cap"] <= 27.0 <= p["dd_budget"]["derived_ref"] + 0.05))
+                   and _bands[0]["cap"] <= _dg["recommended_cap"] <= _bands[-1]["cap"]
+                   # the derived reference the base replaced sits inside the widened band
+                   and _bands[0]["cap"] <= p["dd_budget"]["derived_ref"] <= _bands[-1]["cap"]))
     # THE MONTH-END RECORD IS KEPT (v88): the October review was due at the 31 Oct roll and
     # nothing would have failed had it been skipped. Every month-end from the band's first
     # month to the as-of date has one reading, in order, on the 1-5 scale.

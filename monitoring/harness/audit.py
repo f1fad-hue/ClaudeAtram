@@ -242,6 +242,18 @@ G = D["dd_gauge"]; band = [b for b in G["bands"] if b["lo"] <= G["value"] < b["h
 ck("the drawdown gauge's bands tile 1-5 and its value sits in the band it reports",
    G["bands"][0]["lo"] == 1 and G["bands"][-1]["hi"] == 5 and all(a["hi"] == b["lo"] for a, b in zip(G["bands"], G["bands"][1:]))
    and len(band) == 1 and band[0] == G["band"], f"{G['value']} in {G['band']}")
+# THE BAND IS THE OWNER'S (v105, 2026-11-16: "Wider the band of budget drawdown to 20-30%"): one-point
+# steps from 20% to 30%, the 25% base held from 2.50 to 3.50, and the rest of 1-5 cut into equal widths
+# on each side - re-derived here from those three facts, not read back from the engine's list.
+_base = D["dd_budget"]["base"]; _nd, _nu = int(_base - 20), int(30 - _base)
+_exp = ([(round(1 + i * 1.5 / _nd, 2), round(1 + (i + 1) * 1.5 / _nd, 2), 20.0 + i) for i in range(_nd)]
+        + [(2.5, 3.5, _base)]
+        + [(round(3.5 + i * 1.5 / _nu, 2), round(3.5 + (i + 1) * 1.5 / _nu, 2), _base + 1 + i) for i in range(_nu)])
+ck("the budget band is the owner's 20-30%: one-point steps, the 25% base held from 2.50 to 3.50, equal widths each side",
+   [(b["lo"], b["hi"], b["cap"]) for b in G["bands"]] == _exp
+   and all(b["action"].endswith(f"{b['cap']:.0f}%") for b in G["bands"])
+   and sorted(float(c) for c in G["alt"]) == [float(c) for c in range(20, 31)],
+   f"{[(b['lo'], b['hi'], b['cap']) for b in G['bands']]}")
 # THE GAUGE RE-DERIVED (v90). Until v90 the audit checked only the bands and the budget, not
 # the readings - and its budget check took the band's step as the budget, which would have
 # failed falsely the first time a new band was read before two month-end reviews.
