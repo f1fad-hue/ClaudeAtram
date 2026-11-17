@@ -3326,6 +3326,7 @@
   "baseline_k": 1.7125,
   "a_k": 1.66579,
   "b_k": 1.66579,
+  "c_k": 1.67,
   "d_k": 1.65,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
@@ -4014,6 +4015,28 @@
      "best": 6.76,
      "hormuz_dd": -36.7
     },
+    "c": {
+     "weights": [
+      40,
+      50,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.52,
+     "maxdd": -19.7,
+     "vol": 10.28,
+     "ret_per_dd": 0.331,
+     "n_feasible": 3,
+     "best": 6.52,
+     "hormuz_dd": -36.3
+    },
     "d": {
      "weights": [
       15,
@@ -4081,6 +4104,28 @@
      "n_feasible": 87960,
      "best": 6.85,
      "hormuz_dd": -38.5
+    },
+    "c": {
+     "weights": [
+      35,
+      60,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.6,
+     "maxdd": -20.6,
+     "vol": 10.74,
+     "ret_per_dd": 0.32,
+     "n_feasible": 5,
+     "best": 6.6,
+     "hormuz_dd": -37.8
     },
     "d": {
      "weights": [
@@ -4150,6 +4195,28 @@
      "best": 6.93,
      "hormuz_dd": -40.0
     },
+    "c": {
+     "weights": [
+      35,
+      55,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.68,
+     "maxdd": -21.5,
+     "vol": 11.07,
+     "ret_per_dd": 0.311,
+     "n_feasible": 6,
+     "best": 6.68,
+     "hormuz_dd": -39.4
+    },
     "d": {
      "weights": [
       5,
@@ -4217,6 +4284,28 @@
      "n_feasible": 126527,
      "best": 7.04,
      "hormuz_dd": -41.5
+    },
+    "c": {
+     "weights": [
+      30,
+      65,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.76,
+     "maxdd": -22.3,
+     "vol": 11.54,
+     "ret_per_dd": 0.303,
+     "n_feasible": 8,
+     "best": 6.76,
+     "hormuz_dd": -40.8
     },
     "d": {
      "weights": [
@@ -4286,6 +4375,28 @@
      "best": 7.11,
      "hormuz_dd": -43.1
     },
+    "c": {
+     "weights": [
+      30,
+      60,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.84,
+     "maxdd": -23.2,
+     "vol": 11.87,
+     "ret_per_dd": 0.295,
+     "n_feasible": 10,
+     "best": 6.84,
+     "hormuz_dd": -42.4
+    },
     "d": {
      "weights": [
       0,
@@ -4352,6 +4463,28 @@
      "ret_per_dd": 0.289,
      "n_feasible": 164826,
      "best": 7.2,
+     "hormuz_dd": -45.4
+    },
+    "c": {
+     "weights": [
+      25,
+      65,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.01,
+     "maxdd": -25.0,
+     "vol": 12.67,
+     "ret_per_dd": 0.28,
+     "n_feasible": 14,
+     "best": 7.01,
      "hormuz_dd": -45.4
     },
     "d": {
@@ -4422,6 +4555,28 @@
      "best": 7.29,
      "hormuz_dd": -46.9
     },
+    "c": {
+     "weights": [
+      20,
+      75,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.09,
+     "maxdd": -25.8,
+     "vol": 13.15,
+     "ret_per_dd": 0.275,
+     "n_feasible": 17,
+     "best": 7.09,
+     "hormuz_dd": -46.9
+    },
     "d": {
      "weights": [
       0,
@@ -4489,6 +4644,28 @@
      "n_feasible": 199991,
      "best": 7.36,
      "hormuz_dd": -48.8
+    },
+    "c": {
+     "weights": [
+      20,
+      70,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.17,
+     "maxdd": -26.7,
+     "vol": 13.47,
+     "ret_per_dd": 0.269,
+     "n_feasible": 20,
+     "best": 7.17,
+     "hormuz_dd": -48.5
     },
     "d": {
      "weights": [
@@ -4558,6 +4735,28 @@
      "best": 7.44,
      "hormuz_dd": -49.6
     },
+    "c": {
+     "weights": [
+      15,
+      80,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.26,
+     "maxdd": -27.6,
+     "vol": 13.95,
+     "ret_per_dd": 0.263,
+     "n_feasible": 23,
+     "best": 7.26,
+     "hormuz_dd": -50.0
+    },
     "d": {
      "weights": [
       0,
@@ -4626,6 +4825,28 @@
      "best": 7.54,
      "hormuz_dd": -51.7
     },
+    "c": {
+     "weights": [
+      15,
+      75,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.34,
+     "maxdd": -28.5,
+     "vol": 14.27,
+     "ret_per_dd": 0.258,
+     "n_feasible": 26,
+     "best": 7.34,
+     "hormuz_dd": -51.5
+    },
     "d": {
      "weights": [
       0,
@@ -4693,6 +4914,28 @@
      "n_feasible": 244206,
      "best": 7.64,
      "hormuz_dd": -54.0
+    },
+    "c": {
+     "weights": [
+      10,
+      85,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.42,
+     "maxdd": -29.3,
+     "vol": 14.75,
+     "ret_per_dd": 0.253,
+     "n_feasible": 30,
+     "best": 7.42,
+     "hormuz_dd": -53.0
     },
     "d": {
      "weights": [
@@ -5303,6 +5546,23 @@
      "cagr": 7.12,
      "maxdd": -25.0
     },
+    "c": {
+     "weights": [
+      25,
+      70,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 6.86,
+     "maxdd": -24.1
+    },
     "d": {
      "weights": [
       0,
@@ -5341,6 +5601,23 @@
       0
      ],
      "cagr": 7.28,
+     "maxdd": -24.9
+    },
+    "c": {
+     "weights": [
+      25,
+      65,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.05,
      "maxdd": -24.9
     },
     "d": {
@@ -5383,6 +5660,23 @@
      "cagr": 7.19,
      "maxdd": -24.8
     },
+    "c": {
+     "weights": [
+      25,
+      65,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.01,
+     "maxdd": -25.0
+    },
     "d": {
      "weights": [
       5,
@@ -5422,6 +5716,23 @@
      ],
      "cagr": 7.2,
      "maxdd": -24.9
+    },
+    "c": {
+     "weights": [
+      25,
+      65,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.01,
+     "maxdd": -25.0
     },
     "d": {
      "weights": [
@@ -5464,6 +5775,23 @@
      "cagr": 7.22,
      "maxdd": -24.9
     },
+    "c": {
+     "weights": [
+      25,
+      65,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.04,
+     "maxdd": -24.9
+    },
     "d": {
      "weights": [
       0,
@@ -5503,6 +5831,23 @@
      ],
      "cagr": 7.19,
      "maxdd": -24.8
+    },
+    "c": {
+     "weights": [
+      25,
+      65,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "cagr": 7.01,
+     "maxdd": -25.0
     },
     "d": {
      "weights": [
@@ -6454,6 +6799,323 @@
    "max_w": 35,
    "min_cash": 5
   }
+ },
+ "portfolio_c": {
+  "weights": [
+   25,
+   65,
+   0,
+   10,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "ids": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRASEQ",
+   "ATRGTEC",
+   "ATRGLDV",
+   "ATRGHCP",
+   "M_GINF",
+   "M_GEO",
+   "M_GCT",
+   "ATRAMIP",
+   "M_GALL"
+  ],
+  "macro": {
+   "weights": [
+    25.0,
+    65.0,
+    0.0,
+    10.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "cagr": 7.01,
+   "vol": 12.67,
+   "maxdd": -25.0,
+   "ret_per_dd": 0.28,
+   "sharpe_like": 0.006,
+   "terminal_1m": 1968991,
+   "worst_1m_from_open": 750000
+  },
+  "base": {
+   "weights": [
+    25.0,
+    65.0,
+    0.0,
+    10.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "cagr": 6.88,
+   "vol": 12.67,
+   "maxdd": -25.1,
+   "ret_per_dd": 0.274,
+   "sharpe_like": -0.004,
+   "terminal_1m": 1945201,
+   "worst_1m_from_open": 749000
+  },
+  "ten": {
+   "weights": [
+    25.0,
+    65.0,
+    0.0,
+    10.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "cagr": 7.1,
+   "vol": 12.67,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.285,
+   "sharpe_like": 0.013,
+   "terminal_1m": 1985613,
+   "worst_1m_from_open": 751000
+  },
+  "column": "net_macro",
+  "fund": "ATRQIAP",
+  "funds": [
+   "ATRPHMM",
+   "ATRQIAP",
+   "ATRGTEC"
+  ],
+  "rule_date": "2026-11-17",
+  "by_q": [
+   {
+    "q": 40,
+    "n_feasible": 1,
+    "n_total": 3,
+    "shallowest": -24.6,
+    "weights": [
+     35,
+     40,
+     0,
+     25,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.91,
+    "maxdd": -24.6
+   },
+   {
+    "q": 45,
+    "n_feasible": 2,
+    "n_total": 6,
+    "shallowest": -20.7,
+    "weights": [
+     35,
+     45,
+     0,
+     20,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.84,
+    "maxdd": -23.5
+   },
+   {
+    "q": 50,
+    "n_feasible": 3,
+    "n_total": 9,
+    "shallowest": -17.1,
+    "weights": [
+     35,
+     50,
+     0,
+     15,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.76,
+    "maxdd": -22.5
+   },
+   {
+    "q": 55,
+    "n_feasible": 3,
+    "n_total": 8,
+    "shallowest": -18.8,
+    "weights": [
+     30,
+     55,
+     0,
+     15,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.92,
+    "maxdd": -24.2
+   },
+   {
+    "q": 60,
+    "n_feasible": 2,
+    "n_total": 7,
+    "shallowest": -20.6,
+    "weights": [
+     30,
+     60,
+     0,
+     10,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.84,
+    "maxdd": -23.2
+   },
+   {
+    "q": 65,
+    "n_feasible": 2,
+    "n_total": 6,
+    "shallowest": -22.3,
+    "weights": [
+     25,
+     65,
+     0,
+     10,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 7.01,
+    "maxdd": -25.0
+   },
+   {
+    "q": 70,
+    "n_feasible": 1,
+    "n_total": 5,
+    "shallowest": -24.1,
+    "weights": [
+     25,
+     70,
+     0,
+     5,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "cagr": 6.93,
+    "maxdd": -24.1
+   },
+   {
+    "q": 75,
+    "n_feasible": 0,
+    "n_total": 4,
+    "shallowest": -25.8
+   },
+   {
+    "q": 80,
+    "n_feasible": 0,
+    "n_total": 3,
+    "shallowest": -27.6
+   },
+   {
+    "q": 85,
+    "n_feasible": 0,
+    "n_total": 2,
+    "shallowest": -29.3
+   },
+   {
+    "q": 90,
+    "n_feasible": 0,
+    "n_total": 1,
+    "shallowest": -31.1
+   }
+  ],
+  "band_n": 1,
+  "n_feasible": 14,
+  "n_total": 54,
+  "scenarios": [
+   {
+    "name": "Hormuz escalation",
+    "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $92. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
+    "cagr": 3.46,
+    "vol": 20.28,
+    "maxdd": -45.4
+   },
+   {
+    "name": "Hawkish repricing",
+    "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
+    "cagr": 5.08,
+    "vol": 16.47,
+    "maxdd": -35.3
+   },
+   {
+    "name": "AI capex digestion",
+    "desc": "Partly running since 5 Nov: the Nasdaq fell 5.52% into correction on 5 Nov, and the KOSPI 5.28% on 5 Nov and 6.02% on 6 Nov, on fears for the AI build-out, before any earnings cut. This row models the cut: the semis order book rolls over and the 52.5% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
+    "cagr": 3.93,
+    "vol": 18.37,
+    "maxdd": -40.6
+   },
+   {
+    "name": "Disinflation restart",
+    "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
+    "cagr": 8.86,
+    "vol": 10.14,
+    "maxdd": -17.7
+   },
+   {
+    "name": "Grind-on base case",
+    "desc": "Vol settles back to the 19-20 the futures curve priced on 20 Oct, earnings hold, no policy accident. The modelled path.",
+    "cagr": 7.01,
+    "vol": 12.67,
+    "maxdd": -25.0
+   }
+  ],
+  "dd_cap": 25.0,
+  "in_budget": true
  },
  "portfolio_d": {
   "weights": [

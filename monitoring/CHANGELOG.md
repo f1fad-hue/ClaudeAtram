@@ -2,6 +2,61 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-17 — v111: Portfolio C added - the owner's three funds, Nasdaq Equity Income the main; 25 / 65 / 10 at 7.01%; A, B and D unchanged
+
+At the owner's instruction: "Add portfolio C with atram nasdaq equity as the main with atram global tech and atram
+peso money market based on 1, 3, 5, 10yrs macroeconomics sentiments, regional rankings, market trends and market
+valuations", then "That is a 3 funds portfolio". No market input moved; the data date stays 16 Nov.
+
+**The rule, as built.** C holds exactly Peso Money Market, Nasdaq Equity Income and Global Technology, each at least
+5%, Nasdaq Equity Income strictly the largest (the main fund), on the 5% grid. No single-fund cap: three funds with
+Nasdaq the largest cannot keep 35%. Its cash is the money market it must hold. Otherwise B's rule on B's view: the
+highest net CAGR after all fees inside the band's budget, a shallower drawdown breaking exact ties, on the four
+analyses at 1, 3, 5 and 10 years (10/20/20/50). It is re-chosen at the live budget, at every budget step and on every
+what-if. The key `portfolio_c`, retired with the 50%-pinned C in v101, is reused; the guards that held it absent were
+rewritten, not deleted (runbook 151).
+
+**The pick.** 54 mixes, 14 inside the 25% budget, one at the best CAGR:
+
+| | Weights (Nasdaq / cash / Tech) | 1/3/5/10-year | 10-year view | vs B |
+| --- | --- | --- | --- | --- |
+| C | 65 / 25 / 10 | **7.01% / −25.0%** (vol 12.67%) | 7.10% / −24.9% | −0.19pp a year, 0.1pp more drawdown |
+
+Each Nasdaq weight's best (published as `by_q`, shown on the page): 40% 6.91%, 45% 6.84%, 50% 6.76%, 55% 6.92%,
+60% 6.84%, **65% 7.01%**, 70% 6.93%; from 75% nothing fits (the shallowest mix at 75% falls −25.8%). Global
+Technology nets more than Nasdaq Equity Income (9.24% against 7.67%) but falls further (−56.5% against −32.0%), so
+more Nasdaq leaves less room for Global Technology inside the budget, and less needs more cash. The curve is not
+monotone on the 5% grid. Budget steps 20-30%: 6.52 / 6.60 / 6.68 / 6.76 / 6.84 / **7.01** / 7.09 / 7.17 / 7.26 /
+7.34 / 7.42%. What-ifs: valuation off moves C to 70 / 25 / 5 at 6.86%; with the drags neutral (7.05%) and the trend
+off (7.04%) it keeps its weights. Hormuz: 3.46% / −45.4%. Nasdaq Equity Income and Global Technology move together
+at a correlation of 0.88, so the money market is C's only cushion. The drawdown model does not price 65% with one
+manager.
+
+**Page.** A fourth donut, a C column in the weights, headline, lenses, stress, peso and budget-step tables, "who wins
+where" over six pairs, a C mark on the efficient-mix chart (the four labels now take their own sides: A above, B
+left, D right, C below), a C section with its table by Nasdaq weight, a Report card (6; D's card is now 7), C in
+the cash line, the conclusion, the one-sentence verdict and every what-if, C's weight on each fund slide, and C's
+drawdown coefficient beside A's, B's and D's. Phone width: no new sideways scroll; the six-column budget-step table
+fits at 390px.
+
+**Checks.**
+- Engine 267 (was 266): C's check rewritten from "retired" to "the owner's three funds, the rule's pick inside the
+  budget on both routes, in every what-if and step"; a C CAGR re-derivation; a check that the `by_q` rows cover
+  every C mix once and C is their best; `c_k` is now C's own mix (it was held absent for the old C).
+- Audit 294: C re-picked from its own triple loop over the 5% grid, its three views and every `by_q` row
+  re-derived.
+- Validator 17: four donuts, the A-B-C-D weights table row for row, C's section (mix, CAGR, drawdown, a row per
+  Nasdaq weight with C's marked), and the lede's four CAGRs.
+- Mutants: `m_cback` (the retired C back) replaced by `m_cfour` (C holding a fourth fund), `m_cpick` (C moved to
+  another feasible row with its headline matched), `m_cq` (a weight's shallowest mix off) and `m_cold` (the old
+  C's held-out inputs back).
+
+**Errors found.** None in the published figures. Two layout faults were caught on the phone screenshots before
+publishing: C's donut title wrapped to two lines beside D's, so it was shortened to "Three funds"; and the four
+picks' labels on the efficient-mix chart overlapped, so each now takes its own side.
+
+Not personal financial advice.
+
 ## 2026-11-17 — v110: markets roll to 16 Nov; volatility cut to 2.0 as the VIX closes back above its long run; year-1 readings re-researched; A, B and D unchanged; budget 25%, every raise guard now blocks
 
 At the owner's instruction: run debugging, code review and a sanity check; hunt and fix errors; clean up; and

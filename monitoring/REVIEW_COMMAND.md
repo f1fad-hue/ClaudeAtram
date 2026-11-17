@@ -10,13 +10,15 @@ model is on the Portfolios tab); the four analyses are the regional ranking, mac
 and market valuation, A on 10 years and B and D on 1, 3, 5 and 10; the gauge reads 1, 3 and 5 years.
 Updated 2026-11-16 (v108): every analysis, the regional rankings included, has a researched year-1 reading.
 Updated 2026-11-16 (v109): the band holds at 25% from 2.80 to 3.20 and steps one point per 0.15.
-Updated 2026-11-17 (v110): five tabs, not six. The runbook (`README.md`) says how; this file says what.
+Updated 2026-11-17 (v110): five tabs, not six. Updated 2026-11-17 (v111): Portfolio C is back as the owner's
+three funds, so the command covers A, B, C and D. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
 what's wrong, clean up, and publish it to https://claude.ai/artifact/6z2thyg2HaHjFtcbjKhnUY
 (code: f1fad-hue/ClaudeAtram, branch claude/android-portfolio-macro-dashboard-awmpce).
-The portfolios are A, B and D (C was retired on 12 Nov 2026). I hold Nasdaq Equity Income.
+The portfolios are A, B, C and D (C, from 17 Nov 2026, is my three funds with Nasdaq Equity Income
+as the main). I hold Nasdaq Equity Income.
 
 Before you start
 • Read the runbook (monitoring/README.md) and the newest changelog entry, and carry
@@ -82,7 +84,7 @@ Evidence rules (apply to everything below)
   peso translation stays inside its PPP bracket. Check the Side by side and Fee
   transparency tables against the slides.
 • For each held-out fund, say what still blocks it, including any target fund not yet
-  named. Re-run the held-out what-if for A, B and D and record its weights.
+  named. Re-run the held-out what-if for A, B and D and record its weights (C holds only its three).
 
 3. The four analyses at 1, 3, 5 and 10 years (Macro, Funds and Portfolios tabs)
 • Regional rankings (US, Europe, Asia, Philippines; each with a researched year-1 reading
@@ -114,10 +116,10 @@ Evidence rules (apply to everything below)
   (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or
   under its long run before any raise). Record the month-end review when one is due.
 • Report the budget in force and what each step (20% to 30%, one point a step; owner,
-  16 Nov 2026; hold 2.80-3.20 and 0.15 of the reading a step, v109) does to A, B and D, and to B in a Hormuz closure. The band's budget is every
+  16 Nov 2026; hold 2.80-3.20 and 0.15 of the reading a step, v109) does to A, B, C and D, and to B in a Hormuz closure. The band's budget is every
   portfolio's budget (owner, 16 Nov 2026: "All portfolio still use the budget drawdown band").
 
-5. Portfolios A, B and D (Portfolios tab)
+5. Portfolios A, B, C and D (Portfolios tab)
 • Re-run the selection under the current rules: the highest net CAGR after all fees
   inside the drawdown budget, a shallower drawdown breaking only exact ties.
   ◦ A and B: at most 5 funds, 35% in any one, at least 5% peso money market, 5% steps;
@@ -125,6 +127,9 @@ Evidence rules (apply to everything below)
   ◦ D: Nasdaq Equity Income strictly the largest of two to five funds, each at least 5%,
     5% steps, no single-fund cap and no cash floor, on the 1/3/5/10-year view; the rule
     picks the number of funds, and each count's best is shown.
+  ◦ C: exactly Peso Money Market, Nasdaq Equity Income (strictly the largest) and Global
+    Technology, each at least 5%, 5% steps, no single-fund cap, on the 1/3/5/10-year view;
+    each Nasdaq weight's best is shown.
 • Check the head-to-head tables, the lenses and "who wins where"; the stress scenarios
   against today's markets (for example the oil levels in the Hormuz escalation and
   disinflation restart rows); and re-run the what-ifs, the efficient-mix chart and the
@@ -161,9 +166,9 @@ Evidence rules (apply to everything below)
   and the runbook.
 
 9. Report back, briefly
-• Start with three lines: what changed for A, B and D; the budget in force; and what
+• Start with three lines: what changed for A, B, C and D; the budget in force; and what
   moved for Nasdaq Equity Income, the fund I hold.
-• A table of A, B and D (weights, net CAGR, drawdown) with what changed and why, and D's
+• A table of A, B, C and D (weights, net CAGR, drawdown) with what changed and why, and D's
   number of funds, plus the drawdown band's reading and guards.
 • Any target-fund change found (switch, share class, charge, merger, closure) and its
   effect on the fund's net CAGR.

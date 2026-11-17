@@ -57,21 +57,24 @@ Asia Equity / Global Technology / Global Dividend / Global Health Care / Global 
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · 10-year view | B · 1/3/5/10-year view | D · Nasdaq Income-led |
-|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0** | 0 / 50 / 0 / 0 / 0 / 15 / 20 / 0 / 0 / 15 / 0 |
-| 10y net CAGR after all fees | **7.31%** | 7.20% | 7.25% |
-| Expected max drawdown (10y) | −24.9% | −24.9% | −24.8% |
-| Return per unit of drawdown | **0.294** | 0.289 | 0.292 |
+| | A · 10-year view | B · 1/3/5/10-year view | C · three funds | D · Nasdaq Income-led |
+|---|---|---|---|---|
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0** | 25 / 65 / 0 / 10 / 0 / 0 / 0 / 0 / 0 / 0 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 20 / 0 / 0 / 15 / 0 |
+| 10y net CAGR after all fees | **7.31%** | 7.20% | 7.01% | 7.25% |
+| Expected max drawdown (10y) | −24.9% | −24.9% | −25.0% | −24.8% |
+| Return per unit of drawdown | **0.294** | 0.289 | 0.280 | 0.292 |
 
-Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B and D
-on the 1/3/5/10-year. Portfolio C (Nasdaq Equity Income pinned at 50%) was retired on 12 Nov 2026
-(v101) at the owner's request. **A and B are the same mix since v107**: the rule picks on B's view
+Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C and D
+on the 1/3/5/10-year. **Portfolio C (v111, owner, 17 Nov 2026)** is the owner's three funds -
+Peso Money Market, Nasdaq Equity Income as the main (strictly the largest) and Global Technology,
+each at least 5%, no single-fund cap - chosen by B's rule on B's view: 65 / 25 / 10 (Nasdaq / cash /
+Tech) at 7.01% / −25.0%, 0.19pp a year below B. An earlier C, Nasdaq Equity Income pinned at 50%, was
+retired on 12 Nov 2026 (v101) at the owner's request. **A and B are the same mix since v107**: the rule picks on B's view
 what it picks on A's, 7.20% / −24.9% on the 1/3/5/10-year view and 7.31% / −24.9% on the 10-year.
 Every portfolio is built from four analyses (owner, 16 Nov 2026, v107) - the regional ranking,
 macro sentiment (the drivers' rates and energy tilts), the market trend and market valuation.
 **A** reads them at 10 years alone, where macro, trend and valuation are neutral by construction
-and valuation is already priced in the long-run assumptions. **B and D** read them at **1, 3, 5
+and valuation is already priced in the long-run assumptions. **B, C and D** read them at **1, 3, 5
 and 10 years**, weighted by the years each covers: year 1 10%, years 2-3 20%, years 4-5 20%,
 years 6-10 50%. Year 1 is researched on its own for every analysis - the regional rankings'
 from 16 Nov 2026 (v108): US 5.0, Europe 3.25, Asia 6.0, Philippines 4.75 on 1-10, each half a point under
@@ -133,9 +136,9 @@ driver's reading and its evidence); years 2-3 are what the 3-year reading leaves
 is taken out, so no year counts twice and no pick moves. On 16 Nov it reads 2.93 (year 1 3.32,
 years 2-3 2.83, years 4-5 2.83): hold at 25%, as at October's month-end (restated on the
 three-part rule), the first review on record. Since v77 the band sets
-the budget for A and B (owner, 28 Oct), and since v96 for D, through the same guards.
+the budget for A and B (owner, 28 Oct), since v96 for D and since v111 for C, through the same guards.
 
-Portfolio C - Nasdaq Equity Income held at exactly 50%, the one exemption from the 35% cap, the
+The earlier Portfolio C - Nasdaq Equity Income held at exactly 50%, the one exemption from the 35% cap, the
 rest by B's rule - was first added on 2026-09-25, removed on 2026-10-28 (v76), restored on
 2026-10-29 (v82) and **retired on 2026-11-12 (v101)** at the owner's request ("Remove and clean up
 the portfolio C"). Its pinned search was separate from A's, B's and D's, so no other pick moved:

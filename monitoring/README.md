@@ -133,9 +133,12 @@ truth; the artifact is a rendering of it.
    hand. A fund at 0% is allowed. A fund removed from the list (the two peso bond
    funds, 2026-10-21) never comes back without the owner's instruction. Every fund
    on the 22-fund list is either searched or held out with its reason (v63).
-   Portfolio C (Nasdaq Equity Income held at 50%) was retired at the owner's request
-   on 2026-10-28 (v76), D on 2026-10-27 (v74); neither comes back without the owner's
-   instruction, and a check fails if either does.
+   The 50%-pinned Portfolio C was retired at the owner's request on 2026-10-28 (v76) and
+   again on 2026-11-12 (v101), the four-fund D on 2026-10-27 (v74); neither comes back
+   without the owner's instruction. The keys carry the owner's later portfolios - D from
+   v96 (Nasdaq Equity Income the largest of two to five funds) and C from v111 (exactly
+   Peso Money Market, Nasdaq Equity Income the largest, and Global Technology) - each
+   chosen by the same rule over its own set, never set by hand.
 
 2. Every allocation weight ends in **5 or 0** and each portfolio sums to **100**.
 3. Every figure on the page comes from `model/engine.py`. If a model OUTPUT is
@@ -211,6 +214,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+174. A NEW PORTFOLIO IS A COLUMN IN EVERY TABLE AND A NAME IN EVERY LIST. Adding C (v111) touched about thirty
+   places on the page alone: every "A, B and D", every `["a", "b", "d"]`, every table header, the donut grid,
+   the frontier's labels, the Report's cards, the fund slides' weights and the drawdown coefficients. Find
+   them by searching for the list of names and for each other portfolio's payload key, not by memory; then
+   make the validator count the portfolios it draws and the audit re-pick the new one from its own generator.
+   And a pick over a fixed set of funds is not monotone in its main fund's weight on a 5% grid, so its table
+   shows each weight's best rather than a sentence that says "more is better".
 173. A CHECK MUST COMPARE THE DATE IT MEANS. v103's year-1 check required the data date to be no later than
    `rule_date` - the date the owner SET the 1/3/5 rule (15 Nov), not the date the year-1 readings were researched.
    It passed by accident until the first roll past 15 Nov, then failed for a reason that had nothing to do with

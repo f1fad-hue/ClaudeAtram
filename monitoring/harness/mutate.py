@@ -29,7 +29,15 @@ def m_swap(d):                                                                  
     w = d["portfolio_a"]["weights"]; i = next(k for k in range(1, len(w)) if w[k] >= 10); j = next(k for k in range(1, len(w)) if not w[k])
     w[i] -= 5; w[j] += 5
 def m_feas(d): d["portfolio_b"]["n_feasible"] += 1
-def m_cback(d): d["portfolio_c"] = json.loads(json.dumps(d["portfolio_b"]))                  # the retired C back in the payload (v101)
+def m_cfour(d):                                                                                # C holding a fourth fund (v111)
+    w = d["portfolio_c"]["weights"]; i = w.index(min(x for x in w if x)); j = next(k for k in range(len(w)) if not w[k])
+    w[i] -= 5; w[j] += 5
+def m_cpick(d):                                                                                # C moved off the rule's pick to a feasible row, its headline matched (v111)
+    c = d["portfolio_c"]; q = c["weights"][c["ids"].index("ATRQIAP")]
+    r = next(r for r in c["by_q"] if r["n_feasible"] and r["q"] != q)
+    c["weights"] = list(r["weights"]); c["macro"]["cagr"], c["macro"]["maxdd"] = r["cagr"], r["maxdd"]
+def m_cq(d): r = d["portfolio_c"]["by_q"][0]; r["shallowest"] = round(r["shallowest"] + 0.1, 1)   # a Nasdaq weight's shallowest mix off its re-run (v111)
+def m_cold(d): d["macro"]["gbi_w_c_low"] = 0                                                   # the old C's held-out inputs back (v111)
 def m_cap_k(d): d["dd_model"]["b_k"] = round(d["dd_model"]["b_k"] + 0.01, 5)
 def m_gauge(d): d["gauge"] = round(d["gauge"] + 0.01, 2)
 def m_dscore(d): _drv(d, "Volatility")["score"] = round(_drv(d, "Volatility")["score"] + 0.05, 2)

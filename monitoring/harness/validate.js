@@ -35,12 +35,13 @@ const file = process.argv[2], live = process.argv.includes("--live");
         dashes: [...document.querySelectorAll(".num, .lede")].filter(e => e.textContent.trim() === "—").map(e => e.id).slice(0, 8),
         http: ext.filter(u => !u.startsWith("https://")),
         hscroll: document.documentElement.scrollWidth > window.innerWidth + 1,
-        donuts: ["donutA", "donutB", "donutD"].map(i => !!document.querySelector(`#${i} svg`)),
-        donutC: !!document.getElementById("donutC"),
+        donuts: ["donutA", "donutB", "donutC", "donutD"].map(i => !!document.querySelector(`#${i} svg`)),
         vs, shorts: D.portfolio_b.shorts,
         gaugenow: (document.getElementById("gaugenow") || {}).textContent,
         lede: (document.getElementById("pblede") || {}).textContent || "",
         dlede: (document.getElementById("dlede") || {}).textContent || "",
+        clede: (document.getElementById("clede") || {}).textContent || "",
+        cq: [...document.querySelectorAll("#cq tbody tr")].map(r => r.textContent.trim()),
         donutD: !!document.querySelector("#donutD svg"),
       };
     });
@@ -57,12 +58,12 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("no empty figure", info.emptyNum.length === 0, `${info.emptyNum.slice(0, 6)}`);
     ck("no duplicate element ids", info.dup.length === 0, `${info.dup.slice(0, 5)}`);
     ck("every external reference is https", info.http.length === 0, `${info.http.slice(0, 3)}`);
-    ck("three donuts drawn, A, B and D, and none for the retired C", info.donuts.length === 3 && info.donuts.every(Boolean)
-      && !info.donutC && !D.portfolio_c, `${info.donuts} ${info.donutC}`);
-    const W = { A: D.portfolio_a.weights, B: D.portfolio_b.weights, D: D.portfolio_d.weights };
+    // v111 (owner, 17 Nov): C is back as the owner's three funds, Nasdaq Equity Income the main
+    ck("four donuts drawn, A, B, C and D", info.donuts.length === 4 && info.donuts.every(Boolean), `${info.donuts}`);
+    const W = { A: D.portfolio_a.weights, B: D.portfolio_b.weights, C: D.portfolio_c.weights, D: D.portfolio_d.weights };
     const shown = info.vs.map(r => [r[0], r.slice(1).map(c => c === "–" ? 0 : parseInt(c))]);
-    const want = info.shorts.map((s, i) => [s, [W.A[i], W.B[i], W.D[i]]]).filter(x => x[1].some(Boolean));
-    ck("the A-B-D weights table is the payload's, row for row", JSON.stringify(shown) === JSON.stringify(want),
+    const want = info.shorts.map((s, i) => [s, [W.A[i], W.B[i], W.C[i], W.D[i]]]).filter(x => x[1].some(Boolean));
+    ck("the A-B-C-D weights table is the payload's, row for row", JSON.stringify(shown) === JSON.stringify(want),
       `${JSON.stringify(shown)} vs ${JSON.stringify(want)}`);
     ck("the Report's gauge is the payload's", info.gaugenow === D.gauge.toFixed(2), `${info.gaugenow} vs ${D.gauge}`);
     const pc = x => x.toFixed(2) + "%";
@@ -70,8 +71,16 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("Portfolio D's section draws its donut and states its mix, 1/3/5/10-year CAGR and drawdown",
       info.donutD && dmix.every(x => info.dlede.includes(x)) && info.dlede.includes(pc(D.portfolio_d.macro.cagr))
       && info.dlede.includes("\u2212" + Math.abs(D.portfolio_d.macro.maxdd).toFixed(1) + "%"), info.dlede.slice(0, 200));
-    ck("the Portfolios lede states A's 10-year, B's and D's 1/3/5/10-year CAGR",
-      [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
+    const cmix = D.portfolio_c.weights.map((w, j) => [w, j]).filter(x => x[0]).map(([w, j]) => `${w}% ${D.portfolio_b.shorts[j]}`);
+    const cq = D.portfolio_c.by_q;
+    ck("Portfolio C's section states its three funds' mix, 1/3/5/10-year CAGR and drawdown, and a row per Nasdaq weight, C's marked",
+      cmix.length === 3 && cmix.every(x => info.clede.includes(x)) && info.clede.includes(pc(D.portfolio_c.macro.cagr))
+      && info.clede.includes("−" + Math.abs(D.portfolio_c.macro.maxdd).toFixed(1) + "%")
+      && info.cq.length === 2 * cq.length && info.cq.filter(t => t.includes("← C")).length === 1
+      && info.cq.find(t => t.includes("← C")).startsWith(D.portfolio_c.weights[D.portfolio_b.ids.indexOf("ATRQIAP")] + "%"),
+      info.clede.slice(0, 200));
+    ck("the Portfolios lede states A's 10-year, B's, C's and D's 1/3/5/10-year CAGR",
+      [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_c.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
       info.lede.slice(0, 160));
     await p.close();
   }
