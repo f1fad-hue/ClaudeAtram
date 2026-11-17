@@ -310,8 +310,9 @@ for rk, r in D["regions"].items():
        and abs(r["blend_10"] - round(sum(r[h + "_10"] * w for h, w in HZ.items()), 2)) < 0.006, f"{r['blend']}")
 # v110: THE YEAR-1 RESEARCH IS AS NEW AS THE DATA. Its own date (y1_date), not the owner's rule date
 # the engine compared until v110, is on or after the as-of date and no later than the review.
-ck("the year-1 readings were researched on or after the data date, by this review",
-   AS_OF <= d(D["dd_gauge"]["y1_date"]) <= REV, f"{D['dd_gauge']['y1_date']} vs {AS_OF} / {REV}")
+ck("the year-1 and six-month readings were researched on or after the data date, by this review",
+   AS_OF <= d(D["dd_gauge"]["y1_date"]) <= REV and AS_OF <= d(D["dd_gauge"]["m6_date"]) <= REV,
+   f"{D['dd_gauge']['y1_date']} / {D['dd_gauge']['m6_date']} vs {AS_OF} / {REV}")
 # v110: A TRAILING RETURN IS UNDER 75 DAYS OLD, OR FLAGGED STALE WITH ITS DATE PRINTED BESIDE IT (and under
 # 105 days); a flag on a fresh series is itself an error.
 _tsl = D["trend"]["sleeves"]
@@ -359,11 +360,14 @@ ck("the budget band is the owner's 20-30%: one-point steps, the 25% base held fr
 # v103 (owner, 15 Nov 2026): the gauge reads year 1, years 2-3 and years 4-5, each weighted by
 # the share of the first five years it covers. Re-derived here from the drivers' own paths and
 # year-1 scores and from each trend sleeve's z-scores - nothing is read back from the parts.
+# v112 (owner, 17 Nov 2026): year 1 split into months 1-6 (researched) and 7-12 (implied), 10/10/40/40;
+# the 10-year view shown as the anchor, neutral, and not weighted.
 _sp = G["spans"]; _wv = {h: round((b - a) / 5.0, 2) for h, (a, b) in _sp.items()}
-ck("the budget gauge's spans tile years 0-5 and each weighs its share of them (1Y 20%, 3Y 40%, 5Y 40%)",
-   G["views"] == ["1Y", "3Y", "5Y"] and list(_sp) == G["views"] and _sp["1Y"][0] == 0 and _sp["5Y"][1] == 5
+ck("the budget gauge's spans tile years 0-5 and each weighs its share of them (months 1-6 10%, 7-12 10%, years 2-3 40%, 4-5 40%)",
+   G["views"] == ["6M", "12M", "3Y", "5Y"] and list(_sp) == G["views"] and _sp["6M"] == [0.0, 0.5]
+   and _sp["12M"] == [0.5, 1.0] and _sp["5Y"][1] == 5
    and all(_sp[a][1] == _sp[b][0] for a, b in zip(G["views"], G["views"][1:]))
-   and G["w"] == _wv == {"1Y": 0.2, "3Y": 0.4, "5Y": 0.4}, f"{_sp} {G['w']}")
+   and G["w"] == _wv == {"6M": 0.1, "12M": 0.1, "3Y": 0.4, "5Y": 0.4}, f"{_sp} {G['w']}")
 _GD = {r["name"]: r for r in G["drivers"]}
 ck("the year-1 table lists the seven drivers at their weights, now as the published score, years 4-5 as the 5-year path",
    [x["name"] for x in DR] == list(_GD)
@@ -373,22 +377,44 @@ ck("the year-1 table lists the seven drivers at their weights, now as the publis
 _y23 = {x["name"]: round((3 * x["path"]["3Y"] - _GD[x["name"]]["y1"]) / 2, 3) for x in DR}
 ck("years 2-3 are what the 3-year path leaves once year 1 is taken out, so year 1 is not counted twice",
    all(abs(_GD[n]["y23"] - v) < 1e-9 and 1 <= v <= 10 for n, v in _y23.items()), f"{ {n: (_GD[n]['y23'], v) for n, v in _y23.items()} }")
+_m712 = {x["name"]: round(2 * _GD[x["name"]]["y1"] - _GD[x["name"]]["m6"], 3) for x in DR}
+_tw = lambda xs: all((a - 5.5) * (b - 5.5) >= 0 and abs(b - 5.5) <= abs(a - 5.5) + 1e-9 for a, b in zip(xs, xs[1:]))
+ck("months 7-12 are what year 1 leaves once months 1-6 are taken out, and every path runs from now toward neutral through them",
+   all(abs(_GD[n]["m712"] - v) < 1e-9 and 1 <= _GD[n]["m6"] <= 10 and len(_GD[n]["why_m6"]) > 60
+       and _tw([_GD[n]["now"], _GD[n]["m6"], v, _GD[n]["y23"], _GD[n]["y45"], 5.5]) for n, v in _m712.items()),
+   f"{ {n: (_GD[n]['m6'], _GD[n]['m712'], v) for n, v in _m712.items()} }")
 # v106 (owner, 16 Nov): valuation is its own part, so the macro part is the other six drivers,
 # their weights scaled to one - re-derived here from the drivers' own weights and paths.
 _VALN = "Valuation support"; _DR6 = [x for x in DR if x["name"] != _VALN]; _W6 = sum(x["weight"] for x in _DR6)
 _xv = next(x for x in DR if x["name"] == _VALN)
-_mac = {"1Y": to5(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6),
+_mac = {"6M": to5(sum(x["weight"] * _GD[x["name"]]["m6"] for x in _DR6) / _W6),
+        "12M": to5(sum(x["weight"] * _m712[x["name"]] for x in _DR6) / _W6),
         "3Y": to5(sum(x["weight"] * _y23[x["name"]] for x in _DR6) / _W6),
         "5Y": to5(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6)}
-_vlp = {"1Y": to5(_GD[_VALN]["y1"]), "3Y": to5(_y23[_VALN]), "5Y": to5(_xv["path"]["5Y"])}
+_vlp = {"6M": to5(_GD[_VALN]["m6"]), "12M": to5(_m712[_VALN]), "3Y": to5(_y23[_VALN]), "5Y": to5(_xv["path"]["5Y"])}
+_mac1 = to5(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6); _vlp1 = to5(_GD[_VALN]["y1"])
 _TR = D["trend"]; _ov = lambda a, b, c, e: max(0.0, min(b, e) - max(a, c))
 def _tsp(v, a, b):
     wm = _ov(a, b, *_TR["mom_years"]) / (b - a); wr = _ov(a, b, *_TR["rev_years"]) / (b - a)
     return round(min(5.0, max(1.0, 3.0 + wm * v["z"]["1Y"] - wr * _TR["reversal"] * v["z_rev"])), 2)
-_ts = {h: {f: _tsp(v, a, b) for f, v in _TR["sleeves"].items()} for h, (a, b) in _sp.items()}
-ck("each market's trend in each span is momentum over year 1 and reversal after it, from its own z-scores; years 4-5 equal its 5-year score",
-   G["trend_spans"] == _ts and all(_ts["5Y"][f] == v["score"]["5Y"] for f, v in _TR["sleeves"].items()), f"{G['trend_spans']} vs {_ts}")
+# v112: months 1-6 are the half-year momentum - the last two quarters compounded, as a z in the sleeve's
+# own drift and volatility - and months 7-12 what year 1's momentum leaves once they are taken out.
+def _z6(v):
+    q = v["quarters"]; ks = list(q)[-2:]; r = 1.0
+    for k in ks: r *= 1 + q[k] / 100
+    r = round((r - 1) * 100, 2)
+    return r, round((math.log(1 + r / 100) - 0.5 * math.log(1 + v["mu"] / 100)) / (v["sigma"] / 100 * math.sqrt(0.5)), 2)
+_cl = lambda x: round(min(5.0, max(1.0, x)), 2)
+_ty1 = {f: _tsp(v, 0.0, 1.0) for f, v in _TR["sleeves"].items()}
+_t6 = {f: _cl(3.0 + _z6(v)[1]) for f, v in _TR["sleeves"].items()}
+_ts = {"6M": _t6, "12M": {f: _cl(2 * _ty1[f] - _t6[f]) for f in _t6}}
+_ts.update({h: {f: _tsp(v, *_sp[h]) for f, v in _TR["sleeves"].items()} for h in ("3Y", "5Y")})
+ck("each market's trend in each span: half-year momentum for months 1-6, the rest of year 1's momentum for 7-12, reversal after; years 4-5 equal its 5-year score",
+   G["trend_spans"] == _ts and G["trend_y1"] == _ty1
+   and all(G["trend_6m"][f]["ret"] == _z6(v)[0] and G["trend_6m"][f]["z"] == _z6(v)[1] for f, v in _TR["sleeves"].items())
+   and all(_ts["5Y"][f] == v["score"]["5Y"] for f, v in _TR["sleeves"].items()), f"{G['trend_spans']} vs {_ts}")
 _trp = {h: round(sum(_ts[h].values()) / len(_ts[h]), 2) for h in _sp}
+_trp["1Y"] = round(sum(_ty1.values()) / len(_ty1), 2)
 # v108: THE FOUR ANALYSES, YEAR BY YEAR, re-derived cell by cell from their own inputs: the regions'
 # spans, the two tilt drivers' year 1 / implied years 2-3 / paths, the five markets' trend spans and the
 # valuation path; A reads the last span, B and D all four at 10/20/20/50, each the blend the forecasts use.
@@ -398,15 +424,15 @@ _trp = {h: round(sum(_ts[h].values()) / len(_ts[h]), 2) for h in _sp}
 # a strong but expensive boom raises nothing.
 def _rch(c):
     sp = []
-    for i, w in enumerate((0.2, 0.4, 0.4)):
+    for i, w in enumerate((0.1, 0.1, 0.4, 0.4)):
         v = {n: x + c["back"][i] * (5.5 - x) for n, x in c["drivers"].items()}
         sp.append(w * (to5(sum(x["weight"] * v[x["name"]] for x in _DR6) / _W6)
-                       + (c["momentum"] if i == 0 else c["reversal"]) + to5(v[_VALN])) / 3)
+                       + (c["momentum"] if i < 2 else c["reversal"]) + to5(v[_VALN])) / 3)
     return round(sum(sp), 2)
 _bcap = lambda g: next(b["cap"] for b in G["bands"] if b["lo"] <= g < b["hi"] or (b["hi"] == 5 and g == 5))
 _RC = {c["name"]: c for c in G["reach"]}
 ck("the band fits the gauge's reach: each stylized case re-derived and banded; worst 20%, best 29%+, an expensive boom no raise",
-   all(_rch(c) == c["value"] and _bcap(c["value"]) == c["cap"] and c["back"] == [0.0, 0.6, 0.85] for c in G["reach"])
+   all(_rch(c) == c["value"] and _bcap(c["value"]) == c["cap"] and c["back"] == [0.0, 0.0, 0.6, 0.85] for c in G["reach"])
    # and where each landed on the v105-v108 steps the page quotes (hold 2.50-3.50, 0.30 a step)
    and G["hold_v105"] == [2.5, 3.5] and G["step_w_v105"] == 0.3
    and all(c["cap_v105"] == (20 + min(4, int((c["value"] - 1) / 0.3 + 1e-9)) if c["value"] < 2.5 else 25 if c["value"] < 3.5
@@ -422,7 +448,7 @@ _abx = ([("Regional ranking", [r["1Y"], r["Y23"], r["5Y"], r["10Y"]], r["blend"]
            for n in ("Monetary policy & liquidity", "Geopolitics & energy")]
         + [("Market trend", [_trp["1Y"], _trp["3Y"], _trp["5Y"], 3.0],
             sum(v["blend"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]))]
-        + [("Market valuation", [_vlp["1Y"], _vlp["3Y"], _vlp["5Y"], to5(_xv["path"]["10Y"])], D["val_channel"]["blend_5"])])
+        + [("Market valuation", [_vlp1, _vlp["3Y"], _vlp["5Y"], to5(_xv["path"]["10Y"])], D["val_channel"]["blend_5"])])
 ck("the four analyses year by year: every cell from its inputs, A on years 6-10 alone, B and D at 10/20/20/50, each row its forecasts' blend",
    len(_AB["rows"]) == len(_abx) and _AB["w_bd"] == _abw and _AB["w_a"] == [0.0, 0.0, 0.0, 1.0]
    and all(r["analysis"] == an and r["v"] == v and r["a"] == v[-1]
@@ -434,14 +460,22 @@ from decimal import Decimal as _D, ROUND_HALF_UP as _HU
 _q2 = lambda x: float(x.quantize(_D("0.01"), rounding=_HU))      # exact half-up, the page's convention
 _rd = {h: _q2((_D(str(_mac[h])) + _D(str(_trp[h])) + _D(str(_vlp[h]))) / 3) for h in _mac}
 ck("each budget-gauge view reads the mean of macro (six drivers), trend and valuation over its span - volatility not in it",
-   G["reading_of"] == ["macro", "trend", "valuation"] and list(G["parts"]) == ["1Y", "3Y", "5Y"]
+   G["reading_of"] == ["macro", "trend", "valuation"] and list(G["parts"]) == ["6M", "12M", "3Y", "5Y", "10Y"]
+   and G["anchor"] == "10Y" and "10Y" not in G["w"]
+   and all(G["parts"]["10Y"][k] == 3.0 for k in ("macro", "trend", "valuation", "reading"))
    and all(G["parts"][h]["macro"] == _mac[h] and G["parts"][h]["trend"] == _trp[h]
            and G["parts"][h]["valuation"] == _vlp[h]
            and G["parts"][h]["reading"] == _rd[h] and "vol" not in G["parts"][h] for h in _mac),
    f"{ {h: (G['parts'][h]['macro'], G['parts'][h]['trend'], G['parts'][h]['valuation'], G['parts'][h]['reading']) for h in G['parts']} } vs {_mac} {_trp} {_vlp} {_rd}")
 _val = _q2(sum(_D(str(_rd[h])) * _D(str(_wv[h])) for h in G["views"]))
-ck(f"the budget gauge is the year-1, years 2-3 and years 4-5 readings weighted by their share of the first five years ({_val})",
+ck(f"the budget gauge is the months 1-6, 7-12, years 2-3 and 4-5 readings weighted by their share of the first five years ({_val})",
    G["value"] == _val, f"{G['value']} vs {_val}")
+# v112: the halves cannot move the reading - months 7-12 are implied from year 1 - so year 1 read whole at
+# 20% (the v103-v111 rule) lands within a rounding step of it.
+_rd1 = _q2((_D(str(_mac1)) + _D(str(_trp["1Y"])) + _D(str(_vlp1))) / 3)
+_v111 = _q2(_D(str(_rd1)) * _D("0.2") + _D(str(_rd["3Y"])) * _D("0.4") + _D(str(_rd["5Y"])) * _D("0.4"))
+ck(f"splitting year 1 into months 1-6 and 7-12 leaves the gauge where year 1 whole reads it, to rounding ({_v111})",
+   abs(G["value"] - _v111) <= 0.011 and G["value_v111"] == _v111, f"{G['value']} vs {_v111} / {G['value_v111']}")
 # The split must not move the gauge beyond rounding: the old 3- and 5-year rule (60/40 on the
 # 3-year average and years 4-5) read from the same inputs.
 _old3 = _q2((_D(str(to5(sum(x["weight"] * x["path"]["3Y"] for x in _DR6) / _W6)))
@@ -467,7 +501,7 @@ ck("each guard reads what it guards: two month-end reviews in the band, geopolit
    all(_gz[n]["ok"] == _ok[n] for n in _ok) and _gz["vix"]["reading"] == M["vix_latest"] and _gz["geopolitics"]["reading"] == _geo,
    f"{ {n: (_gz[n]['ok'], _ok[n]) for n in _ok} }")
 ck(f"the budget in force is the band's step only when every guard that applies is clear ({_rec:.0f}%), and the picks ran at it",
-   D["dd_budget"]["cap"] == G["recommended_cap"] == _rec and all(P["dd_cap"] == CAP == _rec for P in (PAA, PBB, PDD)),
+   D["dd_budget"]["cap"] == G["recommended_cap"] == _rec and all(P["dd_cap"] == CAP == _rec for P in (PAA, PBB, PCC, PDD)),
    f"{D['dd_budget']['cap']} / {G['recommended_cap']} vs {_rec}")
 
 # ---------------------------------------------------------------------------

@@ -56,7 +56,14 @@ def m_vixg(d): g = next(g for g in d["dd_gauge"]["guards"] if g["name"] == "vix"
 def m_dayref(d):                                                                               # a day-keyed move beside another day
     x = _drv(d, "Corporate"); x["note"] = x["note"].replace("on 3 Nov the KOSPI", "on 4 Nov the KOSPI", 1)
 def m_y1(d): r = d["dd_gauge"]["drivers"][1]; r["y1"] = round(r["y1"] + 0.5, 2)               # a year-1 score that no longer splits the 3-year path (v103)
-def m_tspan(d): t = d["dd_gauge"]["trend_spans"]["1Y"]; k = next(iter(t)); t[k] = round(t[k] + 0.1, 2)   # a market's year-1 trend off its z (v103)
+def m_tspan(d): t = d["dd_gauge"]["trend_spans"]["12M"]; k = next(iter(t)); t[k] = round(t[k] + 0.1, 2)   # a market's months 7-12 trend off year 1's (v103; v112)
+def m_t6(d): t = d["dd_gauge"]["trend_6m"]; k = next(iter(t)); t[k]["z"] = round(t[k]["z"] + 0.1, 2)   # a half-year momentum z off its two quarters (v112)
+def m_m6(d): r = d["dd_gauge"]["drivers"][1]; r["m6"] = round(r["m6"] + 0.25, 2)              # a six-month reading whose months 7-12 no longer split year 1 (v112)
+def m_m6path(d):                                                                               # a six-month reading past the reading now, away from neutral, its halves kept whole (v112)
+    r = next(x for x in d["dd_gauge"]["drivers"] if x["now"] < 5.5 and x["y23"] > x["y1"]); r["m6"] = round(r["now"] - 0.25, 2)
+    r["m712"] = round(2 * r["y1"] - r["m6"], 3)
+def m_anchor(d): d["dd_gauge"]["w"]["10Y"] = 0.0                                              # the 10-year anchor given a weight (v112)
+def m_m6date(d): d["dd_gauge"]["m6_date"] = "2026-11-15"                                   # six-month research older than the data (v112)
 def m_yoy1(d): d["macro"]["brent_yoy_1dp"] = round(d["macro"]["brent_yoy_1dp"] - 0.1, 1)      # the y/y a rounding of a rounding (v94)
 def m_daydup(d):                                                                               # a day-keyed copy off the latest (v94)
     # By state (v95): it moved nasdaq_5nov, and went blind the day New York rolled to 6 Nov. It now
@@ -112,7 +119,7 @@ def m_nan(d): _drv(d, "Valuation")["note"] += " NaN"
 def m_retired(d): d["portfolio_a"]["is_review_pick"] = True                                    # the retired review flag back
 def m_opt(d): d["optimized"] = d["portfolio_b"]                                                # the retired optimiser key back
 def m_cat(d): d["catalysts"].append({"date": "2026-10-01", "what": "Old event", "why": "past"})
-def m_valpart(d): q = d["dd_gauge"]["parts"]["1Y"]; q["valuation"] = round(q["valuation"] + 0.1, 2)   # a valuation part off its path (v106)
+def m_valpart(d): q = d["dd_gauge"]["parts"]["6M"]; q["valuation"] = round(q["valuation"] + 0.1, 2)   # a valuation part off its path (v106)
 def m_band30(d): d["dd_gauge"]["bands"][-1]["cap"] = 31.0                                # a band past the owner's 30% (v105)
 def m_valtilt(d):                                                                              # a valuation tilt off its blend, total and net moved with it (v107)
     f = _fund(d, 1); f["tilt_valuation"] = round(f["tilt_valuation"] + 0.05, 2)

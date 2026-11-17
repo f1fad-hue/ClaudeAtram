@@ -2558,6 +2558,10 @@ MACRO = {
     # in the first half of 2027 and 1.3 mb/d in the second (the STEO, via Oil & Gas Journal).
     "eia_brent_2027": 85.78, "eia_brent_2027_prev": 83.74,
     "eia_hormuz_h1_2027": 1.9, "eia_hormuz_h2_2027": 1.3,
+    # THE SIX-MONTH EVIDENCE (v112, 17 Nov 2026), for the gauge's months 1-6. The same STEO has global
+    # stocks building 3.5 mb/d on average in the first half of 2027, which takes Brent below $90 only in
+    # the second quarter (Rigzone; Dow Jones, via Morningstar; Oil & Gas Journal).
+    "eia_stockbuild_h1_2027": 3.5, "eia_brent_q2_2027_below": 90,
     # S&P 500 earnings growth expected for 2027: 15% (LSEG I/B/E/S, via Reuters on 1 Oct, carried by
     # 24/7 Wall St.) and 16.1% (FactSet, 6 Nov) - a range, not a figure. The same FactSet report has
     # the forward P/E at 17.7 on 5 Nov, carried from v104 as spx_fwd_pe with its own date.
@@ -4531,6 +4535,55 @@ DRIVER_Y1 = {
         "pre-war, the attacks go on and Tehran denies talks: 2.0, a little better than now."),
 }
 DRIVER_Y23 = {n: round((3 * DRIVER_PATH[n]["3Y"] - DRIVER_Y1[n][0]) / 2, 3) for n in DRIVER_Y1}
+# THE SIX-MONTH VIEW (owner, 2026-11-17, v112: "Update also the drawdown budget gauge of macroeconomic
+# sentiments, market trends and market valuations based on deep researchs and analysis of 6months, 1yr,
+# 3yrs, 5yrs and 10yrs"; the weights the owner chose: months 1-6 and 7-12 at 10% each, years 2-3 and 4-5
+# at 40% each, the 10-year view shown as the anchor and not weighted). Each driver's reading for the next
+# six months, researched from the half-year evidence. Year 1 stays the researched reading the forecasts
+# read, so MONTHS 7-12 ARE IMPLIED: 2 x the year-1 reading - the six-month reading. The path rule holds
+# now -> months 1-6 -> months 7-12 -> years 2-3 -> years 4-5 -> neutral, so where year 1 equals the
+# reading now, or years 2-3 equal year 1, the six-month reading can only equal year 1 (Monetary, Growth
+# and Earnings): the research confirms it rather than sets it.
+DRIVER_M6_DATE = "2026-11-17"
+VOL_6M = round(horizon_vol(0.5), 2)
+VOL_FWD_M712 = round(math.sqrt(2 * VOL_1Y ** 2 - VOL_6M ** 2), 2)   # the forward vol of months 7-12
+DRIVER_M6 = {
+    "Monetary policy & liquidity": (2.0,
+        "The futures price the Fed's December hike and more into early 2027, a majority chance of another by "
+        "March (TheStreet, citing FedWatch; RateProbability), and most banks expect BSP to hike again on "
+        f"{_dday('bsp_next_meeting')} (BusinessMirror; the Tribune, citing BPI): the half-year ahead is the hiking end "
+        "of the cycle, as hostile as now - 2.0, as for the year."),
+    "Inflation trajectory": (2.25,
+        f"Prices rise fastest in the months just ahead: Philippine inflation was {MACRO['ph_cpi_oct']}% in October, "
+        f"transport {MACRO['ph_cpi_oct_transport']}%, and US PCE inflation {MACRO['us_pce_sep']}% in September; the EIA "
+        f"sees stocks rebuilding {MACRO['eia_stockbuild_h1_2027']} mb/d in the first half of 2027 but Brent below "
+        f"${MACRO['eia_brent_q2_2027_below']} only in the second quarter (Rigzone; Dow Jones) - 2.25, a little better "
+        "than now, the easing landing in months 7-12."),
+    "Growth momentum": (4.5,
+        f"The US grew {MACRO['us_gdp_q3']}% in the third quarter, but the Philippines {MACRO['ph_gdp_q3']}% and "
+        f"China's factory PMI is {MACRO['china_pmi_oct']}, and the hikes still to land weigh on the half-year "
+        "ahead: 4.5, as for the year."),
+    "Corporate earnings": (7.0,
+        f"S&P earnings are growing {MACRO['factset_q3_growth']}% this quarter and analysts expect "
+        f"{MACRO['spx_eps_2027_lo']:.0f}-{MACRO['spx_eps_2027_hi']}% for 2027 (LSEG I/B/E/S; FactSet); the half-year "
+        "ahead reports the strongest of it: 7.0, as now."),
+    "Valuation support": (7.75,
+        f"The S&P is on {MACRO['spx_fwd_pe']}x forward, below its {MACRO['spx_fwd_pe_5y']}x five-year and "
+        f"{MACRO['spx_fwd_pe_10y']}x ten-year averages, and Asia on {MACRO['asia_fwd_pe']}x; six months is too short "
+        f"for the discount to close or for the {MACRO['cape']} cyclically adjusted multiple to bite: 7.75, between "
+        "now and the year's 7.5."),
+    "Volatility & risk appetite": (2.5,
+        f"The VIX closed at {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, over its {MACRO['vix_longrun']} "
+        f"long run, and the curve's own six-month implied volatility is {VOL_6M:.2f}; with the Fed and BSP still "
+        "hiking and the Gulf unsettled, the half-year ahead stays below neutral - 2.5, between now and the "
+        "year's 3.0."),
+    "Geopolitics & energy": (1.75,
+        f"The EIA has the Hormuz disruption at {MACRO['eia_hormuz_h1_2027']} mb/d through the first half of 2027, "
+        f"easing to {MACRO['eia_hormuz_h2_2027']} mb/d only in the second, and Brent above "
+        f"${MACRO['eia_brent_q2_2027_below']} until the second quarter: the six months ahead carry most of what is "
+        "left of the shock - 1.75, between now and the year's 2.0."),
+}
+DRIVER_M712 = {n: round(2 * DRIVER_Y1[n][0] - DRIVER_M6[n][0], 3) for n in DRIVER_M6}
 # Each driver's path averaged over the ten years (the reading its tilts take), and the
 # gauge at each horizon - the headline GAUGE stays the reading now.
 DRIVER_BLEND_10 = {n: round(sum(DRIVER_PATH[n][h] * w for h, w in HZ_W.items()), 2)
@@ -5724,8 +5777,13 @@ DDG_PARTS_DATE = "2026-11-16"
 # view stays the anchor, shown and not weighted. Until v103 it read 3 and 5 years at 60 / 40, the
 # 3-year view covering years 1-3. Years 2-3 are implied by that 3-year reading and the researched
 # year 1 (DRIVER_Y1), so the split refines the reading without counting year 1 twice.
-DDG_SPANS = {"1Y": (0.0, 1.0), "3Y": (1.0, 3.0), "5Y": (3.0, 5.0)}
-DDG_SPAN_LABEL = {"1Y": "Year 1", "3Y": "Years 2-3", "5Y": "Years 4-5"}
+# SIX MONTHS, 1, 3, 5 AND 10 YEARS (owner, 2026-11-17, v112): year 1 is split into months 1-6, researched,
+# and months 7-12, implied, so the spans are 10 / 10 / 40 / 40 of the first five years; the 10-year view
+# is shown beside them as the anchor - neutral by construction, it is the 25% base - and not weighted.
+DDG_SPANS = {"6M": (0.0, 0.5), "12M": (0.5, 1.0), "3Y": (1.0, 3.0), "5Y": (3.0, 5.0)}
+DDG_SPAN_LABEL = {"6M": "Months 1-6", "12M": "Months 7-12", "3Y": "Years 2-3", "5Y": "Years 4-5",
+                  HZ_LABEL: "Years 6-10"}
+DDG_SPLIT_DATE = "2026-11-17"
 DDG_VIEWS = tuple(DDG_SPANS)
 DDG_W = {h: round((b - a) / DDG_SPANS[DDG_VIEWS[-1]][1], 2) for h, (a, b) in DDG_SPANS.items()}
 DDG_RULE_WIDE_DATE = "2026-11-16"
@@ -5775,7 +5833,24 @@ def _trend_span(fid, a, b):
     t = TREND[fid]
     wm = _overlap(a, b, *TREND_MOM_YEARS) / (b - a); wr = _overlap(a, b, *TREND_REV_YEARS) / (b - a)
     return round(min(5.0, max(1.0, 3.0 + wm * t["z"][TREND_H[0][0]] - wr * TREND_REVERSAL * t["z_rev"])), 2)
-TREND_SPAN = {h: {f: _trend_span(f, a, b) for f in TREND} for h, (a, b) in DDG_SPANS.items()}
+# THE SIX-MONTH TREND (v112): months 1-6 read the past two quarters' momentum - the half-year return as a
+# z in the sleeve's own drift and volatility, the shorter look-back of time-series momentum and the
+# six-month window of Jegadeesh and Titman (1993). Months 7-12 are what the past year's momentum leaves
+# once months 1-6 are taken out, so year 1 reads as before and is not counted twice.
+def _trend_6m(fid):
+    t = TREND[fid]
+    r = round(_compound([t["quarters"][k] for k in TREND_Q[-2:]]), 2)
+    z = round((math.log(1 + r / 100) - 0.5 * math.log(1 + t["mu"] / 100)) / (t["sigma"] / 100 * math.sqrt(0.5)), 2)
+    return {"ret": r, "z": z, "score": round(min(5.0, max(1.0, 3.0 + z)), 2)}
+TREND_6M = {f: _trend_6m(f) for f in TREND}
+TREND_Y1 = {f: _trend_span(f, 0.0, 1.0) for f in TREND}
+def _trend_span_v112(fid, h):
+    if h == "6M":
+        return TREND_6M[fid]["score"]
+    if h == "12M":
+        return round(min(5.0, max(1.0, 2 * TREND_Y1[fid] - TREND_6M[fid]["score"])), 2)
+    return _trend_span(fid, *DDG_SPANS[h])
+TREND_SPAN = {h: {f: _trend_span_v112(f, h) for f in TREND} for h in DDG_SPANS}
 
 # THE FOUR ANALYSES, YEAR BY YEAR (v108, owner 2026-11-16): what each portfolio reads, on 1-5 (3
 # neutral), at year 1, years 2-3, years 4-5 and years 6-10. A reads the last column alone; B and D
@@ -5794,7 +5869,8 @@ ANALYSES_BY_YEAR = {
           + [_ab_row("Macro sentiment", lbl, [to5(DRIVER_Y1[n][0]), to5(DRIVER_Y23[n]), to5(DRIVER_PATH[n]["5Y"]),
                                               to5(DRIVER_PATH[n][HZ_LABEL])]) for n, lbl in _MDRV]
           + [_ab_row("Market trend", "Five markets, average",
-                     [round(sum(TREND_SPAN[h].values()) / len(TREND), 2) for h in DDG_SPANS] + [NEUTRAL])]
+                     [round(sum(TREND_Y1.values()) / len(TREND), 2)]
+                     + [round(sum(TREND_SPAN[h].values()) / len(TREND), 2) for h in ("3Y", "5Y")] + [NEUTRAL])]
           + [_ab_row("Market valuation", "Multiples vs averages",
                      [VAL_PATH_5[h] for h in ("1Y", "3Y", "5Y", HZ_LABEL)])],
 }
@@ -5811,16 +5887,17 @@ DDG_MACRO_W = {n: w / _MACW for n, w, _, _ in DRIVERS if n != DDG_VAL}
 def _macro_part(v):
     """The gauge's macro part: the six drivers other than valuation, re-weighted, on 1-5."""
     return to5(sum(w * v[n] for n, w in DDG_MACRO_W.items()))
-_DV = {"1Y": {n: DRIVER_Y1[n][0] for n in DRIVER_Y1}, "3Y": DRIVER_Y23,
+_DV = {"1Y": {n: DRIVER_Y1[n][0] for n in DRIVER_Y1}, "6M": {n: DRIVER_M6[n][0] for n in DRIVER_M6},
+       "12M": DRIVER_M712, "3Y": DRIVER_Y23,
        "5Y": {n: DRIVER_PATH[n]["5Y"] for n in DRIVER_PATH}, HZ_LABEL: {n: DRIVER_NEUTRAL_10 for n in DRIVER_PATH}}
-DDG_PARTS = {
-    "1Y": {"macro": _macro_part(_DV["1Y"]), "trend": round(sum(TREND_SPAN["1Y"].values()) / len(TREND), 2),
-           "valuation": to5(_DV["1Y"][DDG_VAL]), "vol_forward": VOL_1Y},
-    "3Y": {"macro": _macro_part(_DV["3Y"]), "trend": round(sum(TREND_SPAN["3Y"].values()) / len(TREND), 2),
-           "valuation": to5(_DV["3Y"][DDG_VAL]), "vol_forward": VOL_FWD_Y23},
-    "5Y": {"macro": _macro_part(_DV["5Y"]), "trend": _ddg_trend("5Y"), "valuation": to5(_DV["5Y"][DDG_VAL]),
-           "vol_forward": _VOL_FWD["5Y"]},
-}
+_VFWD = {"6M": VOL_6M, "12M": VOL_FWD_M712, "3Y": VOL_FWD_Y23, "5Y": _VOL_FWD["5Y"], HZ_LABEL: _VOL_FWD[HZ_LABEL]}
+DDG_PARTS = {h: {"macro": _macro_part(_DV[h]), "trend": round(sum(TREND_SPAN[h].values()) / len(TREND), 2),
+                 "valuation": to5(_DV[h][DDG_VAL]), "vol_forward": _VFWD[h]} for h in DDG_VIEWS}
+# THE 10-YEAR ANCHOR (v112): shown beside the four weighted spans and not weighted - every part neutral by
+# construction (the drivers at neutral, no trend signal past year 5, the base returns pricing today's
+# multiples), so it reads the owner's 25% base itself. Weighted in, it would pin the gauge (runbook 107).
+DDG_PARTS[HZ_LABEL] = {"macro": _macro_part(_DV[HZ_LABEL]), "trend": TREND_ANCHOR,
+                       "valuation": to5(_DV[HZ_LABEL][DDG_VAL]), "vol_forward": _VFWD[HZ_LABEL]}
 # 1, 3 AND 5 YEARS ONLY (owner, 2026-11-16: "...based on deep researchs and analysis of 1, 3, and
 # 5yrs"): the 10-year anchor, shown beside the three weighted views from v75 to v106 and neutral by
 # construction (3.00 on every part), is dropped from the gauge. It still sets Portfolio A's view.
@@ -5835,18 +5912,25 @@ for _h in DDG_PARTS:
     _p = DDG_PARTS[_h]
     _p["reading"] = _hu2(sum(Decimal(repr(_p[k])) for k in DDG_READING_OF) / len(DDG_READING_OF))
 DDG_VALUE = _hu2(sum(Decimal(repr(DDG_PARTS[h]["reading"])) * Decimal(repr(DDG_W[h])) for h in DDG_VIEWS))
+# The v103-v111 rule on the same inputs: year 1 whole at 20%. The split cannot move the reading beyond a
+# rounding step, since months 7-12 are implied from year 1; a check holds it.
+_Y1P = {"macro": _macro_part(_DV["1Y"]), "trend": round(sum(TREND_Y1.values()) / len(TREND), 2),
+        "valuation": to5(_DV["1Y"][DDG_VAL])}
+_Y1P["reading"] = _hu2(sum(Decimal(repr(_Y1P[k])) for k in DDG_READING_OF) / len(DDG_READING_OF))
+DDG_VALUE_V111 = _hu2(Decimal(repr(_Y1P["reading"])) * Decimal("0.2")
+                      + sum(Decimal(repr(DDG_PARTS[h]["reading"])) * Decimal("0.4") for h in ("3Y", "5Y")))
 DDG_BAND = next(b for b in DDG_BANDS if b[0] <= DDG_VALUE < b[1])
 # THE GAUGE'S REACH (v109): stylized extremes - not a backtest, the gauge has weeks of history - run
 # through the gauge's own construction. Each driver's reading is held for year 1 and steps back toward
 # neutral by years 2-3 and 4-5 (60% and 85% of the way, as today's Monetary path does: 64% / 86%);
 # the trend is momentum in year 1 and reversal after it; valuation is the valuation driver's path.
 # The steps are sized so the worst case reaches the 20% floor and the best the 29-30% steps.
-_REACH_BACK = (0.0, 0.60, 0.85)
+_REACH_BACK = (0.0, 0.0, 0.60, 0.85)   # v112: months 1-6 and 7-12 both hold year 1's reading
 def _reach(drv, mom, rev):
     sp = []
     for i, h in enumerate(DDG_VIEWS):
         v = {n: drv[n] + _REACH_BACK[i] * (DRIVER_NEUTRAL_10 - drv[n]) for n in drv}
-        sp.append((_macro_part(v) + (mom if i == 0 else rev) + to5(v[DDG_VAL])) / 3)
+        sp.append((_macro_part(v) + (mom if DDG_SPANS[h][1] <= 1.0 else rev) + to5(v[DDG_VAL])) / 3)
     return round(sum(DDG_W[h] * x for h, x in zip(DDG_VIEWS, sp)), 2)
 _RD = ("Monetary policy & liquidity", "Inflation trajectory", "Growth momentum", "Corporate earnings",
        "Valuation support", "Volatility & risk appetite", "Geopolitics & energy")
@@ -6395,6 +6479,15 @@ def run_scenarios(w, key, u=None):
 # 8. SOURCES
 # ----------------------------------------------------------------------------
 SOURCES = [
+    # v112: the six-month evidence for the budget gauge
+    ("Dow Jones, via Morningstar", "EIA sees global oil stock builds in the fourth quarter - builds of 3.5 mb/d in the first half of 2027, Brent below $90 in the second quarter, 10 Nov 2026",
+     "https://www.morningstar.com/news/dow-jones/2026111012360/eia-sees-global-oil-stock-builds-in-fourth-quarter"),
+    ("TheStreet", "Fed rate hike fears grow ahead of December meeting - FedWatch odds of hikes in January and March 2027, Nov 2026",
+     "https://www.thestreet.com/fed/fed-rate-hike-fears-december-inflation-2027"),
+    ("BusinessMirror", "'50-bps rate hike still needed in December' - BSP's 17 Dec meeting, 11 Nov 2026",
+     "https://businessmirror.com.ph/2026/11/11/50-bps-rate-hike-still-needed-in-december/"),
+    ("Daily Tribune", "BSP tightening cycle likely not over - BPI sees at least 25bp in December, 25 Oct 2026",
+     "https://tribune.net.ph/2026/10/25/bsp-tightening-cycle-likely-not-over-bpi"),
     ("Rigzone", "Oil rises with Iran attack report - Brent +1.3% to $115.32, WTI +2.9% to $102.78, 28 Oct 2026",
      "https://www.rigzone.com/news/oil_rises_with_iran_attack_report_israeli_election_in_focus-28-oct-2026-184958-article"),
     ("CNBC", "Oil prices rise as U.S. reportedly tells Gulf countries to prepare for Iran strikes after midterm elections (citing the Wall Street Journal), 28 Oct 2026",
@@ -8324,16 +8417,22 @@ def payload():
                       "derived_ref": round(DD_CAP_DERIVED, 2), "improvement": DD_BUDGET_IMPROVEMENT},
         "dd_gauge": {"value": DDG_VALUE, "views": list(DDG_VIEWS), "w": DDG_W,
                      "spans": {h: list(v) for h, v in DDG_SPANS.items()}, "rule_date": DDG_RULE_DATE,
-                     "y1_date": DRIVER_Y1_DATE,
-                     # the 1-year research (v103): each driver now, in year 1, years 2-3 (implied) and
-                     # years 4-5, and each trend market in each span
-                     "drivers": [{"name": n, "weight": w, "now": s_, "y1": DRIVER_Y1[n][0], "why": DRIVER_Y1[n][1],
+                     "y1_date": DRIVER_Y1_DATE, "m6_date": DRIVER_M6_DATE, "split_date": DDG_SPLIT_DATE,
+                     "anchor": HZ_LABEL, "value_v111": DDG_VALUE_V111,
+                     # the 1-year research (v103) and the six-month research (v112): each driver now, in
+                     # months 1-6, months 7-12 (implied), year 1, years 2-3 (implied) and years 4-5, and
+                     # each trend market in each span
+                     "drivers": [{"name": n, "weight": w, "now": s_, "m6": DRIVER_M6[n][0], "why_m6": DRIVER_M6[n][1],
+                                  "m712": DRIVER_M712[n], "y1": DRIVER_Y1[n][0], "why": DRIVER_Y1[n][1],
                                   "y23": DRIVER_Y23[n], "y3_avg": DRIVER_PATH[n]["3Y"], "y45": DRIVER_PATH[n]["5Y"]}
                                  for n, w, s_, _ in DRIVERS],
                      "trend_spans": {h: v for h, v in TREND_SPAN.items()},
+                     "trend_y1": TREND_Y1, "trend_6m": TREND_6M, "vol_6m": VOL_6M, "vol_1y": VOL_1Y,
                      "parts_date": DDG_PARTS_DATE,
                      "macro_w": {n: round(w, 6) for n, w in DDG_MACRO_W.items()},
                      "valuation": {"name": DDG_VAL, "now": next(s_ for n_, _, s_, _ in DRIVERS if n_ == DDG_VAL),
+                                   "m6": DRIVER_M6[DDG_VAL][0], "m712": DRIVER_M712[DDG_VAL],
+                                   "why_m6": DRIVER_M6[DDG_VAL][1],
                                    "y1": DRIVER_Y1[DDG_VAL][0], "y23": DRIVER_Y23[DDG_VAL],
                                    "y45": DRIVER_PATH[DDG_VAL]["5Y"],
                                    "why_y1": DRIVER_Y1[DDG_VAL][1], "why_path": DRIVER_PATH[DDG_VAL]["why"],
@@ -10009,16 +10108,23 @@ def report():
                    and all(set(_dg["parts"][h]) == {"macro", "trend", "valuation", "reading", "vol_forward", "years"}
                            for h in _dg["parts"])
                    and all(_dg["parts"][h]["vol_forward"] == next(v["forward"] for v in p["vol_ts"] if v["label"] == h)
-                           for h in ("5Y",))
-                   and _dg["parts"]["1Y"]["vol_forward"] == round(horizon_vol(1.0), 2)
+                           for h in ("5Y", HZ_LABEL))
+                   and _dg["parts"]["6M"]["vol_forward"] == round(horizon_vol(0.5), 2) == _dg["vol_6m"]
+                   and _dg["vol_1y"] == round(horizon_vol(1.0), 2)
+                   and abs(0.5 * _dg["parts"]["6M"]["vol_forward"] ** 2 + 0.5 * _dg["parts"]["12M"]["vol_forward"] ** 2
+                           - _dg["vol_1y"] ** 2) < 0.15
                    and "vol_step" not in _dg
                    and any(g["name"] == "vix" and g["applies_to"] == "raise" for g in _dg["guards"])))
-    checks.append(("the budget gauge reads year 1, years 2-3 and years 4-5 only, by their share of the first five years (20/40/40)",
-                   _dg["views"] == ["1Y", "3Y", "5Y"] and _dg["w"] == {"1Y": 0.2, "3Y": 0.4, "5Y": 0.4}
-                   and _dg["spans"] == {"1Y": [0.0, 1.0], "3Y": [1.0, 3.0], "5Y": [3.0, 5.0]}
+    # v112 (owner, 2026-11-17): months 1-6 and 7-12, years 2-3 and 4-5 at 10/10/40/40; the 10-year
+    # anchor shown, neutral on every part, and not weighted.
+    checks.append(("the budget gauge reads months 1-6, months 7-12, years 2-3 and years 4-5 by their share of the first five years (10/10/40/40), the 10-year anchor shown, neutral and unweighted",
+                   _dg["views"] == ["6M", "12M", "3Y", "5Y"] and _dg["w"] == {"6M": 0.1, "12M": 0.1, "3Y": 0.4, "5Y": 0.4}
+                   and _dg["spans"] == {"6M": [0.0, 0.5], "12M": [0.5, 1.0], "3Y": [1.0, 3.0], "5Y": [3.0, 5.0]}
                    and _dg["value"] == _hu2(sum(Decimal(repr(_dg["parts"][h]["reading"])) * Decimal(repr(_dg["w"][h]))
                                                 for h in _dg["views"]))
-                   and 1.0 <= _dg["value"] <= 5.0 and list(_dg["parts"]) == ["1Y", "3Y", "5Y"]))
+                   and 1.0 <= _dg["value"] <= 5.0 and list(_dg["parts"]) == ["6M", "12M", "3Y", "5Y", HZ_LABEL]
+                   and _dg["anchor"] == HZ_LABEL and HZ_LABEL not in _dg["w"]
+                   and all(_dg["parts"][HZ_LABEL][k] == NEUTRAL_5 for k in ("macro", "trend", "valuation", "reading"))))
     # THE 1-YEAR VIEW (v103). Years 2-3 are implied, so year 1 and years 2-3 average back to the
     # 3-year reading the portfolios read; every path moves from the reading now toward neutral, year by
     # year, never past it; the macro parts are the weighted drivers on 1-5; the trend parts are each
@@ -10027,27 +10133,39 @@ def report():
     _toward = lambda xs: all((a - DRIVER_NEUTRAL_10) * (b - DRIVER_NEUTRAL_10) >= 0
                              and abs(b - DRIVER_NEUTRAL_10) <= abs(a - DRIVER_NEUTRAL_10) + 1e-9
                              for a, b in zip(xs, xs[1:]))
-    checks.append(("each driver's year-1 reading is researched and dated, years 2-3 are implied by the 3-year average, and the path moves toward neutral",
+    checks.append(("each driver's year-1 and six-month readings are researched and dated, months 7-12 and years 2-3 are implied, and the path moves toward neutral",
                    len(_ddr) == len(DRIVERS) and AS_OF <= _dg["y1_date"] <= REVIEW_DATE
-                   and all(1.0 <= r["y1"] <= 10.0 and len(r["why"]) > 60
+                   and AS_OF <= _dg["m6_date"] <= REVIEW_DATE
+                   and all(1.0 <= r["y1"] <= 10.0 and len(r["why"]) > 60 and 1.0 <= r["m6"] <= 10.0 and len(r["why_m6"]) > 60
                            and abs((r["y1"] + 2 * r["y23"]) / 3 - r["y3_avg"]) < 1e-9
+                           and abs((r["m6"] + r["m712"]) / 2 - r["y1"]) < 1e-9
                            and r["y3_avg"] == DRIVER_PATH[r["name"]]["3Y"] and r["y45"] == DRIVER_PATH[r["name"]]["5Y"]
+                           and _toward([r["now"], r["m6"], r["m712"], r["y23"], r["y45"], DRIVER_NEUTRAL_10])
                            and _toward([r["now"], r["y1"], r["y23"], r["y45"], DRIVER_NEUTRAL_10]) for r in _ddr)))
     _ddn = [r for r in _ddr if r["name"] != DDG_VAL]; _ddv = next(r for r in _ddr if r["name"] == DDG_VAL)
     _w6 = sum(r["weight"] for r in _ddn)
+    _spk = {"6M": "m6", "12M": "m712", "3Y": "y23", "5Y": "y45"}
     checks.append(("the gauge's macro parts are the six non-valuation drivers for each span, re-weighted, on 1-5",
-                   _dg["parts"]["1Y"]["macro"] == to5(sum(r["weight"] * r["y1"] for r in _ddn) / _w6)
-                   and _dg["parts"]["3Y"]["macro"] == to5(sum(r["weight"] * r["y23"] for r in _ddn) / _w6)
-                   and _dg["parts"]["5Y"]["macro"] == to5(sum(r["weight"] * r["y45"] for r in _ddn) / _w6)))
-    checks.append(("the gauge's valuation parts are the valuation driver's own path, year by year, on 1-5, and the Budget tab's record of it is that path",
-                   _dg["parts"]["1Y"]["valuation"] == to5(_ddv["y1"]) and _dg["parts"]["3Y"]["valuation"] == to5(_ddv["y23"])
-                   and _dg["parts"]["5Y"]["valuation"] == to5(_ddv["y45"])
-                   and (_dg["valuation"]["now"], _dg["valuation"]["y1"], _dg["valuation"]["y23"], _dg["valuation"]["y45"])
-                       == (_ddv["now"], _ddv["y1"], _ddv["y23"], _ddv["y45"])))
-    checks.append(("the gauge's trend parts average each sleeve's span score, and years 4-5 are the 5-year trend",
+                   all(_dg["parts"][h]["macro"] == to5(sum(r["weight"] * r[k] for r in _ddn) / _w6) for h, k in _spk.items())))
+    checks.append(("the gauge's valuation parts are the valuation driver's own path, span by span, on 1-5, and the Budget tab's record of it is that path",
+                   all(_dg["parts"][h]["valuation"] == to5(_ddv[k]) for h, k in _spk.items())
+                   and all(_dg["valuation"][k] == _ddv[k] for k in ("now", "m6", "m712", "y1", "y23", "y45"))))
+    # v112: months 1-6 are each sleeve's half-year momentum, z from its last two quarters; months 7-12 what
+    # year 1's momentum leaves (2 x year 1 - months 1-6), so the two halves average back to year 1.
+    _t6ok = all(_dg["trend_6m"][f]["ret"] == round(_compound([TREND[f]["quarters"][k] for k in TREND_Q[-2:]]), 2)
+                and _dg["trend_spans"]["6M"][f] == _dg["trend_6m"][f]["score"]
+                == round(min(5.0, max(1.0, 3.0 + _dg["trend_6m"][f]["z"])), 2)
+                and (abs(_dg["trend_spans"]["6M"][f] + _dg["trend_spans"]["12M"][f] - 2 * _dg["trend_y1"][f]) < 0.0051
+                     or _dg["trend_spans"]["12M"][f] in (1.0, 5.0))
+                and _dg["trend_y1"][f] == round(min(5.0, max(1.0, 3.0 + TREND[f]["z"]["1Y"])), 2) for f in TREND)
+    checks.append(("the gauge's trend parts average each sleeve's span score; months 1-6 are the half-year momentum, months 7-12 the rest of year 1's, and years 4-5 the 5-year trend",
                    all(_dg["parts"][h]["trend"] == round(sum(_dg["trend_spans"][h].values()) / len(TREND), 2)
-                       for h in _dg["views"])
+                       for h in _dg["views"]) and _t6ok
                    and all(_dg["trend_spans"]["5Y"][f] == TREND[f]["score"]["5Y"] for f in TREND)))
+    # v112: splitting year 1 into halves cannot move the reading - months 7-12 are implied from year 1 -
+    # so the same inputs on the v103-v111 rule (year 1 whole, 20/40/40) land within a rounding step.
+    checks.append((f"splitting year 1 into months 1-6 and 7-12 leaves the reading where year 1 whole puts it ({_dg['value']} vs {_dg['value_v111']})",
+                   abs(_dg["value"] - _dg["value_v111"]) <= 0.011 and _dg["value_v111"] == DDG_VALUE_V111))
     # The split cannot move the reading: the same inputs read on the pre-v103 rule (3 and 5 years at
     # 60 / 40) land within a rounding step of it - the restated month-end review rests on this.
     _vp = {h: {n: DRIVER_PATH[n][h] for n in DRIVER_PATH} for h in ("3Y", "5Y")}

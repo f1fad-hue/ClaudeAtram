@@ -1517,6 +1517,8 @@
   "eia_brent_2027_prev": 83.74,
   "eia_hormuz_h1_2027": 1.9,
   "eia_hormuz_h2_2027": 1.3,
+  "eia_stockbuild_h1_2027": 3.5,
+  "eia_brent_q2_2027_below": 90,
   "spx_eps_2027_lo": 15.0,
   "spx_eps_2027_hi": 16.1,
   "bsp_cpi_2026": 6.1,
@@ -3554,18 +3556,24 @@
  "dd_gauge": {
   "value": 2.93,
   "views": [
-   "1Y",
+   "6M",
+   "12M",
    "3Y",
    "5Y"
   ],
   "w": {
-   "1Y": 0.2,
+   "6M": 0.1,
+   "12M": 0.1,
    "3Y": 0.4,
    "5Y": 0.4
   },
   "spans": {
-   "1Y": [
+   "6M": [
     0.0,
+    0.5
+   ],
+   "12M": [
+    0.5,
     1.0
    ],
    "3Y": [
@@ -3579,11 +3587,18 @@
   },
   "rule_date": "2026-11-15",
   "y1_date": "2026-11-17",
+  "m6_date": "2026-11-17",
+  "split_date": "2026-11-17",
+  "anchor": "10Y",
+  "value_v111": 2.93,
   "drivers": [
    {
     "name": "Monetary policy & liquidity",
     "weight": 0.2,
     "now": 2.0,
+    "m6": 2.0,
+    "why_m6": "The futures price the Fed's December hike and more into early 2027, a majority chance of another by March (TheStreet, citing FedWatch; RateProbability), and most banks expect BSP to hike again on 17 Dec (BusinessMirror; the Tribune, citing BPI): the half-year ahead is the hiking end of the cycle, as hostile as now - 2.0, as for the year.",
+    "m712": 2.0,
     "y1": 2.0,
     "why": "The futures price the Fed to about 4.73-4.78% by late 2027, above its own 4.1% median for the end of 2027 (RateProbability; SOFR futures), BSP is at 5.50% after its 50bp hike and the BoJ has a December hike flagged: the next twelve months are the hiking end of the cycle, as hostile as now - 2.0.",
     "y23": 4.25,
@@ -3594,6 +3609,9 @@
     "name": "Inflation trajectory",
     "weight": 0.15,
     "now": 2.0,
+    "m6": 2.25,
+    "why_m6": "Prices rise fastest in the months just ahead: Philippine inflation was 7.8% in October, transport 20.1%, and US PCE inflation 3.6% in September; the EIA sees stocks rebuilding 3.5 mb/d in the first half of 2027 but Brent below $90 only in the second quarter (Rigzone; Dow Jones) - 2.25, a little better than now, the easing landing in months 7-12.",
+    "m712": 3.25,
     "y1": 2.75,
     "why": "US PCE inflation is forecast at 2.3% in 2027, core 2.4% (the Philadelphia Fed's forecasters; the FOMC's June median), and the EIA has Brent averaging $85.78 in 2027 ($83.74 a month earlier), below this year's; but BSP sees 6.0% in the Philippines in 2027 and Japan's producer prices rose 7.1% in October - 2.75, easing from 2.0 now.",
     "y23": 4.25,
@@ -3604,6 +3622,9 @@
     "name": "Growth momentum",
     "weight": 0.15,
     "now": 4.25,
+    "m6": 4.5,
+    "why_m6": "The US grew 3.4% in the third quarter, but the Philippines 2.1% and China's factory PMI is 49.3, and the hikes still to land weigh on the half-year ahead: 4.5, as for the year.",
+    "m712": 4.5,
     "y1": 4.5,
     "why": "The IMF has the world growing 3.4% in 2027, from 3.1%, and the Philippines 5.1% from 3.4%, and US jobless claims are 200k - better than now, held back by the hikes: 4.5.",
     "y23": 4.5,
@@ -3614,6 +3635,9 @@
     "name": "Corporate earnings",
     "weight": 0.2,
     "now": 7.0,
+    "m6": 7.0,
+    "why_m6": "S&P earnings are growing 30.2% this quarter and analysts expect 15-16.1% for 2027 (LSEG I/B/E/S; FactSet); the half-year ahead reports the strongest of it: 7.0, as now.",
+    "m712": 7.0,
     "y1": 7.0,
     "why": "Analysts expect S&P 500 earnings to grow about 15-16.1% in 2027 (LSEG I/B/E/S, via Reuters; FactSet) and Asia ex-Japan about 27.5%: as strong as now - 7.0.",
     "y23": 6.25,
@@ -3624,6 +3648,9 @@
     "name": "Valuation support",
     "weight": 0.1,
     "now": 8.0,
+    "m6": 7.75,
+    "why_m6": "The S&P is on 17.7x forward, below its 19.8x five-year and 19.1x ten-year averages, and Asia on 10.5x; six months is too short for the discount to close or for the 38.9 cyclically adjusted multiple to bite: 7.75, between now and the year's 7.5.",
+    "m712": 7.25,
     "y1": 7.5,
     "why": "The S&P is on 17.7x forward, below its averages, and Asia on 10.5x; a year is too short for the 38.9 cyclically adjusted multiple to bite, but the discount narrows as prices recover: 7.5.",
     "y23": 6.0,
@@ -3634,6 +3661,9 @@
     "name": "Volatility & risk appetite",
     "weight": 0.1,
     "now": 2.0,
+    "m6": 2.5,
+    "why_m6": "The VIX closed at 22.91 on 16 Nov, over its 19.5 long run, and the curve's own six-month implied volatility is 18.59; with the Fed and BSP still hiking and the Gulf unsettled, the half-year ahead stays below neutral - 2.5, between now and the year's 3.0.",
+    "m712": 3.5,
     "y1": 3.0,
     "why": "The VIX closed at 22.91 on 16 Nov, 3.41 points over its 19.5 long run, and the curve's own one-year implied volatility is 18.87; the hiking cycle, the Gulf, Nvidia's change of chief executive and the sell-off it set off across Asia keep risk appetite below neutral for the year ahead - 3.0, from 3.5 on 15 Nov, as the jump back above the long run takes back the calm the 3.5 was set in.",
     "y23": 5.25,
@@ -3644,6 +3674,9 @@
     "name": "Geopolitics & energy",
     "weight": 0.1,
     "now": 1.5,
+    "m6": 1.75,
+    "why_m6": "The EIA has the Hormuz disruption at 1.9 mb/d through the first half of 2027, easing to 1.3 mb/d only in the second, and Brent above $90 until the second quarter: the six months ahead carry most of what is left of the shock - 1.75, between now and the year's 2.0.",
+    "m712": 2.25,
     "y1": 2.0,
     "why": "The EIA assumes the Hormuz disruption eases to 1.9 mb/d in the first half of 2027 and 1.3 mb/d in the second; flows are recovering but shipping is still far below pre-war, the attacks go on and Tehran denies talks: 2.0, a little better than now.",
     "y23": 3.5,
@@ -3652,12 +3685,19 @@
    }
   ],
   "trend_spans": {
-   "1Y": {
-    "ATRQIAP": 3.67,
-    "ATRASEQ": 4.17,
-    "ATRGTEC": 4.08,
-    "ATRGHCP": 3.62,
-    "M_GEO": 3.52
+   "6M": {
+    "ATRQIAP": 4.52,
+    "ATRASEQ": 4.72,
+    "ATRGTEC": 5.0,
+    "ATRGHCP": 3.63,
+    "M_GEO": 4.06
+   },
+   "12M": {
+    "ATRQIAP": 2.82,
+    "ATRASEQ": 3.62,
+    "ATRGTEC": 3.16,
+    "ATRGHCP": 3.61,
+    "M_GEO": 2.98
    },
    "3Y": {
     "ATRQIAP": 2.44,
@@ -3674,6 +3714,42 @@
     "M_GEO": 2.53
    }
   },
+  "trend_y1": {
+   "ATRQIAP": 3.67,
+   "ATRASEQ": 4.17,
+   "ATRGTEC": 4.08,
+   "ATRGHCP": 3.62,
+   "M_GEO": 3.52
+  },
+  "trend_6m": {
+   "ATRQIAP": {
+    "ret": 28.46,
+    "z": 1.52,
+    "score": 4.52
+   },
+   "ATRASEQ": {
+    "ret": 27.41,
+    "z": 1.72,
+    "score": 4.72
+   },
+   "ATRGTEC": {
+    "ret": 40.6,
+    "z": 2.01,
+    "score": 5.0
+   },
+   "ATRGHCP": {
+    "ret": 10.14,
+    "z": 0.63,
+    "score": 3.63
+   },
+   "M_GEO": {
+    "ret": 16.77,
+    "z": 1.06,
+    "score": 4.06
+   }
+  },
+  "vol_6m": 18.59,
+  "vol_1y": 18.87,
   "parts_date": "2026-11-16",
   "macro_w": {
    "Monetary policy & liquidity": 0.222222,
@@ -3686,6 +3762,9 @@
   "valuation": {
    "name": "Valuation support",
    "now": 8.0,
+   "m6": 7.75,
+   "m712": 7.25,
+   "why_m6": "The S&P is on 17.7x forward, below its 19.8x five-year and 19.1x ten-year averages, and Asia on 10.5x; six months is too short for the discount to close or for the 38.9 cyclically adjusted multiple to bite: 7.75, between now and the year's 7.5.",
    "y1": 7.5,
    "y23": 6.0,
    "y45": 5.5,
@@ -3709,13 +3788,21 @@
    ]
   },
   "parts": {
-   "1Y": {
-    "macro": 2.23,
-    "trend": 3.81,
-    "valuation": 3.89,
-    "vol_forward": 18.87,
-    "years": "Year 1",
-    "reading": 3.31
+   "6M": {
+    "macro": 2.15,
+    "trend": 4.39,
+    "valuation": 4.0,
+    "vol_forward": 18.59,
+    "years": "Months 1-6",
+    "reading": 3.51
+   },
+   "12M": {
+    "macro": 2.3,
+    "trend": 3.24,
+    "valuation": 3.78,
+    "vol_forward": 19.15,
+    "years": "Months 7-12",
+    "reading": 3.11
    },
    "3Y": {
     "macro": 2.67,
@@ -3732,6 +3819,14 @@
     "vol_forward": 19.49,
     "years": "Years 4-5",
     "reading": 2.83
+   },
+   "10Y": {
+    "macro": 3.0,
+    "trend": 3.0,
+    "valuation": 3.0,
+    "vol_forward": 19.5,
+    "years": "Years 6-10",
+    "reading": 3.0
    }
   },
   "reading_of": [
@@ -3836,6 +3931,7 @@
     "reversal": 3.5,
     "back": [
      0.0,
+     0.0,
      0.6,
      0.85
     ],
@@ -3857,6 +3953,7 @@
     "momentum": 4.5,
     "reversal": 2.0,
     "back": [
+     0.0,
      0.0,
      0.6,
      0.85
@@ -3880,6 +3977,7 @@
     "reversal": 4.0,
     "back": [
      0.0,
+     0.0,
      0.6,
      0.85
     ],
@@ -3902,6 +4000,7 @@
     "reversal": 2.5,
     "back": [
      0.0,
+     0.0,
      0.6,
      0.85
     ],
@@ -3923,6 +4022,7 @@
     "momentum": 1.0,
     "reversal": 2.0,
     "back": [
+     0.0,
      0.0,
      0.6,
      0.85
@@ -7342,6 +7442,26 @@
   "in_budget": true
  },
  "sources": [
+  {
+   "org": "Dow Jones, via Morningstar",
+   "what": "EIA sees global oil stock builds in the fourth quarter - builds of 3.5 mb/d in the first half of 2027, Brent below $90 in the second quarter, 10 Nov 2026",
+   "url": "https://www.morningstar.com/news/dow-jones/2026111012360/eia-sees-global-oil-stock-builds-in-fourth-quarter"
+  },
+  {
+   "org": "TheStreet",
+   "what": "Fed rate hike fears grow ahead of December meeting - FedWatch odds of hikes in January and March 2027, Nov 2026",
+   "url": "https://www.thestreet.com/fed/fed-rate-hike-fears-december-inflation-2027"
+  },
+  {
+   "org": "BusinessMirror",
+   "what": "'50-bps rate hike still needed in December' - BSP's 17 Dec meeting, 11 Nov 2026",
+   "url": "https://businessmirror.com.ph/2026/11/11/50-bps-rate-hike-still-needed-in-december/"
+  },
+  {
+   "org": "Daily Tribune",
+   "what": "BSP tightening cycle likely not over - BPI sees at least 25bp in December, 25 Oct 2026",
+   "url": "https://tribune.net.ph/2026/10/25/bsp-tightening-cycle-likely-not-over-bpi"
+  },
   {
    "org": "Rigzone",
    "what": "Oil rises with Iran attack report - Brent +1.3% to $115.32, WTI +2.9% to $102.78, 28 Oct 2026",

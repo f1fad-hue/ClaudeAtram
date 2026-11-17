@@ -2,6 +2,74 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-17 — v112: the budget gauge reads six months, 1, 3, 5 and 10 years; 2.93, hold at 25%, unchanged
+
+At the owner's instruction: "Update also the drawdown budget gauge of macroeconomic sentiments, market trends and
+market valuations based on deep researchs and analysis of 6months, 1yr, 3yrs, 5yrs and 10yrs." Asked how to weight
+them, the owner chose months 1-6 and 7-12 at 10% each, years 2-3 and 4-5 at 40% each, with the 10-year view shown as
+the anchor and not weighted. No market input moved; the data date stays 16 Nov, and no portfolio moves.
+
+**The spans.** Year 1 is split. Months 1-6 are researched on their own. Months 7-12 are implied: 2 x the year-1
+reading, less months 1-6, so the halves average back to the researched year 1 the forecasts read, and no span counts
+twice. The path rule extends: now -> months 1-6 -> months 7-12 -> years 2-3 -> years 4-5 -> neutral, never past it.
+
+| | Months 1-6 | Months 7-12 | Years 2-3 | Years 4-5 | Years 6-10 (anchor) |
+| --- | --- | --- | --- | --- | --- |
+| Macro (six drivers) | 2.15 | 2.30 | 2.67 | 2.89 | 3.00 |
+| Market trend | 4.39 | 3.24 | 2.61 | 2.61 | 3.00 |
+| Market valuation | 4.00 | 3.78 | 3.22 | 3.00 | 3.00 |
+| **Reading** | **3.51** | **3.11** | 2.83 | 2.83 | 3.00 |
+| Weight | 10% | 10% | 40% | 40% | none |
+
+The gauge is **2.93, hold at 25%**, the same as year 1 read whole: the split shows that the half-year ahead reads
+stronger than the one after it (momentum and cheap forward multiples now, against the harshest macro of the cycle),
+but it moves the reading only when the research moves year 1. All three raise guards still block.
+
+**The six-month research.** Driver readings on 1-10 (now -> months 1-6 -> months 7-12):
+- **Inflation** 2.0 -> 2.25 -> 3.25. Philippine inflation was 7.8% in October, transport 20.1%, and US PCE 3.6% in
+  September. The EIA's November STEO has stocks rebuilding 3.5 mb/d in the first half of 2027 but Brent below $90
+  only in the second quarter (Rigzone; Dow Jones via Morningstar; Oil & Gas Journal).
+- **Valuation** 8.0 -> 7.75 -> 7.25: the S&P on 17.7x forward against 19.8x and 19.1x averages; six months is too
+  short for the discount to close.
+- **Volatility** 2.0 -> 2.5 -> 3.5: the VIX at 22.91 over its 19.5 long run; the curve's six-month implied level
+  is 18.59.
+- **Geopolitics** 1.5 -> 1.75 -> 2.25: the EIA's Hormuz disruption at 1.9 mb/d through H1 2027, 1.3 only in H2.
+- **Monetary 2.0, Growth 4.5, Earnings 7.0:** pinned to year 1 by the path rule. The research confirms them: more Fed
+  hikes priced into early 2027 (TheStreet, citing FedWatch; RateProbability); most banks expect another BSP hike on
+  17 Dec (BusinessMirror; Daily Tribune, citing BPI); US Q3 growth 3.4% against the Philippines' 2.1%; S&P earnings
+  growing 30.2% this quarter.
+
+The six-month trend reads the last two quarters' momentum, z in each sleeve's own drift and volatility: Nasdaq-100
+4.52, Asia ex-Japan 4.72, Global Technology 5.00 (at the bound), Health Care 3.63, ACWI 4.06. Months 7-12 are what
+year 1's momentum leaves.
+
+**The 10-year anchor** reads 3.00 on every part and is shown, not weighted. The Fed's longer-run rate is 3.2%, US
+inflation is priced at about 2.2% for the five years after the next five, no trend signal lasts past year 5, and the
+base returns price today's multiples. That is what the 25% base stands for; weighted in, it would only pull the gauge
+toward 3 (runbook 107).
+
+**Left out, one source each:**
+- FactSet's Q4 2026 and Q1 2027 earnings growth (28.4% and 19.5%);
+- a Cleveland Fed November CPI nowcast;
+- a GDPNow print;
+- Cboe's May 2027 VIX future (22.08 on 13 Nov).
+
+**Checks.**
+- **Engine 268:** spans 10/10/40/40 with the anchor neutral and unweighted; six-month readings researched and dated;
+  months 7-12 implied; paths monotone through both halves; the six-month trend reproduces from the quarters; the
+  split leaves the reading within a rounding step of year 1 whole (2.93 vs 2.93).
+- **Audit 296:** re-derives every span, the six-month trend from the quarters, the halves, the reach on 10/10/40/40
+  and the year-1-whole comparison. It now also checks C's budget, which v111 missed.
+- **Validator 18:** the Budget table shows the four spans at their weights and the anchor.
+- **Mutants:** new `m_t6`, `m_m6`, `m_m6path`, `m_anchor` and `m_m6date`; `m_tspan` and `m_valpart` moved to the new
+  spans.
+
+**Page.** The Budget tab's tables use short span heads (1-6m, 7-12m, 2-3y, 4-5y, 6-10y) so five spans fit at 390px.
+The driver table puts each weight under its name. The evidence panel gives each driver's six-month and year-1
+reasons. The eyebrow reads 6M / 1Y / 3Y / 5Y / 10Y.
+
+Not personal financial advice.
+
 ## 2026-11-17 — v111: Portfolio C added - the owner's three funds, Nasdaq Equity Income the main; 25 / 65 / 10 at 7.01%; A, B and D unchanged
 
 At the owner's instruction: "Add portfolio C with atram nasdaq equity as the main with atram global tech and atram

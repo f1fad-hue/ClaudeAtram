@@ -42,6 +42,9 @@ const file = process.argv[2], live = process.argv.includes("--live");
         dlede: (document.getElementById("dlede") || {}).textContent || "",
         clede: (document.getElementById("clede") || {}).textContent || "",
         cq: [...document.querySelectorAll("#cq tbody tr")].map(r => r.textContent.trim()),
+        ddh: [...document.querySelectorAll("#ddtab thead th")].map(c => c.textContent.trim()),
+        ddw: [...document.querySelectorAll("#ddtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
+               .find(r => r[0].startsWith("Weight")) || [],
         donutD: !!document.querySelector("#donutD svg"),
       };
     });
@@ -79,6 +82,11 @@ const file = process.argv[2], live = process.argv.includes("--live");
       && info.cq.length === 2 * cq.length && info.cq.filter(t => t.includes("← C")).length === 1
       && info.cq.find(t => t.includes("← C")).startsWith(D.portfolio_c.weights[D.portfolio_b.ids.indexOf("ATRQIAP")] + "%"),
       info.clede.slice(0, 200));
+    // v112 (owner, 17 Nov): the gauge reads months 1-6 and 7-12, years 2-3 and 4-5 at 10/10/40/40, the 10-year anchor beside them
+    const G = D.dd_gauge;
+    ck("the Budget tab's gauge table shows months 1-6, 7-12, years 2-3, 4-5 at their weights and the 10-year anchor unweighted",
+      info.ddh.length === 6 && info.ddw.slice(1).join() === G.views.map(h => (G.w[h] * 100).toFixed(0) + "%").concat(["anchor"]).join()
+      && G.views.join() === "6M,12M,3Y,5Y", `${info.ddh} | ${info.ddw}`);
     ck("the Portfolios lede states A's 10-year, B's, C's and D's 1/3/5/10-year CAGR",
       [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_c.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
       info.lede.slice(0, 160));

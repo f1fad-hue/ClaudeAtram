@@ -11,7 +11,8 @@ and market valuation, A on 10 years and B and D on 1, 3, 5 and 10; the gauge rea
 Updated 2026-11-16 (v108): every analysis, the regional rankings included, has a researched year-1 reading.
 Updated 2026-11-16 (v109): the band holds at 25% from 2.80 to 3.20 and steps one point per 0.15.
 Updated 2026-11-17 (v110): five tabs, not six. Updated 2026-11-17 (v111): Portfolio C is back as the owner's
-three funds, so the command covers A, B, C and D. The runbook (`README.md`) says how; this file says what.
+three funds, so the command covers A, B, C and D. Updated 2026-11-17 (v112): the gauge reads months 1-6
+and 7-12, years 2-3 and 4-5 (10/10/40/40), with the 10-year view as its unweighted anchor. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -106,13 +107,15 @@ Evidence rules (apply to everything below)
 
 4. Drawdown budget band (Budget tab)
 • Recompute the gauge: macro drivers (without valuation) + market trend + market valuation
-  over year 1, years 2-3 and years 4-5, weighted 20/40/40 (owner, 16 Nov 2026: 1, 3 and 5
-  years; years 6-10 are neutral by construction, are what the 25% base stands for, and are
-  not read here). Re-read the valuation evidence (forward P/E for the
+  over months 1-6, months 7-12, years 2-3 and years 4-5, weighted 10/10/40/40 (owner, 17 Nov
+  2026: 6 months, 1, 3, 5 and 10 years); years 6-10 are shown as the anchor and not weighted
+  (neutral by construction, what the 25% base stands for). Re-read the valuation evidence (forward P/E for the
   S&P, Nasdaq-100, Asia and Europe; the CAPE; ten-year return forecasts).
   Re-research each driver's year-1 reading (the year-ahead forecasts: Fed and SOFR futures,
-  the Philadelphia Fed survey, FOMC projections, the EIA's STEO, the IMF, 2027 earnings),
-  and say which moved. Check its guards
+  the Philadelphia Fed survey, FOMC projections, the EIA's STEO, the IMF, 2027 earnings)
+  and its six-month reading (the half-year ahead: FedWatch's next meetings, BSP's next
+  decision, the latest inflation prints, the STEO's quarterly path, the VIX curve, forward
+  multiples), and say which moved; months 7-12 are implied. Check its guards
   (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or
   under its long run before any raise). Record the month-end review when one is due.
 • Report the budget in force and what each step (20% to 30%, one point a step; owner,

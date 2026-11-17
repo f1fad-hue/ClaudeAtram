@@ -214,6 +214,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+175. A SPAN SPLIT INTO A RESEARCHED HALF AND AN IMPLIED HALF CANNOT MOVE THE READING. v112 split year 1 into
+   months 1-6 (researched) and 7-12 (2 x year 1 - months 1-6) at 10/10: the halves average back to year 1, so
+   the gauge read 2.93 either way. That is the honest design - the half-year shows where in the year the
+   pressure sits without counting year 1 twice - but say so to the owner up front: the new research moves the
+   budget only through year 1. And the path rule (now -> each span -> neutral, never past it) pins a short
+   reading wherever the longer ones are flat: where year 1 equals the reading now, months 1-6 can only equal
+   it too. Research those to confirm, not to set; and a figure with one source is left out of the note, not
+   rounded into it (FactSet's quarterly growth, a nowcast, one futures quote were all dropped in v112).
 174. A NEW PORTFOLIO IS A COLUMN IN EVERY TABLE AND A NAME IN EVERY LIST. Adding C (v111) touched about thirty
    places on the page alone: every "A, B and D", every `["a", "b", "d"]`, every table header, the donut grid,
    the frontier's labels, the Report's cards, the fund slides' weights and the drawdown coefficients. Find

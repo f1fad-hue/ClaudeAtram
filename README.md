@@ -123,15 +123,19 @@ each at every update:
   (26%) to 7.67% / −29.8% (30%).
 
 **The Budget tab** reads, on 1-5, whether the next five years justify moving the 25% budget -
-year 1 (20%), years 2-3 (40%) and years 4-5 (40%) (owner, 15 Nov 2026; the ten-year view is not
-read there from 16 Nov: neutral by construction, it is what the 25% base stands for, and it sets
-A's forecasts) - from three parts over each span: the macro drivers other than valuation, the
+months 1-6 (10%), months 7-12 (10%), years 2-3 (40%) and years 4-5 (40%) (owner, 17 Nov 2026, v112:
+"6months, 1yr, 3yrs, 5yrs and 10yrs"; year 1 whole at 20% from 15 Nov), with the ten-year view shown
+beside them as the anchor and not weighted (neutral by construction, it is what the 25% base stands
+for, and it sets A's forecasts). Months 1-6 are researched on their own; months 7-12 are what year 1
+leaves once they are taken out, so the halves average back to year 1 and the split moves the reading
+only when the research moves year 1. On 17 Nov months 1-6 read 3.51 and months 7-12 3.11 (the gauge
+2.93, hold at 25%, as on year 1 whole) - from three parts over each span: the macro drivers other than valuation, the
 market trend and market valuation (its own part from 16 Nov 2026, so it counts once; volatility
 left the reading on 3 Nov 2026 and stays as the guard on a raise), with
 bands for a step anywhere from 20% to 30%, one point at a time (owner, 16 Nov 2026; 24-27%
 until then) - hold at 25% from 2.80 to 3.20 and one point for every 0.15 of the reading beyond
 it (v109, owner 16 Nov 2026, fitted to where the gauge can actually go: stylized extremes read
-about 2.0 to 3.7, which 0.30 steps and a 2.50-3.50 hold turned into 23-26% only; now 20-29%), guards that must also be clear, and what each step does to A, B and D. Year 1 is researched on its own (the section "The year ahead" gives each
+about 2.0 to 3.7, which 0.30 steps and a 2.50-3.50 hold turned into 23-26% only; now 20-29%), guards that must also be clear, and what each step does to A, B, C and D. Year 1 is researched on its own (the section "The year ahead" gives each
 driver's reading and its evidence); years 2-3 are what the 3-year reading leaves once year 1
 is taken out, so no year counts twice and no pick moves. On 16 Nov it reads 2.93 (year 1 3.32,
 years 2-3 2.83, years 4-5 2.83): hold at 25%, as at October's month-end (restated on the
