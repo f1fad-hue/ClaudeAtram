@@ -16,7 +16,8 @@ tabs and five panels but never measured where the tabs sat.
 The validator now checks, at 360px and 412px, that the first tab starts at the bar's left edge, the last ends at its
 right edge, and every tab has an equal width.
 
-No data, figure or portfolio changed. Validator 20 (two new); engine 268 and audit 297 unchanged.
+No data, figure or portfolio changed. Validator 20 (two new); engine 268; audit 296 - the driver-verb check runs
+only when the data date moves against the last commit, and v113's commit carries the same 17 Nov.
 
 ## 2026-11-17 — v113: Seoul and Tokyo to 17 Nov; FedWatch re-quoted; FactSet's 18.3x carried; Global Bond Income's fee corrected; A, B, C and D unchanged; budget 25%
 
