@@ -214,6 +214,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+176. A SIDE SCRIPT READS ITS INPUTS FROM THE ENGINE, OR IT DRIFTS. The held-out what-if typed Global Bond
+   Income's trust fee, 0.90%, into heldout_sens.py, while the engine carried the same figure as an input. When
+   ATRAM's own page turned out to say 1.00% (v113), fixing the engine alone would have left the re-run at 0.90%
+   and published weights for a fee the page no longer stated. The script now reads gbi_trust_listed. And a
+   held-out fund's "one listing" is still a fee: read it from the manager's page every week (runbook 154).
+   Also from v113: two keyed days can share a figure (the KOSPI fell 3.59% on 3 Nov and on 16 Nov), so the
+   audit accepts a figure beside any day of its own series that carries it.
 175. A SPAN SPLIT INTO A RESEARCHED HALF AND AN IMPLIED HALF CANNOT MOVE THE READING. v112 split year 1 into
    months 1-6 (researched) and 7-12 (2 x year 1 - months 1-6) at 10/10: the halves average back to year 1, so
    the gauge read 2.93 either way. That is the honest design - the half-year shows where in the year the

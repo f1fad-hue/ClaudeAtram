@@ -2,6 +2,96 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-17 — v113: Seoul and Tokyo to 17 Nov; FedWatch re-quoted; FactSet's 18.3x carried; Global Bond Income's fee corrected; A, B, C and D unchanged; budget 25%
+
+At the owner's instruction: run debugging, code review and a sanity check; hunt and fix errors; clean up; and
+re-research and re-verify:
+- the data and math, the 22 funds, their target funds and fees, and every portfolio's net 10-year CAGR;
+- the budget gauge at 6 months, 1, 3, 5 and 10 years;
+- the four analyses at 1, 3, 5 and 10 years;
+- every portfolio's mix and number of funds.
+
+**Cut-off and data date.** Cut-off 12:00 UTC on Tue 17 Nov.
+- Tokyo, Seoul and Manila had closed their 17 Nov sessions. Tokyo's and Seoul's are carried, two sources each.
+- Manila's and the peso's 17 Nov closes were not yet reported in two sources, so they stay at 16 Nov.
+- New York had not opened, so New York, the VIX, the oil settles and Treasuries stay at 16 Nov (the Treasury curve
+  at 13 Nov).
+- The as-of date is 17 Nov, Seoul's and Tokyo's close; the README and `AS_OF` name whose close each date is.
+
+| Market | 17 Nov | Move | Sources |
+| --- | --- | --- | --- |
+| KOSPI | 4,968.48 | −132.02 (−2.59%), a fourth straight fall, first close under 5,000 since February | Seoul Economic Daily; the Korea Herald; Korea JoongAng Daily; SBS |
+| Nikkei 225 | 58,860.43 | −801.59 (−1.34%), a second straight fall, under 59,000 | IndexBox; InfoQuest; NEWSTOP; Yahoo via AFP |
+
+Both chain exactly from 16 Nov. The reasons: chipmakers slid on US curbs on AI-chip exports and ahead of Nvidia's
+results; Advantest and SoftBank were the biggest drags in Tokyo. Investing.com's 58,928 and Business Upturn's
+58,981.99 were taken before the close, and TradingKey's 58,860.38 does not chain. The foreign sale in Seoul is
+reported at 1.44-1.56tn won, so no figure is carried.
+
+**Re-quoted and rolled.**
+- **FedWatch:** a hike by 9 Dec at 100% on 16 Nov (the Motley Fool). Jin10's 17 Nov read, via TechFlow, has 95.7%
+  for a quarter-point and 4.3% for a half. TheStreet's "roughly 93%" is the quarter-point share alone.
+- **FactSet's forward P/E:** 18.3 on 12 Nov (its 13 Nov edition; FourWeekMBA the second source), up from 17.7 on
+  5 Nov, still under the 19.8 and 19.1 averages. The S&P has fallen since. Valuation holds at 8.0.
+
+**Errors found and fixed.**
+1. **Global Bond Income's trust fee was 0.90%; it is 1.00%.** That is the figure on ATRAM's own fund page,
+   uitf.com.ph's NAVpu page and DragonFi. The 0.90% was carried since v63 as its "one listing", and the held-out
+   what-if script had it typed in. The script now reads the engine's input, and the re-run at 1.00% moves one
+   case: at the target's retail 1.59% charge the fund would take 20% of A (was 25%) and none of B (was 20%).
+   Every other held-out weight came back identical, and the fund stays held out: its target is named only in a
+   2020 disclosure (runbook 176).
+2. **C's note said Peso Money Market "does not fall".** Its modelled drawdown is −0.5%. The note now says it
+   barely falls and does not fall with the other two.
+3. **The audit's calendar check compared Nvidia's results with Seoul's date.** They come after New York's close
+   and belong to the US session.
+4. **The audit flagged a correct sentence.** The KOSPI fell 3.59% on 3 Nov and on 16 Nov, and a figure shared by
+   two keyed days was read as one day's figure beside the other's date. It now accepts any day of the same
+   series that carries the figure.
+5. **The audit never checked C's budget.** Its budget-in-force check listed A, B and D; C, added in v111, is now
+   in it.
+6. **The driver verbs read against v109.** This is a new review, so they now read against v112's published
+   scores: Volatility is "HELD at 2.0" (cut in v110), not "CUT".
+7. **House cleanup.** Comments in the engine and audit still described the pre-v112 gauge ("the 3- and 5-year
+   views only", "1, 3 and 5 years only", "no 10-year anchor in its parts"). The held-out script's docstring
+   described the retired C.
+
+**Checked and unchanged.**
+- **Fund forecasts, regions and drivers:** every net 10-year CAGR, every regional reading and every driver score
+  is the same.
+- **Portfolios:** A 7.31% / −24.9% (10-year view), B 7.20% / −24.9%, C 7.01% / −25.0%, D 7.25% / −24.8%.
+- **The gauge:** 2.93, hold at 25% (months 1-6 3.51, 7-12 3.11, years 2-3 and 4-5 2.83, the anchor 3.00). All
+  three raise guards still block.
+- **The 22 funds:** a notices search found nothing new since the 16 Nov check. US Equity Opportunity, Global AI,
+  Global Multi-Asset Income and Global Financials were searched again, and nothing newer was found.
+- **IXJ's and IXN's trailing returns:** BlackRock's 30 Sep figures are for an AUD-listed fund. Both stay flagged
+  stale, at 78 and 77 days, inside the 105-day limit.
+- **Gulf:** Iran's claim on 17 Nov that six ships hit mines is unverified and not carried. The 16 Nov incidents
+  are in the note.
+- **Not carried, one source only:** a 16 Nov VIX futures board (vixchart), the 16 Nov 10-year (intraday prints
+  only), and the Philadelphia Fed's Q4 survey (not yet readable).
+
+**Checks.**
+- Engine 268.
+- Audit 297.
+- Validator 18.
+- Mutants 82/82.
+
+**Due before the next review.**
+- New York's 17 Nov session.
+- US October retail sales and Nvidia's results (17 Nov).
+- Manila's and the peso's 17 Nov closes.
+- The 16 Nov Treasury curve.
+- The FOMC minutes and APEC (18 Nov).
+- A VIX futures board in two sources before 19 Nov.
+- The WTI roll (20 Nov).
+- Michigan's final reading (20 Nov).
+- The Philadelphia Fed's Q4 survey.
+- IXJ's and IXN's trailing returns.
+- The month-end band review (30 Nov).
+
+A model's reading, not personal financial advice.
+
 ## 2026-11-17 — v112: the budget gauge reads six months, 1, 3, 5 and 10 years; 2.93, hold at 25%, unchanged
 
 At the owner's instruction: "Update also the drawdown budget gauge of macroeconomic sentiments, market trends and

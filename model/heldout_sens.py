@@ -7,9 +7,11 @@ Allocation's fee note; re-run it when any of those fees, or the universe, change
 
 Imports the engine, builds the held-out fund with build_fund() and the factor model,
 re-binds the search's globals to the eleven funds plus that one, and re-runs the rule
-for A (the 10-year view), B (the 3/5/10-year view) and D (B's view, Nasdaq Equity Income the
-largest of two to five funds; v96, re-set v99). C (Nasdaq Equity Income pinned at 50%) left
-with its retirement in v101. For the disputed fee it rebuilds the admitted fund in place and
+for A (the 10-year view), B (the 1/3/5/10-year view) and D (B's view, Nasdaq Equity Income the
+largest of two to five funds; v96, re-set v99). The 50%-pinned C left with its retirement in
+v101; the C of v111 holds only its three named funds, so no held-out fund can enter it. The
+trust fee of Global Bond Income is read from the engine (gbi_trust_listed; 0.90 typed here
+until v113, when ATRAM's own page was found at 1.00). For the disputed fee it rebuilds the admitted fund in place and
 re-runs the same three."""
 import json, math, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +27,7 @@ def spec_useq(trust):
 def spec_gbi(target):
     return {"id": "X_GBI", "name": "ATRAM Global Bond Income Feeder Fund", "short": "Global Bond Income",
             "ccy": "PHP (unhedged)", "region": "GLOBAL_ALLOC", "target": "PIMCO GIS Diversified Income", "target_verified": False,
-            "fee_feeder": 0.90, "fee_target": target, "fee_note": "", "gross_usd": E.MACRO["ltcma_us_ig"],
+            "fee_feeder": E.MACRO["gbi_trust_listed"], "fee_target": target, "fee_note": "", "gross_usd": E.MACRO["ltcma_us_ig"],
             "gross_note": "", "vol_beta": 5.0 / E.SP_VOL_LT, "fx_exposed": True, "macro_tilt": {"rates": -0.30, "energy": 0.0},
             "dd_k_adj": 0.0, "cash_like": False, "dd_k_why": "", "equity_share": 0.0, "trend_market": None}
 

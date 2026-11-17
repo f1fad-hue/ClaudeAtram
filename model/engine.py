@@ -24,12 +24,14 @@ from itertools import combinations, product
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-11-16"        # newest completed session carried: New York's, the VIX's, the oil settles',
-                            # Seoul's, Tokyo's and Manila's and the peso's 16 Nov closes; the 16 Nov
-                            # T-bill auction; the Treasury curve held at 13 Nov (no par-curve figure for
-                            # 16 Nov by the cut-off); FedWatch's 13 Nov read
-REVIEW_DATE = "2026-11-17"  # when this review was worked through (v110: cut-off 02:00 UTC on Tue
-                            # 17 Nov, before any Asian session of the 17th had closed)
+AS_OF = "2026-11-17"        # newest completed session carried: Seoul's and Tokyo's 17 Nov closes (v113).
+                            # New York's, the VIX's and the oil settles' are 16 Nov's (New York had not
+                            # opened by the cut-off), and so are Manila's and the peso's (their 17 Nov
+                            # closes were not yet reported in two sources); the 16 Nov T-bill auction; the
+                            # Treasury curve held at 13 Nov (no par-curve figure for 16 Nov in two sources);
+                            # FedWatch's 16 Nov read
+REVIEW_DATE = "2026-11-17"  # when this review was worked through (v113: cut-off 12:00 UTC on Tue
+                            # 17 Nov, after Tokyo, Seoul and Manila had closed and before New York opened)
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -562,9 +564,13 @@ MACRO = {
     # at the 8-9 Dec meeting; KuCoin's 12 Nov read: "100% implied probability of a rate hike"; a
     # 16 Nov read has 95% and 5%. A hike by the meeting is carried at 100; the split is not.
     "fed_50bp_odds_dec_13nov": [5.0, 9.2, 11.5],
+    # v113 RE-QUOTED AT 16 NOV: the Motley Fool's 16 Nov read of the tool, "a 100% chance of a Fed rate hike
+    # in December"; Jin10's 17 Nov read (via TechFlow), 95.7% for a quarter-point and 4.3% for a half - a hike
+    # by the meeting at 100 again. TheStreet's "roughly 93%" is the quarter-point share alone.
+    "fed_50bp_odds_dec_17nov": 4.3,
     "fed_hike_odds_dec": 100,    # a hike by the 9 Dec meeting (FedWatch), after the 13 Nov PPI
-    "fed_hike_odds_dec_date": "2026-11-13",
-    "fed_hike_odds_dec_prev": 100, "fed_hike_odds_dec_prev_date": "2026-11-10",
+    "fed_hike_odds_dec_date": "2026-11-16",
+    "fed_hike_odds_dec_prev": 100, "fed_hike_odds_dec_prev_date": "2026-11-13",
     # The 22 Oct evening reads (TheStreet 76%, Reuters about 80%) were recorded as a range
     # in v65 and are superseded by the 23 Oct tool read.
     # A settled reading of a DECIDED meeting. Kept for the record, and registered
@@ -1090,7 +1096,9 @@ MACRO = {
         # here; the site cannot be read from the review environment, so neither is confirmed. At
         # 1.50% the held-out run gives it none of A, B or C.
         ["US Equity Opportunity", "trust fee not confirmed: uitf.com.ph's listings read 1.20% (about 17 months old) and, in a 3 Nov search, 1.50% (USD class); at 1.50% it takes none of A, B or D (owner's hold, 2026-10-21)"],
-        ["Global Bond Income", "trust fee on one listing only (uitf.com.ph, 0.90%); target named only in a 2020 disclosure (PIMCO GIS Diversified Income), whose charge runs 0.69-1.59% by class"],
+        # v113: the trust fee is 1.00% on ATRAM's own fund page, uitf.com.ph's NAVpu page and DragonFi - the
+        # 0.90% carried as its one listing since v63 was wrong (runbook 154). Still held out: the target.
+        ["Global Bond Income", "target named only in a 2020 disclosure (PIMCO GIS Diversified Income), whose charge runs 0.69-1.59% by class; the trust fee, 1.00%, is confirmed (ATRAM; uitf.com.ph; DragonFi)"],
         ["Global AI", "trust fee listings disagree (1.20% and 1.50%); target fund not named in any document found"],
         ["Global Multi-Asset Income", "trust fee listings disagree (1.15%, 1.19%, 1.25%)"],
         ["Global Capital Accumulation FoF", "trust fee on one listing only (0.90%, USD class)"],
@@ -1126,8 +1134,9 @@ MACRO = {
     # 0 / 0; at the derived 26.97% to v74, A / B / the since-retired C: 20 / 25 / 10 and
     # 20 / 0 / 5.)
     # GLOBAL BOND INCOME, the held-out fund that would move the picks most, the same way:
-    # at its listed 0.90% trust fee with the target's institutional 0.69% charge, 35% of
-    # A and 35% of B; with the retail 1.59%, 25% of A and 20% of B (v75-v76: 35 / 35 and
+    # at its listed trust fee (1.00% from v113, 0.90% recorded before) with the target's institutional
+    # 0.69% charge, 35% of A and 35% of B; with the retail 1.59%, 20% of A and none of B (25% and 20% at
+    # 0.90%; v75-v76: 35 / 35 and
     # 30 / 0; at 26.97%, A / B / C: 35 / 35 / 25 and 25 / 20 / 10). Its gross is the LTCMA's investment-grade
     # credit figure - an assumption for a fund whose target is not confirmed.
     # These are RESULTS OF A RUN, so they carry the run's budget: heldout_run_cap must be
@@ -1161,9 +1170,13 @@ MACRO = {
     # v96: Portfolio D in the same re-runs (model/heldout_sens.py, 7 Nov).
     # v99: re-run 12 Nov under D's new rule (Nasdaq the largest of two to five funds).
     "useq_w_d_listed": 10, "useq_w_d_peer": 0, "gbi_w_d_low": 35, "gbi_w_d_high": 10, "amip_w_d_alt": 30,
-    "gbi_trust_listed": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
+    # v113: 1.00% on ATRAM's fund page, uitf.com.ph and DragonFi (0.90% carried to v112 from one listing).
+    "gbi_trust_listed": 1.00, "gbi_trust_v112": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
+    # RE-RUN 2026-11-17 (v113) at the corrected 1.00% trust fee: every weight came back identical but Global
+    # Bond Income's at its target's retail 1.59% charge - 20% of A (25%) and none of B (20%); D 10% as before.
+    # The live picks reproduce (A 7.31% / -24.9%, B 7.20% / -24.9%, D 7.25% / -24.8%).
     "gbi_w_a_low": 35, "gbi_w_b_low": 35,
-    "gbi_w_a_high": 25, "gbi_w_b_high": 20,
+    "gbi_w_a_high": 20, "gbi_w_b_high": 0,
     # ASIA EQUITY OPPORTUNITY's mandate floor, as its look-through note quotes it (v92: the note's
     # "70%" had been traced only by coincidence, to two unrelated inputs since retired).
     "aseq_mandate_div_min_pct": 70,
@@ -1211,7 +1224,7 @@ MACRO = {
     # Nasdaq Equity Income's target charge as confirmed in v93 (justETF; Fidelity UK): the
     # forecast's fee_target must equal it while the check reads "confirmed".
     "qiap_target_confirmed": 0.35,
-    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-16",
+    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-17",
     # ASIAN MULTI-ASSET INCOME'S DISPUTED TRUST FEE (v75 CLAIMS; on the page from v77): ATRAM's
     # page has 1.50%, carried; the October 2025 KIID and uitf.com.ph 1.20%. Re-run 2026-10-28
     # (heldout_sens.run_refee) under the maximum-growth rule at 25%: the fund's net rises
@@ -2511,8 +2524,12 @@ MACRO = {
     # beating, growth 31.4%) are in FactSet's own pages only, so the 30 Oct counts are kept.
     # v110: FactSet's 13 Nov Earnings Insight (18.3x; Q3 blended growth 31.9%, 91% reported) was read through
     # search from FactSet's own PDF only; no second source by the cut-off.
-    "spx_fwd_pe_13nov_one_source": 18.3,
-    "spx_fwd_pe": 17.7, "spx_fwd_pe_date": "2026-11-05", "spx_fwd_pe_prev": 18.7,
+    # v113 ROLLED: FactSet's 13 Nov edition has the forward P/E at 18.3 on 12 Nov (price 7,592.40, that day's
+    # close), back above the 17.7 of 5 Nov, below the five- and ten-year averages and the 19.0 of 30 Sep, the
+    # price down 0.8% since 30 Sep and the forward EPS up 3.3% (FactSet's report; FourWeekMBA, citing the
+    # 18.3x). Its season counts (91% reported, 84% beating) are still in FactSet's own pages only.
+    "spx_fwd_pe": 18.3, "spx_fwd_pe_date": "2026-11-12", "spx_fwd_pe_prev": 17.7,
+    "spx_fwd_pe_prev_date": "2026-11-05", "spx_fwd_pe_2prev": 18.7,
     "spx_fwd_pe_5y": 19.8, "spx_fwd_pe_10y": 19.1, "spx_fwd_pe_q3end": 19.0, "spx_fwd_pe_ytd_start": 22.0,
     # ROLLED in v94 to FactSet's 30 Oct update, now in a second source (GainingGreen, citing it):
     # 60% reported, 82% beating, by 1.9% in aggregate - the smallest surprise since Q4 2022 if it
@@ -2710,9 +2727,16 @@ MACRO = {
     "nikkei_round_level": 60000,            # the round level it closed under on 16 Nov
     "nikkei_12nov_chg_pct": -0.70,
     "nikkei_12nov": 60819.36,       # 12 Nov's close, for the Asia note's own sentence
-    "nikkei_latest": 59662.02, "nikkei_latest_chg_pct": -2.42, "nikkei_latest_chg_pts": -1480.33,
-    "nikkei_latest_date": "2026-11-16",
-    "nikkei_latest_prev": 61142.35,
+    # v113: 17 Nov 58,860.43, -801.59 (-1.34%), a second straight fall, under 59,000, on tighter US curbs on
+    # AI-chip exports and caution before Nvidia's results, Advantest and SoftBank the biggest drags (IndexBox;
+    # InfoQuest; NEWSTOP; Yahoo, via AFP). 59662.02 - 801.59 = 58860.43. Prints of 58,928 (Investing.com,
+    # -1.23%) and 58,981.99 (Business Upturn, -1.14%) were taken before the close, and TradingKey's 58,860.38
+    # does not chain; none is carried.
+    "nikkei_13nov": 61142.35, "nikkei_16nov": 59662.02, "nikkei_16nov_chg_pct": -2.42,
+    "nikkei_round_level_17nov": 59000,      # the round level it closed under on 17 Nov
+    "nikkei_latest": 58860.43, "nikkei_latest_chg_pct": -1.34, "nikkei_latest_chg_pts": -801.59,
+    "nikkei_latest_date": "2026-11-17",
+    "nikkei_latest_prev": 59662.02,
     "nikkei_11nov_chg_pct": 1.31,
     "nikkei_10nov_chg_pct": 2.87,
     "nikkei_9nov_chg_pct": 2.33, "nikkei_6nov_chg_pct": -5.96,
@@ -2825,8 +2849,15 @@ MACRO = {
     "kospi_foreign_sell_16nov_tn": 1.37,    # foreigners' net sale, trillion won, 16 Nov (NoCutNews; Korea JoongAng Daily)
     "kospi_floor_16nov": 5100,              # the round level it "barely held", 16 Nov
     "kospi_12nov_chg_pct": -0.61,
-    "kospi_latest": 5100.50, "kospi_latest_chg_pts": -190.03, "kospi_latest_chg_pct": -3.59,
-    "kospi_latest_date": "2026-11-16", "kospi_latest_prev": 5290.53,
+    # v113: 17 Nov 4968.48, -132.02 (-2.59%), a fourth straight fall and its first close under 5,000 since
+    # February, chipmakers sliding on AI-demand worries and US curbs on AI-chip exports before Nvidia's results,
+    # foreigners selling again (Seoul Economic Daily, "KOSPI Falls 2.59% to Close at 4,968.48"; the Korea Herald;
+    # Korea JoongAng Daily; SBS). 5100.50 - 132.02 = 4968.48. The foreign sale is put at 1.44-1.56tn won in
+    # different reports, so no figure is carried.
+    "kospi_13nov": 5290.53, "kospi_16nov": 5100.50, "kospi_16nov_chg_pct": -3.59,
+    "kospi_floor_17nov": 5000,              # the round level it closed under on 17 Nov, first time since February
+    "kospi_latest": 4968.48, "kospi_latest_chg_pts": -132.02, "kospi_latest_chg_pct": -2.59,
+    "kospi_latest_date": "2026-11-17", "kospi_latest_prev": 5100.50,
     "kospi_11nov_chg_pct": 2.60, "kospi_10nov_chg_pct": 4.39,
     "kospi_9nov_chg_pct": -0.81,
     "kospi_6nov_chg_pct": -6.02, "kospi_5nov_chg_pct": -5.28, "kospi_4nov_chg_pct": 0.62,
@@ -3749,15 +3780,19 @@ US_LATEST_REASON = {
                    "Anthropic's listing"),
 }
 ASIA_LATEST_REASON = {
-    ("2026-11-16", "2026-11-16"): (
-        f"Seoul and Tokyo fell together on the AI sell-off on 16 Nov: the KOSPI "
-        f"{'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% to "
-        f"{MACRO['kospi_latest']:,.2f}, a third straight fall, barely holding {MACRO['kospi_floor_16nov']:,}, as foreigners "
-        f"sold {MACRO['kospi_foreign_sell_16nov_tn']}tn won of tech "
-        "shares on the Nvidia turmoil and ahead of its results and Anthropic's listing (NoCutNews; Korea JoongAng Daily), "
-        f"and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% "
-        f"to {MACRO['nikkei_latest']:,.2f}, under {MACRO['nikkei_round_level']:,}, Advantest and Tokyo Electron taking "
-        f"{MACRO['nikkei_chip_drag_16nov_pts']:,} points of the fall "
+    ("2026-11-17", "2026-11-17"): (
+        f"Seoul and Tokyo fell again on 17 Nov, chipmakers sliding on US curbs on AI-chip exports and ahead of Nvidia's "
+        f"results: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% "
+        f"to {MACRO['kospi_latest']:,.2f}, a fourth straight fall and its first close under {MACRO['kospi_floor_17nov']:,} since "
+        "February, foreigners selling again (Seoul Economic Daily; the Korea Herald; Korea JoongAng Daily), and the Nikkei "
+        f"{'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% to "
+        f"{MACRO['nikkei_latest']:,.2f}, under {MACRO['nikkei_round_level_17nov']:,}, Advantest and SoftBank the biggest drags "
+        "(IndexBox; InfoQuest; NEWSTOP). On 16 Nov the KOSPI had fallen "
+        f"{abs(MACRO['kospi_16nov_chg_pct']):.2f}% to {MACRO['kospi_16nov']:,.2f}, barely holding {MACRO['kospi_floor_16nov']:,}, "
+        f"as foreigners sold {MACRO['kospi_foreign_sell_16nov_tn']}tn won of tech shares on the Nvidia turmoil and ahead of its "
+        "results and Anthropic's listing (NoCutNews; Korea JoongAng Daily), and the Nikkei "
+        f"{abs(MACRO['nikkei_16nov_chg_pct']):.2f}% to {MACRO['nikkei_16nov']:,.2f}, under {MACRO['nikkei_round_level']:,}, "
+        f"Advantest and Tokyo Electron taking {MACRO['nikkei_chip_drag_16nov_pts']:,} points of the fall "
         "(Xinhua; Jiji, via AD HOC News)."),
 }
 PH_PESO_REASON = {
@@ -3821,7 +3856,7 @@ REGIONS = {
                 f"{_nword(MACRO['fed_oct_votes_hike'])} Fed voters wanted a hike on {_dday('fed_oct_decision_date')}, FedWatch has one by December at "
                 f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, and the 10-year closed at "
                 f"{MACRO['ust_10y']:.2f}% on {_dday('ust_10y_date')}. FactSet's {_dday('factset_date')} count has {MACRO['factset_beat_pct']}% of reporting "
-                f"companies beating estimates, and its next update has the index on {MACRO['spx_fwd_pe']}x forward earnings on "
+                f"companies beating estimates, and its 13 Nov edition has the index on {MACRO['spx_fwd_pe']}x forward earnings on "
                 f"{_dday('spx_fwd_pe_date')}, below its five- and ten-year averages. The consumer is the weak point: Michigan sentiment's first November read is "
                 f"{MACRO['us_umich_nov_prelim']}, a three-month high but still low, after October's {MACRO['us_umich_oct']}, retail sales rose {MACRO['us_retail_sep']}% in "
                 f"September, the saving rate down to {MACRO['us_saving_rate_sep']}%. The anchor holds at 6.5 on two structural "
@@ -3862,8 +3897,8 @@ REGIONS = {
                 # v110: the latest session's moves, sources and reasons, keyed by its date (see US_LATEST_REASON)
                 + ASIA_LATEST_REASON[(MACRO["kospi_latest_date"], MACRO["nikkei_latest_date"])]
                 + f" On 13 Nov the KOSPI had fallen {abs(MACRO['kospi_13nov_chg_pct']):.2f}% to "
-                f"{MACRO['kospi_latest_prev']:,.2f} as early gains faded and foreigners sold (Seoul Economic Daily; Bloomingbit), "
-                f"while the Nikkei rose {MACRO['nikkei_13nov_chg_pct']:.2f}% to {MACRO['nikkei_latest_prev']:,.2f} as chip stocks "
+                f"{MACRO['kospi_13nov']:,.2f} as early gains faded and foreigners sold (Seoul Economic Daily; Bloomingbit), "
+                f"while the Nikkei rose {MACRO['nikkei_13nov_chg_pct']:.2f}% to {MACRO['nikkei_13nov']:,.2f} as chip stocks "
                 "recovered (CNBC; Trading Economics). On 12 Nov the KOSPI fell "
                 f"{abs(MACRO['kospi_12nov_chg_pct']):.2f}% as Nvidia fell in New York's after-hours (Seoul Economic Daily; Yonhap) "
                 f"and the Nikkei {abs(MACRO['nikkei_12nov_chg_pct']):.2f}% to {MACRO['nikkei_12nov']:,.2f}, ending three straight "
@@ -4114,8 +4149,8 @@ DRIVERS = [
      f"{MACRO['us_core_pce_mom_sep']}% on the month and {MACRO['us_core_pce_sep']}% on the year, headline "
      f"{MACRO['us_pce_mom_sep']}% and {MACRO['us_pce_sep']}%, and FedWatch has a hike by the 9 Dec meeting at "
      f"{MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, after October's CPI and producer prices, as on "
-     f"{_dday('fed_hike_odds_dec_prev_date')} - no read since the CPI puts any weight on a hold (Stocktwits; KuCoin; "
-     "Investing.com; Reuters, \"fully priced\"). Reads of "
+     f"{_dday('fed_hike_odds_dec_prev_date')} - no read since the CPI puts any weight on a hold (the Motley Fool; Jin10, "
+     "via TechFlow; Stocktwits; KuCoin). Reads of "
      f"{min(MACRO['fed_hike_odds_dec_disputed_6nov_post'])}% to {max(MACRO['fed_hike_odds_dec_disputed_6nov_post'])}% "
      "had followed the 6 Nov payrolls. On 10 Nov Governor Waller said in London that he leans to a quarter-point hike in "
      f"December and that a half-point should be considered if October's core CPI rose {MACRO['fed_waller_core_trigger']}% "
@@ -4273,13 +4308,12 @@ DRIVERS = [
      "stands. Held: the profits keep coming and the quarter's growth estimate rose again; what is being questioned is "
      "whether the spending that buys them goes on, which is the three-year reading's question, not this quarter's."),
     ("Valuation support", 0.1, 8.0,
-     f"HELD at 8.0: FactSet had the S&P on {MACRO['spx_fwd_pe']}x forward earnings on {_dday('spx_fwd_pe_date')}, from "
-     f"{MACRO['spx_fwd_pe_prev']}x on {_dday('factset_date')} and the lowest since November 2023, below its five-year "
+     f"HELD at 8.0: FactSet had the S&P on {MACRO['spx_fwd_pe']}x forward earnings on {_dday('spx_fwd_pe_date')}, up from "
+     f"{MACRO['spx_fwd_pe_prev']}x on {_dday('spx_fwd_pe_prev_date')}, the lowest since November 2023, and still below its five-year "
      f"({MACRO['spx_fwd_pe_5y']}x) and ten-year ({MACRO['spx_fwd_pe_10y']}x) averages and the "
      f"{MACRO['spx_fwd_pe_q3end']:.1f}x of 30 Sep; it began the year at {MACRO['spx_fwd_pe_ytd_start']}x, and forward "
-     f"earnings have risen far faster than the price since (FactSet; FX News Group). FactSet's 13 Nov edition reads "
-     f"{MACRO['spx_fwd_pe_13nov_one_source']}x after that week's rise, but only in its own report here, so it is not "
-     f"carried. The S&P closed at {MACRO['spx_close']:.2f} on {_dday('equity_date')}, "
+     f"earnings have risen far faster than the price since (FactSet; FourWeekMBA; FX News Group). The S&P has fallen since "
+     f"that reading: it closed at {MACRO['spx_close']:.2f} on {_dday('equity_date')}, "
      f"{MACRO['spx_off_record_pct']}% below its {MACRO['spx_record_close']:.2f} record of {_dday('spx_record_date')}. Asia was on {MACRO['asia_fwd_pe']}x forward before its October "
      f"fall and is cheaper on the same earnings: the KOSPI closed at {MACRO['kospi_latest']:,.2f} on "
      f"{_dday('kospi_latest_date')}, {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close. NDX at {MACRO['ndx_fwd_pe']}x forward on its "
@@ -4306,16 +4340,17 @@ DRIVERS = [
     # settled 19.46 of 10 Nov, and Seoul rose two sessions running - and the newest futures board
     # found is in contango.
     ("Volatility & risk appetite", 0.1, 2.0,
-     f"CUT to 2.0 from {DRIVER_PREV_VOL}, as the 12 Nov morning review set when it raised it: a VIX close back above its "
-     f"long run undoes the raise. The VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} "
+     f"HELD at 2.0, cut from {DRIVER_PREV_VOL} in the 17 Nov morning review as the 12 Nov review set when it raised it: a "
+     f"VIX close back above its long run undoes the raise, and none has come since. The VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} "
      f"{abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, its biggest rise since "
      f"5 Nov (CappNotes; Yahoo Finance's Cboe quote; CNN, \"surged 19%\"), {abs(MACRO['vix_lr_gap']):.2f} points "
      f"{'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as Nvidia fell "
      f"{abs(MACRO['nvda_16nov_chg_pct'])}% a day before its results and led a third straight fall in New York; "
      f"{_nword(len(MACRO['vix_disputed_16nov']) - 1)} other prints "
      f"({', '.join(f'{v:.2f}' for v in MACRO['vix_disputed_16nov'] if v != MACRO['vix_latest'])}) are not carried. "
-     f"Asia sold off with it: Seoul fell {abs(MACRO['kospi_latest_chg_pct']):.2f}%, Tokyo "
-     f"{abs(MACRO['nikkei_latest_chg_pct']):.2f}% and Manila {abs(MACRO['psei_chg_pct']):.2f}% on {_dday('kospi_latest_date')}. "
+     f"Asia sold off with it on {_dday('psei_date')}: Seoul fell {abs(MACRO['kospi_16nov_chg_pct']):.2f}%, Tokyo "
+     f"{abs(MACRO['nikkei_16nov_chg_pct']):.2f}% and Manila {abs(MACRO['psei_chg_pct']):.2f}%, and Seoul and Tokyo fell again "
+     f"on {_dday('kospi_latest_date')}. "
      f"It had closed at {_vh_close('2026-11-13'):.2f} on 13 Nov and {_vh_close('2026-11-11'):.2f} on 11 Nov, under the "
      f"long run, and at {_vh_close('2026-11-05'):.2f} on 5 Nov, up {MACRO['vix_reported_moves']['2026-11-05']}% as the AI "
      f"sell-off took the Nasdaq into correction - the highest close in this series, which starts on "
@@ -4433,9 +4468,9 @@ DRIVERS = [
 # review's scores before rescoring; the verb check reads it, and the audit compares it with the
 # committed release. v95 opened with the growth note still saying "RAISED to 4.25" and the
 # volatility note "CUT to 1.5" - v94's moves - in a review that held both.
-DRIVER_PREV = ("v109", {"Monetary policy & liquidity": 2.0, "Inflation trajectory": 2.0,
+DRIVER_PREV = ("v112", {"Monetary policy & liquidity": 2.0, "Inflation trajectory": 2.0,
                        "Growth momentum": 4.25, "Corporate earnings": 7.0, "Valuation support": 8.0,
-                       "Volatility & risk appetite": DRIVER_PREV_VOL, "Geopolitics & energy": 1.5})
+                       "Volatility & risk appetite": 2.0, "Geopolitics & energy": 1.5})
 
 GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
@@ -4600,11 +4635,11 @@ SUMMARY = {
     "Growth momentum": f"Held at 4.25: US payrolls rose {MACRO['us_payrolls_oct'] // 1000}k in October against {MACRO['us_payrolls_oct_consensus'] // 1000}k expected and China's October exports rose {MACRO['china_exports_oct']}%, but Philippine growth slowed to {MACRO['ph_gdp_q3']}% in the third quarter against {MACRO['ph_gdp_q3_poll']}% expected, and the consumer is still the weak point.",
     "Corporate earnings": f"Held, the strongest pillar: third-quarter growth is blended at {MACRO['factset_q3_growth']}% with {MACRO['factset_beat_pct']}% beating (FactSet, {_dday('factset_date')}); the AI sell-off took the Nasdaq down {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% on 5 Nov into correction, on fears for the build-out rather than this quarter's profits, and it took back {MACRO['nasdaq_6nov_chg_pct']:.2f}% on 6 Nov and {MACRO['nasdaq_9nov_chg_pct']:.2f}% on 9 Nov.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Cut to 2.0 from {DRIVER_PREV_VOL}: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as Nvidia led a third straight fall and Asia sold off - the close the 12 Nov raise was to be undone at; it has given back {MACRO['vix_spike_retraced_pct']}% of the 5 Nov jump, and the futures curve carried is held to its window.",
+    "Volatility & risk appetite": f"Held at 2.0, cut from {DRIVER_PREV_VOL} on 17 Nov: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as Nvidia led a third straight fall and Asia sold off - the close the 12 Nov raise was to be undone at; it has given back {MACRO['vix_spike_retraced_pct']}% of the 5 Nov jump, and the futures curve carried is held to its window.",
     "Geopolitics & energy": f"Held: the talks have stalled and Tehran says the Strait stays shut until its conditions are met; oil flows are recovering, but on 16 Nov UKMTO reported two more tanker incidents near Hormuz, Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, down ${abs(MACRO['brent_reported_pts']['2026-11-16']):.2f} on the surplus outlook, and the last confirmed flows were near 14 mb/d.",
     "US": f"Held: the Nasdaq {'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% and the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% on {_dday('equity_date')}, a third straight fall as Nvidia slid a day before its results, after {abs(MACRO['nasdaq_13nov_chg_pct']):.2f}% and {abs(MACRO['spx_13nov_chg_pct']):.2f}% on 13 Nov and {abs(MACRO['nasdaq_12nov_chg_pct']):.2f}% and {abs(MACRO['spx_12nov_chg_pct']):.2f}% on 12 Nov, when its chief executive resigned; the {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% fall of 5 Nov took the Nasdaq into correction; GDP beat at {MACRO['us_gdp_q3']}%, producer prices rose {MACRO['us_ppi_oct_yoy']}% on the year, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
-    "ASIA": f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% on {_dday('kospi_latest_date')}, a third straight fall, after {abs(MACRO['kospi_13nov_chg_pct']):.2f}% on 13 Nov and {abs(MACRO['kospi_12nov_chg_pct']):.2f}% on 12 Nov, and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% on {_dday('nikkei_latest_date')}, under {MACRO['nikkei_round_level']:,}, after rising {MACRO['nikkei_13nov_chg_pct']:.2f}% on 13 Nov; Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and China's October retail sales rose only {MACRO['china_retail_oct']}% and industrial output {MACRO['china_ip_oct']}%, both under forecast.",
+    "ASIA": f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% on {_dday('kospi_latest_date')}, a fourth straight fall and under {MACRO['kospi_floor_17nov']:,}, after {abs(MACRO['kospi_16nov_chg_pct']):.2f}% on 16 Nov and {abs(MACRO['kospi_13nov_chg_pct']):.2f}% on 13 Nov, and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% on {_dday('nikkei_latest_date')}, under {MACRO['nikkei_round_level_17nov']:,}, after {abs(MACRO['nikkei_16nov_chg_pct']):.2f}% on 16 Nov and a {MACRO['nikkei_13nov_chg_pct']:.2f}% rise on 13 Nov; Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and China's October retail sales rose only {MACRO['china_retail_oct']}% and industrial output {MACRO['china_ip_oct']}%, both under forecast.",
     "PHILIPPINES": f"Held: third-quarter growth slowed to {MACRO['ph_gdp_q3']}% against {MACRO['ph_gdp_q3_poll']}% expected, with October inflation at {MACRO['ph_cpi_oct']}%; the PSEi closed at {MACRO['psei']:,.2f} on {_dday('psei_date')}, its lowest since {MACRO['psei_low_since']}, the peso at {MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos {'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}, and 91-day bills rose to {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction.",
 }
 
@@ -5739,12 +5774,12 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 # twice: volatility already deepens every mix's drawdown estimate, which the budget is
 # measured against, and the VIX guard below blocks a raise while it is high. It stays as
 # that guard, and the forward volatility is published beside the readings as context.
-# THE GAUGE READS THE 3- AND 5-YEAR VIEWS ONLY,
-# weighted by the years of the first five each covers (3/5 and 2/5): the 10-year view is
-# neutral by construction for the drivers and the trend, so it carries no timing
-# information - it is what the fixed budget
-# itself stands for. Weighted in, it would pin the gauge between 2 and 4 and make the
-# outer bands unreachable. It is shown beside the other two, not hidden.
+# THE GAUGE READS THE FIRST FIVE YEARS, each span weighted by the years it covers (the spans
+# below: 3 and 5 years at 60 / 40 until v103, year 1 / 2-3 / 4-5 at 20 / 40 / 40 to v111, months
+# 1-6 / 7-12 / years 2-3 / 4-5 at 10 / 10 / 40 / 40 from v112). The 10-year view is neutral by
+# construction for the drivers, the trend and valuation, so it carries no timing information - it
+# is what the fixed budget itself stands for. Weighted in, it would pin the gauge between 2 and 4
+# and make the outer bands unreachable, so it is shown as the anchor, not weighted (runbook 107).
 # The reading maps to a step of the budget (DDG_BANDS); a step away from 25% is acted on
 # only when two consecutive month-end reviews read the same band, and a RAISE also needs
 # both risk guards clear: the Geopolitics & energy reading above 2.0 (1-10) - the Hormuz
@@ -5772,11 +5807,9 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 DDG_READING_OF = ("macro", "trend", "valuation")   # the parts a view's reading averages (v90; v106)
 DDG_VAL = "Valuation support"
 DDG_PARTS_DATE = "2026-11-16"
-# 1, 3, 5 AND 10 YEARS (owner, 2026-11-15, v103). The gauge reads three views of the first five years
-# - year 1, years 2-3 and years 4-5 - each weighted by the years it covers (20 / 40 / 40); the 10-year
-# view stays the anchor, shown and not weighted. Until v103 it read 3 and 5 years at 60 / 40, the
-# 3-year view covering years 1-3. Years 2-3 are implied by that 3-year reading and the researched
-# year 1 (DRIVER_Y1), so the split refines the reading without counting year 1 twice.
+# 1, 3, 5 AND 10 YEARS (owner, 2026-11-15, v103, to v111): year 1, years 2-3 and years 4-5 at 20 / 40 /
+# 40, years 2-3 implied by the 3-year reading and the researched year 1 (DRIVER_Y1), so the split
+# refines the reading without counting year 1 twice. Until v103 it read 3 and 5 years at 60 / 40.
 # SIX MONTHS, 1, 3, 5 AND 10 YEARS (owner, 2026-11-17, v112): year 1 is split into months 1-6, researched,
 # and months 7-12, implied, so the spans are 10 / 10 / 40 / 40 of the first five years; the 10-year view
 # is shown beside them as the anchor - neutral by construction, it is the 25% base - and not weighted.
@@ -5898,9 +5931,9 @@ DDG_PARTS = {h: {"macro": _macro_part(_DV[h]), "trend": round(sum(TREND_SPAN[h].
 # multiples), so it reads the owner's 25% base itself. Weighted in, it would pin the gauge (runbook 107).
 DDG_PARTS[HZ_LABEL] = {"macro": _macro_part(_DV[HZ_LABEL]), "trend": TREND_ANCHOR,
                        "valuation": to5(_DV[HZ_LABEL][DDG_VAL]), "vol_forward": _VFWD[HZ_LABEL]}
-# 1, 3 AND 5 YEARS ONLY (owner, 2026-11-16: "...based on deep researchs and analysis of 1, 3, and
-# 5yrs"): the 10-year anchor, shown beside the three weighted views from v75 to v106 and neutral by
-# construction (3.00 on every part), is dropped from the gauge. It still sets Portfolio A's view.
+# THE 10-YEAR ANCHOR'S HISTORY: shown beside the weighted views from v75 to v106, dropped in v107 (owner,
+# 2026-11-16: "...1, 3, and 5yrs"), shown again from v112 (owner, 2026-11-17: "...6months, 1yr, 3yrs,
+# 5yrs and 10yrs"), always neutral by construction and never weighted. It still sets Portfolio A's view.
 for _h, _p in DDG_PARTS.items():
     _p["years"] = DDG_SPAN_LABEL[_h]
 # EXACT HALF-UP (v90), as every printed CAGR is from v88: the mean of two 2dp parts ends in
@@ -7284,8 +7317,12 @@ SOURCES = [
      "https://www.goldstonefinancialgroup.com/q3-2026-market-review/"),
     ("iShares", "iShares Global Healthcare ETF (IXJ) - NAV returns to 30 Sep 2026: 1 month -1.96%, YTD 5.93%, 1 year 16.81%",
      "https://www.ishares.com/us/products/239744/ishares-global-healthcare-etf"),
-    ("uitf.com.ph", "ATRAM Global Bond Income Feeder Fund - trust fee 0.90% p.a. (held out: one listing)",
+    ("uitf.com.ph", "ATRAM Global Bond Income Feeder Fund - trust fee 1.00% p.a. (held out: target not confirmed)",
      "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=364"),
+    ("ATRAM", "ATRAM Global Bond Income Feeder Fund - fund page: trust fee 1.00% p.a., incl. distribution fee (v113)",
+     "https://www.atram.com.ph/funds/uitf-funds/details?fund=19UF17P"),
+    ("DragonFi", "ATRAM Global Bond Income Feeder Fund - trust fee 1.00% (v113)",
+     "https://www.dragonfi.ph/market/funds/19UF17"),
     ("uitf.com.ph", "ATRAM US Equity Opportunity Feeder Fund (USD unit class) - trust fee 1.20% p.a. (held out: stale listing)",
      "https://www.uitf.com.ph/daily_navpu_details.php?fund_id=260"),
     ("Yahoo Finance", "CBOE Volatility Index (^VIX) - 19.42, +2.22 (+12.91%), day range 18.03-23.93, at the 30 Oct 2026 close (a live quote page; 16.91 at the 28 Oct close)",

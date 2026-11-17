@@ -43,13 +43,13 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 16 Nov 2026 (reviewed 17 Nov, cut-off 02:00 UTC): New York, the VIX
-(22.91, back above its 19.5 long run), Brent's January and WTI's December settles, Seoul, Tokyo and Manila and
-the peso at their 16 Nov closes; the 16 Nov T-bill auction; the Treasury curve held at 13 Nov (no par-curve figure
-for 16 Nov by the cut-off); FedWatch at 13 Nov (a December hike 100% priced); PortWatch's Hormuz count at 8 Nov,
-the latest it has published. Brent's y/y is quoted against its 14 Nov 2025 settle, two days off the anniversary.
+market assumptions. Market data as of 17 Nov 2026 (reviewed 17 Nov, cut-off 12:00 UTC): Seoul and Tokyo at their 17 Nov closes (the KOSPI 4,968.48, under 5,000; the Nikkei 58,860.43); New York, the VIX
+(22.91, back above its 19.5 long run), Brent's January and WTI's December settles at 16 Nov, New York not having opened; Manila and the peso at
+16 Nov (their 17 Nov closes not yet in two sources); the 16 Nov T-bill auction; the Treasury curve held at 13 Nov (no par-curve
+figure for 16 Nov in two sources); FedWatch at 16 Nov (a December hike 100% priced); FactSet's forward P/E at 18.3 on
+12 Nov (its 13 Nov edition); PortWatch's Hormuz count at 8 Nov, the latest it has published. Brent's y/y is quoted against its 14 Nov 2025 settle, two days off the anniversary.
 Target funds were checked in full on 16 Nov, the first review of the week, through search results only, and
-searched again for notices on 17 Nov (none); the 1-year test could not be refreshed (uitf.com.ph is blocked and
+searched again for notices on 17 Nov (none; held-out Global Bond Income's trust fee corrected to 1.00%, from ATRAM's own page); the 1-year test could not be refreshed (uitf.com.ph is blocked and
 not indexed), so its 5 Nov figures stand.
 Weights in the
 universe's order: Money Market / Nasdaq Equity Income /
@@ -162,8 +162,8 @@ from 4.75, and with it held at 4.75, B would keep 10% in cash and 10% in Global
 Technology. A and C kept their weights. (Those were the picks under the derived −26.97% budget;
 v75 moved all three to the owner's 25%; C was retired in v76.) US Equity Opportunity is
 held out until its trust fee is confirmed (at the listed 1.20% it would take 20% of A and
-15% of B, at the 25% budget); Global Bond Income would move the picks most (at its listed
-fee, 25-35% of A). **The Asian Multi-Asset Income trust fee is disputed** (1.50% on ATRAM's
+15% of B, at the 25% budget); Global Bond Income would move the picks most (at its 1.00%
+trust fee, confirmed in v113, 20-35% of A). **The Asian Multi-Asset Income trust fee is disputed** (1.50% on ATRAM's
 page, carried; 1.20% in its October 2025 KIID): at 1.20%, A would hold 35% of it against 20%
 now, and B 20%, as now. The page states every figure here from the
 engine; this table is a snapshot of it, and the review audit fails if it drifts.

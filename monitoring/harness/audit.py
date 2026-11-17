@@ -455,7 +455,8 @@ ck("the four analyses year by year: every cell from its inputs, A on years 6-10 
            and r["bd"] == round(sum(w * x for w, x in zip(_abw, v)), 2) and abs(r["bd"] - bl) < 0.0101
            for r, (an, v, bl) in zip(_AB["rows"], _abx)),
    f"{[(r['name'], r['v'], r['bd']) for r in _AB['rows']]} vs {_abx}")
-# v107 (owner, 16 Nov): the gauge reads 1, 3 and 5 years only - no 10-year anchor in its parts
+# v112 (owner, 17 Nov): the gauge reads months 1-6 and 7-12, years 2-3 and 4-5; the 10-year anchor is in
+# its parts, neutral on every part, and carries no weight (v107-v111 left it out altogether)
 from decimal import Decimal as _D, ROUND_HALF_UP as _HU
 _q2 = lambda x: float(x.quantize(_D("0.01"), rounding=_HU))      # exact half-up, the page's convention
 _rd = {h: _q2((_D(str(_mac[h])) + _D(str(_trp[h])) + _D(str(_vlp[h]))) / 3) for h in _mac}
@@ -532,7 +533,9 @@ ck("the IMF edition carried is the newest whose release window has closed", _due
 ck("Michigan sentiment is the final reading, or its first read is under two weeks old",
    (M["us_umich_latest_final"] is True or (REV - d(M["us_umich_latest_date"])).days < 14)
    and (REV - d(M["us_umich_latest_date"])).days <= 21)
-_US = re.compile(r"^(FOMC\b|US .*\b(GDP|PCE|CPI|PPI|payrolls|jobs report|retail sales|midterm))")
+# v113: a US company's results after New York's close (Nvidia's) are a US-session event too; with Asia
+# rolled a day ahead of New York, they were compared with Seoul's date.
+_US = re.compile(r"^(FOMC\b|Nvidia\b|US .*\b(GDP|PCE|CPI|PPI|payrolls|jobs report|retail sales|midterm))")
 ck("every catalyst is after the last session of its own market carried (US events against the US session)",
    all(d(c["date"]) > (d(M["equity_date"]) if _US.search(c["what"]) else AS_OF) for c in D["catalysts"]),
    f"{[(c['date'], c['what']) for c in D['catalysts']]}")
@@ -694,6 +697,14 @@ _LATEST = {"KOSPI": (M["kospi_latest_chg_pct"], d(M["kospi_latest_date"])),
            "Nikkei": (M["nikkei_latest_chg_pct"], d(M["nikkei_latest_date"])),
            "Nasdaq": (M["nasdaq_chg_pct"], d(M["equity_date"])), "S&P": (M["spx_chg_pct"], d(M["equity_date"])),
            "Dow": (M["dow_chg_pct"], d(M["equity_date"])), "PSEi": (M["psei_chg_pct"], d(M["psei_date"]))}
+# v113: EVERY DAY A SERIES SHARES A FIGURE WITH. The KOSPI fell 3.59% on 3 Nov and again on 16 Nov, both
+# now keyed days, so "3.59% on 3 Nov" was flagged as 16 Nov's figure away from its day. A figure beside any
+# day of its own series that carries that value is in its place.
+_KEYED = {}
+for k, v in M.items():
+    m_ = re.match(r"^([a-z0-9]+?)_(\d{1,2})(" + "|".join(_MO) + r")(?:_|$)", k)
+    if m_ and m_.group(1) in _SER and not isinstance(v, bool) and isinstance(v, (int, float)):
+        _KEYED.setdefault(_SER[m_.group(1)], []).append((abs(v), int(m_.group(2)), m_.group(3).capitalize()))
 for k, v in M.items():
     m_ = re.match(r"^([a-z0-9]+?)_(\d{1,2})(" + "|".join(_MO) + r")(?:_|$)", k)
     if not m_ or m_.group(1) not in _SER or isinstance(v, bool) or not isinstance(v, (int, float)): continue
@@ -717,6 +728,7 @@ for k, v in M.items():
             _onday = lambda dd, mm: re.search(r"(?<!\d)" + str(dd) + " " + mm, snt) or f"the {_ordn(dd)}" in snt
             _lt = _LATEST.get(_SER[m_.group(1)])
             if _lt and abs(abs(_lt[0]) - abs(v)) < 1e-9 and _onday(_lt[1].day, f"{_lt[1]:%b}"): continue
+            if any(abs(a_ - abs(v)) < 1e-9 and _onday(dd_, mm_) for a_, dd_, mm_ in _KEYED.get(_SER[m_.group(1)], [])): continue
             if not _onday(_day, _mo): _dk.append(f"{k} in {src}")
 ck(f"a figure keyed to a day is quoted only beside that day ({_dq} quotes)", _dq > 0 and not _dk, "; ".join(_dk[:3]))
 # v94: a move kept under its own day's key (nasdaq_5nov_chg_pct) equals the series' latest move
