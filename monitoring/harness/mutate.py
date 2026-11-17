@@ -37,6 +37,7 @@ def m_cpick(d):                                                                 
     r = next(r for r in c["by_q"] if r["n_feasible"] and r["q"] != q)
     c["weights"] = list(r["weights"]); c["macro"]["cagr"], c["macro"]["maxdd"] = r["cagr"], r["maxdd"]
 def m_cq(d): r = d["portfolio_c"]["by_q"][0]; r["shallowest"] = round(r["shallowest"] + 0.1, 1)   # a Nasdaq weight's shallowest mix off its re-run (v111)
+def m_orphan(d): d["macro"]["fed_50bp_odds_dec_99nov"] = 4.3                             # a new input nothing reads, its value quoted elsewhere (v116)
 def m_cold(d): d["macro"]["gbi_w_c_low"] = 0                                                   # the old C's held-out inputs back (v111)
 def m_cap_k(d): d["dd_model"]["b_k"] = round(d["dd_model"]["b_k"] + 0.01, 5)
 def m_gauge(d): d["gauge"] = round(d["gauge"] + 0.01, 2)

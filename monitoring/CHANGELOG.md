@@ -2,6 +2,73 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-17 — v116: full review - dead inputs swept, two audit gaps closed, every fund and portfolio re-verified; nothing moved
+
+At the owner's instruction (sent twice): run debugging, code review and a sanity check; hunt and fix errors; clean up;
+and re-verify:
+- the data and math;
+- the 22 funds with their target funds, fees, 10-year net CAGRs and drawdowns;
+- every portfolio's net CAGR, drawdown, mix and number of funds;
+- the budget gauge at 6 months, 1, 3, 5 and 10 years;
+- the four analyses at 1, 3, 5 and 10 years.
+
+Cut-off 16:30 UTC on Tue 17 Nov, ninety minutes after v115. New York's 17 Nov session was still open, so no market
+input could roll.
+
+**Errors found and fixed.**
+1. **Seventeen inputs nothing read** were cleared. They were:
+   - `us_pce_12m`, `us_ppi_core_mom`, `us_ppi_core_yoy`, `us_umich_oct_date`, `us_umich_oct_final`, `us_ahe_oct_yoy`,
+     `ph_core_cpi_sep`, `vix_latest_high_prev(_date)`, `dow_13nov_chg_pct`;
+   - the four `psei_2026_low*` keys;
+   - three I added in v113: `fed_50bp_odds_dec_17nov`, `gbi_trust_v112`, `spx_fwd_pe_2prev`.
+
+   The disputed-print records stay, as records. The payload is otherwise identical: every other input, block and
+   figure is unchanged.
+2. **The audit's dead-input check counted a number as used if its value appeared anywhere in the prose.** That is
+   how v113's 4.3 got through. A new input must now be read by name; the new mutant `m_orphan` plants exactly that
+   case, and it is caught (runbook 177).
+3. **The audit never re-derived the peso drift.** Only the engine checked that the 2.0-point drift sits between the
+   long-run inflation gap (1.5) and September's (3.5: Philippines 7.2% less US 3.7%; October has no US twelve-month
+   rate). The audit now re-derives it and checks every foreign fund carries it.
+4. **Trailing whitespace** left by the cleanup was removed.
+
+**Checked and unchanged.**
+- **Text:** every note and tab was scanned for repeated words, broken spacing, unbalanced brackets and figures beside
+  the wrong day. The few hits were false positives, and every 16 Nov phrase sits beside 16 Nov.
+- **Funds:**
+  - Fees as of the 16 Nov check, with Global Bond Income's trust fee corrected to 1.00% in v113.
+  - Held-out Global Capital Accumulation is at 0.90% on uitf.com.ph, as carried. US Multi-Asset Income lists 1.50% on
+    both unit classes, the same site, and its target is still single-sourced.
+  - The peso's 17 Nov close is still in one source.
+
+| Fund | Fees (trust + target) | Net 10-yr, 10-year view | Net 10-yr, 1/3/5/10 | Drawdown |
+| --- | --- | --- | --- | --- |
+| Peso Money Market | 0.58 + 0 | 4.27% | 4.39% | −0.5% |
+| Nasdaq Equity Income | 1.50 + 0.35 | 7.81% | 7.67% | −32.0% |
+| Asia Equity | 1.18 + 1.55 | 7.32% | 7.28% | −39.4% |
+| Global Technology | 1.50 + 1.04 | 9.51% | 9.24% | −56.5% |
+| Global Dividend | 1.50 + 1.04 | 6.62% | 6.60% | −31.5% |
+| Global Health Care | 1.50 + 1.05 | 7.11% | 7.12% | −33.2% |
+| Global Infra Equity | 1.50 + 0.80 | 7.33% | 7.26% | −33.1% |
+| Global Equity Opportunity | 1.50 + 1.00 | 7.25% | 7.09% | −47.7% |
+| Global Consumer Trends | 1.50 + 0.97 | 7.29% | 7.14% | −79.7% |
+| Asian Multi-Asset Income | 1.50 + 1.54 | 6.04% | 5.95% | −19.2% |
+| Global Allocation | 1.50 + 1.13 | 6.12% | 6.04% | −21.8% |
+
+- **Sanity check on Global Consumer Trends' −79.7%,** the deepest on the sheet. It comes from an assumed volatility
+  beta of 1.75. The target's factsheets show 3-year volatility of 25.4% (Oct 2021), 26.7% (Apr 2022) and 23.9%
+  (Nov 2025), all via Morningstar. The model's 33.3% is implied volatility; on the same realised basis it is 27.9%,
+  a few points conservative, not an error. The fund is in no portfolio. Changing the assumption is the owner's call,
+  so it is recorded, not changed.
+- **Portfolios:** A 7.31% / −24.9% (10-year view), B 7.20% / −24.9%, C 7.01% / −25.0%, D 7.25% / −24.8%, with the
+  same mixes and numbers of funds (A and B five, C three, D four).
+- **The gauge:** 2.93, hold at 25%.
+- **The analyses:** every regional, macro, trend and valuation reading is as in v115.
+
+**Checks.** Engine 268, audit 297 (one new), validator 20, mutants 83/83 (one new).
+
+Not personal financial advice.
+
 ## 2026-11-17 — v115: A on 10 years and B, C and D on 1/3/5/10 years, re-researched and re-picked; Manila to 17 Nov; all four unchanged
 
 At the owner's instruction (sent twice):

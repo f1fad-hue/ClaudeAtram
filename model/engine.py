@@ -85,7 +85,6 @@ MACRO = {
     "us_cpi_oct_mom": 0.4, "us_cpi_oct_mom_consensus": 0.3, "us_cpi_sep_mom": 0.6,
     "us_core_cpi_oct_mom": 0.3, "us_core_cpi_oct_mom_consensus": 0.2,
     "us_cpi_oct_gasoline_mom": 1.0, "us_cpi_sep_gasoline_mom": 9.1,
-    "us_pce_12m": 3.7,
     # AUGUST PCE (BEA, 30 Sep): headline +0.3% m/m and 3.4% y/y against 3.7%
     # expected, core +0.2% and 3.0% against 0.3% and 3.3%. The July headline was
     # REVISED DOWN to 3.4% - the 3.7% carried above as us_pce_12m is July's first
@@ -567,7 +566,6 @@ MACRO = {
     # v113 RE-QUOTED AT 16 NOV: the Motley Fool's 16 Nov read of the tool, "a 100% chance of a Fed rate hike
     # in December"; Jin10's 17 Nov read (via TechFlow), 95.7% for a quarter-point and 4.3% for a half - a hike
     # by the meeting at 100 again. TheStreet's "roughly 93%" is the quarter-point share alone.
-    "fed_50bp_odds_dec_17nov": 4.3,
     "fed_hike_odds_dec": 100,    # a hike by the 9 Dec meeting (FedWatch), after the 13 Nov PPI
     "fed_hike_odds_dec_date": "2026-11-16",
     "fed_hike_odds_dec_prev": 100, "fed_hike_odds_dec_prev_date": "2026-11-13",
@@ -617,7 +615,7 @@ MACRO = {
     # 0.5% expected (sources differ, 0.5-0.6); core +0.5% m/m, 5.0% y/y; energy
     # goods +10.8% (CNBC, CNN, US News / Reuters).
     "us_retail_sep": 0.8,
-    "us_ppi_sep_mom": 1.3, "us_ppi_sep_yoy": 6.3, "us_ppi_core_mom": 0.5, "us_ppi_core_yoy": 5.0,
+    "us_ppi_sep_mom": 1.3, "us_ppi_sep_yoy": 6.3,
     # OCTOBER PPI (BLS, 13 Nov; Babypips; Economy.com; StockTitan): final demand +0.3% on the month,
     # against 0.4% expected, and 6.5% on the year, from 6.3% - the largest 12-month rise since November
     # 2022; core (less food, energy and trade) +0.5%; September revised to +1.4% from +1.3%; goods
@@ -633,7 +631,6 @@ MACRO = {
     # from 48.1 in September, revised up from the 46.3 preliminary and the lowest since May.
     # THE NOTES QUOTED THE PRELIMINARY from the final's release until v85 (runbook 122).
     "us_umich_oct": 48.0, "us_umich_oct_prelim": 46.3,
-    "us_umich_oct_date": "2026-10-23", "us_umich_oct_final": True,
     # NOVEMBER'S FIRST READ (6 Nov), MISSED BY THE v94-v102 REVIEWS and found in v104: 51.0, a three-
     # month high, from 48.0, against 48.0 expected; year-ahead inflation expectations 4.3% from 4.7%
     # (investingLive, "51.0 vs 48.0 expected"; ABA Banking Journal; Advisor Perspectives). The final is
@@ -655,7 +652,7 @@ MACRO = {
     # on; Fox Business has it revised up by 31,000 in the October report.
     "us_payrolls_sep": 29_000,
     "us_payrolls_oct": 165_000, "us_payrolls_oct_consensus": 59_000,
-    "us_ahe_oct_mom": 0.4, "us_ahe_oct_yoy": 3.1,
+    "us_ahe_oct_mom": 0.4,
     "us_unemployment": 4.1,
     # S&P Global flash PMI, September 2026 (released 23 Sep), vs the August finals.
     # The headline Manufacturing PMI, 57.0 from 53.9 (a 52-month high). The first
@@ -773,7 +770,6 @@ MACRO = {
     # BSP's month-ahead range for October (30 Oct): 7.1-8.1% (BusinessWorld; Tribune; GMA;
     # BusinessMirror). PSA publishes on 5 Nov.
     "bsp_cpi_oct_lo": 7.1, "bsp_cpi_oct_hi": 8.1,
-    "ph_core_cpi_sep": 4.7,
     # PH OCTOBER CPI (PSA, 5 Nov): 7.8% from 7.2%, the fastest since February 2023 and inside BSP's
     # 7.1-8.1% range; core 5.4% from 4.8% (PSA; Philstar; PTV; Trading Economics). Transport
     # 20.1% from 14.6%; food 6.4% from 6.8%. PSA's September core is 4.8% where its first
@@ -1011,8 +1007,6 @@ MACRO = {
     "psei_5nov_chg_pct": 1.46,
     "psei_4nov_chg_pct": 1.26,
     "psei_3nov_chg_pct": -0.99,
-    "psei_2026_low": 5481.88, "psei_2026_low_date": "2026-11-16",
-    "psei_2026_low_prev": 5593.49, "psei_2026_low_prev_date": "2026-11-13",
     # PH T-BILLS, 21 Sep auction (BusinessWorld / BusinessMirror). CORRECTED
     # 2026-09-24: 5.138 / 5.517 / 5.717 had been here since the build on 2 Sep,
     # never refreshed, and since 13 Sep the look-through stamped them with the
@@ -1176,7 +1170,7 @@ MACRO = {
     # v99: re-run 12 Nov under D's new rule (Nasdaq the largest of two to five funds).
     "useq_w_d_listed": 10, "useq_w_d_peer": 0, "gbi_w_d_low": 35, "gbi_w_d_high": 10, "amip_w_d_alt": 30,
     # v113: 1.00% on ATRAM's fund page, uitf.com.ph and DragonFi (0.90% carried to v112 from one listing).
-    "gbi_trust_listed": 1.00, "gbi_trust_v112": 0.90, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
+    "gbi_trust_listed": 1.00, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
     # RE-RUN 2026-11-17 (v113) at the corrected 1.00% trust fee: every weight came back identical but Global
     # Bond Income's at its target's retail 1.59% charge - 20% of A (25%) and none of B (20%); D 10% as before.
     # The live picks reproduce (A 7.31% / -24.9%, B 7.20% / -24.9%, D 7.25% / -24.8%).
@@ -2108,7 +2102,6 @@ MACRO = {
     # one source and not carried.
     "vix_latest_high": 28.18,
     "vix_latest_high_date": "2026-11-05",
-    "vix_latest_high_prev": 23.93, "vix_latest_high_prev_date": "2026-10-30",
     # Session context. These were accidentally deleted on 2026-09-16 when the VIX
     # block above was refactored - the replaced range ran past its intended end and
     # swallowed them. Nothing caught it, because the "every published input is
@@ -2295,7 +2288,7 @@ MACRO = {
     "spx_close": 7416.59, "spx_chg_pct": -1.92, "spx_chg_pts": -145.08,
     "nasdaq_close": 24509.76, "nasdaq_chg_pct": -2.49, "nasdaq_chg_pts": -626.51,
     "dow_close": 51608.17, "dow_chg_pct": -1.41, "dow_chg_pts": -739.38,
-    "spx_13nov_chg_pct": -0.40, "nasdaq_13nov_chg_pct": -0.91, "dow_13nov_chg_pct": 0.10,
+    "spx_13nov_chg_pct": -0.40, "nasdaq_13nov_chg_pct": -0.91,
     "nvda_16nov_chg_pct": -4.1,
     "nyse_decliners_ratio_16nov": 3.45,     # decliners to advancers on the NYSE, 16 Nov (Reuters)
     "spx_12nov_chg_pct": -0.35, "nasdaq_12nov_chg_pct": -0.39,
@@ -2534,7 +2527,7 @@ MACRO = {
     # price down 0.8% since 30 Sep and the forward EPS up 3.3% (FactSet's report; FourWeekMBA, citing the
     # 18.3x). Its season counts (91% reported, 84% beating) are still in FactSet's own pages only.
     "spx_fwd_pe": 18.3, "spx_fwd_pe_date": "2026-11-12", "spx_fwd_pe_prev": 17.7,
-    "spx_fwd_pe_prev_date": "2026-11-05", "spx_fwd_pe_2prev": 18.7,
+    "spx_fwd_pe_prev_date": "2026-11-05",
     "spx_fwd_pe_5y": 19.8, "spx_fwd_pe_10y": 19.1, "spx_fwd_pe_q3end": 19.0, "spx_fwd_pe_ytd_start": 22.0,
     # ROLLED in v94 to FactSet's 30 Oct update, now in a second source (GainingGreen, citing it):
     # 60% reported, 82% beating, by 1.9% in aggregate - the smallest surprise since Q4 2022 if it
@@ -9852,7 +9845,7 @@ def report():
         _k_dec = len(repr(float(_k_pub)).split(".")[1].rstrip("0")) if "." in repr(float(_k_pub)) else 0
         checks.append((f"{lab} portfolio k is the ex-cash weighted average of the sleeve k's",
                        abs(avg - _k_pub) <= 0.5 * 10 ** (-_k_dec) + 1e-12))
-    checks.append(("every fund net CAGR is below its gross", 
+    checks.append(("every fund net CAGR is below its gross",
                    all(f["net_base"] < f["gross_php"] for f in p["funds"])))
     lt = p["lookthrough"]
     checks.append((f"look-through recorded for all {len(UNIV_IDS)} funds, Global Dividend included",

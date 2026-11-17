@@ -214,6 +214,12 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+177. A NUMBER IS NOT USED BECAUSE ITS VALUE APPEARS. The dead-input check accepted a number whose value showed up
+   anywhere in the prose, so v113's fed_50bp_odds_dec_17nov (4.3) passed on someone else's 4.3, and seventeen
+   inputs nothing read had built up. A new input must be read by name (v116); the old ones were swept by hand.
+   The same care applies to sanity checks: compare like with like. Global Consumer Trends' 33.3% volatility looked
+   far above its target's published 24-27%, but the model's figure is implied volatility; on the realised basis
+   (less the variance risk premium) it is 27.9%, a few points conservative rather than wrong.
 176. A SIDE SCRIPT READS ITS INPUTS FROM THE ENGINE, OR IT DRIFTS. The held-out what-if typed Global Bond
    Income's trust fee, 0.90%, into heldout_sens.py, while the engine carried the same figure as an input. When
    ATRAM's own page turned out to say 1.00% (v113), fixing the engine alone would have left the re-run at 0.90%

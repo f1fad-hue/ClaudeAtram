@@ -88,6 +88,15 @@ ck("the valuation channel's blend is its path on the 10/20/20/50 year split", ab
    and _VC["w"] == D["hz_split"] == {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, "10Y": 0.5}
    and abs(sum(_VC["w"][h] * _VC["path_5"][h] for h in _VC["w"]) - _VC["blend_5"]) < 0.0006, f"{_VC['blend_5']} vs {_vb}")
 
+# v116: THE PESO DRIFT, re-derived here (only the engine checked it until v116). Every unhedged foreign
+# fund assumes the peso weakens by the same drift a year, which must sit between the long-run inflation gap
+# (PH 3.9 less US 2.4) and today's month-matched gap (September: PH CPI less US CPI; October has no US
+# twelve-month rate, the BLS not having collected October 2025). The money market carries none.
+_fx = D["fx"]; _ppp_now = round(M["ph_cpi_sep"] - M["us_cpi_headline"], 1)
+ck(f"the peso drift ({_fx['drift']}) sits between the long-run inflation gap ({_fx['ppp_lr']}) and September's ({_ppp_now}), and every foreign fund carries it",
+   abs(_fx["ppp_lr"] - 1.5) < 1e-9 and abs(_fx["ppp_now"] - _ppp_now) < 1e-9 and _fx["ppp_lr"] <= _fx["drift"] <= _fx["ppp_now"]
+   and all(f["fx_drift"] == (0.0 if f["id"] == "ATRPHMM" else _fx["drift"]) for f in FU), f"{_fx}")
+
 # ---------------------------------------------------------------------------
 sec("C. PORTFOLIOS: weights, limits, re-derived figures and the rule")
 C = PBB["corr"]; NU = len(FU)
@@ -859,7 +868,12 @@ try:
     if [x["note"] for x in D["drivers"]] != [_bd.get(x["name"], {}).get("note") for x in D["drivers"]]:
         _pbad = [x["name"] for x in D["drivers"] if _bd.get(x["name"], {}).get("score_10") != x.get("prev_score_10")]
         ck(f"the last-review scores recorded are {ref}'s published scores", not _pbad, f"{_pbad}")
-    new = [k for k, v in M.items() if k not in base and not isinstance(v, (list, dict, bool)) and v is not None and not used(k, v)]
+    # v116: AN INPUT ADDED SINCE THE BASELINE MUST BE READ BY NAME. used() also accepts a number whose value
+    # appears in the prose, which let v113's fed_50bp_odds_dec_17nov (4.3) through because "4.3" occurs elsewhere.
+    _byname = lambda k: bool(re.search(r"\b(?:m|M|macro|D\.macro)\.%s\b" % re.escape(k), _page)
+                             or len(re.findall(r'MACRO\["%s"\]|\b%s\b' % (re.escape(k), re.escape(k)), ENGINE)) > 1)
+    new = [k for k, v in M.items() if k not in base and not isinstance(v, (list, dict, bool)) and v is not None
+           and not (_byname(k) if isinstance(v, (int, float)) else used(k, v))]
     ck(f"no input added since {ref} that nothing reads", not new, ", ".join(new))
 except Exception as e:
     print(f"  [WARN] orphan check skipped: no baseline ({type(e).__name__})")
