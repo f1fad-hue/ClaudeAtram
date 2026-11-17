@@ -24,12 +24,12 @@ from itertools import combinations, product
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-11-13"        # newest completed session carried: New York's, the VIX's, the oil settles',
-                            # the Treasury curve's, Seoul's, Tokyo's and Manila's 13 Nov closes; the
-                            # peso at 12 Nov (its 13 Nov close is reported two ways); FedWatch's
-                            # 13 Nov read; the 9 Nov T-bill auction (16 Nov's is after the cut-off)
-REVIEW_DATE = "2026-11-16"  # when this review was worked through (v104: cut-off 02:00 UTC on Mon
-                            # 16 Nov, before any Asian session of the 16th had closed)
+AS_OF = "2026-11-16"        # newest completed session carried: New York's, the VIX's, the oil settles',
+                            # Seoul's, Tokyo's and Manila's and the peso's 16 Nov closes; the 16 Nov
+                            # T-bill auction; the Treasury curve held at 13 Nov (no par-curve figure for
+                            # 16 Nov by the cut-off); FedWatch's 13 Nov read
+REVIEW_DATE = "2026-11-17"  # when this review was worked through (v110: cut-off 02:00 UTC on Tue
+                            # 17 Nov, before any Asian session of the 17th had closed)
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -423,6 +423,10 @@ MACRO = {
     # 4.88 is a market close, ust_2y_disputed_12nov) and 4.88 on 13 Nov (the Treasury's par table;
     # Stockinsky; CNBC's market close 4.855-4.872). 4.74 + 0.12 = 4.86; 4.86 + 0.02 = 4.88. The
     # 30-year 5.47 on 13 Nov (the Treasury's par table; Forbes' rate page, 5.47%; CNBC 5.472-5.481).
+    # v110: 16 Nov NOT CARRIED - market quotes only (a newsletter's 5.115%, another's 5.12%, Trading Economics'
+    # 5.14%, Investing.com's 5.137%); FRED's DGS10 for 16 Nov is due 17 Nov, after the cut-off. The 2-year
+    # (4.819-4.86%) and 30-year (5.46-5.48%) likewise.
+    "ust_10y_withheld_16nov": [5.115, 5.12, 5.137, 5.14],
     "ust_2y": 4.88, "ust_2y_date": "2026-11-13",
     "ust_2y_prev": 4.86,           # its 12 Nov close, for the note's "from"
     "ust_2y_disputed_12nov": [4.86, 4.88],
@@ -713,6 +717,12 @@ MACRO = {
     # CHINA'S OCTOBER TRADE (customs, 10 Nov, 03:00 UTC, inside this review's cut-off): exports
     # +35.2% on the year against 33.5% expected, imports +41.6% from 31.0%, the surplus down to
     # $105.3bn from $133.53bn (CNBC; SCMP; investingLive).
+    # v110: October activity, released 16 Nov - every measure under forecast (CNBC; Investing.com; Quartz;
+    # investingLive): retail sales +0.4% on the year (0.8% expected; 1.1% in September), industrial output +4.8%
+    # (5.3%; 5.5%), fixed-asset investment -8.1% for January-October (-7.0% expected; -7.2% to September).
+    "china_retail_oct": 0.4, "china_retail_oct_consensus": 0.8,
+    "china_ip_oct": 4.8, "china_ip_oct_consensus": 5.3,
+    "china_fai_oct_ytd": -8.1, "china_fai_oct_ytd_consensus": -7.0,
     "china_exports_oct": 35.2, "china_exports_oct_consensus": 33.5,
     "china_imports_oct": 41.6, "china_imports_sep": 31.0,
     "china_surplus_oct_bn": 105.3, "china_surplus_sep_bn": 133.53,
@@ -870,12 +880,18 @@ MACRO = {
     # 13 Nov NOT ROLLED (v104): the Daily Tribune has 63.72 and the Manila Times 63.68 ("the dollar
     # traded at"); no two agree, so 12 Nov's close is kept (usdphp_disputed_13nov). BSP's reference
     # rate was 63.559.
+    # 13 Nov SETTLED in v110 at 63.72: BusinessWorld (BAP data, 16 Nov) gives "its P63.72 finish on
+    # Friday", agreeing with the Tribune; the Manila Times' 63.68 is recorded. 63.70 + 0.02 = 63.72.
+    # 16 Nov (v110): 63.94, 22 centavos weaker, its weakest close in more than two weeks, on the strong
+    # dollar, US rate-hike bets and oil (BusinessWorld, BAP data, "Peso slides as strong dollar weighs";
+    # the Manila Times, "PSEi plunges to 6-year low; peso nears P64:$1"). 63.72 + 0.22 = 63.94.
     "usdphp_disputed_13nov": [63.68, 63.72],
-    "usdphp": 63.70,           # 12 Nov
-    "usdphp_date": "2026-11-12",
-    "usdphp_prev": 63.25,      # 11 Nov close
-    "usdphp_prev_date": "2026-11-11",
-    "usdphp_chg": 0.45,
+    "usdphp": 63.94,           # 16 Nov
+    "usdphp_date": "2026-11-16",
+    "usdphp_prev": 63.72,      # 13 Nov close
+    "usdphp_prev_date": "2026-11-13",
+    "usdphp_chg": 0.22,
+    "usdphp_12nov": 63.70,     # 12 Nov's close, for the PH note's own sentence
     "usdphp_11nov": 63.25,     # 11 Nov's close, for the PH note's own sentence
     "usdphp_10nov": 62.91,     # 10 Nov's, likewise
     "usdphp_6nov": 63.055,     # 6 Nov's close, likewise
@@ -966,9 +982,16 @@ MACRO = {
     # the peso weakened and foreigners sold a net P260.51 million (the Inquirer, "PSEi drops to 2026
     # low as peso weakens"; the Daily Tribune, "PSEi closes at year's lowest as index drops 1.18%";
     # the PSE's own post). 5660.55 - 67.06 = 5593.49. The Manila Times' 5660.55 is 12 Nov's close.
-    "psei": 5593.49, "psei_chg_pts": -67.06, "psei_chg_pct": -1.18,
-    "psei_date": "2026-11-13",
-    "psei_prev": 5660.55,
+    # 16 Nov (v110): -111.61 (-2.00%) to 5481.88, its lowest close since 18 May 2020 (5,479.35), on
+    # stagflation worries, bets on more US rate hikes and the peso's fall; only five index members rose
+    # (BusinessWorld, "Economic worries drag PSEi to over six-year low"; the Manila Times, "PSEi plunges
+    # to 6-year low; peso nears P64:$1"; the Tribune). 5593.49 - 111.61 = 5481.88.
+    "psei": 5481.88, "psei_chg_pts": -111.61, "psei_chg_pct": -2.00,
+    "psei_date": "2026-11-16",
+    "psei_prev": 5593.49,
+    "psei_13nov_chg_pct": -1.18,
+    "psei_low_since": "May 2020",
+    "psei_low_since_close": 5479.35,        # the 18 May 2020 close it was the lowest since (BusinessWorld)
     "psei_12nov_chg_pct": -0.57,
     "psei_disputed_11nov_pts": [-22.95, -22.81],
     "psei_11nov_chg_pct": -0.40,
@@ -977,8 +1000,8 @@ MACRO = {
     "psei_5nov_chg_pct": 1.46,
     "psei_4nov_chg_pct": 1.26,
     "psei_3nov_chg_pct": -0.99,
-    "psei_2026_low": 5593.49, "psei_2026_low_date": "2026-11-13",
-    "psei_2026_low_prev": 5610.39, "psei_2026_low_prev_date": "2026-10-08",
+    "psei_2026_low": 5481.88, "psei_2026_low_date": "2026-11-16",
+    "psei_2026_low_prev": 5593.49, "psei_2026_low_prev_date": "2026-11-13",
     # PH T-BILLS, 21 Sep auction (BusinessWorld / BusinessMirror). CORRECTED
     # 2026-09-24: 5.138 / 5.517 / 5.717 had been here since the build on 2 Sep,
     # never refreshed, and since 13 Sep the look-through stamped them with the
@@ -1021,11 +1044,18 @@ MACRO = {
     # report. The BTr's table is blocked, so the dispute stays on record, but the page no longer
     # quotes that auction.
     "ph_tbill_disputed_26oct_91": [6.264, 6.624],
-    "ph_tbill_91": 6.493, "ph_tbill_182": 6.719, "ph_tbill_364": 6.855,
-    "ph_tbill_prev": [6.438, 6.646, 6.756],       # 3 Nov auction
-    "ph_tbill_chg_bp": [5.5, 7.3, 9.9],           # as reported
-    "ph_tbill_weekly_rises": 12,                  # straight weekly rises in short-term rates (BusinessWorld)
-    "ph_tbill_date": "2026-11-09",
+    # 16 Nov auction (v110; BusinessWorld, "BTr partially awards T-bills as yields rise further";
+    # BusinessMirror, "T-bills yields swing high to levels not seen in years"; Context.ph; the BTr's
+    # table via search): 6.567 (+7.4bp), 6.748 (+2.9bp), 6.932 (+7.7bp), each chaining off 9 Nov. The
+    # 364-day was undersubscribed and partially awarded (P7.26bn of P10bn; Context.ph's P7.5bn is not
+    # carried). The 91- and 182-day are the highest since about 2006 (BusinessMirror). The streak is
+    # DERIVED: BusinessWorld's 12 straight weekly rises through 9 Nov, plus 16 Nov's rise in every tenor.
+    "ph_tbill_91": 6.567, "ph_tbill_182": 6.748, "ph_tbill_364": 6.932,
+    "ph_tbill_prev": [6.493, 6.719, 6.855],       # 9 Nov auction
+    "ph_tbill_chg_bp": [7.4, 2.9, 7.7],           # as reported
+    "ph_tbill_weekly_rises": 13,                  # straight weekly rises in short-term rates (12 to 9 Nov, BusinessWorld, + 16 Nov)
+    "ph_tbill_award": "the 364-day undersubscribed and only partly awarded",
+    "ph_tbill_date": "2026-11-16",
     "ph_tbill_cadence_d": 7,                      # BTr auctions T-bills weekly
     # THE PESO BOND FUNDS WERE REMOVED 2026-10-21 (owner: "remove from the lists and
     # portfolio allocations the atram long term and medium term peso bond"). Their
@@ -1380,6 +1410,12 @@ MACRO = {
         # via Rigzone). 95.82 + 0.02 = 95.84. Down $2.48 (2.52%) on the week. Quotes of $96.29-96.67
         # were taken in the session.
         ("2026-11-13", 95.84),
+        # v110: 16 Nov $92.44, -$3.40 (-3.6%), as recovering flows through Hormuz reinforced
+        # expectations of a supply surplus, though fresh tanker incidents underscored the risks
+        # (Reuters, via Rallies and Newsquawk's settlement wrap; CNBC, the same $92.44). 95.84 - 3.40 =
+        # 92.44. January - one contract (it expires 30 Nov). HDFC Sky's 94.86 and Trading Economics'
+        # 94.88 were session prices.
+        ("2026-11-16", 92.44),
     ],
     # ACROSS A ROLL the reported move is off the NEW contract's prior settle, which
     # is not in the front-month series. Carried here, dated by the session it is the
@@ -1417,7 +1453,7 @@ MACRO = {
                              "2026-10-28": 1.3, "2026-11-10": -1.17, "2026-11-12": 3.3},
     # A MOVE REPORTED IN CENTS (v84) is carried in cents, not turned into a percentage no
     # source printed: CNBC's 29 Oct "fell 44 cents". Each must land on the settle exactly.
-    "brent_reported_pts": {"2026-11-13": 0.02, "2026-10-29": -0.44, "2026-10-30": 2.76, "2026-11-02": -8.66,
+    "brent_reported_pts": {"2026-11-16": -3.40, "2026-11-13": 0.02, "2026-10-29": -0.44, "2026-10-30": 2.76, "2026-11-02": -8.66,
                            "2026-11-03": -1.17, "2026-11-04": -8.98, "2026-11-05": 3.67,
                            "2026-11-06": 0.03, "2026-11-09": -5.75, "2026-11-11": 1.27},
     "brent_disputed_4nov": [93.52, 94.62, 98.80],
@@ -1531,8 +1567,13 @@ MACRO = {
     # via Pipeline & Gas Journal, the same 43 cents) - one day off, and January then as now. The
     # 31 Oct 2025 base ($65.07) had been past its three-day bound since v93. With the 10 Nov 2026
     # settle carried it is the exact anniversary.
-    "brent_yr_ago": 64.06,
-    "brent_yr_ago_date": "2025-11-10",
+    # RE-ANCHORED 2026-11-17 (v110): the 16 Nov 2026 settle's anniversary was a Sunday, and the
+    # 10 Nov 2025 base would sit six days off. Friday 14 Nov 2025, two days off and January then as
+    # now: "Brent crude futures settled up $1.38, or 2.19%, at $64.39" after a Ukrainian strike paused
+    # Novorossiysk's exports (Reuters, via EnergyNow and Yahoo Finance; the Al Attiyah Foundation's
+    # weekly energy review of 15 Nov 2025). Monday 17 Nov 2025's $64.20 (-19 cents) is in one wire.
+    "brent_yr_ago": 64.39,
+    "brent_yr_ago_date": "2025-11-14",
     "brent_yr_ago_bound_d": 3,
     # HORMUZ. Two different things get measured here and they do not agree, so both
     # are carried. VESSEL COUNTS differ ~5x across sources because they count
@@ -1957,6 +1998,12 @@ MACRO = {
         # CNBC's quote page, prior close 18.70; Hollowpoint Trading, "VIX adds 0.60 point"). 18.70 +
         # 0.60 = 19.30. A 19.35 (a weekly) and a 19.39 (+0.69) are other prints (vix_disputed_13nov).
         ("2026-11-13", 19.30),
+        # v110: 16 Nov 22.91, +3.61 (+18.70%), its biggest rise since 5 Nov, as Nvidia led a broad
+        # sell-off a day before its results - back above the 19.5 long run (CappNotes' Closing Look;
+        # Yahoo Finance's Cboe quote, 22.91 +3.61, range 19.84-24.52; CNN, "surged 19%"). 19.30 + 3.61 =
+        # 22.91. The Weekend Spread's 23.72, JournalArta's 22.42 (+16.17%) and Macrotrends' 23.01 are
+        # other prints (vix_disputed_16nov); Bloomberg's 24.49 was intraday.
+        ("2026-11-16", 22.91),
     ],
     # EACH SESSION'S REPORTED MOVE, at the precision it was reported. The series
     # above was self-checking only in a comment ("each day's percentage move must
@@ -1982,6 +2029,7 @@ MACRO = {
         "2026-11-03": -1.51, "2026-11-04": -20.26, "2026-11-05": 69.66,
         "2026-11-06": -9.01, "2026-11-09": -22.31, "2026-11-10": -2.31,
         "2026-11-11": -10.12, "2026-11-12": 6.92, "2026-11-13": 3.21,
+        "2026-11-16": 18.70,
     },
     # 28 Sep WITHHELD: two reports, 16.07 ("+1.20, +8.07%") and 16.30 ("+1.43,
     # +9.62%), and BOTH reproduce from 14.87 - the chain cannot choose, and one
@@ -2016,6 +2064,7 @@ MACRO = {
                          "Cboe page snapshot": 24.77, "CappNotes and Yahoo Finance": 25.64, "Investing.com": 25.81},
     "vix_disputed_9nov": [19.92, 20.02],    # JournalArta against Cboe's page and three others
     "vix_disputed_11nov": [17.49, 17.54, 17.82],
+    "vix_disputed_16nov": [22.42, 22.91, 23.01, 23.72],
     "vix_disputed_13nov": [19.30, 19.35, 19.39],   # the Weekend Spread's 17.82 and a 17.54 against four
     "vix_disputed_20oct": [17.31, 17.60],
     "vix_disputed_22oct": [18.84, 19.03],   # Investing.com's table against three sources
@@ -2216,10 +2265,21 @@ MACRO = {
     # 30.73 = 7561.67; 25366.09 - 229.82 = 25136.27; 52297.09 + 50.46 = 52347.55. The week: S&P +2.5%,
     # its first weekly gain since early October. A Yahoo item printing the 12 Nov Dow beside 13 Nov is
     # a mis-dated copy and is not carried.
-    "equity_date": "2026-11-13",
-    "spx_close": 7561.67, "spx_chg_pct": -0.40, "spx_chg_pts": -30.73,
-    "nasdaq_close": 25136.27, "nasdaq_chg_pct": -0.91, "nasdaq_chg_pts": -229.82,
-    "dow_close": 52347.55, "dow_chg_pct": 0.10, "dow_chg_pts": 50.46,
+    # 16 Nov (v110; Reuters, via MarketScreener, "Wall Street ends sharply lower on AI jitters ahead of
+    # Nvidia results, Anthropic IPO"; CappNotes' Closing Look; AP, via BNN Bloomberg and WPTF): S&P
+    # -145.08 (-1.92%) to 7416.59, its third straight fall; Nasdaq -626.51 (-2.49%) to 24509.76; Dow
+    # -739.38 (-1.41%) to 51608.17, as Nvidia fell 4.1% to its lowest close since July 2025 a day before
+    # its results, decliners beat advancers 3.45 to 1 on the NYSE, and the VIX jumped. 7561.67 - 145.08
+    # = 7416.59; 25136.27 - 626.51 = 24509.76; 52347.55 - 739.38 = 51608.17. The Weekend Spread's
+    # 7,416.60 / 51,608.35 and Investrade's -144.55 / -737.24 are other snapshots; 24/7 Wall St.'s
+    # -1.98% is intraday.
+    "equity_date": "2026-11-16",
+    "spx_close": 7416.59, "spx_chg_pct": -1.92, "spx_chg_pts": -145.08,
+    "nasdaq_close": 24509.76, "nasdaq_chg_pct": -2.49, "nasdaq_chg_pts": -626.51,
+    "dow_close": 51608.17, "dow_chg_pct": -1.41, "dow_chg_pts": -739.38,
+    "spx_13nov_chg_pct": -0.40, "nasdaq_13nov_chg_pct": -0.91, "dow_13nov_chg_pct": 0.10,
+    "nvda_16nov_chg_pct": -4.1,
+    "nyse_decliners_ratio_16nov": 3.45,     # decliners to advancers on the NYSE, 16 Nov (Reuters)
     "spx_12nov_chg_pct": -0.35, "nasdaq_12nov_chg_pct": -0.39,
     "spx_11nov_chg_pct": 1.31, "nasdaq_11nov_chg_pct": 1.60,
     "nasdaq_disputed_11nov": [25375.96, 25466.19],
@@ -2244,7 +2304,7 @@ MACRO = {
     # asserted in a sentence. This is the discipline that caught the 10-year's
     # dating error today and the VIX's on 17 Sep: a print that will not reproduce
     # the next session's published move is not a print.
-    "spx_prev": 7592.40, "nasdaq_prev": 25366.09, "dow_prev": 52297.09,
+    "spx_prev": 7561.67, "nasdaq_prev": 25136.27, "dow_prev": 52347.55,
     # WTI rolled on 22 Sep: October's final settle was 94.59, and from the 23rd the
     # front month is NOVEMBER. Its +1.81% is a move off November's own 22 Sep settle,
     # which no source found reports - so that prior is IMPLIED from the move, not
@@ -2324,10 +2384,15 @@ MACRO = {
     # US$0.18" to 88.56, which puts Thursday at 88.74). 86.53 + 2.21 = 88.74. 13 Nov $88.56, -$0.18
     # (-0.20%) (EnergyNow; OilPriceAPI's daily close). 88.74 - 0.18 = 88.56. December - one contract
     # (last trade 20 Nov).
-    "wti_settle": 88.56, "wti_chg_pct": -0.20,
-    "wti_date": "2026-11-13", "wti_contract": "2026-12",
-    "wti_prev": 88.74,             # December's own 12 Nov settle - within one contract
-    "wti_prev_date": "2026-11-12",
+    # v110: 16 Nov $85.72, -$2.84 (-3.2%) (Reuters, via Rallies; Newsquawk's settlement wrap, "WTI
+    # (December) settled at USD 85.72/bbl, down 2.84"). 88.56 - 2.84 = 85.72. December - one contract
+    # (last trade 20 Nov). CNBC's $85.39 and Tokenpost's $86.04 were other prints and are not carried
+    # (wti_disputed_16nov).
+    "wti_settle": 85.72, "wti_chg_pct": -3.21,
+    "wti_date": "2026-11-16", "wti_contract": "2026-12",
+    "wti_prev": 88.56,             # December's own 13 Nov settle - within one contract
+    "wti_prev_date": "2026-11-13",
+    "wti_disputed_16nov": [85.39, 85.72],
     "wti_expired_contract": "2026-11",
     # The 2026 low MOVED and this model did not notice for nine days. 14.18 on
     # 17 Aug was widely reported as the year's low at the time, and was carried as
@@ -2444,6 +2509,9 @@ MACRO = {
     # rising 33.6% this year against the price's 7.4% (FactSet's report and its 9 Nov post; FX News
     # Group, "S&P 500 Forward P/E Falls to Three-Year Low"). Its season counts (88% reported, 84%
     # beating, growth 31.4%) are in FactSet's own pages only, so the 30 Oct counts are kept.
+    # v110: FactSet's 13 Nov Earnings Insight (18.3x; Q3 blended growth 31.9%, 91% reported) was read through
+    # search from FactSet's own PDF only; no second source by the cut-off.
+    "spx_fwd_pe_13nov_one_source": 18.3,
     "spx_fwd_pe": 17.7, "spx_fwd_pe_date": "2026-11-05", "spx_fwd_pe_prev": 18.7,
     "spx_fwd_pe_5y": 19.8, "spx_fwd_pe_10y": 19.1, "spx_fwd_pe_q3end": 19.0, "spx_fwd_pe_ytd_start": 22.0,
     # ROLLED in v94 to FactSet's 30 Oct update, now in a second source (GainingGreen, citing it):
@@ -2627,10 +2695,20 @@ MACRO = {
     # (+0.53%), as chip stocks recovered (CNBC; Trading Economics' table; Vantage Markets). 60819.36 +
     # 322.99 = 61142.35 - the 13 Nov move chains only from 60,819.36, not from the 60,816.00 or
     # 60,758.34 also reported for 12 Nov (nikkei_disputed_12nov, open until Nikkei's own figure).
+    # v110: 16 Nov 59,662.02, -1,480.33 (-2.42%), under 60,000, as Advantest (-11.1%) and Tokyo
+    # Electron (-7.1%) took 1,072 points of the fall on doubts over AI data-centre spending after
+    # Nvidia's chief executive resigned (Xinhua, "Tokyo stocks end lower, Nikkei falls below 60,000";
+    # Jiji, via AD HOC News; IBTimes). 61142.35 - 1480.33 = 59662.02. The Topix fell 1.02% to 3,901.37.
+    # A 59,676 (-1,467) does not chain (nikkei_disputed_16nov).
+    "nikkei_disputed_16nov": [59662.02, 59676.0],
+    "nikkei_13nov_chg_pct": 0.53,
+    "nikkei_chip_drag_16nov_pts": 1072,     # Advantest's and Tokyo Electron's share of the 16 Nov fall (Xinhua; Jiji)
+    "nikkei_round_level": 60000,            # the round level it closed under on 16 Nov
     "nikkei_12nov_chg_pct": -0.70,
-    "nikkei_latest": 61142.35, "nikkei_latest_chg_pct": 0.53, "nikkei_latest_chg_pts": 322.99,
-    "nikkei_latest_date": "2026-11-13",
-    "nikkei_latest_prev": 60819.36,
+    "nikkei_12nov": 60819.36,       # 12 Nov's close, for the Asia note's own sentence
+    "nikkei_latest": 59662.02, "nikkei_latest_chg_pct": -2.42, "nikkei_latest_chg_pts": -1480.33,
+    "nikkei_latest_date": "2026-11-16",
+    "nikkei_latest_prev": 61142.35,
     "nikkei_11nov_chg_pct": 1.31,
     "nikkei_10nov_chg_pct": 2.87,
     "nikkei_9nov_chg_pct": 2.33, "nikkei_6nov_chg_pct": -5.96,
@@ -2735,9 +2813,16 @@ MACRO = {
     # (Seoul Economic Daily, "KOSPI Surrenders 5,300 Line After Early Gains Fade"; Bloomingbit, "Kospi
     # Closes Below 5,300"; Yahoo's prior close 5,342.73). 5342.73 - 52.20 = 5290.53. It opened 2.05%
     # higher at 5,452.41.
+    # v110: 16 Nov 5100.50, -190.03 (-3.59%), a third straight fall, barely holding 5,100 as
+    # foreigners sold 1.37tn won of tech shares on the Nvidia turmoil and ahead of its results and
+    # Anthropic's listing; the Kosdaq fell 4.86% to 665.65 (NoCutNews; Korea JoongAng Daily; Yonhap, via
+    # AD HOC News). 5290.53 - 190.03 = 5100.50. AD HOC's 13:02 print of 5,235.61 was midday.
+    "kospi_13nov_chg_pct": -0.98,
+    "kospi_foreign_sell_16nov_tn": 1.37,    # foreigners' net sale, trillion won, 16 Nov (NoCutNews; Korea JoongAng Daily)
+    "kospi_floor_16nov": 5100,              # the round level it "barely held", 16 Nov
     "kospi_12nov_chg_pct": -0.61,
-    "kospi_latest": 5290.53, "kospi_latest_chg_pts": -52.20, "kospi_latest_chg_pct": -0.98,
-    "kospi_latest_date": "2026-11-13", "kospi_latest_prev": 5342.73,
+    "kospi_latest": 5100.50, "kospi_latest_chg_pts": -190.03, "kospi_latest_chg_pct": -3.59,
+    "kospi_latest_date": "2026-11-16", "kospi_latest_prev": 5290.53,
     "kospi_11nov_chg_pct": 2.60, "kospi_10nov_chg_pct": 4.39,
     "kospi_9nov_chg_pct": -0.81,
     "kospi_6nov_chg_pct": -6.02, "kospi_5nov_chg_pct": -5.28, "kospi_4nov_chg_pct": 0.62,
@@ -3490,9 +3575,12 @@ TREND_INPUTS = {
         # the alternative (TREND_ALT). The figures used agree across three trackers.
         "trail_ann": {"3Y": 31.4, "5Y": 18.8},
         "trail_source": "Yahoo Finance trailing returns (3-year 31.38% to 6 Oct 2026, 5-year "
-                        "18.79% to 1 Sep); PortfoliosLab (31.25%, 18.78%) and MyPlanIQ (5-year "
+                        "18.79% to 1 Sep 2026); PortfoliosLab (31.25%, 18.78%) and MyPlanIQ (5-year "
                         "18.85% to 24 Aug) agree",
         "trail_date": {"3Y": "2026-10-06", "5Y": "2026-09-01"},
+        # v110: the 5-year figure is 76 days old on 16 Nov; Yahoo's 9 Sep table (3-year 33.91%) shows
+        # no 5-year figure, and no other dated one was found. Held and flagged, as health care's.
+        "trail_stale": "the 5-year held past the 75-day limit: no newer figure in two sources",
     },
     # ---- added 2026-10-22 with the 22-fund universe ----
     "ATRGHCP": {
@@ -3515,6 +3603,12 @@ TREND_INPUTS = {
         "trail_source": "AAII, IXJ annualised NAV returns to 31 Aug 2026; Yahoo Finance "
                         "(8.58%, 4.80% to 21 Sep) agrees",
         "trail_date": {"3Y": "2026-08-31", "5Y": "2026-08-31"},
+        # v110: HELD PAST THE 75-DAY LIMIT, AND SAID SO. On 16 Nov the 31 Aug figures are 77 days old;
+        # no 30 Sep or 31 Oct 3- and 5-year figures were found in two sources (PortfoliosLab's undated
+        # 10.08% / 6.33% and ETFdb's undated 14.41% / 7.08% disagree with each other and with AAII). The
+        # check passes only while this flag is set, the page prints the 31 Aug date beside them, and
+        # they are under 105 days old; refresh from iShares' quarter-end table when two sources agree.
+        "trail_stale": "held past the 75-day limit: no newer figures in two sources",
     },
     "M_GEO": {
         "market": "Global equity, MSCI ACWI",
@@ -3597,6 +3691,7 @@ def trend_build(fid, override=None):
             "mu": mu, "beta": t["beta"], "sigma": sigma,
             "quarters": q, "monthly": t.get("monthly", {}), "cross_check": t["cross_check"],
             "trail_source": t["trail_source"], "trail_date": t["trail_date"],
+            "trail_stale": t.get("trail_stale"),
             "ret": ret, "z": z, "z_rev": z_rev, "score": score, "blend": blend,
             "tilt": rnd((blend - TREND_ANCHOR) * TREND_TILT_PER_PT)}
 
@@ -3642,6 +3737,34 @@ _wti_month = f"{_dt.date.fromisoformat(MACRO['wti_contract'] + '-01'):%B}"
 _b2 = dict(MACRO["brent_history"])["2026-11-02"]
 MACRO["brent_2nov_chg_pct"] = round((_b2 / MACRO["brent_roll_priors"]["2026-11-02"] - 1) * 100, 2)
 
+# v110: each latest session's sources and reason, by date (see the US note).
+US_LATEST_REASON = {
+    "2026-11-16": (f" (Reuters, via MarketScreener; CappNotes; AP), a third straight fall, as Nvidia fell "
+                   f"{abs(MACRO['nvda_16nov_chg_pct'])}% to its lowest close since July 2025 a day before its results and "
+                   f"the AI names led a broad sell-off, decliners outnumbering advancers {MACRO['nyse_decliners_ratio_16nov']} to 1 on the NYSE, ahead of "
+                   "Anthropic's listing"),
+}
+ASIA_LATEST_REASON = {
+    ("2026-11-16", "2026-11-16"): (
+        f"Seoul and Tokyo fell together on the AI sell-off on 16 Nov: the KOSPI "
+        f"{'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% to "
+        f"{MACRO['kospi_latest']:,.2f}, a third straight fall, barely holding {MACRO['kospi_floor_16nov']:,}, as foreigners "
+        f"sold {MACRO['kospi_foreign_sell_16nov_tn']}tn won of tech "
+        "shares on the Nvidia turmoil and ahead of its results and Anthropic's listing (NoCutNews; Korea JoongAng Daily), "
+        f"and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% "
+        f"to {MACRO['nikkei_latest']:,.2f}, under {MACRO['nikkei_round_level']:,}, Advantest and Tokyo Electron taking "
+        f"{MACRO['nikkei_chip_drag_16nov_pts']:,} points of the fall "
+        "(Xinhua; Jiji, via AD HOC News)."),
+}
+PH_PESO_REASON = {
+    "2026-11-16": (", its weakest close in more than two weeks, on the strong dollar, bets on more US rate hikes and oil "
+                   "(BusinessWorld, on BAP data; the Manila Times)"),
+}
+PSEI_REASON = {
+    "2026-11-16": (f", its lowest close since {MACRO['psei_low_since']} ({MACRO['psei_low_since_close']:,.2f} on 18 May 2020), on stagflation worries, "
+                   "bets on more US rate hikes and the peso's fall, only five index members rising (BusinessWorld; the "
+                   "Manila Times; the Tribune)"),
+}
 REGIONS = {
     "US": {
         "3Y": 5.5, "5Y": 6.25, HZ_LABEL: 6.5,
@@ -3650,16 +3773,17 @@ REGIONS = {
                 f"{MACRO['nasdaq_close']:.2f}, the S&P "
                 f"{'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% to {MACRO['spx_close']:.2f} "
                 f"and the Dow {'rose' if MACRO['dow_chg_pct'] > 0 else 'fell'} {abs(MACRO['dow_chg_pct']):.2f}% to "
-                f"{MACRO['dow_close']:.2f} (CappNotes; AP; TheStreet)"
-                # the reasons are 13 and 12 Nov's own, so they print only while 13 Nov is the latest session (v104)
-                + (", as the Nvidia turmoil weighed on tech and October's producer prices rose "
-                   f"{MACRO['us_ppi_oct_yoy']}% on the year; on 12 Nov the Nasdaq had fallen "
-                   f"{abs(MACRO['nasdaq_12nov_chg_pct']):.2f}% and the S&P {abs(MACRO['spx_12nov_chg_pct']):.2f}% after Nvidia "
-                   "said Jensen Huang had resigned, the S&P erasing a sharp opening drop (CappNotes; AP; StockTitan), and on "
-                   f"11 Nov risen {MACRO['nasdaq_11nov_chg_pct']:.2f}% and {MACRO['spx_11nov_chg_pct']:.2f}% as CoreWeave's results "
-                   "lifted the AI names (CappNotes; Yahoo Finance); the S&P still gained 2.5% on the week, its first weekly "
-                   "gain since early October"
-                   if MACRO["equity_date"] == "2026-11-13" else "")
+                f"{MACRO['dow_close']:.2f}"
+                # v110: the latest session's sources and reason, KEYED BY ITS DATE - a roll that does not write
+                # the new session's own stops the build here, instead of printing the last session's reason.
+                + US_LATEST_REASON[MACRO["equity_date"]]
+                + f"; on 13 Nov the Nasdaq had fallen {abs(MACRO['nasdaq_13nov_chg_pct']):.2f}% and the S&P "
+                f"{abs(MACRO['spx_13nov_chg_pct']):.2f}% as the Nvidia turmoil weighed on tech and October's producer prices rose "
+                f"{MACRO['us_ppi_oct_yoy']}% on the year (CappNotes; AP; TheStreet), the S&P still up 2.5% on the week, its "
+                f"first weekly gain since early October; on 12 Nov the Nasdaq had fallen {abs(MACRO['nasdaq_12nov_chg_pct']):.2f}% "
+                f"and the S&P {abs(MACRO['spx_12nov_chg_pct']):.2f}% after Nvidia said Jensen Huang had resigned (CappNotes; AP; "
+                f"StockTitan), and on 11 Nov risen {MACRO['nasdaq_11nov_chg_pct']:.2f}% and {MACRO['spx_11nov_chg_pct']:.2f}% as "
+                "CoreWeave's results lifted the AI names (CappNotes; Yahoo Finance)"
                 + f". On 10 Nov the Nasdaq had fallen {abs(MACRO['nasdaq_10nov_chg_pct']):.2f}% and the S&P "
                 f"{abs(MACRO['spx_10nov_chg_pct']):.2f}% as October's core CPI beat forecasts and yields jumped (AP; "
                 f"Kiplinger). On 9 Nov the Nasdaq had risen {MACRO['nasdaq_9nov_chg_pct']:.2f}% and the S&P "
@@ -3730,23 +3854,22 @@ REGIONS = {
         # It cited J.P. Morgan's EM equity assumption, which IS the Asia fund's base,
         # so the same number was counted in the base and again in the tilt.
         "3Y": 6.5, "5Y": 7.0, HZ_LABEL: 7.0,
-        "why": ("Held; the ten-year anchor at 7.0 since 21 Oct. Seoul and Tokyo split on the Nvidia news. On "
-                f"{_dday('kospi_latest_date')} the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} "
-                f"{abs(MACRO['kospi_latest_chg_pct']):.2f}% to {MACRO['kospi_latest']:,.2f} as early gains faded "
-                "and foreigners sold (Seoul Economic Daily; Bloomingbit), after "
-                f"{abs(MACRO['kospi_12nov_chg_pct']):.2f}% on 12 Nov as Nvidia fell in New York's after-hours (Seoul Economic "
-                "Daily; Yonhap), having risen "
+        "why": ("Held; the ten-year anchor at 7.0 since 21 Oct. "
+                # v110: the latest session's moves, sources and reasons, keyed by its date (see US_LATEST_REASON)
+                + ASIA_LATEST_REASON[(MACRO["kospi_latest_date"], MACRO["nikkei_latest_date"])]
+                + f" On 13 Nov the KOSPI had fallen {abs(MACRO['kospi_13nov_chg_pct']):.2f}% to "
+                f"{MACRO['kospi_latest_prev']:,.2f} as early gains faded and foreigners sold (Seoul Economic Daily; Bloomingbit), "
+                f"while the Nikkei rose {MACRO['nikkei_13nov_chg_pct']:.2f}% to {MACRO['nikkei_latest_prev']:,.2f} as chip stocks "
+                "recovered (CNBC; Trading Economics). On 12 Nov the KOSPI fell "
+                f"{abs(MACRO['kospi_12nov_chg_pct']):.2f}% as Nvidia fell in New York's after-hours (Seoul Economic Daily; Yonhap) "
+                f"and the Nikkei {abs(MACRO['nikkei_12nov_chg_pct']):.2f}% to {MACRO['nikkei_12nov']:,.2f}, ending three straight "
+                "gains (Yahoo Finance; News On Japan) - a close also reported as "
+                f"{sorted(MACRO['nikkei_disputed_12nov'])[1]:,.2f} and {min(MACRO['nikkei_disputed_12nov']):,.2f}, but only "
+                f"{MACRO['nikkei_12nov']:,.2f} chains to 13 Nov's reported move - after the KOSPI rose "
                 f"{MACRO['kospi_11nov_chg_pct']:.2f}% on 11 Nov (AD HOC News; BigGo; Yonhap) and "
                 f"{MACRO['kospi_10nov_chg_pct']:.2f}% on 10 Nov, when a buy-side sidecar halted program trading after the "
                 "open, Samsung Electronics and SK hynix leading (the Korea Times; Korea JoongAng Daily; Seoul Economic "
-                "Daily). The Nikkei "
-                f"{'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% to "
-                f"{MACRO['nikkei_latest']:,.2f} on {_dday('nikkei_latest_date')} as chip stocks recovered (CNBC; Trading Economics), "
-                f"after falling {abs(MACRO['nikkei_12nov_chg_pct']):.2f}% to {MACRO['nikkei_latest_prev']:,.2f} on 12 Nov on the "
-                "Nvidia news, ending three straight gains (Yahoo Finance; News On Japan) - a close also reported as "
-                f"{sorted(MACRO['nikkei_disputed_12nov'])[1]:,.2f} and {min(MACRO['nikkei_disputed_12nov']):,.2f}, but only "
-                f"{MACRO['nikkei_latest_prev']:,.2f} chains to 13 Nov's reported move - and rises of "
-                f"{MACRO['nikkei_11nov_chg_pct']:.2f}% on 11 Nov and {MACRO['nikkei_10nov_chg_pct']:.2f}% on 10 Nov (AD HOC News; "
+                f"Daily), and the Nikkei {MACRO['nikkei_11nov_chg_pct']:.2f}% and {MACRO['nikkei_10nov_chg_pct']:.2f}% (AD HOC News; "
                 f"AP). Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter (Xinhua; AP). "
                 "The 10 Nov rise ended three straight "
                 f"falls in Seoul: {abs(MACRO['kospi_9nov_chg_pct']):.2f}% on 9 Nov, as an early rise faded and foreigners sold "
@@ -3781,7 +3904,11 @@ REGIONS = {
                 f"{MACRO['china_exports_oct']}% on the year and imports {MACRO['china_imports_oct']}%, the surplus narrowing to "
                 f"${MACRO['china_surplus_oct_bn']}bn from ${MACRO['china_surplus_sep_bn']}bn (CNBC; SCMP), while factory-gate prices "
                 f"rose {MACRO['china_ppi_oct']}%, the fastest since June 2022, and consumer prices {MACRO['china_cpi_oct']}% "
-                "(Xinhua; SCMP). The BoJ's Summary of "
+                "(Xinhua; SCMP). Its October activity, out on 16 Nov, missed on every measure: retail sales rose "
+                f"{MACRO['china_retail_oct']}% on the year against {MACRO['china_retail_oct_consensus']}% expected, industrial "
+                f"output {MACRO['china_ip_oct']}% against {MACRO['china_ip_oct_consensus']}%, and fixed-asset investment fell "
+                f"{abs(MACRO['china_fai_oct_ytd'])}% in January-October against a {abs(MACRO['china_fai_oct_ytd_consensus'])}% fall "
+                "expected (CNBC; Investing.com; Quartz). The BoJ's Summary of "
                 "Opinions for October, out on 10 Nov, has its board debating how fast to hike, with December the meeting "
                 f"flagged (the Japan Times; Reuters, via Investing.com), and Japan's wholesale prices rose {MACRO['jp_cgpi_oct']}% "
                 "on the year in October, above forecast (the BoJ; investingLive). Korea's October inflation slowed to "
@@ -3810,7 +3937,7 @@ REGIONS = {
                 "and the first half-point since February 2023 - and the bill market has kept repricing: at the "
                 f"{_dday('ph_tbill_date')} auction 91-day bills rose {MACRO['ph_tbill_chg_bp'][0]}bp to {MACRO['ph_tbill_91']}%, "
                 f"182-day bills {MACRO['ph_tbill_chg_bp'][1]}bp to {MACRO['ph_tbill_182']}% and "
-                f"364-day bills {MACRO['ph_tbill_chg_bp'][2]}bp to {MACRO['ph_tbill_364']}%, fully awarded, short-term rates "
+                f"364-day bills {MACRO['ph_tbill_chg_bp'][2]}bp to {MACRO['ph_tbill_364']}%, {MACRO['ph_tbill_award']}, short-term rates "
                 f"rising for a {MACRO['ph_tbill_weekly_rises']}th straight week (BusinessWorld; BusinessMirror). The 26 Oct "
                 f"91-day rate this page carried until now, {max(MACRO['ph_tbill_disputed_26oct_91'])}%, was reported two ways, "
                 f"and both papers' 3 Nov reports chain from the other, {min(MACRO['ph_tbill_disputed_26oct_91'])}%; it is no "
@@ -3826,23 +3953,25 @@ REGIONS = {
                 f"{MACRO['usdphp_6nov']} on 6 Nov and fell to {MACRO['usdphp_9nov']} on 9 Nov on the dollar's strength and "
                 f"the GDP miss (BusinessWorld; Malaya; PNA), then recovered to {MACRO['usdphp_10nov']} on 10 Nov as oil fell "
                 f"(BusinessWorld, on BAP data; a second report via Headtopics), weakened to {MACRO['usdphp_11nov']} on 11 Nov "
-                "after the hot US CPI raised the odds of more Fed hikes (the Manila Times; the Tribune), and closed at "
+                "after the hot US CPI raised the odds of more Fed hikes (the Manila Times; the Tribune), to "
+                f"{MACRO['usdphp_12nov']:.2f} on 12 Nov on dollar demand, oil and the Fed's path (the Tribune; the Inquirer) and "
+                f"{MACRO['usdphp_prev']:.2f} on 13 Nov (the Tribune; BusinessWorld - the Manila Times' "
+                f"{min(MACRO['usdphp_disputed_13nov']):.2f} is not carried), and closed at "
                 f"{MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos "
                 f"{'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}"
-                # the reason is 12 Nov's own, printed only while 12 Nov is the latest close (v102)
-                + (", on dollar demand, oil and the Fed's path (the Tribune; the Inquirer)" if MACRO["usdphp_date"] == "2026-11-12" else "")
-                + (f"; its 13 Nov close is reported as {min(MACRO['usdphp_disputed_13nov']):.2f} and "
-                   f"{max(MACRO['usdphp_disputed_13nov']):.2f} and not carried" if MACRO["usdphp_date"] == "2026-11-12" else "")
+                # v110: the latest close's own reason and sources, keyed by its date
+                + PH_PESO_REASON[MACRO["usdphp_date"]]
                 + ", still "
                 f"{_a_an(MACRO['usdphp_ytd_pct'])} {MACRO['usdphp_ytd_pct']}% loss of "
                 f"purchasing power against the dollar this year. Governor Remolona left the {_dday('bsp_next_meeting')} meeting open, and says "
                 "BSP will not defend a level and intervenes only to cushion excessive moves. The PSEi "
                 f"{'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% to {MACRO['psei']:.2f} on "
                 f"{_dday('psei_date')}"
-                + (f", its lowest close of 2026, under the {MACRO['psei_2026_low_prev']:,.2f} of "
-                   f"{_dday('psei_2026_low_prev_date')}, as the peso weakened and foreigners sold (the Inquirer; the Tribune), "
-                   f"after falling {abs(MACRO['psei_12nov_chg_pct']):.2f}% on 12 Nov, every sector lower, on BMI's cut to its "
-                   "growth forecast and the Nvidia turmoil (the Inquirer; the Tribune)" if MACRO["psei_date"] == "2026-11-13" else "")
+                + PSEI_REASON[MACRO["psei_date"]]
+                + f", after falling {abs(MACRO['psei_13nov_chg_pct']):.2f}% on 13 Nov to {MACRO['psei_prev']:,.2f}, then its 2026 "
+                "low, as the peso weakened and foreigners sold (the Inquirer; the Tribune), "
+                f"{abs(MACRO['psei_12nov_chg_pct']):.2f}% on 12 Nov, every sector lower, on BMI's cut to its growth forecast and "
+                "the Nvidia turmoil (the Inquirer; the Tribune)"
                 + f", {abs(MACRO['psei_11nov_chg_pct']):.2f}% on 11 Nov on the hot US CPI, the peso's fall and "
                 "lower foreign direct investment (the Tribune; the Chronicle), "
                 f"rising {MACRO['psei_10nov_chg_pct']:.2f}% on 10 Nov on late buying as crude fell "
@@ -3900,8 +4029,8 @@ REGION_Y1 = {
         f"Asia ex-Japan earnings are forecast to grow about {MACRO['asia_eps_2027']}% in 2027 on "
         f"{MACRO['asia_fwd_pe']}x forward, but year 1 carries the importers' oil bill (Brent "
         f"${MACRO['eia_brent_2027']:.2f} on the EIA's 2027 average), a Bank of Japan with a December hike in view after "
-        f"Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and the "
-        "selling since October",
+        f"Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, China's October "
+        "activity missing every forecast, and the selling since October",
         "as earnings re-rate the multiple"),
     "PHILIPPINES": (4.75,
         f"The cash sleeve earns the bill rate, {MACRO['ph_tbill_91']:.2f}-{MACRO['ph_tbill_364']:.2f}% at the "
@@ -4003,7 +4132,10 @@ DRIVERS = [
      f"CappNotes) and {_u10['2026-11-13']:.2f}% on 13 Nov, after October's producer prices (the Treasury's par table; "
      f"Stockinsky) - with the 2-year at {MACRO['ust_2y']:.2f}% ({_dday('ust_2y_date')}), from {MACRO['ust_2y_prev']:.2f}% a "
      "session earlier (the Treasury's par table; Stockinsky; StockMarketWatch), and the 30-year at "
-     f"{MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}; the Treasury's par table; Forbes). "
+     f"{MACRO['ust_30y']:.2f}% ({_dday('ust_30y_date')}; the Treasury's par table; Forbes). New York's 16 Nov market "
+     f"quotes had the 10-year at {min(MACRO['ust_10y_withheld_16nov']):.3f}-{max(MACRO['ust_10y_withheld_16nov']):.2f}% "
+     "(CappNotes; the Weekend Spread; Trading Economics; Investing.com), lower as stocks fell, but no par-curve figure "
+     "was out by the cut-off, so 13 Nov's closes are carried. "
      f"The 10-year's {_dday('ust_10y_peak_date')} intraday high of "
      f"{MACRO['ust_10y_peak']}%, above the {_dday('ust_10y_peak_prev_date')} peak of {MACRO['ust_10y_peak_prev']}%, was the highest since "
      f"{MACRO['ust_10y_peak_since']}. "
@@ -4072,7 +4204,10 @@ DRIVERS = [
      f"{MACRO['china_pmi_oct']} in October, services and construction to {MACRO['china_nmpmi_oct']} from {MACRO['china_nmpmi_sep']}, "
      f"and the private services PMI to {MACRO['china_svc_pmi_oct']}; in October its exports rose "
      f"{MACRO['china_exports_oct']}% on the year against {MACRO['china_exports_oct_consensus']}% expected and its imports "
-     f"{MACRO['china_imports_oct']}%, from {MACRO['china_imports_sep']}% (CNBC; SCMP). The euro area's composite PMI was confirmed at "
+     f"{MACRO['china_imports_oct']}%, from {MACRO['china_imports_sep']}% (CNBC; SCMP); but its October activity, out on "
+     f"16 Nov, missed on every measure - retail sales {MACRO['china_retail_oct']}%, industrial output "
+     f"{MACRO['china_ip_oct']}%, investment {MACRO['china_fai_oct_ytd']}% for the year to October (CNBC; Investing.com; "
+     "Quartz) - held here, one month's miss against a US economy still beating forecasts. The euro area's composite PMI was confirmed at "
      f"{MACRO['ea_pmi_comp_oct']} for October, a four-month low, from {MACRO['ea_pmi_comp_sep']}, its services PMI revised down "
      f"to {MACRO['ea_pmi_svc_oct']} from a {MACRO['ea_pmi_svc_oct_flash']} flash, and its September retail volumes fell "
      f"{abs(MACRO['ea_retail_sep_mom'])}% on the month against a {abs(MACRO['ea_retail_sep_consensus'])}% fall expected "
@@ -4138,7 +4273,9 @@ DRIVERS = [
      f"{MACRO['spx_fwd_pe_prev']}x on {_dday('factset_date')} and the lowest since November 2023, below its five-year "
      f"({MACRO['spx_fwd_pe_5y']}x) and ten-year ({MACRO['spx_fwd_pe_10y']}x) averages and the "
      f"{MACRO['spx_fwd_pe_q3end']:.1f}x of 30 Sep; it began the year at {MACRO['spx_fwd_pe_ytd_start']}x, and forward "
-     f"earnings have risen far faster than the price since (FactSet; FX News Group). The S&P closed at {MACRO['spx_close']:.2f} on {_dday('equity_date')}, "
+     f"earnings have risen far faster than the price since (FactSet; FX News Group). FactSet's 13 Nov edition reads "
+     f"{MACRO['spx_fwd_pe_13nov_one_source']}x after that week's rise, but only in its own report here, so it is not "
+     f"carried. The S&P closed at {MACRO['spx_close']:.2f} on {_dday('equity_date')}, "
      f"{MACRO['spx_off_record_pct']}% below its {MACRO['spx_record_close']:.2f} record of {_dday('spx_record_date')}. Asia was on {MACRO['asia_fwd_pe']}x forward before its October "
      f"fall and is cheaper on the same earnings: the KOSPI closed at {MACRO['kospi_latest']:,.2f} on "
      f"{_dday('kospi_latest_date')}, {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close. NDX at {MACRO['ndx_fwd_pe']}x forward on its "
@@ -4164,25 +4301,22 @@ DRIVERS = [
     # the v98 note set are met - the VIX closed at 17.49 on 11 Nov, under the long run after the
     # settled 19.46 of 10 Nov, and Seoul rose two sessions running - and the newest futures board
     # found is in contango.
-    ("Volatility & risk appetite", 0.1, 2.5,
-     f"HELD at {DRIVER_PREV_VOL}, where the 12 Nov morning review raised it from 2.0, the rest of the 6 Nov review's cut "
-     f"restored. The VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} "
-     f"{abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')} (CappNotes; CNBC; "
-     f"Hollowpoint Trading), {abs(MACRO['vix_lr_gap']):.2f} points "
-     f"{'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, a second rise after "
-     f"{MACRO['vix_reported_moves']['2026-11-12']}% to {_vh_close('2026-11-12'):.2f} on 12 Nov as Nvidia's chief executive "
-     f"resigned (CappNotes; FRED); a {sorted(MACRO['vix_disputed_13nov'])[1]:.2f} and a {max(MACRO['vix_disputed_13nov']):.2f} "
-     f"are other prints. It had closed at {_vh_close('2026-11-11'):.2f} on 11 Nov, under the long run for the first time "
-     f"since 4 Nov. The 10 Nov close, withheld in the 10 Nov review on {_nword(len(MACRO['vix_disputed_10nov']))} reports, is "
-     f"settled at {_vh_close('2026-11-10'):.2f}: Cboe's own page, at 9:15 pm ET, has it, as CNN, CappNotes and Saxo did, "
-     f"and AD HOC News' {MACRO['vix_10nov_reports']['AD HOC News']:.2f} and Cboe's 5:15 pm snapshot of "
-     f"{MACRO['vix_10nov_reports']['Cboe page snapshot']:.2f} were session readings. That was already under the long run, "
-     f"by {MACRO['vix_longrun'] - _vh_close('2026-11-10'):.2f}. The VIX had closed at {_vh_close('2026-11-09'):.2f} on "
-     f"9 Nov, {_vh_close('2026-11-06'):.2f} on 6 Nov and {_vh_close('2026-11-05'):.2f} on 5 Nov, up "
-     f"{MACRO['vix_reported_moves']['2026-11-05']}% as the AI sell-off took the Nasdaq into correction - the highest "
-     f"close in this series, which starts on {_dday('vix_series_start')}; it has given back "
-     f"{MACRO['vix_spike_retraced_pct']}% of that jump. JournalArta's {max(MACRO['vix_disputed_9nov']):.2f} for 9 Nov is "
-     "in one outlet and not carried. The futures curve carried is "
+    ("Volatility & risk appetite", 0.1, 2.0,
+     f"CUT to 2.0 from {DRIVER_PREV_VOL}, as the 12 Nov morning review set when it raised it: a VIX close back above its "
+     f"long run undoes the raise. The VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} "
+     f"{abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, its biggest rise since "
+     f"5 Nov (CappNotes; Yahoo Finance's Cboe quote; CNN, \"surged 19%\"), {abs(MACRO['vix_lr_gap']):.2f} points "
+     f"{'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as Nvidia fell "
+     f"{abs(MACRO['nvda_16nov_chg_pct'])}% a day before its results and led a third straight fall in New York; "
+     f"{_nword(len(MACRO['vix_disputed_16nov']) - 1)} other prints "
+     f"({', '.join(f'{v:.2f}' for v in MACRO['vix_disputed_16nov'] if v != MACRO['vix_latest'])}) are not carried. "
+     f"Asia sold off with it: Seoul fell {abs(MACRO['kospi_latest_chg_pct']):.2f}%, Tokyo "
+     f"{abs(MACRO['nikkei_latest_chg_pct']):.2f}% and Manila {abs(MACRO['psei_chg_pct']):.2f}% on {_dday('kospi_latest_date')}. "
+     f"It had closed at {_vh_close('2026-11-13'):.2f} on 13 Nov and {_vh_close('2026-11-11'):.2f} on 11 Nov, under the "
+     f"long run, and at {_vh_close('2026-11-05'):.2f} on 5 Nov, up {MACRO['vix_reported_moves']['2026-11-05']}% as the AI "
+     f"sell-off took the Nasdaq into correction - the highest close in this series, which starts on "
+     f"{_dday('vix_series_start')}; it has given back {MACRO['vix_spike_retraced_pct']}% of that jump, so it is not cut "
+     "further. The futures curve carried is "
      + ("OVERTAKEN" if _STRIP_OVER else "old but no longer overtaken")
      + f": the latest close is {abs(_STRIP_MOVE):.1f}% {'above' if _STRIP_MOVE > 0 else 'below'} the "
      f"{_dval(VIX_QUOTE_DATE)} spot, " + ("past" if _STRIP_OVER else "inside") + f" the {STRIP_OVERTAKEN_PCT:.0f}% flag, "
@@ -4196,21 +4330,22 @@ DRIVERS = [
      f"long run beyond. Tested against that day's VIX3M of {MACRO['vix3m']} it gives "
      f"{VIX3M_MODEL:.2f} at three months, {abs(VIX3M_RESID):.2f}% {'below' if VIX3M_RESID < 0 else 'above'}, inside "
      f"the {VIX3M_BOUND_PCT:.0f}% bound; on forward vol it sits at "
-     f"{VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} {'below' if VOL_RAMP < 0 else 'above'} the long run. Held: the raise's undo was "
-     "set at a VIX close back above its long run, and none has come - "
-     f"{MACRO['vix_latest']:.2f} is under it, if only by {abs(MACRO['vix_lr_gap']):.2f} - though it rose two sessions "
-     f"running and Seoul fell {abs(MACRO['kospi_12nov_chg_pct']):.2f}% on 12 Nov and "
-     f"{abs(MACRO['kospi_latest_chg_pct']):.2f}% on {_dday('kospi_latest_date')}, after rising "
-     f"{MACRO['kospi_10nov_chg_pct']:.2f}% on 10 Nov and {MACRO['kospi_11nov_chg_pct']:.2f}% on 11 Nov; a close above "
-     f"{MACRO['vix_longrun']} would undo it. It moves the headline gauge only: the 3- and "
-     "5-year readings, the tilts and the drawdown band read their own inputs."),
+     f"{VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} {'below' if VOL_RAMP < 0 else 'above'} the long run. A close back under "
+     f"{MACRO['vix_longrun']} that holds would restore the half-point. It moves the headline gauge and the budget "
+     "gauge's macro part only: the tilts and the forecasts read their own inputs."),
     ("Geopolitics & energy", 0.1, 1.5,
-     "HELD at 1.5; the talks have stalled, the attacks go on, and the Strait stays shut. On 12 Nov the Houthis claimed "
+     "HELD at 1.5; the talks have stalled and the attacks go on. Oil flows through the Strait are recovering (Reuters; "
+     "CNBC), but shipping is still far below its pre-war level (the JMIC, via gCaptain). On 16 Nov UKMTO reported a tanker "
+     "hit by a projectile leaving the Strait, its engine room on fire, and a second incident seven miles north of Khasab "
+     "that left a vessel disabled; Iran's navy said tankers had struck mines (gCaptain; JNS; the Jerusalem Post). "
+     f"Brent settled at ${dict(MACRO['brent_history'])['2026-11-16']:.2f} that day, down "
+     f"${abs(MACRO['brent_reported_pts']['2026-11-16']):.2f}, as the recovering flows reinforced expectations of a surplus "
+     "(Reuters, via Rallies; CNBC). On 12 Nov the Houthis claimed "
      "strikes on a pumping station on Saudi Arabia's East-West pipeline, a facility at Yanbu and an Aramco building in "
      "Riyadh, and Iran's military reported explosions on four tankers in the Strait - none confirmed, the Saudi-led "
      "coalition saying it intercepted two drones (Reuters, via Investing.com and Yahoo Finance). Brent settled at "
      f"${dict(MACRO['brent_history'])['2026-11-12']:.2f} that day, up "
-     f"{MACRO['brent_reported_moves']['2026-11-12']:.1f}%, and at ${MACRO['brent']:.2f} on {_dday('brent_date')}, as "
+     f"{MACRO['brent_reported_moves']['2026-11-12']:.1f}%, and at ${dict(MACRO['brent_history'])['2026-11-13']:.2f} on 13 Nov, as "
      "traders weighed mixed signs on the talks and the IEA said the market is in surplus this quarter for the first "
      "time since the war began (EnergyNow; FinanceFeeds; Bloomberg, via Rigzone). The indirect talks through Qatari, "
      "Pakistani and Saudi mediators were reported stalled on the Strait and Iran's nuclear material (CBS News), and "
@@ -4294,7 +4429,7 @@ DRIVERS = [
 # review's scores before rescoring; the verb check reads it, and the audit compares it with the
 # committed release. v95 opened with the growth note still saying "RAISED to 4.25" and the
 # volatility note "CUT to 1.5" - v94's moves - in a review that held both.
-DRIVER_PREV = ("v101", {"Monetary policy & liquidity": 2.0, "Inflation trajectory": 2.0,
+DRIVER_PREV = ("v109", {"Monetary policy & liquidity": 2.0, "Inflation trajectory": 2.0,
                        "Growth momentum": 4.25, "Corporate earnings": 7.0, "Valuation support": 8.0,
                        "Volatility & risk appetite": DRIVER_PREV_VOL, "Geopolitics & energy": 1.5})
 
@@ -4384,14 +4519,16 @@ DRIVER_Y1 = {
         f"The S&P is on {MACRO['spx_fwd_pe']}x forward, below its averages, and Asia on {MACRO['asia_fwd_pe']}x; a "
         f"year is too short for the {MACRO['cape']} cyclically adjusted multiple to bite, but the discount narrows "
         "as prices recover: 7.5."),
-    "Volatility & risk appetite": (3.5,
-        f"The VIX closed at {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, under its {MACRO['vix_longrun']} "
-        f"long run, and the curve's own one-year implied volatility is {VOL_1Y:.2f}; but the hiking cycle, the Gulf "
-        "and Nvidia's change of chief executive keep risk appetite below neutral - 3.5."),
+    "Volatility & risk appetite": (3.0,
+        f"The VIX closed at {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, "
+        f"{abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its {MACRO['vix_longrun']} "
+        f"long run, and the curve's own one-year implied volatility is {VOL_1Y:.2f}; the hiking cycle, the Gulf, Nvidia's "
+        "change of chief executive and the sell-off it set off across Asia keep risk appetite below neutral for the year "
+        "ahead - 3.0, from 3.5 on 15 Nov, as the jump back above the long run takes back the calm the 3.5 was set in."),
     "Geopolitics & energy": (2.0,
         f"The EIA assumes the Hormuz disruption eases to {MACRO['eia_hormuz_h1_2027']} mb/d in the first half of 2027 "
-        f"and {MACRO['eia_hormuz_h2_2027']} mb/d in the second; the Strait stays shut and Tehran denies talks: 2.0, "
-        "a little better than now."),
+        f"and {MACRO['eia_hormuz_h2_2027']} mb/d in the second; flows are recovering but shipping is still far below "
+        "pre-war, the attacks go on and Tehran denies talks: 2.0, a little better than now."),
 }
 DRIVER_Y23 = {n: round((3 * DRIVER_PATH[n]["3Y"] - DRIVER_Y1[n][0]) / 2, 3) for n in DRIVER_Y1}
 # Each driver's path averaged over the ten years (the reading its tilts take), and the
@@ -4410,12 +4547,12 @@ SUMMARY = {
     "Growth momentum": f"Held at 4.25: US payrolls rose {MACRO['us_payrolls_oct'] // 1000}k in October against {MACRO['us_payrolls_oct_consensus'] // 1000}k expected and China's October exports rose {MACRO['china_exports_oct']}%, but Philippine growth slowed to {MACRO['ph_gdp_q3']}% in the third quarter against {MACRO['ph_gdp_q3_poll']}% expected, and the consumer is still the weak point.",
     "Corporate earnings": f"Held, the strongest pillar: third-quarter growth is blended at {MACRO['factset_q3_growth']}% with {MACRO['factset_beat_pct']}% beating (FactSet, {_dday('factset_date')}); the AI sell-off took the Nasdaq down {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% on 5 Nov into correction, on fears for the build-out rather than this quarter's profits, and it took back {MACRO['nasdaq_6nov_chg_pct']:.2f}% on 6 Nov and {MACRO['nasdaq_9nov_chg_pct']:.2f}% on 9 Nov.",
     "Valuation support": f"Held: the S&P is on {MACRO['spx_fwd_pe']}x forward earnings, below its five- and ten-year averages; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Held at {DRIVER_PREV_VOL}: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, a second rise as Nvidia's chief executive resigned, but {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}; it has given back {MACRO['vix_spike_retraced_pct']}% of the 5 Nov jump, and the futures curve carried is held to its window.",
-    "Geopolitics & energy": f"Held: the talks have stalled and Tehran says the Strait stays shut until its conditions are met; on 12 Nov the Houthis claimed strikes on Saudi oil sites and Iran reported blasts on four tankers, none confirmed, Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, and the last confirmed flows were near 14 mb/d.",
-    "US": f"Held: the Nasdaq {'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% and the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% on {_dday('equity_date')}" + (f" and {abs(MACRO['nasdaq_12nov_chg_pct']):.2f}% and {abs(MACRO['spx_12nov_chg_pct']):.2f}% on 12 Nov, as Nvidia's chief executive resigned, after rises of {MACRO['nasdaq_11nov_chg_pct']:.2f}% and {MACRO['spx_11nov_chg_pct']:.2f}% on 11 Nov" if MACRO["equity_date"] == "2026-11-13" else "") + f"; the {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% fall of 5 Nov took the Nasdaq into correction; GDP beat at {MACRO['us_gdp_q3']}%, producer prices rose {MACRO['us_ppi_oct_yoy']}% on the year, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
+    "Volatility & risk appetite": f"Cut to 2.0 from {DRIVER_PREV_VOL}: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as Nvidia led a third straight fall and Asia sold off - the close the 12 Nov raise was to be undone at; it has given back {MACRO['vix_spike_retraced_pct']}% of the 5 Nov jump, and the futures curve carried is held to its window.",
+    "Geopolitics & energy": f"Held: the talks have stalled and Tehran says the Strait stays shut until its conditions are met; oil flows are recovering, but on 16 Nov UKMTO reported two more tanker incidents near Hormuz, Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, down ${abs(MACRO['brent_reported_pts']['2026-11-16']):.2f} on the surplus outlook, and the last confirmed flows were near 14 mb/d.",
+    "US": f"Held: the Nasdaq {'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% and the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% on {_dday('equity_date')}, a third straight fall as Nvidia slid a day before its results, after {abs(MACRO['nasdaq_13nov_chg_pct']):.2f}% and {abs(MACRO['spx_13nov_chg_pct']):.2f}% on 13 Nov and {abs(MACRO['nasdaq_12nov_chg_pct']):.2f}% and {abs(MACRO['spx_12nov_chg_pct']):.2f}% on 12 Nov, when its chief executive resigned; the {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% fall of 5 Nov took the Nasdaq into correction; GDP beat at {MACRO['us_gdp_q3']}%, producer prices rose {MACRO['us_ppi_oct_yoy']}% on the year, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
-    "ASIA": f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% on {_dday('kospi_latest_date')} and {abs(MACRO['kospi_12nov_chg_pct']):.2f}% on 12 Nov on the Nvidia news, after rising {MACRO['kospi_11nov_chg_pct']:.2f}% on 11 Nov and {MACRO['kospi_10nov_chg_pct']:.2f}% on 10 Nov, and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% on {_dday('nikkei_latest_date')} after a {abs(MACRO['nikkei_12nov_chg_pct']):.2f}% fall on 12 Nov; Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and China's October exports rose {MACRO['china_exports_oct']}%.",
-    "PHILIPPINES": f"Held: third-quarter growth slowed to {MACRO['ph_gdp_q3']}% against {MACRO['ph_gdp_q3_poll']}% expected, with October inflation at {MACRO['ph_cpi_oct']}%; the PSEi closed at {MACRO['psei']:,.2f} on {_dday('psei_date')}, its lowest of 2026, the peso at {MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos {'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}, and 91-day bills rose to {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction.",
+    "ASIA": f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% on {_dday('kospi_latest_date')}, a third straight fall, after {abs(MACRO['kospi_13nov_chg_pct']):.2f}% on 13 Nov and {abs(MACRO['kospi_12nov_chg_pct']):.2f}% on 12 Nov, and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% on {_dday('nikkei_latest_date')}, under {MACRO['nikkei_round_level']:,}, after rising {MACRO['nikkei_13nov_chg_pct']:.2f}% on 13 Nov; Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and China's October retail sales rose only {MACRO['china_retail_oct']}% and industrial output {MACRO['china_ip_oct']}%, both under forecast.",
+    "PHILIPPINES": f"Held: third-quarter growth slowed to {MACRO['ph_gdp_q3']}% against {MACRO['ph_gdp_q3_poll']}% expected, with October inflation at {MACRO['ph_cpi_oct']}%; the PSEi closed at {MACRO['psei']:,.2f} on {_dday('psei_date')}, its lowest since {MACRO['psei_low_since']}, the peso at {MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos {'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}, and 91-day bills rose to {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction.",
 }
 
 GAUGE = to5(GAUGE_10)          # headline, 1-5
@@ -5624,6 +5761,9 @@ DDG_REVIEWS_NEEDED = 2
 # years 4-5 2.89 / 2.61 / 3.00, reading 2.83; 60 / 40, 2.93. Still the hold band.
 DDG_REVIEWS = [("2026-10-31", 2.93)]
 DDG_RULE_DATE = "2026-11-15"
+# v110: the date the year-1 readings were last researched - not the owner's rule date above, which the
+# v103 check compared with the data date by mistake and which would have failed at the first roll.
+DRIVER_Y1_DATE = "2026-11-17"
 _VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}   # context beside the readings, not in them
 
 def _ddg_trend(h):
@@ -7910,6 +8050,63 @@ SOURCES = [
      "https://www.morningstar.com/markets/are-investors-expecting-too-much-stock-market"),
     ("Beinsure", "Stock market return forecast: Fidelity and Vanguard predict slower growth - Vanguard 4.8-6.8% a year",
      "https://beinsure.com/stock-market-return-forecast-fidelity-vanguard-prediction/"),
+    # v110: the 16 Nov sessions
+    ("CappNotes", "Closing Look - Monday, 16 Nov 2026: S&P -1.92%, Nasdaq -626.51 to 24,509.76, Dow -739.38 to 51,608.17; VIX 22.91 (+18.70%)",
+     "https://cappnotes.substack.com/p/closing-look-monday-november-16-2026"),
+    ("Reuters, via MarketScreener", "Wall Street ends sharply lower on AI jitters ahead of Nvidia results, Anthropic IPO - S&P 7,416.59, 16 Nov 2026",
+     "https://www.marketscreener.com/news/wall-street-slumps-on-ai-jitters-ahead-of-nvidia-results-anthropic-ipo-ce785edfdd8ef425"),
+    ("AP, via BNN Bloomberg", "Stocks tumble on Wall Street as Nvidia leads another sell-off in technology companies, 16 Nov 2026",
+     "https://www.bnnbloomberg.ca/markets/nasdaq/2026/11/16/stocks-decline-on-tech-sell-off-as-concerns-over-the-nvidia-fallout-persist/"),
+    ("CNN", "Stocks slide to kick off major week for Wall Street - the VIX surged 19%, 16 Nov 2026",
+     "https://www.cnn.com/2026/11/16/business/stocks-nvidia-ai-anthropic"),
+    ("The Weekend Spread", "The Close: Monday, 16 Nov 2026 - VIX 23.72 (vix_disputed_16nov); 10-year 5.115% on market quotes",
+     "https://theweekendspread.substack.com/p/the-close-monday-november-16-2026"),
+    ("Reuters, via Rallies", "Oil settles lower as recovering Middle East exports bolster surplus outlook - Brent $92.44 (-$3.40), WTI $85.72 (-$2.84), 16 Nov 2026",
+     "https://rallies.ai/news/oil-settles-lower-as-recovering-middle-east-exports-bolster-surplus-outlook-ae7928db1c064e7a"),
+    ("Newsquawk", "US market wrap, 16 Nov 2026 - WTI December settled $85.72 (-2.84), Brent January $92.44 (-3.40)",
+     "https://www.newsquawk.com/headlines/us-market-wrap---16th-november-2026-risk-off-trade-as-tech-rout-resumes-supporting-havens-"),
+    ("CNBC", "US crude oil declines on recovering Middle East exports - Brent $92.44, WTI $85.39 (wti_disputed_16nov), 16 Nov 2026",
+     "https://cnbc.com/amp/2026/11/16/us-crude-oil-declines-to-87-a-barrel-on-recovering-middle-east-exports.html"),
+    ("NoCutNews", "Foreign selling sends KOSPI down 3.6% to barely hold 5,100; KOSDAQ down 4.9%, 16 Nov 2026",
+     "https://en.nocutnews.co.kr/news/6607581"),
+    ("Korea JoongAng Daily", "Kospi tanks over 3% with tech share sell-off as Nvidia turmoil stokes AI bubble concerns - 5,100.50, 16 Nov 2026",
+     "https://www.koreajoongangdaily.com/business/kospi-tanks-over-3-with-tech-share-selloff-as-nvidia-turmoil-stokes-ai-bubble-concerns/12975391"),
+    ("Xinhua", "Tokyo stocks end lower, Nikkei falls below 60,000 - 59,662.02, -1,480.33 (-2.42%), 16 Nov 2026",
+     "https://english.news.cn/20261116/103f5b70c83e4eebbf5826438d5a283d/c.html"),
+    ("Jiji, via AD HOC News", "Nikkei 225 falls 2.42% as chip sell-off pushes index below 60,000, 16 Nov 2026",
+     "https://www.ad-hoc-news.de/boerse/news/marktberichte/nikkei-225-falls-2-42-prozent-as-chip-sell-off-pushes-index-below-60-000/70522199"),
+    ("BusinessWorld", "Economic worries drag PSEi to over six-year low - 5,481.88, -111.61 (-2%), 16 Nov 2026",
+     "https://bworldonline.com/stock-market/2026/11/16/794329/economic-worries-drag-psei-to-over-six-year-low/"),
+    ("The Manila Times", "PSEi plunges to 6-year low; peso nears P64:$1, 16 Nov 2026",
+     "https://www.manilatimes.net/2026/11/17/business/top-business/psei-plunges-to-6-year-low-peso-nears-p641/2471452"),
+    ("Daily Tribune", "Market rout sends PSEi back to pandemic-era depths, 16 Nov 2026",
+     "https://tribune.net.ph/2026/11/16/market-rout-sends-psei-back-to-pandemic-era-depths"),
+    ("BusinessWorld", "Peso slides as strong dollar weighs - P63.94 from P63.72, 16 Nov 2026 (settles usdphp_disputed_13nov)",
+     "https://bworldonline.com/banking-finance/2026/11/16/794279/peso-slides-as-strong-dollar-weighs/"),
+    ("BusinessWorld", "BTr partially awards T-bills as yields rise further - 6.567% / 6.748% / 6.932%, 16 Nov 2026",
+     "https://bworldonline.com/banking-finance/2026/11/16/794280/btr-partially-awards-t-bills-as-yields-rise-further/"),
+    ("BusinessMirror", "T-bills yields swing high to levels not seen in years, 16 Nov 2026",
+     "https://businessmirror.com.ph/2026/11/16/t-bills-yields-swing-high-to-levels-not-seen-in-years/"),
+    ("Context.ph", "T-bill yields climb as rate hike prospects persist, 16 Nov 2026",
+     "https://context.ph/2026/11/16/t-bill-yields-climb-as-rate-hike-prospects-persist/"),
+    ("CNBC", "China's slowdown deepens in October as industrial output, retail sales, investment miss estimates, 16 Nov 2026",
+     "https://www.cnbc.com/2026/11/16/china-retail-sales-october-industrial-output-investment.html"),
+    ("Investing.com", "China factory output, retail sales miss forecasts in October, 16 Nov 2026",
+     "https://uk.investing.com/news/economic-indicators/china-factory-output-retail-sales-miss-forecasts-in-oct-4983530"),
+    ("Quartz", "China's economy stumbles as retail sales, factory output and investment all miss, 16 Nov 2026",
+     "https://qz.com/china-october-economic-data-retail-sales-investment-miss-111626"),
+    ("gCaptain", "UKMTO reports two tanker attacks in Strait of Hormuz, 16 Nov 2026",
+     "https://gcaptain.com/ukmto-reports-two-tanker-attacks-in-strait-of-hormuz/"),
+    ("JNS", "Tanker struck by projectile in Strait of Hormuz, fire reported, 16 Nov 2026",
+     "https://www.jns.org/news/world/tanker-struck-by-projectile-in-strait-of-hormuz-fire-reported"),
+    ("The Jerusalem Post", "Fourth oil tanker struck in Strait of Hormuz, Iran says, Nov 2026",
+     "https://www.jpost.com/middle-east/iran-news/article-915102"),
+    ("EnergyNow (Reuters)", "Oil settles up more than 2% as Russian port suspends oil exports - Brent $64.39 (+$1.38), 14 Nov 2025, the year-ago base",
+     "https://energynow.ca/2025/11/oil-settles-up-more-than-2-as-russian-port-suspends-oil-exports-after-ukrainian-attack/"),
+    ("Al Attiyah Foundation", "Weekly energy market review, 15 Nov 2025 - Brent $64.39 on 14 Nov 2025",
+     "https://marhaba.qa/al-attiyah-foundation-weekly-energy-market-review-15-november-2025/"),
+    ("FactSet", "Earnings Insight, 13 Nov 2026 - forward 12-month P/E 18.3, Q3 blended growth 31.9% (one source; not carried)",
+     "https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_111326.pdf"),
 ]
 
 # ----------------------------------------------------------------------------
@@ -8075,6 +8272,7 @@ def payload():
                       "derived_ref": round(DD_CAP_DERIVED, 2), "improvement": DD_BUDGET_IMPROVEMENT},
         "dd_gauge": {"value": DDG_VALUE, "views": list(DDG_VIEWS), "w": DDG_W,
                      "spans": {h: list(v) for h, v in DDG_SPANS.items()}, "rule_date": DDG_RULE_DATE,
+                     "y1_date": DRIVER_Y1_DATE,
                      # the 1-year research (v103): each driver now, in year 1, years 2-3 (implied) and
                      # years 4-5, and each trend market in each span
                      "drivers": [{"name": n, "weight": w, "now": s_, "y1": DRIVER_Y1[n][0], "why": DRIVER_Y1[n][1],
@@ -8306,7 +8504,10 @@ def report():
     # Catalyst text is on the page and carries the same quotes, so it is scanned
     # with the rest. It was outside this join until 2026-09-19, which is why the
     # catalyst note kept its own private copy of the stale "$109" for nine days.
+    # v110: the year-1 readings' reasons are prose the page prints too (Budget and Macro tabs); until v110
+    # the oil-quote checks below never read them.
     _notes_all = ([d[3] for d in DRIVERS] + [r["why"] for r in REGIONS.values()]
+                  + [r["y1_why"] for r in REGIONS.values()] + [v[1] for v in DRIVER_Y1.values()]
                   + [f["gross_note"] for f in FUNDS] + [f["fee_note"] for f in FUNDS]
                   + [c[2] for c in CATALYSTS] + [p[1] for p in POSTPONED])
     _all_prose = " ".join(_notes_all)
@@ -8319,7 +8520,9 @@ def report():
                  MACRO["brent_closure"], MACRO["brent_session_high"],
                  # the dated forward curve the 5-year readings cite (2026-10-27)
                  MACRO["brent_dec2029"], MACRO["brent_dec2030"], MACRO["brent_front_15oct"],
-                 MACRO["brent_dec2027_lo"], MACRO["brent_dec2027_hi"]]
+                 MACRO["brent_dec2027_lo"], MACRO["brent_dec2027_hi"],
+                 # the EIA's 2027 average, this month's and last month's (v110: a forecast, not a price)
+                 MACRO["eia_brent_2027"], MACRO["eia_brent_2027_prev"]]
     _quoted = [
         (r"Brent[^.]{0,20}?\$(\d+(?:\.\d+)?)", _brent_ok, 1.0, "Brent level"),
         (r"Brent \+(\d+(?:\.\d+)?)%", [MACRO["brent_yoy"]], 1.0, "Brent y/y"),
@@ -8365,6 +8568,8 @@ def report():
         _v = float(next(g for g in _q.groups() if g))
         if abs(_v - MACRO["brent_closure"]) <= 1.0:
             continue              # the full-closure counterfactual, not a quote
+        if any(abs(_v - MACRO[k]) < 0.005 for k in ("eia_brent_2027", "eia_brent_2027_prev")):
+            continue              # the EIA's 2027 forecasts, to the cent: a forecast, not a price (v110)
         _ctx = _all_prose[max(0, _q.start() - _DATE_WINDOW):_q.end() + _DATE_WINDOW]
         if _DATED.search(_ctx):
             continue              # dated quotes may cite a dated input
@@ -9568,10 +9773,16 @@ def report():
                    all(_trend_ok(v) for v in list(_tr["sleeves"].values()) + list(_tr["alt_built"].values()))
                    and all(set(v["ret"]) == {"1Y", "3Y", "5Y"} for v in _tr["sleeves"].values())))
     _tds = [d_ for v in _tr["sleeves"].values() for d_ in v["trail_date"].values() if d_]
-    checks.append(("every dated trailing return is on or before the as-of date and under 75 days old",
+    # v110: a sleeve past 75 days passes only flagged, with its date printed in its source, and under 105.
+    _tage = lambda d_: (_dt.date.fromisoformat(AS_OF) - _dt.date.fromisoformat(d_)).days
+    _dlong = lambda d_: f"{_dt.date.fromisoformat(d_).day} {_dt.date.fromisoformat(d_):%b %Y}"
+    checks.append(("every dated trailing return is on or before the as-of date and under 75 days old, or flagged stale with its date shown",
                    all(set(v["trail_date"]) == {"3Y", "5Y"} for v in _tr["sleeves"].values())
-                   and all(0 <= (_dt.date.fromisoformat(AS_OF) - _dt.date.fromisoformat(d_)).days <= 75
-                           for d_ in _tds)))
+                   and all(0 <= _tage(d_) <= 75
+                           or (v.get("trail_stale") and _tage(d_) <= 105 and _dlong(d_) in v["trail_source"])
+                           for v in _tr["sleeves"].values() for d_ in v["trail_date"].values() if d_)
+                   and all(not v.get("trail_stale") or any(_tage(d_) > 75 for d_ in v["trail_date"].values() if d_)
+                           for v in _tr["sleeves"].values())))
     checks.append(("the trend's momentum and reversal shares are the years each view covers: 3Y 1/3 and 2/3, 5Y all reversal, 10Y neither",
                    _tr["w"] == {"3Y": {"mom": 0.3333, "rev": 0.6667}, "5Y": {"mom": 0.0, "rev": 1.0},
                                 HZ_LABEL: {"mom": 0.0, "rev": 0.0}} and _tr["views"] == ["3Y", "5Y"]))
@@ -9754,7 +9965,7 @@ def report():
                              and abs(b - DRIVER_NEUTRAL_10) <= abs(a - DRIVER_NEUTRAL_10) + 1e-9
                              for a, b in zip(xs, xs[1:]))
     checks.append(("each driver's year-1 reading is researched and dated, years 2-3 are implied by the 3-year average, and the path moves toward neutral",
-                   len(_ddr) == len(DRIVERS) and AS_OF <= _dg["rule_date"]
+                   len(_ddr) == len(DRIVERS) and AS_OF <= _dg["y1_date"] <= REVIEW_DATE
                    and all(1.0 <= r["y1"] <= 10.0 and len(r["why"]) > 60
                            and abs((r["y1"] + 2 * r["y23"]) / 3 - r["y3_avg"]) < 1e-9
                            and r["y3_avg"] == DRIVER_PATH[r["name"]]["3Y"] and r["y45"] == DRIVER_PATH[r["name"]]["5Y"]

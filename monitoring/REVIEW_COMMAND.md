@@ -9,7 +9,8 @@ the budget band runs 20% to 30%. Updated 2026-11-16 (v107): the Volatility tab i
 model is on the Portfolios tab); the four analyses are the regional ranking, macro sentiment, market trend
 and market valuation, A on 10 years and B and D on 1, 3, 5 and 10; the gauge reads 1, 3 and 5 years.
 Updated 2026-11-16 (v108): every analysis, the regional rankings included, has a researched year-1 reading.
-Updated 2026-11-16 (v109): the band holds at 25% from 2.80 to 3.20 and steps one point per 0.15. The runbook (`README.md`) says how; this file says what.
+Updated 2026-11-16 (v109): the band holds at 25% from 2.80 to 3.20 and steps one point per 0.15.
+Updated 2026-11-17 (v110): five tabs, not six. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -151,7 +152,7 @@ Evidence rules (apply to everything below)
 8. Verify, clean up, publish
 • All must pass: the engine checks, the independent audit, the phone-width page check
   and the planted-error (mutation) test, re-run after any later code change. Then open all
-  six tabs and read them as a user would: wording, dates, and figures that contradict
+  five tabs and read them as a user would: wording, dates, and figures that contradict
   each other.
 • House cleanup: retire inputs nothing reads, remove dead code and temp files, and make
   any hand-typed figure or date read its input.

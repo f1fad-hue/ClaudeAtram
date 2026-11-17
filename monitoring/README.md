@@ -211,6 +211,22 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+173. A CHECK MUST COMPARE THE DATE IT MEANS. v103's year-1 check required the data date to be no later than
+   `rule_date` - the date the owner SET the 1/3/5 rule (15 Nov), not the date the year-1 readings were researched.
+   It passed by accident until the first roll past 15 Nov, then failed for a reason that had nothing to do with
+   freshness. The readings now carry their own `y1_date`, checked against the data and the review date by the
+   engine and the audit, and the page keeps `rule_date` for what it is: the owner's rule.
+172. A REASON IS KEYED TO ITS SESSION, OR IT OUTLIVES IT. v104 printed 13 Nov's reasons only while 13 Nov was the
+   latest session, but the citations beside the latest figures were plain text, so after the roll the Nikkei's
+   2.42% fall read "as chip stocks recovered", the KOSPI's 3.59% "as early gains faded" with 13 Nov's sources,
+   61,142.35 was labelled 12 Nov's close, and Brent's $92.44 carried 13 Nov's "mixed signs on the talks". The
+   latest session's reasons and sources now live in dicts keyed by its date (US_LATEST_REASON,
+   ASIA_LATEST_REASON, PH_PESO_REASON, PSEI_REASON): a roll that does not write the new session's own stops the
+   build. The year-1 volatility text likewise said "under its long run" as a fixed word; it now reads the gap.
+171. A HELD FIGURE PAST ITS LIMIT IS FLAGGED, NOT REPLACED. Two trailing returns crossed the 75-day limit (IXJ's to
+   31 Aug, IXN's five-year to 1 Sep) with no newer figure in two sources. The fix is the Brent-base pattern: hold,
+   flag (`trail_stale`), print the date beside the figure, and bound the flag (105 days) - never a single-source
+   number, never a quietly widened limit.
 170. SIZE A SCALE TO WHAT CAN REACH IT. The 20-30% band cut the gauge's 1-5 into 0.30 steps as if the
    reading could travel all of it. It cannot: four-fifths of it is years 2-5, whose paths step back to
    neutral and whose trend is reversal, and each view averages three parts. Stylized extremes run

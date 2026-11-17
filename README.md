@@ -43,13 +43,14 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 13 Nov 2026 (reviewed 16 Nov, cut-off 02:00 UTC): New York, the VIX
-(19.30), Brent's January and WTI's December settles, the Treasury curve, Seoul, Tokyo and Manila at their 13 Nov
-closes; the peso at 12 Nov (its 13 Nov close is reported two ways); FedWatch at 13 Nov (a December hike 100%
-priced); the 9 Nov T-bill auction (16 Nov's is after the cut-off); PortWatch's Hormuz count at 8 Nov, the
-latest it has published. Brent's y/y is quoted against its 10 Nov 2025 settle, three days off the anniversary.
-Target funds were checked in full on 16 Nov, the first review of the week, through search results only; the
-1-year test could not be refreshed (uitf.com.ph is blocked and not indexed), so its 5 Nov figures stand.
+market assumptions. Market data as of 16 Nov 2026 (reviewed 17 Nov, cut-off 02:00 UTC): New York, the VIX
+(22.91, back above its 19.5 long run), Brent's January and WTI's December settles, Seoul, Tokyo and Manila and
+the peso at their 16 Nov closes; the 16 Nov T-bill auction; the Treasury curve held at 13 Nov (no par-curve figure
+for 16 Nov by the cut-off); FedWatch at 13 Nov (a December hike 100% priced); PortWatch's Hormuz count at 8 Nov,
+the latest it has published. Brent's y/y is quoted against its 14 Nov 2025 settle, two days off the anniversary.
+Target funds were checked in full on 16 Nov, the first review of the week, through search results only, and
+searched again for notices on 17 Nov (none); the 1-year test could not be refreshed (uitf.com.ph is blocked and
+not indexed), so its 5 Nov figures stand.
 Weights in the
 universe's order: Money Market / Nasdaq Equity Income /
 Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra

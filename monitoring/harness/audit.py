@@ -254,6 +254,20 @@ for rk, r in D["regions"].items():
     ck(f"{rk}: each horizon's 1-5 score is its research score rescaled, the blend the horizon-weighted average",
        ok and abs(r["blend"] - round(sum(r[h] * w for h, w in HZ.items()), 2)) < 0.006
        and abs(r["blend_10"] - round(sum(r[h + "_10"] * w for h, w in HZ.items()), 2)) < 0.006, f"{r['blend']}")
+# v110: THE YEAR-1 RESEARCH IS AS NEW AS THE DATA. Its own date (y1_date), not the owner's rule date
+# the engine compared until v110, is on or after the as-of date and no later than the review.
+ck("the year-1 readings were researched on or after the data date, by this review",
+   AS_OF <= d(D["dd_gauge"]["y1_date"]) <= REV, f"{D['dd_gauge']['y1_date']} vs {AS_OF} / {REV}")
+# v110: A TRAILING RETURN IS UNDER 75 DAYS OLD, OR FLAGGED STALE WITH ITS DATE PRINTED BESIDE IT (and under
+# 105 days); a flag on a fresh series is itself an error.
+_tsl = D["trend"]["sleeves"]
+_tage = lambda x: (AS_OF - d(x)).days
+_tdl = lambda x: f"{d(x).day} {d(x):%b %Y}"
+ck("every dated trailing return is under 75 days old, or flagged stale with its date shown and under 105",
+   all(0 <= _tage(x) <= 75 or (v.get("trail_stale") and _tage(x) <= 105 and _tdl(x) in v["trail_source"])
+       for v in _tsl.values() for x in v["trail_date"].values() if x)
+   and all(not v.get("trail_stale") or any(_tage(x) > 75 for x in v["trail_date"].values() if x) for v in _tsl.values()),
+   f"{[(k, v['trail_date'], v.get('trail_stale')) for k, v in _tsl.items()]}")
 # v108 (owner, 16 Nov): each region reads year 1 (researched) and years 2-3 (implied by its 3-year score,
 # the average of years 1-3); the path runs monotone to years 4-5, and the four printed spans at
 # 10/20/20/50 give the published blend, so no year counts twice. The note states both readings.
@@ -588,6 +602,10 @@ def _owner(snt, pos):
     best = max(((snt.rfind(nm, 0, pos), nm) for nm in _SNAMES), default=(-1, None))
     return best[1] if best[0] >= 0 else None
 _dk, _dq = [], 0
+_LATEST = {"KOSPI": (M["kospi_latest_chg_pct"], d(M["kospi_latest_date"])),
+           "Nikkei": (M["nikkei_latest_chg_pct"], d(M["nikkei_latest_date"])),
+           "Nasdaq": (M["nasdaq_chg_pct"], d(M["equity_date"])), "S&P": (M["spx_chg_pct"], d(M["equity_date"])),
+           "Dow": (M["dow_chg_pct"], d(M["equity_date"])), "PSEi": (M["psei_chg_pct"], d(M["psei_date"]))}
 for k, v in M.items():
     m_ = re.match(r"^([a-z0-9]+?)_(\d{1,2})(" + "|".join(_MO) + r")(?:_|$)", k)
     if not m_ or m_.group(1) not in _SER or isinstance(v, bool) or not isinstance(v, (int, float)): continue
@@ -605,7 +623,13 @@ for k, v in M.items():
                 if hits: break
             else: continue
             _dq += 1
-            if f"{_day} {_mo}" not in snt and f"the {_ordn(_day)}" not in snt: _dk.append(f"{k} in {src}")
+            # v110: "3 Nov" is not a date inside "13 Nov" (the test matched it until v110), and a figure the
+            # LATEST session shares with an older day (the KOSPI fell 3.59% on 3 Nov and on 16 Nov) is the
+            # latest session's own beside its own date.
+            _onday = lambda dd, mm: re.search(r"(?<!\d)" + str(dd) + " " + mm, snt) or f"the {_ordn(dd)}" in snt
+            _lt = _LATEST.get(_SER[m_.group(1)])
+            if _lt and abs(abs(_lt[0]) - abs(v)) < 1e-9 and _onday(_lt[1].day, f"{_lt[1]:%b}"): continue
+            if not _onday(_day, _mo): _dk.append(f"{k} in {src}")
 ck(f"a figure keyed to a day is quoted only beside that day ({_dq} quotes)", _dq > 0 and not _dk, "; ".join(_dk[:3]))
 # v94: a move kept under its own day's key (nasdaq_5nov_chg_pct) equals the series' latest move
 # while that day is the latest session - re-read from the payload, not from the engine's verdict.

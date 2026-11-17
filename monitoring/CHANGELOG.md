@@ -2,6 +2,149 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-17 — v110: markets roll to 16 Nov; volatility cut to 2.0 as the VIX closes back above its long run; year-1 readings re-researched; A, B and D unchanged; budget 25%, every raise guard now blocks
+
+At the owner's instruction: run debugging, code review and a sanity check; hunt and fix errors; clean up; and
+re-research and re-verify the data and math, the 22 funds, every portfolio's net 10-year CAGR, the budget gauge
+at 1, 3 and 5 years (macro sentiment, market valuations and market trends), the four analyses at 1, 3, 5 and 10
+years, and every portfolio's mix and fund selection.
+
+**Cut-off and sources.**
+- **Cut-off:** 02:00 UTC on Tue 17 Nov. By then New York, the VIX, the oil settles, Seoul, Tokyo, Manila and the
+  peso had closed for 16 Nov; no Asian session of the 17th had.
+- **Blocked:** every primary site was refused by the environment's network policy (proxy 403), as before: Cboe,
+  CME, PSE, the Treasury, FRED, uitf.com.ph, atram.com.ph, BSP, PSA, PortWatch, the Fed, BLS, the BTr, JPX, KRX
+  and ICE. Everything was read through search results.
+- **Periodic items:** the weekly full fund check was done on 16 Nov. No month-end or quarter-end falls due (the
+  band review is due 30 Nov). The WTI December contract's last trade is 20 Nov, and the VIX futures window ends
+  19 Nov.
+
+**Sessions rolled to 16 Nov.** Each chains from 13 Nov and is confirmed by two sources.
+
+| Market | 16 Nov | Move | Sources |
+| --- | --- | --- | --- |
+| S&P 500 | 7,416.59 | −145.08 (−1.92%), third straight fall | Reuters, via MarketScreener; CappNotes |
+| Nasdaq | 24,509.76 | −626.51 (−2.49%) | Reuters; CappNotes |
+| Dow | 51,608.17 | −739.38 (−1.41%) | Reuters; CappNotes |
+| VIX | 22.91 | +3.61 (+18.70%), back above 19.5 | CappNotes; Yahoo's Cboe quote |
+| Brent, January | $92.44 | −$3.40 | Reuters, via Rallies; Newsquawk; CNBC |
+| WTI, December | $85.72 | −$2.84 | Reuters; Newsquawk |
+| KOSPI | 5,100.50 | −190.03 (−3.59%) | NoCutNews; Korea JoongAng Daily |
+| Nikkei | 59,662.02 | −1,480.33 (−2.42%) | Xinhua; Jiji |
+| PSEi | 5,481.88 | −111.61 (−2.00%), lowest since May 2020 | BusinessWorld; the Manila Times; the Tribune |
+| Peso | 63.94 | 22 centavos weaker | BusinessWorld; the Manila Times |
+| T-bills, 16 Nov auction | 6.567 / 6.748 / 6.932% | 364-day partly awarded | BusinessWorld; BusinessMirror; Context.ph |
+
+**Settled.** The peso's 13 Nov close at 63.72 (the Tribune and BusinessWorld's 16 Nov report).
+
+**Re-anchored.** Brent's year-ago base, to the 14 Nov 2025 settle of $64.39 (Reuters, via EnergyNow; the Al
+Attiyah Foundation). It is two days off the Sunday anniversary; 10 Nov 2025 would have sat six days off. The y/y
+is now +43.6%.
+
+**Held, and why.**
+- **Treasuries at 13 Nov.** 16 Nov had market quotes only (10-year 5.115-5.14%) and no par-curve figure by the
+  cut-off.
+- **FedWatch at 13 Nov (100%).** The one read dated 16 Nov (Admiral Markets: 91.1% for 25bp, 8.9% for 50bp, still
+  100% in all) has no second source.
+- **FactSet's forward P/E at 17.7x.** Its 13 Nov edition (18.3x; Q3 growth 31.9%) was read in its own PDF only.
+- **Two trend sleeves' trailing returns, flagged.** IXJ's 3- and 5-year to 31 Aug and IXN's 5-year to 1 Sep, now
+  76-77 days old. No newer figure was found in two sources.
+
+**Disputes recorded.** VIX 22.42 / 23.01 / 23.72; WTI $85.39 (CNBC); Nikkei 59,676.
+
+**Releases added.**
+- **China's October activity** (16 Nov) missed on every measure: retail sales +0.4% (0.8% expected), industrial
+  output +4.8% (5.3%), investment −8.1% for the year to date (−7.0%) (CNBC; Investing.com; Quartz).
+- **The Gulf, 16 Nov.** UKMTO reported two tanker incidents near Hormuz, and Iran's navy said tankers struck mines
+  (gCaptain; JNS; the Jerusalem Post). Oil flows through the Strait are recovering (Reuters; CNBC).
+
+**The four analyses, re-judged.**
+- **Macro sentiment: volatility CUT 2.5 → 2.0.** This is the condition v100 set when it raised it: a VIX close back
+  above 19.5 undoes the raise. Its year-1 reading is cut 3.5 → 3.0, which implies 5.25 for years 2-3. The other
+  six drivers hold:
+  - Growth at 4.25: China's miss against a US economy still beating forecasts.
+  - Geopolitics at 1.5: flows recovering, attacks continuing.
+  - Monetary, inflation, earnings and valuation unchanged.
+  - The headline gauge moves 2.31 → 2.28.
+- **Regional rankings:** all four held at 1, 3, 5 and 10 years, their year-1 readings re-checked. China's miss
+  joins Asia's year-1 evidence.
+- **Market trend:** the window ends 30 Sep, so it is unchanged until the quarter-end roll.
+- **Market valuation:** held at 8.0 now and 7.5 for year 1.
+
+**The budget gauge (1, 3 and 5 years).** The year-1 research is dated 17 Nov.
+
+| Span | Macro | Trend | Valuation | Reading |
+| --- | --- | --- | --- | --- |
+| Year 1 | 2.23 | 3.81 | 3.89 | 3.31 |
+| Years 2-3 | 2.67 | 2.61 | 3.22 | 2.83 |
+| Years 4-5 | 2.89 | 2.61 | 3.00 | 2.83 |
+
+The gauge reads **2.93, hold at 25%**, unchanged. **All three guards now block a raise:** one month-end review of
+two, geopolitics at 1.5, and the VIX at 22.91.
+
+**Funds.** No notice from ATRAM or any target manager was found: J.P. Morgan, Fidelity, HSBC, Schroders, Allianz,
+Invesco and BlackRock. Fees and targets are unchanged, so every fund forecast is unchanged.
+
+**Portfolios: A, B and D unchanged.**
+- **A:** 5 / 35 / 10 / 30 / 20, 7.31% / −24.9%.
+- **B:** A's mix, 7.20% / −24.9%.
+- **D:** 50 / 20 / 15 / 15, 7.25% / −24.8%, four funds.
+- **Nasdaq Equity Income** nets 7.67%.
+
+Volatility tilts no forecast (v107), so its cut moves only the gauges.
+
+**Errors found and fixed (recorded before fixing).**
+1. **The year-1 check compared the wrong date.** Since v103 it compared the data date with `rule_date`, the date
+   the owner set the 1/3/5 rule, so it failed at the first roll past 15 Nov. The readings now carry their own
+   `y1_date`, and the engine and the audit both check it (runbook 173).
+2. **The year-1 volatility text was hard-coded "under its long run".** That was false at 22.91. It now reads the
+   gap.
+3. **The geopolitics note put 13 Nov's reason beside 16 Nov's Brent.** "Mixed signs on the talks" sat beside the
+   latest settle, $92.44.
+4. **The Asia note put 13 Nov's reasons beside 16 Nov's figures.** The Nikkei's fall read "as chip stocks
+   recovered", and the KOSPI's carried 13 Nov's reason and sources. 61,142.35 was labelled 12 Nov's close, and
+   "Seoul and Tokyo split" when both fell.
+5. **The US note's 16 Nov moves carried 13 Nov's sources and no reason.**
+6. **The summaries skipped 13 Nov.** The Nikkei read "after a 0.70% fall on 12 Nov" though it rose on 13 Nov.
+   Items 3-6 are fixed by date-keyed reason tables that stop the build when a roll does not write the new
+   session's own (runbook 172).
+7. **The T-bill sentence was hard-coded "fully awarded".** The 16 Nov 364-day was partly awarded.
+8. **The oil-quote checks never read the year-1 texts.** They do now, with the EIA's 2027 forecasts accepted as
+   forecasts.
+9. **The audit's day check had two faults.** It matched "3 Nov" inside "13 Nov", and it flagged the KOSPI's 16 Nov
+   fall because 3 Nov's fall was also 3.59%.
+10. **The review command said "six tabs".** There are five since v107.
+11. **Errors made during this review, caught by the checks:**
+    - "Brent fell $3.40 to $92.44" read as a $3.40 Brent level.
+    - An f-string prefix was lost in the valuation note.
+    - Two duplicate source URLs and an http link were added.
+    - Five figures were typed into notes before they were inputs (3.45, 1.37, 60,000, 1,072, 5,479.35).
+
+**Checks.** Engine 265/265 · audit 283/283 · page 16/16 · mutants 74/74 caught. All five tabs read at 390px with no
+script errors and no horizontal scroll. Two new mutants: the year-1 research older than the data, and a stale
+trailing return unflagged.
+
+**Within two days of a limit.**
+- FedWatch's 13 Nov read (18 Nov).
+- The VIX futures strip (window ends 19 Nov).
+- WTI December's last trade (20 Nov).
+
+**Due before the next review.**
+- The 16 Nov Treasury par curve (FRED, 17 Nov).
+- New York's 17 Nov session.
+- US October retail sales and Nvidia's results (17 Nov).
+- The FOMC minutes and APEC (18 Nov).
+- A VIX futures board in two sources before 19 Nov.
+- The WTI roll to January (20 Nov).
+- Michigan's final reading (20 Nov).
+- A second source for FactSet's 13 Nov edition, or its 20 Nov edition.
+- The Philadelphia Fed's Q4 survey.
+- IXJ's and IXN's trailing returns.
+- A FedWatch re-quote.
+- The month-end band review (30 Nov).
+
+A model's reading, not personal financial advice.
+
 ## 2026-11-16 — v109: the budget band fitted to where the gauge can go - hold 2.80-3.20, one point per 0.15; nothing moves today
 
 At the owner's instruction, after asking whether the band-to-gauge ratio was the best: "Okay update it to best and

@@ -120,6 +120,8 @@ def m_oldhold(d):                                                               
     b = d["dd_gauge"]["bands"]; h = next(x for x in b if x["cap"] == 25.0); h["lo"], h["hi"] = 2.5, 3.5
     next(x for x in b if x["cap"] == 24.0)["hi"] = 2.5; next(x for x in b if x["cap"] == 26.0)["lo"] = 3.5
 def m_reach(d): r = d["dd_gauge"]["reach"][0]; r["value"] = round(r["value"] + 0.04, 2)     # a reach case off its inputs (v109)
+def m_y1date(d): d["dd_gauge"]["y1_date"] = "2026-11-15"                                   # year-1 research older than the data (v110)
+def m_trailflag(d): d["trend"]["sleeves"]["ATRGHCP"]["trail_stale"] = None                    # a stale trailing return unflagged (v110)
 def m_ccvol(d): d["cc_vol_factor"] = round(d["cc_vol_factor"] + 0.02, 4)                      # the covered-call factor off its inputs (v107)
 def m_step(d):                                                                                 # a budget step printing a CAGR its search did not rank on
     e = next(iter(d["dd_gauge"]["alt"].values()))["b"]; e["cagr"] = round(e["cagr"] - 0.01, 2)
