@@ -8,7 +8,8 @@ are named. Updated 2026-11-15 (v103): the Budget tab reads 1, 3, 5 and 10 years.
 the budget band runs 20% to 30%. Updated 2026-11-16 (v107): the Volatility tab is removed (its drawdown
 model is on the Portfolios tab); the four analyses are the regional ranking, macro sentiment, market trend
 and market valuation, A on 10 years and B and D on 1, 3, 5 and 10; the gauge reads 1, 3 and 5 years.
-Updated 2026-11-16 (v108): every analysis, the regional rankings included, has a researched year-1 reading. The runbook (`README.md`) says how; this file says what.
+Updated 2026-11-16 (v108): every analysis, the regional rankings included, has a researched year-1 reading.
+Updated 2026-11-16 (v109): the band holds at 25% from 2.80 to 3.20 and steps one point per 0.15. The runbook (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -112,7 +113,7 @@ Evidence rules (apply to everything below)
   (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or
   under its long run before any raise). Record the month-end review when one is due.
 • Report the budget in force and what each step (20% to 30%, one point a step; owner,
-  16 Nov 2026) does to A, B and D, and to B in a Hormuz closure. The band's budget is every
+  16 Nov 2026; hold 2.80-3.20 and 0.15 of the reading a step, v109) does to A, B and D, and to B in a Hormuz closure. The band's budget is every
   portfolio's budget (owner, 16 Nov 2026: "All portfolio still use the budget drawdown band").
 
 5. Portfolios A, B and D (Portfolios tab)
@@ -129,7 +130,7 @@ Evidence rules (apply to everything below)
   peso table.
 • Ask me before changing any rule: the 25% base, the band and its guards, the limits,
   D's rule, the selection rule, the 1/3/5/10-year weights (10/20/20/50 by years covered), the
-  valuation tilt's years 1-5 only, the budget gauge's 1/3/5-year
+  valuation tilt's years 1-5 only, the band's 2.80-3.20 hold and 0.15 steps, the budget gauge's 1/3/5-year
   spans and their 20/40/40 weights, or the fund list.
 
 6. Report tab

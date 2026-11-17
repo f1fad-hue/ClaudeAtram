@@ -116,6 +116,10 @@ def m_regy1(d):                                                                 
 def m_abycell(d):                                                                              # a year-by-year cell off, its B-and-D reading moved to match (v108)
     r = d["analyses_by_year"]["rows"][4]; r["v"][0] = round(r["v"][0] + 0.2, 2)
     r["bd"] = round(sum(w * x for w, x in zip(d["analyses_by_year"]["w_bd"], r["v"])), 2)
+def m_oldhold(d):                                                                              # the v105 hold band back (v109)
+    b = d["dd_gauge"]["bands"]; h = next(x for x in b if x["cap"] == 25.0); h["lo"], h["hi"] = 2.5, 3.5
+    next(x for x in b if x["cap"] == 24.0)["hi"] = 2.5; next(x for x in b if x["cap"] == 26.0)["lo"] = 3.5
+def m_reach(d): r = d["dd_gauge"]["reach"][0]; r["value"] = round(r["value"] + 0.04, 2)     # a reach case off its inputs (v109)
 def m_ccvol(d): d["cc_vol_factor"] = round(d["cc_vol_factor"] + 0.02, 4)                      # the covered-call factor off its inputs (v107)
 def m_step(d):                                                                                 # a budget step printing a CAGR its search did not rank on
     e = next(iter(d["dd_gauge"]["alt"].values()))["b"]; e["cagr"] = round(e["cagr"] - 0.01, 2)

@@ -211,6 +211,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+170. SIZE A SCALE TO WHAT CAN REACH IT. The 20-30% band cut the gauge's 1-5 into 0.30 steps as if the
+   reading could travel all of it. It cannot: four-fifths of it is years 2-5, whose paths step back to
+   neutral and whose trend is reversal, and each view averages three parts. Stylized extremes run
+   through the gauge's own construction read about 2.0 to 3.7, so six of the eleven steps could never
+   fire. The steps now fit that reach (hold 2.80-3.20, 0.15 a step), the engine publishes the cases and
+   the audit re-derives them, and a check fails if the worst case stops reaching 20% or the best 29%.
+   When a scale is widened, test where the input can actually land before calling the ends usable.
 169. SHOWING A YEAR IS NOT COUNTING IT AGAIN. Asked to read the regional rankings at 1, 3, 5 and 10 years,
    the tempting move is a fourth column weighted 10% beside the 3-year score's 30%; but the 3-year score
    already averages years 1-3, so year 1 would count twice and every forecast would move for no new

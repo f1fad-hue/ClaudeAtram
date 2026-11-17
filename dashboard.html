@@ -4504,75 +4504,198 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "bands": [
    {
     "lo": 1.0,
-    "hi": 1.3,
+    "hi": 2.2,
     "cap": 20.0,
     "action": "Tighten to 20%"
    },
    {
-    "lo": 1.3,
-    "hi": 1.6,
+    "lo": 2.2,
+    "hi": 2.35,
     "cap": 21.0,
     "action": "Tighten to 21%"
    },
    {
-    "lo": 1.6,
-    "hi": 1.9,
+    "lo": 2.35,
+    "hi": 2.5,
     "cap": 22.0,
     "action": "Tighten to 22%"
    },
    {
-    "lo": 1.9,
-    "hi": 2.2,
+    "lo": 2.5,
+    "hi": 2.65,
     "cap": 23.0,
     "action": "Tighten to 23%"
    },
    {
-    "lo": 2.2,
-    "hi": 2.5,
+    "lo": 2.65,
+    "hi": 2.8,
     "cap": 24.0,
     "action": "Tighten to 24%"
    },
    {
-    "lo": 2.5,
-    "hi": 3.5,
+    "lo": 2.8,
+    "hi": 3.2,
     "cap": 25.0,
     "action": "Hold at 25%"
    },
    {
-    "lo": 3.5,
-    "hi": 3.8,
+    "lo": 3.2,
+    "hi": 3.35,
     "cap": 26.0,
     "action": "Raise to 26%"
    },
    {
-    "lo": 3.8,
-    "hi": 4.1,
+    "lo": 3.35,
+    "hi": 3.5,
     "cap": 27.0,
     "action": "Raise to 27%"
    },
    {
-    "lo": 4.1,
-    "hi": 4.4,
+    "lo": 3.5,
+    "hi": 3.65,
     "cap": 28.0,
     "action": "Raise to 28%"
    },
    {
-    "lo": 4.4,
-    "hi": 4.7,
+    "lo": 3.65,
+    "hi": 3.8,
     "cap": 29.0,
     "action": "Raise to 29%"
    },
    {
-    "lo": 4.7,
+    "lo": 3.8,
     "hi": 5.0,
     "cap": 30.0,
     "action": "Raise to 30%"
    }
   ],
   "band_rule_date": "2026-11-16",
+  "hold": [
+   2.8,
+   3.2
+  ],
+  "step_w": 0.15,
+  "rescale_date": "2026-11-16",
+  "hold_v105": [
+   2.5,
+   3.5
+  ],
+  "step_w_v105": 0.3,
+  "reach": [
+   {
+    "name": "Every input at its best",
+    "drivers": {
+     "Monetary policy & liquidity": 9.0,
+     "Inflation trajectory": 9.0,
+     "Growth momentum": 9.0,
+     "Corporate earnings": 9.0,
+     "Valuation support": 9.0,
+     "Volatility & risk appetite": 9.0,
+     "Geopolitics & energy": 9.0
+    },
+    "momentum": 5.0,
+    "reversal": 3.5,
+    "back": [
+     0.0,
+     0.6,
+     0.85
+    ],
+    "value": 3.7,
+    "cap": 29.0,
+    "cap_v105": 26.0
+   },
+   {
+    "name": "A strong but expensive boom, 2021-like",
+    "drivers": {
+     "Monetary policy & liquidity": 7.5,
+     "Inflation trajectory": 7.0,
+     "Growth momentum": 8.5,
+     "Corporate earnings": 9.0,
+     "Valuation support": 2.5,
+     "Volatility & risk appetite": 8.5,
+     "Geopolitics & energy": 7.0
+    },
+    "momentum": 4.5,
+    "reversal": 2.0,
+    "back": [
+     0.0,
+     0.6,
+     0.85
+    ],
+    "value": 2.8,
+    "cap": 25.0,
+    "cap_v105": 25.0
+   },
+   {
+    "name": "A crash, cheap afterwards, 2008- or 2020-like",
+    "drivers": {
+     "Monetary policy & liquidity": 8.0,
+     "Inflation trajectory": 6.5,
+     "Growth momentum": 1.5,
+     "Corporate earnings": 1.5,
+     "Valuation support": 8.5,
+     "Volatility & risk appetite": 1.0,
+     "Geopolitics & energy": 4.5
+    },
+    "momentum": 1.0,
+    "reversal": 4.0,
+    "back": [
+     0.0,
+     0.6,
+     0.85
+    ],
+    "value": 3.23,
+    "cap": 26.0,
+    "cap_v105": 25.0
+   },
+   {
+    "name": "A stagflation shock, expensive going in",
+    "drivers": {
+     "Monetary policy & liquidity": 1.0,
+     "Inflation trajectory": 1.0,
+     "Growth momentum": 1.5,
+     "Corporate earnings": 2.0,
+     "Valuation support": 2.0,
+     "Volatility & risk appetite": 1.0,
+     "Geopolitics & energy": 1.0
+    },
+    "momentum": 1.0,
+    "reversal": 2.5,
+    "back": [
+     0.0,
+     0.6,
+     0.85
+    ],
+    "value": 2.25,
+    "cap": 21.0,
+    "cap_v105": 24.0
+   },
+   {
+    "name": "Every input at its worst",
+    "drivers": {
+     "Monetary policy & liquidity": 1.0,
+     "Inflation trajectory": 1.0,
+     "Growth momentum": 1.0,
+     "Corporate earnings": 1.0,
+     "Valuation support": 1.0,
+     "Volatility & risk appetite": 1.0,
+     "Geopolitics & energy": 1.0
+    },
+    "momentum": 1.0,
+    "reversal": 2.0,
+    "back": [
+     0.0,
+     0.6,
+     0.85
+    ],
+    "value": 2.04,
+    "cap": 20.0,
+    "cap_v105": 23.0
+   }
+  ],
   "band": {
-   "lo": 2.5,
-   "hi": 3.5,
+   "lo": 2.8,
+   "hi": 3.2,
    "cap": 25.0,
    "action": "Hold at 25%"
   },
@@ -11934,8 +12057,9 @@ $("#corrnote").textContent = D.corr_note;
        once year 1 is taken out, so no year counts twice. Over ten years the cycle averages
        out &mdash; that is the ${base.toFixed(0)}% base itself.</p>
      <p><b>Why ${lo}% to ${top}%.</b> The owner widened the band on ${dlong(G.band_rule_date)}, from 24&ndash;27% to
-       ${lo}&ndash;${top}%: ${wn(dnB.length).toLowerCase()} one-point steps below the ${base.toFixed(0)}% base and ${wn(upB.length).toLowerCase()} above, the hold band
-       unchanged. ${(() => { const r = caps.slice(1).map((c, i) => { const p = caps[i], dd = Math.abs(AL[c].b.maxdd) - Math.abs(AL[p].b.maxdd);
+       ${lo}&ndash;${top}%: ${wn(dnB.length).toLowerCase()} one-point steps below the ${base.toFixed(0)}% base and ${wn(upB.length).toLowerCase()} above.
+       On ${dlong(G.rescale_date)} (owner) the steps were fitted to where the gauge can go: hold from
+       ${G.hold[0].toFixed(2)} to ${G.hold[1].toFixed(2)}, then ${G.step_w.toFixed(2)} of the reading a step (${G.step_w_v105.toFixed(2)} and a ${G.hold_v105[0].toFixed(2)}&ndash;${G.hold_v105[1].toFixed(2)} hold until then). ${(() => { const r = caps.slice(1).map((c, i) => { const p = caps[i], dd = Math.abs(AL[c].b.maxdd) - Math.abs(AL[p].b.maxdd);
            return dd > 0.05 ? (AL[c].b.cagr - AL[p].b.cagr) / dd : null; }).filter(v => v !== null);
          const hz = (Math.abs(AL[top].b.hormuz_dd) - Math.abs(AL[lo].b.hormuz_dd)) / (+top - +lo),
                ex = (Math.abs(AL[top].b.maxdd) - Math.abs(AL[lo].b.maxdd)) / (+top - +lo);
@@ -11945,7 +12069,18 @@ $("#corrnote").textContent = D.corr_note;
            drawdown &mdash; why a raise still needs both risk guards and two month-end reviews.`; })()} Going down, the step from
        ${hiLo}% to ${lo}% costs
        ${and3(["a", "b", "d"].map(x => { const dd = Math.abs(G.alt[hiLo][x].maxdd) - Math.abs(G.alt[lo][x].maxdd);
-         return `${x.toUpperCase()} ${dd > 0.05 ? ((G.alt[hiLo][x].cagr - G.alt[lo][x].cagr) / dd).toFixed(2) + "pp" : "nothing (no drawdown removed)"}`; }))} a year for each point of drawdown removed.</p>`;
+         return `${x.toUpperCase()} ${dd > 0.05 ? ((G.alt[hiLo][x].cagr - G.alt[lo][x].cagr) / dd).toFixed(2) + "pp" : "nothing (no drawdown removed)"}`; }))} a year for each point of drawdown removed.</p>
+     <p><b>Why ${G.step_w.toFixed(2)} a step.</b> Four-fifths of the reading is years 2&ndash;5, where every driver steps back
+       toward neutral and the trend is reversal, and each view averages three parts, so the gauge cannot travel the
+       whole of 1&ndash;5. Stylized extremes run through its own construction (not a backtest; it has weeks of
+       history):</p>
+     <div class="tw"><table class="dt"><thead><tr><th>Case</th><th>Gauge</th><th>${G.step_w.toFixed(2)} steps</th><th>${G.step_w_v105.toFixed(2)} steps</th></tr></thead><tbody>` +
+       G.reach.map(r => `<tr><td>${r.name}</td><td class="num">${r.value.toFixed(2)}</td><td class="num"><b>${r.cap.toFixed(0)}%</b></td><td class="num">${r.cap_v105.toFixed(0)}%</td></tr>`).join("") +
+     `</tbody></table></div>
+     <p>With these steps the worst case reaches the floor and the best the ${G.reach.find(r => r.name === "Every input at its best").cap.toFixed(0)}% step; with ${G.step_w_v105.toFixed(2)} steps they
+       reached only ${(() => { const v = G.reach.map(r => r.cap_v105); return `${Math.min(...v)}&ndash;${Math.max(...v)}%`; })()}. A strong but expensive
+       boom holds at ${base.toFixed(0)}%, at the edge of the hold band, so the gauge does not add risk into dear markets; a crash
+       that leaves markets cheap points one step up, which the VIX guard holds back until volatility settles.</p>`;
 })();
 
 /* ---------------- gauge ---------------- */

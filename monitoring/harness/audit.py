@@ -272,14 +272,15 @@ G = D["dd_gauge"]; band = [b for b in G["bands"] if b["lo"] <= G["value"] < b["h
 ck("the drawdown gauge's bands tile 1-5 and its value sits in the band it reports",
    G["bands"][0]["lo"] == 1 and G["bands"][-1]["hi"] == 5 and all(a["hi"] == b["lo"] for a, b in zip(G["bands"], G["bands"][1:]))
    and len(band) == 1 and band[0] == G["band"], f"{G['value']} in {G['band']}")
-# THE BAND IS THE OWNER'S (v105, 2026-11-16: "Wider the band of budget drawdown to 20-30%"): one-point
-# steps from 20% to 30%, the 25% base held from 2.50 to 3.50, and the rest of 1-5 cut into equal widths
-# on each side - re-derived here from those three facts, not read back from the engine's list.
+# THE BAND IS THE OWNER'S (v105, 2026-11-16: "Wider the band of budget drawdown to 20-30%"; re-scaled
+# v109, 2026-11-16: "Okay update it to best and recommended"): one-point steps from 20% to 30%, the 25%
+# base held from 2.80 to 3.20, every inner step 0.15 wide, the end steps taking the rest of 1-5 -
+# re-derived here from those facts, not read back from the engine's list.
 _base = D["dd_budget"]["base"]; _nd, _nu = int(_base - 20), int(30 - _base)
-_exp = ([(round(1 + i * 1.5 / _nd, 2), round(1 + (i + 1) * 1.5 / _nd, 2), 20.0 + i) for i in range(_nd)]
-        + [(2.5, 3.5, _base)]
-        + [(round(3.5 + i * 1.5 / _nu, 2), round(3.5 + (i + 1) * 1.5 / _nu, 2), _base + 1 + i) for i in range(_nu)])
-ck("the budget band is the owner's 20-30%: one-point steps, the 25% base held from 2.50 to 3.50, equal widths each side",
+_exp = ([(1.0 if i == 0 else round(2.8 - (_nd - i) * 0.15, 2), round(2.8 - (_nd - 1 - i) * 0.15, 2), 20.0 + i) for i in range(_nd)]
+        + [(2.8, 3.2, _base)]
+        + [(round(3.2 + i * 0.15, 2), 5.0 if i == _nu - 1 else round(3.2 + (i + 1) * 0.15, 2), _base + 1 + i) for i in range(_nu)])
+ck("the budget band is the owner's 20-30%: one-point steps, the 25% base held from 2.80 to 3.20, 0.15 a step",
    [(b["lo"], b["hi"], b["cap"]) for b in G["bands"]] == _exp
    and all(b["action"].endswith(f"{b['cap']:.0f}%") for b in G["bands"])
    and sorted(float(c) for c in G["alt"]) == [float(c) for c in range(20, 31)],
@@ -323,6 +324,28 @@ _trp = {h: round(sum(_ts[h].values()) / len(_ts[h]), 2) for h in _sp}
 # v108: THE FOUR ANALYSES, YEAR BY YEAR, re-derived cell by cell from their own inputs: the regions'
 # spans, the two tilt drivers' year 1 / implied years 2-3 / paths, the five markets' trend spans and the
 # valuation path; A reads the last span, B and D all four at 10/20/20/50, each the blend the forecasts use.
+# v109: THE GAUGE'S REACH re-derived from each stylized case's own inputs - the six-driver macro part,
+# the trend's momentum then reversal, the valuation path, each span stepped back toward neutral - and
+# the band it lands in. The band is sized to it: the worst case reaches 20%, the best 29% or more, and
+# a strong but expensive boom raises nothing.
+def _rch(c):
+    sp = []
+    for i, w in enumerate((0.2, 0.4, 0.4)):
+        v = {n: x + c["back"][i] * (5.5 - x) for n, x in c["drivers"].items()}
+        sp.append(w * (to5(sum(x["weight"] * v[x["name"]] for x in _DR6) / _W6)
+                       + (c["momentum"] if i == 0 else c["reversal"]) + to5(v[_VALN])) / 3)
+    return round(sum(sp), 2)
+_bcap = lambda g: next(b["cap"] for b in G["bands"] if b["lo"] <= g < b["hi"] or (b["hi"] == 5 and g == 5))
+_RC = {c["name"]: c for c in G["reach"]}
+ck("the band fits the gauge's reach: each stylized case re-derived and banded; worst 20%, best 29%+, an expensive boom no raise",
+   all(_rch(c) == c["value"] and _bcap(c["value"]) == c["cap"] and c["back"] == [0.0, 0.6, 0.85] for c in G["reach"])
+   # and where each landed on the v105-v108 steps the page quotes (hold 2.50-3.50, 0.30 a step)
+   and G["hold_v105"] == [2.5, 3.5] and G["step_w_v105"] == 0.3
+   and all(c["cap_v105"] == (20 + min(4, int((c["value"] - 1) / 0.3 + 1e-9)) if c["value"] < 2.5 else 25 if c["value"] < 3.5
+                             else 26 + min(4, int((c["value"] - 3.5) / 0.3 + 1e-9))) for c in G["reach"])
+   and _RC["Every input at its worst"]["cap"] == 20.0 and _RC["Every input at its best"]["cap"] >= 29.0
+   and _RC["A strong but expensive boom, 2021-like"]["cap"] <= _base,
+   f"{[(c['name'][:12], c['value'], _rch(c), c['cap']) for c in G['reach']]}")
 _AB = D["analyses_by_year"]; _abw = [0.1, 0.2, 0.2, 0.5]
 _DRn = {x["name"]: x for x in DR}
 _drow = lambda n: [to5(_GD[n]["y1"]), to5(_y23[n]), to5(_DRn[n]["path"]["5Y"]), to5(_DRn[n]["path"]["10Y"])]

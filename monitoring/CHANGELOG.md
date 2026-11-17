@@ -2,6 +2,92 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-16 — v109: the budget band fitted to where the gauge can go - hold 2.80-3.20, one point per 0.15; nothing moves today
+
+At the owner's instruction, after asking whether the band-to-gauge ratio was the best: "Okay update it to best and
+recommended." **Market data is unchanged** (v104, closes to 13 Nov).
+
+**The problem.** v105 cut the gauge's 1-5 scale into 0.30-wide one-point steps around a 2.50-3.50 hold band, as if
+the reading could travel the whole scale. It cannot, for three reasons:
+- Four-fifths of the reading is years 2-5.
+- In those years every driver's path steps back toward neutral, and the trend is reversal.
+- Each view averages three parts (macro, trend, valuation).
+
+Stylized extremes run through the gauge's own construction read about 2.0 to 3.7, so only 23-26% could ever be
+reached. Six of the eleven steps the owner asked for were dead. These are not a backtest: the gauge has weeks of
+history.
+
+**The rule now.** Hold at 25% from 2.80 to 3.20, then one point per 0.15 of the reading:
+
+| Reading | Budget |
+| --- | --- |
+| below 2.20 | 20% |
+| 2.20-2.35 | 21% |
+| 2.35-2.50 | 22% |
+| 2.50-2.65 | 23% |
+| 2.65-2.80 | 24% |
+| **2.80-3.20** | **25% (hold)** |
+| 3.20-3.35 | 26% |
+| 3.35-3.50 | 27% |
+| 3.50-3.65 | 28% |
+| 3.65-3.80 | 29% |
+| 3.80 and above | 30% |
+
+The guards and the two-review rule are unchanged.
+
+**The stylized cases** (published as `dd_gauge.reach`; drivers step 60% / 85% back to neutral by years 2-3 / 4-5):
+
+| Case | Gauge | 0.15 steps | 0.30 steps |
+| --- | --- | --- | --- |
+| Every input at its best | 3.70 | 29% | 26% |
+| A strong but expensive boom, 2021-like | 2.80 | 25% | 25% |
+| A crash, cheap afterwards, 2008- or 2020-like | 3.23 | 26% | 25% |
+| A stagflation shock, expensive going in | 2.25 | 21% | 24% |
+| Every input at its worst | 2.04 | 20% | 23% |
+
+**Alternatives tested and rejected.**
+- 0.20 steps around a 2.70-3.30 hold use only 21-28%.
+- 0.10 steps around a 2.85-3.15 hold put stagflation and the worst case on the same 20% floor, cut an expensive
+  boom to 24%, and change the budget more often.
+
+0.15 is the one that spreads the cases across the whole band, holds an expensive boom at 25%, and makes a raise
+slightly harder to reach than a cut. That fits the tail: each point earns B 0.07-0.11pp a year but deepens its
+Hormuz loss about 1.7 points.
+
+**Today.** The gauge reads 2.93, inside the new hold band, so the budget stays at 25% for A, B and D and nothing
+moves:
+- **A**: 7.31% / −24.9%.
+- **B**: 7.20% / −24.9%.
+- **D**: 7.25% / −24.8%.
+
+A raise now needs a reading of 3.20 (was 3.50), held at two month-end reviews, with geopolitics above 2.0 and the
+VIX at or below 19.5. The 31 Oct review (2.93) is in the same hold band.
+
+**On the page (Budget tab).**
+- The bands table shows the new edges.
+- "Why 20% to 30%" records the re-scaling.
+- A new paragraph, "Why 0.15 a step", tabulates the five cases on the new and the old steps.
+
+**Checks added.**
+- **Engine** (265): the bands tile 1-5 with the 2.80-3.20 hold and 0.15 inner steps, and end steps at 2.20 and
+  3.80. The band fits the reach: the worst case reaches 20%, the best 29% or more, and an expensive boom does not
+  raise the budget.
+- **Audit** (280): the bands re-derived from the owner's rule; every stylized case re-derived from its published
+  inputs through the audit's own six-driver macro part, then banded on both the new and the old steps.
+- **Mutants** (72): the old hold band put back; a case's reading moved off its inputs.
+
+**Errors found and fixed.**
+1. **The page's first draft re-typed the old steps in JavaScript** (2.5, 3.5, 0.3) to show where each case landed
+   before. The engine now publishes `cap_v105`, `hold_v105` and `step_w_v105`, and the audit re-derives them.
+2. **The five cases first printed as one run-on sentence** whose commas could not be parsed. They are a table now.
+3. **The tab read-through showed "âˆ’" for the minus signs** in the "What each step buys" table. A check of the
+   rendered cell found U+2212, the right character: the garbling was in the capture, not the page.
+
+**Checks.** Engine 265/265 · audit 280/280 · page 16/16 · mutants 72/72 caught. All five tabs read at 390px with no
+script errors and no horizontal scroll.
+
+A model's reading, not personal financial advice.
+
 ## 2026-11-16 — v108: the regional rankings read year 1 on their own, so all four analyses are read at 1, 3, 5 and 10 years; A, B and D re-derive unchanged
 
 At the owner's instruction: "Update portfolio A based on 10yrs macroeconomics sentiments, regional rankings, market

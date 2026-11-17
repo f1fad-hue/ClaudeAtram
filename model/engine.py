@@ -5565,6 +5565,15 @@ DD_BUDGET_BAND_DATE = "2026-10-28"
 # rest of 1-5 cut into equal 0.30 widths, so a step is as far in the reading on either side.
 # The guards and the two-review rule are unchanged; the derived 26.97% now sits inside the band,
 # at its 27% step.
+# RE-SCALED TO WHERE THE GAUGE CAN GO (owner, 2026-11-16, v109: "Okay update it to best and
+# recommended"): the 0.30 steps assumed the reading could travel the whole of 1-5, but 80% of it
+# is years 2-5, whose paths step back toward neutral and whose trend is reversal, and each view
+# averages three parts. Stylized extremes run through the gauge's own construction (DDG_REACH below)
+# span about 2.0 to 3.7, so under 0.30 steps the budget could only ever reach 23-26%. The hold band
+# narrows to 2.80-3.20 and each one-point step is 0.15 wide: the worst case reaches 20%, the best
+# 29%, a strong but expensive boom holds at 25%, and the two-review rule and both raise guards are
+# unchanged. The tested alternatives - 0.20 steps (21-28% used) and 0.10 steps (floors early, an
+# expensive boom cuts) - did worse.
 # THREE PARTS FROM v106 (owner, 2026-11-16: "Update also the drawdown budget gauge macroeconomic
 # sentiments, market trends and market valuations based on deep researchs and analysis of 1, 3, 5,
 # and 10yrs"): market valuation is read as its own part, beside the macro drivers and the market
@@ -5583,15 +5592,18 @@ DDG_SPAN_LABEL = {"1Y": "Year 1", "3Y": "Years 2-3", "5Y": "Years 4-5"}
 DDG_VIEWS = tuple(DDG_SPANS)
 DDG_W = {h: round((b - a) / DDG_SPANS[DDG_VIEWS[-1]][1], 2) for h, (a, b) in DDG_SPANS.items()}
 DDG_RULE_WIDE_DATE = "2026-11-16"
-DDG_HOLD = (2.5, 3.5)            # the hold band at the owner's 25%, unchanged
+DDG_HOLD = (2.8, 3.2)            # the hold band at the owner's 25% (v109; 2.50-3.50 until then)
+DDG_STEP_W = 0.15                # each one-point step's width in the reading (v109; 0.30 in v105-v108)
+DDG_RESCALE_DATE = "2026-11-16"
 DDG_FLOOR, DDG_CEIL = 20.0, 30.0  # owner, 2026-11-16
 _n_dn = int(DD_BUDGET_OWNER - DDG_FLOOR); _n_up = int(DDG_CEIL - DD_BUDGET_OWNER)
-_w_dn = (DDG_HOLD[0] - 1.0) / _n_dn; _w_up = (5.0 - DDG_HOLD[1]) / _n_up
+# The end steps take the rest of 1-5: 20% everything below 2.20, 30% everything from 3.80.
 DDG_BANDS = (  # [lo, hi) on the 1-5 reading, the budget it points to, the action
-    [(round(1.0 + i * _w_dn, 2), round(1.0 + (i + 1) * _w_dn, 2), DDG_FLOOR + i, f"Tighten to {DDG_FLOOR + i:.0f}%")
+    [(1.0 if i == 0 else round(DDG_HOLD[0] - (_n_dn - i) * DDG_STEP_W, 2),
+      round(DDG_HOLD[0] - (_n_dn - 1 - i) * DDG_STEP_W, 2), DDG_FLOOR + i, f"Tighten to {DDG_FLOOR + i:.0f}%")
      for i in range(_n_dn)]
     + [(DDG_HOLD[0], DDG_HOLD[1], DD_BUDGET_OWNER, f"Hold at {DD_BUDGET_OWNER:.0f}%")]
-    + [(round(DDG_HOLD[1] + i * _w_up, 2), round(DDG_HOLD[1] + (i + 1) * _w_up, 2) if i < _n_up - 1 else 5.0001,
+    + [(round(DDG_HOLD[1] + i * DDG_STEP_W, 2), round(DDG_HOLD[1] + (i + 1) * DDG_STEP_W, 2) if i < _n_up - 1 else 5.0001,
         DD_BUDGET_OWNER + 1 + i, f"Raise to {DD_BUDGET_OWNER + 1 + i:.0f}%") for i in range(_n_up)])
 DDG_GEO_FLOOR = 2.0
 DDG_REVIEWS_NEEDED = 2
@@ -5684,6 +5696,39 @@ for _h in DDG_PARTS:
     _p["reading"] = _hu2(sum(Decimal(repr(_p[k])) for k in DDG_READING_OF) / len(DDG_READING_OF))
 DDG_VALUE = _hu2(sum(Decimal(repr(DDG_PARTS[h]["reading"])) * Decimal(repr(DDG_W[h])) for h in DDG_VIEWS))
 DDG_BAND = next(b for b in DDG_BANDS if b[0] <= DDG_VALUE < b[1])
+# THE GAUGE'S REACH (v109): stylized extremes - not a backtest, the gauge has weeks of history - run
+# through the gauge's own construction. Each driver's reading is held for year 1 and steps back toward
+# neutral by years 2-3 and 4-5 (60% and 85% of the way, as today's Monetary path does: 64% / 86%);
+# the trend is momentum in year 1 and reversal after it; valuation is the valuation driver's path.
+# The steps are sized so the worst case reaches the 20% floor and the best the 29-30% steps.
+_REACH_BACK = (0.0, 0.60, 0.85)
+def _reach(drv, mom, rev):
+    sp = []
+    for i, h in enumerate(DDG_VIEWS):
+        v = {n: drv[n] + _REACH_BACK[i] * (DRIVER_NEUTRAL_10 - drv[n]) for n in drv}
+        sp.append((_macro_part(v) + (mom if i == 0 else rev) + to5(v[DDG_VAL])) / 3)
+    return round(sum(DDG_W[h] * x for h, x in zip(DDG_VIEWS, sp)), 2)
+_RD = ("Monetary policy & liquidity", "Inflation trajectory", "Growth momentum", "Corporate earnings",
+       "Valuation support", "Volatility & risk appetite", "Geopolitics & energy")
+assert set(_RD) == {n for n, _, _, _ in DRIVERS}
+_REACH_IN = (   # name, the seven drivers on 1-10 in _RD's order, year-1 momentum and later reversal on 1-5
+    ("Every input at its best", (9.0,) * 7, 5.0, 3.5),
+    ("A strong but expensive boom, 2021-like", (7.5, 7.0, 8.5, 9.0, 2.5, 8.5, 7.0), 4.5, 2.0),
+    ("A crash, cheap afterwards, 2008- or 2020-like", (8.0, 6.5, 1.5, 1.5, 8.5, 1.0, 4.5), 1.0, 4.0),
+    ("A stagflation shock, expensive going in", (1.0, 1.0, 1.5, 2.0, 2.0, 1.0, 1.0), 1.0, 2.5),
+    ("Every input at its worst", (1.0,) * 7, 1.0, 2.0))
+# The v105-v108 steps, kept to show what the re-scaling changed: hold 2.50-3.50, 0.30 a step.
+DDG_HOLD_V105, DDG_STEP_W_V105 = (2.5, 3.5), 0.3
+def _cap_v105(g):
+    if g < DDG_HOLD_V105[0]: return DDG_FLOOR + min(_n_dn - 1, int((g - 1.0) / DDG_STEP_W_V105 + 1e-9))
+    if g < DDG_HOLD_V105[1]: return DD_BUDGET_OWNER
+    return DD_BUDGET_OWNER + 1 + min(_n_up - 1, int((g - DDG_HOLD_V105[1]) / DDG_STEP_W_V105 + 1e-9))
+DDG_REACH = []
+for _n, _dv, _m, _r in _REACH_IN:
+    _g = _reach(dict(zip(_RD, _dv)), _m, _r)
+    DDG_REACH.append({"name": _n, "drivers": dict(zip(_RD, _dv)), "momentum": _m, "reversal": _r,
+                      "back": list(_REACH_BACK), "value": _g,
+                      "cap": next(b[2] for b in DDG_BANDS if b[0] <= _g < b[1]), "cap_v105": _cap_v105(_g)})
 _geo_now = next(s_ for n_, _, s_, _ in DRIVERS if n_.startswith("Geopolitics"))
 DDG_GUARDS = [
     {"name": "persistence", "ok": (len(DDG_REVIEWS) >= DDG_REVIEWS_NEEDED and all(
@@ -8052,6 +8097,9 @@ def payload():
                      "parts": DDG_PARTS, "reading_of": list(DDG_READING_OF), "longrun": MACRO["vix_longrun"],
                      "bands": [{"lo": b[0], "hi": min(b[1], 5.0), "cap": b[2], "action": b[3]}
                                for b in DDG_BANDS], "band_rule_date": DDG_RULE_WIDE_DATE,
+                     "hold": list(DDG_HOLD), "step_w": DDG_STEP_W, "rescale_date": DDG_RESCALE_DATE,
+                     "hold_v105": list(DDG_HOLD_V105), "step_w_v105": DDG_STEP_W_V105,
+                     "reach": DDG_REACH,
                      "band": {"lo": DDG_BAND[0], "hi": min(DDG_BAND[1], 5.0), "cap": DDG_BAND[2],
                               "action": DDG_BAND[3]},
                      "guards": DDG_GUARDS, "recommended_cap": DDG_RECOMMENDED,
@@ -9739,14 +9787,15 @@ def report():
     # ranked on. Two summation routes printed 7.20 beside a "best" of 7.21 on Python 3.13.
     checks.append(("every budget step's printed CAGR is the best its search found",
                    all(e["cagr"] == e["best"] for alt in p["dd_gauge"]["alt"].values() for e in alt.values())))
-    checks.append(("the gauge's bands tile 1-5 without a gap, step 1pp from 20% to 30% (owner, 16 Nov), and hold at the owner's 25% from 2.50 to 3.50",
+    checks.append(("the gauge's bands tile 1-5 without a gap, step 1pp from 20% to 30% (owner, 16 Nov), hold at the owner's 25% from 2.80 to 3.20 and each inner step 0.15 wide (owner, 16 Nov, v109)",
                    _bands[0]["lo"] == 1.0 and _bands[-1]["hi"] == 5.0
                    and all(a["hi"] == b["lo"] for a, b in zip(_bands, _bands[1:]))
                    and [b["cap"] for b in _bands] == [float(c) for c in range(20, 31)]
-                   and any(b["cap"] == p["dd_budget"]["base"] and (b["lo"], b["hi"]) == (2.5, 3.5) for b in _bands)
-                   # equal widths on each side of the hold band
-                   and len({round(b["hi"] - b["lo"], 2) for b in _bands if b["cap"] < p["dd_budget"]["base"]}) == 1
-                   and len({round(b["hi"] - b["lo"], 2) for b in _bands if b["cap"] > p["dd_budget"]["base"]}) == 1
+                   and any(b["cap"] == p["dd_budget"]["base"] and (b["lo"], b["hi"]) == (2.8, 3.2) for b in _bands)
+                   and _dg["hold"] == [2.8, 3.2] and _dg["step_w"] == 0.15
+                   # every step but the two end ones is 0.15 wide; the ends take the rest of 1-5
+                   and all(abs(b["hi"] - b["lo"] - 0.15) < 1e-9 for b in _bands[1:-1] if b["cap"] != p["dd_budget"]["base"])
+                   and (_bands[0]["hi"], _bands[-1]["lo"]) == (2.2, 3.8)
                    and any(b["cap"] == p["dd_budget"]["base"] and b["lo"] <= 3.0 < b["hi"] for b in _bands)
                    and _dg["band"]["lo"] <= _dg["value"] < _dg["band"]["hi"] + (1e-9 if _dg["band"]["hi"] == 5.0 else 0)))
     # runbook 107: a weighted view that is neutral by construction pins the gauge inside
@@ -9755,6 +9804,14 @@ def report():
                                for h, w in _dg["w"].items()), 2)
     checks.append(("every band of the gauge is reachable: the weighted views at 1 and at 5 reach the 20% and 30% bands",
                    _ext(1.0) < _bands[0]["hi"] and _ext(5.0) >= _bands[-1]["lo"]))
+    # v109: and REALISTICALLY reachable - the stylized worst case reaches the floor, the best case one of
+    # the top two steps, and an expensive boom does not raise the budget.
+    _rc = {r["name"]: r for r in _dg["reach"]}
+    checks.append(("the band fits the gauge's reach: the worst stylized case reaches 20%, the best 29% or more, an expensive boom no raise",
+                   _rc["Every input at its worst"]["cap"] == 20.0 and _rc["Every input at its best"]["cap"] >= 29.0
+                   and _rc["A strong but expensive boom, 2021-like"]["cap"] <= p["dd_budget"]["base"]
+                   and all(next(b["cap"] for b in _bands if b["lo"] <= r["value"] < b["hi"] or (b["hi"] == 5.0 and r["value"] == 5.0)) == r["cap"]
+                           for r in _dg["reach"])))
     _gd = {g["name"]: g for g in _dg["guards"]}
     _rz = _dg["band"]["cap"] > p["dd_budget"]["base"]
     _okstep = all(g["ok"] for g in _dg["guards"] if g["applies_to"] == "any step" or (_rz and g["applies_to"] == "raise"))
