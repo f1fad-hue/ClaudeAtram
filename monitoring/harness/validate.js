@@ -35,6 +35,11 @@ const file = process.argv[2], live = process.argv.includes("--live");
         dashes: [...document.querySelectorAll(".num, .lede")].filter(e => e.textContent.trim() === "—").map(e => e.id).slice(0, 8),
         http: ext.filter(u => !u.startsWith("https://")),
         hscroll: document.documentElement.scrollWidth > window.innerWidth + 1,
+        // v114: the tabs fill the bar edge to edge in equal widths (a stale six-column grid left a gap)
+        tabfit: (() => { const bar = document.querySelector(".navin"), ts = [...document.querySelectorAll("button.tab")];
+          if (!bar || !ts.length) return false; const r = bar.getBoundingClientRect(), w = ts.map(t => t.getBoundingClientRect());
+          return Math.abs(w[0].left - r.left) < 1.5 && Math.abs(w[w.length - 1].right - r.right) < 1.5
+            && w.every(x => Math.abs(x.width - r.width / ts.length) < 1.5); })(),
         donuts: ["donutA", "donutB", "donutC", "donutD"].map(i => !!document.querySelector(`#${i} svg`)),
         vs, shorts: D.portfolio_b.shorts,
         gaugenow: (document.getElementById("gaugenow") || {}).textContent,
@@ -51,6 +56,7 @@ const file = process.argv[2], live = process.argv.includes("--live");
     const D = info.D;
     ck(`[${width}px] no JavaScript errors after opening every tab`, errs.length === 0, errs.slice(0, 3).join(" | "));
     ck(`[${width}px] no horizontal scroll`, !info.hscroll);
+    ck(`[${width}px] the tabs fill the bottom bar in equal widths, edge to edge`, info.tabfit);
     if (width !== 412) { await p.close(); continue; }
     // v107 (owner, 16 Nov): the Volatility tab retired - five tabs, its drawdown model on the Portfolios tab
     ck("five tabs, five panels, no Volatility tab, the tab bar fixed to the bottom",

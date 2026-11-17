@@ -79,7 +79,9 @@ nav{position:fixed;bottom:0;left:0;right:0;z-index:50;
   background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
   border-top:1px solid var(--line-2);
   padding-bottom:env(safe-area-inset-bottom,0px)}
-.navin{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);height:var(--tabh)}
+/* v114: one equal column per tab, however many there are - the bar kept six columns after the Volatility tab
+   left in v107, so five tabs sat in five-sixths of it with an empty column on the right */
+.navin{max-width:480px;margin:0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;height:var(--tabh)}
 .tab{appearance:none;border:0;background:none;cursor:pointer;font-family:var(--body);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   color:var(--ink-3);font-size:10.5px;font-weight:600;letter-spacing:.01em;

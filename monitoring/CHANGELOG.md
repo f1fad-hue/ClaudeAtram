@@ -2,6 +2,22 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-17 — v114: the bottom tab bar spans the full width
+
+At the owner's request, from a phone screenshot with the tab bar circled: "Can you arrange/align the circle in the
+photo". The five tabs (Macro, Funds, Portfolios, Budget, Report) sat in the left five-sixths of the bar, with an
+empty strip on the right.
+
+**The error.** The bar was still a six-column grid (`repeat(6, 1fr)`) after the Volatility tab was removed in v107,
+so the five tabs took 65px columns on a 390px phone and the sixth column stayed empty. v107's check counted five
+tabs and five panels but never measured where the tabs sat.
+
+**The fix.** One equal column per tab, however many there are (`grid-auto-flow: column; grid-auto-columns: 1fr`).
+The validator now checks, at 360px and 412px, that the first tab starts at the bar's left edge, the last ends at its
+right edge, and every tab has an equal width.
+
+No data, figure or portfolio changed. Validator 20 (two new); engine 268 and audit 297 unchanged.
+
 ## 2026-11-17 — v113: Seoul and Tokyo to 17 Nov; FedWatch re-quoted; FactSet's 18.3x carried; Global Bond Income's fee corrected; A, B, C and D unchanged; budget 25%
 
 At the owner's instruction: run debugging, code review and a sanity check; hunt and fix errors; clean up; and
