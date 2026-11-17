@@ -2,6 +2,62 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-17 — v115: A on 10 years and B, C and D on 1/3/5/10 years, re-researched and re-picked; Manila to 17 Nov; all four unchanged
+
+At the owner's instruction (sent twice):
+- **A:** update on 10 years of deep research and analysis of macro sentiment, market trends, regional rankings and
+  market valuations.
+- **B, C and D:** the same at 1, 3, 5 and 10 years.
+
+Cut-off 15:00 UTC on Tue 17 Nov. New York's 17 Nov session was open, not closed.
+
+**What was re-researched, horizon by horizon.**
+
+- **Regional rankings, 10 years** (A's whole view, half of B's, C's and D's): US 6.5, Europe 4.5, Asia 7.0,
+  Philippines 5.5 on 1-10. No house published a new decade outlook in November. The current editions still put US
+  equities at about 5-6% a year and developed ex-US at 7-8% (BNY; Schwab; Morningstar; Invesco; Cohen & Steers;
+  Vanguard), on high US valuations and a weaker dollar. The anchors' reasons already carry this, and J.P. Morgan's
+  2027 assumptions, which the base returns use, carry the rest. Held.
+- **Regional rankings, years 1-5:** year 1 US 5.0, Europe 3.25, Asia 6.0, Philippines 4.75; 3-year US 5.5,
+  Europe 3.75, Asia 6.5, Philippines 5.25; years 4-5 US 6.25, Europe 4.5, Asia 7.0, Philippines 5.75. Held. Asia's
+  slide under 5,000 widens the valuation discount its year-1 reading already counts, and Manila's bounce ends a
+  four-day slide without changing the case.
+- **Macro sentiment:**
+  - Every driver score and path is unchanged, and FedWatch is at 100% for a December hike.
+  - US October retail sales were released at 13:30 UTC: +0.2%, as expected, after a revised +0.8% (AP; Tribune
+    India). They join the notes with New York's 17 Nov session, when the calendar's clock reads them as past. An
+    in-line print would move no reading.
+- **Market trend:** the windows run to 30 Sep and roll at the quarter-end, in January. IXJ's and IXN's trailing
+  returns stay held and flagged stale, with nothing newer in two sources.
+- **Market valuation:** the S&P on 18.3x on 12 Nov, lower since, and the CAPE at 38.9. Held at 8.0, with the same
+  path.
+
+**Rolled: Manila's PSEi to 17 Nov.**
+- **Close:** 5,500.88, +19.00 (+0.35%), ending a four-day slide on bargain hunting, the gain capped by Wall
+  Street's losses and weak regional markets (BusinessWorld; CNBC's quote). 5,481.88 + 19.00 = 5,500.88.
+- **Peso:** its 17 Nov close, P63.67 on BAP data, is in BusinessWorld only (Trading Economics has 63.78), so the
+  peso stays at 16 Nov.
+- **Notes:** the 16 Nov and 13 Nov moves now read from their own keys, not from "the previous close".
+
+**The picks: every mix the same.**
+
+| | Weights | Own view | Feasible |
+| --- | --- | --- | --- |
+| A | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | 7.31% / −24.9% (10-year) | 165,565 |
+| B | the same mix | 7.20% / −24.9% (1/3/5/10) | 164,826 |
+| C | 25 / 65 / 0 / 10 (cash / Nasdaq / - / Tech) | 7.01% / −25.0% | 14 of 54 |
+| D | 0 / 50 / 0 / 0 / 0 / 15 / 20 / 0 / 0 / 15 / 0 | 7.25% / −24.8% | 37,481 |
+
+Every fund's net CAGR is unchanged. The budget gauge is 2.93, hold at 25%.
+
+**Errors caught by the checks before publishing.**
+- The PSEi's 16 Nov figures read "the day after" instead of naming 16 Nov.
+- The single-source peso close was entered as an input nothing read; it is now a comment.
+
+**Checks.** Engine 268. Audit 296. Validator 20. Mutants 82/82.
+
+Not personal financial advice.
+
 ## 2026-11-17 — v114: the bottom tab bar spans the full width
 
 At the owner's request, from a phone screenshot with the tab bar circled: "Can you arrange/align the circle in the

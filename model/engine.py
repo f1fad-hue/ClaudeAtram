@@ -24,14 +24,14 @@ from itertools import combinations, product
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-11-17"        # newest completed session carried: Seoul's and Tokyo's 17 Nov closes (v113).
-                            # New York's, the VIX's and the oil settles' are 16 Nov's (New York had not
-                            # opened by the cut-off), and so are Manila's and the peso's (their 17 Nov
-                            # closes were not yet reported in two sources); the 16 Nov T-bill auction; the
+AS_OF = "2026-11-17"        # newest completed session carried: Seoul's, Tokyo's (v113) and Manila's PSEi
+                            # (v115) 17 Nov closes. New York's, the VIX's and the oil settles' are 16 Nov's
+                            # (New York's 17 Nov session had not closed by the cut-off), and so is the
+                            # peso's (its 17 Nov close in one source only); the 16 Nov T-bill auction; the
                             # Treasury curve held at 13 Nov (no par-curve figure for 16 Nov in two sources);
                             # FedWatch's 16 Nov read
-REVIEW_DATE = "2026-11-17"  # when this review was worked through (v113: cut-off 12:00 UTC on Tue
-                            # 17 Nov, after Tokyo, Seoul and Manila had closed and before New York opened)
+REVIEW_DATE = "2026-11-17"  # when this review was worked through (v115: cut-off 15:00 UTC on Tue
+                            # 17 Nov, after Tokyo, Seoul and Manila had closed, New York's session open)
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -992,9 +992,14 @@ MACRO = {
     # stagflation worries, bets on more US rate hikes and the peso's fall; only five index members rose
     # (BusinessWorld, "Economic worries drag PSEi to over six-year low"; the Manila Times, "PSEi plunges
     # to 6-year low; peso nears P64:$1"; the Tribune). 5593.49 - 111.61 = 5481.88.
-    "psei": 5481.88, "psei_chg_pts": -111.61, "psei_chg_pct": -2.00,
-    "psei_date": "2026-11-16",
-    "psei_prev": 5593.49,
+    # v115: 17 Nov +19.00 (+0.35%) to 5500.88, ending a four-day slide on bargain hunting, the gain capped by
+    # Wall Street's losses and weak regional markets (BusinessWorld, "Stocks halt four-day slump on bargain
+    # hunting"; CNBC's .PSI quote). 5481.88 + 19.00 = 5500.88. The peso's 17 Nov close, P63.67 on BAP data, is
+    # in BusinessWorld only (Trading Economics has 63.78), so the peso stays at 16 Nov.
+    "psei_13nov": 5593.49, "psei_16nov": 5481.88, "psei_16nov_chg_pct": -2.00,
+    "psei": 5500.88, "psei_chg_pts": 19.00, "psei_chg_pct": 0.35,
+    "psei_date": "2026-11-17",
+    "psei_prev": 5481.88,
     "psei_13nov_chg_pct": -1.18,
     "psei_low_since": "May 2020",
     "psei_low_since_close": 5479.35,        # the 18 May 2020 close it was the lowest since (BusinessWorld)
@@ -3800,9 +3805,11 @@ PH_PESO_REASON = {
                    "(BusinessWorld, on BAP data; the Manila Times)"),
 }
 PSEI_REASON = {
-    "2026-11-16": (f", its lowest close since {MACRO['psei_low_since']} ({MACRO['psei_low_since_close']:,.2f} on 18 May 2020), on stagflation worries, "
-                   "bets on more US rate hikes and the peso's fall, only five index members rising (BusinessWorld; the "
-                   "Manila Times; the Tribune)"),
+    "2026-11-17": (", ending a four-day slide as bargain hunters bought, the gain capped by Wall Street's losses and weak "
+                   f"regional markets (BusinessWorld; CNBC's quote), after it fell {abs(MACRO['psei_16nov_chg_pct']):.2f}% on 16 Nov to "
+                   f"{MACRO['psei_16nov']:,.2f}, its lowest close since {MACRO['psei_low_since']} ({MACRO['psei_low_since_close']:,.2f} on "
+                   "18 May 2020), on stagflation worries, bets on more US rate hikes and the peso's fall, only five index members "
+                   "rising (BusinessWorld; the Manila Times; the Tribune)"),
 }
 REGIONS = {
     "US": {
@@ -4007,7 +4014,7 @@ REGIONS = {
                 f"{'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% to {MACRO['psei']:.2f} on "
                 f"{_dday('psei_date')}"
                 + PSEI_REASON[MACRO["psei_date"]]
-                + f", after falling {abs(MACRO['psei_13nov_chg_pct']):.2f}% on 13 Nov to {MACRO['psei_prev']:,.2f}, then its 2026 "
+                + f", and {abs(MACRO['psei_13nov_chg_pct']):.2f}% on 13 Nov to {MACRO['psei_13nov']:,.2f}, then its 2026 "
                 "low, as the peso weakened and foreigners sold (the Inquirer; the Tribune), "
                 f"{abs(MACRO['psei_12nov_chg_pct']):.2f}% on 12 Nov, every sector lower, on BMI's cut to its growth forecast and "
                 "the Nvidia turmoil (the Inquirer; the Tribune)"
@@ -4348,8 +4355,8 @@ DRIVERS = [
      f"{abs(MACRO['nvda_16nov_chg_pct'])}% a day before its results and led a third straight fall in New York; "
      f"{_nword(len(MACRO['vix_disputed_16nov']) - 1)} other prints "
      f"({', '.join(f'{v:.2f}' for v in MACRO['vix_disputed_16nov'] if v != MACRO['vix_latest'])}) are not carried. "
-     f"Asia sold off with it on {_dday('psei_date')}: Seoul fell {abs(MACRO['kospi_16nov_chg_pct']):.2f}%, Tokyo "
-     f"{abs(MACRO['nikkei_16nov_chg_pct']):.2f}% and Manila {abs(MACRO['psei_chg_pct']):.2f}%, and Seoul and Tokyo fell again "
+     f"Asia sold off with it on 16 Nov: Seoul fell {abs(MACRO['kospi_16nov_chg_pct']):.2f}%, Tokyo "
+     f"{abs(MACRO['nikkei_16nov_chg_pct']):.2f}% and Manila {abs(MACRO['psei_16nov_chg_pct']):.2f}%, and Seoul and Tokyo fell again "
      f"on {_dday('kospi_latest_date')}. "
      f"It had closed at {_vh_close('2026-11-13'):.2f} on 13 Nov and {_vh_close('2026-11-11'):.2f} on 11 Nov, under the "
      f"long run, and at {_vh_close('2026-11-05'):.2f} on 5 Nov, up {MACRO['vix_reported_moves']['2026-11-05']}% as the AI "
@@ -4640,7 +4647,7 @@ SUMMARY = {
     "US": f"Held: the Nasdaq {'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% and the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% on {_dday('equity_date')}, a third straight fall as Nvidia slid a day before its results, after {abs(MACRO['nasdaq_13nov_chg_pct']):.2f}% and {abs(MACRO['spx_13nov_chg_pct']):.2f}% on 13 Nov and {abs(MACRO['nasdaq_12nov_chg_pct']):.2f}% and {abs(MACRO['spx_12nov_chg_pct']):.2f}% on 12 Nov, when its chief executive resigned; the {abs(MACRO['nasdaq_5nov_chg_pct']):.2f}% fall of 5 Nov took the Nasdaq into correction; GDP beat at {MACRO['us_gdp_q3']}%, producer prices rose {MACRO['us_ppi_oct_yoy']}% on the year, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
     "ASIA": f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% on {_dday('kospi_latest_date')}, a fourth straight fall and under {MACRO['kospi_floor_17nov']:,}, after {abs(MACRO['kospi_16nov_chg_pct']):.2f}% on 16 Nov and {abs(MACRO['kospi_13nov_chg_pct']):.2f}% on 13 Nov, and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% on {_dday('nikkei_latest_date')}, under {MACRO['nikkei_round_level_17nov']:,}, after {abs(MACRO['nikkei_16nov_chg_pct']):.2f}% on 16 Nov and a {MACRO['nikkei_13nov_chg_pct']:.2f}% rise on 13 Nov; Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and China's October retail sales rose only {MACRO['china_retail_oct']}% and industrial output {MACRO['china_ip_oct']}%, both under forecast.",
-    "PHILIPPINES": f"Held: third-quarter growth slowed to {MACRO['ph_gdp_q3']}% against {MACRO['ph_gdp_q3_poll']}% expected, with October inflation at {MACRO['ph_cpi_oct']}%; the PSEi closed at {MACRO['psei']:,.2f} on {_dday('psei_date')}, its lowest since {MACRO['psei_low_since']}, the peso at {MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos {'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}, and 91-day bills rose to {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction.",
+    "PHILIPPINES": f"Held: third-quarter growth slowed to {MACRO['ph_gdp_q3']}% against {MACRO['ph_gdp_q3_poll']}% expected, with October inflation at {MACRO['ph_cpi_oct']}%; the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% to {MACRO['psei']:,.2f} on {_dday('psei_date')}, the day after its lowest close since {MACRO['psei_low_since']}, the peso at {MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos {'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}, and 91-day bills rose to {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction.",
 }
 
 GAUGE = to5(GAUGE_10)          # headline, 1-5

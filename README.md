@@ -43,9 +43,9 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 17 Nov 2026 (reviewed 17 Nov, cut-off 12:00 UTC): Seoul and Tokyo at their 17 Nov closes (the KOSPI 4,968.48, under 5,000; the Nikkei 58,860.43); New York, the VIX
-(22.91, back above its 19.5 long run), Brent's January and WTI's December settles at 16 Nov, New York not having opened; Manila and the peso at
-16 Nov (their 17 Nov closes not yet in two sources); the 16 Nov T-bill auction; the Treasury curve held at 13 Nov (no par-curve
+market assumptions. Market data as of 17 Nov 2026 (reviewed 17 Nov, cut-off 15:00 UTC): Seoul, Tokyo and Manila at their 17 Nov closes (the KOSPI 4,968.48, under 5,000; the Nikkei 58,860.43; the PSEi 5,500.88, ending a four-day slide); New York, the VIX
+(22.91, back above its 19.5 long run), Brent's January and WTI's December settles at 16 Nov, New York's 17 Nov session not having closed; the peso at
+16 Nov (its 17 Nov close in one source only); the 16 Nov T-bill auction; the Treasury curve held at 13 Nov (no par-curve
 figure for 16 Nov in two sources); FedWatch at 16 Nov (a December hike 100% priced); FactSet's forward P/E at 18.3 on
 12 Nov (its 13 Nov edition); PortWatch's Hormuz count at 8 Nov, the latest it has published. Brent's y/y is quoted against its 14 Nov 2025 settle, two days off the anniversary.
 Target funds were checked in full on 16 Nov, the first review of the week, through search results only, and
