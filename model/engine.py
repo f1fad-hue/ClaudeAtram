@@ -1697,8 +1697,11 @@ MACRO = {
     # REFRESHED 2026-11-12 (v100), three days before the 1 Nov reading's two-cycle bound: PortWatch's
     # newest published day is 8 Nov, 3 transits against the 85 baseline, 3.9 a day over the week to it
     # (Straits Daily Brief, 11 and 12 Nov; hormuz.now's FAQ).
-    "hormuz_transits": 3,          # IMF PortWatch, all transits (1 on 1 Nov, 2 on 25 Oct, 4 on 18 Oct)
-    "hormuz_transits_date": "2026-11-08",   # latest published day (Straits Daily Brief, 11-12 Nov)
+    # REFRESHED 2026-11-21 (v121), a day before the 8 Nov reading's 14-day bound: PortWatch's newest published
+    # day is 15 Nov, 2 transits against the 85 baseline (Straits Daily Brief, 19 Nov; hormuz.now's traffic
+    # table, its PortWatch column). hormuz.now's own AIS count for the day, 6, is another measure, not carried.
+    "hormuz_transits": 2,          # IMF PortWatch, all transits (3 on 8 Nov, 1 on 1 Nov, 2 on 25 Oct, 4 on 18 Oct)
+    "hormuz_transits_date": "2026-11-15",   # latest published day (Straits Daily Brief, 19 Nov; hormuz.now)
     "hormuz_transits_cadence_d": 7,   # weekly Tuesday publication
     "hormuz_baseline": 85,         # pre-crisis transits/day, SAME PortWatch basis
                                    # (measured 28 Feb 2025 - 27 Feb 2026)
@@ -3176,13 +3179,8 @@ MACRO["vix_prev_close"] = _VH[-2][1]
 # under its own name, for the audit; the chain check below ties the two together.
 _vrep = MACRO["vix_reported_moves"][MACRO["vix_latest_date"]]
 MACRO["vix_latest_chg_pct"] = float(_vrep)
-MACRO["vix_latest_chg_dp"] = 0 if isinstance(_vrep, int) else len(repr(_vrep).split(".")[1])
-MACRO["vix_episode_high"] = max(v for _, v in _VH)
-# The episode high has a DATE, and the page needed it: without one the prose called
-# 17.84 a mid-week peak when it belongs to 10 Sep, a week before the week described.
-# A superlative without its date drifts the moment the window moves.
-MACRO["vix_episode_high_date"] = max(_VH, key=lambda r: r[1])[0]
-MACRO["vix_series_start"] = _VH[0][0]
+# v121: vix_latest_chg_dp, vix_episode_high(_date) and vix_series_start RETIRED - published, and read by no
+# note, page or check since the sentences that needed them were rewritten (the notes now read the series).
 
 # The 10-year's headline level, its prior and its move, all DERIVED from the
 # series. ust_10y was a scalar with its date in a comment, and the comment was
@@ -3308,7 +3306,7 @@ MACRO["vix_fut_sep"] = MACRO["vix_futs"][0][2]
 MACRO["vix_fut_dec"] = next(lvl for lbl, _, lvl in MACRO["vix_futs"] if lbl == "Dec")
 # The gaps the volatility note quotes, DERIVED so the note cannot type them (v94).
 MACRO["vix_lr_gap"] = round(MACRO["vix_latest"] - MACRO["vix_longrun"], 2)
-MACRO["vix_strip_gap"] = round(MACRO["vix_latest"] - MACRO["vix_fut_dec"], 2)
+# (vix_strip_gap RETIRED v121: the note states the strip's distance as _STRIP_MOVE, and nothing read it.)
 # THE LATEST PH CPI, BY MONTH (v95). The real-yield card read September's 7.2% for two days after
 # October's 7.8% was out - the second time it lagged a release (August's 6.1% in October) - because
 # the payload named one month's key. It now takes the newest monthly print on record before AS_OF's
@@ -3324,10 +3322,8 @@ MACRO["vix_disputed_6nov"] = sorted(MACRO["vix_6nov_reports"].values())
 MACRO["vix_disputed_10nov"] = sorted(MACRO["vix_10nov_reports"].values())
 # (vix_withheld_lo_lr_gap, the lowest withheld report against the long run, RETIRED in v98 with the
 # dispute it described: nothing is withheld, and the note reads the settled close.)
-# How much of the 5 Nov jump the latest close has given back (v98): the reason the score moves.
-_vhd = dict(MACRO["vix_history"])
-MACRO["vix_spike_retraced_pct"] = round((_vhd["2026-11-05"] - MACRO["vix_history"][-1][1])
-                                        / (_vhd["2026-11-05"] - _vhd["2026-11-04"]) * 100)
+# (vix_spike_retraced_pct, the share of the 5 Nov jump given back, RETIRED v121: v98-v100's notes quoted it,
+# no text has since v117, and with the VIX above its 5 Nov close it read -67%, a "retrace" that is a new high.)
 MACRO["iran_frozen_funds_bn"] = 8    # the Iranian funds frozen in Qatar in the reported framework (Israel Hayom; Oilprice)
 # THE 1-YEAR GAP TEST (v98). The peso's 1-year fall against the dollar as the feeder table itself
 # implies it (one fund, two unit classes); a target's dollar return carried into pesos by it; and
@@ -3543,11 +3539,9 @@ VIX3M_PREV_RESID = round((_horizon_vol_on([(0.0, MACRO["vix3m_spot"])]
 
 # ----------------------------------------------------------------------------
 # 3. REGIONAL MACRO-DRIVER SCORES
-#    Researched and scored on 1-10 (the granularity the evidence supports, and the
-#    scale every "why" note below is written against), then REPORTED on 1-5 using
-#    the same endpoint-preserving rescale as the headline gauge: 1->1, 5.5->3.0,
-#    10->5. The fund tilt coefficient is restated in 1-5 units so the rescale moves
-#    no allocation: 0.30 per 1-10 point == 0.675 per 1-5 point.
+#    Scored on 1-5, 3 neutral (v120). Until v119 they were researched on 1-10 and
+#    rescaled by 1->1, 5.5->3.0, 10->5; the fund tilt coefficient, 0.675 per 1-5
+#    point, is the 0.30 per 1-10 point it replaced.
 #    Each score is an evidence-weighted judgement over the seven drivers in
 #    DRIVERS below, blended across horizons by HZ_W.
 #
@@ -4359,9 +4353,9 @@ _STRIP_OVER = abs(_STRIP_MOVE) > STRIP_OVERTAKEN_PCT
 # review's scores before rescoring; the verb check reads it, and the audit compares it with the
 # committed release. v95 opened with the growth note still saying "RAISED to 4.25" and the
 # volatility note "CUT to 1.5" - v94's moves - in a review that held both.
-# The last review's scores, on 1-5 (v119: v117's 1-10 scores carried across by the fixed map
-# 1 -> 1, 5.5 -> 3, 10 -> 5 at 2dp, which is what the page published for them).
-DRIVER_PREV = ("v117", {"Monetary policy & liquidity": 1.44, "Inflation trajectory": 1.44,
+# The last review's scores, on 1-5: v120's, unchanged since v117's two moves (v119 carried v117's 1-10
+# scores across by the fixed map 1 -> 1, 5.5 -> 3, 10 -> 5 at 2dp, which is what the page published).
+DRIVER_PREV = ("v120", {"Monetary policy & liquidity": 1.44, "Inflation trajectory": 1.44,
                        "Growth momentum": 2.44, "Corporate earnings": 3.67, "Valuation support": 4.33,
                        "Volatility & risk appetite": 1.0, "Geopolitics & energy": 1.22})
 # (Defined above DRIVERS from v117, whose notes quote the score they move from.)
@@ -4648,7 +4642,11 @@ DRIVERS = [
      "Bahrain said they intercepted the attacks (Fox News; Gulf News; Yahoo News). The tanker attacks have become nearly "
      "daily - Windward counted five tankers struck near Hormuz in the week to 18 Nov - and Iran's navy says more ships "
      "have hit mines in lanes it calls unauthorised (Bloomberg, via gCaptain and Insurance Journal; Al Jazeera), while "
-     "the US envoys' talks with Qatar's mediators have made no major progress, Axios reported. Flows through the Strait "
+     "the US envoys' talks with Qatar's mediators have made no major progress, Axios reported. On 20 Nov Trump said his "
+     "next move on Iran might not come until 2027 - he is \"not rushing into any decision\" - while saying, without "
+     "evidence, that Iran may be working on chemical or biological weapons, which Tehran denied (CBS News; Time; Gulf "
+     "News). A US official's count of 28 million barrels through the Strait on 18 Nov is in one report (the Jerusalem "
+     "Post) and is not carried. Flows through the Strait "
      "eased in November and are well below pre-war (Bloomberg; AP, citing Kpler). Brent settled at "
      f"${dict(MACRO['brent_history'])['2026-11-20']:.2f} on 20 Nov, up ${MACRO['brent_reported_pts']['2026-11-20']:.2f} as "
      f"fears of escalation resurfaced, but {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week, a third weekly fall, "
@@ -4921,7 +4919,7 @@ SUMMARY = {
     "Corporate earnings": f"Held, the strongest pillar: Nvidia's revenue rose {MACRO['nvda_q3_rev_yoy']}% on a year to ${MACRO['nvda_q3_rev_bn']}bn, against about ${MACRO['nvda_q3_rev_consensus_bn']}bn expected, and it guided to ${MACRO['nvda_q4_guide_bn']:.1f}bn, yet the Nasdaq lost {abs(MACRO['nasdaq_wk_20nov_pct'])}% in the week to 20 Nov, on fears for the build-out rather than this quarter's profits; third-quarter growth is blended at {MACRO['factset_q3_growth']}% (FactSet, {_dday('factset_date')}).",
     "Valuation support": f"Held at 4.33, raised from 4.11 on 21 Nov: the S&P has fallen {abs(MACRO['spx_since_fwd_pe_pct'])}% since FactSet's {MACRO['spx_fwd_pe']}x reading on earnings estimates that have not, putting it near {MACRO['spx_fwd_pe_implied']}x against five- and ten-year averages of {MACRO['spx_fwd_pe_5y']}x and {MACRO['spx_fwd_pe_10y']}x; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
     "Volatility & risk appetite": f"Held at 1.0, cut from 1.44 on 21 Nov: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {'the highest close in this series' if MACRO['vix_latest'] == max(v for _, v in MACRO['vix_history']) else 'below the series high'} and {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as the S&P fell into correction; the futures curve, re-quoted to {_dval(VIX_QUOTE_DATE)}, is in backwardation.",
-    "Geopolitics & energy": f"Held: US jets struck Iran's Qeshm Island on 17 Nov and Iran fired at Kuwait, tanker attacks are nearly daily and the talks have made no major progress; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week on the surplus outlook, and flows through the Strait are well below pre-war.",
+    "Geopolitics & energy": f"Held: US jets struck Iran's Qeshm Island on 17 Nov and Iran fired at Kuwait, tanker attacks are nearly daily, the talks have made no major progress and Trump said on 20 Nov his next move may not come until 2027; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week on the surplus outlook, and flows through the Strait are well below pre-war.",
     "US": US_SUMMARY_BY_DATE[MACRO["equity_date"]],
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
     "ASIA": ASIA_SUMMARY_BY_DATE[(MACRO["kospi_latest_date"], MACRO["nikkei_latest_date"])],
@@ -5159,8 +5157,8 @@ NEUTRAL = NEUTRAL_5             # 0.675 per 1-5 point (0.30 per point of the 1-1
 # Until 2026-09-23 they were not. Each fund's rates and energy tilt was a typed
 # constant, and the Monetary and Geopolitics drivers - scored separately, above -
 # fed only the headline gauge, which itself feeds nothing. Since launch the
-# Monetary driver has moved 4.0 -> 3.5 -> 2.5 -> 2.25 and Geopolitics 2.5 -> 1.5
-# -> 1.0 -> 1.5 -> 1.25 -> 1.5, and Global Tech's rates tilt stayed at -0.40 and
+# Monetary driver had moved 4.0 -> 3.5 -> 2.5 -> 2.25 and Geopolitics 2.5 -> 1.5
+# -> 1.0 -> 1.5 -> 1.25 -> 1.5 (on the 1-10 scale of the day), and Global Tech's rates tilt stayed at -0.40 and
 # its energy tilt at -0.15 through every one of those moves. The page said the
 # optimiser was built from the macro drivers; it was built from constants that
 # happened to have been written the same day the drivers first were.
@@ -5171,15 +5169,15 @@ NEUTRAL = NEUTRAL_5             # 0.675 per 1-5 point (0.30 per point of the 1-1
 # readings in force when they were written (commit 918c280, 2 Sep: Monetary 4.0,
 # Geopolitics 2.5). Calibrating there states the ORIGINAL judgment rather than
 # making a new one; the tilt today is what that judgment implies at today's
-# readings. Linear in distance from the 5.5 neutral, the minimal assumption.
+# readings. Linear in distance from neutral (3 on 1-5; 5.5 on the 1-10 scale of 2 Sep), the minimal assumption.
 # The recommended allocation does not change - it was checked before this went
 # in - but every fund's forecast does, and every future driver move now reaches
 # the returns and the optimiser, which is what the page has always claimed.
 #
 # READ ACROSS THE HORIZONS (since 2026-10-26). Until v67 the tilt took each driver's
 # current reading as though it held for all ten years, while the regional and
-# volatility channels already averaged their horizons. A Monetary reading of 2.0 that
-# is expected to average 3.5 over three years and 5.0 over the next two does not drag
+# volatility channels already averaged their horizons. A Monetary reading of 1.44 that
+# is expected to average 2.11 over three years and 2.78 over the next two does not drag
 # a ten-year return as one held for the decade would. The reading is the driver's path averaged over the ten
 # years with the HZ_W weights (DRIVER_BLEND); the 10-year view alone (Portfolio A's
 # column) reads the 10-year point, which is neutral, so it carries no rates or energy
@@ -6213,7 +6211,7 @@ _MACW = sum(w for n, w, _, _ in DRIVERS if n != DDG_VAL)
 DDG_MACRO_W = {n: w / _MACW for n, w, _, _ in DRIVERS if n != DDG_VAL}
 def _macro_part(v):
     """The gauge's macro part: the six drivers other than valuation, re-weighted, on 1-5."""
-    return round(sum(w * v[n] for n, w in DDG_MACRO_W.items()), 2)
+    return rnd(sum(w * v[n] for n, w in DDG_MACRO_W.items()))   # half-up, as the valuation part (v121)
 _DV = {"1Y": {n: DRIVER_Y1[n][0] for n in DRIVER_Y1}, "6M": {n: DRIVER_M6[n][0] for n in DRIVER_M6},
        "12M": DRIVER_M712, "3Y": DRIVER_Y23,
        "5Y": {n: DRIVER_PATH[n]["5Y"] for n in DRIVER_PATH}, HZ_LABEL: {n: DRIVER_NEUTRAL for n in DRIVER_PATH}}
@@ -6257,7 +6255,7 @@ def _reach(drv, mom, rev):
     sp = []
     for i, h in enumerate(DDG_VIEWS):
         v = {n: drv[n] + _REACH_BACK[i] * (DRIVER_NEUTRAL - drv[n]) for n in drv}
-        sp.append((_macro_part(v) + (mom if DDG_SPANS[h][1] <= 1.0 else rev) + round(v[DDG_VAL], 2)) / 3)
+        sp.append((_macro_part(v) + (mom if DDG_SPANS[h][1] <= 1.0 else rev) + rnd(v[DDG_VAL])) / 3)
     return round(sum(DDG_W[h] * x for h, x in zip(DDG_VIEWS, sp)), 2)
 _RD = ("Monetary policy & liquidity", "Inflation trajectory", "Growth momentum", "Corporate earnings",
        "Valuation support", "Volatility & risk appetite", "Geopolitics & energy")
@@ -8203,7 +8201,7 @@ SOURCES = [
      "https://maritime-executive.com/article/tanker-burns-after-strike-in-strait-of-hormuz"),
     ("Straits", "Strait of Hormuz news, 10 Nov 2026 - PortWatch's latest day is 1 Nov: 1 transit against an 85 baseline",
      "https://straits.live/briefs/2026-11-10"),
-    ("hormuz.now", "How many ships crossed the Strait of Hormuz today - PortWatch's 1 Nov 2026 count of 1, 4.4 a day over the week to it",
+    ("hormuz.now", "How many ships crossed the Strait of Hormuz today - its daily table's PortWatch column: 1 on 1 Nov 2026 (4.4 a day over the week to it); 2 on 15 Nov (v121)",
      "https://hormuz.now/traffic"),
     ("fedratecalc", "November 2026 US economic calendar - PPI on 13 Nov, retail sales on 17 Nov, FOMC minutes on 18 Nov",
      "https://fedratecalc.com/us-economic-calendar/november-2026/"),
@@ -8703,6 +8701,18 @@ SOURCES = [
      'https://gcaptain.com/iran-intensifies-hormuz-tanker-attacks-just-as-oil-prices-slide/'),
     ('Insurance Journal (Bloomberg)', 'Iran Intensifies Hormuz Tanker Attacks Just as Oil Prices Slide',
      'https://www.insurancejournal.com/news/international/2026/11/19/893122.htm'),
+    # v121: PortWatch's 15 Nov transit count, two publishers
+    ('Straits Daily Brief', 'Strait of Hormuz News, November 19, 2026 - IMF PortWatch: 2 transits on 15 Nov against 85 pre-crisis',
+     'https://straits.live/briefs/2026-11-19'),
+    # v121: Trump's 2027 remark (three sources) and the one-source Hormuz count that is not carried
+    ('CBS News', 'Live Updates: Trump says next move on Iran may not come until 2027 as Tehran denies chemical weapons claim, 20-21 Nov 2026',
+     'https://www.cbsnews.com/live-updates/iran-war-trump-tehran-denies-chemical-weapons/'),
+    ('Time', "'We've Got Time': Trump Suggests Iran War Will Continue Into 2027, 20 Nov 2026",
+     'https://time.com/article/2026/11/20/iran-war-trump-strikes-major-decision-january-2027/'),
+    ('Gulf News', 'Will US strike Iran again? Trump says decision can wait until 2027',
+     'https://gulfnews.com/world/americas/will-us-strike-iran-again-trump-says-decision-can-wait-until-2027-1.500754568'),
+    ('The Jerusalem Post', 'Iran grows more aggressive in Strait of Hormuz despite surge in oil traffic - a US official: 28 million barrels on 18 Nov (one source, not carried)',
+     'https://www.jpost.com/middle-east/iran-news/article-915531'),
     ('Investing.com', 'Japan shares lower at close of trade; Nikkei 225 down, 20 Nov 2026',
      'https://in.investing.com/news/stock-market-news/japan-shares-lower-at-close-of-trade-nikkei-225-down-477-5716902'),
     ('MarketScreener (Reuters)', "Japan's Nikkei falls more than 4% as tech stocks track Wall Street declines",
@@ -10574,7 +10584,7 @@ def report():
     _ndv = [d for d in p["drivers"] if d["name"] != DDG_VAL]; _wsum = sum(d["weight"] for d in _ndv)
     _vd = next(d for d in p["drivers"] if d["name"] == DDG_VAL)
     checks.append(("the budget gauge's parts are the six non-valuation drivers' paths, the trend scores and the valuation path where the views coincide, each reading their mean",
-                   all(_dg["parts"][h]["macro"] == round(sum(d["weight"] * d["path"][h] for d in _ndv) / _wsum, 2)
+                   all(_dg["parts"][h]["macro"] == rnd(sum(d["weight"] * d["path"][h] for d in _ndv) / _wsum)
                        and _dg["parts"][h]["valuation"] == rnd(_vd["path"][h])
                        and _dg["parts"][h]["trend"] == round(sum(v["score"][h] for v in p["trend"]["sleeves"].values())
                                                              / len(p["trend"]["sleeves"]), 2)
@@ -10628,7 +10638,7 @@ def report():
     _w6 = sum(r["weight"] for r in _ddn)
     _spk = {"6M": "m6", "12M": "m712", "3Y": "y23", "5Y": "y45"}
     checks.append(("the gauge's macro parts are the six non-valuation drivers for each span, re-weighted, on 1-5",
-                   all(_dg["parts"][h]["macro"] == round(sum(r["weight"] * r[k] for r in _ddn) / _w6, 2) for h, k in _spk.items())))
+                   all(_dg["parts"][h]["macro"] == rnd(sum(r["weight"] * r[k] for r in _ddn) / _w6) for h, k in _spk.items())))
     checks.append(("the gauge's valuation parts are the valuation driver's own path, span by span, on 1-5, and the Budget tab's record of it is that path",
                    all(_dg["parts"][h]["valuation"] == rnd(_ddv[k]) for h, k in _spk.items())
                    and all(_dg["valuation"][k] == _ddv[k] for k in ("now", "m6", "m712", "y1", "y23", "y45"))))

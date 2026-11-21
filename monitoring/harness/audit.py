@@ -403,12 +403,12 @@ ck("months 7-12 are what year 1 leaves once months 1-6 are taken out, and every 
 # their weights scaled to one - re-derived here from the drivers' own weights and paths.
 _VALN = "Valuation support"; _DR6 = [x for x in DR if x["name"] != _VALN]; _W6 = sum(x["weight"] for x in _DR6)
 _xv = next(x for x in DR if x["name"] == _VALN)
-_mac = {"6M": round(sum(x["weight"] * _GD[x["name"]]["m6"] for x in _DR6) / _W6, 2),
-        "12M": round(sum(x["weight"] * _m712[x["name"]] for x in _DR6) / _W6, 2),
-        "3Y": round(sum(x["weight"] * _y23[x["name"]] for x in _DR6) / _W6, 2),
-        "5Y": round(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6, 2)}
+_mac = {"6M": hu2(sum(x["weight"] * _GD[x["name"]]["m6"] for x in _DR6) / _W6),
+        "12M": hu2(sum(x["weight"] * _m712[x["name"]] for x in _DR6) / _W6),
+        "3Y": hu2(sum(x["weight"] * _y23[x["name"]] for x in _DR6) / _W6),
+        "5Y": hu2(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6)}
 _vlp = {"6M": hu2(_GD[_VALN]["m6"]), "12M": hu2(_m712[_VALN]), "3Y": hu2(_y23[_VALN]), "5Y": hu2(_xv["path"]["5Y"])}
-_mac1 = round(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6, 2); _vlp1 = hu2(_GD[_VALN]["y1"])
+_mac1 = hu2(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6); _vlp1 = hu2(_GD[_VALN]["y1"])
 _TR = D["trend"]; _ov = lambda a, b, c, e: max(0.0, min(b, e) - max(a, c))
 def _tsp(v, a, b):
     wm = _ov(a, b, *_TR["mom_years"]) / (b - a); wr = _ov(a, b, *_TR["rev_years"]) / (b - a)
@@ -442,8 +442,8 @@ def _rch(c):
     sp = []
     for i, w in enumerate((0.1, 0.1, 0.4, 0.4)):
         v = {n: x + c["back"][i] * (3.0 - x) for n, x in c["drivers"].items()}
-        sp.append(w * (round(sum(x["weight"] * v[x["name"]] for x in _DR6) / _W6, 2)
-                       + (c["momentum"] if i < 2 else c["reversal"]) + round(v[_VALN], 2)) / 3)
+        sp.append(w * (hu2(sum(x["weight"] * v[x["name"]] for x in _DR6) / _W6)
+                       + (c["momentum"] if i < 2 else c["reversal"]) + hu2(v[_VALN])) / 3)
     return round(sum(sp), 2)
 _bcap = lambda g: next(b["cap"] for b in G["bands"] if b["lo"] <= g < b["hi"] or (b["hi"] == 5 and g == 5))
 _RC = {c["name"]: c for c in G["reach"]}
@@ -495,7 +495,7 @@ ck(f"splitting year 1 into months 1-6 and 7-12 leaves the gauge where year 1 who
    abs(G["value"] - _v111) <= 0.011 and G["value_v111"] == _v111, f"{G['value']} vs {_v111} / {G['value_v111']}")
 # The split must not move the gauge beyond rounding: the old 3- and 5-year rule (60/40 on the
 # 3-year average and years 4-5) read from the same inputs.
-_old3 = _q2((_D(str(round(sum(x["weight"] * x["path"]["3Y"] for x in _DR6) / _W6, 2)))
+_old3 = _q2((_D(str(hu2(sum(x["weight"] * x["path"]["3Y"] for x in _DR6) / _W6)))
              + _D(str(round(sum(v["score"]["3Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)))
              + _D(str(hu2(_xv["path"]["3Y"])))) / 3)
 _old = _q2(_D(str(_old3)) * _D("0.6") + _D(str(_rd["5Y"])) * _D("0.4"))
@@ -818,10 +818,6 @@ ck("the 1-year gap test re-derives: the dollar's implied move, the target in pes
    and 0 <= M["gtec_gap_1y_pp"] <= _gtec["fee_feeder"] + 0.5
    and f"a gap of {M['gtec_gap_1y_pp']} points" in _gtec["target_check"]["text"],
    f"{_fx} {_tp} {M['gtec_gap_1y_pp']}")
-_vhd = dict(M["vix_history"])
-ck("the VIX's retrace of its 5 Nov jump is the series' own",
-   round((_vhd["2026-11-05"] - M["vix_history"][-1][1]) / (_vhd["2026-11-05"] - _vhd["2026-11-04"]) * 100)
-   == M["vix_spike_retraced_pct"], f"{M['vix_spike_retraced_pct']}")
 _over = abs(M["vix_latest"] / M["vix_spot"] - 1) * 100 > D["vol_channel"]["overtaken_pct"]
 _vnote = next(x for x in D["drivers"] if x["name"].startswith("Volatility"))["note"]
 ck("the curve is flagged overtaken, on the page and in the volatility note, exactly when the latest close is past the flag",

@@ -2,6 +2,78 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-21 — v121: full review the same Saturday - one Gulf development, a transit count refreshed a day before its bound, six dead figures retired; no score, budget or pick moved
+
+At the owner's instruction, the full review again:
+- debugging, code review and a sanity check;
+- a hunt for errors, and a clean-up;
+- re-research and re-verification of the data and math, the 22 funds, every portfolio, the budget at
+  6 months, 1, 3, 5 and 10 years, the four analyses at 1, 3, 5 and 10 years, and the mixes and fund counts.
+
+No market has traded since Friday 20 Nov's close, so no price could roll. This pass re-searched what v117 and v118
+held back, and turned on the code changed today (v119-v120).
+
+**New, in two sources or more:**
+- **Gulf, 20 Nov.** Trump said his next move on Iran might not come until 2027 ("not rushing into any decision").
+  He also said, without evidence, that Iran may be working on chemical or biological weapons, which Tehran denied
+  (CBS News; Time; Gulf News). This is in the geopolitics note and summary.
+  - Geopolitics is **HELD at 1.22**: a deferred decision is not an opening of the Strait.
+  - The tanker attacks go on, and PortWatch still counts almost no transits.
+- **IMF PortWatch's Hormuz count**, refreshed a day before the 8 Nov reading's 14-day bound. Its newest published
+  day is 15 Nov: **2 transits** against the 85 baseline, a 98% drop (Straits Daily Brief, 19 Nov; the PortWatch
+  column of hormuz.now's table). hormuz.now's own AIS count, 6, is another measure and is not carried.
+
+**Searched again, still not in two sources:**
+- FactSet's 20 Nov edition, so 18.3x stands.
+- A 20 Nov VIX futures board or VIX3M, so the 19 Nov board stands.
+- A newer CAPE, so 38.9 stands. The 40.3 in a CFA Institute post of 18 Nov is September's figure.
+- A November Hormuz flow figure two sources agree on. A US official's 28 million barrels on 18 Nov is in the
+  Jerusalem Post and its reprints only.
+- FedWatch's 96.9% for a quarter-point (BigGo Finance). A hike by December is still 100% priced.
+
+No ATRAM notice dated November was found. Global Health Care's September fact sheet was posted on 14 Nov. Fees
+stand from the 16-17 Nov full check.
+
+**Errors found and fixed:**
+1. **Six derived VIX figures were published and read by nothing:** `vix_spike_retraced_pct`,
+   `vix_latest_chg_dp`, `vix_episode_high`, `vix_episode_high_date`, `vix_series_start` and `vix_strip_gap`.
+   - The first was written for v98's "71% of the 5 Nov jump given back". With the VIX above its 5 Nov close it
+     read **−67%**, a "retrace" that is a new high, and its audit check kept passing.
+   - All six are retired, with that check and its mutant `m_retr`.
+   - A sweep found 49 other inputs that nothing reads by name. They are the disputed prints the engine's comments
+     cite as the record of each dispute, and they stay.
+2. **The runbook described a model that no longer exists:**
+   - "Drivers and regions are researched on 1–10" (stale since today);
+   - "each fund's volatility tilt is gap × sensitivity ... `VOL_SENS`" (retired in v107);
+   - "the one function `pick()`" (the selector is `_Pick`, and it chooses C and D too).
+
+   All three are rewritten.
+3. **The budget gauge's macro part rounded half-even, its valuation part half-up.** Since v119 the macro part used
+   Python's `round()` and the valuation part the half-up `rnd()` every printed CAGR uses. Both are half-up now, in
+   the engine and in the audit. No figure moved: there was no tie.
+4. **Stale 1-10 wording in the engine's comments:**
+   - the regional section's header;
+   - the tilt transmission's "5.5 neutral" and its worked example.
+
+   The published last-review label still said "v117" while the scores are v120's; it now says "v120" (the scores
+   are unchanged).
+
+**Coming up:** three funds' holdings (Nasdaq Equity Income, Global Technology, Global Dividend, as of 30 Sep)
+reach their 60-day bound on 29 Nov. The October fact sheets are due before then.
+
+**Unchanged:**
+- The gauge, 2.26.
+- The budget gauge, 2.93: hold at 25%, all three guards blocking a raise.
+- A 7.24% / −24.9% (10-year view).
+- B 7.13% / −24.9%.
+- C 6.94% / −24.8%.
+- D 7.19% / −24.9%, four funds the best count.
+
+**Checks:** engine 267/267; audit 298/298 (the retrace check retired, the last-review check back because the
+geopolitics note changed); validator 22/22; mutants 85 (from 86, `m_retr` retired).
+
+Not personal financial advice.
+
 ## 2026-11-21 — v120: the regional rankings scored on 1-5, 3 neutral; no forecast, pick or budget moved
 
 At the owner's instruction: "Regional driver update them to 1-5 gauge."

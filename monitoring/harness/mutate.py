@@ -161,7 +161,6 @@ def m_dlead(d):                                                                 
 def m_dcount(d): b = d["portfolio_d"]["by_count"][0]; b["cagr"] = round(b["cagr"] + 0.01, 2)   # a count's best off its re-run (v99)
 def m_gap(d): d["macro"]["gtec_gap_1y_pp"] = round(d["macro"]["gtec_gap_1y_pp"] + 0.5, 2)      # a 1-year gap off its inputs (v98)
 def m_over(d): d["vol_channel"]["overtaken"] = not d["vol_channel"]["overtaken"]              # the overtaken flag flipped (v98)
-def m_retr(d): d["macro"]["vix_spike_retraced_pct"] += 5                                       # the retrace off the series (v98)
 def m_holds(d):                                                                                # "none holds it" said of a fund A and B hold (v98)
     f = next(f for f in d["funds"] if f["id"] == "ATRGTEC"); f["target_check"]["text"] += " And none of A, B or D holds it."
 def m_grind(d):

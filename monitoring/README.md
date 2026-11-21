@@ -29,8 +29,9 @@ prior value and mark it stale — never guess.
 expected average over years 1-3) and 5-year reading (years 4-5) live in `DRIVER_PATH`, each
 step between the one before it and neutral, and are re-judged whenever the year-by-year
 evidence or the reading now moves far enough to change them.
-Drivers and regions are researched on 1–10; both the headline gauge and the regional
-rankings are reported on 1–5. The horizon weights are each view's share of the ten
+Drivers and regions are scored on 1–5, 3 neutral (drivers from v119, regions from v120,
+owner 21 Nov 2026; both were researched on 1–10 and rescaled until then), and so are the
+headline gauge and every part of the budget gauge. The horizon weights are each view's share of the ten
 years (30 / 20 / 50) and are not to be tuned. Every portfolio is built from the
 same four analyses (owner, 16 Nov 2026, v107) — the regional rankings, macro sentiment
 (the drivers' rates and energy tilts, read on each driver's ten-year path), **market
@@ -52,18 +53,18 @@ estimated"), and the VIX guards a raise of the budget. Refresh `TREND_INPUTS` (q
 month stale. Every
 quarter must reproduce from its months where months are given, and a "1-year"
 figure from a search is never used unless the months behind it reproduce it.
-Every portfolio — A, B and every what-if — is
-chosen by the one function `pick()`: maximum growth since v77 - the highest net CAGR
+Every portfolio — A, B, C, D and every what-if — is
+chosen by the one selector, `_Pick`: maximum growth since v77 - the highest net CAGR
 inside the budget (as computed and as shown), a shallower drawdown deciding only between
 mixes that print the same CAGR (`PIN_TIE_PP = 0`; the lowest drawdown within 0.05pp of the
-best until v76). Three of the inputs are derived rather than judged: the
-regional tilt is `(score − 3.0) × 0.675` on the reported 1–5 scale (identical to
-the old `(score − 5.5) × 0.30` on the 1–10 research scale), and each fund's volatility tilt is
-`gap × sensitivity`, where the sensitivities in `VOL_SENS` are structural properties
-of how each sleeve is built. Change a sensitivity only if the fund's structure changes,
-not because you have a view on the market. Never change a score without rewriting
+best until v76). The tilts are derived rather than judged: the regional tilt is
+`(score − 3.0) × 0.675` on 1–5 (the old `(score − 5.5) × 0.30` on 1–10); the rates and
+energy tilts are each fund's calibrated tilt scaled by its driver's ten-year blend; the
+valuation tilt is the valuation path's blend at the regional rate; and there has been no
+volatility tilt since v107 (`VOL_SENS` retired) - the volatility curve sets each fund's
+volatility and so its expected drawdown. Never change a score without rewriting
 its rationale to cite the new evidence. Re-run the engine: it re-chooses A and B
-by the one rule over the whole universe (eleven funds from the owner's 22-fund list
+by the one rule over the whole universe (C and D by the same rule over their own sets) (eleven funds from the owner's 22-fund list
 since 2026-10-22) within the review's limits - at most 5 funds, at most 35% in any one, at least 5% in the money
 market - on the 5% grid, each
 summing to 100. A fund may be held at 0%. Every pick, and every what-if, sits inside ONE
@@ -214,6 +215,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+185. A DERIVED FIGURE OUTLIVES ITS SENTENCE. `vix_spike_retraced_pct` was written in v98 for "71% of the 5 Nov jump
+   given back"; the sentence went in v117, the figure stayed, and once the VIX closed above its 5 Nov level it read
+   -67% - a "retrace" that is a new high - while its audit check passed, because the arithmetic was right. Five other
+   VIX figures were published and read by nothing. A check on a number no reader sees guards nothing: sweep for
+   derived inputs that no note, page or check reads, and retire them with their checks.
 184. A SCALE CHANGE IS A ROUNDING, AND A ROUNDING CAN MOVE A KNIFE EDGE. v119 moved the macro drivers from 1-10 to
    1-5 by the fixed map (1 -> 1, 5.5 -> 3, 10 -> 5). Quarter points on 1-10 are ninths on 1-5, so every reading
    rounds at 2dp, and an implied span magnifies it: years 2-3 are (3 x the 3-year reading - year 1) / 2, so

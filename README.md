@@ -53,7 +53,7 @@ confirmed in a second source in v118; the VIX futures curve
 re-quoted to Cboe's 19 Nov settlements (December 24.54, January 23.99, in backwardation); FedWatch at 19 Nov (a
 December hike 100% priced, a half-point at up to 10%); the 16 Nov T-bill auction; FactSet's forward P/E at 18.3 on
 12 Nov (its 13 Nov edition; the 20 Nov edition was not found), the S&P 9.0% lower since; PortWatch's Hormuz count at
-8 Nov, the latest it has published. Brent's y/y, +45.76%, is quoted against its 19 Nov 2025 settle ($63.51), one
+15 Nov, the latest it has published (2 transits, refreshed in v121 from 8 Nov's 3). Brent's y/y, +45.76%, is quoted against its 19 Nov 2025 settle ($63.51), one
 day off the anniversary (re-anchored in v117 from 14 Nov 2025; this sentence lagged until v118).
 Target funds were checked in full on 16 Nov, the first review of the week, through search results only, and
 searched again for notices on 17 Nov and 21 Nov (ATRAM's pages list undated plan-rule and cut-off notices whose text
