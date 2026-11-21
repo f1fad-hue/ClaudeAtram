@@ -52,6 +52,11 @@ const file = process.argv[2], live = process.argv.includes("--live");
         ddw: [...document.querySelectorAll("#ddtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
                .find(r => r[0].startsWith("Weight")) || [],
         donutD: !!document.querySelector("#donutD svg"),
+        // v119: every surface that shows a macro driver, for the retired 1-10 scale
+        drvtxt: ["#drivers", "#dptab", "#dpnote", "#ddy1", "#ddy1note", "#ddy1why", "#ddval", "#ddvalnote", "#ddguards"]
+          .map(q => (document.querySelector(q) || {}).textContent || "").join(" ")
+          + " " + (((document.getElementById("dvgeo") || {}).parentElement || {}).textContent || ""),
+        drvh: [...document.querySelectorAll("h3")].map(h => h.textContent).filter(t => /Macro drivers|Market valuation/.test(t)),
       };
     });
     const D = info.D;
@@ -98,6 +103,12 @@ const file = process.argv[2], live = process.argv.includes("--live");
     const sw = G.step_w.toFixed(2), nt = info.ddnote.replace(/\s+/g, " ");
     ck("the Budget tab's band sentence states the payload's step width both ways",
       nt.includes(`each ${sw} below`) && nt.includes(`each ${sw} above`), nt.slice(0, 220));
+    // v119 (owner, 21 Nov: "Macroeconomics drivers update it 1-5 guauge. No more 1-10."): no driver surface prints
+    // the retired 1-10 scale, its 5.5 neutral or a "research scale" label, and the tables are headed 1-5
+    const old10 = info.drvtxt.match(/\b1[–-]10\b|\/ 10\b|research scale|5\.5 neutral/g) || [];
+    ck("no macro driver surface shows the retired 1-10 scale; the driver and valuation tables are headed 1-5, 3 neutral",
+      old10.length === 0 && info.drvh.length === 2 && info.drvh.every(t => t.includes("1–5 (3 neutral)")),
+      `${old10.slice(0, 3)} | ${info.drvh}`);
     ck("the Portfolios lede states A's 10-year, B's, C's and D's 1/3/5/10-year CAGR",
       [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_c.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
       info.lede.slice(0, 160));

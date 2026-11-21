@@ -20,6 +20,11 @@ README = open(os.path.join(ROOT, "README.md")).read()
 ENGINE = open(os.path.join(ROOT, "model", "engine.py")).read()
 M = D["macro"]
 def d(iso): return dt.date.fromisoformat(iso)
+# v119: the macro drivers are scored on 1-5 natively. hu2 is exact half-up to 2dp (the engine's rnd);
+# wavg2 an exact weighted average of 2dp scores, half-up (the engine's gauge, paths and blends).
+def hu2(v): return float(Decimal(repr(v)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+def wavg2(pairs):
+    return float(sum(Decimal(repr(w)) * Decimal(repr(v)) for w, v in pairs).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 AS_OF, REV = d(D["as_of"]), d(D["review_date"])
 FAILS, N = [], [0]
 
@@ -70,8 +75,7 @@ for f in FU:
     _VD = next(x for x in D["drivers"] if x["name"] == "Valuation support")
     _vy1 = next(r for r in D["dd_gauge"]["drivers"] if r["name"] == "Valuation support")["y1"]
     _vy23 = round((3 * _VD["path"]["3Y"] - _vy1) / 2, 3)
-    _t5 = lambda v: round(1 + (v - 1) * 4 / 9, 2)          # the 1-10 to 1-5 rescale (to5, defined below)
-    _vb = round(0.1 * _t5(_vy1) + 0.2 * _t5(_vy23) + 0.2 * _t5(_VD["path"]["5Y"]) + 0.5 * _t5(_VD["path"]["10Y"]), 4)
+    _vb = round(0.1 * _vy1 + 0.2 * hu2(_vy23) + 0.2 * _VD["path"]["5Y"] + 0.5 * _VD["path"]["10Y"], 4)
     _vt = 0.0 if f["id"] == "ATRPHMM" else (_vb - 3.0) * D["regional_tilt_per_pt"] * f["equity_share"]
     ck(f"{i_}: the valuation tilt reproduces from the valuation path, and is none at 10 years",
        abs(f["tilt_valuation"] - _vt) < 0.0051 and f["tilt_valuation_10y"] == 0.0, f"{f['tilt_valuation']} vs {_vt:.4f}")
@@ -303,15 +307,21 @@ ck("driver weights sum to 1", abs(sum(x["weight"] for x in DR) - 1) < 1e-9)
 ck("horizon weights sum to 1 and are each view's share of ten years", abs(sum(HZ.values()) - 1) < 1e-9
    and HZ == {"3Y": 0.3, "5Y": 0.2, "10Y": 0.5}, f"{HZ}")
 for x in DR:
-    ck(f"{x['name']}: the 1-5 score is the 1-10 research score rescaled", x["score"] == to5(x["score_10"]), f"{x['score']} vs {to5(x['score_10'])}")
-    ck(f"{x['name']}: its path runs from now toward neutral, never past it",
-       all(min(x["score_10"], 5.5) - 1e-9 <= x["path"][h] <= max(x["score_10"], 5.5) + 1e-9 for h in ("3Y", "5Y"))
-       and x["path"]["10Y"] == 5.5, f"{x['score_10']} -> {x['path']}")
-g10 = round(sum(x["weight"] * x["score_10"] for x in DR), 2)
-ck("the gauge is the weighted drivers, rescaled", D["gauge_10"] == g10 and D["gauge"] == to5(g10), f"{g10} / {to5(g10)}")
+    ck(f"{x['name']}: scored on 1-5 at 2dp, nothing published on the retired 1-10 scale (v119)",
+       1 <= x["score"] <= 5 and round(x["score"], 2) == x["score"]
+       and not any(k.endswith("_10") or k in ("path_5", "blend_5") for k in x), f"{x['score']} {sorted(x)}")
+    ck(f"{x['name']}: its path runs from now toward neutral, never past it, and its blend is that path at the horizon weights",
+       all(min(x["score"], 3.0) - 1e-9 <= x["path"][h] <= max(x["score"], 3.0) + 1e-9 for h in ("3Y", "5Y"))
+       and x["path"]["10Y"] == 3.0 and x["blend"] == wavg2((w, x["path"][h]) for h, w in HZ.items()),
+       f"{x['score']} -> {x['path']} / {x['blend']}")
+g5 = wavg2((x["weight"], x["score"]) for x in DR)
+ck("the gauge is the weighted driver scores, exact and half-up, and the drivers' scale is 1-5 with 3 neutral",
+   D["gauge"] == g5 and not any(k.startswith("gauge") and k.endswith("_10") for k in D)
+   and D["driver_scale"] == {"min": 1, "max": 5, "neutral": 3.0} and D["driver_tilt_cal"]["neutral"] == 3.0,
+   f"{D['gauge']} vs {g5}")
 for h in ("3Y", "5Y", "10Y"):
-    gp = round(sum(x["weight"] * x["path"][h] for x in DR), 2)
-    ck(f"the {h} gauge is the weighted {h} paths", D["gauge_path_10"][h] == gp and D["gauge_path"][h] == to5(gp), f"{gp}")
+    gp = wavg2((x["weight"], x["path"][h]) for x in DR)
+    ck(f"the {h} gauge is the weighted {h} paths", D["gauge_path"][h] == gp, f"{gp}")
 for rk, r in D["regions"].items():
     ok = all(r[h] == to5(r[h + "_10"]) for h in HZ)
     ck(f"{rk}: each horizon's 1-5 score is its research score rescaled, the blend the horizon-weighted average",
@@ -380,28 +390,28 @@ ck("the budget gauge's spans tile years 0-5 and each weighs its share of them (m
 _GD = {r["name"]: r for r in G["drivers"]}
 ck("the year-1 table lists the seven drivers at their weights, now as the published score, years 4-5 as the 5-year path",
    [x["name"] for x in DR] == list(_GD)
-   and all(_GD[x["name"]]["weight"] == x["weight"] and _GD[x["name"]]["now"] == x["score_10"]
+   and all(_GD[x["name"]]["weight"] == x["weight"] and _GD[x["name"]]["now"] == x["score"]
            and _GD[x["name"]]["y45"] == x["path"]["5Y"] and _GD[x["name"]]["y3_avg"] == x["path"]["3Y"]
-           and 1 <= _GD[x["name"]]["y1"] <= 10 and len(_GD[x["name"]]["why"]) > 60 for x in DR), f"{list(_GD)}")
+           and 1 <= _GD[x["name"]]["y1"] <= 5 and len(_GD[x["name"]]["why"]) > 60 for x in DR), f"{list(_GD)}")
 _y23 = {x["name"]: round((3 * x["path"]["3Y"] - _GD[x["name"]]["y1"]) / 2, 3) for x in DR}
 ck("years 2-3 are what the 3-year path leaves once year 1 is taken out, so year 1 is not counted twice",
-   all(abs(_GD[n]["y23"] - v) < 1e-9 and 1 <= v <= 10 for n, v in _y23.items()), f"{ {n: (_GD[n]['y23'], v) for n, v in _y23.items()} }")
+   all(abs(_GD[n]["y23"] - v) < 1e-9 and 1 <= v <= 5 for n, v in _y23.items()), f"{ {n: (_GD[n]['y23'], v) for n, v in _y23.items()} }")
 _m712 = {x["name"]: round(2 * _GD[x["name"]]["y1"] - _GD[x["name"]]["m6"], 3) for x in DR}
-_tw = lambda xs: all((a - 5.5) * (b - 5.5) >= 0 and abs(b - 5.5) <= abs(a - 5.5) + 1e-9 for a, b in zip(xs, xs[1:]))
+_tw = lambda xs: all((a - 3.0) * (b - 3.0) >= 0 and abs(b - 3.0) <= abs(a - 3.0) + 1e-9 for a, b in zip(xs, xs[1:]))
 ck("months 7-12 are what year 1 leaves once months 1-6 are taken out, and every path runs from now toward neutral through them",
-   all(abs(_GD[n]["m712"] - v) < 1e-9 and 1 <= _GD[n]["m6"] <= 10 and len(_GD[n]["why_m6"]) > 60
-       and _tw([_GD[n]["now"], _GD[n]["m6"], v, _GD[n]["y23"], _GD[n]["y45"], 5.5]) for n, v in _m712.items()),
+   all(abs(_GD[n]["m712"] - v) < 1e-9 and 1 <= _GD[n]["m6"] <= 5 and len(_GD[n]["why_m6"]) > 60
+       and _tw([_GD[n]["now"], _GD[n]["m6"], v, _GD[n]["y23"], _GD[n]["y45"], 3.0]) for n, v in _m712.items()),
    f"{ {n: (_GD[n]['m6'], _GD[n]['m712'], v) for n, v in _m712.items()} }")
 # v106 (owner, 16 Nov): valuation is its own part, so the macro part is the other six drivers,
 # their weights scaled to one - re-derived here from the drivers' own weights and paths.
 _VALN = "Valuation support"; _DR6 = [x for x in DR if x["name"] != _VALN]; _W6 = sum(x["weight"] for x in _DR6)
 _xv = next(x for x in DR if x["name"] == _VALN)
-_mac = {"6M": to5(sum(x["weight"] * _GD[x["name"]]["m6"] for x in _DR6) / _W6),
-        "12M": to5(sum(x["weight"] * _m712[x["name"]] for x in _DR6) / _W6),
-        "3Y": to5(sum(x["weight"] * _y23[x["name"]] for x in _DR6) / _W6),
-        "5Y": to5(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6)}
-_vlp = {"6M": to5(_GD[_VALN]["m6"]), "12M": to5(_m712[_VALN]), "3Y": to5(_y23[_VALN]), "5Y": to5(_xv["path"]["5Y"])}
-_mac1 = to5(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6); _vlp1 = to5(_GD[_VALN]["y1"])
+_mac = {"6M": round(sum(x["weight"] * _GD[x["name"]]["m6"] for x in _DR6) / _W6, 2),
+        "12M": round(sum(x["weight"] * _m712[x["name"]] for x in _DR6) / _W6, 2),
+        "3Y": round(sum(x["weight"] * _y23[x["name"]] for x in _DR6) / _W6, 2),
+        "5Y": round(sum(x["weight"] * x["path"]["5Y"] for x in _DR6) / _W6, 2)}
+_vlp = {"6M": hu2(_GD[_VALN]["m6"]), "12M": hu2(_m712[_VALN]), "3Y": hu2(_y23[_VALN]), "5Y": hu2(_xv["path"]["5Y"])}
+_mac1 = round(sum(x["weight"] * _GD[x["name"]]["y1"] for x in _DR6) / _W6, 2); _vlp1 = hu2(_GD[_VALN]["y1"])
 _TR = D["trend"]; _ov = lambda a, b, c, e: max(0.0, min(b, e) - max(a, c))
 def _tsp(v, a, b):
     wm = _ov(a, b, *_TR["mom_years"]) / (b - a); wr = _ov(a, b, *_TR["rev_years"]) / (b - a)
@@ -434,9 +444,9 @@ _trp["1Y"] = round(sum(_ty1.values()) / len(_ty1), 2)
 def _rch(c):
     sp = []
     for i, w in enumerate((0.1, 0.1, 0.4, 0.4)):
-        v = {n: x + c["back"][i] * (5.5 - x) for n, x in c["drivers"].items()}
-        sp.append(w * (to5(sum(x["weight"] * v[x["name"]] for x in _DR6) / _W6)
-                       + (c["momentum"] if i < 2 else c["reversal"]) + to5(v[_VALN])) / 3)
+        v = {n: x + c["back"][i] * (3.0 - x) for n, x in c["drivers"].items()}
+        sp.append(w * (round(sum(x["weight"] * v[x["name"]] for x in _DR6) / _W6, 2)
+                       + (c["momentum"] if i < 2 else c["reversal"]) + round(v[_VALN], 2)) / 3)
     return round(sum(sp), 2)
 _bcap = lambda g: next(b["cap"] for b in G["bands"] if b["lo"] <= g < b["hi"] or (b["hi"] == 5 and g == 5))
 _RC = {c["name"]: c for c in G["reach"]}
@@ -451,13 +461,13 @@ ck("the band fits the gauge's reach: each stylized case re-derived and banded; w
    f"{[(c['name'][:12], c['value'], _rch(c), c['cap']) for c in G['reach']]}")
 _AB = D["analyses_by_year"]; _abw = [0.1, 0.2, 0.2, 0.5]
 _DRn = {x["name"]: x for x in DR}
-_drow = lambda n: [to5(_GD[n]["y1"]), to5(_y23[n]), to5(_DRn[n]["path"]["5Y"]), to5(_DRn[n]["path"]["10Y"])]
+_drow = lambda n: [_GD[n]["y1"], hu2(_y23[n]), _DRn[n]["path"]["5Y"], _DRn[n]["path"]["10Y"]]
 _abx = ([("Regional ranking", [r["1Y"], r["Y23"], r["5Y"], r["10Y"]], r["blend"]) for r in D["regions"].values()]
-        + [("Macro sentiment", _drow(n), to5(round(sum(_DRn[n]["path"][h] * w for h, w in HZ.items()), 2)))
+        + [("Macro sentiment", _drow(n), wavg2((w, _DRn[n]["path"][h]) for h, w in HZ.items()))
            for n in ("Monetary policy & liquidity", "Geopolitics & energy")]
         + [("Market trend", [_trp["1Y"], _trp["3Y"], _trp["5Y"], 3.0],
             sum(v["blend"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]))]
-        + [("Market valuation", [_vlp1, _vlp["3Y"], _vlp["5Y"], to5(_xv["path"]["10Y"])], D["val_channel"]["blend_5"])])
+        + [("Market valuation", [_vlp1, _vlp["3Y"], _vlp["5Y"], _xv["path"]["10Y"]], D["val_channel"]["blend_5"])])
 ck("the four analyses year by year: every cell from its inputs, A on years 6-10 alone, B and D at 10/20/20/50, each row its forecasts' blend",
    len(_AB["rows"]) == len(_abx) and _AB["w_bd"] == _abw and _AB["w_a"] == [0.0, 0.0, 0.0, 1.0]
    and all(r["analysis"] == an and r["v"] == v and r["a"] == v[-1]
@@ -488,9 +498,9 @@ ck(f"splitting year 1 into months 1-6 and 7-12 leaves the gauge where year 1 who
    abs(G["value"] - _v111) <= 0.011 and G["value_v111"] == _v111, f"{G['value']} vs {_v111} / {G['value_v111']}")
 # The split must not move the gauge beyond rounding: the old 3- and 5-year rule (60/40 on the
 # 3-year average and years 4-5) read from the same inputs.
-_old3 = _q2((_D(str(to5(sum(x["weight"] * x["path"]["3Y"] for x in _DR6) / _W6)))
+_old3 = _q2((_D(str(round(sum(x["weight"] * x["path"]["3Y"] for x in _DR6) / _W6, 2)))
              + _D(str(round(sum(v["score"]["3Y"] for v in _TR["sleeves"].values()) / len(_TR["sleeves"]), 2)))
-             + _D(str(to5(_xv["path"]["3Y"])))) / 3)
+             + _D(str(hu2(_xv["path"]["3Y"])))) / 3)
 _old = _q2(_D(str(_old3)) * _D("0.6") + _D(str(_rd["5Y"])) * _D("0.4"))
 ck(f"splitting year 1 out leaves the gauge where the 3- and 5-year rule reads it, to rounding ({_old})",
    abs(G["value"] - _old) <= 0.011, f"{G['value']} vs {_old}")
@@ -499,7 +509,7 @@ ck("every month-end review on record is a month-end before the data date, read o
    all(_me(r[0]) and d(r[0]) < AS_OF and 1 <= r[1] <= 5 for r in G["reviews"]), f"{G['reviews']}")
 _bof = lambda v: next(b for b in G["bands"] if b["lo"] <= v < b["hi"] or (b["hi"] == 5 and v == 5))
 _base = D["dd_budget"]["base"]; _gz = {g["name"]: g for g in G["guards"]}
-_geo = next(x["score_10"] for x in DR if x["name"].startswith("Geopolitics"))
+_geo = next(x["score"] for x in DR if x["name"].startswith("Geopolitics"))
 _ok = {"persistence": len(G["reviews"]) >= _gz["persistence"]["needed"]
                       and all(_bof(r[1]) == G["band"] for r in G["reviews"][-_gz["persistence"]["needed"]:]),
        "geopolitics": _geo > _gz["geopolitics"]["floor"],
@@ -881,8 +891,8 @@ ck("the tech sleeve's regional mix sums to 1", abs(sum(D["acwi_it_mix"].values()
 # THE VERB IS THE MOVE (v95): each driver's note and summary open with HELD, RAISED or CUT, and that
 # word must be what its score did against the last review's score the payload records.
 _vw = lambda t: (re.match(r"(HELD|RAISED|CUT)\b", t.upper()) or [None, None])[1]
-_vexp = lambda x: "HELD" if x["score_10"] == x["prev_score_10"] else "RAISED" if x["score_10"] > x["prev_score_10"] else "CUT"
-_vbad = [x["name"] for x in D["drivers"] if "prev_score_10" not in x or _vw(x["note"]) != _vexp(x) or _vw(x["summary"]) != _vexp(x)]
+_vexp = lambda x: "HELD" if x["score"] == x["prev_score"] else "RAISED" if x["score"] > x["prev_score"] else "CUT"
+_vbad = [x["name"] for x in D["drivers"] if "prev_score" not in x or _vw(x["note"]) != _vexp(x) or _vw(x["summary"]) != _vexp(x)]
 ck("each driver's note and summary open with the move its score made since the last review", not _vbad, f"{_vbad}")
 try:
     ref = os.environ.get("BASELINE_REF", "HEAD")
@@ -893,7 +903,9 @@ try:
     # "last review" scores this payload records; once this release is committed, it is skipped.
     _bd = {x["name"]: x for x in _bfull["drivers"]}
     if [x["note"] for x in D["drivers"]] != [_bd.get(x["name"], {}).get("note") for x in D["drivers"]]:
-        _pbad = [x["name"] for x in D["drivers"] if _bd.get(x["name"], {}).get("score_10") != x.get("prev_score_10")]
+        # on 1-5 (v119): the baseline's published "score" - to v118 the 1-10 score rescaled, which is what
+        # the page showed and what v119 carried across
+        _pbad = [x["name"] for x in D["drivers"] if _bd.get(x["name"], {}).get("score") != x.get("prev_score")]
         ck(f"the last-review scores recorded are {ref}'s published scores", not _pbad, f"{_pbad}")
     # v116: AN INPUT ADDED SINCE THE BASELINE MUST BE READ BY NAME. used() also accepts a number whose value
     # appears in the prose, which let v113's fed_50bp_odds_dec_17nov (4.3) through because "4.3" occurs elsewhere.

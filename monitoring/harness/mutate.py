@@ -43,7 +43,7 @@ def m_cold(d): d["macro"]["gbi_w_c_low"] = 0                                    
 def m_cap_k(d): d["dd_model"]["b_k"] = round(d["dd_model"]["b_k"] + 0.01, 5)
 def m_gauge(d): d["gauge"] = round(d["gauge"] + 0.01, 2)
 def m_dscore(d): _drv(d, "Volatility")["score"] = round(_drv(d, "Volatility")["score"] + 0.05, 2)
-def m_path(d): _drv(d, "Geopolitics")["path"]["3Y"] = 6.0                                     # a path past neutral
+def m_path(d): _drv(d, "Geopolitics")["path"]["3Y"] = 3.5                                     # a path past neutral (3 on 1-5, v119)
 def m_region(d): d["regions"]["ASIA"]["blend"] = round(d["regions"]["ASIA"]["blend"] + 0.02, 2)
 def m_band(d): d["dd_gauge"]["value"] = 3.6                                                    # the gauge outside its band
 def m_ddread(d): r = d["dd_gauge"]["parts"]["3Y"]; r["reading"] = round(r["reading"] + 0.05, 2)  # a view reading off its parts
@@ -62,7 +62,7 @@ def m_tspan(d): t = d["dd_gauge"]["trend_spans"]["12M"]; k = next(iter(t)); t[k]
 def m_t6(d): t = d["dd_gauge"]["trend_6m"]; k = next(iter(t)); t[k]["z"] = round(t[k]["z"] + 0.1, 2)   # a half-year momentum z off its two quarters (v112)
 def m_m6(d): r = d["dd_gauge"]["drivers"][1]; r["m6"] = round(r["m6"] + 0.25, 2)              # a six-month reading whose months 7-12 no longer split year 1 (v112)
 def m_m6path(d):                                                                               # a six-month reading past the reading now, away from neutral, its halves kept whole (v112)
-    r = next(x for x in d["dd_gauge"]["drivers"] if x["now"] < 5.5 and x["y23"] > x["y1"]); r["m6"] = round(r["now"] - 0.25, 2)
+    r = next(x for x in d["dd_gauge"]["drivers"] if x["now"] < 3.0 and x["y23"] > x["y1"]); r["m6"] = round(r["now"] - 0.11, 2)
     r["m712"] = round(2 * r["y1"] - r["m6"], 3)
 def m_anchor(d): d["dd_gauge"]["w"]["10Y"] = 0.0                                              # the 10-year anchor given a weight (v112)
 def m_m6date(d): d["dd_gauge"]["m6_date"] = "2026-11-15"                                   # six-month research older than the data (v112)
@@ -142,6 +142,7 @@ def m_trailflag(d): d["trend"]["sleeves"]["ATRGHCP"]["trail_stale"] = None      
 def m_ccvol(d): d["cc_vol_factor"] = round(d["cc_vol_factor"] + 0.02, 4)                      # the covered-call factor off its inputs (v107)
 def m_step(d):                                                                                 # a budget step printing a CAGR its search did not rank on
     e = next(iter(d["dd_gauge"]["alt"].values()))["b"]; e["cagr"] = round(e["cagr"] - 0.01, 2)
+def m_old10(d): x = _drv(d, "Monetary"); x["score_10"] = 2.0                                  # a driver published on the retired 1-10 scale (v119)
 def m_verb(d):                                                                                 # a note announcing a move not made (v95)
     x = _drv(d, "Growth"); w = x["note"].split(" ", 1)
     x["note"] = {"HELD": "RAISED", "RAISED": "HELD", "CUT": "HELD"}[w[0]] + " " + w[1]

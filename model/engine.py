@@ -3632,7 +3632,16 @@ def rnd(x, ndigits=2):
     return float(Decimal(repr(x)).quantize(q, rounding=ROUND_HALF_UP))
 
 
-NEUTRAL_5 = 3.0                 # the 1-5 neutral (= 5.5 on the 1-10 research scale)
+def wavg2(pairs):
+    """A weighted average of 2dp scores, exact, half-up to 2dp. From v119 the macro drivers are
+    scored on 1-5 natively (owner, 2026-11-21: "Macroeconomics drivers update it 1-5 guauge. No more
+    1-10."), so the headline gauge, its horizon path and each driver's ten-year blend are built here
+    from the 1-5 scores themselves, not rescaled from a 1-10 composite."""
+    s_ = sum(Decimal(repr(w)) * Decimal(repr(v)) for w, v in pairs)
+    return float(s_.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+
+
+NEUTRAL_5 = 3.0                 # the 1-5 neutral: the macro drivers, the regions, the trend and valuation
 
 # Each equity market's volatility relative to the S&P, used twice: by the fund
 # volatilities below (where each sleeve then applies its own structure factor) and
@@ -4366,9 +4375,11 @@ _STRIP_OVER = abs(_STRIP_MOVE) > STRIP_OVERTAKEN_PCT
 # review's scores before rescoring; the verb check reads it, and the audit compares it with the
 # committed release. v95 opened with the growth note still saying "RAISED to 4.25" and the
 # volatility note "CUT to 1.5" - v94's moves - in a review that held both.
-DRIVER_PREV = ("v117", {"Monetary policy & liquidity": 2.0, "Inflation trajectory": 2.0,
-                       "Growth momentum": 4.25, "Corporate earnings": 7.0, "Valuation support": 8.5,
-                       "Volatility & risk appetite": 1.0, "Geopolitics & energy": 1.5})
+# The last review's scores, on 1-5 (v119: v117's 1-10 scores carried across by the fixed map
+# 1 -> 1, 5.5 -> 3, 10 -> 5 at 2dp, which is what the page published for them).
+DRIVER_PREV = ("v117", {"Monetary policy & liquidity": 1.44, "Inflation trajectory": 1.44,
+                       "Growth momentum": 2.44, "Corporate earnings": 3.67, "Valuation support": 4.33,
+                       "Volatility & risk appetite": 1.0, "Geopolitics & energy": 1.22})
 # (Defined above DRIVERS from v117, whose notes quote the score they move from.)
 
 # v118: what the latest VIX close was, keyed by its session (see US_SUMMARY_BY_DATE), so the claim cannot
@@ -4379,9 +4390,13 @@ VIX_LATEST_REASON = {
                       else "below the series' high")
                    + f", which starts on {_dval(MACRO['vix_history'][0][0])}"),
 }
+# v119 (owner, 2026-11-21: "Macroeconomics drivers update it 1-5 guauge. No more 1-10."): every score,
+# path point and reading below is on 1-5, 3 neutral, and moves on that scale. The history comments
+# above each driver keep the scores of their day: before v119 those are on the retired 1-10 scale
+# (1 -> 1, 5.5 -> 3, 10 -> 5 on 1-5).
 DRIVERS = [
-    ("Monetary policy & liquidity", 0.2, 2.0,
-     f"HELD at 2.0. The Fed held at {MACRO['fed_funds_lower']:.2f}-{MACRO['fed_funds_upper']:.2f}% on {_dday('fed_oct_decision_date')}, "
+    ("Monetary policy & liquidity", 0.2, 1.44,
+     f"HELD at 1.44. The Fed held at {MACRO['fed_funds_lower']:.2f}-{MACRO['fed_funds_upper']:.2f}% on {_dday('fed_oct_decision_date')}, "
      f"{MACRO['fed_oct_votes_hold']}-{MACRO['fed_oct_votes_hike']}, Governor Cook and Cleveland's Hammack for a hike, and "
      "the statement calls inflation elevated. September's core PCE then rose "
      f"{MACRO['us_core_pce_mom_sep']}% on the month and {MACRO['us_core_pce_sep']}% on the year, headline "
@@ -4435,8 +4450,8 @@ DRIVERS = [
      f"{MACRO['ph_tbill_chg_bp'][2]}bp to {MACRO['ph_tbill_364']}% (BusinessWorld; BusinessMirror). "
      "Held: a December hike is the path the score assumed, and it is fully priced; a half-point is a minority "
      "price, not the expectation. It would be cut if the half-point became the base case."),
-    ("Inflation trajectory", 0.15, 2.0,
-     f"HELD at 2.0. October's CPI rose {MACRO['us_cpi_oct_mom']}% on the month against {MACRO['us_cpi_oct_mom_consensus']}% "
+    ("Inflation trajectory", 0.15, 1.44,
+     f"HELD at 1.44. October's CPI rose {MACRO['us_cpi_oct_mom']}% on the month against {MACRO['us_cpi_oct_mom_consensus']}% "
      f"expected, after September's {MACRO['us_cpi_sep_mom']}%, and core {MACRO['us_core_cpi_oct_mom']}% against "
      f"{MACRO['us_core_cpi_oct_mom_consensus']}%, shelter the largest part of the rise and gasoline up "
      f"{MACRO['us_cpi_oct_gasoline_mom']}% after September's {MACRO['us_cpi_sep_gasoline_mom']}%; the BLS printed no 12-month "
@@ -4465,12 +4480,12 @@ DRIVERS = [
      f"{MACRO['china_cpi_oct_consensus']}% expected (Xinhua; SCMP). Japan's corporate goods prices rose "
      f"{MACRO['jp_cgpi_oct']}% on the year in October from {MACRO['jp_cgpi_sep']}%, against {MACRO['jp_cgpi_oct_consensus']}% "
      "expected (the BoJ; Reuters, via Yahoo Finance). Held: October's core, a tenth above forecast "
-     "and led by shelter, is more than energy passing through, but 2.0 already scores an inflation problem, and "
+     "and led by shelter, is more than energy passing through, but 1.44 already scores an inflation problem, and "
      "oil's fall since 30 Oct has not yet reached a price index."),
     # CUT 4.25 -> 4.0 on 3 Oct on September's 29k payrolls; RAISED back 4.0 -> 4.25 (v94, 2026-11-06)
     # on October's 165k, the reversal of the reason for the cut.
-    ("Growth momentum", 0.15, 4.25,
-     f"HELD at 4.25, where the 6 Nov review put it back, undoing the 3 Oct cut, whose reason was September's "
+    ("Growth momentum", 0.15, 2.44,
+     f"HELD at 2.44, where the 6 Nov review put it back, undoing the 3 Oct cut, whose reason was September's "
      f"{MACRO['us_payrolls_sep'] // 1000}k payrolls: "
      f"the BLS counted {MACRO['us_payrolls_oct'] // 1000}k in October against {MACRO['us_payrolls_oct_consensus'] // 1000}k "
      f"expected, unemployment fell to {MACRO['us_unemployment']}% and hourly earnings rose {MACRO['us_ahe_oct_mom']}% on the "
@@ -4524,8 +4539,8 @@ DRIVERS = [
      "joined them, and Europe, its shoppers now among them, and the Philippines are slowing. The week's stock rout "
      "is a test of the consumer still to come, not yet a reading of the economy: claims are low and October's core "
      "spending beat."),
-    ("Corporate earnings", 0.2, 7.0,
-     "HELD at 7.0, still the strongest pillar; the market is pricing the financing and the politics, not the profits. "
+    ("Corporate earnings", 0.2, 3.67,
+     "HELD at 3.67, still the strongest pillar; the market is pricing the financing and the politics, not the profits. "
      f"FactSet's {_dday('factset_date')} count has {MACRO['factset_reported_pct']}% of the S&P reported and "
      f"{MACRO['factset_beat_pct']}% beating estimates - by {MACRO['factset_surprise_pct']}% in aggregate, the smallest "
      f"surprise since late 2022 if it holds, against a {MACRO['factset_surprise_5y']}% "
@@ -4571,8 +4586,8 @@ DRIVERS = [
      "goes on, which is the three-year reading's question, not this quarter's."),
     # RAISED 8.0 -> 8.5 (v117, 2026-11-21): the S&P fell 8.6% in the week to 20 Nov on earnings estimates still
     # rising, the condition the v94-v116 hold ("the S&P has risen since") said was missing. HELD (v118).
-    ("Valuation support", 0.1, 8.5,
-     f"HELD at 8.5, where the 21 Nov morning review (v117) raised it from 8.0: the S&P has fallen {abs(MACRO['spx_since_fwd_pe_pct'])}% since "
+    ("Valuation support", 0.1, 4.33,
+     f"HELD at 4.33, where the 21 Nov morning review (v117) raised it from 4.11: the S&P has fallen {abs(MACRO['spx_since_fwd_pe_pct'])}% since "
      f"FactSet's {MACRO['spx_fwd_pe']}x forward reading of {_dday('spx_fwd_pe_date')} (struck at {MACRO['spx_fwd_pe_price']:,.2f}), "
      "on earnings estimates that have not fallen - the largest supplier beat and raised its guidance on 17 Nov - so on "
      f"that reading's earnings the {MACRO['spx_close']:,.2f} close of {_dday('equity_date')} prices it near "
@@ -4590,9 +4605,9 @@ DRIVERS = [
      f"{MACRO['ndx_fwd_pe_disputed'][1]:.1f}x earlier in November, "
      f"{', '.join(f'{v:g}x' for v in MACRO['ndx_fwd_pe_disputed_19nov'][:-1])} and "
      f"{MACRO['ndx_fwd_pe_disputed_19nov'][-1]:g}x by 19 Nov (Dollar Liquidity; ETFdb; Bustudy) - disagree and are not "
-     f"carried; Europe is at {MACRO['sxxp_fwd_pe']:.1f}x. Raised half a point, not more: the "
+     f"carried; Europe is at {MACRO['sxxp_fwd_pe']:.1f}x. Raised 0.22, not more: the "
      f"{MACRO['spx_fwd_pe_implied']}x is arithmetic on a week-old estimate, and on ten-year earnings the S&P is still on "
-     f"{MACRO['cape']} ({_dday('cape_date')}), near its record - the three-year reading's question. It goes back to 8.0 "
+     f"{MACRO['cape']} ({_dday('cape_date')}), near its record - the three-year reading's question. It goes back to 4.11 "
      f"if FactSet's next reading puts the forward multiple back at {MACRO['spx_fwd_pe']}x or above."),
     # RAISED 2.5 -> 2.75 (2026-10-21); HELD 2026-10-22 as the VIX eased again but
     # Asia sold off and the Gulf escalated. CUT 2.75 -> 2.5 (2026-10-23): the VIX's
@@ -4614,7 +4629,7 @@ DRIVERS = [
     # CUT 2.0 -> 1.0 (v117, 2026-11-21): the VIX closed at 35.89 on 20 Nov, above the 28.18 of 5 Nov that the
     # v94 cut to 1.5 was made on, the highest close in the series, as the S&P fell into correction. HELD (v118).
     ("Volatility & risk appetite", 0.1, 1.0,
-     "HELD at 1.0, where the 21 Nov morning review (v117) cut it from 2.0: the VIX "
+     "HELD at 1.0, where the 21 Nov morning review (v117) cut it from 1.44: the VIX "
      f"{'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} "
      f"on {_dday('vix_latest_date')}, " + VIX_LATEST_REASON[MACRO["vix_latest_date"]] + f", "
      f"{abs(MACRO['vix_lr_gap']):.2f} points "
@@ -4626,7 +4641,7 @@ DRIVERS = [
      f"{min(MACRO['vix_disputed_18nov']):.2f} for 18 Nov does not chain. Asia sold off with it on 20 Nov: Seoul fell "
      f"{abs(MACRO['kospi_20nov_chg_pct']):.2f}%, Tokyo {abs(MACRO['nikkei_20nov_chg_pct']):.2f}% and Manila "
      f"{abs(MACRO['psei_20nov_chg_pct']):.2f}%. The {_vh_close('2026-11-05'):.2f} close of 5 Nov, on which this score was cut to "
-     "1.5, is passed; 0.5 is kept for a VIX above 45 that holds - a market that cannot price risk at all. The futures "
+     "1.22, is passed, and 1.0 is the floor of the scale: no lower score is left for a VIX above 45. The futures "
      f"curve is RE-QUOTED to Cboe's {_dval(VIX_QUOTE_DATE)} settlements (VIXChart's copy), the first fresh board since 20 Oct: "
      f"December {MACRO['vix_futs_levels'][0][3]:.2f} and January {MACRO['vix_futs_levels'][1][3]:.2f} under a "
      f"{MACRO['vix_spot']:.2f} spot, in backwardation - the market prices the spike fading - and Saxo's parity read "
@@ -4639,11 +4654,11 @@ DRIVERS = [
      f"{VIX3M_MODEL:.2f} at three months, {abs(VIX3M_RESID):.2f}% {'below' if VIX3M_RESID < 0 else 'above'}, inside "
      f"the {VIX3M_BOUND_PCT:.0f}% bound; on forward vol it sits at "
      f"{VOL_BLEND:.2f}, {abs(VOL_RAMP):.2f} {'below' if VOL_RAMP < 0 else 'above'} the long run. A close back under "
-     f"{_vh_close('2026-11-05'):.2f} that holds would restore the half-point, and one under {MACRO['vix_longrun']} the point. "
+     f"{_vh_close('2026-11-05'):.2f} that holds would take it back to 1.22, and one under {MACRO['vix_longrun']} to 1.44. "
      "It moves the headline gauge only: the drawdown budget gauge reads the six-month and later readings, and the tilts "
      "and the forecasts read their own inputs."),
-    ("Geopolitics & energy", 0.1, 1.5,
-     "HELD at 1.5; the fighting has widened and the talks have not moved. On 17 Nov US jets struck an IRGC missile site "
+    ("Geopolitics & energy", 0.1, 1.22,
+     "HELD at 1.22; the fighting has widened and the talks have not moved. On 17 Nov US jets struck an IRGC missile site "
      "on Iran's Qeshm Island, in what a US official called self-defence, hours after Iranian drones were launched at "
      "Bahrain, and Iran then fired at Kuwait's Ali Al Salem base, its first attack on Kuwait since September; Kuwait and "
      "Bahrain said they intercepted the attacks (Fox News; Gulf News; Yahoo News). The tanker attacks have become nearly "
@@ -4744,10 +4759,9 @@ DRIVERS = [
      "and counter-strikes across the Gulf, tanker attacks nearly every day, talks that have not moved and a fall in Brent "
      "that prices a surplus the Strait's own barrels have not delivered are not an opening of the Strait. "
      "Not cut: attacks that go on, with the "
-     "Strait open to four countries' ships, are not a full closure, and 1.0 is kept for full closure with Brent "
+     "Strait open to four countries' ships, are not a full closure, and 1.0, the floor, is kept for full closure with Brent "
      "above $130 - strictly worse."),
 ]
-GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 
 # THE DRIVERS AT 3, 5 AND 10 YEARS (2026-10-27). Each score above is the reading NOW:
 # the evidence in its note is about the cycle in force. The 3-year reading is the
@@ -4757,50 +4771,50 @@ GAUGE_10 = round(sum(w * s for _, w, s, _ in DRIVERS), 2)
 # long-run assumptions that already carry the average cycle, so a 10-year reading away
 # from neutral would count it twice. A check holds each path moving from the reading now
 # toward neutral, never past it.
-DRIVER_NEUTRAL_10 = 5.5
+DRIVER_NEUTRAL = NEUTRAL_5
 _VOL3Y = next(v["implied"] for v in VOL_TS if v["label"] == "3Y")   # the curve's 3-year implied vol, for the path note
 DRIVER_PATH = {
-    "Monetary policy & liquidity": {"3Y": 3.5, "5Y": 5.0,
+    "Monetary policy & liquidity": {"3Y": 2.11, "5Y": 2.78,
         "why": f"The Fed's own September path keeps its rate above the {MACRO['fed_sep_longrun']}% it "
                f"calls neutral for three years - {_fed_26_27()}, "
-               f"{MACRO['fed_sep_2028']}% in 2028 - and BSP, hiking now, only hints at easing in 2027: 3.5 "
-               f"for years 1-3. Then {MACRO['fed_sep_2029']}% in 2029, close to neutral: 5.0 for years 4-5."},
-    "Inflation trajectory": {"3Y": 3.75, "5Y": 5.25,
+               f"{MACRO['fed_sep_2028']}% in 2028 - and BSP, hiking now, only hints at easing in 2027: 2.11 "
+               f"for years 1-3. Then {MACRO['fed_sep_2029']}% in 2029, close to neutral: 2.78 for years 4-5."},
+    "Inflation trajectory": {"3Y": 2.22, "5Y": 2.89,
         "why": f"BSP sees {MACRO['bsp_cpi_2026']}% this year and {MACRO['bsp_cpi_2027']}% in 2027 before "
                f"{MACRO['bsp_cpi_2028']}% in 2028, and the US prices {MACRO['be_5y_6oct']}-{MACRO['be_5y']}% a year "
-               "over five years (October breakevens): 3.75 for years 1-3. The market puts the five "
-               f"after at about {MACRO['be_5y5y']}%, near target: 5.25 for years 4-5."},
-    "Growth momentum": {"3Y": 4.5, "5Y": 5.25,
+               "over five years (October breakevens): 2.22 for years 1-3. The market puts the five "
+               f"after at about {MACRO['be_5y5y']}%, near target: 2.89 for years 4-5."},
+    "Growth momentum": {"3Y": 2.56, "5Y": 2.89,
         "why": f"The IMF has the world at {MACRO['imf_world_2026']}% this year and {MACRO['imf_world_2027']}% "
                f"next and the Philippines recovering to {MACRO['imf_ph_2027']}% in 2027 but below its "
-               "potential, with a hiking cycle and an energy shock in train: 4.5 for years 1-3, "
-               "5.25 for years 4-5 as policy turns."},
-    "Corporate earnings": {"3Y": 6.5, "5Y": 5.5,
+               "potential, with a hiking cycle and an energy shock in train: 2.56 for years 1-3, "
+               "2.89 for years 4-5 as policy turns."},
+    "Corporate earnings": {"3Y": 3.44, "5Y": 3.0,
         "why": f"Analysts' long-term S&P growth forecast is {MACRO['ltg_eps']}%, in the top tenth this "
-               f"century, and this quarter is growing at {MACRO['factset_q3_growth']}%: 6.5 for years 1-3. "
+               f"century, and this quarter is growing at {MACRO['factset_q3_growth']}%: 3.44 for years 1-3. "
                f"But since 1992 they forecast {MACRO['ltg_hist_fcst']}% a year and got "
                f"{MACRO['ltg_hist_real']}%: neutral by years 4-5 as margins revert."},
-    "Valuation support": {"3Y": 6.5, "5Y": 5.5,
+    "Valuation support": {"3Y": 3.44, "5Y": 3.0,
         "why": f"Asia at {MACRO['asia_fwd_pe']}x and Europe at {MACRO['sxxp_fwd_pe']:.1f}x are cheap, and the S&P's forward multiple, "
                f"{MACRO['spx_fwd_pe']}x, is below its averages, but on ten-year earnings the S&P is on {MACRO['cape']} "
-               f"({_dday('cape_date')}), from {MACRO['cape_prev']} in October and near the {MACRO['cape_high']} record: 6.5 "
+               f"({_dday('cape_date')}), from {MACRO['cape_prev']} in October and near the {MACRO['cape_high']} record: 3.44 "
                "for years 1-3, neutral for years 4-5, where the base returns already price the starting multiple - "
                f"Vanguard's model puts US stocks at {MACRO['vanguard_us_10y_lo']}-{MACRO['vanguard_us_10y_hi']}% a year for "
                f"the decade on those valuations, against the {MACRO['ltcma_us_eq']}% J.P. Morgan assumption the funds are built on."},
-    "Volatility & risk appetite": {"3Y": 4.5, "5Y": 5.5,
+    "Volatility & risk appetite": {"3Y": 2.55, "5Y": 3.0,
         "why": f"The VIX curve's own 3-year implied volatility, on the {_dval(VIX_QUOTE_DATE)} strip, is "
                f"{_VOL3Y:.2f}, {abs(_VOL3Y - MACRO['vix_longrun']):.2f} {'over' if _VOL3Y > MACRO['vix_longrun'] else 'under'} "
                f"the {MACRO['vix_longrun']} long run, and the hiking cycle and the Gulf keep risk appetite below "
-               "neutral: 4.5 for years 1-3, the spike priced to fade within them; neutral for years 4-5."},
-    "Geopolitics & energy": {"3Y": 3.0, "5Y": 5.0,
+               "neutral: 2.55 for years 1-3, the spike priced to fade within them; neutral for years 4-5."},
+    "Geopolitics & energy": {"3Y": 1.89, "5Y": 2.78,
         "why": "The oil market prices the shock out slowly: December 2027 Brent was quoted at "
-               f"${MACRO['brent_dec2027_hi']} on 22 Oct (another table has ${MACRO['brent_dec2027_lo']}), still far above pre-war - 3.0 for "
+               f"${MACRO['brent_dec2027_hi']} on 22 Oct (another table has ${MACRO['brent_dec2027_lo']}), still far above pre-war - 1.89 for "
                f"years 1-3. December 2029 settled at ${MACRO['brent_dec2029']} and December 2030 at "
                f"${MACRO['brent_dec2030']} on 15 Oct, against ${MACRO['brent_front_15oct']} for the front "
-               "month: 5.0 for years 4-5, a premium still above pre-war."},
+               "month: 2.78 for years 4-5, a premium still above pre-war."},
 }
 for _n, _, _s, _ in DRIVERS:
-    DRIVER_PATH[_n][HZ_LABEL] = DRIVER_NEUTRAL_10
+    DRIVER_PATH[_n][HZ_LABEL] = DRIVER_NEUTRAL
 
 # THE 1-YEAR VIEW (owner, 2026-11-15, v103), for the drawdown budget gauge. Each driver's reading
 # for the next twelve months, researched from the year-ahead evidence. The 3-year reading above is
@@ -4811,40 +4825,40 @@ for _n, _, _s, _ in DRIVERS:
 VOL_1Y = round(horizon_vol(1.0), 2)
 VOL_FWD_Y23 = round(math.sqrt((3 * horizon_vol(3.0) ** 2 - VOL_1Y ** 2) / 2), 2)
 DRIVER_Y1 = {
-    "Monetary policy & liquidity": (2.0,
+    "Monetary policy & liquidity": (1.44,
         f"The futures price the Fed to about {MACRO['fed_mkt_2027_lo']}-{MACRO['fed_mkt_2027_hi']}% by late 2027, "
         f"above its own {MACRO['fed_sep_2027']}% median for the end of 2027 (RateProbability; SOFR futures), BSP "
         f"is at {MACRO['bsp_rrp']:.2f}% after its {MACRO['bsp_hike_bp']}bp hike and the BoJ has a December hike flagged: "
-        "the next twelve months are the hiking end of the cycle, as hostile as now - 2.0."),
-    "Inflation trajectory": (2.75,
+        "the next twelve months are the hiking end of the cycle, as hostile as now - 1.44."),
+    "Inflation trajectory": (1.78,
         f"US PCE inflation is forecast at {MACRO['us_pce_2027']}% in 2027, core {MACRO['us_core_pce_2027']}% (the "
         f"Philadelphia Fed's forecasters; the FOMC's June median), and the EIA has Brent averaging "
         f"${MACRO['eia_brent_2027']:.2f} in 2027 (${MACRO['eia_brent_2027_prev']:.2f} a month earlier), below this year's; but BSP sees {MACRO['bsp_cpi_2027']}% in the "
-        f"Philippines in 2027 and Japan's producer prices rose {MACRO['jp_cgpi_oct']}% in October - 2.75, easing "
-        "from 2.0 now."),
-    "Growth momentum": (4.5,
+        f"Philippines in 2027 and Japan's producer prices rose {MACRO['jp_cgpi_oct']}% in October - 1.78, easing "
+        "from 1.44 now."),
+    "Growth momentum": (2.56,
         f"The IMF has the world growing {MACRO['imf_world_2027']}% in 2027, from {MACRO['imf_world_2026']}%, and "
         f"the Philippines {MACRO['imf_ph_2027']}% from {MACRO['imf_ph_2026']}%, and US jobless claims are "
-        f"{MACRO['us_claims_nov14'] // 1000}k - better than now, held back by the hikes: 4.5."),
-    "Corporate earnings": (7.0,
+        f"{MACRO['us_claims_nov14'] // 1000}k - better than now, held back by the hikes: 2.56."),
+    "Corporate earnings": (3.67,
         f"Analysts expect S&P 500 earnings to grow about {MACRO['spx_eps_2027_lo']:.0f}-{MACRO['spx_eps_2027_hi']}% "
         f"in 2027 (LSEG I/B/E/S, via Reuters; FactSet) and Asia ex-Japan about {MACRO['asia_eps_2027']}%: as "
-        "strong as now - 7.0."),
-    "Valuation support": (7.75,
+        "strong as now - 3.67."),
+    "Valuation support": (4.0,
         f"After the week's fall the S&P is near {MACRO['spx_fwd_pe_implied']}x on the earnings of FactSet's "
         f"{_dday('spx_fwd_pe_date')} reading ({MACRO['spx_fwd_pe']}x), below its averages, and Asia on {MACRO['asia_fwd_pe']}x; "
         f"a year is too short for the {MACRO['cape']} cyclically adjusted multiple to bite, but the discount narrows "
-        "as prices recover: 7.75, from 7.5 on 17 Nov, the year ahead starting from a lower price."),
-    "Volatility & risk appetite": (2.5,
+        "as prices recover: 4.0, from 3.89 on 17 Nov, the year ahead starting from a lower price."),
+    "Volatility & risk appetite": (1.67,
         f"The VIX closed at {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, "
         f"{abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its {MACRO['vix_longrun']} "
         f"long run, and the curve's own one-year implied volatility is {VOL_1Y:.2f}; the hiking cycle, the Gulf and a "
-        "sell-off that has taken the S&P into correction keep risk appetite below neutral for the year ahead - 2.5, "
-        "from 3.0 on 17 Nov: the futures price the spike fading, not the year back to calm."),
-    "Geopolitics & energy": (2.0,
+        "sell-off that has taken the S&P into correction keep risk appetite below neutral for the year ahead - 1.67, "
+        "from 1.89 on 17 Nov: the futures price the spike fading, not the year back to calm."),
+    "Geopolitics & energy": (1.44,
         f"The EIA assumes the Hormuz disruption eases to {MACRO['eia_hormuz_h1_2027']} mb/d in the first half of 2027 "
         f"and {MACRO['eia_hormuz_h2_2027']} mb/d in the second; flows are recovering but shipping is still far below "
-        "pre-war, the attacks go on and Tehran denies talks: 2.0, a little better than now."),
+        "pre-war, the attacks go on and Tehran denies talks: 1.44, a little better than now."),
 }
 DRIVER_Y23 = {n: round((3 * DRIVER_PATH[n]["3Y"] - DRIVER_Y1[n][0]) / 2, 3) for n in DRIVER_Y1}
 # THE SIX-MONTH VIEW (owner, 2026-11-17, v112: "Update also the drawdown budget gauge of macroeconomic
@@ -4860,48 +4874,46 @@ DRIVER_M6_DATE = "2026-11-21"
 VOL_6M = round(horizon_vol(0.5), 2)
 VOL_FWD_M712 = round(math.sqrt(2 * VOL_1Y ** 2 - VOL_6M ** 2), 2)   # the forward vol of months 7-12
 DRIVER_M6 = {
-    "Monetary policy & liquidity": (2.0,
+    "Monetary policy & liquidity": (1.44,
         "The futures price the Fed's December hike and more into early 2027, a majority chance of another by "
         "March (TheStreet, citing FedWatch; RateProbability), and most banks expect BSP to hike again on "
         f"{_dday('bsp_next_meeting')} (BusinessMirror; the Tribune, citing BPI): the half-year ahead is the hiking end "
-        "of the cycle, as hostile as now - 2.0, as for the year."),
-    "Inflation trajectory": (2.25,
+        "of the cycle, as hostile as now - 1.44, as for the year."),
+    "Inflation trajectory": (1.56,
         f"Prices rise fastest in the months just ahead: Philippine inflation was {MACRO['ph_cpi_oct']}% in October, "
         f"transport {MACRO['ph_cpi_oct_transport']}%, and US PCE inflation {MACRO['us_pce_sep']}% in September; the EIA "
         f"sees stocks rebuilding {MACRO['eia_stockbuild_h1_2027']} mb/d in the first half of 2027 but Brent below "
-        f"${MACRO['eia_brent_q2_2027_below']} only in the second quarter (Rigzone; Dow Jones) - 2.25, a little better "
+        f"${MACRO['eia_brent_q2_2027_below']} only in the second quarter (Rigzone; Dow Jones) - 1.56, a little better "
         "than now, the easing landing in months 7-12."),
-    "Growth momentum": (4.5,
+    "Growth momentum": (2.56,
         f"The US grew {MACRO['us_gdp_q3']}% in the third quarter, but the Philippines {MACRO['ph_gdp_q3']}% and "
         f"China's factory PMI is {MACRO['china_pmi_oct']}, and the hikes still to land weigh on the half-year "
-        "ahead: 4.5, as for the year."),
-    "Corporate earnings": (7.0,
+        "ahead: 2.56, as for the year."),
+    "Corporate earnings": (3.67,
         f"S&P earnings are growing {MACRO['factset_q3_growth']}% this quarter and analysts expect "
         f"{MACRO['spx_eps_2027_lo']:.0f}-{MACRO['spx_eps_2027_hi']}% for 2027 (LSEG I/B/E/S; FactSet); the half-year "
-        "ahead reports the strongest of it: 7.0, as now."),
-    "Valuation support": (8.0,
+        "ahead reports the strongest of it: 3.67, as now."),
+    "Valuation support": (4.11,
         f"The S&P is near {MACRO['spx_fwd_pe_implied']}x on the earnings of FactSet's {MACRO['spx_fwd_pe']}x reading, below "
         f"its {MACRO['spx_fwd_pe_5y']}x five-year and {MACRO['spx_fwd_pe_10y']}x ten-year averages, and Asia on "
         f"{MACRO['asia_fwd_pe']}x; six months is too short for the discount to close or for the {MACRO['cape']} "
-        "cyclically adjusted multiple to bite: 8.0, between now and the year's 7.75."),
-    "Volatility & risk appetite": (2.0,
+        "cyclically adjusted multiple to bite: 4.11, between now and the year's 4.0."),
+    "Volatility & risk appetite": (1.44,
         f"The VIX closed at {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, over its {MACRO['vix_longrun']} "
         f"long run, the curve's own six-month implied volatility is {VOL_6M:.2f} and VIX6M was {MACRO['vix6m_19nov']} on "
         "19 Nov; with the Fed and BSP still hiking, the Gulf fighting widening and the S&P in correction, the half-year "
-        "ahead stays well below neutral - 2.0, between now and the year's 2.5."),
-    "Geopolitics & energy": (1.75,
+        "ahead stays well below neutral - 1.44, between now and the year's 1.67."),
+    "Geopolitics & energy": (1.33,
         f"The EIA has the Hormuz disruption at {MACRO['eia_hormuz_h1_2027']} mb/d through the first half of 2027, "
         f"easing to {MACRO['eia_hormuz_h2_2027']} mb/d only in the second, and Brent above "
         f"${MACRO['eia_brent_q2_2027_below']} until the second quarter: the six months ahead carry most of what is "
-        "left of the shock - 1.75, between now and the year's 2.0."),
+        "left of the shock - 1.33, between now and the year's 1.44."),
 }
 DRIVER_M712 = {n: round(2 * DRIVER_Y1[n][0] - DRIVER_M6[n][0], 3) for n in DRIVER_M6}
 # Each driver's path averaged over the ten years (the reading its tilts take), and the
 # gauge at each horizon - the headline GAUGE stays the reading now.
-DRIVER_BLEND_10 = {n: round(sum(DRIVER_PATH[n][h] * w for h, w in HZ_W.items()), 2)
-                   for n, _, _, _ in DRIVERS}
-GAUGE_PATH_10 = {h: round(sum(w * DRIVER_PATH[n][h] for n, w, _, _ in DRIVERS), 2)
-                 for h in HZ_KEYS}
+DRIVER_BLEND = {n: wavg2((w, DRIVER_PATH[n][h]) for h, w in HZ_W.items()) for n, _, _, _ in DRIVERS}
+GAUGE_PATH = {h: wavg2((w, DRIVER_PATH[n][h]) for n, w, _, _ in DRIVERS) for h in HZ_KEYS}
 
 # ONE-LINE SUMMARIES, shown by default; the full note sits one tap behind each.
 # A check requires every number in a summary to appear in its full note, so a
@@ -4921,10 +4933,10 @@ PH_SUMMARY_BY_DATE = {
 SUMMARY = {
     "Monetary policy & liquidity": f"Held: the October minutes have almost all members expecting further hikes and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, a half-point at up to {max(MACRO['fed_50bp_odds_dec_19nov']):.0f}%; the 10-year fell five sessions running to {MACRO['ust_10y']:.2f}% on {_dday('ust_10y_date')} as the stock rout sent money into Treasuries.",
     "Inflation trajectory": f"Held: October's CPI rose {MACRO['us_cpi_oct_mom']}% on the month and core {MACRO['us_core_cpi_oct_mom']}%, each a tenth above forecast, and Philippine inflation rose to {MACRO['ph_cpi_oct']}% in October; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, +{MACRO['brent_yoy_1dp']:.1f}% {MACRO['brent_yoy_on']}.",
-    "Growth momentum": f"Held at 4.25: US payrolls rose {MACRO['us_payrolls_oct'] // 1000}k in October against {MACRO['us_payrolls_oct_consensus'] // 1000}k expected, claims are {MACRO['us_claims_nov14'] // 1000}k and October's retail control group rose {MACRO['us_retail_oct_control']}%, but Philippine growth slowed to {MACRO['ph_gdp_q3']}% in the third quarter against {MACRO['ph_gdp_q3_poll']}% expected, and the consumer is still the weak point.",
+    "Growth momentum": f"Held at 2.44: US payrolls rose {MACRO['us_payrolls_oct'] // 1000}k in October against {MACRO['us_payrolls_oct_consensus'] // 1000}k expected, claims are {MACRO['us_claims_nov14'] // 1000}k and October's retail control group rose {MACRO['us_retail_oct_control']}%, but Philippine growth slowed to {MACRO['ph_gdp_q3']}% in the third quarter against {MACRO['ph_gdp_q3_poll']}% expected, and the consumer is still the weak point.",
     "Corporate earnings": f"Held, the strongest pillar: Nvidia's revenue rose {MACRO['nvda_q3_rev_yoy']}% on a year to ${MACRO['nvda_q3_rev_bn']}bn, against about ${MACRO['nvda_q3_rev_consensus_bn']}bn expected, and it guided to ${MACRO['nvda_q4_guide_bn']:.1f}bn, yet the Nasdaq lost {abs(MACRO['nasdaq_wk_20nov_pct'])}% in the week to 20 Nov, on fears for the build-out rather than this quarter's profits; third-quarter growth is blended at {MACRO['factset_q3_growth']}% (FactSet, {_dday('factset_date')}).",
-    "Valuation support": f"Held at 8.5, raised from 8.0 on 21 Nov: the S&P has fallen {abs(MACRO['spx_since_fwd_pe_pct'])}% since FactSet's {MACRO['spx_fwd_pe']}x reading on earnings estimates that have not, putting it near {MACRO['spx_fwd_pe_implied']}x against five- and ten-year averages of {MACRO['spx_fwd_pe_5y']}x and {MACRO['spx_fwd_pe_10y']}x; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
-    "Volatility & risk appetite": f"Held at 1.0, cut from 2.0 on 21 Nov: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {'the highest close in this series' if MACRO['vix_latest'] == max(v for _, v in MACRO['vix_history']) else 'below the series high'} and {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as the S&P fell into correction; the futures curve, re-quoted to {_dval(VIX_QUOTE_DATE)}, is in backwardation.",
+    "Valuation support": f"Held at 4.33, raised from 4.11 on 21 Nov: the S&P has fallen {abs(MACRO['spx_since_fwd_pe_pct'])}% since FactSet's {MACRO['spx_fwd_pe']}x reading on earnings estimates that have not, putting it near {MACRO['spx_fwd_pe_implied']}x against five- and ten-year averages of {MACRO['spx_fwd_pe_5y']}x and {MACRO['spx_fwd_pe_10y']}x; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
+    "Volatility & risk appetite": f"Held at 1.0, cut from 1.44 on 21 Nov: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {'the highest close in this series' if MACRO['vix_latest'] == max(v for _, v in MACRO['vix_history']) else 'below the series high'} and {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as the S&P fell into correction; the futures curve, re-quoted to {_dval(VIX_QUOTE_DATE)}, is in backwardation.",
     "Geopolitics & energy": f"Held: US jets struck Iran's Qeshm Island on 17 Nov and Iran fired at Kuwait, tanker attacks are nearly daily and the talks have made no major progress; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week on the surplus outlook, and flows through the Strait are well below pre-war.",
     "US": US_SUMMARY_BY_DATE[MACRO["equity_date"]],
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
@@ -4932,10 +4944,9 @@ SUMMARY = {
     "PHILIPPINES": PH_SUMMARY_BY_DATE[(MACRO["psei_date"], MACRO["usdphp_date"])],
 }
 
-GAUGE = to5(GAUGE_10)          # headline, 1-5
+GAUGE = wavg2((w, s) for _, w, s, _ in DRIVERS)   # headline, 1-5
 GAUGE_NEUTRAL = NEUTRAL_5
-# The gauge at each horizon on the reported scale, and blended on the reader's route.
-GAUGE_PATH = {h: to5(v) for h, v in GAUGE_PATH_10.items()}
+# The gauge at each horizon (GAUGE_PATH, above), blended on the reader's route.
 GAUGE_BLEND = round(sum(GAUGE_PATH[h] * w for h, w in HZ_W.items()), 2)
 
 # ----------------------------------------------------------------------------
@@ -5158,7 +5169,7 @@ REGION_MIX = {
 }
 
 REGIONAL_TILT_PER_PT = 0.675    # % of net CAGR per point of 1-5 macro score above neutral
-NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts are unchanged
+NEUTRAL = NEUTRAL_5             # 0.675 per 1-5 point (0.30 per point of the 1-10 scale retired in v119, x 9/4)
 
 # ---- The Monetary and Geopolitics drivers, TRANSMITTED -----------------------
 # Until 2026-09-23 they were not. Each fund's rates and energy tilt was a typed
@@ -5186,21 +5197,23 @@ NEUTRAL = NEUTRAL_5             # 0.675 = 0.30 per 1-10 point x 9/4, so tilts ar
 # volatility channels already averaged their horizons. A Monetary reading of 2.0 that
 # is expected to average 3.5 over three years and 5.0 over the next two does not drag
 # a ten-year return as one held for the decade would. The reading is the driver's path averaged over the ten
-# years with the HZ_W weights (DRIVER_BLEND_10); the 10-year view alone (Portfolio A's
+# years with the HZ_W weights (DRIVER_BLEND); the 10-year view alone (Portfolio A's
 # column) reads the 10-year point, which is neutral, so it carries no rates or energy
 # tilt.
-TILT_CAL = {"monetary": 4.0, "geopolitics": 2.5,
+# v119: the 2 Sep readings on 1-5, as the page published them that day (4.0 and 2.5 on the 1-10
+# scale then in use, by the fixed map).
+TILT_CAL = {"monetary": 2.33, "geopolitics": 1.67,
             "date": "2026-09-02", "commit": "918c280"}
-MON_BLEND = DRIVER_BLEND_10["Monetary policy & liquidity"]
-GEO_BLEND = DRIVER_BLEND_10["Geopolitics & energy"]
-assert TILT_CAL["monetary"] != DRIVER_NEUTRAL_10 and TILT_CAL["geopolitics"] != DRIVER_NEUTRAL_10, \
+MON_BLEND = DRIVER_BLEND["Monetary policy & liquidity"]
+GEO_BLEND = DRIVER_BLEND["Geopolitics & energy"]
+assert TILT_CAL["monetary"] != DRIVER_NEUTRAL and TILT_CAL["geopolitics"] != DRIVER_NEUTRAL, \
     "a calibration reading at neutral carries no information about sensitivity"
 def _drv_scale(reading, cal):
-    return (reading - DRIVER_NEUTRAL_10) / (cal - DRIVER_NEUTRAL_10)
+    return (reading - DRIVER_NEUTRAL) / (cal - DRIVER_NEUTRAL)
 RATES_SCALE = _drv_scale(MON_BLEND, TILT_CAL["monetary"])
 ENERGY_SCALE = _drv_scale(GEO_BLEND, TILT_CAL["geopolitics"])
-RATES_SCALE_10 = _drv_scale(DRIVER_PATH["Monetary policy & liquidity"][HZ_LABEL], TILT_CAL["monetary"]) + 0.0
-ENERGY_SCALE_10 = _drv_scale(DRIVER_PATH["Geopolitics & energy"][HZ_LABEL], TILT_CAL["geopolitics"]) + 0.0
+RATES_SCALE_10Y = _drv_scale(DRIVER_PATH["Monetary policy & liquidity"][HZ_LABEL], TILT_CAL["monetary"]) + 0.0
+ENERGY_SCALE_10Y = _drv_scale(DRIVER_PATH["Geopolitics & energy"][HZ_LABEL], TILT_CAL["geopolitics"]) + 0.0
 
 def regional_score(region_key, h="blend"):
     """The fund's regional score: the horizon blend, or one horizon's score."""
@@ -5249,8 +5262,8 @@ def combine_fx(sig_asset):
 # 10-year view (Portfolio A's) carries no valuation tilt and nothing is counted twice.
 VAL_DRIVER = "Valuation support"
 VAL_SPAN_W = {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, HZ_LABEL: 0.5}
-VAL_PATH_5 = {"1Y": to5(DRIVER_Y1[VAL_DRIVER][0]), "3Y": to5(DRIVER_Y23[VAL_DRIVER]),
-              "5Y": to5(DRIVER_PATH[VAL_DRIVER]["5Y"]), HZ_LABEL: to5(DRIVER_NEUTRAL_10)}
+VAL_PATH_5 = {"1Y": DRIVER_Y1[VAL_DRIVER][0], "3Y": rnd(DRIVER_Y23[VAL_DRIVER]),
+              "5Y": DRIVER_PATH[VAL_DRIVER]["5Y"], HZ_LABEL: DRIVER_NEUTRAL}
 VAL_BLEND_5 = round(sum(w * VAL_PATH_5[h] for h, w in VAL_SPAN_W.items()), 4)
 VAL_TILT_PER_PT = REGIONAL_TILT_PER_PT
 
@@ -5295,8 +5308,8 @@ def build_fund(f):
     reg10 = rnd((rs10 - NEUTRAL) * REGIONAL_TILT_PER_PT * share if share != 1.0
                 else (rs10 - NEUTRAL) * REGIONAL_TILT_PER_PT) + 0.0
     val10 = rnd((VAL_PATH_5[HZ_LABEL] - NEUTRAL) * VAL_TILT_PER_PT * vshare) + 0.0
-    rates10 = rnd(t["rates"] * RATES_SCALE_10) + 0.0
-    energy10 = rnd(t["energy"] * ENERGY_SCALE_10) + 0.0
+    rates10 = rnd(t["rates"] * RATES_SCALE_10Y) + 0.0
+    energy10 = rnd(t["energy"] * ENERGY_SCALE_10Y) + 0.0
     tilt10 = rnd(reg10 + rates10 + energy10 + val10)
     net10 = base_net + tilt10
 
@@ -6130,7 +6143,7 @@ DDG_BANDS = (  # [lo, hi) on the 1-5 reading, the budget it points to, the actio
     + [(DDG_HOLD[0], DDG_HOLD[1], DD_BUDGET_OWNER, f"Hold at {DD_BUDGET_OWNER:.0f}%")]
     + [(round(DDG_HOLD[1] + i * DDG_STEP_W, 2), round(DDG_HOLD[1] + (i + 1) * DDG_STEP_W, 2) if i < _n_up - 1 else 5.0001,
         DD_BUDGET_OWNER + 1 + i, f"Raise to {DD_BUDGET_OWNER + 1 + i:.0f}%") for i in range(_n_up)])
-DDG_GEO_FLOOR = 2.0
+DDG_GEO_FLOOR = 1.44   # v119: 2.0 on the retired 1-10 scale, by the fixed map
 DDG_REVIEWS_NEEDED = 2
 # Month-end readings on record, oldest first: (month-end, reading). Until two share a
 # band, no step is taken. October's (v88, 2026-11-03) is the reading on the month's last
@@ -6196,8 +6209,8 @@ _MDRV = (("Monetary policy & liquidity", "Monetary (rates tilt)"), ("Geopolitics
 ANALYSES_BY_YEAR = {
     "spans": ["Year 1", "Years 2-3", "Years 4-5", "Years 6-10"], "w_bd": _AB_W, "w_a": [0.0, 0.0, 0.0, 1.0],
     "rows": [_ab_row("Regional ranking", _RNAME[k], [r["1Y"], r["Y23"], r["5Y"], r[HZ_LABEL]]) for k, r in REGIONS.items()]
-          + [_ab_row("Macro sentiment", lbl, [to5(DRIVER_Y1[n][0]), to5(DRIVER_Y23[n]), to5(DRIVER_PATH[n]["5Y"]),
-                                              to5(DRIVER_PATH[n][HZ_LABEL])]) for n, lbl in _MDRV]
+          + [_ab_row("Macro sentiment", lbl, [DRIVER_Y1[n][0], rnd(DRIVER_Y23[n]), DRIVER_PATH[n]["5Y"],
+                                              DRIVER_PATH[n][HZ_LABEL]]) for n, lbl in _MDRV]
           + [_ab_row("Market trend", "Five markets, average",
                      [round(sum(TREND_Y1.values()) / len(TREND), 2)]
                      + [round(sum(TREND_SPAN[h].values()) / len(TREND), 2) for h in ("3Y", "5Y")] + [NEUTRAL])]
@@ -6205,10 +6218,10 @@ ANALYSES_BY_YEAR = {
                      [VAL_PATH_5[h] for h in ("1Y", "3Y", "5Y", HZ_LABEL)])],
 }
 # Each B-and-D reading is the blend the forecasts use, within a rounding step: the regions' published
-# blend, the drivers' 3/5/10 blend rescaled, the trend sleeves' mean blend, the valuation channel's blend.
+# blend, the drivers' 3/5/10 blend, the trend sleeves' mean blend, the valuation channel's blend.
 _ABR = {r["name"]: r for r in ANALYSES_BY_YEAR["rows"]}
 assert all(abs(_ABR[_RNAME[k]]["bd"] - REGIONS[k]["blend"]) < 0.0051 for k in REGIONS)
-assert all(abs(_ABR[lbl]["bd"] - to5(DRIVER_BLEND_10[n])) < 0.0101 for n, lbl in _MDRV)
+assert all(abs(_ABR[lbl]["bd"] - DRIVER_BLEND[n]) < 0.0101 for n, lbl in _MDRV)
 assert abs(_ABR["Five markets, average"]["bd"] - sum(TREND[f]["blend"] for f in TREND) / len(TREND)) < 0.0101
 assert abs(_ABR["Multiples vs averages"]["bd"] - VAL_BLEND_5) < 0.0051
 
@@ -6216,18 +6229,18 @@ _MACW = sum(w for n, w, _, _ in DRIVERS if n != DDG_VAL)
 DDG_MACRO_W = {n: w / _MACW for n, w, _, _ in DRIVERS if n != DDG_VAL}
 def _macro_part(v):
     """The gauge's macro part: the six drivers other than valuation, re-weighted, on 1-5."""
-    return to5(sum(w * v[n] for n, w in DDG_MACRO_W.items()))
+    return round(sum(w * v[n] for n, w in DDG_MACRO_W.items()), 2)
 _DV = {"1Y": {n: DRIVER_Y1[n][0] for n in DRIVER_Y1}, "6M": {n: DRIVER_M6[n][0] for n in DRIVER_M6},
        "12M": DRIVER_M712, "3Y": DRIVER_Y23,
-       "5Y": {n: DRIVER_PATH[n]["5Y"] for n in DRIVER_PATH}, HZ_LABEL: {n: DRIVER_NEUTRAL_10 for n in DRIVER_PATH}}
+       "5Y": {n: DRIVER_PATH[n]["5Y"] for n in DRIVER_PATH}, HZ_LABEL: {n: DRIVER_NEUTRAL for n in DRIVER_PATH}}
 _VFWD = {"6M": VOL_6M, "12M": VOL_FWD_M712, "3Y": VOL_FWD_Y23, "5Y": _VOL_FWD["5Y"], HZ_LABEL: _VOL_FWD[HZ_LABEL]}
 DDG_PARTS = {h: {"macro": _macro_part(_DV[h]), "trend": round(sum(TREND_SPAN[h].values()) / len(TREND), 2),
-                 "valuation": to5(_DV[h][DDG_VAL]), "vol_forward": _VFWD[h]} for h in DDG_VIEWS}
+                 "valuation": rnd(_DV[h][DDG_VAL]), "vol_forward": _VFWD[h]} for h in DDG_VIEWS}
 # THE 10-YEAR ANCHOR (v112): shown beside the four weighted spans and not weighted - every part neutral by
 # construction (the drivers at neutral, no trend signal past year 5, the base returns pricing today's
 # multiples), so it reads the owner's 25% base itself. Weighted in, it would pin the gauge (runbook 107).
 DDG_PARTS[HZ_LABEL] = {"macro": _macro_part(_DV[HZ_LABEL]), "trend": TREND_ANCHOR,
-                       "valuation": to5(_DV[HZ_LABEL][DDG_VAL]), "vol_forward": _VFWD[HZ_LABEL]}
+                       "valuation": rnd(_DV[HZ_LABEL][DDG_VAL]), "vol_forward": _VFWD[HZ_LABEL]}
 # THE 10-YEAR ANCHOR'S HISTORY: shown beside the weighted views from v75 to v106, dropped in v107 (owner,
 # 2026-11-16: "...1, 3, and 5yrs"), shown again from v112 (owner, 2026-11-17: "...6months, 1yr, 3yrs,
 # 5yrs and 10yrs"), always neutral by construction and never weighted. It still sets Portfolio A's view.
@@ -6245,7 +6258,7 @@ DDG_VALUE = _hu2(sum(Decimal(repr(DDG_PARTS[h]["reading"])) * Decimal(repr(DDG_W
 # The v103-v111 rule on the same inputs: year 1 whole at 20%. The split cannot move the reading beyond a
 # rounding step, since months 7-12 are implied from year 1; a check holds it.
 _Y1P = {"macro": _macro_part(_DV["1Y"]), "trend": round(sum(TREND_Y1.values()) / len(TREND), 2),
-        "valuation": to5(_DV["1Y"][DDG_VAL])}
+        "valuation": rnd(_DV["1Y"][DDG_VAL])}
 _Y1P["reading"] = _hu2(sum(Decimal(repr(_Y1P[k])) for k in DDG_READING_OF) / len(DDG_READING_OF))
 DDG_VALUE_V111 = _hu2(Decimal(repr(_Y1P["reading"])) * Decimal("0.2")
                       + sum(Decimal(repr(DDG_PARTS[h]["reading"])) * Decimal("0.4") for h in ("3Y", "5Y")))
@@ -6259,17 +6272,19 @@ _REACH_BACK = (0.0, 0.0, 0.60, 0.85)   # v112: months 1-6 and 7-12 both hold yea
 def _reach(drv, mom, rev):
     sp = []
     for i, h in enumerate(DDG_VIEWS):
-        v = {n: drv[n] + _REACH_BACK[i] * (DRIVER_NEUTRAL_10 - drv[n]) for n in drv}
-        sp.append((_macro_part(v) + (mom if DDG_SPANS[h][1] <= 1.0 else rev) + to5(v[DDG_VAL])) / 3)
+        v = {n: drv[n] + _REACH_BACK[i] * (DRIVER_NEUTRAL - drv[n]) for n in drv}
+        sp.append((_macro_part(v) + (mom if DDG_SPANS[h][1] <= 1.0 else rev) + round(v[DDG_VAL], 2)) / 3)
     return round(sum(DDG_W[h] * x for h, x in zip(DDG_VIEWS, sp)), 2)
 _RD = ("Monetary policy & liquidity", "Inflation trajectory", "Growth momentum", "Corporate earnings",
        "Valuation support", "Volatility & risk appetite", "Geopolitics & energy")
 assert set(_RD) == {n for n, _, _, _ in DRIVERS}
-_REACH_IN = (   # name, the seven drivers on 1-10 in _RD's order, year-1 momentum and later reversal on 1-5
-    ("Every input at its best", (9.0,) * 7, 5.0, 3.5),
-    ("A strong but expensive boom, 2021-like", (7.5, 7.0, 8.5, 9.0, 2.5, 8.5, 7.0), 4.5, 2.0),
-    ("A crash, cheap afterwards, 2008- or 2020-like", (8.0, 6.5, 1.5, 1.5, 8.5, 1.0, 4.5), 1.0, 4.0),
-    ("A stagflation shock, expensive going in", (1.0, 1.0, 1.5, 2.0, 2.0, 1.0, 1.0), 1.0, 2.5),
+# v119: the drivers on 1-5, the v109 cases (set on 1-10) carried across by the fixed map, so every
+# case lands where it did.
+_REACH_IN = (   # name, the seven drivers in _RD's order, year-1 momentum and later reversal, all on 1-5
+    ("Every input at its best", (4.56,) * 7, 5.0, 3.5),
+    ("A strong but expensive boom, 2021-like", (3.89, 3.67, 4.33, 4.56, 1.67, 4.33, 3.67), 4.5, 2.0),
+    ("A crash, cheap afterwards, 2008- or 2020-like", (4.11, 3.44, 1.22, 1.22, 4.33, 1.0, 2.56), 1.0, 4.0),
+    ("A stagflation shock, expensive going in", (1.0, 1.0, 1.22, 1.44, 1.44, 1.0, 1.0), 1.0, 2.5),
     ("Every input at its worst", (1.0,) * 7, 1.0, 2.0))
 # The v105-v108 steps, kept to show what the re-scaling changed: hold 2.50-3.50, 0.30 a step.
 DDG_HOLD_V105, DDG_STEP_W_V105 = (2.5, 3.5), 0.3
@@ -8786,26 +8801,20 @@ def payload():
                         "prev_strip_date": MACRO["vix_futs_prev_date"],
                         "strip_age_d": (_dt.date.fromisoformat(REVIEW_DATE)
                                         - _dt.date.fromisoformat(VIX_QUOTE_DATE)).days},
-        # Each driver is RESEARCHED on 1-10 (score_10) - the granularity the evidence
-        # supports, and the scale every note below is written against - and REPORTED on
-        # 1-5 (score) by the same endpoint-preserving rescale used for the gauge and the
-        # regional rankings. Since to5() is affine and the weights sum to 1, the weighted
-        # composite of the REPORTED scores is exactly the headline gauge; the check block
-        # asserts that rather than assuming it.
+        # Each driver is scored on 1-5, 3 neutral (v119, owner: "No more 1-10"; until v118 it
+        # was researched on 1-10 and rescaled). The headline gauge is the weighted average of
+        # these scores, exact and half-up; the check block re-derives it.
         "drivers": [{"name": n, "weight": w,
-                     "score": to5(s), "score_10": s, "note": t, "summary": SUMMARY[n],
-                     "prev_score_10": DRIVER_PREV[1][n], "prev_review": DRIVER_PREV[0],
-                     # the 1/3/5/10-year path on the research scale, its reasoning, and
-                     # its ten-year average - the reading the rates and energy tilts take
+                     "score": s, "note": t, "summary": SUMMARY[n],
+                     "prev_score": DRIVER_PREV[1][n], "prev_review": DRIVER_PREV[0],
+                     # the 3/5/10-year path, its reasoning, and its ten-year average - the
+                     # reading the rates and energy tilts take
                      "path": {h: DRIVER_PATH[n][h] for h in HZ_KEYS},
-                     "path_5": {h: to5(DRIVER_PATH[n][h]) for h in HZ_KEYS},
-                     "blend_5": round(sum(to5(DRIVER_PATH[n][h]) * w for h, w in HZ_W.items()), 2),
-                     "path_why": DRIVER_PATH[n]["why"], "blend_10": DRIVER_BLEND_10[n]}
+                     "blend": DRIVER_BLEND[n], "path_why": DRIVER_PATH[n]["why"]}
                     for n, w, s, t in DRIVERS],
-        "driver_scale": {"research_max": 10, "reported_max": 5,
-                         "neutral": NEUTRAL_5, "neutral_10": 5.5},
-        "gauge": GAUGE, "gauge_10": GAUGE_10, "gauge_neutral": GAUGE_NEUTRAL,
-        "gauge_path": GAUGE_PATH, "gauge_path_10": GAUGE_PATH_10, "gauge_blend": GAUGE_BLEND,
+        "driver_scale": {"min": 1, "max": 5, "neutral": NEUTRAL_5},
+        "gauge": GAUGE, "gauge_neutral": GAUGE_NEUTRAL,
+        "gauge_path": GAUGE_PATH, "gauge_blend": GAUGE_BLEND,
         "funds": F, "corr": CORR, "corr_note": CORR_NOTE,
         "lookthrough": LOOKTHROUGH,
         "acwi_it_mix": ACWI_IT_MIX, "gdiv_mix": GDIV_MIX,
@@ -8837,13 +8846,13 @@ def payload():
         # The calibration record for the driver transmission, published so the
         # page-level and independent harnesses can re-derive every rates and energy
         # tilt from the driver scores without importing this file.
-        "driver_tilt_cal": {**TILT_CAL, "neutral_10": DRIVER_NEUTRAL_10,
-                            "reading": "blend_10",
+        "driver_tilt_cal": {**TILT_CAL, "neutral": DRIVER_NEUTRAL,
+                            "reading": "blend",
                             "monetary_blend": MON_BLEND, "geopolitics_blend": GEO_BLEND,
                             "rates_scale": round(RATES_SCALE, 6),
                             "energy_scale": round(ENERGY_SCALE, 6),
-                            "rates_scale_10y": round(RATES_SCALE_10, 6),
-                            "energy_scale_10y": round(ENERGY_SCALE_10, 6)},
+                            "rates_scale_10y": round(RATES_SCALE_10Y, 6),
+                            "energy_scale_10y": round(ENERGY_SCALE_10Y, 6)},
         # On the LATEST print. It read August's 6.1% for two days after September's
         # 7.2% was out, and the page typed the month - "against August inflation".
         # (The PPP differential above stays on August: it needs the US figure for
@@ -9017,16 +9026,14 @@ def report():
           f"{'/'.join(f'{v[chr(122)][h]:+.2f}' for h in ('1Y', '3Y', '5Y')):<18}"
           f"{v['z_rev']:>+6.2f}" + "".join(f"{v['score'][h]:>7.2f}" for h in TREND_VIEWS)
           + f"{v['blend']:>7.2f}{v['tilt']:>+7.2f}")
-    A("\n[3] BROAD MACRO GAUGE (drivers reported 1-5, researched 1-10)")
+    A("\n[3] BROAD MACRO GAUGE (drivers scored 1-5, 3 neutral)")
     for d in p["drivers"]:
-        A(f"    {d['name']:<30} w={d['weight']:.2f}  "
-          f"score={d['score']:.2f} / 5   ({d['score_10']:g} / 10)")
-    A(f"    {'COMPOSITE (research scale)':<30}            {p['gauge_10']} / 10")
+        A(f"    {d['name']:<30} w={d['weight']:.2f}  score={d['score']:.2f} / 5")
     A(f"    {'HEADLINE GAUGE':<30}            {p['gauge']} / 5"
       f"   (neutral {p['gauge_neutral']})")
-    A(f"    {'driver path (1-10)':<30}" + "".join(f"{h:>6}" for h in HZ_KEYS) + f"{'blend':>8}")
+    A(f"    {'driver path (1-5)':<30}" + "".join(f"{h:>6}" for h in HZ_KEYS) + f"{'blend':>8}")
     for d in p["drivers"]:
-        A(f"    {d['name']:<30}" + "".join(f"{d['path'][h]:>6g}" for h in HZ_KEYS) + f"{d['blend_10']:>8}")
+        A(f"    {d['name']:<30}" + "".join(f"{d['path'][h]:>6g}" for h in HZ_KEYS) + f"{d['blend']:>8}")
     A(f"    {'GAUGE (1-5)':<30}" + "".join(f"{p['gauge_path'][h]:>6}" for h in HZ_KEYS)
       + f"{p['gauge_blend']:>8}")
     A(f"    rates scale {p['driver_tilt_cal']['rates_scale']:.4f} (Monetary {MON_BLEND} blended), "
@@ -9088,23 +9095,22 @@ def report():
     checks.append(("every horizon vol is in a sane 10-40% band",
                    all(10 <= v["implied"] <= 40 for v in p["vol_ts"])))
     checks.append(("headline gauge within 1-5", 1 <= p["gauge"] <= 5))
-    checks.append(("driver composite within 1-10", 1 <= p["gauge_10"] <= 10))
-    checks.append(("gauge rescale 1-10 -> 1-5 is exact",
-                   abs(p["gauge"] - (1 + (p["gauge_10"] - 1) * 4 / 9)) <= 0.005))
-    checks.append(("the 1-10 neutral 5.5 maps to the 1-5 neutral",
-                   abs(to5(5.5) - p["gauge_neutral"]) < 1e-9))
+    checks.append(("the headline gauge is the weighted driver scores, exact and half-up",
+                   p["gauge"] == wavg2((d["weight"], d["score"]) for d in p["drivers"])))
+    # v119: the drivers are scored on 1-5 natively; nothing about them is published on 1-10.
+    checks.append(("no driver figure is published on the retired 1-10 scale (v119)",
+                   not any(k.endswith("_10") or k in ("path_5", "blend_5") for d in p["drivers"] for k in d)
+                   and not any(k.endswith("_10") for k in p if k.startswith("gauge"))
+                   and "neutral_10" not in p["driver_tilt_cal"]
+                   and p["driver_scale"] == {"min": 1, "max": 5, "neutral": NEUTRAL_5}))
     # The 1-5 neutral appears in three payload fields (gauge_neutral,
     # driver_scale.neutral, and implicitly the regional NEUTRAL). Three copies of
     # one constant is a drift risk with no upside, so tie them together rather
     # than trusting them to stay equal. (Audit 2026-09-09.)
     checks.append(("every published 1-5 neutral is the same number",
                    p["driver_scale"]["neutral"] == p["gauge_neutral"] == NEUTRAL_5))
-    checks.append(("the driver research neutral is the 1-10 neutral",
-                   abs(p["driver_scale"]["neutral_10"] - 5.5) < 1e-9))
-    # Driver scale. The last 1-10 surface on the page moved to 1-5 on 2026-09-09;
-    # these assert the reported scores really are the research scores rescaled, and
-    # that the composite of the reported scores IS the headline gauge (true because
-    # to5 is affine and the weights sum to 1 - asserted, not assumed).
+    checks.append(("the drivers' neutral, the tilts' neutral and the gauge's are the 1-5 neutral",
+                   DRIVER_NEUTRAL == p["driver_tilt_cal"]["neutral"] == p["gauge_neutral"] == NEUTRAL_5))
     # Prose-vs-payload regression guards. These are TARGETED, not general
     # contradiction detection: they encode the two specific ways the scenario
     # descriptions drifted from the macro block. On 2026-09-09 the "Hawkish
@@ -10136,16 +10142,16 @@ def report():
                        for x, _k in _hd_rows)))
     checks.append(("every driver score is reported in 1-5",
                    all(1 <= d["score"] <= 5 for d in p["drivers"])))
-    checks.append(("every driver rescale 1-10 -> 1-5 is exact",
-                   all(abs(d["score"] - to5(d["score_10"])) < 1e-9 for d in p["drivers"])))
-    # Tolerance DERIVED, not picked. Each reported score is to5() rounded to 2dp
-    # (+-0.005) and the weights sum to 1, so the composite carries up to 0.005 of
-    # rounding; the gauge itself rounds at 2dp for another 0.005. Bound = 0.010.
-    # The hand-picked 0.006 that stood here passed only because the scores happened
-    # to round favourably - it failed the moment a driver moved to 1.25, on an error
-    # of 0.0065 that is well inside what the published precision permits. Second
-    # time a hand-picked tolerance has been the defect rather than the check.
-    _comp_bound = sum(d["weight"] for d in p["drivers"]) * 0.005 + 0.005
+    checks.append(("every driver score, path point, year-1 and six-month reading is a 2dp figure on 1-5",
+                   all(round(v, 2) == v and 1 <= v <= 5
+                       for d in p["drivers"] for v in [d["score"], d["prev_score"]] + list(d["path"].values()))
+                   and all(round(r_[k], 2) == r_[k] and 1 <= r_[k] <= 5 for r_ in p["dd_gauge"]["drivers"]
+                           for k in ("now", "m6", "y1", "y3_avg", "y45"))))
+    # Tolerance DERIVED, not picked. Until v118 each reported score was a 1-10 score rescaled
+    # and rounded (+-0.005), and the bound was 0.010. From v119 the scores are the figures
+    # themselves and the gauge is their exact weighted average, so the only rounding left is
+    # the gauge's own 2dp: 0.005.
+    _comp_bound = 0.005
     checks.append(("the weighted composite of the reported driver scores is the gauge",
                    abs(sum(d["weight"] * d["score"] for d in p["drivers"]) - p["gauge"])
                    <= _comp_bound))
@@ -10337,8 +10343,8 @@ def report():
     # v107: no volatility tilt; the valuation tilt is the valuation path over years 1, 2-3, 4-5 and
     # 6-10 at 10/20/20/50, at the regional rate per point, on the equity share, none for cash.
     _vc = p["val_channel"]; _dv = next(d for d in p["drivers"] if d["name"] == VAL_DRIVER)
-    _vb = round(0.1 * to5(DRIVER_Y1[VAL_DRIVER][0]) + 0.2 * to5(DRIVER_Y23[VAL_DRIVER])
-                + 0.2 * to5(_dv["path"]["5Y"]) + 0.5 * to5(_dv["path"][HZ_LABEL]), 4)
+    _vb = round(0.1 * DRIVER_Y1[VAL_DRIVER][0] + 0.2 * rnd(DRIVER_Y23[VAL_DRIVER])
+                + 0.2 * _dv["path"]["5Y"] + 0.5 * _dv["path"][HZ_LABEL], 4)
     checks.append(("every fund's valuation tilt reproduces from the valuation path (years 1, 2-3, 4-5, 6-10 at 10/20/20/50), none for cash and none at 10 years; no volatility tilt",
                    _vc["blend_5"] == _vb and _vc["w"] == {"1Y": 0.1, "3Y": 0.2, "5Y": 0.2, HZ_LABEL: 0.5}
                    and all(f2["tilt_valuation"] == rnd((_vb - NEUTRAL) * _vc["per_pt"]
@@ -10369,24 +10375,22 @@ def report():
     # constant, both fail here.
     # Since 2026-10-26 the reading is each driver's horizon path averaged with the
     # published horizon weights, re-derived here from the published path.
-    _dp = {d["name"]: round(sum(d["path"][h] * w for h, w in p["hz_weights"].items()), 2)
-           for d in p["drivers"]}
+    _dp = {d["name"]: wavg2((w, d["path"][h]) for h, w in p["hz_weights"].items()) for d in p["drivers"]}
     def _toward(seq, neu):
         """Each step moves toward neutral or holds, and never crosses it."""
         return all(min(x, neu) <= y <= max(x, neu) for x, y in zip(seq, seq[1:]))
     checks.append(("every driver's path moves from its reading now toward neutral, ends neutral, and averages as published",
-                   all(_toward([d["score_10"]] + [d["path"][h] for h in HZ_KEYS], DRIVER_NEUTRAL_10)
-                       and d["path"][HZ_LABEL] == DRIVER_NEUTRAL_10
-                       and list(d["path"]) == list(HZ_KEYS) and _dp[d["name"]] == d["blend_10"]
-                       and all(1 <= v <= 10 for v in d["path"].values()) and d["path_why"]
+                   all(_toward([d["score"]] + [d["path"][h] for h in HZ_KEYS], DRIVER_NEUTRAL)
+                       and d["path"][HZ_LABEL] == DRIVER_NEUTRAL
+                       and list(d["path"]) == list(HZ_KEYS) and _dp[d["name"]] == d["blend"]
+                       and all(1 <= v <= 5 for v in d["path"].values()) and d["path_why"]
                        for d in p["drivers"])))
     checks.append(("the gauge at each horizon is the weighted composite of the driver path, moving from the headline toward neutral",
-                   all(abs(p["gauge_path_10"][h] - sum(d["weight"] * d["path"][h] for d in p["drivers"])) < 0.006
-                       and p["gauge_path"][h] == to5(p["gauge_path_10"][h]) for h in HZ_KEYS)
+                   all(p["gauge_path"][h] == wavg2((d["weight"], d["path"][h]) for d in p["drivers"]) for h in HZ_KEYS)
                    and _toward([p["gauge"]] + [p["gauge_path"][h] for h in HZ_KEYS], NEUTRAL_5)
                    and p["gauge_blend"] == round(sum(p["gauge_path"][h] * w for h, w in p["hz_weights"].items()), 2)))
-    _rs = (_dp["Monetary policy & liquidity"] - DRIVER_NEUTRAL_10) / (TILT_CAL["monetary"] - DRIVER_NEUTRAL_10)
-    _es = (_dp["Geopolitics & energy"] - DRIVER_NEUTRAL_10) / (TILT_CAL["geopolitics"] - DRIVER_NEUTRAL_10)
+    _rs = (_dp["Monetary policy & liquidity"] - DRIVER_NEUTRAL) / (TILT_CAL["monetary"] - DRIVER_NEUTRAL)
+    _es = (_dp["Geopolitics & energy"] - DRIVER_NEUTRAL) / (TILT_CAL["geopolitics"] - DRIVER_NEUTRAL)
     checks.append(("every rates tilt is transmitted from the Monetary driver",
                    all(f2["tilt_rates"] == rnd(f2["tilt_rates_cal"] * _rs) for f2 in p["funds"])))
     checks.append(("every energy tilt is transmitted from the Geopolitics driver",
@@ -10596,8 +10600,8 @@ def report():
     _ndv = [d for d in p["drivers"] if d["name"] != DDG_VAL]; _wsum = sum(d["weight"] for d in _ndv)
     _vd = next(d for d in p["drivers"] if d["name"] == DDG_VAL)
     checks.append(("the budget gauge's parts are the six non-valuation drivers' paths, the trend scores and the valuation path where the views coincide, each reading their mean",
-                   all(_dg["parts"][h]["macro"] == to5(sum(d["weight"] * d["path"][h] for d in _ndv) / _wsum)
-                       and _dg["parts"][h]["valuation"] == to5(_vd["path"][h])
+                   all(_dg["parts"][h]["macro"] == round(sum(d["weight"] * d["path"][h] for d in _ndv) / _wsum, 2)
+                       and _dg["parts"][h]["valuation"] == rnd(_vd["path"][h])
                        and _dg["parts"][h]["trend"] == round(sum(v["score"][h] for v in p["trend"]["sleeves"].values())
                                                              / len(p["trend"]["sleeves"]), 2)
                        for h in ("5Y",))
@@ -10634,25 +10638,25 @@ def report():
     # year, never past it; the macro parts are the weighted drivers on 1-5; the trend parts are each
     # sleeve's span score, and years 4-5 reproduce the 5-year trend exactly.
     _ddr = _dg["drivers"]
-    _toward = lambda xs: all((a - DRIVER_NEUTRAL_10) * (b - DRIVER_NEUTRAL_10) >= 0
-                             and abs(b - DRIVER_NEUTRAL_10) <= abs(a - DRIVER_NEUTRAL_10) + 1e-9
+    _toward = lambda xs: all((a - DRIVER_NEUTRAL) * (b - DRIVER_NEUTRAL) >= 0
+                             and abs(b - DRIVER_NEUTRAL) <= abs(a - DRIVER_NEUTRAL) + 1e-9
                              for a, b in zip(xs, xs[1:]))
     checks.append(("each driver's year-1 and six-month readings are researched and dated, months 7-12 and years 2-3 are implied, and the path moves toward neutral",
                    len(_ddr) == len(DRIVERS) and AS_OF <= _dg["y1_date"] <= REVIEW_DATE
                    and AS_OF <= _dg["m6_date"] <= REVIEW_DATE
-                   and all(1.0 <= r["y1"] <= 10.0 and len(r["why"]) > 60 and 1.0 <= r["m6"] <= 10.0 and len(r["why_m6"]) > 60
+                   and all(1.0 <= r["y1"] <= 5.0 and len(r["why"]) > 60 and 1.0 <= r["m6"] <= 5.0 and len(r["why_m6"]) > 60
                            and abs((r["y1"] + 2 * r["y23"]) / 3 - r["y3_avg"]) < 1e-9
                            and abs((r["m6"] + r["m712"]) / 2 - r["y1"]) < 1e-9
                            and r["y3_avg"] == DRIVER_PATH[r["name"]]["3Y"] and r["y45"] == DRIVER_PATH[r["name"]]["5Y"]
-                           and _toward([r["now"], r["m6"], r["m712"], r["y23"], r["y45"], DRIVER_NEUTRAL_10])
-                           and _toward([r["now"], r["y1"], r["y23"], r["y45"], DRIVER_NEUTRAL_10]) for r in _ddr)))
+                           and _toward([r["now"], r["m6"], r["m712"], r["y23"], r["y45"], DRIVER_NEUTRAL])
+                           and _toward([r["now"], r["y1"], r["y23"], r["y45"], DRIVER_NEUTRAL]) for r in _ddr)))
     _ddn = [r for r in _ddr if r["name"] != DDG_VAL]; _ddv = next(r for r in _ddr if r["name"] == DDG_VAL)
     _w6 = sum(r["weight"] for r in _ddn)
     _spk = {"6M": "m6", "12M": "m712", "3Y": "y23", "5Y": "y45"}
     checks.append(("the gauge's macro parts are the six non-valuation drivers for each span, re-weighted, on 1-5",
-                   all(_dg["parts"][h]["macro"] == to5(sum(r["weight"] * r[k] for r in _ddn) / _w6) for h, k in _spk.items())))
+                   all(_dg["parts"][h]["macro"] == round(sum(r["weight"] * r[k] for r in _ddn) / _w6, 2) for h, k in _spk.items())))
     checks.append(("the gauge's valuation parts are the valuation driver's own path, span by span, on 1-5, and the Budget tab's record of it is that path",
-                   all(_dg["parts"][h]["valuation"] == to5(_ddv[k]) for h, k in _spk.items())
+                   all(_dg["parts"][h]["valuation"] == rnd(_ddv[k]) for h, k in _spk.items())
                    and all(_dg["valuation"][k] == _ddv[k] for k in ("now", "m6", "m712", "y1", "y23", "y45"))))
     # v112: months 1-6 are each sleeve's half-year momentum, z from its last two quarters; months 7-12 what
     # year 1's momentum leaves (2 x year 1 - months 1-6), so the two halves average back to year 1.
@@ -10674,7 +10678,7 @@ def report():
     # 60 / 40) land within a rounding step of it - the restated month-end review rests on this.
     _vp = {h: {n: DRIVER_PATH[n][h] for n in DRIVER_PATH} for h in ("3Y", "5Y")}
     _old = _hu2(sum(Decimal(repr(_hu2((Decimal(repr(_macro_part(_vp[h]))) + Decimal(repr(_ddg_trend(h)))
-                                       + Decimal(repr(to5(_vp[h][DDG_VAL])))) / 3))) * Decimal(w)
+                                       + Decimal(repr(rnd(_vp[h][DDG_VAL])))) / 3))) * Decimal(w)
                     for h, w in (("3Y", "0.6"), ("5Y", "0.4"))))
     checks.append((f"splitting year 1 out leaves the reading where the 3-and-5-year rule puts it ({_dg['value']} vs {_old})",
                    abs(_dg["value"] - _old) <= 0.011))

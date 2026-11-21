@@ -2,6 +2,79 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-21 — v119: the macro drivers scored on 1-5, 3 neutral - no more 1-10; one knife-edge tilt moved, and D re-picked a near-tie
+
+At the owner's instruction: "Macroeconomics drivers update it 1-5 guauge. No more 1-10."
+
+**What changed.** Until v118 each of the seven macro drivers was researched on 1-10 (5.5 neutral) and shown on
+1-5. From v119 every driver figure is on 1-5, 3 neutral, and moves on that scale:
+- the scores, the 3-, 5- and 10-year paths, the six-month and year-1 readings and the last review's scores;
+- the geopolitics guard's floor, 2.0 → **1.44**;
+- the rates and energy tilts' calibration, Monetary 4.0 → **2.33** and Geopolitics 2.5 → **1.67**, the 2 Sep
+  readings as the page showed them that day;
+- the gauge's stylized reach cases.
+
+Each was carried across by the fixed map 1 → 1, 5.5 → 3, 10 → 5, at 2dp. No score was re-researched and none
+moved: Monetary 1.44, Inflation 1.44, Growth 2.44, Earnings 3.67, Valuation 4.33, Volatility 1.00, Geopolitics
+1.22. The headline gauge is now the exact weighted average of the 1-5 scores, half-up: **2.26**, as before.
+
+On the page:
+- The driver rows lose their "research scale x / 10" label, and the composite its "3.84 / 10".
+- The Budget tab's tables are headed "Macro drivers, 1–5 (3 neutral)" and "Market valuation, 1–5 (3 neutral)".
+  The valuation table's separate 1-10 row is gone.
+- The guards read "Geopolitics & energy reads 1.22 against a floor of 1.44".
+- The Report's line ends "on 1–5, 3 neutral".
+
+The regional rankings are not drivers. They are still researched on 1-10 and shown on 1-5, as before.
+
+**What it moved.** Quarter points on 1-10 are ninths on 1-5, so every converted reading rounds. Years 2-3 are
+implied as (3 × the 3-year reading − year 1) / 2, which magnifies the rounding:
+- Valuation's 3-year 3.444 became 3.44, and its years 2-3 went from 3.167 (3.17) to **3.16**.
+- That took the valuation blend from 3.134 to **3.132**.
+- Asian Multi-Asset Income has half its assets in equities, and its valuation tilt sat on a rounding edge (0.0452).
+  It fell to 0.0446, so **0.05 → 0.04pp**, and its forecast went from 5.96% to 5.95%.
+- **B (= A's mix): 7.14% → 7.13%**, the same mix. A on its 10-year view is unchanged at 7.24% / −24.9%. C is
+  unchanged at 6.94% / −24.8%.
+- **D re-picked a near-tie: 50% Nasdaq Equity Income, 20% Asian Multi-Asset Income, 15% Global Health Care, 15%
+  Global Infra Equity** (from 10% and 20%). That is 7.19% / −24.9%, against 7.20% / −25.0%. Four funds is still
+  the best count; four and five tie at 7.19%, and the shallower drawdown decides.
+- The budget gauge stays **2.93, hold at 25%**. Its years 2-3 reading went 2.83 → 2.82: macro 2.69 → 2.68,
+  valuation 3.17 → 3.16.
+- No rates or energy tilt moved. The scales shifted in the third decimal: rates ×0.467 → ×0.463, energy
+  ×0.283 → ×0.286.
+
+No market input moved. Every change above is the conversion's own rounding, so it is stated here rather than
+dressed as a market call.
+
+**Errors found and fixed.**
+1. **A score below the scale.** The volatility note said "0.5 is kept for a VIX above 45". On 1-10 the floor was
+   1.0, and the driver already sat on it. On 1-5 the note now says 1.0 is the floor and no lower score is left. The
+   undo conditions read as scores ("back to 1.22", "to 1.44") instead of "the half-point" and "the point".
+2. **Volatility's 3-year reading could not round to nearest.** 4.5 on 1-10 is 2.556. At 2.56, years 2-3 would read
+   3.005, past neutral, which the path rule forbids. It is carried at **2.55** (years 2-3 2.99).
+3. **CLAIMS' driver rows had not recorded v117's two moves.** The row still showed Valuation 8.0 and Volatility
+   2.0; the year-1 row showed Valuation 7.5 and Volatility 3.5. Both rows now lead with the v119 figures on 1-5 and
+   v117's Valuation 8.0 → 8.5 and Volatility 2.0 → 1.0.
+4. **The README's held-out snapshot was stale.** It said US Equity Opportunity, at its listed 1.20% fee, would take
+   20% of A; `model/heldout_sens.py` gives 15% of A and 15% of B, as it did in v118. It said that at a 1.20% fee
+   Asian Multi-Asset Income would rise to 35% of A "against 20% now"; A holds 25% (since v117). Both are corrected.
+
+**Checks:**
+- **Engine 268** (from 269). Five checks of the 1-10 → 1-5 rescale were retired or merged into four on the native
+  scale:
+  - the gauge is the exact weighted average of the scores;
+  - no driver figure is published on 1-10;
+  - every driver figure is a 2dp value on 1-5;
+  - the drivers', tilts' and gauge's neutral is 3.
+- **Audit 299.** Its driver checks re-derive everything on 1-5, and the last-review check compares with the
+  baseline's published 1-5 score.
+- **Validator 22** (from 21). New: no driver surface on the rendered page shows "1–10", "/ 10", "research scale"
+  or a 5.5 neutral, and both Budget tables are headed 1-5. It fails on v118's page.
+- **Mutants 85** (from 84). New: `m_old10` re-publishes a driver's `score_10`. `m_path` and `m_m6path` were
+  re-set to the 1-5 neutral.
+
+Not personal financial advice.
+
 ## 2026-11-21 — v118: full review the same Saturday - v117's open items closed, a latent roll bug and four smaller errors fixed; no score, budget or pick moved
 
 At the owner's instruction, the full review again:

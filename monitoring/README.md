@@ -214,6 +214,14 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+184. A SCALE CHANGE IS A ROUNDING, AND A ROUNDING CAN MOVE A KNIFE EDGE. v119 moved the macro drivers from 1-10 to
+   1-5 by the fixed map (1 -> 1, 5.5 -> 3, 10 -> 5). Quarter points on 1-10 are ninths on 1-5, so every reading
+   rounds at 2dp, and an implied span magnifies it: years 2-3 are (3 x the 3-year reading - year 1) / 2, so
+   Valuation's 3-year 3.444 -> 3.44 took years 2-3 from 3.167 to 3.16. That was enough to tip one fund's valuation
+   tilt across a rounding edge (Asian Multi-Asset Income 0.0452 -> 0.0446, so 0.05 -> 0.04) and re-pick D's
+   near-tie. A second rounding can also break a rule outright: Volatility's 3-year 2.556 rounded to 2.56 puts years
+   2-3 at 3.005, past neutral, so it is carried at 2.55. Before converting a scale, run the payload both ways and
+   diff it; say what moved and why, and do not round a reading across a rule the checks enforce.
 183. TWO SESSIONS CAN SHARE A CLOSE. Brent settled at $92.57 on 9 Nov and again on 20 Nov; the moment 20 Nov was
    carried, both "close beside its own day" checks flagged the note's 9 Nov sentence. A dated series' value is in
    its place beside any day of that series that carries it - read the series, do not assume a level is unique.
