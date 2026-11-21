@@ -70,8 +70,8 @@ dressed as a market call.
   baseline's published 1-5 score.
 - **Validator 22** (from 21). New: no driver surface on the rendered page shows "1–10", "/ 10", "research scale"
   or a 5.5 neutral, and both Budget tables are headed 1-5. It fails on v118's page.
-- **Mutants 85** (from 84). New: `m_old10` re-publishes a driver's `score_10`. `m_path` and `m_m6path` were
-  re-set to the 1-5 neutral.
+- **Mutants 85/85 caught** (from 84). New: `m_old10` re-publishes a driver's `score_10`. `m_path` and `m_m6path`
+  were re-set to the 1-5 neutral.
 
 Not personal financial advice.
 
