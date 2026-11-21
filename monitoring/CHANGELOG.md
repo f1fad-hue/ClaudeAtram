@@ -44,7 +44,7 @@ give the 3.60 blend.
 - **Audit 298.** Its regional checks re-derive on 1-5. The last-review check runs only when the driver notes
   differ from the baseline, and here they do not.
 - **Validator 22.** The no-1-10 check now covers the regional table and its notes and the year-by-year table.
-- **Mutants 86** (from 85). New: `m_reg10` re-publishes a region's `blend_10`. `m_regy1` moves a year 1 on 1-5.
+- **Mutants 86/86 caught** (from 85). New: `m_reg10` re-publishes a region's `blend_10`. `m_regy1` moves a year 1 on 1-5.
 
 Not personal financial advice.
 
