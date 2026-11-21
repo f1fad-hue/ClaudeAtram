@@ -214,6 +214,15 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+183. TWO SESSIONS CAN SHARE A CLOSE. Brent settled at $92.57 on 9 Nov and again on 20 Nov; the moment 20 Nov was
+   carried, both "close beside its own day" checks flagged the note's 9 Nov sentence. A dated series' value is in
+   its place beside any day of that series that carries it - read the series, do not assume a level is unique.
+182. A FIGURE DATED IN PROSE IS DATED IN ITS KEY. v117 computed the week's moves from the LATEST close against 13 Nov
+   and printed them as "the week to 20 Nov"; the next roll would have printed a six-session move under that label,
+   and nothing would have failed, because the arithmetic stays right while the meaning moves. Any figure the prose
+   ties to a day reads a key named for that day (`spx_20nov`), checked equal to the latest while that day is the
+   latest; and a sentence that tells one session's story is keyed by the session, so a roll that forgets it
+   stops the build.
 181. A WIDTH IS READ FROM THE STEP IT DESCRIBES. The Budget tab's sentence took "each step down" from the first
    band below the hold zone in the list - the lowest, 1.00-2.20 - so from v109 it read "each 1.20 below 2.80"
    while every step was 0.15. Nothing checked the sentence against the payload's `step_w`, and the eye reads past

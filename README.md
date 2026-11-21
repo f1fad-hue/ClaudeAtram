@@ -47,12 +47,14 @@ market assumptions. Market data as of 20 Nov 2026 (reviewed 21 Nov, every 20 Nov
 Seoul, Tokyo and Manila at their 20 Nov closes, after the week's AI sell-off (the S&P 500 6,910.39, -3.70% on the day
 and -8.6% on the week, into correction; the Nasdaq 22,617.73, -5.28%; the KOSPI 4,869.96, -5.21%; the Nikkei
 56,436.65, -5.06%; the PSEi 5,306.98, -3.12%, its lowest close since April 2020); the VIX at 35.89, its highest close
-in this record; the 10-year Treasury at 4.92% (the Treasury's par curve), the 2-year and 30-year at 19 Nov; the peso
-at 63.81; Brent's January and WTI's December settles at 19 Nov (20 Nov's in one source only); the VIX futures curve
+in this record; the Treasury curve at 20 Nov (the 10-year 4.92%, the 2-year 4.63%, the 30-year 5.31%, on the par
+curve); the peso at 63.81; Brent's January ($92.57) and WTI's December ($83.98, its last trading day) at 20 Nov,
+confirmed in a second source in v118; the VIX futures curve
 re-quoted to Cboe's 19 Nov settlements (December 24.54, January 23.99, in backwardation); FedWatch at 19 Nov (a
 December hike 100% priced, a half-point at up to 10%); the 16 Nov T-bill auction; FactSet's forward P/E at 18.3 on
 12 Nov (its 13 Nov edition; the 20 Nov edition was not found), the S&P 9.0% lower since; PortWatch's Hormuz count at
-8 Nov, the latest it has published. Brent's y/y is quoted against its 14 Nov 2025 settle.
+8 Nov, the latest it has published. Brent's y/y, +45.76%, is quoted against its 19 Nov 2025 settle ($63.51), one
+day off the anniversary (re-anchored in v117 from 14 Nov 2025; this sentence lagged until v118).
 Target funds were checked in full on 16 Nov, the first review of the week, through search results only, and
 searched again for notices on 17 Nov and 21 Nov (ATRAM's pages list undated plan-rule and cut-off notices whose text
 could not be read; no fee or target change found); the 1-year test could not be refreshed (uitf.com.ph is blocked and

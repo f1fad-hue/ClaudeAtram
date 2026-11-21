@@ -2,6 +2,91 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-21 — v118: full review the same Saturday - v117's open items closed, a latent roll bug and four smaller errors fixed; no score, budget or pick moved
+
+At the owner's instruction, the full review again:
+- debugging, code review and a sanity check;
+- a hunt for errors, and a clean-up;
+- re-research and re-verification of the data and math, the 22 funds, every portfolio, the budget at
+  6 months, 1, 3, 5 and 10 years, and the four analyses at 1, 3, 5 and 10 years.
+
+Reviewed Saturday 21 Nov, a few hours after v117, with no session since 20 Nov's close. No market could roll, so
+this pass closed what v117 held back and turned on v117's own work.
+
+**What v117 held back, now confirmed in a second source:**
+- **Oil, 20 Nov:** Brent's January $92.57 (+$0.59, −3.41% on the week) and WTI's December $83.98 on its last
+  trading day (+$0.77) (Xinhua via Bernama; FinanceFeeds; Kitco; EnergyNow). January WTI is the front month from
+  23 Nov. Brent's y/y is +45.76% against 19 Nov 2025, one day off the anniversary.
+- **Treasury curve, 20 Nov:** the 2-year at 4.63% (−13bp) and the 30-year at 5.31% (−9bp), on the Treasury's own
+  par table and CappNotes' close. The curve is now all at 20 Nov.
+- **APEC (Shenzhen, 19 Nov):**
+  - Trump and Xi agreed to draft an action plan for "a constructive relationship of strategic stability" but set
+    no new tariff rates or rare-earth quotas (China Briefing; SCMP).
+  - The US, Chinese and Russian leaders issued a four-point declaration that does not mention the Gulf (RFE/RL;
+    Fox News).
+  - It is in the Asia and geopolitics notes.
+- **US October PCE and the second estimate of Q3 GDP, 25 Nov, 8:30 ET:** now on the BEA's own schedule. Added to
+  the calendar.
+
+**Still not in two sources:**
+- FactSet's 20 Nov edition, so 18.3x stands.
+- A 20 Nov VIX futures board or VIX3M, so the 19 Nov board stands.
+- A post-sell-off FedWatch read. Reads range 90-96% for a quarter-point; a hike by December is still 100%.
+- A newer CAPE (38.9 stands).
+- A November Hormuz flow figure two sources agree on.
+
+ATRAM's fees were spot-checked again with nothing new; the 16-17 Nov full check stands.
+
+**Errors found and fixed.**
+1. **A latent roll bug in v117's own code.** The week's moves were computed from the LATEST close against 13 Nov:
+   the S&P's −8.6%, the Nasdaq's −10.0%, the Dow's −8.0%, the KOSPI's −7.9% and the Nikkei's −7.7%. So were the
+   volatility note's "Asia sold off on 20 Nov" figures and the Bank of Korea entry. At the next roll every one of
+   them would have printed a six-session move, or Monday's, under a "20 Nov" label, and no check would have
+   failed.
+   - They are now read from explicit 20 Nov keys (`spx_20nov`, `kospi_20nov_chg_pct`, ...).
+   - A new engine check holds each key equal to the latest while 20 Nov is the latest session.
+   - A new audit check re-derives each week from its own two day-keyed closes. The new mutant `m_day20` proves the
+     audit catches a key that drifts.
+2. **Three regional summaries and the volatility note's opening told one session's story under the latest
+   figures.** These are "the S&P's seventh straight fall", "its lowest close since April 2020" and "its first close
+   above 30 since March". They are now keyed by their session, like the notes' latest reasons (v110), so a roll that
+   does not rewrite them stops the build. "The highest close in this series" is read from the series.
+3. **Two sessions can share a close, and both checks said they couldn't.** Brent settled at $92.57 on 9 Nov and
+   again on 20 Nov, and the geopolitics note quotes 9 Nov's beside 9 Nov. The engine's and the audit's
+   "close beside its own day" checks both flagged it. Each now accepts a dated series' value beside any day of that
+   series that carries it, as the audit's day-keyed check has since v113.
+4. **The README still dated Brent's y/y base at 14 Nov 2025.** v117 had re-anchored it to 19 Nov 2025. Corrected.
+
+**Scores:**
+- **DRIVER_PREV is now v117's published scores**, so the two moves of the morning read **HELD**:
+  - valuation at 8.5, raised from 8.0 in v117;
+  - volatility at 1.0, cut from 2.0 in v117.
+- The other five are held: Monetary 2.0, Inflation 2.0, Growth 4.25, Earnings 7.0, Geopolitics 1.5.
+- Nothing in today's evidence moves a score. Brent's +$0.59 on Friday sits inside a third weekly fall, and the
+  week's yields and oil are what v117 scored.
+
+**The budget gauge, 6 months to 10 years:**
+- **Readings unchanged:** months 1-6 3.53, months 7-12 3.13, years 2-3 2.83, years 4-5 2.84, the anchor 3.00.
+- **The gauge is 2.93, hold at 25%,** and all three guards still block a raise.
+- **Regional readings and trend inputs held**, the trend's quarter-end data unchanged.
+
+**Portfolios and funds:** every weight, CAGR and drawdown is unchanged from v117.
+
+| Portfolio | Mix | 1/3/5/10 view | 10-year view |
+| --- | --- | --- | --- |
+| A = B | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | 7.14% / −24.9% | 7.24% / −24.9% |
+| C | 25 / 70 / 5 | 6.94% / −24.8% | |
+| D | 50 Nasdaq / 20 Infra / 20 Asian MAI / 10 Health Care | 7.20% / −25.0%, four funds | 7.29% |
+
+- The held-out what-ifs re-run identically (every weight and CAGR as recorded in v117).
+- The 11-fund table is v117's.
+
+**Checks:**
+- engine 269/269 (one new);
+- audit 299/299 (one new);
+- page validator 21/21;
+- mutants: 84, with the new `m_day20`, run on the final build (the result is in the follow-up commit).
+
 ## 2026-11-21 — v117: full review on the week to 20 Nov - the AI sell-off rolled in, the VIX curve re-quoted, volatility cut to 1.0 and valuation raised to 8.5, the budget held at 25%; four errors found and fixed
 
 At the owner's instruction: run debugging, code review and a sanity check; hunt and fix errors; clean up; and

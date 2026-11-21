@@ -671,6 +671,7 @@ for rk, r in D["regions"].items():
 _CLOSES = {"spx_close": "equity_date", "nasdaq_close": "equity_date", "dow_close": "equity_date",
            "nikkei_latest": "nikkei_latest_date", "kospi_latest": "kospi_latest_date", "psei": "psei_date",
            "usdphp": "usdphp_date", "brent": "brent_date", "wti_settle": "wti_date", "vix_latest": "vix_latest_date"}
+_SERIES_OF = {"brent": "brent_history", "vix_latest": "vix_history"}
 _bad = []
 for lab, t in TXT:
     for sent in re.split(r"(?<=[.;])\s+", t):
@@ -678,8 +679,11 @@ for lab, t in TXT:
         for k, dk in _CLOSES.items():
             forms = {f"{M[k]:.2f}", f"{M[k]:,.2f}"}
             if any(re.search(r"(?<![\d.,])" + re.escape(f_) + r"(?![\d])", sent) for f_ in forms):
-                day = d(M[dk]).day
-                if not re.search(rf"\b{day} {MON}|\bthe {day}(?:st|nd|rd|th)\b", sent): _bad.append((lab, k))
+                # v118: a close its own dated series also carries on another day (Brent $92.57 on 9 Nov and
+                # 20 Nov) is in its place beside that day too - re-read from the series, not the engine.
+                _days = {d(M[dk]).day} | ({d(x_).day for x_, y_ in M[_SERIES_OF[k]] if y_ == M[k]} if k in _SERIES_OF else set())
+                if not any(re.search(rf"\b{day} {MON}|\bthe {day}(?:st|nd|rd|th)\b", sent) for day in _days):
+                    _bad.append((lab, k))
 ck("every daily close quoted beside a date is quoted beside its own", not _bad, f"{_bad[:4]}")
 _bel = [(lab, m.group(0)[:60]) for lab, t in TXT for m in re.finditer(
     r"Brent settled at \$(\d+(?:\.\d+)?)(?:[^.;]|\.(?=\d))*?below the \$(\d+(?:\.\d+)?)", t) if float(m.group(2)) <= float(m.group(1))]
@@ -754,6 +758,27 @@ for k, v in M.items():
         _dd.append((k, v, M[_LAT[m_.group(1)][1]]))
 ck(f"a day-keyed move on the series' latest day equals the latest move ({len(_dd)} keys)",
    all(v == w for _, v, w in _dd), f"{[x for x in _dd if x[1] != x[2]]}")
+# v118: the same for a day-keyed CLOSE (spx_20nov, kospi_20nov), and each week's move re-derived from its two
+# day-keyed closes - so the week stays the week to its own day after the roll, and a typo in either fails.
+_LATC = {"spx": "spx_close", "nasdaq": "nasdaq_close", "dow": "dow_close", "kospi": "kospi_latest",
+         "nikkei": "nikkei_latest", "psei": "psei"}
+_dc = []
+for k, v in M.items():
+    m_ = re.match(r"^(spx|nasdaq|dow|kospi|nikkei|psei)_(\d{1,2})(" + "|".join(_MO) + r")$", k)
+    if not m_: continue
+    _l = d(M[_LAT[m_.group(1)][0]])
+    if (_l.month, _l.day) == (_MO.index(m_.group(3)) + 1, int(m_.group(2))):
+        _dc.append((k, v, M[_LATC[m_.group(1)]]))
+_wk = []
+for k, v in M.items():
+    m_ = re.match(r"^(spx|nasdaq|dow|kospi|nikkei)_wk_(\d{1,2})(" + "|".join(_MO) + r")_pct$", k)
+    if not m_: continue
+    _end, _beg = M.get(f"{m_.group(1)}_{m_.group(2)}{m_.group(3)}"), M.get(f"{m_.group(1)}_{int(m_.group(2)) - 7}{m_.group(3)}")
+    _wk.append((k, v, None if _end is None or _beg is None else round((_end / _beg - 1) * 100, 1)))
+ck(f"a day-keyed close on the series' latest day equals the latest close, and each week's move re-derives "
+   f"from its own two closes ({len(_dc)} closes, {len(_wk)} weeks)",
+   all(v == w for _, v, w in _dc) and _wk and all(v == w for _, v, w in _wk),
+   f"{[x for x in _dc if x[1] != x[2]]} {[x for x in _wk if x[1] != x[2]]}")
 # v94: Brent's y/y at one decimal is the EXACT ratio rounded half-up - re-derived from the two
 # settles, not read from the payload's own rounded figure (it printed 51.0% for 51.053%).
 from decimal import Decimal as _D, ROUND_HALF_UP as _HU
