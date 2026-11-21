@@ -85,7 +85,7 @@ ATRAM's fees were spot-checked again with nothing new; the 16-17 Nov full check 
 - engine 269/269 (one new);
 - audit 299/299 (one new);
 - page validator 21/21;
-- mutants: 84, with the new `m_day20`, run on the final build (the result is in the follow-up commit).
+- mutants: 84/84 caught, the new `m_day20` among them, run on the final build.
 
 ## 2026-11-21 — v117: full review on the week to 20 Nov - the AI sell-off rolled in, the VIX curve re-quoted, volatility cut to 1.0 and valuation raised to 8.5, the budget held at 25%; four errors found and fixed
 
