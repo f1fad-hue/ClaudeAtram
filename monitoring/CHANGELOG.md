@@ -70,7 +70,7 @@ reach their 60-day bound on 29 Nov. The October fact sheets are due before then.
 - D 7.19% / −24.9%, four funds the best count.
 
 **Checks:** engine 267/267; audit 298/298 (the retrace check retired, the last-review check back because the
-geopolitics note changed); validator 22/22; mutants 85 (from 86, `m_retr` retired).
+geopolitics note changed); validator 22/22; mutants 85/85 caught (from 86, `m_retr` retired).
 
 Not personal financial advice.
 
