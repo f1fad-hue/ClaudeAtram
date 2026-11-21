@@ -87,8 +87,8 @@ macro sentiment (the drivers' rates and energy tilts), the market trend and mark
 and valuation is already priced in the long-run assumptions. **B, C and D** read them at **1, 3, 5
 and 10 years**, weighted by the years each covers: year 1 10%, years 2-3 20%, years 4-5 20%,
 years 6-10 50%. Year 1 is researched on its own for every analysis - the regional rankings'
-from 16 Nov 2026 (v108): US 5.0, Europe 3.25, Asia 6.0, Philippines 4.75 on 1-10, each half a point under
-its three-year score - and years 2-3 are what each three-year reading (the average of years 1-3)
+from 16 Nov 2026 (v108): US 2.78, Europe 2.00, Asia 3.22, Philippines 2.67 on 1-5, each 0.22 under
+its three-year score (5.0, 3.25, 6.0 and 4.75 on the 1-10 scale they were researched on until v119) - and years 2-3 are what each three-year reading (the average of years 1-3)
 leaves once year 1 is taken out, so no year counts twice and the blends, forecasts and picks are
 unchanged by the split. The Portfolios tab's table "The four analyses, year by year" shows every
 reading A, B and D take.
@@ -99,8 +99,10 @@ rounding of Valuation's 3-year reading tipped it under the edge).
 **The macro drivers are scored on 1-5, 3 neutral, from v119** (owner, 21 Nov 2026: "Macroeconomics
 drivers update it 1-5 guauge. No more 1-10."): every score, path point, six-month and year-1
 reading, the guard's floor (1.44) and the tilts' calibration (2.33 and 1.67) is on 1-5, carried
-across from 1-10 by the fixed map 1 → 1, 5.5 → 3, 10 → 5 at 2dp. The regional rankings are still
-researched on 1-10 and shown on 1-5. The volatility curve no longer tilts any return (it moved them -0.02 to +0.01pp);
+across from 1-10 by the fixed map 1 → 1, 5.5 → 3, 10 → 5 at 2dp. **The regional rankings followed in
+v120** (owner, 21 Nov 2026: "Regional driver update them to 1-5 gauge"): US 3.00 / 3.33 / 3.44 at 3, 5
+and 10 years, Europe 2.22 / 2.56 / 2.56, Asia 3.44 / 3.67 / 3.67, Philippines 2.89 / 3.11 / 3.00, the
+same blends (3.29 / 2.46 / 3.60 / 2.99) and no forecast or pick moved. Nothing on the page is on 1-10. The volatility curve no longer tilts any return (it moved them -0.02 to +0.01pp);
 it sets each fund's volatility and so its expected drawdown, and the VIX guards a raise of the
 budget. The Volatility tab was removed; its drawdown model is on the Portfolios tab.
 **One rule chooses all three**, over the eleven funds within the review's

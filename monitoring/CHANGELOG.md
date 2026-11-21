@@ -2,6 +2,52 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-21 — v120: the regional rankings scored on 1-5, 3 neutral; no forecast, pick or budget moved
+
+At the owner's instruction: "Regional driver update them to 1-5 gauge."
+
+**What changed.** The four regional rankings follow the macro drivers (v119) onto 1-5. Until v119 they were
+researched on 1-10 and rescaled. Every 3-, 5- and 10-year score and every year-1 reading is now a 1-5 figure,
+carried across by the fixed map 1 → 1, 5.5 → 3, 10 → 5 at 2dp. No score was re-researched and none moved:
+
+| Region | Year 1 | Years 2-3 (implied) | 3Y | 5Y | 10Y | Blend |
+|---|---|---|---|---|---|---|
+| United States | 2.78 | 3.11 | 3.00 | 3.33 | 3.44 | 3.29 |
+| Europe | 2.00 | 2.33 | 2.22 | 2.56 | 2.56 | 2.46 |
+| Asia ex-Japan | 3.22 | 3.55 | 3.44 | 3.67 | 3.67 | 3.60 |
+| Philippines (cash) | 2.67 | 3.00 | 2.89 | 3.11 | 3.00 | 2.99 |
+
+The notes read on the same scale: "THREE YEARS: 3.0, 0.44 below the 3.44 anchor", "the ten-year anchor at 3.67",
+"2.78, 0.22 under the three-year 3.0".
+
+On the page:
+- The regional "Why" panels lose their "research scale x / 10" label.
+- The payload drops its `_10` fields.
+- The engine's `to5()` rescale is retired, as nothing uses it now.
+
+Nothing on the page is on 1-10.
+
+**What it moved: nothing that reaches a return.** The blends were always taken on the 1-5 scores. The
+regional tilt reads the blends and the 10-year scores, and every one is the same figure as before. So no fund
+forecast, pick, drawdown or budget reading changed. One displayed figure did: Asia's implied years 2-3 is 3.55
+on 1-5 (3 × 3.44 − 3.22, halved), against 3.56 when it was implied on 1-10 and rescaled. Its four spans still
+give the 3.60 blend.
+
+**Also fixed:**
+- The engine's section header still said the drivers are "researched and scored on a 1-10 scale", which was
+  stale since v119.
+- The US note said "the anchor holds at 6.5". It now says 3.44.
+
+**Checks:**
+- **Engine 267** (from 268). Two rescale checks became one: every regional score is a 2dp figure on 1-5, and
+  none is published on 1-10.
+- **Audit 298.** Its regional checks re-derive on 1-5. The last-review check runs only when the driver notes
+  differ from the baseline, and here they do not.
+- **Validator 22.** The no-1-10 check now covers the regional table and its notes and the year-by-year table.
+- **Mutants 86** (from 85). New: `m_reg10` re-publishes a region's `blend_10`. `m_regy1` moves a year 1 on 1-5.
+
+Not personal financial advice.
+
 ## 2026-11-21 — v119: the macro drivers scored on 1-5, 3 neutral - no more 1-10; one knife-edge tilt moved, and D re-picked a near-tie
 
 At the owner's instruction: "Macroeconomics drivers update it 1-5 guauge. No more 1-10."

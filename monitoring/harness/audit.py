@@ -301,7 +301,6 @@ ck("C: each Nasdaq weight's best re-derives, every weight is listed once, and C'
 
 # ---------------------------------------------------------------------------
 sec("D. THE MACRO GAUGE, THE DRIVER PATHS AND THE REGIONS")
-def to5(v): return round(1 + (v - 1) * 4 / 9, 2)
 DR = D["drivers"]; HZ = D["hz_weights"]
 ck("driver weights sum to 1", abs(sum(x["weight"] for x in DR) - 1) < 1e-9)
 ck("horizon weights sum to 1 and are each view's share of ten years", abs(sum(HZ.values()) - 1) < 1e-9
@@ -323,10 +322,9 @@ for h in ("3Y", "5Y", "10Y"):
     gp = wavg2((x["weight"], x["path"][h]) for x in DR)
     ck(f"the {h} gauge is the weighted {h} paths", D["gauge_path"][h] == gp, f"{gp}")
 for rk, r in D["regions"].items():
-    ok = all(r[h] == to5(r[h + "_10"]) for h in HZ)
-    ck(f"{rk}: each horizon's 1-5 score is its research score rescaled, the blend the horizon-weighted average",
-       ok and abs(r["blend"] - round(sum(r[h] * w for h, w in HZ.items()), 2)) < 0.006
-       and abs(r["blend_10"] - round(sum(r[h + "_10"] * w for h, w in HZ.items()), 2)) < 0.006, f"{r['blend']}")
+    ck(f"{rk}: scored on 1-5 at 2dp, nothing published on the retired 1-10 scale (v120), the blend the horizon-weighted average",
+       all(1 <= r[h] <= 5 and round(r[h], 2) == r[h] for h in list(HZ) + ["1Y"]) and not any(k.endswith("_10") for k in r)
+       and abs(r["blend"] - round(sum(r[h] * w for h, w in HZ.items()), 2)) < 0.006, f"{r['blend']} {sorted(r)}")
 # v110: THE YEAR-1 RESEARCH IS AS NEW AS THE DATA. Its own date (y1_date), not the owner's rule date
 # the engine compared until v110, is on or after the as-of date and no later than the review.
 ck("the year-1 and six-month readings were researched on or after the data date, by this review",
@@ -346,16 +344,15 @@ ck("every dated trailing return is under 75 days old, or flagged stale with its 
 # the average of years 1-3); the path runs monotone to years 4-5, and the four printed spans at
 # 10/20/20/50 give the published blend, so no year counts twice. The note states both readings.
 def _sc(x):
-    t = f"{x:.2f}".rstrip("0")
+    t = f"{x:.3f}".rstrip("0")
     return t + "0" if t.endswith(".") else t
 for rk, r in D["regions"].items():
-    _y23r = round((3 * r["3Y_10"] - r["1Y_10"]) / 2, 3)
-    ck(f"{rk}: year 1 rescaled, years 2-3 implied by the 3-year score and between year 1 and years 4-5, the four spans give the blend, the note states them",
-       r["1Y"] == to5(r["1Y_10"]) and r["Y23_10"] == _y23r and r["Y23"] == to5(_y23r)
-       and min(r["1Y_10"], r["5Y_10"]) <= _y23r <= max(r["1Y_10"], r["5Y_10"])
+    _y23r = round((3 * r["3Y"] - r["1Y"]) / 2, 3)
+    ck(f"{rk}: years 2-3 implied by the 3-year score and between year 1 and years 4-5, the four spans give the blend, the note states them",
+       r["Y23"] == _y23r and min(r["1Y"], r["5Y"]) <= _y23r <= max(r["1Y"], r["5Y"])
        and r["blend"] == round(0.1 * r["1Y"] + 0.2 * r["Y23"] + 0.2 * r["5Y"] + 0.5 * r["10Y"], 2)
-       and f": {_sc(r['1Y_10'])}, " in r["y1_why"] and f"years 2-3 read {_sc(_y23r)}" in r["y1_why"],
-       f"{r['1Y_10']} / {_y23r} / {r['5Y_10']} -> {r['blend']}")
+       and f": {_sc(r['1Y'])}, " in r["y1_why"] and f"the three-year {_sc(r['3Y'])}; years 2-3 read {_sc(_y23r)}" in r["y1_why"],
+       f"{r['1Y']} / {_y23r} / {r['5Y']} -> {r['blend']}")
 G = D["dd_gauge"]; band = [b for b in G["bands"] if b["lo"] <= G["value"] < b["hi"] or (b["hi"] == 5 and G["value"] == 5)]
 ck("the drawdown gauge's bands tile 1-5 and its value sits in the band it reports",
    G["bands"][0]["lo"] == 1 and G["bands"][-1]["hi"] == 5 and all(a["hi"] == b["lo"] for a, b in zip(G["bands"], G["bands"][1:]))

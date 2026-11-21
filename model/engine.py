@@ -3615,11 +3615,6 @@ def cagr2(w, nets):
     return float(Decimal(s_).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 
 
-def to5(v10):
-    """Linear rescale of a 1-10 research score onto 1-5. 1->1, 5.5->3.0, 10->5."""
-    return round(1 + (v10 - 1) * 4 / 9, 2)
-
-
 def rnd(x, ndigits=2):
     """Round-half-up (ties away from zero) to ndigits, unlike Python's built-in
     round() which rounds half-to-even. The driver-tilt scale factors (2.5,
@@ -4029,7 +4024,7 @@ PSEI_REASON = {
 }
 REGIONS = {
     "US": {
-        "3Y": 5.5, "5Y": 6.25, HZ_LABEL: 6.5,
+        "3Y": 3.0, "5Y": 3.33, HZ_LABEL: 3.44,
         "why": (f"Held. On {_dday('equity_date')} the Nasdaq "
                 f"{'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% to "
                 f"{MACRO['nasdaq_close']:.2f}, the S&P "
@@ -4084,32 +4079,32 @@ REGIONS = {
                 f"{MACRO['us_umich_nov']}, up from a first read of {MACRO['us_umich_nov_prelim']} and October's {MACRO['us_umich_oct']} but still "
                 f"{MACRO['us_umich_nov_below_feb_pct']}% below February (the university; Bloomberg), and October's retail sales rose {MACRO['us_retail_oct']}% after September's "
                 f"{MACRO['us_retail_sep']}%, the control group {MACRO['us_retail_oct_control']}% against {MACRO['us_retail_oct_control_consensus']}% "
-                f"expected (Census; TheStreet), the saving rate down to {MACRO['us_saving_rate_sep']}%. The anchor holds at 6.5 on two structural "
+                f"expected (Census; TheStreet), the saving rate down to {MACRO['us_saving_rate_sep']}%. The anchor holds at 3.44 on two structural "
                 "points: the US is a net energy EXPORTER, a relative tailwind with "
                 f"Brent +{MACRO['brent_yoy_1dp']:.1f}% {MACRO['brent_yoy_on']}, and NDX at {MACRO['ndx_fwd_pe']}x forward on its last verified reading sat "
                 "below its 10y and 5y averages. J.P. Morgan's "
                 f"{MACRO['ltcma_edition']} assumptions lift US large caps to "
                 f"{MACRO['ltcma_us_eq']}% from {MACRO['ltcma_us_eq_prev']}%; that is already "
                 "in every US fund's base return, so it does not move the anchor as well. "
-                "THREE YEARS: 5.5, a point below the 6.5 anchor. The Fed's own path keeps "
+                "THREE YEARS: 3.0, 0.44 below the 3.44 anchor. The Fed's own path keeps "
                 f"policy above its {MACRO['fed_sep_longrun']}% long-run rate through all three - "
                 f"{_fed_26_27()}, {MACRO['fed_sep_2028']}% at end-2028 - "
                 f"and the cyclically adjusted P/E is {MACRO['cape']}, against a {MACRO['cape_high']} record "
                 f"and a {MACRO['cape_median']} long-run median: a valuation that has historically cost "
                 "the next years' returns, whatever the forward multiple says. Against them, earnings "
                 "growing at a record pace and the energy-exporter edge. FIVE YEARS (years 4-5): "
-                f"6.25, as policy reaches neutral ({MACRO['fed_sep_2029']}% at end-2029) and the "
+                f"3.33, as policy reaches neutral ({MACRO['fed_sep_2029']}% at end-2029) and the "
                 "AI spending has either paid or been digested. Most houses' decade forecasts "
                 "favour non-US over US equities on the same valuation."),
     },
     "EUROPE": {
-        "3Y": 3.75, "5Y": 4.5, HZ_LABEL: 4.5,
+        "3Y": 2.22, "5Y": 2.56, HZ_LABEL: 2.56,
         "why": f"Held. The ECB held its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')}, after the 10 Sep hike, with September inflation confirmed at {MACRO['ea_hicp_sep_final']}% (energy {MACRO['ea_energy_sep']}%, core {MACRO['ea_core_sep']}%), and made no commitment on December; Lagarde said she will step down early, in February. The October composite PMI was confirmed at {MACRO['ea_pmi_comp_oct']}, under its {MACRO['ea_pmi_comp_oct_flash']} flash and a four-month low, France the weakest, and services at {MACRO['ea_pmi_svc_oct']}, under a {MACRO['ea_pmi_svc_oct_flash']} flash; September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}% on the month against a {abs(MACRO['ea_retail_sep_consensus'])}% fall expected, led down by Germany (Eurostat; Quartz). The 10-year OAT-Bund spread eased to {MACRO['fr_oat_spread_14oct']}bp on 14 Oct from about {MACRO['fr_oat_spread_bp']}bp as the Assembly took up a budget meant to cut the deficit to {MACRO['fr_deficit_target']}% of GDP from {MACRO['fr_deficit_2026']}%. Europe is the largest net energy importer here, facing Brent +" f"{MACRO['brent_yoy_1dp']:.1f}% {MACRO['brent_yoy_on']} against IMF growth of {MACRO['imf_ea_2026']}% this year; the offset is real - at {MACRO['sxxp_fwd_pe']:.1f}x forward it is the cheapest large market after Asia. "
-                 "THREE YEARS: 3.75. The largest energy importer pays the most while oil stays "
+                 "THREE YEARS: 2.22. The largest energy importer pays the most while oil stays "
                  f"high - December 2027 Brent was quoted at ${MACRO['brent_dec2027_hi']} on 22 Oct (another "
                  f"table has ${MACRO['brent_dec2027_lo']}) - "
                  f"and growth starts at {MACRO['imf_ea_2026']}% under an ECB that hiked into it (the IMF's October "
-                 f"upgrade, too small to offset oil's new high); a {MACRO['sxxp_fwd_pe']:.1f}x market is the offset. FIVE YEARS (years 4-5): 4.5, at the anchor, as the shock fades - on 15 Oct "
+                 f"upgrade, too small to offset oil's new high); a {MACRO['sxxp_fwd_pe']:.1f}x market is the offset. FIVE YEARS (years 4-5): 2.56, at the anchor, as the shock fades - on 15 Oct "
                  f"the Brent curve settled near ${MACRO['brent_dec2029']} for December 2029 and "
                  f"${MACRO['brent_dec2030']} for December 2030.",
     },
@@ -4117,8 +4112,8 @@ REGIONS = {
         # TEN-YEAR ANCHOR 7.5 -> 7.0 (2026-10-21): half its case was the base return.
         # It cited J.P. Morgan's EM equity assumption, which IS the Asia fund's base,
         # so the same number was counted in the base and again in the tilt.
-        "3Y": 6.5, "5Y": 7.0, HZ_LABEL: 7.0,
-        "why": ("Held; the ten-year anchor at 7.0 since 21 Oct. "
+        "3Y": 3.44, "5Y": 3.67, HZ_LABEL: 3.67,
+        "why": ("Held; the ten-year anchor at 3.67 since 21 Oct. "
                 # v110: the latest session's moves, sources and reasons, keyed by its date (see US_LATEST_REASON)
                 + ASIA_LATEST_REASON[(MACRO["kospi_latest_date"], MACRO["nikkei_latest_date"])]
                 + " At APEC in Shenzhen on 19 Nov Trump and Xi agreed to draft an action plan for \"a constructive "
@@ -4192,13 +4187,13 @@ REGIONS = {
                 f"valuation: {MACRO['asia_fwd_pe']}x forward before the fall against consensus EPS growth of "
                 f"~{MACRO['asia_eps_2026']}% and ~{MACRO['asia_eps_2027']}% is a two-decade-wide discount, wider since. Held: a "
                 "policy fear priced in a week has not yet cut the earnings, two days of rebound do not end it, and the "
-                "discount it widens is the case for the five-year reading. THREE YEARS: 6.5, half a point "
-                "below the 7.0 anchor - the October selling and an importer's oil bill weigh "
-                "on the first years. FIVE YEARS (years 4-5): 7.0, at the anchor, as earnings "
+                "discount it widens is the case for the five-year reading. THREE YEARS: 3.44, 0.22 "
+                "below the 3.67 anchor - the October selling and an importer's oil bill weigh "
+                "on the first years. FIVE YEARS (years 4-5): 3.67, at the anchor, as earnings "
                 "that grew into a discounted multiple re-rate it."),
     },
     "PHILIPPINES": {
-        "3Y": 5.25, "5Y": 5.75, HZ_LABEL: 5.5,
+        "3Y": 2.89, "5Y": 3.11, HZ_LABEL: 3.0,
         "why": (f"Held. BSP raised its policy rate {MACRO['bsp_hike_bp']}bp to {MACRO['bsp_rrp']:.2f}% on {_dday('bsp_decision_date')}, "
                 f"twice the 25bp that {MACRO['bsp_poll_hike']} of {MACRO['bsp_poll_n']} analysts expected - its fourth straight hike "
                 "and the first half-point since February 2023 - and the bill market has kept repricing: at the "
@@ -4259,13 +4254,13 @@ REGIONS = {
                    - MACRO['ph_cpi_oct'] < -1 else "")
                 + ". This sleeve's job - zero "
                 "duration risk and high nominal carry - is unimpaired. Its purchasing "
-                f"power is not. THREE YEARS: 5.25. BSP sees inflation at {MACRO['bsp_cpi_2026']}% this "
+                f"power is not. THREE YEARS: 2.89. BSP sees inflation at {MACRO['bsp_cpi_2026']}% this "
                 f"year and {MACRO['bsp_cpi_2027']}% next, then {MACRO['bsp_cpi_2028']}% in 2028, inside its "
                 "2-4% target, while the IMF has growth recovering to "
                 f"{MACRO['imf_ph_2027']}% in 2027 from {MACRO['imf_ph_2026']}%, a 2026 figure the third quarter now puts "
                 "out of reach: the real carry is about "
                 "nil for two of the three years. Held on the GDP miss: this sleeve is paid the bill rate, which rose "
-                "again, and slower growth cuts neither it nor the fund's unit price. FIVE YEARS (years 4-5): 5.75, a little above "
+                "again, and slower growth cuts neither it nor the fund's unit price. FIVE YEARS (years 4-5): 3.11, a little above "
                 "neutral, as a policy rate set against 6% inflation meets inflation back near 3%."),
     },
 }
@@ -4278,7 +4273,7 @@ REGIONS = {
 # give, so no year counts twice and no forecast moves; the page shows the path. A check holds each
 # path moving from year 1 toward the 5-year score, never past it.
 REGION_Y1 = {
-    "US": (5.0,
+    "US": (2.78,
         f"The year ahead is the hiking end of the cycle: the futures price the Fed to about "
         f"{MACRO['fed_mkt_2027_lo']}-{MACRO['fed_mkt_2027_hi']}% by late 2027, above its own {MACRO['fed_sep_2027']}% "
         f"median (RateProbability; SOFR futures), with the 10-year at {MACRO['ust_10y']:.2f}%. Against it, analysts "
@@ -4288,21 +4283,21 @@ REGION_Y1 = {
         + (f"holding at {MACRO['imf_us_2027']}% in 2026 and 2027" if MACRO['imf_us_2026'] == MACRO['imf_us_2027']
            else f"at {MACRO['imf_us_2026']}% this year and {MACRO['imf_us_2027']}% in 2027") + " (IMF; IANS)",
         "as policy eases"),
-    "EUROPE": (3.25,
+    "EUROPE": (2.0,
         f"The largest energy importer here meets the year with Brent still averaging ${MACRO['eia_brent_2027']:.2f} "
         f"in the EIA's 2027 forecast (EIA; Rigzone), the ECB at {MACRO['ecb_depo']:.2f}% with inflation at "
         f"{MACRO['ea_hicp_sep_final']}%, a composite PMI of {MACRO['ea_pmi_comp_oct']} and the IMF's euro area growing "
         f"{MACRO['imf_ea_2027']}% in 2027 after {MACRO['imf_ea_2026']}% (IMF; Yahoo Finance UK); "
         f"{MACRO['sxxp_fwd_pe']:.1f}x forward is the offset, and oil costs most in year 1",
         "as the oil curve falls"),
-    "ASIA": (6.0,
+    "ASIA": (3.22,
         f"Asia ex-Japan earnings are forecast to grow about {MACRO['asia_eps_2027']}% in 2027 on "
         f"{MACRO['asia_fwd_pe']}x forward, but year 1 carries the importers' oil bill (Brent "
         f"${MACRO['eia_brent_2027']:.2f} on the EIA's 2027 average), a Bank of Japan with a December hike in view after "
         f"Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, China's October "
         "activity missing every forecast, and the selling since October",
         "as earnings re-rate the multiple"),
-    "PHILIPPINES": (4.75,
+    "PHILIPPINES": (2.67,
         f"The cash sleeve earns the bill rate, {MACRO['ph_tbill_91']:.2f}-{MACRO['ph_tbill_364']:.2f}% at the "
         f"{_dday('ph_tbill_date')} auction, with BSP at {MACRO['bsp_rrp']:.2f}%; BSP sees inflation at "
         f"{MACRO['bsp_cpi_2027']}% in 2027, from {MACRO['ph_cpi_oct']}% in October, so the year's real carry is thin, "
@@ -4311,52 +4306,41 @@ REGION_Y1 = {
 }
 REGION_Y23 = {k: round((3 * REGIONS[k]["3Y"] - REGION_Y1[k][0]) / 2, 3) for k in REGION_Y1}
 def _gap_words(d):
-    """How far year 1 sits from the 3-year score, in words: 'half a point under', 'level with'."""
-    a = abs(d); w = {0.25: "a quarter point", 0.5: "half a point", 0.75: "three quarters of a point", 1.0: "a point"}
-    return "level with" if a < 1e-9 else f"{w.get(round(a, 2), f'{a:g} points')} {'under' if d < 0 else 'over'}"
+    """How far year 1 sits from the 3-year score, on 1-5: '0.22 under', 'level with'."""
+    a = abs(d)
+    return "level with" if a < 1e-9 else f"{a:.2f} {'under' if d < 0 else 'over'}"
 def _sc(x):
-    """A research-scale score as the notes print it: 5.0, 3.25, 5.75."""
-    t = f"{x:.2f}".rstrip("0")
+    """A 1-5 score as the notes print it: 3.0, 2.78, and an implied span to three places (3.555)."""
+    t = f"{x:.3f}".rstrip("0")
     return t + "0" if t.endswith(".") else t
 def _y1_text(k):
-    """Called once the 1-5 rescale has run, so it reads the research-basis 3-year score."""
-    sc, ev, why23 = REGION_Y1[k]; t3 = REGIONS[k]["3Y_10"]; y23 = REGION_Y23[k]
+    sc, ev, why23 = REGION_Y1[k]; t3 = REGIONS[k]["3Y"]; y23 = REGION_Y23[k]
     return (f"{ev}: {_sc(sc)}, {_gap_words(sc - t3)} the three-year {_sc(t3)}; years 2-3 read {_sc(y23)}"
-            + (", neutral," if to5(y23) == NEUTRAL_5 else "") + f" {why23}.")
+            + (", neutral," if abs(y23 - NEUTRAL_5) < 1e-9 else "") + f" {why23}.")
 assert set(REGION_Y1) == set(REGIONS)
 assert all(min(REGION_Y1[k][0], REGIONS[k]["5Y"]) <= REGION_Y23[k] <= max(REGION_Y1[k][0], REGIONS[k]["5Y"])
            for k in REGIONS), "a region's years 2-3 must lie between its year 1 and its years 4-5"
 
-# to5() is affine and HZ_W sums to 1, so blending then rescaling equals rescaling
-# then blending - EXACTLY. It stops being true the moment either side is rounded,
-# and to5() rounds to 2dp. Blending on the research scale and rescaling the result
-# printed a US blend of 3.15 while a reader blending the four REPORTED scores with
-# the printed horizon weights got 3.14. One region in four failed to reconcile, on
-# the page, for as long as anyone had been looking.
-# The reader's route is now the definition: the blend is the horizon-weighted
-# average of the values actually printed. blend_10 is still published on the
-# research basis for audit, and is still checked against the research-scale
-# horizons - it is simply no longer to5() of itself.  (Audit 2026-09-20.)
+# v120 (owner, 2026-11-21: "Regional driver update them to 1-5 gauge"): the regions are scored on 1-5,
+# 3 neutral, like the macro drivers from v119 - until v119 they were researched on 1-10 and rescaled,
+# and the history comments above keep the scores of their day. The blend is the horizon-weighted
+# average of the printed scores, the reader's route (since 2026-09-20, when blending on 1-10 and
+# rescaling printed a US blend of 3.15 beside four scores a reader blended to 3.14).
 for r in REGIONS.values():
-    r["blend_10"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
-    for h in HZ_KEYS:
-        r[h + "_10"] = r[h]      # research basis, kept so the rescale stays auditable
-        r[h] = to5(r[h])         # reported value, 1-5
     r["blend"] = round(sum(r[h] * w for h, w in HZ_W.items()), 2)
-# v108: each region's year 1 and implied years 2-3, research basis and reported, and the year-1 reasoning.
+# v108: each region's year 1 and implied years 2-3, and the year-1 reasoning.
 REGION_SPLIT_W = {"1Y": 0.1, "Y23": 0.2, "5Y": 0.2, HZ_LABEL: 0.5}
 for _k, r in REGIONS.items():
-    r["1Y_10"], r["1Y"], r["y1_why"] = REGION_Y1[_k][0], to5(REGION_Y1[_k][0]), _y1_text(_k)
-    r["Y23_10"], r["Y23"] = REGION_Y23[_k], to5(REGION_Y23[_k])
+    r["1Y"], r["y1_why"] = REGION_Y1[_k][0], _y1_text(_k)
+    r["Y23"] = REGION_Y23[_k]
     # the reader's route on the four printed spans gives the published blend
     r["blend_split"] = round(sum(r[h] * w for h, w in REGION_SPLIT_W.items()), 2)
     assert r["blend_split"] == r["blend"], (_k, r["blend_split"], r["blend"])
 
 # ----------------------------------------------------------------------------
 # 4. BROAD MACRO GAUGE (1-5) - weighted composite of seven drivers
-#    Drivers are researched and scored on a 1-10 scale (that is the granularity the
-#    underlying evidence supports). The HEADLINE gauge is reported 1-5: endpoints map
-#    to endpoints, so the 1-10 neutral of 5.5 lands exactly on the 1-5 neutral of 3.0.
+#    The drivers are scored on 1-5, 3 neutral (v119; researched on 1-10 and rescaled
+#    until v118), and the headline gauge is their weighted average.
 # ----------------------------------------------------------------------------
 
 # Brent's weekly change, when there is a same-contract one to quote (v88).
@@ -10160,23 +10144,14 @@ def report():
     checks.append(("every regional score is reported in 1-5",
                    all(1 <= v[h] <= 5 for v in p["regions"].values()
                        for h in HZ_KEYS + ("blend",))))
-    # The four HORIZON scores are to5() of their research values. The BLEND is not,
-    # and deliberately so since 2026-09-20: it is the horizon-weighted average of
-    # the printed scores, because that is the arithmetic a reader does. Asserting
-    # to5(blend_10) here would re-impose the route that printed 3.15 over a page
-    # showing 3.14.
-    checks.append(("every regional rescale 1-10 -> 1-5 is exact",
-                   all(abs(v[h] - to5(v[h + "_10"])) < 1e-9
-                       for v in p["regions"].values()
-                       for h in HZ_KEYS)))
+    # v120: the regions are scored on 1-5 natively; nothing regional is published on 1-10.
+    checks.append(("every regional score is a 2dp figure on 1-5, and none is published on the retired 1-10 scale (v120)",
+                   all(round(v[h], 2) == v[h] for v in p["regions"].values() for h in HZ_KEYS + ("1Y",))
+                   and not any(k.endswith("_10") for v in p["regions"].values() for k in v)))
     checks.append(("every regional blend reproduces from the scores printed beside it",
                    all(v["blend"] == round(sum(v[h] * w for h, w in HZ_W.items()), 2)
                        for v in p["regions"].values())))
-    checks.append(("regional blend is horizon-weighted on the research scale",
-                   all(abs(v["blend_10"] - sum(v[h + "_10"] * w
-                                               for h, w in HZ_W.items())) < 0.006
-                       for v in p["regions"].values())))
-    checks.append(("the 1-5 tilt coefficient equals the 1-10 one rescaled",
+    checks.append(("the regional rate, 0.675 a 1-5 point, is the 0.30 a 1-10 point it replaced, x 9/4",
                    abs(REGIONAL_TILT_PER_PT - 0.30 * 9 / 4) < 1e-9))
     # Horizon consistency. On 8 Sep the mandate moved 5y -> 10y; these assert the
     # horizon is one number everywhere rather than a label that drifted from the
@@ -10354,9 +10329,8 @@ def report():
     # v108: each region's year 1 is researched, its years 2-3 implied by the 3-year score, the path
     # monotone to years 4-5, and the four printed spans at 10/20/20/50 give the published blend.
     checks.append(("every region reads year 1 (researched), years 2-3 (implied), 4-5 and 6-10, and those four printed spans at 10/20/20/50 give its blend",
-                   all(r["Y23_10"] == round((3 * r["3Y_10"] - r["1Y_10"]) / 2, 3)
-                       and min(r["1Y_10"], r["5Y_10"]) <= r["Y23_10"] <= max(r["1Y_10"], r["5Y_10"])
-                       and r["1Y"] == to5(r["1Y_10"]) and r["Y23"] == to5(r["Y23_10"]) and len(r["y1_why"]) > 80
+                   all(r["Y23"] == round((3 * r["3Y"] - r["1Y"]) / 2, 3)
+                       and min(r["1Y"], r["5Y"]) <= r["Y23"] <= max(r["1Y"], r["5Y"]) and len(r["y1_why"]) > 80
                        and r["blend"] == round(0.1 * r["1Y"] + 0.2 * r["Y23"] + 0.2 * r["5Y"] + 0.5 * r[HZ_LABEL], 2)
                        for r in p["regions"].values())))
     _ab = p["analyses_by_year"]
