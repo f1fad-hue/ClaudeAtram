@@ -170,7 +170,7 @@ Every drawdown is about 3% deeper on the curve's higher long-run vol.
 - engine 268/268;
 - audit 298/298;
 - page validator 21/21, with one new check;
-- mutants: 83, run on the final build (the result is recorded in the follow-up commit);
+- mutants: 83/83 caught, run on the final build;
 - sources: 65 added, every figure in two.
 
 ## 2026-11-17 — v116: full review - dead inputs swept, two audit gaps closed, every fund and portfolio re-verified; nothing moved
