@@ -214,6 +214,23 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+181. A WIDTH IS READ FROM THE STEP IT DESCRIBES. The Budget tab's sentence took "each step down" from the first
+   band below the hold zone in the list - the lowest, 1.00-2.20 - so from v109 it read "each 1.20 below 2.80"
+   while every step was 0.15. Nothing checked the sentence against the payload's `step_w`, and the eye reads past
+   a plausible number. A sentence that states a parameter is checked against that parameter (validate.js, v117).
+180. A SUBSTRING IS NOT A MATCH. The register check accepted a headline that CONTAINED the payload's value as
+   text, so "5.4" (the 30-year's 5.40 printed %g) passed inside a stale "5.47% (13 Nov)" for six releases.
+   Numbers in prose are matched as whole numbers, never as substrings.
+179. A FIT IN ABSOLUTE UNITS IS A FIT AT ONE LEVEL. The factor loadings were fitted in volatility points when the
+   curve's 10-year vol was 19.42; when the v117 re-quote raised it, every fund's own vol rose with it but the
+   factor parts did not, so every off-block correlation fell and the check that the fit reproduces the typed
+   block failed - the first re-quote since the fit. Scale the parts with the level they were fitted at
+   (`FACTOR_FIT_VOL_LT`), and let the check that the fit reproduces its source stand guard.
+178. A STRIP HAS AN EXPIRY, AND A SPIKE IS WHEN IT ARRIVES. The 20 Oct VIX strip ran past its 30-day window in
+   the week the VIX doubled. Re-quote while it is calm if you can; when it must be done in a spike, take the
+   exchange's settlement in two copies, test it against VIX3M on the same close, and expect it to be flagged
+   overtaken at once - a re-quote moves the long-run vol, every fund's drawdown and, through the budget, the
+   picks, and the report has to say that this, not the drivers, is why the mixes moved.
 177. A NUMBER IS NOT USED BECAUSE ITS VALUE APPEARS. The dead-input check accepted a number whose value showed up
    anywhere in the prose, so v113's fed_50bp_odds_dec_17nov (4.3) passed on someone else's 4.3, and seventeen
    inputs nothing read had built up. A new input must be read by name (v116); the old ones were swept by hand.

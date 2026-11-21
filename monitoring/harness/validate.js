@@ -48,6 +48,7 @@ const file = process.argv[2], live = process.argv.includes("--live");
         clede: (document.getElementById("clede") || {}).textContent || "",
         cq: [...document.querySelectorAll("#cq tbody tr")].map(r => r.textContent.trim()),
         ddh: [...document.querySelectorAll("#ddtab thead th")].map(c => c.textContent.trim()),
+        ddnote: (document.querySelector("#ddbarnote") || {}).textContent || "",
         ddw: [...document.querySelectorAll("#ddtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
                .find(r => r[0].startsWith("Weight")) || [],
         donutD: !!document.querySelector("#donutD svg"),
@@ -93,6 +94,10 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("the Budget tab's gauge table shows months 1-6, 7-12, years 2-3, 4-5 at their weights and the 10-year anchor unweighted",
       info.ddh.length === 6 && info.ddw.slice(1).join() === G.views.map(h => (G.w[h] * 100).toFixed(0) + "%").concat(["anchor"]).join()
       && G.views.join() === "6M,12M,3Y,5Y", `${info.ddh} | ${info.ddw}`);
+    // v117: the band sentence read the width of the LOWEST band (1.00-2.20, so "each 1.20 below 2.80") as the step down.
+    const sw = G.step_w.toFixed(2), nt = info.ddnote.replace(/\s+/g, " ");
+    ck("the Budget tab's band sentence states the payload's step width both ways",
+      nt.includes(`each ${sw} below`) && nt.includes(`each ${sw} above`), nt.slice(0, 220));
     ck("the Portfolios lede states A's 10-year, B's, C's and D's 1/3/5/10-year CAGR",
       [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_c.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
       info.lede.slice(0, 160));

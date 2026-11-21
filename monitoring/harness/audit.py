@@ -827,7 +827,9 @@ for lab, v in REG:
     cell = row(lab)
     head = re.findall(r"\*\*(.*?)\*\*", cell or "")
     forms = {f"{v:.2f}", f"{v:,.2f}", f"{v:g}"}
-    ck(f"the register's '{lab}' headline is the payload's {v}", cell is not None and any(any(f_ in h for f_ in forms) for h in head[:1]),
+    # v117: AS A WHOLE NUMBER, not a substring - "5.4" sat inside a stale "5.47%" and passed the 30-year row.
+    _num = lambda f_, h: re.search(r"(?<![\d.,])" + re.escape(f_) + r"(?![\d])", h)
+    ck(f"the register's '{lab}' headline is the payload's {v}", cell is not None and any(any(_num(f_, h) for f_ in forms) for h in head[:1]),
        f"{head[:1]}")
 ck("the register's gauge row reads the payload's drawdown gauge", f"{G['value']:.2f} of 5" in CLAIMS)
 ck("the README dates the data the payload's way", f"Market data as of {AS_OF.day} {AS_OF:%b} {AS_OF.year}" in README)

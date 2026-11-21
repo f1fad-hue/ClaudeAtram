@@ -2,6 +2,177 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-21 — v117: full review on the week to 20 Nov - the AI sell-off rolled in, the VIX curve re-quoted, volatility cut to 1.0 and valuation raised to 8.5, the budget held at 25%; four errors found and fixed
+
+At the owner's instruction: run debugging, code review and a sanity check; hunt and fix errors; clean up; and
+re-research and re-verify:
+- the data and math;
+- the 22 funds with their target funds, fees, 10-year net CAGRs and drawdowns;
+- every portfolio's net 10-year CAGR, drawdown, mix and number of funds;
+- the drawdown budget at 6 months, 1, 3, 5 and 10 years;
+- the four analyses (macro sentiment, market trend, market valuation, regional ranking) at 1, 3, 5 and 10 years.
+
+Reviewed Saturday 21 Nov, every 20 Nov session closed. **The data date moves from 17 Nov to 20 Nov.**
+
+**The week.** The AI sell-off came back and spread:
+- The S&P 500 fell seven sessions running and **8.6% on the week**, its worst week since April 2025, to 6,910.39 on
+  20 Nov (−3.70% that day), 11.6% under its 6 Oct record: a correction. The Dow fell 8.0% and is in correction too.
+  The Nasdaq fell 10.0%, 5.28% on 20 Nov alone, to 22,617.73, below where it began 2026 (AP; CNBC; CappNotes).
+- Nvidia beat and raised on 17 Nov: revenue $115.8bn, up 103%, against about $109bn expected; Q4 guided to
+  $130.0bn ± 3%. Its shares fell anyway.
+- The VIX closed at **35.89** on 20 Nov (+26.2%), its first close above 30 since March and the highest in this
+  record, 16.39 over its 19.5 long run.
+- Seoul fell 5.21% and Tokyo 5.06% on 20 Nov (7.9% and 7.7% on the week). Manila fell 3.12% to 5,306.98, its lowest
+  close since April 2020.
+- The 10-year fell five sessions running to 4.92%, the stock rout sending money into Treasuries.
+- The FOMC minutes (18 Nov) had almost all members expecting further hikes. FedWatch still prices a December hike
+  fully, a half-point at up to 10% after Waller.
+- In the Gulf, US jets struck Iran's Qeshm Island (17 Nov) and Iran fired at Kuwait. Tanker attacks are now nearly
+  daily, and the talks have made no major progress. Brent still eased, to $91.98 on 19 Nov, on a surplus outlook
+  and a 3.4m-barrel US crude build.
+
+**What rolled.** These move to 20 Nov's closes:
+- New York, Seoul, Tokyo and Manila;
+- the VIX;
+- the peso, 63.81. Its 17 Nov close (63.67) is now in two sources.
+- the 10-year, on the par curve: 16 Nov at 5.12, withheld in v110, is settled on the official curve, then 5.10,
+  5.07, 5.04 and 4.92.
+
+These move to 19 Nov:
+- the 2-year (4.76%) and the 30-year (5.40%). Their 20 Nov prints are in one par snapshot, or disagree.
+- Brent ($91.98) and WTI ($83.21). The 20 Nov settles ($92.57 and $83.98, December's expiry) are in EnergyNow's
+  report only.
+- FedWatch, and the VIX futures board.
+
+Other inputs:
+- US claims: 203k in the week to 14 Nov.
+- October retail sales: +0.2%; the control group +0.6%.
+- Michigan's November final: 51.5.
+- Nvidia's quarter.
+
+**Not found in two sources by the cut-off:**
+- FactSet's 20 Nov edition. Its 13 Nov reading, 18.3x, stands.
+- APEC's outcome.
+- The 25 Nov PCE date.
+- Any newer Hormuz flow figure that two sources agree on.
+
+**Errors found and fixed.**
+1. **The VIX futures curve was past its 30-day window.** The engine's check failed: the 20 Oct strip ran out on
+   19 Nov, the day after its November contract settled. It is RE-QUOTED to Cboe's 19 Nov settlements: December 24.54,
+   January 23.99, under a 28.44 spot, in backwardation. That board is in Cboe's page and in VIXChart's copy, and
+   Saxo's put-call parity read agrees on the shape. It tests at −6.53% against VIX3M's 27.03 the same day, inside the
+   10% bound.
+
+   The curve's 10-year implied vol moves from 19.42 to 19.96. That deepens every fund's expected drawdown by about
+   3%; Nasdaq Equity Income goes from −32.0% to −33.0%.
+2. **The factor model tied every correlation to the volatility level.** Its loadings are in vol points, fitted when
+   the 10-year vol was 19.42. When the re-quote raised each fund's own vol, the factor parts stayed put, so every pair
+   outside the typed block fell. The engine's check that the fit reproduces the typed block failed. The loadings now
+   scale with the vol level (`FACTOR_FIT_VOL_LT`), so the fitted correlations hold at any level. A correlation is
+   not a function of the level the strip happens to price.
+3. **The Budget tab said "each 1.20 below 2.80 tightens it a point".** The step is 0.15. The sentence read the width
+   of the lowest band (1.00-2.20) instead of the band beside the hold zone, and has done so since the v109
+   re-scale. Fixed, and a new validator check holds the sentence to the payload's `step_w` both ways. It fails on
+   v116's page.
+4. **The audit's register check matched by substring.** The 30-year row's headline read **5.47% (13 Nov)** from
+   v110 to v116 against a payload of 5.40: "5.4" sits inside "5.47%", so the check passed. It now matches whole
+   numbers, and the row is current.
+
+Also fixed in passing:
+- Brent's year-ago base, the 14 Nov 2025 settle, would sit five days off the anniversary, past the three-day bound.
+  It is re-anchored to the exact anniversary, 19 Nov 2025's $63.51 (Reuters via The Star; Rigzone's next session
+  chains from it): **+44.83%** y/y.
+- The VIX intraday high must bracket the closes. It moves to the 20 Nov close, 35.89, on the v94 rule (the high is at
+  least the close); Bloomberg's intraday 40 is in one source.
+- `DRIVER_PREV` is defined above the drivers, whose notes now quote the score they move from. The unused
+  `DRIVER_PREV_VOL` is gone.
+- Retired with what they recorded: the 10-year's withheld 16 Nov quotes, and the 11 Nov and 10 Nov futures boards.
+- The Bank of Korea entry on the calendar cited 6 Nov's fall. It now reads the latest close.
+- The Hormuz scenario's sentence now says November's flows are lower and differ by source.
+- Past catalysts retired: retail sales, Nvidia, the FOMC minutes, APEC.
+
+**Scores** (1-10; DRIVER_PREV is v116's published scores):
+- **Volatility & risk appetite CUT 2.0 → 1.0.** The VIX is at 35.89, above the 28.18 of 5 Nov that the v94 cut to 1.5
+  was made on. 0.5 is kept for a VIX above 45 that holds.
+- **Valuation support RAISED 8.0 → 8.5.** The S&P has fallen 9.0% since FactSet's 18.3x reading of 12 Nov, on
+  estimates that have not fallen. On that reading's earnings the 20 Nov close is near 16.7x, which is this review's
+  arithmetic and is printed as such. Raised by half a point only: the estimate is a week old, and the CAPE (38.9) is
+  near its record. It goes back to 8.0 if FactSet's next reading is 18.3x or more.
+- **Held:** Monetary 2.0 (a half-point is still the minority price), Inflation 2.0, Growth 4.25, Earnings 7.0 (the
+  largest supplier beat and raised), Geopolitics 1.5 (worse in deeds, not a full closure).
+- **The headline gauge:** 2.26 of 5 (3.84 of 10).
+
+**The budget gauge at 6 months, 1, 3, 5 and 10 years.**
+- **Volatility:** months 1-6 cut 2.5 → 2.0 (six-month implied vol 24.18; VIX6M 26.85 on 19 Nov); year 1 cut
+  3.0 → 2.5 (one-year 22.90). The 3-year path stays 4.5 (3-year implied vol 20.97, now above the long run).
+- **Valuation:** months 1-6 raised 7.75 → 8.0, year 1 7.5 → 7.75; the 3-year path stays 6.5.
+- **The rest:** every 3- and 5-year path is unchanged.
+
+The gauge reads only the spans from months 1-6 onward, and the halves of year 1 average back to it, so the reading
+moves only through the 3- and 5-year paths and the trend. Readings:
+
+| Span | Reading | Macro | Trend | Valuation | 17 Nov reading |
+| --- | --- | --- | --- | --- | --- |
+| Months 1-6 | 3.53 | 2.13 | 4.34 | 4.11 | 3.51 |
+| Months 7-12 | 3.13 | | | | 3.11 |
+| Years 2-3 | 2.83 | | | | 2.83 |
+| Years 4-5 | 2.84 | | | | 2.83 |
+| Years 6-10 (anchor) | 3.00 | | | | 3.00 |
+
+**The gauge is 2.93, hold at 25%,** for A, B, C and D. All three guards block a raise:
+- one month-end review of two (30 Nov next);
+- geopolitics at 1.5, which needs above 2.0;
+- the VIX at 35.89, which needs 19.5 or under.
+
+Regional readings are held. The trend inputs are quarter-end and unchanged; the sigma moves with the vol level.
+
+**Portfolios** (the rule and the 25% budget unchanged; the curve's higher vol makes the budget bind tighter):
+
+| | Mix (MM / Nasdaq Inc / Asia / Tech / Gl Div / Health / Infra / Eq Opp / Cons / Asian MAI / Gl Alloc) | 1/3/5/10 | 10-year view | Was (v116) |
+| --- | --- | --- | --- | --- |
+| A | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | 7.14% / −24.9% | **7.24% / −24.9%** | 30 Infra / 20 Asian MAI, 7.31% |
+| B | the same mix | **7.14% / −24.9%** (150,907 of 322,725 inside the budget) | 7.24% | 7.20% |
+| C | 25 / 70 / 0 / 5 / 0 ... | **6.94% / −24.8%** | 7.01% / −24.8% | 25 / 65 / 10, 7.01% |
+| D | 0 / 50 / 0 / 0 / 0 / 10 / 20 / 0 / 0 / 20 / 0 | **7.20% / −25.0%** (four funds) | 7.29% / −24.9% | 15 Health / 15 Asian MAI, 7.25% |
+
+D's best by count:
+- two funds: 7.08% / −25.0%;
+- three: 7.17% / −24.9%;
+- four: 7.20% / −25.0%;
+- five: 7.19% / −25.0%.
+
+Four is still the best number. The held-out what-ifs were re-run at the live budget; the weights are recorded in the
+engine.
+
+**The 22 funds.** ATRAM's pages and the target managers' notices were searched again. ATRAM's pages list undated
+notices (plan-rule amendments for Nasdaq Equity Income; a target-fund name and cut-off change for Global Health
+Care) whose text could not be read in any source. No fee or target change was found in two sources, so the fees
+stand.
+
+| Fund | Fees (trust + target) | Net 10-yr, 10-year view | Net 10-yr, 1/3/5/10 | Drawdown |
+| --- | --- | --- | --- | --- |
+| Peso Money Market | 0.58 + 0 | 4.27% | 4.39% | −0.5% |
+| Nasdaq Equity Income | 1.50 + 0.35 | 7.81% | 7.68% | −33.0% |
+| Asia Equity | 1.18 + 1.55 | 7.32% | 7.28% | −40.6% |
+| Global Technology | 1.50 + 1.04 | 9.51% | 9.24% | −58.2% |
+| Global Dividend | 1.50 + 1.04 | 6.62% | 6.60% | −32.4% |
+| Global Health Care | 1.50 + 1.05 | 7.11% | 7.12% | −34.2% |
+| Global Infra Equity | 1.50 + 0.80 | 7.33% | 7.26% | −34.1% |
+| Global Equity Opportunity | 1.50 + 1.00 | 7.25% | 7.09% | −49.2% |
+| Global Consumer Trends | 1.50 + 0.97 | 7.29% | 7.14% | −82.1% |
+| Asian Multi-Asset Income | 1.50 + 1.54 | 6.04% | 5.96% | −19.7% |
+| Global Allocation | 1.50 + 1.13 | 6.12% | 6.04% | −22.4% |
+
+The net CAGRs are unchanged except Nasdaq Equity Income's 1/3/5/10 (+0.01) and Asian Multi-Asset Income's (+0.01).
+Every drawdown is about 3% deeper on the curve's higher long-run vol.
+
+**Checks:**
+- engine 268/268;
+- audit 298/298;
+- page validator 21/21, with one new check;
+- mutants: 83, run on the final build (the result is recorded in the follow-up commit);
+- sources: 65 added, every figure in two.
+
 ## 2026-11-17 — v116: full review - dead inputs swept, two audit gaps closed, every fund and portfolio re-verified; nothing moved
 
 At the owner's instruction (sent twice): run debugging, code review and a sanity check; hunt and fix errors; clean up;

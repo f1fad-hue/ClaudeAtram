@@ -43,13 +43,19 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 17 Nov 2026 (reviewed 17 Nov, cut-off 15:00 UTC): Seoul, Tokyo and Manila at their 17 Nov closes (the KOSPI 4,968.48, under 5,000; the Nikkei 58,860.43; the PSEi 5,500.88, ending a four-day slide); New York, the VIX
-(22.91, back above its 19.5 long run), Brent's January and WTI's December settles at 16 Nov, New York's 17 Nov session not having closed; the peso at
-16 Nov (its 17 Nov close in one source only); the 16 Nov T-bill auction; the Treasury curve held at 13 Nov (no par-curve
-figure for 16 Nov in two sources); FedWatch at 16 Nov (a December hike 100% priced); FactSet's forward P/E at 18.3 on
-12 Nov (its 13 Nov edition); PortWatch's Hormuz count at 8 Nov, the latest it has published. Brent's y/y is quoted against its 14 Nov 2025 settle, two days off the anniversary.
+market assumptions. Market data as of 20 Nov 2026 (reviewed 21 Nov, every 20 Nov session closed): New York,
+Seoul, Tokyo and Manila at their 20 Nov closes, after the week's AI sell-off (the S&P 500 6,910.39, -3.70% on the day
+and -8.6% on the week, into correction; the Nasdaq 22,617.73, -5.28%; the KOSPI 4,869.96, -5.21%; the Nikkei
+56,436.65, -5.06%; the PSEi 5,306.98, -3.12%, its lowest close since April 2020); the VIX at 35.89, its highest close
+in this record; the 10-year Treasury at 4.92% (the Treasury's par curve), the 2-year and 30-year at 19 Nov; the peso
+at 63.81; Brent's January and WTI's December settles at 19 Nov (20 Nov's in one source only); the VIX futures curve
+re-quoted to Cboe's 19 Nov settlements (December 24.54, January 23.99, in backwardation); FedWatch at 19 Nov (a
+December hike 100% priced, a half-point at up to 10%); the 16 Nov T-bill auction; FactSet's forward P/E at 18.3 on
+12 Nov (its 13 Nov edition; the 20 Nov edition was not found), the S&P 9.0% lower since; PortWatch's Hormuz count at
+8 Nov, the latest it has published. Brent's y/y is quoted against its 14 Nov 2025 settle.
 Target funds were checked in full on 16 Nov, the first review of the week, through search results only, and
-searched again for notices on 17 Nov (none; held-out Global Bond Income's trust fee corrected to 1.00%, from ATRAM's own page); the 1-year test could not be refreshed (uitf.com.ph is blocked and
+searched again for notices on 17 Nov and 21 Nov (ATRAM's pages list undated plan-rule and cut-off notices whose text
+could not be read; no fee or target change found); the 1-year test could not be refreshed (uitf.com.ph is blocked and
 not indexed), so its 5 Nov figures stand.
 Weights in the
 universe's order: Money Market / Nasdaq Equity Income /
@@ -59,18 +65,20 @@ Global Allocation.
 
 | | A · 10-year view | B · 1/3/5/10-year view | C · three funds | D · Nasdaq Income-led |
 |---|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 30 / 0 / 0 / 20 / 0** | 25 / 65 / 0 / 10 / 0 / 0 / 0 / 0 / 0 / 0 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 20 / 0 / 0 / 15 / 0 |
-| 10y net CAGR after all fees | **7.31%** | 7.20% | 7.01% | 7.25% |
-| Expected max drawdown (10y) | −24.9% | −24.9% | −25.0% | −24.8% |
-| Return per unit of drawdown | **0.294** | 0.289 | 0.280 | 0.292 |
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** | 25 / 70 / 0 / 5 / 0 / 0 / 0 / 0 / 0 / 0 / 0 | 0 / 50 / 0 / 0 / 0 / 10 / 20 / 0 / 0 / 20 / 0 |
+| 10y net CAGR after all fees | **7.24%** | 7.14% | 6.94% | 7.20% |
+| Expected max drawdown (10y) | −24.9% | −24.9% | −24.8% | −25.0% |
+| Return per unit of drawdown | **0.291** | 0.287 | 0.280 | 0.288 |
 
 Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C and D
 on the 1/3/5/10-year. **Portfolio C (v111, owner, 17 Nov 2026)** is the owner's three funds -
 Peso Money Market, Nasdaq Equity Income as the main (strictly the largest) and Global Technology,
-each at least 5%, no single-fund cap - chosen by B's rule on B's view: 65 / 25 / 10 (Nasdaq / cash /
-Tech) at 7.01% / −25.0%, 0.19pp a year below B. An earlier C, Nasdaq Equity Income pinned at 50%, was
+each at least 5%, no single-fund cap - chosen by B's rule on B's view: 70 / 25 / 5 (Nasdaq / cash /
+Tech) at 6.94% / −24.8%, 0.20pp a year below B (65 / 25 / 10 at 7.01% / −25.0% until v116). An earlier C, Nasdaq Equity Income pinned at 50%, was
 retired on 12 Nov 2026 (v101) at the owner's request. **A and B are the same mix since v107**: the rule picks on B's view
-what it picks on A's, 7.20% / −24.9% on the 1/3/5/10-year view and 7.31% / −24.9% on the 10-year.
+what it picks on A's, 7.14% / −24.9% on the 1/3/5/10-year view and 7.24% / −24.9% on the 10-year
+(v117: 25% Global Infra Equity and 25% Asian Multi-Asset Income, from 30% and 20%, as the re-quoted VIX curve's
+higher long-run volatility, 19.96 from 19.42, deepens every fund's expected drawdown and the budget binds tighter).
 Every portfolio is built from four analyses (owner, 16 Nov 2026, v107) - the regional ranking,
 macro sentiment (the drivers' rates and energy tilts), the market trend and market valuation.
 **A** reads them at 10 years alone, where macro, trend and valuation are neutral by construction
@@ -97,12 +105,12 @@ B and D alike: the band leaves the base only when two month-end reviews in a row
 band and, for a raise, both risk guards are clear. It is −25% today, in place of the derived
 −26.97% (the original 20 / 30 / 25 / 25 baseline's drawdown less 2.83pp). The engine re-chooses
 each at every update:
-- **A, the 10-year view**: the rule on the four analyses read at 10 years alone (7.31% /
-  −24.9% there): 5% money market, 35% Nasdaq Equity Income, 10% Global Technology, 30%
-  Global Infra Equity, 20% Asian Multi-Asset Income. Unchanged by v107.
+- **A, the 10-year view**: the rule on the four analyses read at 10 years alone (7.24% /
+  −24.9% there): 5% money market, 35% Nasdaq Equity Income, 10% Global Technology, 25%
+  Global Infra Equity, 25% Asian Multi-Asset Income (30% and 20% until v116).
 - **B, the 1/3/5/10-year view**: the rule on all four horizons, now A's mix: 5% money market,
-  35% Nasdaq Equity Income, 10% Global Technology, 30% Global Infra Equity, 20% Asian Multi-Asset
-  Income - 7.20% / −24.9%, the one mix at that CAGR (164,826 of the 322,725 inside the budget).
+  35% Nasdaq Equity Income, 10% Global Technology, 25% Global Infra Equity, 25% Asian Multi-Asset
+  Income - 7.14% / −24.9% (150,907 of the 322,725 inside the budget).
   Until v106 it held 10% money market, 35% Nasdaq Equity Income, 5% Global Technology, 20% Global
   Health Care and 30% Global Infra Equity for 7.10%; the valuation tilt lifts the equity funds
   more than the multi-asset fund, and Asian Multi-Asset Income replaces Global Health Care.
@@ -113,14 +121,13 @@ each at every update:
   analyses at 1, 3, 5 and 10 years from v107): B's rule, inputs and band budget over every mix
   with Nasdaq Equity Income as the largest holding of two to five funds, each at least 5%, with
   **no single-fund cap and no cash floor** (the owner's choice of 7 Nov). The rule picks the
-  number of funds (174,390 mixes, 37,481 inside the budget): **four** - 50% Nasdaq Equity Income,
-  20% Global Infra Equity, 15% Global Health Care, 15% Asian Multi-Asset Income, unchanged.
-  7.25% / −24.8% on the 1/3/5/10-year view (7.34% / −24.7% on the 10-year), 0.05pp above B
-  for 0.1pp less drawdown, by giving up the cap and the cash floor. Each count's best: two funds
-  7.07% / −24.3%, three 7.22% / −24.9%, four 7.25% / −24.8%, five 7.25% / −24.9% (the same
-  return, more drawdown). It holds no peso cash, and all four funds are unhedged; across the
-  band's steps it runs from 6.76% / −20.0% (20%) through 7.17% / −24.0% (24%) and 7.34% / −25.9%
-  (26%) to 7.67% / −29.8% (30%).
+  number of funds (174,390 mixes, 30,281 inside the budget): **four** - 50% Nasdaq Equity Income,
+  20% Global Infra Equity, 20% Asian Multi-Asset Income, 10% Global Health Care (15% and 15% until
+  v116). 7.20% / −25.0% on the 1/3/5/10-year view (7.29% / −24.9% on the 10-year), 0.06pp above B,
+  by giving up the cap and the cash floor. Each count's best: two funds 7.08% / −25.0%, three
+  7.17% / −24.9%, four 7.20% / −25.0%, five 7.19% / −25.0%. It holds no peso cash, and all four
+  funds are unhedged; across the band's steps it runs from 6.70% / −19.9% (20%) through 7.10% /
+  −24.0% (24%) and 7.28% / −25.9% (26%) to 7.60% / −29.8% (30%).
 
 **The Budget tab** reads, on 1-5, whether the next five years justify moving the 25% budget -
 months 1-6 (10%), months 7-12 (10%), years 2-3 (40%) and years 4-5 (40%) (owner, 17 Nov 2026, v112:
@@ -128,8 +135,8 @@ months 1-6 (10%), months 7-12 (10%), years 2-3 (40%) and years 4-5 (40%) (owner,
 beside them as the anchor and not weighted (neutral by construction, it is what the 25% base stands
 for, and it sets A's forecasts). Months 1-6 are researched on their own; months 7-12 are what year 1
 leaves once they are taken out, so the halves average back to year 1 and the split moves the reading
-only when the research moves year 1. On 17 Nov months 1-6 read 3.51 and months 7-12 3.11 (the gauge
-2.93, hold at 25%, as on year 1 whole) - from three parts over each span: the macro drivers other than valuation, the
+only when the research moves year 1. On 20 Nov (v117) months 1-6 read 3.53 and months 7-12 3.13 (the
+gauge 2.93, hold at 25%, as on year 1 whole; 3.51 and 3.11 on 17 Nov) - from three parts over each span: the macro drivers other than valuation, the
 market trend and market valuation (its own part from 16 Nov 2026, so it counts once; volatility
 left the reading on 3 Nov 2026 and stays as the guard on a raise), with
 bands for a step anywhere from 20% to 30%, one point at a time (owner, 16 Nov 2026; 24-27%
