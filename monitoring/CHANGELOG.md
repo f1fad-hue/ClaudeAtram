@@ -47,7 +47,7 @@ shallower drawdown decides, and a 0.01pp nudge can swap Health Care and Infra by
 - D 7.19% / −24.9%.
 - Nasdaq Equity Income, unchanged.
 
-**Checks:** engine 267/267; audit 305/305; validator 23/23; mutants 89.
+**Checks:** engine 267/267; audit 305/305; validator 23/23; mutants 89/89 caught.
 
 **Due before the next review:**
 - Roll Monday's Seoul and Manila sessions and New York's; Tokyo resumes on 24 Nov.
