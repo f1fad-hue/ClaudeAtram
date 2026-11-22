@@ -2,6 +2,63 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-22 — v123: the review run from REVIEW_COMMAND.md - no session since 20 Nov; one date corrected; nothing moved
+
+At the owner's instruction: "Run the ATRAM review in monitoring/REVIEW_COMMAND.md".
+
+**Pre-flight.**
+- Cut-off: 22 Nov, 08:34 UTC, a Sunday, hours after v122. No session has closed since 20 Nov anywhere carried: New
+  York, Manila, Tokyo and Seoul, the Brent and WTI settles, and Treasuries.
+- Sources: search results only. There is no direct page fetch in this session, so the exchanges', agencies',
+  uitf.com.ph's and ATRAM's own pages were read through search results.
+- Periodic items: the weekly full fund check falls on Monday's review (last done 16-17 Nov); the month-end band
+  review is due on 30 Nov; no quarter-end roll is due.
+- Holidays and contract dates the next roll crosses:
+  - Tokyo is shut on Mon 23 Nov, Labor Thanksgiving Day, with JPX's group-wide disaster-recovery test on 21-23 Nov
+    (JPX's calendar and holiday-trading page; FinanceCalendar).
+  - US Thanksgiving is Thu 26 Nov.
+  - January WTI is the front month from 23 Nov.
+  - January Brent expires Mon 30 Nov (ICE's rule: the last business day of the second month before; no expiry
+    page found).
+
+**Error found and fixed.** v122 dated the Kharg tanker convoy with the 21 Nov Bahrain attack, "since the 20 Nov
+close". The convoy is reported from 20 Nov (Euronews, 20 Nov; Iran International), so it belongs to the session carried.
+No Iranian official has confirmed it, and it has not sailed.
+- The geopolitics note and summary now date the convoy to 20 Nov, and keep the Bahrain attack after the close.
+- CLAIMS' Gulf row is corrected.
+- Geopolitics is HELD at 1.22.
+
+**Searched again, nothing new in two sources:**
+- No US response to the Bahrain attack; CENTCOM's "no impacts to American forces" is from an earlier strike.
+- No convoy sailing.
+- No ATRAM UITF notice. A PSE disclosure for an ATRAM "AETF" (NAV per share 93.40 on 18 Nov) is an exchange-traded
+  fund, not in the 22-fund list.
+- January WTI's 20 Nov settle is not in two sources. The next roll needs it to chain January's first move.
+
+**Near-ties (the command's new rule):** A, B and C each have one best mix. **D is a three-way tie at 7.19%**: the
+shallower drawdown decides, and a 0.01pp nudge can swap Health Care and Infra by 5%.
+
+**Unchanged:**
+- The gauge, 2.26.
+- The budget gauge, 2.93: hold at 25%, all three guards blocking.
+- A 7.24% / −24.9%.
+- B 7.13% / −24.9%.
+- C 6.94% / −24.8%.
+- D 7.19% / −24.9%.
+- Nasdaq Equity Income, unchanged.
+
+**Checks:** engine 267/267; audit 305/305; validator 23/23; mutants 89.
+
+**Due before the next review:**
+- Roll Monday's Seoul and Manila sessions and New York's; Tokyo resumes on 24 Nov.
+- January WTI's 20 Nov settle, and its chain.
+- The weekly full fund check.
+- Three funds' holdings, which reach the 60-day bound on 29 Nov.
+- Brent's January expiry on 30 Nov.
+- The 30 Nov month-end band review.
+
+Not personal financial advice.
+
 ## 2026-11-22 — v122: the review made to cover every tab; weekend Gulf escalation noted, two calendar events added, a calendar-clock bug fixed; no score, budget or pick moved
 
 At the owner's instruction, the full review again, and: "Can you make this better and recommended. Make it cover

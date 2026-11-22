@@ -4664,11 +4664,12 @@ DRIVERS = [
      "next move on Iran might not come until 2027 - he is \"not rushing into any decision\" - while saying, without "
      "evidence, that Iran may be working on chemical or biological weapons, which Tehran denied (CBS News; Time; Gulf "
      "News). A US official's count of 28 million barrels through the Strait on 18 Nov is in one report (the Jerusalem "
-     "Post) and is not carried. Since the 20 Nov close, and so in no price here: on the night of 21 Nov Iran fired two "
-     "waves of drones and missiles at US bases in Bahrain, which said it intercepted several and that a fire broke out at "
-     "a civilian industrial compound, with no injuries, and Iran is assembling a convoy of more than 14 tankers near Kharg "
-     "Island to run the US blockade, warning of a \"fierce military response\" if it is engaged (Euronews; Outlook India; "
-     "the Jerusalem Post). Held until a market has priced it: a clash with the convoy or a strike on Gulf energy "
+     "Post) and is not carried. Reported from 20 Nov, Iran has staged a convoy of more than 14 tankers at Kharg Island "
+     "to run the US blockade, China its reported destination; no Iranian official has confirmed it and it has not sailed, "
+     "while hardliners threaten the region's energy facilities if it is stopped (Euronews; Iran International; the "
+     "Jerusalem Post). Since the 20 Nov close, and so in no price here: on the night of 21 Nov Iran fired two waves of "
+     "drones and missiles at US bases in Bahrain, which said it intercepted several and that a fire broke out at a "
+     "civilian industrial compound, with no injuries (Euronews; Outlook India). Held until a market has priced it: a clash with the convoy or a strike on Gulf energy "
      "facilities would cut it, a step toward the floor. Flows through the Strait "
      "eased in November and are well below pre-war (Bloomberg; AP, citing Kpler). Brent settled at "
      f"${dict(MACRO['brent_history'])['2026-11-20']:.2f} on 20 Nov, up ${MACRO['brent_reported_pts']['2026-11-20']:.2f} as "
@@ -4942,7 +4943,7 @@ SUMMARY = {
     "Corporate earnings": f"Held, the strongest pillar: Nvidia's revenue rose {MACRO['nvda_q3_rev_yoy']}% on a year to ${MACRO['nvda_q3_rev_bn']}bn, against about ${MACRO['nvda_q3_rev_consensus_bn']}bn expected, and it guided to ${MACRO['nvda_q4_guide_bn']:.1f}bn, yet the Nasdaq lost {abs(MACRO['nasdaq_wk_20nov_pct'])}% in the week to 20 Nov, on fears for the build-out rather than this quarter's profits; third-quarter growth is blended at {MACRO['factset_q3_growth']}% (FactSet, {_dday('factset_date')}).",
     "Valuation support": f"Held at 4.33, raised from 4.11 on 21 Nov: the S&P has fallen {abs(MACRO['spx_since_fwd_pe_pct'])}% since FactSet's {MACRO['spx_fwd_pe']}x reading on earnings estimates that have not, putting it near {MACRO['spx_fwd_pe_implied']}x against five- and ten-year averages of {MACRO['spx_fwd_pe_5y']}x and {MACRO['spx_fwd_pe_10y']}x; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
     "Volatility & risk appetite": f"Held at 1.0, cut from 1.44 on 21 Nov: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {'the highest close in this series' if MACRO['vix_latest'] == max(v for _, v in MACRO['vix_history']) else 'below the series high'} and {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as the S&P fell into correction; the futures curve, re-quoted to {_dval(VIX_QUOTE_DATE)}, is in backwardation.",
-    "Geopolitics & energy": f"Held: US jets struck Iran's Qeshm Island on 17 Nov and Iran fired at Kuwait, tanker attacks are nearly daily, the talks have made no major progress and Trump said on 20 Nov his next move may not come until 2027; after the close, on 21 Nov, Iran attacked US bases in Bahrain and readied a tanker convoy against the blockade; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week on the surplus outlook, and flows through the Strait are well below pre-war.",
+    "Geopolitics & energy": f"Held: US jets struck Iran's Qeshm Island on 17 Nov and Iran fired at Kuwait, tanker attacks are nearly daily, the talks have made no major progress and Trump said on 20 Nov his next move may not come until 2027; after the close, on 21 Nov, Iran attacked US bases in Bahrain, and a tanker convoy staged at Kharg to run the blockade has not sailed; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week on the surplus outlook, and flows through the Strait are well below pre-war.",
     "US": US_SUMMARY_BY_DATE[MACRO["equity_date"]],
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
     "ASIA": ASIA_SUMMARY_BY_DATE[(MACRO["kospi_latest_date"], MACRO["nikkei_latest_date"])],
@@ -8724,6 +8725,11 @@ SOURCES = [
      'https://gcaptain.com/iran-intensifies-hormuz-tanker-attacks-just-as-oil-prices-slide/'),
     ('Insurance Journal (Bloomberg)', 'Iran Intensifies Hormuz Tanker Attacks Just as Oil Prices Slide',
      'https://www.insurancejournal.com/news/international/2026/11/19/893122.htm'),
+    # v123: the convoy is reported from 20 Nov, not after the close (v122 dated it with the Bahrain attack)
+    ('Euronews', 'Iran readies tanker convoy at Kharg Island to test US oil blockade, 20 Nov 2026',
+     'https://www.euronews.com/2026/11/20/iran-readies-tanker-convoy-at-kharg-island-to-test-us-oil-blockade'),
+    ('Iran International', 'Iran hardliners push tanker convoy to defy US blockade, 20 Nov 2026',
+     'https://www.iranintl.com/en/202611204994'),
     # v122: the weekend's Gulf events, after the 20 Nov close
     ('Euronews', 'Iran attacks US bases in Bahrain as its tankers get ready to break the US blockade, 21 Nov 2026',
      'https://euronews.com/2026/11/21/iran-attacks-us-bases-in-bahrain-as-its-tankers-get-ready-to-break-the-us-blockade'),
