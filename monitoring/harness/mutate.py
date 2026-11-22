@@ -161,6 +161,11 @@ def m_dlead(d):                                                                 
 def m_dcount(d): b = d["portfolio_d"]["by_count"][0]; b["cagr"] = round(b["cagr"] + 0.01, 2)   # a count's best off its re-run (v99)
 def m_gap(d): d["macro"]["gtec_gap_1y_pp"] = round(d["macro"]["gtec_gap_1y_pp"] + 0.5, 2)      # a 1-year gap off its inputs (v98)
 def m_over(d): d["vol_channel"]["overtaken"] = not d["vol_channel"]["overtaken"]              # the overtaken flag flipped (v98)
+def m_catclock(d): c = d["catalysts"][0]; c["clock"] = "as_of" if c["clock"] == "us" else "us"   # a catalyst on the wrong market's clock (v122)
+def m_front(d): f = d["universe"]["frontier"][3]; f["cagr"] = round(f["cagr"] + 0.01, 2)       # a frontier point off its weights (v122)
+def m_volts(d): v = d["vol_ts"][1]; v["forward"] = round(v["forward"] + 0.3, 2)               # a term-structure forward off its implied vols (v122)
+def m_corrpsd(d):                                                                              # a correlation matrix no data could produce (v122)
+    c = d["portfolio_b"]["corr"]; c[1][3] = c[3][1] = -0.95
 def m_holds(d):                                                                                # "none holds it" said of a fund A and B hold (v98)
     f = next(f for f in d["funds"] if f["id"] == "ATRGTEC"); f["target_check"]["text"] += " And none of A, B or D holds it."
 def m_grind(d):

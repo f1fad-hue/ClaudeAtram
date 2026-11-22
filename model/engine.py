@@ -28,7 +28,7 @@ AS_OF = "2026-11-20"        # newest completed session carried (v117): Friday 20
                             # Seoul, Tokyo and Manila, the VIX's, the peso's and the Treasury curve's; from v118
                             # the oil settles too (Brent's January, WTI's December on its last trading day). The
                             # VIX futures board, VIX3M and FedWatch's read are 19 Nov's; the 16 Nov T-bill auction
-REVIEW_DATE = "2026-11-21"  # when this review was worked through (v117 and v118: Saturday, every 20 Nov session closed)
+REVIEW_DATE = "2026-11-22"  # when this review was worked through (v117-v121 Saturday 21 Nov, v122 Sunday 22 Nov; no session since 20 Nov)
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -3407,6 +3407,18 @@ CATALYSTS = [
      f"On hold at {MACRO['bok_rate']:.2f}% since {_dday('bok_decision_date')}; most economists expect a hike (Seoul "
      "Economic Daily's survey; the Kyunghyang Shinmun), now after the KOSPI's "
      f"{abs(MACRO['kospi_20nov_chg_pct']):.2f}% fall on 20 Nov, {abs(MACRO['kospi_wk_20nov_pct'])}% in the week to 20 Nov."),
+    # v122: ADDED the OPEC+ ministerial meeting on 29 Nov, which sets the 2027 output framework (OPEC's 1 Nov statement;
+    # Reuters, via Engineering News; FinanceFeeds' week ahead), and the US November jobs report on 4 Dec at 8:30 ET, the
+    # last before the Fed (BLS's release schedule; FinanceCalendar; ForexFundamentals). Not added: Philippine November
+    # inflation, whose release date is in no schedule found (a third-party site's "no later than 4 Dec" only).
+    ("2026-11-29", "OPEC+ ministerial meeting",
+     "The full group meets to set its 2027 output framework, after the seven countries kept December's targets "
+     f"steady on 1 Nov (OPEC; Reuters, via Engineering News; FinanceFeeds); Brent settled at ${MACRO['brent']:.2f} on "
+     f"{_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week, on the surplus outlook."),
+    ("2026-12-04", "US November jobs report",
+     f"At 8:30 ET (the BLS's schedule), the last before the Fed: October's payrolls rose "
+     f"{MACRO['us_payrolls_oct'] // 1000}k against {MACRO['us_payrolls_oct_consensus'] // 1000}k expected, with "
+     f"unemployment at {MACRO['us_unemployment']}%."),
     ("2026-12-09", "Fed decision",
      f"FedWatch has a hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}, "
      f"the meeting the {_nword(MACRO['fed_oct_votes_hike'])} dissents of {_dday('fed_oct_decision_date')} pointed at; "
@@ -3424,7 +3436,13 @@ CATALYSTS = [
 # session carried, often Asia's, a day ahead of New York's. A US event is past once a US
 # session ON OR AFTER its date is carried, so it is read against the US equity date;
 # every other catalyst against AS_OF.
-CATALYST_CLOCK = {"Fed decision": "equity_date"}
+# v122: ONE RULE FOR WHICH EVENTS ARE AMERICAN, the audit's own pattern. Until v122 this was a hand list naming
+# "Fed decision" alone, so the 25 Nov PCE was read against Asia's clock, while the audit's pattern missed "Fed
+# decision": on the next day Asia led New York, each would have retired a different event a day early. Each
+# catalyst now publishes its clock, and the audit holds it to the audit's own pattern.
+US_CATALYST_RE = r"^(Fed decision|FOMC\b|Nvidia\b|US .*\b(GDP|PCE|CPI|PPI|payrolls|jobs report|retail sales|midterm))"
+CATALYST_CLOCK = {n: "equity_date" for _, n, _ in CATALYSTS if re.match(US_CATALYST_RE, n)}
+assert "Fed decision" in CATALYST_CLOCK and any(n.startswith("US October PCE") for n in CATALYST_CLOCK)
 
 # ----------------------------------------------------------------------------
 # 2. VOLATILITY TERM STRUCTURE
@@ -4646,7 +4664,12 @@ DRIVERS = [
      "next move on Iran might not come until 2027 - he is \"not rushing into any decision\" - while saying, without "
      "evidence, that Iran may be working on chemical or biological weapons, which Tehran denied (CBS News; Time; Gulf "
      "News). A US official's count of 28 million barrels through the Strait on 18 Nov is in one report (the Jerusalem "
-     "Post) and is not carried. Flows through the Strait "
+     "Post) and is not carried. Since the 20 Nov close, and so in no price here: on the night of 21 Nov Iran fired two "
+     "waves of drones and missiles at US bases in Bahrain, which said it intercepted several and that a fire broke out at "
+     "a civilian industrial compound, with no injuries, and Iran is assembling a convoy of more than 14 tankers near Kharg "
+     "Island to run the US blockade, warning of a \"fierce military response\" if it is engaged (Euronews; Outlook India; "
+     "the Jerusalem Post). Held until a market has priced it: a clash with the convoy or a strike on Gulf energy "
+     "facilities would cut it, a step toward the floor. Flows through the Strait "
      "eased in November and are well below pre-war (Bloomberg; AP, citing Kpler). Brent settled at "
      f"${dict(MACRO['brent_history'])['2026-11-20']:.2f} on 20 Nov, up ${MACRO['brent_reported_pts']['2026-11-20']:.2f} as "
      f"fears of escalation resurfaced, but {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week, a third weekly fall, "
@@ -4919,7 +4942,7 @@ SUMMARY = {
     "Corporate earnings": f"Held, the strongest pillar: Nvidia's revenue rose {MACRO['nvda_q3_rev_yoy']}% on a year to ${MACRO['nvda_q3_rev_bn']}bn, against about ${MACRO['nvda_q3_rev_consensus_bn']}bn expected, and it guided to ${MACRO['nvda_q4_guide_bn']:.1f}bn, yet the Nasdaq lost {abs(MACRO['nasdaq_wk_20nov_pct'])}% in the week to 20 Nov, on fears for the build-out rather than this quarter's profits; third-quarter growth is blended at {MACRO['factset_q3_growth']}% (FactSet, {_dday('factset_date')}).",
     "Valuation support": f"Held at 4.33, raised from 4.11 on 21 Nov: the S&P has fallen {abs(MACRO['spx_since_fwd_pe_pct'])}% since FactSet's {MACRO['spx_fwd_pe']}x reading on earnings estimates that have not, putting it near {MACRO['spx_fwd_pe_implied']}x against five- and ten-year averages of {MACRO['spx_fwd_pe_5y']}x and {MACRO['spx_fwd_pe_10y']}x; the KOSPI is {MACRO['kospi_off_2oct_pct']}% below its 2 Oct close.",
     "Volatility & risk appetite": f"Held at 1.0, cut from 1.44 on 21 Nov: the VIX {'rose' if MACRO['vix_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['vix_latest_chg_pct'])}% to {MACRO['vix_latest']:.2f} on {_dday('vix_latest_date')}, {'the highest close in this series' if MACRO['vix_latest'] == max(v for _, v in MACRO['vix_history']) else 'below the series high'} and {abs(MACRO['vix_lr_gap']):.2f} points {'under' if MACRO['vix_lr_gap'] < 0 else 'over'} its long-run {MACRO['vix_longrun']}, as the S&P fell into correction; the futures curve, re-quoted to {_dval(VIX_QUOTE_DATE)}, is in backwardation.",
-    "Geopolitics & energy": f"Held: US jets struck Iran's Qeshm Island on 17 Nov and Iran fired at Kuwait, tanker attacks are nearly daily, the talks have made no major progress and Trump said on 20 Nov his next move may not come until 2027; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week on the surplus outlook, and flows through the Strait are well below pre-war.",
+    "Geopolitics & energy": f"Held: US jets struck Iran's Qeshm Island on 17 Nov and Iran fired at Kuwait, tanker attacks are nearly daily, the talks have made no major progress and Trump said on 20 Nov his next move may not come until 2027; after the close, on 21 Nov, Iran attacked US bases in Bahrain and readied a tanker convoy against the blockade; Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, {abs(MACRO['brent_wk_20nov_pct']):.2f}% lower on the week on the surplus outlook, and flows through the Strait are well below pre-war.",
     "US": US_SUMMARY_BY_DATE[MACRO["equity_date"]],
     "EUROPE": f"Held: the ECB kept its deposit rate at {MACRO['ecb_depo']:.2f}% on {_dday('ecb_oct_decision_date')} with inflation at {MACRO['ea_hicp_sep_final']}%, the October composite PMI was confirmed at a four-month low of {MACRO['ea_pmi_comp_oct']}, and September's retail volumes fell {abs(MACRO['ea_retail_sep_mom'])}%.",
     "ASIA": ASIA_SUMMARY_BY_DATE[(MACRO["kospi_latest_date"], MACRO["nikkei_latest_date"])],
@@ -8701,6 +8724,24 @@ SOURCES = [
      'https://gcaptain.com/iran-intensifies-hormuz-tanker-attacks-just-as-oil-prices-slide/'),
     ('Insurance Journal (Bloomberg)', 'Iran Intensifies Hormuz Tanker Attacks Just as Oil Prices Slide',
      'https://www.insurancejournal.com/news/international/2026/11/19/893122.htm'),
+    # v122: the weekend's Gulf events, after the 20 Nov close
+    ('Euronews', 'Iran attacks US bases in Bahrain as its tankers get ready to break the US blockade, 21 Nov 2026',
+     'https://euronews.com/2026/11/21/iran-attacks-us-bases-in-bahrain-as-its-tankers-get-ready-to-break-the-us-blockade'),
+    ('Outlook India', 'Iran Attacks Bahrain: Industrial Facility Hit, US Bases Targeted, 21 Nov 2026',
+     'https://outlookindia.com/international/iran-attacks-bahrain-industrial-facility-us-bases-missile-drone-strikes'),
+    ('The Jerusalem Post', 'Iran prepares oil tanker convoy to break US naval blockade, threatens Gulf facilities',
+     'https://www.jpost.com/middle-east/iran-news/article-915644'),
+    # v122: the calendar's two new dates
+    ('OPEC', 'Saudi Arabia, Russia, Iraq, Kuwait, Kazakhstan, Algeria, and Oman reaffirm commitment to market stability - December targets held; next meeting 29 Nov 2026 (1 Nov 2026)',
+     'https://www.opec.org/pr-detail/2033620-1-november-2026.html'),
+    ('Engineering News (Reuters)', 'OPEC+ keeps December oil output targets steady ahead of tougher call for 2027, 2 Nov 2026',
+     'https://engineeringnews.co.za/article/opec-keeps-december-oil-output-targets-steady-ahead-of-tougher-call-for-2027-2026-11-02'),
+    ('BLS', 'Schedule of releases for December 2026 - the Employment Situation for November, Fri 4 Dec 2026, 8:30 a.m. ET',
+     'https://www.bls.gov/schedule/2026/12_sched_list.htm'),
+    ('FinanceCalendar', 'US Employment Situation (non-farm payrolls), December 2026 - 4 Dec',
+     'https://www.financecalendar.com/event/us-employment-situation-non-farm-payrolls-december-2026/'),
+    ('ForexFundamentals', 'US Non-Farm Payrolls (NFP), 4 Dec 2026',
+     'https://forexfundamentals.com/economic-calendar/nfp/2026-12-04'),
     # v121: PortWatch's 15 Nov transit count, two publishers
     ('Straits Daily Brief', 'Strait of Hormuz News, November 19, 2026 - IMF PortWatch: 2 transits on 15 Nov against 85 pre-crisis',
      'https://straits.live/briefs/2026-11-19'),
@@ -8860,7 +8901,8 @@ def payload():
             "ry_lo": round(min(MACRO["ph_tbill_91"], MACRO["ph_tbill_182"], MACRO["ph_tbill_364"]) - MACRO["ph_cpi_latest"], 2),
             "ry_hi": round(max(MACRO["ph_tbill_91"], MACRO["ph_tbill_182"], MACRO["ph_tbill_364"]) - MACRO["ph_cpi_latest"], 2),
         },
-        "catalysts": [{"date": d, "what": w, "why": y} for d, w, y in CATALYSTS],
+        "catalysts": [{"date": d, "what": w, "why": y, "clock": "us" if w in CATALYST_CLOCK else "as_of"}
+                      for d, w, y in CATALYSTS],
         "postponed": [{"what": w, "why": y} for w, y in POSTPONED],
         "dd_model": {"k": DD_K, "mu_coef": DD_MU,
                      "calib": {k_: list(v_) for k_, v_ in DD_CALIB.items()},

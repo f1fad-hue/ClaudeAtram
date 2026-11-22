@@ -215,6 +215,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+186. TWO CHECKS OF ONE RULE MUST SHARE THE RULE. The engine decided which calendar events are American from a hand list
+   ("Fed decision" alone) and the audit from a pattern (which missed "Fed decision"), so on the next weekday Asia's data
+   led New York's, each would have retired a different event a day early - and both would have passed today, when the
+   two clocks agree. Where an engine check and an audit check must classify the same thing, publish the engine's
+   classification and hold it to the audit's own rule.
 185. A DERIVED FIGURE OUTLIVES ITS SENTENCE. `vix_spike_retraced_pct` was written in v98 for "71% of the 5 Nov jump
    given back"; the sentence went in v117, the figure stayed, and once the VIX closed above its 5 Nov level it read
    -67% - a "retrace" that is a new high - while its audit check passed, because the arithmetic was right. Five other

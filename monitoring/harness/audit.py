@@ -106,6 +106,24 @@ sec("C. PORTFOLIOS: weights, limits, re-derived figures and the rule")
 C = PBB["corr"]; NU = len(FU)
 ck("the correlation matrix is square, symmetric, unit-diagonal", len(C) == NU and all(len(r) == NU for r in C)
    and all(abs(C[i][j] - C[j][i]) < 1e-9 for i in range(NU) for j in range(NU)) and all(C[i][i] == 1 for i in range(NU)))
+# v122: THE MACRO TAB'S "CORRELATED SENTIMENT" MATRIX IS A CORRELATION MATRIX: every entry in [-1, 1] and the whole
+# positive semi-definite (a Cholesky factor exists), or some mix's variance would come out negative.
+def _chol_ok(M, eps=1e-10):
+    n = len(M); L = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(i + 1):
+            s_ = M[i][j] - sum(L[i][k] * L[j][k] for k in range(j))
+            if i == j:
+                if s_ < -eps: return False
+                L[i][i] = math.sqrt(max(s_, 0.0))
+            else:
+                L[i][j] = s_ / L[j][j] if L[j][j] > eps else 0.0
+    return True
+_C4 = D["corr"]; _id4 = [f["id"] for f in D["funds"]]
+ck("the correlation matrix's entries are in [-1, 1], it is positive semi-definite, and the four-fund copy the Funds tab quotes is its corner",
+   all(-1 <= C[i][j] <= 1 for i in range(NU) for j in range(NU)) and _chol_ok(C)
+   and _id4 == IDS[:len(_id4)] and all(abs(_C4[i][j] - C[i][j]) < 1e-9 for i in range(len(_C4)) for j in range(len(_C4))),
+   f"{_id4} vs {IDS[:4]}")
 LIM = D["universe"]["limits"]; CAP = D["dd_budget"]["cap"]
 def pk(w):
     eq = sum(w[i] for i in range(NU) if i not in CASH)
@@ -160,13 +178,16 @@ def mixes():
                 w = [0] * NU; w[0] = rest
                 for i, x in zip(combo, ws): w[i] = x
                 yield w
+ALLPTS = {}   # v122: every mix's printed (CAGR, drawdown) on a view, for the frontier and best-ratio checks
 def pick(key):
     """The published rule: feasible if both the raw and the printed drawdown are inside the
     budget; the best printed CAGR; within it the shallowest printed, then raw, drawdown."""
     feas, n_tot = [], 0
+    pts = ALLPTS.setdefault(key, [])
     for w in mixes():
         n_tot += 1
         rd, vd, dd_, r, v = figures(w, key)
+        pts.append((rd, abs(dd_)))
         ddr = max((pk(w) * v - MU * r) * SC, 0.0)
         if ddr > CAP + 1e-9 or abs(dd_) > CAP + 1e-9: continue
         feas.append((rd, abs(dd_), ddr, w))
@@ -179,6 +200,45 @@ for lab, P, key in (("A", PAA, "net_10y"), ("B", PBB, "net_macro")):
        w_ == [int(x) for x in P["weights"]] and nf == P["n_feasible"] and nb == P["band_n"],
        f"{w_} ({nf}, {nb}) vs {P['weights']} ({P['n_feasible']}, {P['band_n']})")
     if lab == "B": ck(f"the universe's mix count is the payload's ({nt})", nt == D["universe"]["n_total"], f"{D['universe']['n_total']}")
+# v122: THE PORTFOLIOS TAB'S "FEASIBLE SET" CHART, re-derived from every mix the limits allow (only the engine checked it
+# until v122). Each frontier point's figures follow from its weights; no mix has a higher CAGR at no more drawdown; B is
+# on it; and the best pure ratio is the highest return per drawdown of any mix.
+_FR = D["universe"]["frontier"]; _pm = ALLPTS["net_macro"]
+_frd = [(figures([int(round(x)) for x in f["weights"]], "net_macro"), f) for f in _FR]
+ck(f"every frontier point re-derives from its weights and is within the limits ({len(_FR)} points)",
+   all((r_[0], r_[2]) == (f["cagr"], f["dd"]) and abs(f["dd"]) == f["maxdd"] and sum(f["weights"]) == 100
+       and sum(1 for x in f["weights"] if x) <= LIM["max_funds"] and max(f["weights"]) <= LIM["max_w"] and f["weights"][0] >= LIM["min_cash"]
+       for r_, f in _frd), f"{[(f['cagr'], f['dd'], r_[0], r_[2]) for r_, f in _frd if (r_[0], r_[2]) != (f['cagr'], f['dd'])][:3]}")
+_best_by_dd = {}
+for c_, d_ in _pm: _best_by_dd[d_] = max(c_, _best_by_dd.get(d_, -1e9))
+_dds = sorted(_best_by_dd); _run, _cum = -1e9, {}
+for d_ in _dds: _run = max(_run, _best_by_dd[d_]); _cum[d_] = _run    # the best CAGR at this drawdown or less
+import bisect as _bs
+def _best_at(dd):
+    i = _bs.bisect_right(_dds, dd + 1e-9) - 1
+    return _cum[_dds[i]] if i >= 0 else -1e9
+ck("every frontier point is efficient: no mix the limits allow has a higher CAGR at no more drawdown",
+   all(_best_at(abs(f["dd"])) <= f["cagr"] + 1e-9 for f in _FR),
+   f"{[(f['cagr'], f['dd'], _best_at(abs(f['dd']))) for f in _FR if _best_at(abs(f['dd'])) > f['cagr'] + 1e-9][:3]}")
+ck("Portfolio B is a frontier point", any([int(round(x)) for x in f["weights"]] == [int(x) for x in PBB["weights"]] for f in _FR))
+_BR = D["universe"]["best_ratio"]; _brr = figures([int(round(x)) for x in _BR["weights"]], "net_macro")
+ck(f"the best pure ratio ({_BR['ret_per_dd']}) re-derives from its weights and is the highest of any mix",
+   (_brr[0], _brr[2]) == (_BR["cagr"], _BR["maxdd"]) and _BR["ret_per_dd"] == round(_BR["cagr"] / abs(_BR["maxdd"]), 3)
+   and _BR["ret_per_dd"] == max(round(c_ / d_, 3) for c_, d_ in _pm if d_ > 0), f"{_brr[:3]} / {_BR}")
+# v122: THE VOLATILITY TERM STRUCTURE (Portfolios tab, "How each drawdown is estimated"), re-derived from its own rows:
+# variance adds over time, so each span's forward follows from the implied vols either side; realised is implied less
+# the variance risk premium; a one-sigma move is the implied vol times the root of the years.
+_VT = D["vol_ts"]; _vrp = D["vol_channel"]["vrp"]
+def _fwd_ok(a, b):
+    f2 = (b["implied"] ** 2 * b["years"] - a["implied"] ** 2 * a["years"]) / (b["years"] - a["years"])
+    return abs(math.sqrt(max(f2, 0.0)) - b["forward"]) < 0.02
+ck("the volatility term structure re-derives: forwards from the implied vols, realised = implied less the premium, moves = implied x root T",
+   _VT[0]["from_years"] == 0 and abs(_VT[0]["forward"] - _VT[0]["implied"]) < 1e-9
+   and all(_fwd_ok(a, b) and b["from_years"] == a["years"] for a, b in zip(_VT, _VT[1:]))
+   and all(abs(v["realised"] - (v["implied"] - _vrp)) < 0.011 and abs(v["move_1sd"] - v["implied"] * math.sqrt(v["years"])) < 0.02
+           and abs(v["move_2sd"] - 2 * v["move_1sd"]) < 0.02 for v in _VT)
+   and abs(D["vol_channel"]["blend"] - sum(v["forward"] * D["hz_weights"][v["label"]] for v in _VT)) < 0.006,
+   f"{_VT}")
 
 # PORTFOLIO D (v96, owner 2026-11-07; re-set v99, owner 2026-11-12): Nasdaq Equity Income as the
 # largest holding of two to five funds, each at least 5%, with no single-fund cap and no cash floor;
@@ -551,7 +611,12 @@ ck("Michigan sentiment is the final reading, or its first read is under two week
    and (REV - d(M["us_umich_latest_date"])).days <= 21)
 # v113: a US company's results after New York's close (Nvidia's) are a US-session event too; with Asia
 # rolled a day ahead of New York, they were compared with Seoul's date.
-_US = re.compile(r"^(FOMC\b|Nvidia\b|US .*\b(GDP|PCE|CPI|PPI|payrolls|jobs report|retail sales|midterm))")
+_US = re.compile(r"^(Fed decision|FOMC\b|Nvidia\b|US .*\b(GDP|PCE|CPI|PPI|payrolls|jobs report|retail sales|midterm))")
+# v122: the engine read "Fed decision" alone against the US clock and the 25 Nov PCE against Asia's; this pattern
+# missed "Fed decision". Each catalyst now publishes its clock, and it must be the one this pattern gives.
+ck("each catalyst's clock is its own market's: US releases and the Fed against the US session, the rest against the data date",
+   all(c.get("clock") == ("us" if _US.search(c["what"]) else "as_of") for c in D["catalysts"]),
+   f"{[(c['what'][:24], c.get('clock')) for c in D['catalysts']]}")
 ck("every catalyst is after the last session of its own market carried (US events against the US session)",
    all(d(c["date"]) > (d(M["equity_date"]) if _US.search(c["what"]) else AS_OF) for c in D["catalysts"]),
    f"{[(c['date'], c['what']) for c in D['catalysts']]}")

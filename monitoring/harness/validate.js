@@ -58,6 +58,11 @@ const file = process.argv[2], live = process.argv.includes("--live");
           .map(q => (document.querySelector(q) || {}).textContent || "").join(" ")
           + " " + (((document.getElementById("dvgeo") || {}).parentElement || {}).textContent || ""),
         drvh: [...document.querySelectorAll("h3")].map(h => h.textContent).filter(t => /Macro drivers|Market valuation/.test(t)),
+        // v122: every section on every tab, after each tab has been opened: its text, and any element in it left empty
+        secs: [...document.querySelectorAll(".panel section")].map(s => ({
+          tab: s.closest(".panel").id, eb: ((s.querySelector(".eyebrow") || {}).textContent || "").trim().slice(0, 40),
+          n: s.textContent.trim().length,
+          empty: [...s.querySelectorAll("[id]")].filter(x => !x.textContent.trim() && !x.querySelector("svg,canvas")).map(x => x.id) })),
       };
     });
     const D = info.D;
@@ -111,6 +116,13 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("no macro driver or regional surface shows the retired 1-10 scale; the driver and valuation tables are headed 1-5, 3 neutral",
       old10.length === 0 && info.drvh.length === 2 && info.drvh.every(t => t.includes("1–5 (3 neutral)")),
       `${old10.slice(0, 3)} | ${info.drvh}`);
+    // v122: the review covers every tab, so the check does too - each section renders, none is a stub, and no element in
+    // it is left empty (the postponed list only while the payload has nothing postponed)
+    const tabsSeen = new Set(info.secs.map(x => x.tab));
+    const stubs = info.secs.filter(x => x.n < 150 || x.empty.some(id => !(id === "postponed" && !(D.postponed || []).length)));
+    ck(`every section on all ${tabsSeen.size} tabs renders (${info.secs.length} sections), none a stub and nothing in it left empty`,
+      tabsSeen.size === 5 && info.secs.length >= 30 && stubs.length === 0,
+      stubs.map(x => `${x.tab}/${x.eb || "?"}: ${x.n} chars, empty ${x.empty}`).slice(0, 3).join(" | "));
     ck("the Portfolios lede states A's 10-year, B's, C's and D's 1/3/5/10-year CAGR",
       [pc(D.portfolio_a.ten.cagr), pc(D.portfolio_b.macro.cagr), pc(D.portfolio_c.macro.cagr), pc(D.portfolio_d.macro.cagr)].every(x => info.lede.includes(x)),
       info.lede.slice(0, 160));

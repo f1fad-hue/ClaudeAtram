@@ -2,6 +2,93 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-22 — v122: the review made to cover every tab; weekend Gulf escalation noted, two calendar events added, a calendar-clock bug fixed; no score, budget or pick moved
+
+At the owner's instruction, the full review again, and: "Can you make this better and recommended. Make it cover
+everything in the pages/tabs."
+
+**The review command, made to cover every tab.** `monitoring/REVIEW_COMMAND.md` is the owner's standing review command.
+It was last updated on 17 Nov (v112) and had gone stale:
+- it still said "geopolitics above 2.0" (1.44 on 1-5 since v119);
+- it gave the budget gauge's spans as 1/3/5 years at 20/40/40;
+- it did not say that the drivers and regions are now on 1-5.
+
+It is brought up to date, and it now has:
+- **a map of all thirty sections on the five tabs**, each with the step that covers it;
+- a rule for news after the cut-off: in its note, marked as in no price yet; a score moves only on decisive evidence;
+- a rule for near-tie picks: flag them, say what would flip them, and call a tie-break a tie-break;
+- the calendar's shared US-clock rule;
+- the Report's setup figures and "Method & limits" by name;
+- a page check that every section renders.
+
+The owner's own list left out these sections, now named in the map:
+- the correlation matrix;
+- the look-through and stock-level holdings;
+- the feasible set;
+- the stress tests;
+- the peso values;
+- the drawdown model;
+- the Report's live figures, calendar, sources and limits.
+
+**Checks added for the sections only the engine checked:**
+- **Audit (+6):**
+  - the Feasible-set frontier re-derived from every one of the 322,725 mixes (each point from its weights, each
+    point efficient, B on it);
+  - the best pure ratio as the true maximum;
+  - the correlation matrix positive semi-definite, with the Funds tab's four-fund copy as its corner;
+  - the volatility term structure re-derived from its own rows;
+  - each catalyst's clock.
+- **Validator (+1):** every one of the thirty sections renders after its tab is opened, none is a stub, and nothing in
+  them is left empty.
+- **Mutants (+4):** `m_front`, `m_volts`, `m_corrpsd`, `m_catclock`.
+
+**New, in two sources or more:**
+- **Gulf, 21 Nov, after the 20 Nov close and so in no price.**
+  - Iran fired two waves of drones and missiles at US bases in Bahrain. Bahrain said it intercepted several, and that
+    a fire broke out at a civilian industrial compound, with no injuries.
+  - Iran is assembling a convoy of more than 14 tankers near Kharg Island to run the US blockade, and warns of a
+    "fierce military response" (Euronews; Outlook India; the Jerusalem Post).
+  - The IRGC's claims of hits on US radars and an F-16 are denied by US Central Command and not carried.
+  - Geopolitics is **HELD at 1.22** until a market has priced it. The note says a clash with the convoy or a strike on
+    Gulf energy facilities would cut it.
+- **Calendar:**
+  - ADDED the OPEC+ ministerial meeting on Sun 29 Nov, which sets the 2027 output framework (OPEC's 1 Nov
+    statement; Reuters, via Engineering News; FinanceFeeds).
+  - ADDED the US November jobs report on Fri 4 Dec, the last before the Fed (the BLS's schedule; FinanceCalendar;
+    ForexFundamentals).
+  - Not added: Philippine November CPI (no release date in a schedule found) and US November CPI on 10 Dec (one
+    source).
+
+**Errors found and fixed:**
+1. **The engine and the audit disagreed on which calendar events are American.**
+   - The engine read "Fed decision" alone against the US session, and so read the 25 Nov PCE against Asia's clock.
+   - The audit's pattern missed "Fed decision".
+   - On the next weekday Asia's data led New York's, each would have retired a different event a day early. Both
+     passed today only because the two clocks agree.
+   - One rule now decides: the engine publishes each catalyst's clock, and the audit holds it to its own pattern.
+2. **The standing review command was stale** in three places (above).
+3. **A hypothetical score typed into a note** ("would take this score to 1.11") was caught by the audit's
+   every-number-traces rule before publishing, and reworded.
+
+**Searched again:** FactSet's 20 Nov edition, a 20 Nov VIX board, a newer CAPE and a November Hormuz flow figure; none
+is in two sources. No ATRAM notice. The three wide tables on phone (the trend table, the correlation matrix, the
+held-out what-if) scroll inside their own frames; the page does not scroll sideways.
+
+**Unchanged:**
+- The gauge, 2.26.
+- The budget gauge, 2.93: hold at 25%, all three guards blocking.
+- A 7.24% / −24.9%.
+- B 7.13% / −24.9%.
+- C 6.94% / −24.8%.
+- D 7.19% / −24.9%, a three-way tie at the best CAGR.
+
+**Checks:** engine 267/267; audit 305/305; validator 23/23; mutants 89.
+
+**Due next:** the holdings of three funds reach their 60-day bound on 29 Nov; Monday's Asian sessions are the first to
+price the weekend.
+
+Not personal financial advice.
+
 ## 2026-11-21 — v121: full review the same Saturday - one Gulf development, a transit count refreshed a day before its bound, six dead figures retired; no score, budget or pick moved
 
 At the owner's instruction, the full review again:

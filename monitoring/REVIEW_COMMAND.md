@@ -12,7 +12,11 @@ Updated 2026-11-16 (v108): every analysis, the regional rankings included, has a
 Updated 2026-11-16 (v109): the band holds at 25% from 2.80 to 3.20 and steps one point per 0.15.
 Updated 2026-11-17 (v110): five tabs, not six. Updated 2026-11-17 (v111): Portfolio C is back as the owner's
 three funds, so the command covers A, B, C and D. Updated 2026-11-17 (v112): the gauge reads months 1-6
-and 7-12, years 2-3 and 4-5 (10/10/40/40), with the 10-year view as its unweighted anchor. The runbook (`README.md`) says how; this file says what.
+and 7-12, years 2-3 and 4-5 (10/10/40/40), with the 10-year view as its unweighted anchor. Updated 2026-11-22 (v122): the
+drivers and the regional rankings are scored on 1-5 (v119-v120), so the geopolitics guard's floor is 1.44; news after the
+cut-off, near-tie picks and the calendar's US clock have their own rules; every section on the five tabs is named, with
+the step that covers it (the map after the command), and the page check confirms every section renders. The runbook
+(`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
@@ -67,7 +71,13 @@ Evidence rules (apply to everything below)
   VIX has moved past the overtaken flag, and re-test it against VIX3M. Refresh anything else
   close to its freshness limit, or say why it's held.
 • Update the event calendar: retire events that have passed or been released, add the
-  next ones, each date confirmed by two sources.
+  next ones - at least everything due before the next Fed, BSP, ECB and BoJ decisions (jobs, CPI and
+  PCE prints, OPEC+ meetings, Philippine inflation) - each date confirmed by two sources. A US release
+  or the Fed is past once a US session on or after its date is carried; everything else, once the data
+  date reaches it (one rule, shared by the engine and the audit).
+• News after the cut-off (a weekend, or while you work) goes in its note marked as after the close and
+  in no price yet. A score moves on it only if the evidence is decisive; otherwise the note says what
+  would move it, in words, not a typed score.
 
 2. The 22 ATRAM funds and their target funds (Funds tab)
 • Every review: search ATRAM's notices and the target managers' notices for a fee change,
@@ -88,6 +98,8 @@ Evidence rules (apply to everything below)
   named. Re-run the held-out what-if for A, B and D and record its weights (C holds only its three).
 
 3. The four analyses at 1, 3, 5 and 10 years (Macro, Funds and Portfolios tabs)
+• Every score is on 1-5, 3 neutral (the drivers from v119, the regions from v120); moves are
+  judged on that scale, and no 1-10 figure is published.
 • Regional rankings (US, Europe, Asia, Philippines; each with a researched year-1 reading
   from v108, years 2-3 implied), macro sentiment (seven driver scores
   now, their year-1, 3- and 5-year paths, neutral at 10), market trend and market valuation
@@ -116,7 +128,7 @@ Evidence rules (apply to everything below)
   and its six-month reading (the half-year ahead: FedWatch's next meetings, BSP's next
   decision, the latest inflation prints, the STEO's quarterly path, the VIX curve, forward
   multiples), and say which moved; months 7-12 are implied. Check its guards
-  (two month-end reviews in the same band; geopolitics above 2.0 and the VIX at or
+  (two month-end reviews in the same band; geopolitics above its 1.44 floor and the VIX at or
   under its long run before any raise). Record the month-end review when one is due.
 • Report the budget in force and what each step (20% to 30%, one point a step; owner,
   16 Nov 2026; hold 2.80-3.20 and 0.15 of the reading a step, v109) does to A, B, C and D, and to B in a Hormuz closure. The band's budget is every
@@ -133,19 +145,25 @@ Evidence rules (apply to everything below)
   ◦ C: exactly Peso Money Market, Nasdaq Equity Income (strictly the largest) and Global
     Technology, each at least 5%, 5% steps, no single-fund cap, on the 1/3/5/10-year view;
     each Nasdaq weight's best is shown.
+• Flag any pick that sits in a near-tie - more than one mix printing the best CAGR, or a runner-up
+  within 0.01pp - say what would flip it, and say plainly when a change of mix is a tie-break, not a
+  view (D, 21 Nov 2026: three mixes tied at 7.19%).
 • Check the head-to-head tables, the lenses and "who wins where"; the stress scenarios
   against today's markets (for example the oil levels in the Hormuz escalation and
   disinflation restart rows); and re-run the what-ifs, the efficient-mix chart and the
   peso table.
 • Ask me before changing any rule: the 25% base, the band and its guards, the limits,
   D's rule, the selection rule, the 1/3/5/10-year weights (10/20/20/50 by years covered), the
-  valuation tilt's years 1-5 only, the band's 2.80-3.20 hold and 0.15 steps, the budget gauge's 1/3/5-year
-  spans and their 20/40/40 weights, or the fund list.
+  valuation tilt's years 1-5 only, the band's 2.80-3.20 hold and 0.15 steps, the budget gauge's spans
+  (months 1-6 and 7-12, years 2-3 and 4-5) and their 10/10/40/40 weights, the 1-5 scales, or the fund list.
 
 6. Report tab
-• Read the rationale report, the conclusion and the what-ifs against the other tabs, and
-  the "Not in these numbers yet" calendar. Every source is a working https link, none is
-  listed twice, and every dispute names its sources.
+• Read the rationale report, the conclusion and the what-ifs against the other tabs; the
+  setup's live figures (the Fed's range, the odds, the 10-year, Brent, BSP, the ECB, the BoJ,
+  the IMF, Asia's earnings and multiple, the gauge, geopolitics and volatility) against the
+  Macro tab; the "Not in these numbers yet" calendar; "Method & limits" (fee estimates,
+  correlations, the footer's data and review dates). Every source is a working https link,
+  none is listed twice, and every dispute names its sources.
 
 7. Error hunt (throughout)
 • Debug, code-review and sanity-check the engine, the page, the audit, the held-out
@@ -159,6 +177,7 @@ Evidence rules (apply to everything below)
 
 8. Verify, clean up, publish
 • All must pass: the engine checks, the independent audit, the phone-width page check
+  (every section on every tab renders, nothing left empty, no page-wide horizontal scroll)
   and the planted-error (mutation) test, re-run after any later code change. Then open all
   five tabs and read them as a user would: wording, dates, and figures that contradict
   each other.
@@ -179,3 +198,40 @@ Evidence rules (apply to everything below)
   fixed, anything within two days of its limit, and what's due before the next review.
 • Mark it "not personal financial advice."
 ```
+
+## Every section, and the step that covers it (v122)
+
+Five tabs, thirty sections. A review that skips a row has not covered the page.
+
+| Tab | Section | Step |
+|---|---|---|
+| Macro | Overall driver gauge (the headline and its verdict) | 3 |
+| Macro | Driver breakdown (seven scores, notes, summaries) | 1, 3 |
+| Macro | Drivers now / 3Y / 5Y / 10Y (paths, ten-year averages, the gauge at each) | 3 |
+| Macro | Regional ranking 1Y / 2-3Y / 4-5Y / 6-10Y | 3 |
+| Macro | Market trend 1Y / 3Y / 5Y / 10Y (quarters, z-scores, reversal) | 3 |
+| Macro | Correlated sentiment (the correlation matrix and how each driver lands) | 3 |
+| Funds | Fund slides (the eleven funds' jobs) | 2 |
+| Funds | Side by side | 2 |
+| Funds | Fee transparency (feeder and target layers) | 2 |
+| Funds | Look-through (regions and sectors underneath) | 2 |
+| Funds | Stock level (top holdings, dated, 60-day limit) | 2 |
+| Portfolios | A vs B vs C vs D, and the four analyses year by year | 3, 5 |
+| Portfolios | Portfolio C (each Nasdaq weight's best) | 5 |
+| Portfolios | Portfolio D (each count's best, the number of funds) | 5 |
+| Portfolios | Headline forecast, lenses, who wins where | 5 |
+| Portfolios | Feasible set (the frontier, the best pure ratio, the extremes) | 5 |
+| Portfolios | Stress test | 5 |
+| Portfolios | In pesos (P1,000,000 over ten years) | 5 |
+| Portfolios | How each drawdown is estimated (volatility term structure, betas, k, the cash floor) | 3, 5 |
+| Budget | The reading and the budget in force | 4 |
+| Budget | What each view says (6M, 7-12M, 2-3Y, 4-5Y, the 10Y anchor) | 4 |
+| Budget | The research by span (drivers, valuation, trend) | 4 |
+| Budget | The bands and the guards | 4 |
+| Budget | What each step buys (A to D at 20% to 30%) | 4 |
+| Budget | Why (the rule and its history) | 4 |
+| Report | Rationale report | 6 |
+| Report | The setup, volatility, where the weight goes, Global Technology, cash, C | 6 |
+| Report | Keeping this current (the calendar, anything postponed) | 1, 6 |
+| Report | Sources | 6 |
+| Report | Method & limits | 6 |
