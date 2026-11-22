@@ -82,7 +82,7 @@ held-out what-if) scroll inside their own frames; the page does not scroll sidew
 - C 6.94% / −24.8%.
 - D 7.19% / −24.9%, a three-way tie at the best CAGR.
 
-**Checks:** engine 267/267; audit 305/305; validator 23/23; mutants 89.
+**Checks:** engine 267/267; audit 305/305; validator 23/23; mutants 89/89 caught.
 
 **Due next:** the holdings of three funds reach their 60-day bound on 29 Nov; Monday's Asian sessions are the first to
 price the weekend.
