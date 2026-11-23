@@ -18,7 +18,7 @@ cut-off, near-tie picks and the calendar's US clock have their own rules; every 
 the step that covers it (the map after the command), and the page check confirms every section renders. Updated
 2026-11-23 (v125): Portfolio C is the dividend-income portfolio; the weekly fund check re-confirms each income fund's
 payout schedule. Updated 2026-11-23 (v126): every portfolio shows its trailing-12-month payout, estimated
-from the target funds' yields. The runbook
+from the target funds' yields. Updated 2026-11-23 (v127): beside it, each portfolio's 1-year return. The runbook
 (`README.md`) says how; this file says what.
 
 ```text
@@ -101,6 +101,9 @@ Evidence rules (apply to everything below)
     until ATRAM's own distribution tables can be read; two sources, one decimal) and
     check that the funds on no income-paying list still pay nothing. Every portfolio's
     income on the Portfolios tab is derived from these.
+  ◦ 1-year returns beside the payout (v127): re-read each held fund's 1-year unit-price
+    return (uitf.com.ph's ROI-YOY, one date for all) and Nasdaq Equity Income's stand-in
+    (its target's dollar return) until it has a year of its own (January 2027).
 • Check the long-run return assumptions each forecast starts from (the J.P. Morgan
   edition in use), that each matches its target's asset class and region, and that the
   peso translation stays inside its PPP bracket. Check the Side by side and Fee

@@ -51,6 +51,9 @@ const file = process.argv[2], live = process.argv.includes("--live");
         inc: [...document.querySelectorAll("#inctab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim())),
         ptabInc: [...document.querySelectorAll("#ptab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
                    .filter(r => /^Payout/.test(r[0])),
+        ptab1y: [...document.querySelectorAll("#ptab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
+                   .filter(r => /^1-year return/.test(r[0])),
+        r1: [...document.querySelectorAll("#r1tab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim())),
         ddh: [...document.querySelectorAll("#ddtab thead th")].map(c => c.textContent.trim()),
         ddnote: (document.querySelector("#ddbarnote") || {}).textContent || "",
         ddw: [...document.querySelectorAll("#ddtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
@@ -122,6 +125,17 @@ const file = process.argv[2], live = process.argv.includes("--live");
            return r && INCp.every((x, k) => { const f = x.funds.find(q => q.id === id); return r[k + 1] === (f ? pz(f.per_1m) : "\u2013"); }); })
       && info.ptabInc.length === 2 && INCp.every((x, k) => info.ptabInc[0][k + 1] === x.ttm_pct.toFixed(2) + "%" && info.ptabInc[1][k + 1] === pz(x.per_1m)),
       JSON.stringify(tot) + " " + JSON.stringify(info.ptabInc));
+    // v127 (owner, 23 Nov): the payout beside the 1-year return, each portfolio and each fund it holds
+    const f2 = v => v == null ? "\u2013" : v.toFixed(2) + "%";
+    const r1p = info.inc.find(r => r[0].startsWith("1-year return, unit price")), r1t = info.inc.find(r => r[0].startsWith("1-year return with"));
+    const heldV = D.portfolio_b.ids.filter((id, j) => ["portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"].some(k => D[k].weights[j]));
+    ck("each portfolio's 1-year return, with and without its payout, and each held fund's, are the payload's",
+      !!r1p && !!r1t && INCp.every((x, k) => r1p[k + 1] === f2(x.ret_1y_pct) && r1t[k + 1] === f2(x.ret_1y_total_pct)
+                                     && info.ptab1y[0][k + 1] === f2(x.ret_1y_pct) && info.ptab1y[1][k + 1] === f2(x.ret_1y_total_pct))
+      && info.ptab1y.length === 2 && info.r1.length === heldV.length
+      && heldV.every((id, i) => info.r1[i][0].startsWith(D.portfolio_b.shorts[D.portfolio_b.ids.indexOf(id)])
+                                && info.r1[i][1] === f2(D.fund_1y[id].pct)),
+      JSON.stringify(r1t) + " " + JSON.stringify(info.ptab1y));
     // v112 (owner, 17 Nov): the gauge reads months 1-6 and 7-12, years 2-3 and 4-5 at 10/10/40/40, the 10-year anchor beside them
     const G = D.dd_gauge;
     ck("the Budget tab's gauge table shows months 1-6, 7-12, years 2-3, 4-5 at their weights and the 10-year anchor unweighted",

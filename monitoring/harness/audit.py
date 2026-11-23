@@ -398,9 +398,26 @@ for lab_, Q in (("A", PAA), ("B", PBB), ("C", PCC), ("D", PDD)):
         else: qu_ += x * t_ * 100
     want = {"ttm_pct": _h2(g_ / 100), "net_pct": _h2(n_ / 100), "per_1m": _h0(g_ * 100), "per_1m_net": _h0(n_ * 100),
             "monthly_1m": _h0(mo_ / 12), "quarterly_1m": _h0(qu_ / 4), "no_payout_w": none_, "funds": rows_}
-    if Q["income"] != want: _inc_bad.append((lab_, {k: (Q["income"].get(k), v) for k, v in want.items() if Q["income"].get(k) != v}))
+    if {k: Q["income"].get(k) for k in want} != want: _inc_bad.append((lab_, {k: (Q["income"].get(k), v) for k, v in want.items() if Q["income"].get(k) != v}))
 ck("each portfolio's trailing-12-month income re-derives from its weights, the payout records and the trust fees",
    not _inc_bad, f"{str(_inc_bad)[:220]}")
+# v127 (owner 2026-11-23: "Update payout 12 ttm vs 1yr in all 4 portfolios"; asked, "1-year return"): each portfolio's
+# 1-year unit-price return re-derived from its funds' dated figures, the return with the payout added, and the payout's
+# share of it; Nasdaq Equity Income's stand-in re-derived from its target's dollar return, the peso's 1-year move and
+# its trust fee. A portfolio holding a fund with no figure shows none.
+F1A = D["fund_1y"]
+_q1 = _h2(((1 + M["jepq_ucits_1y_usd"] / 100) * (1 + M["fx_1y_implied_pct"] / 100) - 1) * 100 - _feeA["ATRQIAP"])
+_r1_bad = []
+for lab_, Q in (("A", PAA), ("B", PBB), ("C", PCC), ("D", PDD)):
+    I_ = Q["income"]; miss_ = [f for f, x in zip(IDS, Q["weights"]) if x and F1A[f]["pct"] is None]
+    r_ = None if miss_ else _h2(sum(x * F1A[f]["pct"] for f, x in zip(IDS, Q["weights"]) if x) / 100)
+    t_ = None if r_ is None else _h2(r_ + I_["ttm_pct"])
+    sh_ = None if not t_ or t_ <= 0 else _h2(round(I_["ttm_pct"] / t_ * 100))
+    if (I_["ret_1y_missing"], I_["ret_1y_pct"], I_["ret_1y_total_pct"], I_["payout_share_pct"]) != (miss_, r_, t_, sh_):
+        _r1_bad.append((lab_, I_["ret_1y_pct"], r_, I_["ret_1y_total_pct"], t_, I_["payout_share_pct"], sh_))
+ck("each portfolio's 1-year return re-derives from its funds' figures to the same date, with the payout added and its share",
+   sorted(F1A) == sorted(IDS) and F1A["ATRQIAP"]["pct"] == _q1 and D["ret_1y_date"] == M["jepq_ucits_1y_date"] <= D["review_date"]
+   and all(F1A[f]["sources"] for f in IDS) and not _r1_bad, f"{_r1_bad[:2]} stand-in {F1A['ATRQIAP']['pct']} vs {_q1}")
 
 # ---------------------------------------------------------------------------
 sec("D. THE MACRO GAUGE, THE DRIVER PATHS AND THE REGIONS")

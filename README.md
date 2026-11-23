@@ -76,6 +76,8 @@ Global Allocation.
 | Return per unit of drawdown | **0.291** | 0.286 | 0.283 | 0.289 |
 | Payout yield, trailing 12 months (est.) | 5.49% | 5.49% | 9.51% | 6.90% |
 | Payout a year on ₱1,000,000 (est.; net of ATRAM's trust fee) | ₱54,900 (₱45,900) | ₱54,900 (₱45,900) | ₱95,100 (₱80,100) | ₱69,000 (₱58,500) |
+| 1-year return, unit price, to 11 Nov (est.) | 15.62% | 15.62% | 15.28% | 15.74% |
+| 1-year return with the payout (approx.); the payout's share | 21.11%; 26% | 21.11%; 26% | 24.79%; 38% | 22.64%; 30% |
 
 Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C and D
 on the 1/3/5/10-year. **Portfolio C (v125, owner, 23 Nov 2026)** is the dividend-income portfolio -
@@ -88,6 +90,10 @@ the rule finds two funds best (three return 7.05%). Payouts count inside each fu
 paying fund is read at its target fund's trailing-12-month distribution yield (Nasdaq Equity Income ~11.4% monthly; Asian
 Multi-Asset Income ~6.0%, Asia Equity Opportunity ~2.7% and Global Dividend ~2.3% quarterly), and the bracket assumes ATRAM
 pays it net of its trust fee. A payout is part of the return, not added to it.
+**The 1-year rows (v127)** are each fund's change in unit price over the year to 11 Nov 2026 (uitf.com.ph's
+daily table, one source each), weighted; the table counts unit prices only, so the payout is added beside it, an
+approximation. Nasdaq Equity Income has no year of its own: its target's 9.87% in dollars (ETF Atlas), carried into pesos,
+less its trust fee, stands in (15.83%). The figures predate the week to 20 Nov, when the Nasdaq fell 10.0%.
 From 17 Nov (v111) to v124 C was the owner's three funds, Nasdaq Equity Income-led with Peso Money Market and
 Global Technology (70 / 25 / 5 at 6.94% / −24.8% on 23 Nov); an earlier C, Nasdaq Equity Income pinned at
 50%, was retired on 12 Nov 2026 (v101). **A and B are the same mix since v107**: the rule picks on B's view

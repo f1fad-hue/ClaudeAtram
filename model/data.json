@@ -698,6 +698,8 @@
   "gall_feeder_1y_date": "2026-11-04",
   "gtec_target_1y": 13.37,
   "gtec_target_1y_date": "2026-11-03",
+  "jepq_ucits_1y_usd": 9.87,
+  "jepq_ucits_1y_date": "2026-11-11",
   "aseq_trust_page": 1.5,
   "aseq_trust_listing": 1.2,
   "aseq_dot_date": "2026-07-16",
@@ -3532,7 +3534,11 @@
      "net": 4.5,
      "per_1m": 15000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.62,
+   "ret_1y_total_pct": 21.11,
+   "ret_1y_missing": [],
+   "payout_share_pct": 26.0
   },
   "macro": {
    "weights": [
@@ -6107,7 +6113,11 @@
      "net": 4.5,
      "per_1m": 15000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.62,
+   "ret_1y_total_pct": 21.11,
+   "ret_1y_missing": [],
+   "payout_share_pct": 26.0
   },
   "column": "net_macro",
   "band_n": 1,
@@ -7061,7 +7071,11 @@
      "net": 4.5,
      "per_1m": 21000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.28,
+   "ret_1y_total_pct": 24.79,
+   "ret_1y_missing": [],
+   "payout_share_pct": 38.0
   },
   "macro": {
    "weights": [
@@ -7364,7 +7378,11 @@
      "net": 4.5,
      "per_1m": 12000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.74,
+   "ret_1y_total_pct": 22.64,
+   "ret_1y_missing": [],
+   "payout_share_pct": 30.0
   },
   "macro": {
    "weights": [
@@ -7643,6 +7661,53 @@
   }
  },
  "payout_ttm_date": "2026-11-23",
+ "fund_1y": {
+  "ATRPHMM": {
+   "pct": 2.84,
+   "sources": "uitf.com.ph, A unit class, ROI-YOY 2.8407% (the row's date not shown in the search; one source)"
+  },
+  "ATRQIAP": {
+   "pct": 15.83,
+   "sources": "a stand-in, its target's 9.87% in dollars to 11 Nov (ETF Atlas, NAV-based; one source), carried into pesos by the dollar's 6.79% 1-year gain, less its 1.50% trust fee"
+  },
+  "ATRASEQ": {
+   "pct": 18.24,
+   "sources": "ATRAM's fund page, 1 year 18.24% to 11 Nov (one source)"
+  },
+  "ATRGTEC": {
+   "pct": 23.99,
+   "sources": "uitf.com.ph, A PHP unit class, ROI-YOY 23.9850% to 11 Nov (one source)"
+  },
+  "ATRGHCP": {
+   "pct": 17.24,
+   "sources": "uitf.com.ph, ROI-YOY 17.2416% to 11 Nov (one source)"
+  },
+  "M_GINF": {
+   "pct": 15.9,
+   "sources": "uitf.com.ph, A PHP units, ROI-YOY 15.9009% to 11 Nov (one source)"
+  },
+  "ATRAMIP": {
+   "pct": 14.25,
+   "sources": "uitf.com.ph, ROI-YOY 14.2501% to 11 Nov (one source)"
+  },
+  "ATRGLDV": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found (22.80% to 5 Nov is on the Funds tab)"
+  },
+  "M_GEO": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found"
+  },
+  "M_GCT": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found (-16.87% to 5 Nov is on the Funds tab)"
+  },
+  "M_GALL": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found (13.55% to 4 Nov is on the Funds tab)"
+  }
+ },
+ "ret_1y_date": "2026-11-11",
  "sources": [
   {
    "org": "Dow Jones, via Morningstar",
@@ -10996,12 +11061,12 @@
   },
   {
    "org": "ATRAM",
-   "what": "ATRAM Asia Equity Opportunity Feeder Fund fund page - trust fee 1.50% p.a., KIIDS dated July 2026, Declaration of Trust dated 16 Jul 2026 (read through search; one source)",
+   "what": "ATRAM Asia Equity Opportunity Feeder Fund fund page - trust fee 1.50% p.a., KIIDS dated July 2026, Declaration of Trust dated 16 Jul 2026; 1 year 18.24% to 11 Nov 2026 (read through search; one source)",
    "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRASEQ"
   },
   {
    "org": "uitf.com.ph",
-   "what": "Daily NAVpu, ATRAM Trust - the feeders' 1-year returns as of 5 Nov 2026 (read through search)",
+   "what": "Daily NAVpu, ATRAM Trust - the feeders' 1-year returns as of 5 Nov 2026, and ROI-YOY to 11 Nov 2026 (read through search)",
    "url": "https://uitf.com.ph/daily_navpu.php?bank_id=31"
   },
   {
@@ -12426,7 +12491,7 @@
   },
   {
    "org": "ETF Atlas",
-   "what": "JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49% (11 Nov 2026)",
+   "what": "JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49%, 1-year return 9.87% (NAV), 11 Nov 2026",
    "url": "https://etfatlas.com/etf-details/IE000U9J8HX9"
   },
   {

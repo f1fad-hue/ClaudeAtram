@@ -2,6 +2,43 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v127: each portfolio's payout beside its 1-year return
+
+At the owner's instruction: "Update payout 12 ttm vs 1yr in all 4 portfolios". Asked what "1yr" means, the owner chose
+the 1-year return.
+
+| | A | B | C | D |
+|---|---|---|---|---|
+| Payout, trailing 12 months (est.) | 5.49% | 5.49% | 9.51% | 6.90% |
+| 1-year return, unit price, to 11 Nov | 15.62% | 15.62% | 15.28% | 15.74% |
+| 1-year return with the payout (approx.) | 21.11% | 21.11% | 24.79% | 22.64% |
+| The payout's share of it | 26% | 26% | 38% | 30% |
+
+**Each held fund's 1-year unit-price return to 11 Nov** (uitf.com.ph's ROI-YOY, read through search, one source each):
+Peso Money Market 2.84% (row date not shown), Global Technology 23.99%, Global Health Care 17.24%, Global Infra Equity
+15.90%, Asian Multi-Asset Income 14.25%. Nasdaq Equity Income has no year of its own (launched January 2026): a stand-in of
+15.83%, its target's 9.87% in dollars (ETF Atlas, NAV-based, one source), carried into pesos by the dollar's 6.79% 1-year
+gain, less its 1.50% trust fee. Global Dividend, Global Equity Opportunity, Global Consumer Trends and Global Allocation have
+no 11 Nov figure; none of A-D holds them.
+
+**Read with care:** the unit-price table leaves the payouts out, so the payout is added beside it, approximately. The date is
+before the week to 20 Nov, when the Nasdaq fell 10.0%: the equity funds' figures are lower now. A past year is not a forecast.
+
+**What changed:**
+- Engine: `jepq_ucits_1y_usd` and its date, `FUND_1Y`, the stand-in, and `ret_1y_pct`, `ret_1y_total_pct`,
+  `payout_share_pct` in every portfolio's `income`; `fund_1y` and `ret_1y_date` in the payload. One check added: 271.
+- Page: two unranked rows in the headline table; three rows and a fund-by-fund table in the income card, now titled
+  "Income paid, trailing 12 months, against the 1-year return"; the note gives the basis, date and stand-in.
+- Audit: each portfolio's 1-year figures and the stand-in re-derived (308); the v126 income check compares its own keys.
+  Validator: the rows and the fund table show the payload's figures (25). Mutants: two added: 95.
+- Docs: README rows, a register row, the review command, lesson 190.
+
+**Checks:** engine 271/271; audit 308/308; validator 25/25; mutants 95/95 caught.
+
+**Due:** re-read the 1-year figures after the sell-off (a date after 20 Nov, every held fund on it); a second source for each.
+
+Not personal financial advice.
+
 ## 2026-11-23 — v126: every portfolio shows its trailing-12-month payout
 
 At the owner's instruction: "Add each portfolio their annual dividend pay out ttm".

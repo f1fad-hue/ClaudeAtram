@@ -1299,6 +1299,10 @@ MACRO = {
     # The one target with a dated 1-year figure near the feeders' date: Fidelity Global Technology
     # Y-Acc-USD, 13.37% in dollars to 3 Nov 2026 (Endowus).
     "gtec_target_1y": 13.37, "gtec_target_1y_date": "2026-11-03",
+    # v127 (owner, 2026-11-23: "Update payout 12 ttm vs 1yr in all 4 portfolios"; asked, "1-year return"): Nasdaq Equity
+    # Income has no year of its own (launched January 2026), so its target's: ETF Atlas, 9.87% in dollars to 11 Nov,
+    # NAV-based (one source; Cbonds' 18.78% is to 9 Oct and Borsa Italiana's -0.20% is after the mid-November fall).
+    "jepq_ucits_1y_usd": 9.87, "jepq_ucits_1y_date": "2026-11-11",
     # ASIA EQUITY OPPORTUNITY'S TRUST FEE, DISPUTED (v98): ATRAM's fund page now shows 1.50% p.a.
     # (incl. distribution fee), beside a KIIDS dated July 2026 and a Declaration of Trust dated
     # 16 Jul 2026; uitf.com.ph's listing still has 1.20%, and the 1.18% carried is the earlier
@@ -6729,6 +6733,30 @@ for _f in ("ATRGTEC", "ATRGHCP", "M_GINF", "M_GEO", "M_GCT", "M_GALL"):
                        "sources": _NO_PAY_SRC, "ttm": 0.0, "ttm_sources": ""}
 PAYOUT_TTM_DATE = "2026-11-23"
 C_PAYOUT = {f: FUND_PAYOUT[f] for f in C_FUNDS}
+# EACH FUND'S 1-YEAR RETURN (v127), beside its payout: the change in its peso unit price over the year to 11 Nov 2026,
+# from uitf.com.ph's daily table for ATRAM (ROI-YOY, read through search; one source each) - the newest date with
+# every fund the portfolios hold. The table is computed from unit prices, so a paying fund's payouts are not in it:
+# its return with them is about the two added. It is BEFORE the 12-20 Nov sell-off (the Nasdaq fell 10.0% in the
+# week to 20 Nov), so the equity funds' figures are lower now. Nasdaq Equity Income has no year of its own: its
+# target's dollar return carried into pesos by the dollar's 1-year move (fx_1y_implied_pct), less its trust fee.
+# A fund with no dated figure found carries None, and a portfolio holding one shows no 1-year figure.
+RET_1Y_DATE = MACRO["jepq_ucits_1y_date"]      # the stand-in and the table share the date
+_QIAP_FEE = next(f for f in FUNDS if f["id"] == "ATRQIAP")["fee_feeder"]
+FUND_1Y = {
+    "ATRPHMM": {"pct": 2.84, "sources": "uitf.com.ph, A unit class, ROI-YOY 2.8407% (the row's date not shown in the search; one source)"},
+    "ATRQIAP": {"pct": rnd(((1 + MACRO["jepq_ucits_1y_usd"] / 100) * (1 + MACRO["fx_1y_implied_pct"] / 100) - 1) * 100 - _QIAP_FEE, 2),
+                "sources": f"a stand-in, its target's {MACRO['jepq_ucits_1y_usd']}% in dollars to 11 Nov (ETF Atlas, NAV-based; one source), "
+                           f"carried into pesos by the dollar's {MACRO['fx_1y_implied_pct']}% 1-year gain, less its {_QIAP_FEE:.2f}% trust fee"},
+    "ATRASEQ": {"pct": 18.24, "sources": "ATRAM's fund page, 1 year 18.24% to 11 Nov (one source)"},
+    "ATRGTEC": {"pct": 23.99, "sources": "uitf.com.ph, A PHP unit class, ROI-YOY 23.9850% to 11 Nov (one source)"},
+    "ATRGHCP": {"pct": 17.24, "sources": "uitf.com.ph, ROI-YOY 17.2416% to 11 Nov (one source)"},
+    "M_GINF": {"pct": 15.90, "sources": "uitf.com.ph, A PHP units, ROI-YOY 15.9009% to 11 Nov (one source)"},
+    "ATRAMIP": {"pct": 14.25, "sources": "uitf.com.ph, ROI-YOY 14.2501% to 11 Nov (one source)"},
+    "ATRGLDV": {"pct": None, "sources": "no 1-year figure to 11 Nov found (22.80% to 5 Nov is on the Funds tab)"},
+    "M_GEO": {"pct": None, "sources": "no 1-year figure to 11 Nov found"},
+    "M_GCT": {"pct": None, "sources": "no 1-year figure to 11 Nov found (-16.87% to 5 Nov is on the Funds tab)"},
+    "M_GALL": {"pct": None, "sources": "no 1-year figure to 11 Nov found (13.55% to 4 Nov is on the Funds tab)"},
+}
 # The income payers still held out (First Metro Securities' list: Global Multi-Asset Income monthly, the
 # other two quarterly); each must be on the held-out list, and joins C's set only once admitted.
 C_HELD_OUT_INCOME = ["Global Bond Income", "Global Multi-Asset Income", "US Multi-Asset Income"]
@@ -6809,8 +6837,15 @@ def port_income(w):
         g += x * r["ttm"]; n += x * net
         if r["freq"] == "monthly": mo += amt
         else: qu += amt
+    # v127: the 1-year unit-price return over the same weights, the return with the payout added (approximate: the
+    # payout yield is today's, the price return the year's), and the payout's share of that
+    miss = [fid for fid, x in zip(UNIV_IDS, wp) if x and FUND_1Y[fid]["pct"] is None]
+    r1 = None if miss else rnd(sum(x * FUND_1Y[fid]["pct"] for fid, x in zip(UNIV_IDS, wp) if x) / 100, 2)
+    tot = None if r1 is None else rnd(r1 + rnd(g / 100, 2), 2)
     return {"ttm_pct": rnd(g / 100, 2), "net_pct": rnd(n / 100, 2), "per_1m": _hu0(g * 100), "per_1m_net": _hu0(n * 100),
-            "monthly_1m": _hu0(mo / 12), "quarterly_1m": _hu0(qu / 4), "no_payout_w": none_w, "funds": rows}
+            "monthly_1m": _hu0(mo / 12), "quarterly_1m": _hu0(qu / 4), "no_payout_w": none_w, "funds": rows,
+            "ret_1y_pct": r1, "ret_1y_total_pct": tot, "ret_1y_missing": miss,
+            "payout_share_pct": None if not tot or tot <= 0 else rnd(rnd(g / 100, 2) / tot * 100, 0)}
 
 # The universe's macro frontier and the best pure ratio, for the Portfolios chart and
 # the "why not simply maximise return" note - the same set B is chosen from. The
@@ -8353,9 +8388,9 @@ SOURCES = [
      "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRGAAP"),
     ("DragonFi", "ATRAM Global Allocation Feeder Fund - trust fee 1.50% a year",
      "https://dragonfi.ph/market/funds/14UF06"),
-    ("ATRAM", "ATRAM Asia Equity Opportunity Feeder Fund fund page - trust fee 1.50% p.a., KIIDS dated July 2026, Declaration of Trust dated 16 Jul 2026 (read through search; one source)",
+    ("ATRAM", "ATRAM Asia Equity Opportunity Feeder Fund fund page - trust fee 1.50% p.a., KIIDS dated July 2026, Declaration of Trust dated 16 Jul 2026; 1 year 18.24% to 11 Nov 2026 (read through search; one source)",
      "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRASEQ"),
-    ("uitf.com.ph", "Daily NAVpu, ATRAM Trust - the feeders' 1-year returns as of 5 Nov 2026 (read through search)",
+    ("uitf.com.ph", "Daily NAVpu, ATRAM Trust - the feeders' 1-year returns as of 5 Nov 2026, and ROI-YOY to 11 Nov 2026 (read through search)",
      "https://uitf.com.ph/daily_navpu.php?bank_id=31"),
     ("Endowus", "Fidelity Global Technology Fund, LU1560650563 - 1-year return 13.37% as of 3 Nov 2026",
      "https://endowus.com/en-hk/investment-funds-list/fidelity-global-technology-fund-LU1560650563"),
@@ -8942,7 +8977,7 @@ SOURCES = [
     # v126: each payer's trailing-12-month yield (FUND_PAYOUT ttm), read from its target fund
     ('Parqet', 'JPMorgan Nasdaq Equity Premium Income Active UCITS ETF USD (dist) - dividend yield, trailing 12 months, 11.39%',
      'https://app.parqet.com/en/etf/jpmorgan-nasdaq-equity-premium-income-active-ucits-etf-usd-dist-IE000U9J8HX9/dividends'),
-    ('ETF Atlas', 'JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49% (11 Nov 2026)',
+    ('ETF Atlas', 'JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49%, 1-year return 9.87% (NAV), 11 Nov 2026',
      'https://etfatlas.com/etf-details/IE000U9J8HX9'),
     ('J.P. Morgan Asset Management', 'Nasdaq Equity Premium Income Active UCITS ETF - distribution notice, monthly payouts Dec 2025 - Sep 2026, annualised 8.88-16.12%',
      'https://am.jpmorgan.com/content/dam/jpm-am-aem/asiapacific/sg/en/supplemental/dividend-information/distribution-notice-nasdaq-equity-premium-income.pdf'),
@@ -9202,6 +9237,7 @@ def payload():
                                      and abs(port_dd(PD_W, "net_macro", UNIV)) <= DD_CAP + 1e-9},
         # v126: what each of the eleven funds pays, for the income each portfolio shows
         "fund_payout": FUND_PAYOUT, "payout_ttm_date": PAYOUT_TTM_DATE,
+        "fund_1y": FUND_1Y, "ret_1y_date": RET_1Y_DATE,                # v127
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
 
@@ -11130,6 +11166,16 @@ def report():
                              and _in["no_payout_w"] + sum(r[1] for r in _rows) == 100
                              and _in["net_pct"] <= _in["ttm_pct"] and sum(r["per_1m"] for r in _in["funds"]) - _in["per_1m"] in (-1, 0, 1))
     checks.append(("each portfolio's trailing-12-month income re-derives from its weights and the funds' payout records", _incok))
+    # v127: each portfolio's 1-year return beside its payout: every fund it holds has a dated figure, the weighted
+    # sum re-derives, the return with the payout is the two added, and the payout's share of it follows
+    _f1 = p["fund_1y"]; _r1ok = set(_f1) == set(UNIV_IDS) and p["ret_1y_date"] == RET_1Y_DATE <= REVIEW_DATE
+    _r1ok = _r1ok and _f1["ATRQIAP"]["pct"] == rnd(((1 + MACRO["jepq_ucits_1y_usd"] / 100) * (1 + MACRO["fx_1y_implied_pct"] / 100) - 1) * 100 - _QIAP_FEE, 2)
+    for _k in ("portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"):
+        _in = p[_k]["income"]; _w = p[_k]["weights"]
+        _r = rnd(sum(x * _f1[f]["pct"] for f, x in zip(UNIV_IDS, _w) if x) / 100, 2)
+        _r1ok = _r1ok and not _in["ret_1y_missing"] and _in["ret_1y_pct"] == _r and _in["ret_1y_total_pct"] == rnd(_r + _in["ttm_pct"], 2) \
+            and _in["payout_share_pct"] == rnd(_in["ttm_pct"] / _in["ret_1y_total_pct"] * 100, 0)
+    checks.append(("each portfolio's 1-year return re-derives from its funds' dated figures, with its payout added and its payout's share", _r1ok))
     # Each count's best is the rule run within that count alone: the rows cover every C mix once, each
     # row's best is one of its own mixes, and C is the best of the rows, at its own count.
     _bc = _pc["by_count"]; _bcf = [r for r in _bc if r["n_feasible"]]

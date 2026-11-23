@@ -523,8 +523,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     </div>
     <!-- v126 (owner, 2026-11-23): each portfolio's income over the trailing 12 months -->
     <div class="card">
-      <h3 style="margin-top:0">Income paid, trailing 12 months</h3>
+      <h3 style="margin-top:0">Income paid, trailing 12 months, against the 1-year return</h3>
       <div class="tw"><table class="dt" id="inctab"></table></div>
+      <div class="tw" style="margin-top:10px"><table class="dt" id="r1tab"></table></div>
       <p class="note" id="incnote">—</p>
     </div>
     <div class="card" id="deltacard"></div>
@@ -1563,6 +1564,8 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "gall_feeder_1y_date": "2026-11-04",
   "gtec_target_1y": 13.37,
   "gtec_target_1y_date": "2026-11-03",
+  "jepq_ucits_1y_usd": 9.87,
+  "jepq_ucits_1y_date": "2026-11-11",
   "aseq_trust_page": 1.5,
   "aseq_trust_listing": 1.2,
   "aseq_dot_date": "2026-07-16",
@@ -4397,7 +4400,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "net": 4.5,
      "per_1m": 15000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.62,
+   "ret_1y_total_pct": 21.11,
+   "ret_1y_missing": [],
+   "payout_share_pct": 26.0
   },
   "macro": {
    "weights": [
@@ -6972,7 +6979,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "net": 4.5,
      "per_1m": 15000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.62,
+   "ret_1y_total_pct": 21.11,
+   "ret_1y_missing": [],
+   "payout_share_pct": 26.0
   },
   "column": "net_macro",
   "band_n": 1,
@@ -7926,7 +7937,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "net": 4.5,
      "per_1m": 21000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.28,
+   "ret_1y_total_pct": 24.79,
+   "ret_1y_missing": [],
+   "payout_share_pct": 38.0
   },
   "macro": {
    "weights": [
@@ -8229,7 +8244,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "net": 4.5,
      "per_1m": 12000
     }
-   ]
+   ],
+   "ret_1y_pct": 15.74,
+   "ret_1y_total_pct": 22.64,
+   "ret_1y_missing": [],
+   "payout_share_pct": 30.0
   },
   "macro": {
    "weights": [
@@ -8508,6 +8527,53 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   }
  },
  "payout_ttm_date": "2026-11-23",
+ "fund_1y": {
+  "ATRPHMM": {
+   "pct": 2.84,
+   "sources": "uitf.com.ph, A unit class, ROI-YOY 2.8407% (the row's date not shown in the search; one source)"
+  },
+  "ATRQIAP": {
+   "pct": 15.83,
+   "sources": "a stand-in, its target's 9.87% in dollars to 11 Nov (ETF Atlas, NAV-based; one source), carried into pesos by the dollar's 6.79% 1-year gain, less its 1.50% trust fee"
+  },
+  "ATRASEQ": {
+   "pct": 18.24,
+   "sources": "ATRAM's fund page, 1 year 18.24% to 11 Nov (one source)"
+  },
+  "ATRGTEC": {
+   "pct": 23.99,
+   "sources": "uitf.com.ph, A PHP unit class, ROI-YOY 23.9850% to 11 Nov (one source)"
+  },
+  "ATRGHCP": {
+   "pct": 17.24,
+   "sources": "uitf.com.ph, ROI-YOY 17.2416% to 11 Nov (one source)"
+  },
+  "M_GINF": {
+   "pct": 15.9,
+   "sources": "uitf.com.ph, A PHP units, ROI-YOY 15.9009% to 11 Nov (one source)"
+  },
+  "ATRAMIP": {
+   "pct": 14.25,
+   "sources": "uitf.com.ph, ROI-YOY 14.2501% to 11 Nov (one source)"
+  },
+  "ATRGLDV": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found (22.80% to 5 Nov is on the Funds tab)"
+  },
+  "M_GEO": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found"
+  },
+  "M_GCT": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found (-16.87% to 5 Nov is on the Funds tab)"
+  },
+  "M_GALL": {
+   "pct": null,
+   "sources": "no 1-year figure to 11 Nov found (13.55% to 4 Nov is on the Funds tab)"
+  }
+ },
+ "ret_1y_date": "2026-11-11",
  "sources": [
   {
    "org": "Dow Jones, via Morningstar",
@@ -11861,12 +11927,12 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   },
   {
    "org": "ATRAM",
-   "what": "ATRAM Asia Equity Opportunity Feeder Fund fund page - trust fee 1.50% p.a., KIIDS dated July 2026, Declaration of Trust dated 16 Jul 2026 (read through search; one source)",
+   "what": "ATRAM Asia Equity Opportunity Feeder Fund fund page - trust fee 1.50% p.a., KIIDS dated July 2026, Declaration of Trust dated 16 Jul 2026; 1 year 18.24% to 11 Nov 2026 (read through search; one source)",
    "url": "https://www.atram.com.ph/funds/uitf-funds/details?fund=ATRASEQ"
   },
   {
    "org": "uitf.com.ph",
-   "what": "Daily NAVpu, ATRAM Trust - the feeders' 1-year returns as of 5 Nov 2026 (read through search)",
+   "what": "Daily NAVpu, ATRAM Trust - the feeders' 1-year returns as of 5 Nov 2026, and ROI-YOY to 11 Nov 2026 (read through search)",
    "url": "https://uitf.com.ph/daily_navpu.php?bank_id=31"
   },
   {
@@ -13291,7 +13357,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   },
   {
    "org": "ETF Atlas",
-   "what": "JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49% (11 Nov 2026)",
+   "what": "JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49%, 1-year return 9.87% (NAV), 11 Nov 2026",
    "url": "https://etfatlas.com/etf-details/IE000U9J8HX9"
   },
   {
@@ -14895,6 +14961,10 @@ function donut(host, w, title, cagr, dd) {
   hrow(`All on the ${HYN} view`, PS.map(q => q.ten.cagr), pc, hi);
   hrow("Payout yield, trailing 12 months (est.)", PS.map(q => q.income.ttm_pct), pc, null);
   hrow("Payout a year on &#8369;1M (est.)", PS.map(q => q.income.per_1m), v => "&#8369;" + v.toLocaleString("en-US"), null);
+  /* v127 (owner, 2026-11-23: "Update payout 12 ttm vs 1yr in all 4 portfolios"): the payout beside the 1-year return */
+  const r1d = new Date(D.ret_1y_date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  hrow(`1-year return, unit price, to ${r1d} (est.)`, PS.map(q => q.income.ret_1y_pct), v => v == null ? "&ndash;" : pc(v), null);
+  hrow("1-year return with the payout (approx.)", PS.map(q => q.income.ret_1y_total_pct), v => v == null ? "&ndash;" : pc(v), null);
   ht.appendChild(hb);
 
   /* INCOME, TRAILING 12 MONTHS (owner, 2026-11-23, v126: "Add each portfolio their annual dividend pay out ttm").
@@ -14918,7 +14988,23 @@ function donut(host, w, title, cagr, dd) {
   irow("Paid each month", x => x.monthly_1m ? peso(x.monthly_1m) : "&ndash;");
   irow("Paid each quarter", x => x.quarterly_1m ? peso(x.quarterly_1m) : "&ndash;");
   irow("Held in funds that pay nothing", x => x.no_payout_w + "%");
+  irow(`1-year return, unit price, to ${r1d}`, x => x.ret_1y_pct == null ? "&ndash;" : pc(x.ret_1y_pct));
+  irow("1-year return with the payout (approx.)", x => x.ret_1y_total_pct == null ? "&ndash;" : pc(x.ret_1y_total_pct), true);
+  irow("The payout's share of it", x => x.payout_share_pct == null ? "&ndash;" : x.payout_share_pct.toFixed(0) + "%");
   it.appendChild(ib);
+  /* each fund any portfolio holds: its 1-year unit-price return, its payout, and the two together (v127) */
+  const F1 = D.fund_1y, heldIds = PB.ids.filter(id => PS.some(q => q.weights[PB.ids.indexOf(id)]));
+  const rt = $("#r1tab");
+  rt.appendChild(el("thead", null, `<tr><th>Fund</th><th>1 yr, unit price</th><th>Payout, 12m</th><th>Together</th></tr>`));
+  const rb = el("tbody");
+  heldIds.forEach(id => {
+    const r1 = F1[id].pct, t = FP[id].ttm;
+    rb.appendChild(el("tr", null, `<td>${nmF(id)}${id === "ATRQIAP" ? "*" : ""}<br><span style="font-size:12px;color:var(--ink-2)">held by ${
+      PVL.filter((_, k) => PS[k].weights[PB.ids.indexOf(id)]).join(", ")}</span></td>` +
+      `<td class="num">${r1 == null ? "&ndash;" : pc(r1)}</td><td class="num">${t ? "~" + t.toFixed(1) + "%" : "&ndash;"}</td>` +
+      `<td class="num">${r1 == null ? "&ndash;" : pc(r1 + t)}</td>`));
+  });
+  rt.appendChild(rb);
   const fqI = D.funds.concat(PB.funds).find(f => f.id === "ATRQIAP");
   const payAll = PB.ids.filter(id => FP[id].freq), one = payAll.filter(id => /one source/.test(FP[id].ttm_sources));
   const nopay = PB.ids.filter(id => !FP[id].freq && id !== "ATRPHMM");
@@ -14935,7 +15021,14 @@ function donut(host, w, title, cagr, dd) {
      its unit price. A payout is not extra return: it comes out of the fund, whose unit price falls by what it pays, and it
      is already inside each forecast above. ${nmF("ATRQIAP")} pays out about ${FP.ATRQIAP.ttm.toFixed(1)}% against a forecast
      return of ${pc(fqI.net_macro)}, much of it from the options it sells, so its unit price is expected to drift down: read
-     its income with its growth, not on top of it.`;
+     its income with its growth, not on top of it. ` +
+    `The 1-year return is each fund's change in unit price over the year to ${r1d}, from uitf.com.ph's daily table for
+     ATRAM (one source each${heldIds.includes("ATRASEQ") ? "; Asia Equity Opportunity's from ATRAM's page" : ""}), weighted as each portfolio holds it. The table
+     counts unit prices only, so a paying fund's payouts are not in it; the return with the payout adds the two, an
+     approximation, since the payout is today's rate and the price change the year's. *${nmF("ATRQIAP")} has no year of
+     its own: ${F1.ATRQIAP.sources}. These run to ${r1d}, before the sell-off of the week to 20 November, when the
+     Nasdaq fell ${Math.abs(D.macro.nasdaq_wk_20nov_pct).toFixed(1)}%, so the equity funds' figures are lower now. A past year is not a forecast: the forecasts are
+     the rows above.`;
 
   /* every lens, all four portfolios. v82: the third lens is the 1/3/5/10-year view itself -
      since v80 it read PM, A's own (10-year) headline, so A's row repeated its 10-year view. */

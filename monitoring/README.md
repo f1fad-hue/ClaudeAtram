@@ -215,6 +215,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+190. A PAST RETURN AND A PAYOUT MUST BE ON THE SAME FOOTING BEFORE THEY ARE COMPARED. v127 sets each portfolio's
+   trailing-12-month payout beside its 1-year return. The 1-year figures come from a table of unit prices, which fall by
+   every payout, so for a paying fund the payout is not inside them; the page adds the two and says it is approximate
+   (today's payout rate, the year's price change). All the 1-year figures share one date, 11 Nov, the newest with every
+   held fund, and the page says that date is before the week the Nasdaq fell 10%. A fund with no year of its own gets a
+   stand-in that is named as one, and a fund with no figure on that date leaves its portfolio blank rather than averaged
+   around.
 189. AN ESTIMATE IS LABELLED AS ONE, WITH WHAT IT STANDS IN FOR. v126 shows each portfolio's trailing-12-month payout,
    but no ATRAM fund's own payout rate could be read; the figures stand on the target funds' yields, which each feeder
    says it passes on, with a second figure net of ATRAM's trust fee because neither basis is published. So the rows say
