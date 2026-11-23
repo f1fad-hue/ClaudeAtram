@@ -215,6 +215,12 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+192. WHEN ASKING WHAT A WORD MEANS, OFFER THE READING CLOSEST TO THE WORDS. "Payout 12 ttm vs 1yr" was asked about, and
+   the options offered were next year's payout, the 1-year return, or both - but not the plainest reading, the payout a
+   year earlier. The owner picked the return, then corrected it (v129): "dividend payout 12 ttm vs dividend payout 1yr
+   past ... not the past 1yr return". The question should have offered the like-for-like comparison - the same measure
+   one period back - first. v127's return rows were retired whole (inputs, payload, checks, mutants), not left beside the
+   new rows.
 191. CONCISE IS A RULE THE PAGE ENFORCES, NOT A ONE-OFF EDIT. v128 found the Portfolios tab showing 3,450 words and
    the Budget tab 1,945, most of it method and sourcing a reader needs only on asking. Deleting it would lose the record,
    so the page folds instead: after rendering, any paragraph over 60 words keeps its opening sentence and folds the rest

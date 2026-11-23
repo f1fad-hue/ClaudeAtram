@@ -18,7 +18,7 @@ cut-off, near-tie picks and the calendar's US clock have their own rules; every 
 the step that covers it (the map after the command), and the page check confirms every section renders. Updated
 2026-11-23 (v125): Portfolio C is the dividend-income portfolio; the weekly fund check re-confirms each income fund's
 payout schedule. Updated 2026-11-23 (v126): every portfolio shows its trailing-12-month payout, estimated
-from the target funds' yields. Updated 2026-11-23 (v127): beside it, each portfolio's 1-year return. Updated 2026-11-23 (v128): every tab
+from the target funds' yields. Updated 2026-11-23 (v129): beside it, each portfolio's payout the year before (v127's 1-year return retired). Updated 2026-11-23 (v128): every tab
 leads with figures and takeaways; long notes fold under "More". The runbook
 (`README.md`) says how; this file says what.
 
@@ -102,9 +102,9 @@ Evidence rules (apply to everything below)
     until ATRAM's own distribution tables can be read; two sources, one decimal) and
     check that the funds on no income-paying list still pay nothing. Every portfolio's
     income on the Portfolios tab is derived from these.
-  ◦ 1-year returns beside the payout (v127): re-read each held fund's 1-year unit-price
-    return (uitf.com.ph's ROI-YOY, one date for all) and Nasdaq Equity Income's stand-in
-    (its target's dollar return) until it has a year of its own (January 2027).
+  ◦ The year before (v129): each payer's payout yield for the prior full year (2025 until
+    the 2026 figures publish), read the same way as this year's; replace any ASSUMED rate
+    (Asian Multi-Asset Income's) as soon as its record is found.
 • Check the long-run return assumptions each forecast starts from (the J.P. Morgan
   edition in use), that each matches its target's asset class and region, and that the
   peso translation stays inside its PPP bracket. Check the Side by side and Fee
@@ -240,7 +240,7 @@ Five tabs, thirty sections. A review that skips a row has not covered the page.
 | Portfolios | Portfolio C (what each fund pays and its sources; each count's best) | 4, 5 |
 | Portfolios | Portfolio D (each count's best, the number of funds) | 5 |
 | Portfolios | Headline forecast, lenses, who wins where | 5 |
-| Portfolios | Income paid, trailing 12 months (each portfolio, fund by fund) | 4, 5 |
+| Portfolios | Income paid, the last 12 months against the year before (each portfolio, fund by fund) | 4, 5 |
 | Portfolios | Feasible set (the frontier, the best pure ratio, the extremes) | 5 |
 | Portfolios | Stress test | 5 |
 | Portfolios | In pesos (P1,000,000 over ten years) | 5 |

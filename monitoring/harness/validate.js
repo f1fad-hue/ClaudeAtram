@@ -50,10 +50,10 @@ const file = process.argv[2], live = process.argv.includes("--live");
         cpay: [...document.querySelectorAll("#cpay tbody tr")].map(r => r.textContent.trim()),
         inc: [...document.querySelectorAll("#inctab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim())),
         ptabInc: [...document.querySelectorAll("#ptab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
-                   .filter(r => /^Payout/.test(r[0])),
-        ptab1y: [...document.querySelectorAll("#ptab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
-                   .filter(r => /^1-year return/.test(r[0])),
-        r1: [...document.querySelectorAll("#r1tab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim())),
+                   .filter(r => /^Payout (yield, trailing|a year on)/.test(r[0])),
+        ptabPr: [...document.querySelectorAll("#ptab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
+                   .filter(r => /^(Payout yield, \d{4}|Change in payout)/.test(r[0])),
+        pr: [...document.querySelectorAll("#prtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim())),
         ddh: [...document.querySelectorAll("#ddtab thead th")].map(c => c.textContent.trim()),
         ddnote: (document.querySelector("#ddbarnote") || {}).textContent || "",
         ddw: [...document.querySelectorAll("#ddtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
@@ -135,17 +135,19 @@ const file = process.argv[2], live = process.argv.includes("--live");
            return r && INCp.every((x, k) => { const f = x.funds.find(q => q.id === id); return r[k + 1] === (f ? pz(f.per_1m) : "\u2013"); }); })
       && info.ptabInc.length === 2 && INCp.every((x, k) => info.ptabInc[0][k + 1] === x.ttm_pct.toFixed(2) + "%" && info.ptabInc[1][k + 1] === pz(x.per_1m)),
       JSON.stringify(tot) + " " + JSON.stringify(info.ptabInc));
-    // v127 (owner, 23 Nov): the payout beside the 1-year return, each portfolio and each fund it holds
+    // v129 (owner, 23 Nov): the payout over the last 12 months against the year before (v127's 1-year return retired)
     const f2 = v => v == null ? "\u2013" : v.toFixed(2) + "%";
-    const r1p = info.inc.find(r => r[0].startsWith("1-year return, unit price")), r1t = info.inc.find(r => r[0].startsWith("1-year return with"));
-    const heldV = D.portfolio_b.ids.filter((id, j) => ["portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"].some(k => D[k].weights[j]));
-    ck("each portfolio's 1-year return, with and without its payout, and each held fund's, are the payload's",
-      !!r1p && !!r1t && INCp.every((x, k) => r1p[k + 1] === f2(x.ret_1y_pct) && r1t[k + 1] === f2(x.ret_1y_total_pct)
-                                     && info.ptab1y[0][k + 1] === f2(x.ret_1y_pct) && info.ptab1y[1][k + 1] === f2(x.ret_1y_total_pct))
-      && info.ptab1y.length === 2 && info.r1.length === heldV.length
-      && heldV.every((id, i) => info.r1[i][0].startsWith(D.portfolio_b.shorts[D.portfolio_b.ids.indexOf(id)])
-                                && info.r1[i][1] === f2(D.fund_1y[id].pct)),
-      JSON.stringify(r1t) + " " + JSON.stringify(info.ptab1y));
+    const sg = v => v == null ? "\u2013" : (v > 0 ? "+" : v < 0 ? "\u2212" : "") + Math.abs(v).toFixed(2) + "pp";
+    const prY = info.inc.find(r => r[0].startsWith("A year, at " + D.payout_prior_label));
+    const payH = D.portfolio_b.ids.filter(id => D.fund_payout[id].freq && INCp.some(x => x.funds.some(r => r.id === id)));
+    ck("each portfolio's payout a year earlier, and the change, and each paying fund's two years, are the payload's",
+      !!prY && INCp.every((x, k) => prY[k + 1].includes(pz(x.prior_per_1m)) && prY[k + 1].includes(f2(x.prior_pct))
+                                    && info.ptabPr[0][k + 1] === f2(x.prior_pct) && info.ptabPr[1][k + 1] === sg(x.change_pp))
+      && info.ptabPr.length === 2 && info.pr.length === payH.length && !info.inc.some(r => /^1-year return/.test(r[0]))
+      && payH.every((id, i) => info.pr[i][0].startsWith(D.portfolio_b.shorts[D.portfolio_b.ids.indexOf(id)])
+                               && info.pr[i][1] === "~" + D.fund_payout[id].ttm.toFixed(1) + "%"
+                               && info.pr[i][2] === (D.fund_payout[id].prior == null ? "\u2013" : "~" + D.fund_payout[id].prior.toFixed(1) + "%")),
+      JSON.stringify(prY) + " " + JSON.stringify(info.ptabPr));
     // v112 (owner, 17 Nov): the gauge reads months 1-6 and 7-12, years 2-3 and 4-5 at 10/10/40/40, the 10-year anchor beside them
     const G = D.dd_gauge;
     ck("the Budget tab's gauge table shows months 1-6, 7-12, years 2-3, 4-5 at their weights and the 10-year anchor unweighted",

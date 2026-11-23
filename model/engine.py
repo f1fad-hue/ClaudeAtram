@@ -1299,10 +1299,8 @@ MACRO = {
     # The one target with a dated 1-year figure near the feeders' date: Fidelity Global Technology
     # Y-Acc-USD, 13.37% in dollars to 3 Nov 2026 (Endowus).
     "gtec_target_1y": 13.37, "gtec_target_1y_date": "2026-11-03",
-    # v127 (owner, 2026-11-23: "Update payout 12 ttm vs 1yr in all 4 portfolios"; asked, "1-year return"): Nasdaq Equity
-    # Income has no year of its own (launched January 2026), so its target's: ETF Atlas, 9.87% in dollars to 11 Nov,
-    # NAV-based (one source; Cbonds' 18.78% is to 9 Oct and Borsa Italiana's -0.20% is after the mid-November fall).
-    "jepq_ucits_1y_usd": 9.87, "jepq_ucits_1y_date": "2026-11-11",
+    # v127's 1-year returns beside the payout (jepq_ucits_1y_*, FUND_1Y) RETIRED in v129: the owner wanted last year's
+    # payout, not last year's return ("dividend payout 12 ttm vs dividend payout 1yr past ... not the past 1yr return").
     # ASIA EQUITY OPPORTUNITY'S TRUST FEE, DISPUTED (v98): ATRAM's fund page now shows 1.50% p.a.
     # (incl. distribution fee), beside a KIIDS dated July 2026 and a Declaration of Trust dated
     # 16 Jul 2026; uitf.com.ph's listing still has 1.20%, and the 1.18% carried is the earlier
@@ -6733,30 +6731,27 @@ for _f in ("ATRGTEC", "ATRGHCP", "M_GINF", "M_GEO", "M_GCT", "M_GALL"):
                        "sources": _NO_PAY_SRC, "ttm": 0.0, "ttm_sources": ""}
 PAYOUT_TTM_DATE = "2026-11-23"
 C_PAYOUT = {f: FUND_PAYOUT[f] for f in C_FUNDS}
-# EACH FUND'S 1-YEAR RETURN (v127), beside its payout: the change in its peso unit price over the year to 11 Nov 2026,
-# from uitf.com.ph's daily table for ATRAM (ROI-YOY, read through search; one source each) - the newest date with
-# every fund the portfolios hold. The table is computed from unit prices, so a paying fund's payouts are not in it:
-# its return with them is about the two added. It is BEFORE the 12-20 Nov sell-off (the Nasdaq fell 10.0% in the
-# week to 20 Nov), so the equity funds' figures are lower now. Nasdaq Equity Income has no year of its own: its
-# target's dollar return carried into pesos by the dollar's 1-year move (fx_1y_implied_pct), less its trust fee.
-# A fund with no dated figure found carries None, and a portfolio holding one shows no 1-year figure.
-RET_1Y_DATE = MACRO["jepq_ucits_1y_date"]      # the stand-in and the table share the date
-_QIAP_FEE = next(f for f in FUNDS if f["id"] == "ATRQIAP")["fee_feeder"]
-FUND_1Y = {
-    "ATRPHMM": {"pct": 2.84, "sources": "uitf.com.ph, A unit class, ROI-YOY 2.8407% (the row's date not shown in the search; one source)"},
-    "ATRQIAP": {"pct": rnd(((1 + MACRO["jepq_ucits_1y_usd"] / 100) * (1 + MACRO["fx_1y_implied_pct"] / 100) - 1) * 100 - _QIAP_FEE, 2),
-                "sources": f"a stand-in, its target's {MACRO['jepq_ucits_1y_usd']}% in dollars to 11 Nov (ETF Atlas, NAV-based; one source), "
-                           f"carried into pesos by the dollar's {MACRO['fx_1y_implied_pct']}% 1-year gain, less its {_QIAP_FEE:.2f}% trust fee"},
-    "ATRASEQ": {"pct": 18.24, "sources": "ATRAM's fund page, 1 year 18.24% to 11 Nov (one source)"},
-    "ATRGTEC": {"pct": 23.99, "sources": "uitf.com.ph, A PHP unit class, ROI-YOY 23.9850% to 11 Nov (one source)"},
-    "ATRGHCP": {"pct": 17.24, "sources": "uitf.com.ph, ROI-YOY 17.2416% to 11 Nov (one source)"},
-    "M_GINF": {"pct": 15.90, "sources": "uitf.com.ph, A PHP units, ROI-YOY 15.9009% to 11 Nov (one source)"},
-    "ATRAMIP": {"pct": 14.25, "sources": "uitf.com.ph, ROI-YOY 14.2501% to 11 Nov (one source)"},
-    "ATRGLDV": {"pct": None, "sources": "no 1-year figure to 11 Nov found (22.80% to 5 Nov is on the Funds tab)"},
-    "M_GEO": {"pct": None, "sources": "no 1-year figure to 11 Nov found"},
-    "M_GCT": {"pct": None, "sources": "no 1-year figure to 11 Nov found (-16.87% to 5 Nov is on the Funds tab)"},
-    "M_GALL": {"pct": None, "sources": "no 1-year figure to 11 Nov found (13.55% to 4 Nov is on the Funds tab)"},
-}
+# LAST YEAR'S PAYOUT BESIDE THIS YEAR'S (v129, owner 2026-11-23: "Update dividend payout 12 ttm vs dividend payout 1yr
+# past in all 4 portfolios not the past 1yr return"). Each payer's distribution yield for the year before (calendar
+# 2025, the nearest full year the sources give; the trailing 12 months overlap it by December 2025), from its target as
+# this year's is. Schroder Asian Asset Income's 2025 payouts were not found: its target pays at a set annualised rate,
+# 6% a year on the 2026 record dates found, so 2025 is ASSUMED at that rate and flagged (`prior_assumed`). A payer with
+# no figure carries None, and a portfolio holding it shows no prior year. Funds that pay nothing paid nothing then too.
+PAYOUT_PRIOR_LABEL = "2025"
+FUND_PAYOUT["ATRQIAP"].update({"prior": 10.5, "prior_assumed": False, "prior_sources":
+    "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own "
+    "price basis (disputed); DivvyDiary, USD 2.66 paid in 2025"})
+FUND_PAYOUT["ATRAMIP"].update({"prior": 6.0, "prior_assumed": True, "prior_sources":
+    "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found "
+    "(HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)"})
+FUND_PAYOUT["ATRGLDV"].update({"prior": 2.4, "prior_assumed": False, "prior_sources":
+    "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% "
+    "on its 2025 payouts"})
+FUND_PAYOUT["ATRASEQ"].update({"prior": None, "prior_assumed": False, "prior_sources":
+    "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)"})
+for _f, _r in FUND_PAYOUT.items():
+    if not _r["freq"]:
+        _r.update({"prior": 0.0, "prior_assumed": False, "prior_sources": ""})
 # The income payers still held out (First Metro Securities' list: Global Multi-Asset Income monthly, the
 # other two quarterly); each must be on the held-out list, and joins C's set only once admitted.
 C_HELD_OUT_INCOME = ["Global Bond Income", "Global Multi-Asset Income", "US Multi-Asset Income"]
@@ -6837,15 +6832,14 @@ def port_income(w):
         g += x * r["ttm"]; n += x * net
         if r["freq"] == "monthly": mo += amt
         else: qu += amt
-    # v127: the 1-year unit-price return over the same weights, the return with the payout added (approximate: the
-    # payout yield is today's, the price return the year's), and the payout's share of that
-    miss = [fid for fid, x in zip(UNIV_IDS, wp) if x and FUND_1Y[fid]["pct"] is None]
-    r1 = None if miss else rnd(sum(x * FUND_1Y[fid]["pct"] for fid, x in zip(UNIV_IDS, wp) if x) / 100, 2)
-    tot = None if r1 is None else rnd(r1 + rnd(g / 100, 2), 2)
+    # v129: the same weights at last year's payout rates, the change, and how much of last year's rests on an assumption
+    miss = [fid for fid, x in zip(UNIV_IDS, wp) if x and FUND_PAYOUT[fid]["prior"] is None]
+    pg = None if miss else sum(x * FUND_PAYOUT[fid]["prior"] for fid, x in zip(UNIV_IDS, wp) if x)
     return {"ttm_pct": rnd(g / 100, 2), "net_pct": rnd(n / 100, 2), "per_1m": _hu0(g * 100), "per_1m_net": _hu0(n * 100),
             "monthly_1m": _hu0(mo / 12), "quarterly_1m": _hu0(qu / 4), "no_payout_w": none_w, "funds": rows,
-            "ret_1y_pct": r1, "ret_1y_total_pct": tot, "ret_1y_missing": miss,
-            "payout_share_pct": None if not tot or tot <= 0 else rnd(rnd(g / 100, 2) / tot * 100, 0)}
+            "prior_pct": None if pg is None else rnd(pg / 100, 2), "prior_per_1m": None if pg is None else _hu0(pg * 100),
+            "change_pp": None if pg is None else rnd(rnd(g / 100, 2) - rnd(pg / 100, 2), 2), "prior_missing": miss,
+            "prior_assumed_w": sum(x for fid, x in zip(UNIV_IDS, wp) if x and FUND_PAYOUT[fid].get("prior_assumed"))}
 
 # The universe's macro frontier and the best pure ratio, for the Portfolios chart and
 # the "why not simply maximise return" note - the same set B is chosen from. The
@@ -9237,7 +9231,7 @@ def payload():
                                      and abs(port_dd(PD_W, "net_macro", UNIV)) <= DD_CAP + 1e-9},
         # v126: what each of the eleven funds pays, for the income each portfolio shows
         "fund_payout": FUND_PAYOUT, "payout_ttm_date": PAYOUT_TTM_DATE,
-        "fund_1y": FUND_1Y, "ret_1y_date": RET_1Y_DATE,                # v127
+        "payout_prior_label": PAYOUT_PRIOR_LABEL,                       # v129 (v127's fund_1y retired)
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
 
@@ -11166,16 +11160,22 @@ def report():
                              and _in["no_payout_w"] + sum(r[1] for r in _rows) == 100
                              and _in["net_pct"] <= _in["ttm_pct"] and sum(r["per_1m"] for r in _in["funds"]) - _in["per_1m"] in (-1, 0, 1))
     checks.append(("each portfolio's trailing-12-month income re-derives from its weights and the funds' payout records", _incok))
-    # v127: each portfolio's 1-year return beside its payout: every fund it holds has a dated figure, the weighted
-    # sum re-derives, the return with the payout is the two added, and the payout's share of it follows
-    _f1 = p["fund_1y"]; _r1ok = set(_f1) == set(UNIV_IDS) and p["ret_1y_date"] == RET_1Y_DATE <= REVIEW_DATE
-    _r1ok = _r1ok and _f1["ATRQIAP"]["pct"] == rnd(((1 + MACRO["jepq_ucits_1y_usd"] / 100) * (1 + MACRO["fx_1y_implied_pct"] / 100) - 1) * 100 - _QIAP_FEE, 2)
+    # v129: last year's payout beside this year's: every payer has a prior-year figure with sources (or None, said), a
+    # non-payer zero; each portfolio's prior year, its pesos and the change re-derive; the assumed share is the weight
+    # in funds whose prior year is assumed
+    _pr = all(("prior" in _fp[f]) and (_fp[f]["prior"] is None or 0 <= _fp[f]["prior"] < 20) for f in UNIV_IDS) \
+        and all(_fp[f]["prior_sources"] for f in _payers) and all(_fp[f]["prior"] == 0 for f in UNIV_IDS if f not in _payers) \
+        and p["payout_prior_label"] == PAYOUT_PRIOR_LABEL and "fund_1y" not in p
     for _k in ("portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"):
         _in = p[_k]["income"]; _w = p[_k]["weights"]
-        _r = rnd(sum(x * _f1[f]["pct"] for f, x in zip(UNIV_IDS, _w) if x) / 100, 2)
-        _r1ok = _r1ok and not _in["ret_1y_missing"] and _in["ret_1y_pct"] == _r and _in["ret_1y_total_pct"] == rnd(_r + _in["ttm_pct"], 2) \
-            and _in["payout_share_pct"] == rnd(_in["ttm_pct"] / _in["ret_1y_total_pct"] * 100, 0)
-    checks.append(("each portfolio's 1-year return re-derives from its funds' dated figures, with its payout added and its payout's share", _r1ok))
+        _ms = [f for f, x in zip(UNIV_IDS, _w) if x and _fp[f]["prior"] is None]
+        _pg = None if _ms else sum(x * _fp[f]["prior"] for f, x in zip(UNIV_IDS, _w) if x)
+        _pr = _pr and _in["prior_missing"] == _ms and "ret_1y_pct" not in _in and (
+            _pg is None and _in["prior_pct"] is None or
+            _in["prior_pct"] == rnd(_pg / 100, 2) and _in["prior_per_1m"] == _hu0(_pg * 100)
+            and _in["change_pp"] == rnd(_in["ttm_pct"] - _in["prior_pct"], 2)) \
+            and _in["prior_assumed_w"] == sum(x for f, x in zip(UNIV_IDS, _w) if x and _fp[f].get("prior_assumed"))
+    checks.append(("each portfolio's payout a year earlier re-derives from its funds' prior-year rates, with the change and the assumed share", _pr))
     # Each count's best is the rule run within that count alone: the rows cover every C mix once, each
     # row's best is one of its own mixes, and C is the best of the rows, at its own count.
     _bc = _pc["by_count"]; _bcf = [r for r in _bc if r["n_feasible"]]

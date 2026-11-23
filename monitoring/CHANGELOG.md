@@ -2,6 +2,39 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v129: the payout over the last 12 months against the year before; v127's 1-year return retired
+
+At the owner's instruction: "Update dividend payout 12 ttm vs dividend payout 1yr past in all 4 portfolios not the past 1yr
+return".
+
+| | A | B | C | D |
+|---|---|---|---|---|
+| Payout yield, last 12 months (est.) | 5.49% | 5.49% | 9.51% | 6.90% |
+| Payout yield, 2025, today's weights (est.) | 5.18% | 5.18% | 8.93% | 6.45% |
+| Change | +0.31pp | +0.31pp | +0.58pp | +0.45pp |
+| On ₱1,000,000: last 12 months / 2025 | ₱54,900 / ₱51,750 | ₱54,900 / ₱51,750 | ₱95,100 / ₱89,250 | ₱69,000 / ₱64,500 |
+| Held in a fund whose 2025 rate is assumed | 25% | 25% | 35% | 20% |
+
+**Each payer's 2025 rate** (from its target, as this year's): Nasdaq Equity Income 10.5% (Parqet 10.45%; justETF's 9.63% on its
+own price basis disputed; DivvyDiary USD 2.66 paid), against 11.4% now; Asian Multi-Asset Income 6.0% ASSUMED (no 2025 record
+found; its target pays a set 6% a year on the 2026 record dates found); Global Dividend 2.4% (Fidelity 2.37%, POEMS 2.34%);
+Asia Equity Opportunity none found. Calendar 2025 overlaps the last 12 months by December 2025. So all of each portfolio's
+rise comes from Nasdaq Equity Income paying more.
+
+**Retired:** v127's 1-year return rows - `jepq_ucits_1y_*`, `FUND_1Y`, `ret_1y_*`, `fund_1y`, their checks, page rows and table,
+mutants and register row (kept as history).
+
+**What changed:** engine `prior`, `prior_sources`, `prior_assumed` on each payout record, `prior_pct`, `prior_per_1m`,
+`change_pp`, `prior_missing`, `prior_assumed_w` in each portfolio's income, `payout_prior_label`; the check replaced (271).
+Page: the headline table's two rows and the income card's rows now compare the two years, with a fund-by-fund table. Audit
+(308) and validator (26) checks replaced; mutants: two replaced (95). Docs: README, register, review command, lesson 192.
+
+**Checks:** engine 271/271; audit 308/308; validator 26/26; mutants 95/95 caught.
+
+**Due:** Asian Multi-Asset Income's 2025 payout record, to replace the assumption; Asia Equity Opportunity's 2025 yield.
+
+Not personal financial advice.
+
 ## 2026-11-23 — v128: house clean-up; every tab made concise
 
 At the owner's instruction: "Do house clean up and make the page/tabs concise."
