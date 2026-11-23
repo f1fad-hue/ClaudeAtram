@@ -2,6 +2,54 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v126: every portfolio shows its trailing-12-month payout
+
+At the owner's instruction: "Add each portfolio their annual dividend pay out ttm".
+
+**The figures (estimated; on ₱1,000,000):**
+
+| | A | B | C | D |
+|---|---|---|---|---|
+| Payout yield, trailing 12 months | 5.49% | 5.49% | 9.51% | 6.90% |
+| A year | ₱54,900 | ₱54,900 | ₱95,100 | ₱69,000 |
+| A year, net of ATRAM's trust fee | ₱45,900 (4.59%) | ₱45,900 (4.59%) | ₱80,100 (8.01%) | ₱58,500 (5.85%) |
+| Paid each month / each quarter | ₱3,325 / ₱3,750 | ₱3,325 / ₱3,750 | ₱6,175 / ₱5,250 | ₱4,750 / ₱3,000 |
+| Held in funds that pay nothing | 40% | 40% | 0% | 30% |
+
+**Why "estimated":** no ATRAM fund's own payout rate was found - its fact sheets' distribution tables did not come through
+search. Each paying fund is read at its target fund's trailing-12-month distribution yield, which each feeder says it aims
+to pass on:
+- Nasdaq Equity Income 11.4%, monthly (Parqet 11.39%; ETF Atlas 11.49%; J.P. Morgan's notice: monthly payouts this year
+  8.88-16.12% annualised; ATRAM's launch: 9-11% historically).
+- Asian Multi-Asset Income 6.0%, quarterly (Investing.com 5.95%; HSBC's copy of Schroders' factsheet, 6% a year).
+- Asia Equity Opportunity 2.7%, quarterly (Investing.com 2.71% - one source).
+- Global Dividend 2.3%, quarterly (Fidelity's factsheet 2.30%; Hargreaves Lansdown 2.30%; Investing.com 2.23%).
+- Nothing from Global Technology, Global Health Care, Global Infra Equity, Global Equity Opportunity, Global Consumer
+  Trends or Global Allocation (on no income-paying list found - one source), or from the money market.
+- The net row subtracts each fund's carried trust fee, since whether ATRAM pays out before or after it is not published.
+
+A payout is part of each fund's return, not added to it. Nasdaq Equity Income pays ~11.4% against a 7.68% forecast, so its
+unit price is expected to drift down; the page says so.
+
+**What changed:**
+- Engine: `FUND_PAYOUT` (all eleven funds; C's `C_PAYOUT` now reads from it), `port_income()`, `income` on every
+  portfolio, `fund_payout` and `payout_ttm_date` in the payload. Two checks added: 270.
+- Page: two unranked rows in the headline table, an "Income paid, trailing 12 months" card fund by fund, and C's payout
+  table shows each fund's yield and its sources.
+- Audit: the payout records and every portfolio's income re-derived (307). Validator: the card and the headline rows
+  show the payload's figures (24). Mutants: three added (a portfolio's payout off, a net yield off, a non-payer given a
+  yield): 93.
+- Sources: Parqet, ETF Atlas, J.P. Morgan's distribution notice, Investing.com (three pages), Fidelity's factsheet,
+  Hargreaves Lansdown.
+- Docs: README table rows, a register row, the review command (re-read the yields in the weekly fund check), lesson 189.
+
+**Checks:** engine 270/270; audit 307/307; validator 24/24; mutants 93/93 caught.
+
+**Due:** read ATRAM's own distribution tables when reachable and replace the targets' yields; a second source for Asia
+Equity Opportunity's yield and for the non-payers.
+
+Not personal financial advice.
+
 ## 2026-11-23 — v125: Portfolio C re-set as the dividend-income portfolio
 
 At the owner's instruction: "Update portfolio C to be a dividend income paying portfolio from the 22 atram lists".

@@ -215,6 +215,12 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+189. AN ESTIMATE IS LABELLED AS ONE, WITH WHAT IT STANDS IN FOR. v126 shows each portfolio's trailing-12-month payout,
+   but no ATRAM fund's own payout rate could be read; the figures stand on the target funds' yields, which each feeder
+   says it passes on, with a second figure net of ATRAM's trust fee because neither basis is published. So the rows say
+   "est.", are not ranked as a best, name every yield's sources and flag the one-source ones, and the payout is never
+   added to a forecast: a fund paying more than it earns (Nasdaq Equity Income, ~11.4% against 7.68%) gives the
+   difference back in its unit price. When ATRAM's own distribution tables become readable, they replace the targets'.
 188. A PORTFOLIO DEFINED BY WHAT ITS FUNDS DO MUST CARRY THE EVIDENCE THAT THEY DO IT. v125 made C the dividend-income
    portfolio: its set is the funds that pay income to their unitholders, and that is a fact about each fund, not a
    setting. So the set is not a typed list alone - each fund carries a payout record (frequency, what it pays from, its

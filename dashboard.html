@@ -519,7 +519,13 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       <div class="tw"><table class="dt" id="ptab"></table></div>
       <p class="note">Each on its own horizon &mdash; A on the 10-year forecasts, B, C and D on the
         1/3/5/10-year &mdash; from the same fund forecasts and drawdown budget; the last two rows put
-        all four on one basis. The best figure in each row is marked.</p>
+        all four on one basis. The best figure in each row is marked; the payout rows, an estimate, are not ranked.</p>
+    </div>
+    <!-- v126 (owner, 2026-11-23): each portfolio's income over the trailing 12 months -->
+    <div class="card">
+      <h3 style="margin-top:0">Income paid, trailing 12 months</h3>
+      <div class="tw"><table class="dt" id="inctab"></table></div>
+      <p class="note" id="incnote">—</p>
     </div>
     <div class="card" id="deltacard"></div>
     <details class="card how">
@@ -4366,6 +4372,33 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 5.49,
+   "net_pct": 4.59,
+   "per_1m": 54900,
+   "per_1m_net": 45900,
+   "monthly_1m": 3325,
+   "quarterly_1m": 3750,
+   "no_payout_w": 40,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 35,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 39900
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 25,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 15000
+    }
+   ]
+  },
   "macro": {
    "weights": [
     5.0,
@@ -6914,6 +6947,33 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 5.49,
+   "net_pct": 4.59,
+   "per_1m": 54900,
+   "per_1m_net": 45900,
+   "monthly_1m": 3325,
+   "quarterly_1m": 3750,
+   "no_payout_w": 40,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 35,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 39900
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 25,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 15000
+    }
+   ]
+  },
   "column": "net_macro",
   "band_n": 1,
   "n_feasible": 150902,
@@ -7841,6 +7901,33 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 9.51,
+   "net_pct": 8.01,
+   "per_1m": 95100,
+   "per_1m_net": 80100,
+   "monthly_1m": 6175,
+   "quarterly_1m": 5250,
+   "no_payout_w": 0,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 65,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 74100
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 35,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 21000
+    }
+   ]
+  },
   "macro": {
    "weights": [
     0.0,
@@ -7916,30 +8003,40 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ATRAMIP"
   ],
   "payout": {
+   "ATRPHMM": {
+    "freq": null,
+    "basis": "no payout: interest accrues in the unit price",
+    "sources": "allowed as the cash buffer at the owner's choice of 23 Nov",
+    "ttm": 0.0,
+    "ttm_sources": ""
+   },
    "ATRQIAP": {
     "freq": "monthly",
     "basis": "income from the target fund's option premiums and dividends, not guaranteed",
-    "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); the target's own class distributes (justETF)"
+    "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); the target's own class distributes (justETF)",
+    "ttm": 11.4,
+    "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)"
    },
    "ATRASEQ": {
     "freq": "quarterly",
     "basis": "dividends from Asia Pacific ex-Japan equities, through JPMorgan Asia Equity Dividend",
-    "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 (Etiqa); the 2021 KIIDS said monthly"
+    "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 (Etiqa); the 2021 KIIDS said monthly",
+    "ttm": 2.7,
+    "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)"
    },
    "ATRGLDV": {
     "freq": "quarterly",
     "basis": "dividends from global equities, through Fidelity Global Dividend",
-    "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, then monthly"
+    "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, then monthly",
+    "ttm": 2.3,
+    "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%"
    },
    "ATRAMIP": {
     "freq": "quarterly",
     "basis": "bond interest and equity and REIT dividends, through Schroder Asian Asset Income",
-    "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)"
-   },
-   "ATRPHMM": {
-    "freq": null,
-    "basis": "no payout: interest accrues in the unit price",
-    "sources": "allowed as the cash buffer at the owner's choice of 23 Nov"
+    "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)",
+    "ttm": 6.0,
+    "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)"
    }
   },
   "held_out_income": [
@@ -8107,6 +8204,33 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 6.9,
+   "net_pct": 5.85,
+   "per_1m": 69000,
+   "per_1m_net": 58500,
+   "monthly_1m": 4750,
+   "quarterly_1m": 3000,
+   "no_payout_w": 30,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 50,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 57000
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 20,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 12000
+    }
+   ]
+  },
   "macro": {
    "weights": [
     0.0,
@@ -8304,6 +8428,86 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
   "dd_cap": 25.0,
   "in_budget": true
  },
+ "fund_payout": {
+  "ATRQIAP": {
+   "freq": "monthly",
+   "basis": "income from the target fund's option premiums and dividends, not guaranteed",
+   "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); the target's own class distributes (justETF)",
+   "ttm": 11.4,
+   "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)"
+  },
+  "ATRASEQ": {
+   "freq": "quarterly",
+   "basis": "dividends from Asia Pacific ex-Japan equities, through JPMorgan Asia Equity Dividend",
+   "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 (Etiqa); the 2021 KIIDS said monthly",
+   "ttm": 2.7,
+   "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)"
+  },
+  "ATRGLDV": {
+   "freq": "quarterly",
+   "basis": "dividends from global equities, through Fidelity Global Dividend",
+   "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, then monthly",
+   "ttm": 2.3,
+   "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%"
+  },
+  "ATRAMIP": {
+   "freq": "quarterly",
+   "basis": "bond interest and equity and REIT dividends, through Schroder Asian Asset Income",
+   "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)",
+   "ttm": 6.0,
+   "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)"
+  },
+  "ATRPHMM": {
+   "freq": null,
+   "basis": "no payout: interest accrues in the unit price",
+   "sources": "allowed as the cash buffer at the owner's choice of 23 Nov",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "ATRGTEC": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "ATRGHCP": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GINF": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GEO": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GCT": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GALL": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  }
+ },
+ "payout_ttm_date": "2026-11-23",
  "sources": [
   {
    "org": "Dow Jones, via Morningstar",
@@ -13079,6 +13283,46 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "org": "DragonFi",
    "what": "ATRAM Global Multi-asset Income Feeder Fund - aims to distribute income monthly, as its target fund",
    "url": "https://help.dragonfi.ph/hc/en-us/articles/60112340334873-ATRAM-Global-Multi-asset-Income-Feeder-Fund"
+  },
+  {
+   "org": "Parqet",
+   "what": "JPMorgan Nasdaq Equity Premium Income Active UCITS ETF USD (dist) - dividend yield, trailing 12 months, 11.39%",
+   "url": "https://app.parqet.com/en/etf/jpmorgan-nasdaq-equity-premium-income-active-ucits-etf-usd-dist-IE000U9J8HX9/dividends"
+  },
+  {
+   "org": "ETF Atlas",
+   "what": "JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49% (11 Nov 2026)",
+   "url": "https://etfatlas.com/etf-details/IE000U9J8HX9"
+  },
+  {
+   "org": "J.P. Morgan Asset Management",
+   "what": "Nasdaq Equity Premium Income Active UCITS ETF - distribution notice, monthly payouts Dec 2025 - Sep 2026, annualised 8.88-16.12%",
+   "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/asiapacific/sg/en/supplemental/dividend-information/distribution-notice-nasdaq-equity-premium-income.pdf"
+  },
+  {
+   "org": "Investing.com",
+   "what": "Schroder Asian Asset Income Fund A Dis USD - trailing-12-month yield 5.95%",
+   "url": "https://www.investing.com/funds/schroder-asian-asset-income-fund-us"
+  },
+  {
+   "org": "Investing.com",
+   "what": "JPMorgan Asia Equity Dividend (mth) USD - trailing-12-month yield 2.71%",
+   "url": "https://ph.investing.com/funds/jpmorgan-asia-equity-dividend-mth-u"
+  },
+  {
+   "org": "Fidelity International",
+   "what": "Fidelity Funds - Global Dividend Fund A-QINCOME(G)-EUR factsheet, 30 Sep 2026 - historic yield 2.30%, quarterly",
+   "url": "https://www.fidelityinternational.com/FILPS/Documents/en/current/mf.en.xx.LU0731782404.pdf"
+  },
+  {
+   "org": "Hargreaves Lansdown",
+   "what": "Fidelity Global Dividend: May 2026 fund update - yields 2.30%",
+   "url": "https://www.hl.co.uk/funds/research-and-news/fidelity-global-dividend-may-2026-fund-update"
+  },
+  {
+   "org": "Investing.com UK",
+   "what": "Fidelity Funds - Global Dividend Fund A-QINCOME G - trailing-12-month yield 2.23%",
+   "url": "https://uk.investing.com/funds/global-dividend-fund-a-qincome-g-us"
   }
  ]
 }
@@ -14357,9 +14601,10 @@ function donut(host, w, title, cagr, dd) {
   P.funds.map(id => [id, P.weights[ix(id)]]).sort((a, b) => b[1] - a[1]).forEach(([id, w]) => {
     const wt = w ? "font-weight:700;" : "", r = PAY[id];
     pb.appendChild(el("tr", null,
-      `<td style="${top(wt)}">${SH[ix(id)]}</td><td style="${top(wt)}">${r.freq ? cap1(r.freq) : "No payout"}</td>` +
+      `<td style="${top(wt)}">${SH[ix(id)]}</td><td style="${top(wt)}">${r.freq ? cap1(r.freq) + " &middot; ~" + r.ttm.toFixed(1) + "%" : "No payout"}</td>` +
       `<td class="num" style="${top(wt)}">${w ? w + "%" : "&ndash;"}</td>`));
-    pb.appendChild(el("tr", null, sub(r.freq ? `${cap1(r.basis)}. Sources: ${r.sources}.` : `${cap1(r.basis)}; ${r.sources}.`)));
+    pb.appendChild(el("tr", null, sub(r.freq ? `${cap1(r.basis)}. Sources: ${r.sources}. Yield over the trailing 12 months, estimated from ${r.ttm_sources}.`
+                                              : `${cap1(r.basis)}; ${r.sources}.`)));
   });
   pt.appendChild(pb);
   $("#cpaynote").innerHTML =
@@ -14635,7 +14880,7 @@ function donut(host, w, title, cagr, dd) {
   const ht = $("#ptab");
   ht.appendChild(el("thead", null, `<tr><th>Own horizon</th>` + PVL.map(x => `<th>${x}</th>`).join("") + `</tr>`));
   const hb = el("tbody");
-  const hrow = (lab, vals, fm, best) => { const b = best(vals);
+  const hrow = (lab, vals, fm, best) => { const b = best ? best(vals) : undefined;   /* no best: not ranked (v126) */
     hb.appendChild(el("tr", null, `<td>${lab}</td>` + vals.map(v =>
       `<td${v === b ? ' class="pos" style="font-weight:700"' : ''}>${fm(v)}</td>`).join(""))); };
   hb.appendChild(el("tr", null, `<td>Horizon</td><td>${HYN}</td>` + "<td>1/3/5/10</td>".repeat(PS.length - 1)));
@@ -14648,7 +14893,49 @@ function donut(host, w, title, cagr, dd) {
     hrow(`${n} &middot; drawdown`, PS.map(q => sc(n)(q).maxdd), pc1, shallow));
   hrow(`All on the 1/3/5/10-year view`, PS.map(q => q.macro.cagr), pc, hi);
   hrow(`All on the ${HYN} view`, PS.map(q => q.ten.cagr), pc, hi);
+  hrow("Payout yield, trailing 12 months (est.)", PS.map(q => q.income.ttm_pct), pc, null);
+  hrow("Payout a year on &#8369;1M (est.)", PS.map(q => q.income.per_1m), v => "&#8369;" + v.toLocaleString("en-US"), null);
   ht.appendChild(hb);
+
+  /* INCOME, TRAILING 12 MONTHS (owner, 2026-11-23, v126: "Add each portfolio their annual dividend pay out ttm").
+     A row per paying fund any portfolio holds - its target's trailing-12-month yield and how often it pays - with
+     the pesos a year each portfolio draws from it on P1,000,000; then the totals at the targets' rates and net of
+     ATRAM's trust fee, the monthly and quarterly payments, and the share held in funds that pay nothing. A payout
+     is part of the return each forecast already counts, not added to it. Everything reads the payload. */
+  const FP = D.fund_payout, INC = PS.map(q => q.income), peso = v => "&#8369;" + v.toLocaleString("en-US");
+  const nmF = id => PB.shorts[PB.ids.indexOf(id)];
+  const payIds = PB.ids.filter(id => FP[id].freq && INC.some(x => x.funds.some(r => r.id === id)));
+  const it = $("#inctab");
+  it.appendChild(el("thead", null, `<tr><th>On &#8369;1,000,000</th>` + PVL.map(x => `<th>${x}</th>`).join("") + `</tr>`));
+  const ib = el("tbody");
+  payIds.forEach(id => ib.appendChild(el("tr", null,
+    `<td>${nmF(id)}<br><span style="font-size:12px;color:var(--ink-2)">~${FP[id].ttm.toFixed(1)}% a year, ${FP[id].freq}</span></td>` +
+    INC.map(x => { const r = x.funds.find(r_ => r_.id === id); return `<td class="num">${r ? peso(r.per_1m) : "&ndash;"}</td>`; }).join(""))));
+  const irow = (lab, f, bold) => ib.appendChild(el("tr", null, `<td>${lab}</td>` +
+    INC.map(x => `<td class="num"${bold ? ' style="font-weight:700"' : ""}>${f(x)}</td>`).join("")));
+  irow("A year, at the targets' rates", x => `${peso(x.per_1m)}<br>${x.ttm_pct.toFixed(2)}%`, true);
+  irow("A year, net of ATRAM's trust fee", x => `${peso(x.per_1m_net)}<br>${x.net_pct.toFixed(2)}%`);
+  irow("Paid each month", x => x.monthly_1m ? peso(x.monthly_1m) : "&ndash;");
+  irow("Paid each quarter", x => x.quarterly_1m ? peso(x.quarterly_1m) : "&ndash;");
+  irow("Held in funds that pay nothing", x => x.no_payout_w + "%");
+  it.appendChild(ib);
+  const fqI = D.funds.concat(PB.funds).find(f => f.id === "ATRQIAP");
+  const payAll = PB.ids.filter(id => FP[id].freq), one = payAll.filter(id => /one source/.test(FP[id].ttm_sources));
+  const nopay = PB.ids.filter(id => !FP[id].freq && id !== "ATRPHMM");
+  const hiI = INC.reduce((a, x, k) => x.per_1m > INC[a].per_1m ? k : a, 0);
+  $("#incnote").innerHTML =
+    `Estimated as of ${new Date(D.payout_ttm_date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}.
+     No ATRAM fund's own payout rate was found, so each paying fund is read at its target fund's trailing-12-month
+     distribution yield, which each says it aims to pass on; the second total assumes ATRAM pays that rate net of its own
+     trust fee instead, and neither is published. Paid in pesos, so the peso's moves change them too, and none is
+     guaranteed. ${PVL[hiI]} pays the most${PVL[hiI] === "C" ? ", as the portfolio built to hold only the funds that pay" : ""}. ` +
+    payAll.map(id => `${nmF(id)}: ${FP[id].ttm_sources}`).join("; ") + `.` +
+    (one.length ? ` ${and3(one.map(nmF))}'s yield rests on one source.` : ``) +
+    ` ${and3(nopay.map(nmF))} pay nothing out, on no income-paying list found (one source); the money market's interest stays in
+     its unit price. A payout is not extra return: it comes out of the fund, whose unit price falls by what it pays, and it
+     is already inside each forecast above. ${nmF("ATRQIAP")} pays out about ${FP.ATRQIAP.ttm.toFixed(1)}% against a forecast
+     return of ${pc(fqI.net_macro)}, much of it from the options it sells, so its unit price is expected to drift down: read
+     its income with its growth, not on top of it.`;
 
   /* every lens, all four portfolios. v82: the third lens is the 1/3/5/10-year view itself -
      since v80 it read PM, A's own (10-year) headline, so A's row repeated its 10-year view. */

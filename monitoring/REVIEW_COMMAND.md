@@ -17,7 +17,8 @@ drivers and the regional rankings are scored on 1-5 (v119-v120), so the geopolit
 cut-off, near-tie picks and the calendar's US clock have their own rules; every section on the five tabs is named, with
 the step that covers it (the map after the command), and the page check confirms every section renders. Updated
 2026-11-23 (v125): Portfolio C is the dividend-income portfolio; the weekly fund check re-confirms each income fund's
-payout schedule. The runbook
+payout schedule. Updated 2026-11-23 (v126): every portfolio shows its trailing-12-month payout, estimated
+from the target funds' yields. The runbook
 (`README.md`) says how; this file says what.
 
 ```text
@@ -96,6 +97,10 @@ Evidence rules (apply to everything below)
     often (ATRAM's distribution notices, a broker's income-paying list), two sources for
     "pays"; a fund that stops paying leaves C's set, and an admitted fund that starts paying
     joins it - both are the owner's call, so ask.
+  ◦ Payouts (v126): re-read each paying fund's trailing-12-month yield (its target fund's,
+    until ATRAM's own distribution tables can be read; two sources, one decimal) and
+    check that the funds on no income-paying list still pay nothing. Every portfolio's
+    income on the Portfolios tab is derived from these.
 • Check the long-run return assumptions each forecast starts from (the J.P. Morgan
   edition in use), that each matches its target's asset class and region, and that the
   peso translation stays inside its PPP bracket. Check the Side by side and Fee
@@ -227,6 +232,7 @@ Five tabs, thirty sections. A review that skips a row has not covered the page.
 | Portfolios | Portfolio C (what each fund pays and its sources; each count's best) | 4, 5 |
 | Portfolios | Portfolio D (each count's best, the number of funds) | 5 |
 | Portfolios | Headline forecast, lenses, who wins where | 5 |
+| Portfolios | Income paid, trailing 12 months (each portfolio, fund by fund) | 4, 5 |
 | Portfolios | Feasible set (the frontier, the best pure ratio, the extremes) | 5 |
 | Portfolios | Stress test | 5 |
 | Portfolios | In pesos (P1,000,000 over ten years) | 5 |

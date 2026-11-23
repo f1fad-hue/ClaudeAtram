@@ -3507,6 +3507,33 @@
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 5.49,
+   "net_pct": 4.59,
+   "per_1m": 54900,
+   "per_1m_net": 45900,
+   "monthly_1m": 3325,
+   "quarterly_1m": 3750,
+   "no_payout_w": 40,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 35,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 39900
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 25,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 15000
+    }
+   ]
+  },
   "macro": {
    "weights": [
     5.0,
@@ -6055,6 +6082,33 @@
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 5.49,
+   "net_pct": 4.59,
+   "per_1m": 54900,
+   "per_1m_net": 45900,
+   "monthly_1m": 3325,
+   "quarterly_1m": 3750,
+   "no_payout_w": 40,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 35,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 39900
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 25,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 15000
+    }
+   ]
+  },
   "column": "net_macro",
   "band_n": 1,
   "n_feasible": 150902,
@@ -6982,6 +7036,33 @@
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 9.51,
+   "net_pct": 8.01,
+   "per_1m": 95100,
+   "per_1m_net": 80100,
+   "monthly_1m": 6175,
+   "quarterly_1m": 5250,
+   "no_payout_w": 0,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 65,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 74100
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 35,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 21000
+    }
+   ]
+  },
   "macro": {
    "weights": [
     0.0,
@@ -7057,30 +7138,40 @@
    "ATRAMIP"
   ],
   "payout": {
+   "ATRPHMM": {
+    "freq": null,
+    "basis": "no payout: interest accrues in the unit price",
+    "sources": "allowed as the cash buffer at the owner's choice of 23 Nov",
+    "ttm": 0.0,
+    "ttm_sources": ""
+   },
    "ATRQIAP": {
     "freq": "monthly",
     "basis": "income from the target fund's option premiums and dividends, not guaranteed",
-    "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); the target's own class distributes (justETF)"
+    "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); the target's own class distributes (justETF)",
+    "ttm": 11.4,
+    "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)"
    },
    "ATRASEQ": {
     "freq": "quarterly",
     "basis": "dividends from Asia Pacific ex-Japan equities, through JPMorgan Asia Equity Dividend",
-    "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 (Etiqa); the 2021 KIIDS said monthly"
+    "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 (Etiqa); the 2021 KIIDS said monthly",
+    "ttm": 2.7,
+    "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)"
    },
    "ATRGLDV": {
     "freq": "quarterly",
     "basis": "dividends from global equities, through Fidelity Global Dividend",
-    "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, then monthly"
+    "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, then monthly",
+    "ttm": 2.3,
+    "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%"
    },
    "ATRAMIP": {
     "freq": "quarterly",
     "basis": "bond interest and equity and REIT dividends, through Schroder Asian Asset Income",
-    "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)"
-   },
-   "ATRPHMM": {
-    "freq": null,
-    "basis": "no payout: interest accrues in the unit price",
-    "sources": "allowed as the cash buffer at the owner's choice of 23 Nov"
+    "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)",
+    "ttm": 6.0,
+    "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)"
    }
   },
   "held_out_income": [
@@ -7248,6 +7339,33 @@
    "ATRAMIP",
    "M_GALL"
   ],
+  "income": {
+   "ttm_pct": 6.9,
+   "net_pct": 5.85,
+   "per_1m": 69000,
+   "per_1m_net": 58500,
+   "monthly_1m": 4750,
+   "quarterly_1m": 3000,
+   "no_payout_w": 30,
+   "funds": [
+    {
+     "id": "ATRQIAP",
+     "w": 50,
+     "freq": "monthly",
+     "ttm": 11.4,
+     "net": 9.9,
+     "per_1m": 57000
+    },
+    {
+     "id": "ATRAMIP",
+     "w": 20,
+     "freq": "quarterly",
+     "ttm": 6.0,
+     "net": 4.5,
+     "per_1m": 12000
+    }
+   ]
+  },
   "macro": {
    "weights": [
     0.0,
@@ -7445,6 +7563,86 @@
   "dd_cap": 25.0,
   "in_budget": true
  },
+ "fund_payout": {
+  "ATRQIAP": {
+   "freq": "monthly",
+   "basis": "income from the target fund's option premiums and dividends, not guaranteed",
+   "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); the target's own class distributes (justETF)",
+   "ttm": 11.4,
+   "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)"
+  },
+  "ATRASEQ": {
+   "freq": "quarterly",
+   "basis": "dividends from Asia Pacific ex-Japan equities, through JPMorgan Asia Equity Dividend",
+   "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 (Etiqa); the 2021 KIIDS said monthly",
+   "ttm": 2.7,
+   "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)"
+  },
+  "ATRGLDV": {
+   "freq": "quarterly",
+   "basis": "dividends from global equities, through Fidelity Global Dividend",
+   "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, then monthly",
+   "ttm": 2.3,
+   "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%"
+  },
+  "ATRAMIP": {
+   "freq": "quarterly",
+   "basis": "bond interest and equity and REIT dividends, through Schroder Asian Asset Income",
+   "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)",
+   "ttm": 6.0,
+   "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)"
+  },
+  "ATRPHMM": {
+   "freq": null,
+   "basis": "no payout: interest accrues in the unit price",
+   "sources": "allowed as the cash buffer at the owner's choice of 23 Nov",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "ATRGTEC": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "ATRGHCP": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GINF": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GEO": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GCT": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  },
+  "M_GALL": {
+   "freq": null,
+   "basis": "no payout found: gains and income stay in the unit price",
+   "sources": "not on First Metro Securities' list of income-paying funds (one source)",
+   "ttm": 0.0,
+   "ttm_sources": ""
+  }
+ },
+ "payout_ttm_date": "2026-11-23",
  "sources": [
   {
    "org": "Dow Jones, via Morningstar",
@@ -12220,6 +12418,46 @@
    "org": "DragonFi",
    "what": "ATRAM Global Multi-asset Income Feeder Fund - aims to distribute income monthly, as its target fund",
    "url": "https://help.dragonfi.ph/hc/en-us/articles/60112340334873-ATRAM-Global-Multi-asset-Income-Feeder-Fund"
+  },
+  {
+   "org": "Parqet",
+   "what": "JPMorgan Nasdaq Equity Premium Income Active UCITS ETF USD (dist) - dividend yield, trailing 12 months, 11.39%",
+   "url": "https://app.parqet.com/en/etf/jpmorgan-nasdaq-equity-premium-income-active-ucits-etf-usd-dist-IE000U9J8HX9/dividends"
+  },
+  {
+   "org": "ETF Atlas",
+   "what": "JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49% (11 Nov 2026)",
+   "url": "https://etfatlas.com/etf-details/IE000U9J8HX9"
+  },
+  {
+   "org": "J.P. Morgan Asset Management",
+   "what": "Nasdaq Equity Premium Income Active UCITS ETF - distribution notice, monthly payouts Dec 2025 - Sep 2026, annualised 8.88-16.12%",
+   "url": "https://am.jpmorgan.com/content/dam/jpm-am-aem/asiapacific/sg/en/supplemental/dividend-information/distribution-notice-nasdaq-equity-premium-income.pdf"
+  },
+  {
+   "org": "Investing.com",
+   "what": "Schroder Asian Asset Income Fund A Dis USD - trailing-12-month yield 5.95%",
+   "url": "https://www.investing.com/funds/schroder-asian-asset-income-fund-us"
+  },
+  {
+   "org": "Investing.com",
+   "what": "JPMorgan Asia Equity Dividend (mth) USD - trailing-12-month yield 2.71%",
+   "url": "https://ph.investing.com/funds/jpmorgan-asia-equity-dividend-mth-u"
+  },
+  {
+   "org": "Fidelity International",
+   "what": "Fidelity Funds - Global Dividend Fund A-QINCOME(G)-EUR factsheet, 30 Sep 2026 - historic yield 2.30%, quarterly",
+   "url": "https://www.fidelityinternational.com/FILPS/Documents/en/current/mf.en.xx.LU0731782404.pdf"
+  },
+  {
+   "org": "Hargreaves Lansdown",
+   "what": "Fidelity Global Dividend: May 2026 fund update - yields 2.30%",
+   "url": "https://www.hl.co.uk/funds/research-and-news/fidelity-global-dividend-may-2026-fund-update"
+  },
+  {
+   "org": "Investing.com UK",
+   "what": "Fidelity Funds - Global Dividend Fund A-QINCOME G - trailing-12-month yield 2.23%",
+   "url": "https://uk.investing.com/funds/global-dividend-fund-a-qincome-g-us"
   }
  ]
 }

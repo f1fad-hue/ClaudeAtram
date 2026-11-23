@@ -369,6 +369,39 @@ ck("C: each count's best (two to five funds) re-derives, and C's count is the be
    _cc_ok and max((b_ for b_ in PCC["by_count"] if b_["n_feasible"]), key=lambda b_: (b_["cagr"], -abs(b_["maxdd"]), -b_["n"]))["n"] == nC,
    f"counts off: {_cc_bad}")
 
+# INCOME, TRAILING 12 MONTHS (v126, owner 2026-11-23: "Add each portfolio their annual dividend pay out ttm"). Every
+# admitted fund has a payout record - a payer its frequency, its target's trailing-12-month yield and the sources, a
+# non-payer none - and each portfolio's income is re-derived here from its weights, the records and each fund's
+# trust fee: the yield at the targets' rates and net of the fee, the pesos a year on P1,000,000, the monthly and
+# quarterly payments, and the share in funds that pay nothing. Whole pesos half-up, yields to two places half-up.
+FPAY = D["fund_payout"]
+_feeA = {f["id"]: f["fee_feeder"] for f in D["funds"] + PBB["funds"]}
+_paysA = [f for f in IDS if FPAY[f]["freq"]]
+ck("every admitted fund has a payout record; each payer a frequency, a trailing-12-month yield and sources, each non-payer none",
+   sorted(FPAY) == sorted(IDS) and all(FPAY[f]["freq"] in ("monthly", "quarterly") and 0 < FPAY[f]["ttm"] < 20
+                                       and FPAY[f]["ttm_sources"] for f in _paysA)
+   and all(FPAY[f]["freq"] is None and FPAY[f]["ttm"] == 0 for f in IDS if f not in _paysA)
+   and sorted(PCC["funds"]) == sorted(_paysA + ["ATRPHMM"]) and D["payout_ttm_date"] <= D["review_date"],
+   f"{_paysA}")
+_h0 = lambda x: int(Decimal(repr(x)).quantize(Decimal(1), rounding=ROUND_HALF_UP))
+_h2 = lambda x: float(Decimal(repr(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+_inc_bad = []
+for lab_, Q in (("A", PAA), ("B", PBB), ("C", PCC), ("D", PDD)):
+    g_ = n_ = mo_ = qu_ = 0.0; none_ = 0; rows_ = []
+    for f, x in zip(IDS, Q["weights"]):
+        if not x: continue
+        if not FPAY[f]["freq"]: none_ += x; continue
+        t_ = FPAY[f]["ttm"]; nt_ = _h2(max(t_ - _feeA[f], 0.0))
+        rows_.append({"id": f, "w": x, "freq": FPAY[f]["freq"], "ttm": t_, "net": nt_, "per_1m": _h0(x * t_ * 100)})
+        g_ += x * t_; n_ += x * nt_
+        if FPAY[f]["freq"] == "monthly": mo_ += x * t_ * 100
+        else: qu_ += x * t_ * 100
+    want = {"ttm_pct": _h2(g_ / 100), "net_pct": _h2(n_ / 100), "per_1m": _h0(g_ * 100), "per_1m_net": _h0(n_ * 100),
+            "monthly_1m": _h0(mo_ / 12), "quarterly_1m": _h0(qu_ / 4), "no_payout_w": none_, "funds": rows_}
+    if Q["income"] != want: _inc_bad.append((lab_, {k: (Q["income"].get(k), v) for k, v in want.items() if Q["income"].get(k) != v}))
+ck("each portfolio's trailing-12-month income re-derives from its weights, the payout records and the trust fees",
+   not _inc_bad, f"{str(_inc_bad)[:220]}")
+
 # ---------------------------------------------------------------------------
 sec("D. THE MACRO GAUGE, THE DRIVER PATHS AND THE REGIONS")
 DR = D["drivers"]; HZ = D["hz_weights"]

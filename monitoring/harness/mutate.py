@@ -37,6 +37,9 @@ def m_cpick(d):                                                                 
     c["weights"] = list(r["weights"]); c["n_funds"] = r["n"]; c["macro"]["cagr"], c["macro"]["maxdd"] = r["cagr"], r["maxdd"]
 def m_ccount(d): r = d["portfolio_c"]["by_count"][-1]; r["shallowest"] = round(r["shallowest"] + 0.1, 1)   # a count's shallowest mix off its re-run (v125)
 def m_cpay(d): d["portfolio_c"]["payout"]["ATRGLDV"]["freq"] = None                            # an income fund's payout record lost (v125)
+def m_inc(d): d["portfolio_d"]["income"]["per_1m"] += 100                                     # a portfolio's yearly payout 100 pesos off its funds (v126)
+def m_incnet(d): i = d["portfolio_a"]["income"]; i["net_pct"] = round(i["net_pct"] + 0.01, 2)   # the net-of-fee yield off its trust fees (v126)
+def m_incnopay(d): d["fund_payout"]["ATRGTEC"]["ttm"] = 1.0                                  # a fund on no income list given a yield (v126)
 def m_orphan(d): d["macro"]["fed_50bp_odds_dec_99nov"] = 4.3                             # a new input nothing reads, its value quoted elsewhere (v116)
 def m_day20(d): d["macro"]["spx_20nov"] = round(d["macro"]["spx_20nov"] + 10, 2)                # a day-keyed close off the latest, the week off it (v118)
 def m_cold(d): d["macro"]["gbi_w_c_low"] = 0                                                   # the old C's held-out inputs back (v111)

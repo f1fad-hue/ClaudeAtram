@@ -74,6 +74,8 @@ Global Allocation.
 | 10y net CAGR after all fees | **7.24%** | 7.13% | 7.07% | 7.19% |
 | Expected max drawdown (10y) | −24.9% | −24.9% | −25.0% | −24.9% |
 | Return per unit of drawdown | **0.291** | 0.286 | 0.283 | 0.289 |
+| Payout yield, trailing 12 months (est.) | 5.49% | 5.49% | 9.51% | 6.90% |
+| Payout a year on ₱1,000,000 (est.; net of ATRAM's trust fee) | ₱54,900 (₱45,900) | ₱54,900 (₱45,900) | ₱95,100 (₱80,100) | ₱69,000 (₱58,500) |
 
 Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C and D
 on the 1/3/5/10-year. **Portfolio C (v125, owner, 23 Nov 2026)** is the dividend-income portfolio -
@@ -82,6 +84,10 @@ Asia Equity Opportunity, Global Dividend and Asian Multi-Asset Income quarterly)
 an allowed cash buffer, each at least 5%, no main fund and no single-fund cap - chosen by B's rule on B's
 view: 65% Nasdaq Equity Income and 35% Asian Multi-Asset Income at 7.07% / −25.0%, 0.06pp a year below B;
 the rule finds two funds best (three return 7.05%). Payouts count inside each fund's net CAGR, not on top.
+**The payout rows (v126, owner, 23 Nov 2026)** are estimates: no ATRAM fund's own payout rate was found, so each
+paying fund is read at its target fund's trailing-12-month distribution yield (Nasdaq Equity Income ~11.4% monthly; Asian
+Multi-Asset Income ~6.0%, Asia Equity Opportunity ~2.7% and Global Dividend ~2.3% quarterly), and the bracket assumes ATRAM
+pays it net of its trust fee. A payout is part of the return, not added to it.
 From 17 Nov (v111) to v124 C was the owner's three funds, Nasdaq Equity Income-led with Peso Money Market and
 Global Technology (70 / 25 / 5 at 6.94% / −24.8% on 23 Nov); an earlier C, Nasdaq Equity Income pinned at
 50%, was retired on 12 Nov 2026 (v101). **A and B are the same mix since v107**: the rule picks on B's view

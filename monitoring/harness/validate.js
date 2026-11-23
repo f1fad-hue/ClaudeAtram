@@ -48,6 +48,9 @@ const file = process.argv[2], live = process.argv.includes("--live");
         clede: (document.getElementById("clede") || {}).textContent || "",
         ccount: [...document.querySelectorAll("#ccount tbody tr")].map(r => r.textContent.trim()),
         cpay: [...document.querySelectorAll("#cpay tbody tr")].map(r => r.textContent.trim()),
+        inc: [...document.querySelectorAll("#inctab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim())),
+        ptabInc: [...document.querySelectorAll("#ptab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
+                   .filter(r => /^Payout/.test(r[0])),
         ddh: [...document.querySelectorAll("#ddtab thead th")].map(c => c.textContent.trim()),
         ddnote: (document.querySelector("#ddbarnote") || {}).textContent || "",
         ddw: [...document.querySelectorAll("#ddtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
@@ -107,6 +110,18 @@ const file = process.argv[2], live = process.argv.includes("--live");
            return k >= 0 && cpRows[k].includes(cpy[id].freq ? cpy[id].freq.replace(/^./, c => c.toUpperCase()) : "No payout")
              && cpRows[k].endsWith(w ? w + "%" : "\u2013") && cpSub[k].includes(cpy[id].sources); }),
       info.clede.slice(0, 200));
+    // v126 (owner, 23 Nov): each portfolio's income over the trailing 12 months, in the headline table and its own card
+    const INCp = ["portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"].map(k => D[k].income);
+    const pz = v => "\u20b1" + v.toLocaleString("en-US");
+    const tot = info.inc.find(r => r[0].startsWith("A year, at the targets")), net = info.inc.find(r => r[0].startsWith("A year, net"));
+    const payF = D.portfolio_b.ids.filter(id => D.fund_payout[id].freq && INCp.some(x => x.funds.some(r => r.id === id)));
+    ck("the income card and the headline table show each portfolio's trailing-12-month payout, fund by fund, at both rates",
+      !!tot && !!net && INCp.every((x, k) => tot[k + 1].includes(pz(x.per_1m)) && tot[k + 1].includes(x.ttm_pct.toFixed(2) + "%")
+                                   && net[k + 1].includes(pz(x.per_1m_net)) && net[k + 1].includes(x.net_pct.toFixed(2) + "%"))
+      && payF.every(id => { const r = info.inc.find(c => c[0].startsWith(D.portfolio_b.shorts[D.portfolio_b.ids.indexOf(id)]));
+           return r && INCp.every((x, k) => { const f = x.funds.find(q => q.id === id); return r[k + 1] === (f ? pz(f.per_1m) : "\u2013"); }); })
+      && info.ptabInc.length === 2 && INCp.every((x, k) => info.ptabInc[0][k + 1] === x.ttm_pct.toFixed(2) + "%" && info.ptabInc[1][k + 1] === pz(x.per_1m)),
+      JSON.stringify(tot) + " " + JSON.stringify(info.ptabInc));
     // v112 (owner, 17 Nov): the gauge reads months 1-6 and 7-12, years 2-3 and 4-5 at 10/10/40/40, the 10-year anchor beside them
     const G = D.dd_gauge;
     ck("the Budget tab's gauge table shows months 1-6, 7-12, years 2-3, 4-5 at their weights and the 10-year anchor unweighted",

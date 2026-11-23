@@ -6693,22 +6693,42 @@ for _seq, (_idx, _u) in enumerate(d_mixes()):
 C_FUNDS = ("ATRPHMM", "ATRQIAP", "ATRASEQ", "ATRGLDV", "ATRAMIP")
 C_MIN_FUNDS, C_MAX_FUNDS = 2, len(C_FUNDS)
 C_RULE_DATE = "2026-11-23"
-# WHAT EACH OF C'S FUNDS PAYS (v125). "Pays" needs two sources; the frequency is what the newest one says.
-C_PAYOUT = {
+# WHAT EACH FUND PAYS (v125 for C's funds; v126 for all eleven, with each payer's trailing-12-month yield, owner
+# 2026-11-23: "Add each portfolio their annual dividend pay out ttm"). "Pays" needs two sources; the frequency is what
+# the newest one says. NO ATRAM FEEDER'S OWN PAYOUT RATE WAS FOUND - its fact sheets' distribution tables did not come
+# through search - so `ttm` is the TARGET fund's trailing-12-month distribution yield, in its own currency: each
+# feeder states it aims to distribute as its target does. Whether ATRAM passes that rate on or pays it net of its own
+# trust fee is not published, so each portfolio shows both (`port_income`). A fund on no income-paying list carries
+# no payout and a zero yield; that it pays nothing rests on one source (First Metro Securities' list) and is flagged.
+_NO_PAY_SRC = "not on First Metro Securities' list of income-paying funds (one source)"
+FUND_PAYOUT = {
     "ATRQIAP": {"freq": "monthly", "basis": "income from the target fund's option premiums and dividends, not guaranteed",
                 "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); "
-                           "the target's own class distributes (justETF)"},
+                           "the target's own class distributes (justETF)",
+                "ttm": 11.4, "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); "
+                                            "ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran "
+                                            "8.88-16.12% annualised (J.P. Morgan's distribution notice)"},
     "ATRASEQ": {"freq": "quarterly", "basis": "dividends from Asia Pacific ex-Japan equities, through JPMorgan Asia Equity Dividend",
                 "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 "
-                           "(Etiqa); the 2021 KIIDS said monthly"},
+                           "(Etiqa); the 2021 KIIDS said monthly",
+                "ttm": 2.7, "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)"},
     "ATRGLDV": {"freq": "quarterly", "basis": "dividends from global equities, through Fidelity Global Dividend",
                 "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, "
-                           "then monthly"},
+                           "then monthly",
+                "ttm": 2.3, "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); "
+                                           "Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%"},
     "ATRAMIP": {"freq": "quarterly", "basis": "bond interest and equity and REIT dividends, through Schroder Asian Asset Income",
-                "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)"},
+                "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)",
+                "ttm": 6.0, "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of "
+                                           "Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)"},
     "ATRPHMM": {"freq": None, "basis": "no payout: interest accrues in the unit price",
-                "sources": "allowed as the cash buffer at the owner's choice of 23 Nov"},
+                "sources": "allowed as the cash buffer at the owner's choice of 23 Nov", "ttm": 0.0, "ttm_sources": ""},
 }
+for _f in ("ATRGTEC", "ATRGHCP", "M_GINF", "M_GEO", "M_GCT", "M_GALL"):
+    FUND_PAYOUT[_f] = {"freq": None, "basis": "no payout found: gains and income stay in the unit price",
+                       "sources": _NO_PAY_SRC, "ttm": 0.0, "ttm_sources": ""}
+PAYOUT_TTM_DATE = "2026-11-23"
+C_PAYOUT = {f: FUND_PAYOUT[f] for f in C_FUNDS}
 # The income payers still held out (First Metro Securities' list: Global Multi-Asset Income monthly, the
 # other two quarterly); each must be on the held-out list, and joins C's set only once admitted.
 C_HELD_OUT_INCOME = ["Global Bond Income", "Global Multi-Asset Income", "US Multi-Asset Income"]
@@ -6767,6 +6787,30 @@ PA_10, PB_10 = (summarise(w, "net_10y", UNIV) for w in (PA_W, PB_W))
 PB, PB_BASE = summarise(PB_W, "net_macro", UNIV), summarise(PB_W, "net_base", UNIV)
 PD, PD_BASE, PD_10 = (summarise(PD_W, c_, UNIV) for c_ in ("net_macro", "net_base", "net_10y"))
 PC, PC_BASE, PC_10 = (summarise(PC_W, c_, UNIV) for c_ in ("net_macro", "net_base", "net_10y"))
+
+def _hu0(x):
+    """Half-up to a whole peso (x is never negative here)."""
+    return int(Decimal(repr(x)).quantize(Decimal(1), rounding=ROUND_HALF_UP))
+def port_income(w):
+    """A portfolio's income over the trailing 12 months (v126), from its weights and each fund's payout record:
+    the yield if ATRAM passes on its targets' rates (`ttm_pct`) and if it pays them net of its own trust fee
+    (`net_pct`), the pesos a year on P1,000,000 for each, the monthly and quarterly payments within it, and the
+    share held in funds that pay nothing. A payout is part of a fund's return, not added to it."""
+    wp = [round(x * 100) for x in w]                       # weights as fractions, as every pick carries them
+    rows, g, n, mo, qu, none_w = [], 0.0, 0.0, 0.0, 0.0, 0
+    for fid, x, spec in zip(UNIV_IDS, wp, UNIV[1]):
+        if not x: continue
+        r = FUND_PAYOUT[fid]
+        if not r["freq"]:
+            none_w += x; continue
+        net = rnd(max(r["ttm"] - spec["fee_feeder"], 0.0), 2)
+        amt = x * r["ttm"] * 100
+        rows.append({"id": fid, "w": x, "freq": r["freq"], "ttm": r["ttm"], "net": net, "per_1m": _hu0(amt)})
+        g += x * r["ttm"]; n += x * net
+        if r["freq"] == "monthly": mo += amt
+        else: qu += amt
+    return {"ttm_pct": rnd(g / 100, 2), "net_pct": rnd(n / 100, 2), "per_1m": _hu0(g * 100), "per_1m_net": _hu0(n * 100),
+            "monthly_1m": _hu0(mo / 12), "quarterly_1m": _hu0(qu / 4), "no_payout_w": none_w, "funds": rows}
 
 # The universe's macro frontier and the best pure ratio, for the Portfolios chart and
 # the "why not simply maximise return" note - the same set B is chosen from. The
@@ -8895,6 +8939,23 @@ SOURCES = [
      'https://etiqa.com.ph/fund-price-and-statistics'),
     ('DragonFi', 'ATRAM Global Multi-asset Income Feeder Fund - aims to distribute income monthly, as its target fund',
      'https://help.dragonfi.ph/hc/en-us/articles/60112340334873-ATRAM-Global-Multi-asset-Income-Feeder-Fund'),
+    # v126: each payer's trailing-12-month yield (FUND_PAYOUT ttm), read from its target fund
+    ('Parqet', 'JPMorgan Nasdaq Equity Premium Income Active UCITS ETF USD (dist) - dividend yield, trailing 12 months, 11.39%',
+     'https://app.parqet.com/en/etf/jpmorgan-nasdaq-equity-premium-income-active-ucits-etf-usd-dist-IE000U9J8HX9/dividends'),
+    ('ETF Atlas', 'JPM Nasdaq Equity Premium Income Active UCITS ETF USD Dist - dividend yield 11.49% (11 Nov 2026)',
+     'https://etfatlas.com/etf-details/IE000U9J8HX9'),
+    ('J.P. Morgan Asset Management', 'Nasdaq Equity Premium Income Active UCITS ETF - distribution notice, monthly payouts Dec 2025 - Sep 2026, annualised 8.88-16.12%',
+     'https://am.jpmorgan.com/content/dam/jpm-am-aem/asiapacific/sg/en/supplemental/dividend-information/distribution-notice-nasdaq-equity-premium-income.pdf'),
+    ('Investing.com', 'Schroder Asian Asset Income Fund A Dis USD - trailing-12-month yield 5.95%',
+     'https://www.investing.com/funds/schroder-asian-asset-income-fund-us'),
+    ('Investing.com', 'JPMorgan Asia Equity Dividend (mth) USD - trailing-12-month yield 2.71%',
+     'https://ph.investing.com/funds/jpmorgan-asia-equity-dividend-mth-u'),
+    ('Fidelity International', 'Fidelity Funds - Global Dividend Fund A-QINCOME(G)-EUR factsheet, 30 Sep 2026 - historic yield 2.30%, quarterly',
+     'https://www.fidelityinternational.com/FILPS/Documents/en/current/mf.en.xx.LU0731782404.pdf'),
+    ('Hargreaves Lansdown', 'Fidelity Global Dividend: May 2026 fund update - yields 2.30%',
+     'https://www.hl.co.uk/funds/research-and-news/fidelity-global-dividend-may-2026-fund-update'),
+    ('Investing.com UK', 'Fidelity Funds - Global Dividend Fund A-QINCOME G - trailing-12-month yield 2.23%',
+     'https://uk.investing.com/funds/global-dividend-fund-a-qincome-g-us'),
 ]
 
 # ----------------------------------------------------------------------------
@@ -9040,7 +9101,7 @@ def payload():
         "baseline": {"weights": [round(x*100) for x in BASELINE_W],
                      "base": BASE, "under_macro": BASE_UNDER_MACRO,
                      "scenarios": run_scenarios(BASELINE_W, "net_macro")},
-        "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": UNIV_IDS,
+        "portfolio_a": {"weights": [round(x * 100) for x in PA_W], "ids": UNIV_IDS, "income": port_income(PA_W),
                         "macro": PA, "base": PA_BASE, "ten": PA_10, "column": "net_10y",
                         "band_n": PA_BAND_N, "n_feasible": UNIV_N_FEAS["a"],
                         "scenarios": run_scenarios(PA_W, "net_10y", UNIV),   # its own horizon (v80)
@@ -9100,7 +9161,7 @@ def payload():
                 "tie_pp": PIN_TIE_PP, "frontier": UNIV_FRONTIER,
                 "best_ratio": {"weights": UNIV_BEST_RATIO[1]["weights"], **UNIV_BEST_RATIO[1]},
                 "what_if": WHAT_IF_UNIV},
-        "portfolio_b": {"weights": [round(x * 100) for x in PB_W], "ids": UNIV_IDS,
+        "portfolio_b": {"weights": [round(x * 100) for x in PB_W], "ids": UNIV_IDS, "income": port_income(PB_W),
                         "column": "net_macro", "band_n": PB_BAND_N,
                         "n_feasible": UNIV_N_FEAS["b"],
                         "shorts": [f["short"] for f in UNIV[1]],
@@ -9118,7 +9179,7 @@ def payload():
         # PORTFOLIO C (re-set v125, owner 2026-11-23): the income portfolio - two to five of the four
         # income-paying funds and Peso Money Market, no main fund, no cap, by the one rule on the
         # 1/3/5/10-year view; each fund's payout record beside it.
-        "portfolio_c": {"weights": [round(x * 100) for x in PC_W], "ids": UNIV_IDS,
+        "portfolio_c": {"weights": [round(x * 100) for x in PC_W], "ids": UNIV_IDS, "income": port_income(PC_W),
                         "macro": PC, "base": PC_BASE, "ten": PC_10, "column": "net_macro",
                         "funds": list(C_FUNDS), "payout": C_PAYOUT, "held_out_income": C_HELD_OUT_INCOME, "rule_date": C_RULE_DATE,
                         "n_funds": PC_N, "min_funds": C_MIN_FUNDS, "max_funds": C_MAX_FUNDS, "by_count": C_BY_COUNT,
@@ -9130,7 +9191,7 @@ def payload():
         # PORTFOLIO D (v96, owner 2026-11-07; re-set v99, 2026-11-12): Nasdaq Equity Income the largest
         # of two to five funds, no cap and no cash floor, by the same rule on the 1/3/5/10-year view
         # inside the budget. (This comment said "exactly two other funds" from v99 to v100.)
-        "portfolio_d": {"weights": [round(x * 100) for x in PD_W], "ids": UNIV_IDS,
+        "portfolio_d": {"weights": [round(x * 100) for x in PD_W], "ids": UNIV_IDS, "income": port_income(PD_W),
                         "macro": PD, "base": PD_BASE, "ten": PD_10, "column": "net_macro",
                         "fund": "ATRQIAP", "n_funds": PD_N, "min_funds": D_MIN_FUNDS, "max_funds": D_MAX_FUNDS,
                         "by_count": D_BY_COUNT, "rule_date": D_RULE_DATE,
@@ -9139,6 +9200,8 @@ def payload():
                         "dd_cap": round(DD_CAP, 2),
                         "in_budget": abs(PD["maxdd"]) <= DD_CAP + 1e-9
                                      and abs(port_dd(PD_W, "net_macro", UNIV)) <= DD_CAP + 1e-9},
+        # v126: what each of the eleven funds pays, for the income each portfolio shows
+        "fund_payout": FUND_PAYOUT, "payout_ttm_date": PAYOUT_TTM_DATE,
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
 
@@ -11039,6 +11102,34 @@ def report():
                    and all(f in UNIV_IDS for f in C_FUNDS)
                    and _pc["held_out_income"] == C_HELD_OUT_INCOME
                    and set(C_HELD_OUT_INCOME) <= {h[0] for h in MACRO["list22_held_out"]}))
+    # v126: EVERY FUND'S PAYOUT AND EVERY PORTFOLIO'S INCOME. Every fund the search admits has a payout record;
+    # a payer has a frequency, a trailing-12-month yield and its sources, a non-payer neither; C's set is exactly
+    # the payers and the money market; and each portfolio's income re-derives from its weights - per fund, the
+    # yield, the yield net of the trust fee, the pesos a year on P1,000,000, the monthly and quarterly payments.
+    _fp = p["fund_payout"]
+    _payers = [f for f in UNIV_IDS if _fp[f]["freq"]]
+    checks.append(("every fund carries a payout record: a payer its frequency, trailing-12-month yield and sources, a non-payer none; C's set is the payers and the money market",
+                   set(_fp) == set(UNIV_IDS) and p["payout_ttm_date"] == PAYOUT_TTM_DATE <= REVIEW_DATE
+                   and all(_fp[f]["freq"] in ("monthly", "quarterly") and 0 < _fp[f]["ttm"] < 20 and _fp[f]["ttm_sources"]
+                           and _fp[f]["sources"] for f in _payers)
+                   and all(_fp[f]["ttm"] == 0 and not _fp[f]["ttm_sources"] and _fp[f]["sources"] for f in UNIV_IDS if f not in _payers)
+                   and set(C_FUNDS) == set(_payers) | {"ATRPHMM"}))
+    _incok = True
+    for _k in ("portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"):
+        _q = p[_k]; _in = _q["income"]; _g = _n = _mo = _qu = 0.0; _rows = []
+        for _f, _x in zip(UNIV_IDS, _q["weights"]):
+            if not _x or not _fp[_f]["freq"]: continue
+            _fee = UNIV[1][UNIV_IDS.index(_f)]["fee_feeder"]; _nt = rnd(max(_fp[_f]["ttm"] - _fee, 0.0), 2)
+            _rows.append((_f, _x, _fp[_f]["ttm"], _nt)); _g += _x * _fp[_f]["ttm"]; _n += _x * _nt
+            if _fp[_f]["freq"] == "monthly": _mo += _x * _fp[_f]["ttm"] * 100
+            else: _qu += _x * _fp[_f]["ttm"] * 100
+        _incok = _incok and ([(r["id"], r["w"], r["ttm"], r["net"]) for r in _in["funds"]] == _rows
+                             and _in["ttm_pct"] == rnd(_g / 100, 2) and _in["net_pct"] == rnd(_n / 100, 2)
+                             and _in["per_1m"] == _hu0(_g * 100) and _in["per_1m_net"] == _hu0(_n * 100)
+                             and _in["monthly_1m"] == _hu0(_mo / 12) and _in["quarterly_1m"] == _hu0(_qu / 4)
+                             and _in["no_payout_w"] + sum(r[1] for r in _rows) == 100
+                             and _in["net_pct"] <= _in["ttm_pct"] and sum(r["per_1m"] for r in _in["funds"]) - _in["per_1m"] in (-1, 0, 1))
+    checks.append(("each portfolio's trailing-12-month income re-derives from its weights and the funds' payout records", _incok))
     # Each count's best is the rule run within that count alone: the rows cover every C mix once, each
     # row's best is one of its own mixes, and C is the best of the rows, at its own count.
     _bc = _pc["by_count"]; _bcf = [r for r in _bc if r["n_feasible"]]
