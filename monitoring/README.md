@@ -215,6 +215,12 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+193. A RULE THAT DEPENDS ON A DATE MUST READ THE DATE, NOT A TYPED RESULT. v131 caps C's stocks at 110 less the owner's
+   age. Typing "68" would have been right until 30 Dec and wrong after it, with every check still passing. The engine
+   stores the birth date and takes the age on the review date; the audit re-derives the age from the birth date in the
+   engine's source and the review date on its own; and the page says when the cap next steps. A cap can also silently
+   become the binding limit: C's mix is now the same at every drawdown-budget step from 21% to 30%, so the budget no
+   longer moves it - the page and the register say so.
 192. WHEN ASKING WHAT A WORD MEANS, OFFER THE READING CLOSEST TO THE WORDS. "Payout 12 ttm vs 1yr" was asked about, and
    the options offered were next year's payout, the 1-year return, or both - but not the plainest reading, the payout a
    year earlier. The owner picked the return, then corrected it (v129): "dividend payout 12 ttm vs dividend payout 1yr

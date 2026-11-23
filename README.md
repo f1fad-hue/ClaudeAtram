@@ -70,23 +70,25 @@ Global Allocation.
 
 | | A · 10-year view | B · 1/3/5/10-year view | C · dividend income | D · Nasdaq Income-led |
 |---|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** | 0 / 65 / 0 / 0 / 0 / 0 / 0 / 0 / 0 / 35 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 15 / 0 / 0 / 20 / 0 |
-| 10y net CAGR after all fees | **7.24%** | 7.13% | 7.07% | 7.19% |
-| Expected max drawdown (10y) | −24.9% | −24.9% | −25.0% | −24.9% |
-| Return per unit of drawdown | **0.291** | 0.286 | 0.283 | 0.289 |
-| Payout yield, trailing 12 months (est.) | 5.49% | 5.49% | 9.51% | 6.90% |
-| Payout a year on ₱1,000,000 (est.; net of ATRAM's trust fee) | ₱54,900 (₱45,900) | ₱54,900 (₱45,900) | ₱95,100 (₱80,100) | ₱69,000 (₱58,500) |
-| Payout yield, next 12 months (forecast at the latest rates) | 5.84% | 5.84% | 10.16% | 7.40% |
-| Payout, next vs last 12 months | +0.35pp (₱58,400) | +0.35pp (₱58,400) | +0.65pp (₱101,600) | +0.50pp (₱74,000) |
-| Payout yield, 2025, for reference (est.) | 5.18% | 5.18% | 8.93% | 6.45% |
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** | 30 / 65 / 0 / 0 / 0 / 0 / 0 / 0 / 0 / 5 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 15 / 0 / 0 / 20 / 0 |
+| 10y net CAGR after all fees | **7.24%** | 7.13% | 6.61% | 7.19% |
+| Expected max drawdown (10y) | −24.9% | −24.9% | **−20.9%** | −24.9% |
+| Return per unit of drawdown | 0.291 | 0.286 | **0.316** | 0.289 |
+| Payout yield, trailing 12 months (est.) | 5.49% | 5.49% | 7.71% | 6.90% |
+| Payout a year on ₱1,000,000 (est.; net of ATRAM's trust fee) | ₱54,900 (₱45,900) | ₱54,900 (₱45,900) | ₱77,100 (₱66,600) | ₱69,000 (₱58,500) |
+| Payout yield, next 12 months (forecast at the latest rates) | 5.84% | 5.84% | 8.36% | 7.40% |
+| Payout, next vs last 12 months | +0.35pp (₱58,400) | +0.35pp (₱58,400) | +0.65pp (₱83,600) | +0.50pp (₱74,000) |
+| Payout yield, 2025, for reference (est.) | 5.18% | 5.18% | 7.13% | 6.45% |
 
 Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C and D
 on the 1/3/5/10-year. **Portfolio C (v125, owner, 23 Nov 2026)** is the dividend-income portfolio -
 two to five of the four ATRAM funds that pay income to their unitholders (Nasdaq Equity Income monthly;
 Asia Equity Opportunity, Global Dividend and Asian Multi-Asset Income quarterly) and Peso Money Market as
 an allowed cash buffer, each at least 5%, no main fund and no single-fund cap - chosen by B's rule on B's
-view: 65% Nasdaq Equity Income and 35% Asian Multi-Asset Income at 7.07% / −25.0%, 0.06pp a year below B;
-the rule finds two funds best (three return 7.05%). Payouts count inside each fund's net CAGR, not on top.
+view - and, from v131 (owner, 23 Nov 2026), at most 110 less the owner's age in stocks (68% at 42, 67% from 30 Dec,
+recomputed on each birthday): 65% Nasdaq Equity Income, 30% Peso Money Market and 5% Asian Multi-Asset Income, 67.5% in
+stocks, at 6.61% / −20.9%, 0.52pp a year below B (65% / 35% Nasdaq / Asian Multi-Asset at 7.07% / −25.0% before the cap).
+The cap, not the drawdown budget, now binds: C's mix is the same at every budget step from 21% to 30%. Payouts count inside each fund's net CAGR, not on top.
 **The payout rows (v126, owner, 23 Nov 2026)** are estimates: no ATRAM fund's own payout rate was found, so each
 paying fund is read at its target fund's trailing-12-month distribution yield (Nasdaq Equity Income ~11.4% monthly; Asian
 Multi-Asset Income ~6.0%, Asia Equity Opportunity ~2.7% and Global Dividend ~2.3% quarterly), and the bracket assumes ATRAM

@@ -338,12 +338,28 @@ _gC = [r_ for r_ in PCC["scenarios"] if r_["name"].startswith("Grind")]
 ck("C: its grind-on stress row is its own-horizon headline", len(_gC) == 1
    and (_gC[0]["cagr"], _gC[0]["vol"], _gC[0]["maxdd"]) == (PCC["macro"]["cagr"], PCC["macro"]["vol"], PCC["macro"]["maxdd"]))
 ck("C: its drawdown coefficient is its own mix", abs(D["dd_model"]["c_k"] - round(pk(wC), 5)) < 1e-6)
+# v131 (owner 2026-11-23: "Update also portfolio C with my current age born Dec 30, 1983"; asked, "Stocks <= 110 - age"):
+# the age is re-derived here from the birth date in the engine's source and the review date, and every C mix the audit
+# generates keeps its stock share - each fund's equity share, the money market none - within 110 less it.
+_bd = d(re.search(r'^OWNER_BIRTH = "(\d{4}-\d{2}-\d{2})"', ENGINE, re.M).group(1))
+_ageA = REV.year - _bd.year - ((REV.month, REV.day) < (_bd.month, _bd.day))
+_capA = 110 - _ageA
+_eqA = {f["id"]: (0.0 if f["id"] == "ATRPHMM" else f.get("equity_share", 1.0)) for f in D["funds"] + PBB["funds"]}
+_stk = lambda w: sum(x * _eqA[IDS[i]] for i, x in enumerate(w) if x)
+ck("C: the owner's age and stock cap re-derive from the birth date and the review date, and C keeps within the cap",
+   PCC["age"] == _ageA and PCC["age_rule"] == 110 and PCC["equity_cap"] == _capA and abs(PCC["stock_pct"] - _stk(wC)) < 0.006
+   and _stk(wC) <= _capA + 1e-9 and d(PCC["cap_next_date"]) > REV
+   and (d(PCC["cap_next_date"]).month, d(PCC["cap_next_date"]).day) == (_bd.month, _bd.day)
+   and all(_stk(v["c"]["weights"]) <= _capA + 1e-9 for v in D["universe"]["what_if"].values())
+   and all(_stk(a_["c"]["weights"]) <= _capA + 1e-9 for a_ in D["dd_gauge"]["alt"].values()),
+   f"age {PCC['age']} vs {_ageA}, cap {PCC['equity_cap']} vs {_capA}, stocks {PCC['stock_pct']} vs {_stk(wC)}")
 _fC, _nC, _nCn, _shC = [], 0, {}, {}
 for k in range(2, 6):
     for sup in itertools.combinations(sorted(_iC), k):
         for sp in _splits(100, k, 5, 100):
             w = [0] * NU
             for i_, x in zip(sup, sp): w[i_] = x
+            if _stk(w) > _capA + 1e-9: continue
             _nC += 1; _nCn[k] = _nCn.get(k, 0) + 1
             rd, vd, dd_, r, v = figures(w, "net_macro")
             _shC[k] = max(_shC.get(k, -1e9), dd_)

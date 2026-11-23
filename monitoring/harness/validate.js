@@ -120,6 +120,12 @@ const file = process.argv[2], live = process.argv.includes("--live");
            return k >= 0 && cpRows[k].includes(cpy[id].freq ? cpy[id].freq.replace(/^./, c => c.toUpperCase()) : "No payout")
              && cpRows[k].endsWith(w ? w + "%" : "\u2013") && cpSub[k].includes(cpy[id].sources); }),
       info.clede.slice(0, 200));
+    // v131 (owner, 23 Nov): C's stock cap by the owner's age, stated in its lede
+    const PCv = D.portfolio_c;
+    ck("Portfolio C's lede states the age rule, the cap at the owner's age, the next step and C's stock share",
+      info.clede.includes(`at most ${PCv.age_rule} less your age in stocks`) && info.clede.includes(`${PCv.equity_cap}% at ${PCv.age}`)
+      && info.clede.includes(`${PCv.equity_cap - 1}% from`) && info.clede.includes(PCv.stock_pct.toFixed(1).replace(/\.0$/, "") + "% in stocks")
+      && PCv.stock_pct <= PCv.equity_cap, info.clede.slice(0, 240));
     // v128 (owner, 23 Nov): concise - no paragraph shows more than 90 words before its "More"
     const longest = info.shown.reduce((a, x) => x[0] > a[0] ? x : a, [0, ""]);
     ck("every paragraph on every tab shows 90 words or fewer, the rest folded under More",

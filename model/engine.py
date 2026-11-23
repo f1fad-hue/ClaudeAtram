@@ -6769,14 +6769,35 @@ for _f, _r in FUND_PAYOUT.items():
 # The income payers still held out (First Metro Securities' list: Global Multi-Asset Income monthly, the
 # other two quarterly); each must be on the held-out list, and joins C's set only once admitted.
 C_HELD_OUT_INCOME = ["Global Bond Income", "Global Multi-Asset Income", "US Multi-Asset Income"]
+# C BY THE OWNER'S AGE (v131, owner 2026-11-23: "Update also portfolio C with my current age born Dec 30, 1983"; asked,
+# "Stocks <= 110 - age"). C holds at most (110 - age)% in stocks, the age taken on the review date, so the cap steps down
+# one point on each birthday without anyone typing it. A fund's stock share is its equity share (Asian Multi-Asset
+# Income half, the others whole) and the money market none.
+OWNER_BIRTH = "1983-12-30"
+C_AGE_RULE = 110
+def _age_on(iso):
+    b, d = _dt.date.fromisoformat(OWNER_BIRTH), _dt.date.fromisoformat(iso)
+    return d.year - b.year - ((d.month, d.day) < (b.month, b.day))
+OWNER_AGE = _age_on(REVIEW_DATE)
+C_EQUITY_CAP = C_AGE_RULE - OWNER_AGE
+_nb = _dt.date.fromisoformat(OWNER_BIRTH).replace(year=_dt.date.fromisoformat(REVIEW_DATE).year)
+C_CAP_NEXT_DATE = (_nb if _nb > _dt.date.fromisoformat(REVIEW_DATE) else _nb.replace(year=_nb.year + 1)).isoformat()
+def _stock_share(fid):
+    return 0.0 if UNIV[1][UNIV_IDS.index(fid)]["cash_like"] else UNIV[1][UNIV_IDS.index(fid)].get("equity_share", 1.0)
+def c_stock_pct(w_pct):
+    """A mix's share in stocks, %, from its weights in % on the universe."""
+    return rnd(sum(x * _stock_share(f) for f, x in zip(UNIV_IDS, w_pct) if x), 2)
 def c_mixes():
     """Every C mix as (indices ascending, units of 5%): two to five of C's funds, each at least one unit -
-    no main fund, no cap, cash not required. Fewer funds first, as D."""
+    no main fund, no single-fund cap, cash not required - with at most C_EQUITY_CAP% in stocks (v131). Fewer
+    funds first, as D."""
     cidx = sorted(UNIV_IDS.index(f) for f in C_FUNDS)
     for k in range(C_MIN_FUNDS, C_MAX_FUNDS + 1):
         for idx in combinations(cidx, k):
+            sh = [_stock_share(UNIV_IDS[i]) for i in idx]
             for comp in _comps(20, k, 1, 20):
-                yield idx, comp
+                if sum(u * 5 * e for u, e in zip(comp, sh)) <= C_EQUITY_CAP + 1e-9:
+                    yield idx, comp
 _PK["c"] = _Pick()
 _PK.update({("c", k): _Pick() for k in _WI_KEYS})
 _PK.update({("cn", n): _Pick() for n in range(C_MIN_FUNDS, C_MAX_FUNDS + 1)})   # each count's own best
@@ -9234,6 +9255,9 @@ def payload():
                         "macro": PC, "base": PC_BASE, "ten": PC_10, "column": "net_macro",
                         "funds": list(C_FUNDS), "payout": C_PAYOUT, "held_out_income": C_HELD_OUT_INCOME, "rule_date": C_RULE_DATE,
                         "n_funds": PC_N, "min_funds": C_MIN_FUNDS, "max_funds": C_MAX_FUNDS, "by_count": C_BY_COUNT,
+                        # v131: the owner's age rule - stocks at most (110 - age)% - with C's own stock share
+                        "age": OWNER_AGE, "age_rule": C_AGE_RULE, "equity_cap": C_EQUITY_CAP, "cap_next_date": C_CAP_NEXT_DATE,
+                        "stock_pct": c_stock_pct([round(x * 100) for x in PC_W]),
                         "band_n": PC_BAND_N, "n_feasible": UNIV_N_FEAS["c"], "n_total": UNIV_N_C,
                         "scenarios": run_scenarios(PC_W, "net_macro", UNIV),
                         "dd_cap": round(DD_CAP, 2),
@@ -11147,6 +11171,15 @@ def report():
                    and all(_cok(v["c"]["weights"]) for v in _wiv) and all(_cok(_alt[c]["c"]["weights"]) for c in _alt)
                    and p["dd_model"]["c_k"] == round(port_k(PC_W, UNIV), 5)
                    and not any(re.fullmatch(r"[a-z]+_w_c_[a-z]+", k) for k in MACRO)))
+    # v131: the age rule - C's age is the owner's on the review date, its cap 110 less it, and C, every count's best,
+    # every what-if and every budget step hold no more than the cap in stocks
+    _cst = lambda w: c_stock_pct(w) <= C_EQUITY_CAP + 1e-9
+    checks.append(("Portfolio C holds no more in stocks than 110 less the owner's age, in every what-if, step and count",
+                   _pc["age"] == OWNER_AGE == _age_on(REVIEW_DATE) and _pc["equity_cap"] == C_AGE_RULE - OWNER_AGE == 110 - OWNER_AGE
+                   and _pc["stock_pct"] == c_stock_pct(_cw) and _cst(_cw) and _pc["cap_next_date"] > REVIEW_DATE
+                   and _age_on(_pc["cap_next_date"]) == OWNER_AGE + 1
+                   and all(_cst(v["c"]["weights"]) for v in _wiv) and all(_cst(_alt[c]["c"]["weights"]) for c in _alt)
+                   and all(_cst(r["weights"]) for r in _pc["by_count"] if r["n_feasible"])))
     _pay = _pc["payout"]
     checks.append(("each of C's funds carries a payout record - the four income funds monthly or quarterly with sources, the money market none",
                    set(_pay) == set(C_FUNDS) and all(_pay[f]["sources"] and _pay[f]["basis"] for f in C_FUNDS)

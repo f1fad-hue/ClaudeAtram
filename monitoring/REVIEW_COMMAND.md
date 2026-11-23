@@ -19,7 +19,8 @@ the step that covers it (the map after the command), and the page check confirms
 2026-11-23 (v125): Portfolio C is the dividend-income portfolio; the weekly fund check re-confirms each income fund's
 payout schedule. Updated 2026-11-23 (v126): every portfolio shows its trailing-12-month payout, estimated
 from the target funds' yields. Updated 2026-11-23 (v129-v130): beside it, each portfolio's next 12 months at the latest rates, as a versus table, and 2025 for
-reference (v127's 1-year return retired). Updated 2026-11-23 (v128): every tab
+reference (v127's 1-year return retired). Updated 2026-11-23 (v131): C holds at most 110 less
+the owner's age in stocks; the engine takes the age on the review date, so the cap steps down by itself on 30 Dec. Updated 2026-11-23 (v128): every tab
 leads with figures and takeaways; long notes fold under "More". The runbook
 (`README.md`) says how; this file says what.
 
@@ -28,7 +29,8 @@ ATRAM review: bring the dashboard up to today, check every number on every tab, 
 what's wrong, clean up, and publish it to https://claude.ai/artifact/6z2thyg2HaHjFtcbjKhnUY
 (code: f1fad-hue/ClaudeAtram, branch claude/android-portfolio-macro-dashboard-awmpce).
 The portfolios are A, B, C and D (C, from 23 Nov 2026, is my dividend-income portfolio: two to five
-of the ATRAM funds that pay income, with Peso Money Market as a cash buffer). I hold Nasdaq Equity Income.
+of the ATRAM funds that pay income, with Peso Money Market as a cash buffer, and at most 110 less my age in
+stocks). I hold Nasdaq Equity Income.
 
 Before you start
 • Read the runbook (monitoring/README.md) and the newest changelog entry, and carry

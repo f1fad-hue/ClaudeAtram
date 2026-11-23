@@ -2,6 +2,35 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v131: Portfolio C capped in stocks by the owner's age (110 less it)
+
+At the owner's instruction: "Update also portfolio C with my current age born Dec 30, 1983". Asked how the age should shape
+C, the owner chose stocks at most 110 less the age: 68% at 42 today, 67% from 30 Dec, a point less each birthday.
+
+| Portfolio C | Before (v125-v130) | Now |
+|---|---|---|
+| Mix | 65% Nasdaq Equity Income, 35% Asian Multi-Asset Income | 65% Nasdaq Equity Income, 30% Peso Money Market, 5% Asian Multi-Asset Income |
+| In stocks | 82.5% | 67.5% (cap 68%) |
+| 1/3/5/10-year net CAGR / drawdown | 7.07% / −25.0% | 6.61% / −20.9% |
+| Return per unit of drawdown | 0.283 | 0.316, the highest of the four |
+| Payout, last 12 months / next 12 (forecast) | 9.51% / 10.16% | 7.71% / 8.36% |
+
+**Why this mix:** a fund's stock share is its equity share (Asian Multi-Asset Income half, the other payers whole, the money
+market none). Within 68%, keeping Nasdaq Equity Income at 65% and holding cash returns more (6.61%) than swapping it for Asian
+Multi-Asset Income (35% / 65% at 6.56%, which pays more: 7.89%). The cap, not the drawdown budget, now binds: C's mix is the
+same at every budget step from 21% to 30%.
+
+**What changed:** engine `OWNER_BIRTH`, the age on the review date, `C_EQUITY_CAP`, `c_stock_pct()`, the cap in `c_mixes()`,
+and `age`, `age_rule`, `equity_cap`, `cap_next_date`, `stock_pct` on `portfolio_c` (the birth date itself is not in the
+page's data); one check added (273). Page: C's lede states the rule, the cap now and from the next birthday, and C's stock
+share; the method note, the Report card and the verdict mention it. Audit: the age re-derived from the birth date in the
+engine source and the review date, the cap held in C's own generator, its what-ifs and steps (310). Validator: one check
+(28). Mutants: two added (99). Docs: README, register, review command, lesson 193.
+
+**Checks:** engine 273/273; audit 310/310; validator 28/28; mutants 99/99 caught.
+
+Not personal financial advice.
+
 ## 2026-11-23 — v130: payout, last 12 months vs next 12 months, as a versus table
 
 At the owner's instruction: "Update dividend payout 12 ttm vs dividend payout 1yr forecast in all 4 portfolios", then
