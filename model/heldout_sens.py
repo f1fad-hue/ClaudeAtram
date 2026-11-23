@@ -88,9 +88,13 @@ def run_override(fid, **over):
 if __name__ == "__main__":
     shorts = [f["short"] for f in E.FUNDS + E.ADD_FUNDS]
     res = {}
+    got = {}    # v124: every figure the engine records from this run, to be held equal to it below
     for lab, sp in (("useq_listed", spec_useq(E.MACRO["useq_trust_listed"])), ("useq_peer", spec_useq(E.MACRO["useq_trust_peer"])),
                     ("gbi_inst", spec_gbi(0.69)), ("gbi_retail", spec_gbi(1.59))):
         t = time.time(); fb, out = run(sp); res[lab] = out
+        for k in "abd":
+            got[{"useq_listed": f"useq_w_{k}_listed", "useq_peer": f"useq_w_{k}_peer",
+                 "gbi_inst": f"gbi_w_{k}_low", "gbi_retail": f"gbi_w_{k}_high"}[lab]] = out[k]["new_w"]
         print(f"{lab:12} fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']} vol {fb['vol']} dd {fb['dd_macro']}  ({time.time()-t:.0f}s)")
         for k, v in out.items():
             mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts + [fb["short"]]) if x)
@@ -105,15 +109,27 @@ if __name__ == "__main__":
         print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
     # Global Infra Equity's target charge (v93): 0.80% on ATRAM's fact sheet matches no HSBC class
     # found; the IC class's 1.00% (estimated) and the BC GBP class's 1.10% are the alternatives.
-    for chg in E.MACRO["ginf_target_alt"]:
+    for i_, chg in enumerate(E.MACRO["ginf_target_alt"]):
         t = time.time(); fb, out = run_override("M_GINF", fee_target=chg)
+        got[("ginf_net_alt", i_)] = fb["net_macro"]
+        for k in "abd":
+            got[(f"ginf_w_{k}_alt", i_)] = out[k]["fund_w"]; got[(f"ginf_cagr_{k}_alt", i_)] = out[k]["cagr"]
         print(f"ginf_{round(chg * 100)}     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
         for k, v in out.items():
             mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
             print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
     # Asian Multi-Asset Income: 1.50% carried, 1.20% on the October 2025 KIID (2026-10-28).
     t = time.time(); fb, out = run_refee("ATRAMIP", E.MACRO["amip_trust_alt"])
+    for k in "abd": got[f"amip_w_{k}_alt"] = out[k]["fund_w"]
     print(f"amip_alt     fund net base {fb['net_base']} 10y {fb['net_10y']} macro {fb['net_macro']}  ({time.time()-t:.0f}s)")
     for k, v in out.items():
         mix = ", ".join(f"{x}% {s}" for x, s in zip(v["w"], shorts) if x)
         print(f"   {k.upper()}: {v['fund_w']}% of it  | {mix}  {v['cagr']}% / {v['dd']}%")
+    # v124: THE ENGINE'S RECORD OF THIS RUN MUST BE THIS RUN. From v119 to v123 the page printed what-if weights from an
+    # older run (US Equity Opportunity's B at the peer fee, D at the listed fee, Global Bond Income's D at the high fee,
+    # Global Infra Equity's B and D figures), because nothing compared the two. Re-record, re-date (heldout_run_date)
+    # and re-run until this passes.
+    rec = lambda key: E.MACRO[key[0]][key[1]] if isinstance(key, tuple) else E.MACRO[key]
+    bad = [(k, rec(k), v) for k, v in got.items() if abs(rec(k) - v) > 1e-9]
+    print(f"\nrecorded figures that differ from this run: {bad if bad else 'none'} ({len(got)} compared)")
+    sys.exit(1 if bad else 0)

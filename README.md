@@ -43,10 +43,13 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 20 Nov 2026 (reviewed 21 and 22 Nov, every 20 Nov session closed; the Gulf's 21 Nov events are in the geopolitics note, in no price yet): New York,
-Seoul, Tokyo and Manila at their 20 Nov closes, after the week's AI sell-off (the S&P 500 6,910.39, -3.70% on the day
-and -8.6% on the week, into correction; the Nasdaq 22,617.73, -5.28%; the KOSPI 4,869.96, -5.21%; the Nikkei
-56,436.65, -5.06%; the PSEi 5,306.98, -3.12%, its lowest close since April 2020); the VIX at 35.89, its highest close
+market assumptions. Market data as of 23 Nov 2026 (reviewed 23 Nov, 10:53 UTC): Seoul and Manila at their 23 Nov closes
+(the KOSPI 4,708.54, -3.31%, its lowest close since 13 Jan; the PSEi 5,353.07, +0.87%, after Friday's 5,306.98, its
+lowest since April 2020) and the 23 Nov T-bill auction (91-day 6.584%, a 14th straight weekly rise); Tokyo shut for
+Labor Thanksgiving Day; New York, oil, the VIX and Treasuries at 20 Nov, after the week's AI sell-off (the S&P 500
+6,910.39, -3.70% on the day and -8.6% on the week, into correction; the Nasdaq 22,617.73, -5.28%; the KOSPI 4,869.96,
+-5.21%; the Nikkei 56,436.65, -5.06%); the peso held at 20 Nov's 63.81 (23 Nov's 63.845 in one report); the Gulf's
+21 Nov events are in the geopolitics note, in no price yet; the VIX at 35.89, its highest close
 in this record; the Treasury curve at 20 Nov (the 10-year 4.92%, the 2-year 4.63%, the 30-year 5.31%, on the par
 curve); the peso at 63.81; Brent's January ($92.57) and WTI's December ($83.98, its last trading day) at 20 Nov,
 confirmed in a second source in v118; the VIX futures curve

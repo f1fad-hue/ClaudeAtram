@@ -24,11 +24,14 @@ from itertools import combinations, product
 # NO WEEKDAY IS TYPED HERE. The comment on REVIEW_DATE said "(Saturday)" on a
 # Sunday, because a weekday written beside a date is a second copy of the date
 # that nobody updates. Both weekdays are derived and checked below instead.
-AS_OF = "2026-11-20"        # newest completed session carried (v117): Friday 20 Nov's closes in New York,
+AS_OF = "2026-11-23"        # newest completed session carried (v124): Monday 23 Nov's in Seoul and Manila and the 23 Nov
+                            # T-bill auction; Tokyo shut (Labor Thanksgiving Day); New York, oil, the VIX and
+                            # Treasuries still at 20 Nov, the peso held there (23 Nov in one source). Until v123:
+                            # Friday 20 Nov's closes in New York,
                             # Seoul, Tokyo and Manila, the VIX's, the peso's and the Treasury curve's; from v118
                             # the oil settles too (Brent's January, WTI's December on its last trading day). The
                             # VIX futures board, VIX3M and FedWatch's read are 19 Nov's; the 16 Nov T-bill auction
-REVIEW_DATE = "2026-11-22"  # when this review was worked through (v117-v121 Saturday 21 Nov, v122 Sunday 22 Nov; no session since 20 Nov)
+REVIEW_DATE = "2026-11-23"  # when this review was worked through (v124: Monday 23 Nov, 10:53 UTC, after Seoul's and Manila's closes)
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -940,6 +943,9 @@ MACRO = {
     "usdphp": 63.81,           # 20 Nov
     "usdphp_date": "2026-11-20",
     "usdphp_prev": 63.665,     # 19 Nov close
+    # v124: 23 Nov's P63.845, 3.5 centavos weaker on BAP data, is in BusinessWorld only ("Peso slips as volume thins
+    # before US data"); Trading Economics' 63.849 is a live quote. HELD at 20 Nov.
+    "usdphp_withheld_23nov": 63.845,
     "usdphp_prev_date": "2026-11-19",
     "usdphp_chg": 0.145,
     "usdphp_13nov": 63.72, "usdphp_16nov": 63.94, "usdphp_17nov": 63.67, "usdphp_18nov": 63.71,
@@ -1054,9 +1060,13 @@ MACRO = {
     "psei_13nov": 5593.49, "psei_16nov": 5481.88, "psei_16nov_chg_pct": -2.00,
     "psei_17nov_chg_pct": 0.35, "psei_18nov_chg_pct": 0.20, "psei_19nov": 5477.91, "psei_19nov_chg_pct": -0.62,
     "psei_20nov_chg_pct": -3.12,   # v118: 20 Nov under its own key
-    "psei": 5306.98, "psei_chg_pts": -170.93, "psei_chg_pct": -3.12,
-    "psei_date": "2026-11-20",
-    "psei_prev": 5477.91,
+    # v124: 23 Nov +46.09 (+0.87%) to 5353.07, regaining ground after Friday's sell-off, an intraday high of 5419.49
+    # but unable to hold 5,400 (the Inquirer, "PSEi regains ground after steep sell-off"; Bloomberg's PCOMP quote).
+    # 5306.98 + 46.09 = 5353.07. Trading Economics' 5,399 (+1.73%) is an intraday print, not carried.
+    "psei_20nov": 5306.98,
+    "psei": 5353.07, "psei_chg_pts": 46.09, "psei_chg_pct": 0.87,
+    "psei_date": "2026-11-23",
+    "psei_prev": 5306.98, "psei_23nov_high": 5419.49, "psei_23nov_level": 5400, "psei_disputed_23nov": [5353.07, 5399.0],
     "psei_13nov_chg_pct": -1.18,
     "psei_low_since": "April 2020",         # 20 Nov's close (the Inquirer; GMA)
     "psei_16nov_low_since": "May 2020",
@@ -1117,12 +1127,17 @@ MACRO = {
     # 364-day was undersubscribed and partially awarded (P7.26bn of P10bn; Context.ph's P7.5bn is not
     # carried). The 91- and 182-day are the highest since about 2006 (BusinessMirror). The streak is
     # DERIVED: BusinessWorld's 12 straight weekly rises through 9 Nov, plus 16 Nov's rise in every tenor.
-    "ph_tbill_91": 6.567, "ph_tbill_182": 6.748, "ph_tbill_364": 6.932,
-    "ph_tbill_prev": [6.493, 6.719, 6.855],       # 9 Nov auction
-    "ph_tbill_chg_bp": [7.4, 2.9, 7.7],           # as reported
-    "ph_tbill_weekly_rises": 13,                  # straight weekly rises in short-term rates (12 to 9 Nov, BusinessWorld, + 16 Nov)
-    "ph_tbill_award": "the 364-day undersubscribed and only partly awarded",
-    "ph_tbill_date": "2026-11-16",
+    # 23 Nov auction (v124; Context.ph, "T-bill yields climb as market prices in further rate hikes"; BusinessWorld,
+    # "T-bill yields move up as inflation risks persist"; the Chronicle, whose 182-day "6.578%" is a misprint against
+    # both): 6.584 (+1.7bp), 6.758 (+1.0bp), 6.956 (+2.4bp), each chaining off 16 Nov; P31.4bn awarded of a P35bn offer
+    # cut from P45bn, on P69.2bn of tenders. A fourteenth straight weekly rise (the Chronicle; DERIVED: 13 + 23 Nov's
+    # rise in every tenor).
+    "ph_tbill_91": 6.584, "ph_tbill_182": 6.758, "ph_tbill_364": 6.956,
+    "ph_tbill_prev": [6.567, 6.748, 6.932],       # 16 Nov auction
+    "ph_tbill_chg_bp": [1.7, 1.0, 2.4],           # as reported
+    "ph_tbill_weekly_rises": 14,                  # straight weekly rises in short-term rates (12 to 9 Nov, BusinessWorld, + 16 and 23 Nov)
+    "ph_tbill_award": "P31.4bn awarded of a P35bn offer, cut from P45bn, though tenders reached P69.2bn",
+    "ph_tbill_date": "2026-11-23",
     "ph_tbill_cadence_d": 7,                      # BTr auctions T-bills weekly
     # THE PESO BOND FUNDS WERE REMOVED 2026-10-21 (owner: "remove from the lists and
     # portfolio allocations the atram long term and medium term peso bond"). Their
@@ -1231,13 +1246,13 @@ MACRO = {
     # 1.20% 25% of B (20%) and 25% of D (30%); Global Infra at 1.00% 10% of A (15%), 25% of B (none) and 15% of D
     # (20%), at 1.10% none of A or B and 10% of D (15%). The live picks reproduce (A 7.24% / -24.9%, B 7.14% /
     # -24.9%, D 7.20% / -25.0%).
-    "useq_w_a_listed": 15, "useq_w_b_listed": 15, "useq_w_a_peer": 15, "useq_w_b_peer": 0,
+    "useq_w_a_listed": 15, "useq_w_b_listed": 15, "useq_w_a_peer": 15, "useq_w_b_peer": 10,   # v124: B 10 at the peer fee (0 until v123, stale since v119)
     # RE-RUN 2026-10-30 on the 30 Oct inputs (v84): every weight below came back identical.
     # (Portfolio C's weights in these runs - useq_w_c_*, gbi_w_c_*, amip_w_c_alt, ginf_w_c_alt and
     # ginf_cagr_c_alt - RETIRED in v101 with C itself.)
     # v96: Portfolio D in the same re-runs (model/heldout_sens.py, 7 Nov).
     # v99: re-run 12 Nov under D's new rule (Nasdaq the largest of two to five funds).
-    "useq_w_d_listed": 10, "useq_w_d_peer": 0, "gbi_w_d_low": 30, "gbi_w_d_high": 10, "amip_w_d_alt": 25,
+    "useq_w_d_listed": 5, "useq_w_d_peer": 0, "gbi_w_d_low": 30, "gbi_w_d_high": 5, "amip_w_d_alt": 25,   # v124: 5 and 5 (10 and 10 until v123, stale since v119)
     # v113: 1.00% on ATRAM's fund page, uitf.com.ph and DragonFi (0.90% carried to v112 from one listing).
     "gbi_trust_listed": 1.00, "gbi_target_low": 0.69, "gbi_target_high": 1.59,
     # RE-RUN 2026-11-17 (v113) at the corrected 1.00% trust fee: every weight came back identical but Global
@@ -1257,8 +1272,8 @@ MACRO = {
     # the 1/3/5/10-year view at each alternative, its weight in A, B and D, and their CAGRs on their own views.
     "ginf_net_alt": [7.06, 6.96],
     "ginf_w_a_alt": [10, 0], "ginf_w_b_alt": [25, 0],
-    "ginf_cagr_a_alt": [7.20, 7.20], "ginf_cagr_b_alt": [7.09, 7.07],
-    "ginf_w_d_alt": [15, 10], "ginf_cagr_d_alt": [7.16, 7.15],   # D trims it at 1.00%, more at 1.10% (v117)
+    "ginf_cagr_a_alt": [7.20, 7.20], "ginf_cagr_b_alt": [7.08, 7.07],
+    "ginf_w_d_alt": [15, 15], "ginf_cagr_d_alt": [7.16, 7.14],   # v124: D keeps its 15% at either (B 7.09, D 10% / 7.15 until v123, stale since v119)
     # OTHER TARGET-CHARGE FIGURES FOUND IN v93, recorded beside the charges carried (TARGET_CHECKS):
     "aseq_target_alt": 1.82,          # Investing.com, an HKD class, undated (one source)
     "aseq_mgmt_fee": 1.5,             # J.P. Morgan's HK factsheet, end-Aug 2026
@@ -1292,7 +1307,7 @@ MACRO = {
     # Nasdaq Equity Income's target charge as confirmed in v93 (justETF; Fidelity UK): the
     # forecast's fee_target must equal it while the check reads "confirmed".
     "qiap_target_confirmed": 0.35,
-    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-21",
+    "heldout_run_cap": 25.0, "heldout_run_tie": 0.0, "heldout_run_date": "2026-11-23",
     # ASIAN MULTI-ASSET INCOME'S DISPUTED TRUST FEE (v75 CLAIMS; on the page from v77): ATRAM's
     # page has 1.50%, carried; the October 2025 KIID and uitf.com.ph 1.20%. Re-run 2026-10-28
     # (heldout_sens.run_refee) under the maximum-growth rule at 25%: the fund's net rises
@@ -3035,8 +3050,14 @@ MACRO = {
     "kospi_18nov_chg_pct": 1.99, "kospi_19nov_chg_pct": 1.39,
     "samsung_20nov_chg_pct": -7.01,
     "kospi_20nov": 4869.96, "kospi_20nov_chg_pct": -5.21,   # v118: 20 Nov under its own keys (see spx_20nov)
-    "kospi_latest": 4869.96, "kospi_latest_chg_pts": -267.93, "kospi_latest_chg_pct": -5.21,
-    "kospi_latest_date": "2026-11-20", "kospi_latest_prev": 5137.89,
+    # v124: 23 Nov 4708.54, -161.42 (-3.31%), its lowest close since 13 Jan (4692.64 then), down about 5% during the
+    # session, which set off a sell-side sidecar, before institutions bought in the afternoon, on AI-valuation worries,
+    # the plunge in US chip stocks and the prospect of more rate hikes; the Kosdaq -1.58% to 635.45, its lowest close
+    # since 9 Dec 2024 (Seoul Economic Daily, "KOSPI Closes Down 3.31% at 4,708.54"; the Kyunghyang Shinmun, "'Black
+    # Monday' averted"; SBS). 4869.96 - 161.42 = 4708.54.
+    "kospi_latest": 4708.54, "kospi_latest_chg_pts": -161.42, "kospi_latest_chg_pct": -3.31,
+    "kospi_latest_date": "2026-11-23", "kospi_latest_prev": 4869.96,
+    "kospi_low_since_23nov": "13 Jan", "kosdaq_23nov": 635.45, "kosdaq_23nov_chg_pct": -1.58,
     "kospi_11nov_chg_pct": 2.60, "kospi_10nov_chg_pct": 4.39,
     "kospi_9nov_chg_pct": -0.81,
     "kospi_6nov_chg_pct": -6.02, "kospi_5nov_chg_pct": -5.28, "kospi_4nov_chg_pct": 0.62,
@@ -3994,6 +4015,20 @@ US_LATEST_REASON = {
                    "MarketScreener; CappNotes; AP)"),
 }
 ASIA_LATEST_REASON = {
+    ("2026-11-23", "2026-11-20"): (
+        "Seoul fell again on 23 Nov while Tokyo was shut for Labor Thanksgiving Day: the KOSPI "
+        f"{'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% to "
+        f"{MACRO['kospi_latest']:,.2f}, its lowest close since {MACRO['kospi_low_since_23nov']}, after a fall of about 5% during the "
+        "session set off a sell-side sidecar and institutions bought in the afternoon, on worries over AI valuations, the "
+        "plunge in US chip stocks and the prospect of more rate hikes, and the Kosdaq "
+        f"{abs(MACRO['kosdaq_23nov_chg_pct']):.2f}% to {MACRO['kosdaq_23nov']:,.2f}, its lowest close since December 2024 "
+        "(Seoul Economic Daily; the Kyunghyang Shinmun; SBS). On 20 Nov the KOSPI had fallen "
+        f"{abs(MACRO['kospi_20nov_chg_pct']):.2f}% to {MACRO['kospi_20nov']:,.2f}, back under {MACRO['kospi_floor_17nov']:,} and a "
+        f"ten-month low, Samsung Electronics down {abs(MACRO['samsung_20nov_chg_pct']):.2f}% as foreigners and institutions sold "
+        "(SBS; KED Global; Financial News), and the Nikkei "
+        f"{abs(MACRO['nikkei_20nov_chg_pct']):.2f}% to {MACRO['nikkei_20nov']:,.2f}, a six-month low and its latest close "
+        f"(Investing.com; Reuters, via MarketScreener) - on the week to 20 Nov {abs(MACRO['kospi_wk_20nov_pct'])}% and "
+        f"{abs(MACRO['nikkei_wk_20nov_pct'])}%."),
     ("2026-11-20", "2026-11-20"): (
         "Seoul and Tokyo fell hardest on 20 Nov, as the AI chip sell-off spread from Wall Street: the KOSPI "
         f"{'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% to "
@@ -4023,6 +4058,12 @@ PH_PESO_REASON = {
                    "Tribune, on BAP data)"),
 }
 PSEI_REASON = {
+    "2026-11-23": (f", regaining ground after Friday's sell-off, though it touched {MACRO['psei_23nov_high']:,.2f} and could not "
+                   f"hold {MACRO['psei_23nov_level']:,} (the Inquirer; Bloomberg), while the peso's 23 Nov close, "
+                   f"P{MACRO['usdphp_withheld_23nov']:.3f} in one report (BusinessWorld), is not carried. On 20 Nov it had fallen "
+                   f"{abs(MACRO['psei_20nov_chg_pct']):.2f}% to {MACRO['psei_20nov']:,.2f}, its lowest close since {MACRO['psei_low_since']}, "
+                   "ICTSI the heaviest loser after reports that South Africa threatened to revoke its Durban terminal licence "
+                   "(the Inquirer; GMA; the Tribune)"),
     "2026-11-20": (f", its lowest close since {MACRO['psei_low_since']} (the Inquirer; GMA), ICTSI the heaviest loser after "
                    "reports that South Africa threatened to revoke its Durban terminal licence, only five index members "
                    "rising as the AI sell-off hit Asia (the Inquirer; GMA; the Tribune). It had risen "
@@ -4212,7 +4253,7 @@ REGIONS = {
                 f"{_dday('ph_tbill_date')} auction 91-day bills rose {MACRO['ph_tbill_chg_bp'][0]}bp to {MACRO['ph_tbill_91']}%, "
                 f"182-day bills {MACRO['ph_tbill_chg_bp'][1]}bp to {MACRO['ph_tbill_182']}% and "
                 f"364-day bills {MACRO['ph_tbill_chg_bp'][2]}bp to {MACRO['ph_tbill_364']}%, {MACRO['ph_tbill_award']}, short-term rates "
-                f"rising for a {MACRO['ph_tbill_weekly_rises']}th straight week (BusinessWorld; BusinessMirror). The 26 Oct "
+                f"rising for a {MACRO['ph_tbill_weekly_rises']}th straight week (Context.ph; BusinessWorld). The 26 Oct "
                 f"91-day rate this page carried until now, {max(MACRO['ph_tbill_disputed_26oct_91'])}%, was reported two ways, "
                 f"and both papers' 3 Nov reports chain from the other, {min(MACRO['ph_tbill_disputed_26oct_91'])}%; it is no "
                 "longer quoted. The economy slowed under the hikes: third-quarter GDP grew "
@@ -4443,7 +4484,7 @@ DRIVERS = [
      f"{MACRO['bsp_hike_bp']}bp hike to {MACRO['bsp_rrp']:.2f}%: at "
      f"the {_dday('ph_tbill_date')} auction 91-day bills rose {MACRO['ph_tbill_chg_bp'][0]}bp to {MACRO['ph_tbill_91']}%, "
      f"182-day bills {MACRO['ph_tbill_chg_bp'][1]}bp to {MACRO['ph_tbill_182']}% and 364-day bills "
-     f"{MACRO['ph_tbill_chg_bp'][2]}bp to {MACRO['ph_tbill_364']}% (BusinessWorld; BusinessMirror). "
+     f"{MACRO['ph_tbill_chg_bp'][2]}bp to {MACRO['ph_tbill_364']}% (Context.ph; BusinessWorld). "
      "Held: a December hike is the path the score assumed, and it is fully priced; a half-point is a minority "
      "price, not the expectation. It would be cut if the half-point became the base case."),
     ("Inflation trajectory", 0.15, 1.44,
@@ -4876,7 +4917,7 @@ DRIVER_Y23 = {n: round((3 * DRIVER_PATH[n]["3Y"] - DRIVER_Y1[n][0]) / 2, 3) for 
 # now -> months 1-6 -> months 7-12 -> years 2-3 -> years 4-5 -> neutral, so where year 1 equals the
 # reading now, or years 2-3 equal year 1, the six-month reading can only equal year 1 (Monetary, Growth
 # and Earnings): the research confirms it rather than sets it.
-DRIVER_M6_DATE = "2026-11-21"
+DRIVER_M6_DATE = "2026-11-23"   # v124: re-read on 23 Nov (Seoul -3.31%, bills up a 14th week, the Gulf after the close); none moved
 VOL_6M = round(horizon_vol(0.5), 2)
 VOL_FWD_M712 = round(math.sqrt(2 * VOL_1Y ** 2 - VOL_6M ** 2), 2)   # the forward vol of months 7-12
 DRIVER_M6 = {
@@ -4931,9 +4972,11 @@ US_SUMMARY_BY_DATE = {
     "2026-11-20": f"Held: the Nasdaq {'rose' if MACRO['nasdaq_chg_pct'] > 0 else 'fell'} {abs(MACRO['nasdaq_chg_pct']):.2f}% and the S&P {'rose' if MACRO['spx_chg_pct'] > 0 else 'fell'} {abs(MACRO['spx_chg_pct']):.2f}% on {_dday('equity_date')}, the S&P's seventh straight fall, taking it and the Dow into correction - the S&P down {abs(MACRO['spx_wk_20nov_pct'])}% in the week to 20 Nov, its worst since April 2025 - though Nvidia beat and raised on 17 Nov; claims are low at {MACRO['us_claims_nov14'] // 1000}k, and FedWatch has a December hike at {MACRO['fed_hike_odds_dec']}% on {_dday('fed_hike_odds_dec_date')}.",
 }
 ASIA_SUMMARY_BY_DATE = {
+    ("2026-11-23", "2026-11-20"): f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% to {MACRO['kospi_latest']:,.2f} on {_dday('kospi_latest_date')}, its lowest close since {MACRO['kospi_low_since_23nov']}, while Tokyo was shut for a holiday; on 20 Nov the KOSPI had fallen {abs(MACRO['kospi_20nov_chg_pct']):.2f}% and the Nikkei {abs(MACRO['nikkei_20nov_chg_pct']):.2f}% as the AI chip sell-off spread from Wall Street; Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and China's October retail sales rose only {MACRO['china_retail_oct']}% and industrial output {MACRO['china_ip_oct']}%, both under forecast.",
     ("2026-11-20", "2026-11-20"): f"Held: the KOSPI {'rose' if MACRO['kospi_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['kospi_latest_chg_pct']):.2f}% and the Nikkei {'rose' if MACRO['nikkei_latest_chg_pct'] > 0 else 'fell'} {abs(MACRO['nikkei_latest_chg_pct']):.2f}% on {_dday('kospi_latest_date')} as the AI chip sell-off spread from Wall Street, {abs(MACRO['kospi_wk_20nov_pct'])}% and {abs(MACRO['nikkei_wk_20nov_pct'])}% in the week to 20 Nov; Japan's economy shrank at a {abs(MACRO['jp_gdp_q3_saar'])}% annual rate in the third quarter, and China's October retail sales rose only {MACRO['china_retail_oct']}% and industrial output {MACRO['china_ip_oct']}%, both under forecast.",
 }
 PH_SUMMARY_BY_DATE = {
+    ("2026-11-23", "2026-11-20"): f"Held: third-quarter growth slowed to {MACRO['ph_gdp_q3']}% against {MACRO['ph_gdp_q3_poll']}% expected, with October inflation at {MACRO['ph_cpi_oct']}%; the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% to {MACRO['psei']:,.2f} on {_dday('psei_date')}, after Friday's close at its lowest since {MACRO['psei_low_since']}; the peso was at {MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, and 91-day bills rose to {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction, a {MACRO['ph_tbill_weekly_rises']}th straight weekly rise.",
     ("2026-11-20", "2026-11-20"): f"Held: third-quarter growth slowed to {MACRO['ph_gdp_q3']}% against {MACRO['ph_gdp_q3_poll']}% expected, with October inflation at {MACRO['ph_cpi_oct']}%; the PSEi {'rose' if MACRO['psei_chg_pct'] > 0 else 'fell'} {abs(MACRO['psei_chg_pct']):.2f}% to {MACRO['psei']:,.2f} on {_dday('psei_date')}, its lowest close since {MACRO['psei_low_since']}, the peso at {MACRO['usdphp']:.2f} on {_dday('usdphp_date')}, {abs(MACRO['usdphp_chg_ctvo']):g} centavos {'stronger' if MACRO['usdphp_chg_ctvo'] < 0 else 'weaker'}, and 91-day bills rose to {MACRO['ph_tbill_91']}% at the {_dday('ph_tbill_date')} auction.",
 }
 SUMMARY = {
@@ -6170,7 +6213,7 @@ DDG_REVIEWS = [("2026-10-31", 2.93)]
 DDG_RULE_DATE = "2026-11-15"
 # v110: the date the year-1 readings were last researched - not the owner's rule date above, which the
 # v103 check compared with the data date by mistake and which would have failed at the first roll.
-DRIVER_Y1_DATE = "2026-11-21"
+DRIVER_Y1_DATE = "2026-11-23"   # v124: re-read on 23 Nov, as the six-month readings; none moved
 _VOL_FWD = {v["label"]: v["forward"] for v in VOL_TS}   # context beside the readings, not in them
 
 def _ddg_trend(h):
@@ -8725,6 +8768,27 @@ SOURCES = [
      'https://gcaptain.com/iran-intensifies-hormuz-tanker-attacks-just-as-oil-prices-slide/'),
     ('Insurance Journal (Bloomberg)', 'Iran Intensifies Hormuz Tanker Attacks Just as Oil Prices Slide',
      'https://www.insurancejournal.com/news/international/2026/11/19/893122.htm'),
+    # v124: Monday 23 Nov - Seoul, Manila, the T-bill auction, the withheld peso, Tokyo's holiday
+    ('Seoul Economic Daily', 'KOSPI Closes Down 3.31% at 4,708.54, 23 Nov 2026',
+     'https://en.sedaily.com/market/2026/11/23/kospi-closes-down-331-percent-at-470854'),
+    ('The Kyunghyang Shinmun', "'Black Monday' averted - KOSPI ends at 4708, 23 Nov 2026",
+     'https://www.khan.co.kr/en/article/202611231641007/'),
+    ('SBS', 'KOSPI, Which Plunged Up to 5% During Intraday Trading, Closes Down 3% at 4,708, 23 Nov 2026',
+     'https://news.sbs.co.kr/english/article.do?news_id=N1008859318'),
+    ('The Inquirer', 'PSEi regains ground after steep sell-off - up 0.87% to 5,353.07, 23 Nov 2026',
+     'https://business.inquirer.net/622491/psei-regains-ground-after-steep-sell-off'),
+    ('Bloomberg', 'PCOMP:IND quote - the PSEi at 5,353.07, 23 Nov 2026',
+     'https://www.bloomberg.com/quote/PCOMP:IND'),
+    ('Context.ph', 'T-bill yields climb as market prices in further rate hikes - the 23 Nov 2026 auction',
+     'https://context.ph/2026/11/23/t-bill-yields-climb-as-market-prices-in-further-rate-hikes/'),
+    ('BusinessWorld', 'T-bill yields move up as inflation risks persist - the 23 Nov 2026 auction',
+     'https://bworldonline.com/banking-finance/2026/11/23/796008/t-bill-yields-move-up-as-inflation-risks-persist/'),
+    ('The Chronicle', "Monday's Treasury bill auction yields mixed results - 23 Nov 2026 (its 182-day 6.578% a misprint)",
+     'https://thechronicle.com.ph/mondays-treasury-bill-auction-yields-mixed-results/'),
+    ('BusinessWorld', 'Peso slips as volume thins before US data - P63.845, 23 Nov 2026 (one source, not carried)',
+     'https://bworldonline.com/banking-finance/2026/11/23/796032/peso-slips-as-volume-thins-before-us-data/'),
+    ('JPX', 'Market Holidays - 23 Nov 2026, Labor Thanksgiving Day',
+     'https://www.jpx.co.jp/english/corporate/about-jpx/calendar/'),
     # v123: the convoy is reported from 20 Nov, not after the close (v122 dated it with the Bahrain attack)
     ('Euronews', 'Iran readies tanker convoy at Kharg Island to test US oil blockade, 20 Nov 2026',
      'https://www.euronews.com/2026/11/20/iran-readies-tanker-convoy-at-kharg-island-to-test-us-oil-blockade'),

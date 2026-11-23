@@ -2,6 +2,97 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v124: Monday's Asian sessions rolled, the weekly fund check, and a stale what-if record fixed; no score, budget or pick moved
+
+At the owner's instruction: "Run the ATRAM review in monitoring/REVIEW_COMMAND.md".
+
+**Pre-flight.**
+- Cut-off: 23 Nov, 10:53 UTC.
+  - Closed and rolled: Seoul's and Manila's 23 Nov sessions, and the 23 Nov T-bill auction.
+  - Not yet closed, held at 20 Nov: New York, the VIX, Treasuries, and the Brent and WTI settles.
+  - Tokyo was shut (Labor Thanksgiving Day; JPX).
+- Sources: search results only. There is no direct page fetch, and uitf.com.ph and the agencies' sites are blocked.
+- Periodic items: this is the first review of the week, so the full fund check is due (below). The month-end band
+  review is due 30 Nov; January Brent expires the same day.
+
+**Markets, two sources each:**
+- **KOSPI** 4,708.54, −161.42 (−3.31%) on 23 Nov (Seoul Economic Daily; the Kyunghyang Shinmun; SBS).
+  - Its lowest close since 13 Jan.
+  - It was down about 5% during the session, which set off a sell-side sidecar, before institutions bought.
+  - The Kosdaq fell 1.58% to 635.45, its lowest close since December 2024.
+- **PSEi** 5,353.07, +46.09 (+0.87%) (the Inquirer; Bloomberg's quote).
+  - It touched 5,419.49 but could not hold 5,400.
+  - Trading Economics' 5,399 is an intraday print and not carried.
+- **T-bills, 23 Nov auction:** 6.584% / 6.758% / 6.956%, up 1.7 / 1.0 / 2.4bp, a 14th straight weekly rise (Context.ph;
+  BusinessWorld; the Chronicle, whose 182-day 6.578% is a misprint).
+  - P31.4bn was awarded of a P35bn offer, cut from P45bn, on P69.2bn of tenders.
+  - This moves only the risk-free rate in the Sharpe-like ratios, by 0.002. No fund forecast moved.
+- **Peso HELD at 20 Nov's 63.81.** 23 Nov's 63.845 is in BusinessWorld only; Trading Economics' 63.849 is a live quote.
+  The note quotes it as not carried.
+- **The year-1 and six-month driver readings** were re-read on 23 Nov's evidence and re-dated (the checks require
+  it). None moved: Seoul's fall and the bill rates fit the readings, and New York, the VIX and oil have not traded.
+- **Not carried:**
+  - Brent in Asian trade on Monday (about $92.7, a quote, not a settle).
+  - Tehran's "the Strait will be safe if its demands are met" (one source).
+
+**The weekly full fund check (search results only):**
+- **Notices.**
+  - No ATRAM notice was found.
+  - Fidelity's notices of 9 and 11 Nov concern liquidity tools and swing pricing for other funds.
+  - Its notices of 10 and 12 Nov list Global Dividend share classes, but their text cannot be read through search.
+    They are recorded as open, to be read when a page can be fetched.
+  - No notice was found from HSBC, Invesco, Allianz, Schroders or BlackRock, or for J.P. Morgan's Nasdaq ETF.
+- **Trust fees:** no change found; the 16-17 Nov check stands.
+- **Top-10 holdings** (three funds reach their 60-day bound on 29 Nov):
+  - Global Technology: Fidelity's 31 Oct factsheet, as a search snippet.
+  - Global Dividend: Trustnet's 31 Oct list.
+  - Nasdaq Equity Income: no 31 Oct list, only a 14 Oct snapshot on StockAnalysis.
+
+  Each is one source, and a second search could not confirm the Global Technology weights, so the 30 Sep lists stand.
+  **Due by 29 Nov.** If no second source is found by then, either the manager's own factsheet alone is carried as
+  primary, or the section is flagged stale; that is the owner's decision.
+- **The 1-year gap test** was not run: uitf.com.ph is blocked.
+- **The held-out what-if** was re-run (below).
+
+**Error found and fixed: the held-out what-if record had been stale since v119.**
+- The engine carries the held-out script's results as typed figures, shown on the Portfolios tab and in Global
+  Infra Equity's target note. After v119 changed Asian Multi-Asset Income's forecast, the run gave different
+  weights, but the record was only re-dated:
+  - US Equity Opportunity at the 1.50% peer fee: B's share is 10%, not 0.
+  - US Equity Opportunity at the 1.20% listed fee: D's share is 5%, not 10%.
+  - Global Bond Income at the 1.59% retail target charge: D's share is 5%, not 10%.
+  - Global Infra Equity at a 1.00% target charge: B's CAGR is 7.08%, not 7.09%.
+  - Global Infra Equity at 1.10%: D holds 15%, not 10%, at 7.14%, not 7.15%.
+- The page printed the older run from v119 to v123, and every check passed: the check asked only for limits and a
+  date.
+- **Fixed:** the record is corrected, and `model/heldout_sens.py` now compares all 29 recorded figures with what it
+  computes, and fails on any difference.
+
+**Near-ties:** A, B and C each have one best mix; **D is a three-way tie at 7.19%**.
+
+**Unchanged:**
+- The gauge, 2.26.
+- The budget gauge, 2.93: hold at 25%, all three guards blocking.
+- A 7.24% / −24.9%.
+- B 7.13% / −24.9%.
+- C 6.94% / −24.8%.
+- D 7.19% / −24.9%.
+- Nasdaq Equity Income, unchanged.
+
+**Checks:** engine 267/267; audit 305/305; validator 23/23; held-out record 29/29; mutants 89/89 caught.
+
+**Due before the next review:**
+- New York, oil, the VIX and Treasuries at 23 Nov.
+- January WTI's 20 Nov settle and chain.
+- Tokyo's 24 Nov session.
+- The peso.
+- The three funds' holdings, by 29 Nov.
+- Fidelity's 10/12 Nov Global Dividend notices.
+- US Thanksgiving on 26 Nov.
+- January Brent's expiry and the month-end band review, on 30 Nov.
+
+Not personal financial advice.
+
 ## 2026-11-22 — v123: the review run from REVIEW_COMMAND.md - no session since 20 Nov; one date corrected; nothing moved
 
 At the owner's instruction: "Run the ATRAM review in monitoring/REVIEW_COMMAND.md".

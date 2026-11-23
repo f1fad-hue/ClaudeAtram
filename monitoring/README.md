@@ -215,6 +215,12 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+187. A RECORD OF A RUN MUST BE CHECKED AGAINST THE RUN. The engine carries the held-out what-if's results as typed
+   figures, and its check asked only that they sit inside the limits and carry a recent run date. v119 changed Asian
+   Multi-Asset Income's forecast; the script's output moved (US Equity Opportunity's B at the peer fee 0 -> 10%, D at
+   the listed fee 10 -> 5%, Global Bond Income's D at the high fee 10 -> 5%, Global Infra Equity's B and D figures),
+   and the page printed the old run for five releases while every check passed. The script now compares all 29
+   recorded figures with what it computes and fails on any difference. Re-dating a run is not re-recording it.
 186. TWO CHECKS OF ONE RULE MUST SHARE THE RULE. The engine decided which calendar events are American from a hand list
    ("Fed decision" alone) and the audit from a pattern (which missed "Fed decision"), so on the next weekday Asia's data
    led New York's, each would have retired a different event a day early - and both would have passed today, when the
