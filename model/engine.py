@@ -6749,9 +6749,23 @@ FUND_PAYOUT["ATRGLDV"].update({"prior": 2.4, "prior_assumed": False, "prior_sour
     "on its 2025 payouts"})
 FUND_PAYOUT["ATRASEQ"].update({"prior": None, "prior_assumed": False, "prior_sources":
     "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)"})
+# THE NEXT 12 MONTHS (v130, owner 2026-11-23: "Update dividend payout 12 ttm vs dividend payout 1yr forecast in all 4
+# portfolios"). A FORECAST AT THE LATEST RATE: each payer's most recent payout, annualised by its manager or a data
+# site - what the next 12 months pay if the rate holds. It is not guaranteed: a covered-call fund's premium income moves
+# with volatility, and a set-rate fund can cut its rate. A payer with no forward rate found carries None.
+PAYOUT_FWD_BASIS = "the latest payout rate, annualised"
+FUND_PAYOUT["ATRQIAP"].update({"fwd": 12.4, "fwd_sources":
+    "J.P. Morgan's distribution notice, latest monthly payout annualised 12.37% (10 Sep 2026); DivvyDiary, 12.88% after "
+    "the 12 Nov payout of USD 0.2751 a unit (higher; one site)"})
+FUND_PAYOUT["ATRAMIP"].update({"fwd": 6.0, "fwd_sources":
+    "the target's set payout rate, 6% a year, paid monthly (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders' "
+    "Asian income range pays 6.0% a year at 31 Aug 2026); not guaranteed and may be paid from capital"})
+FUND_PAYOUT["ATRGLDV"].update({"fwd": 2.4, "fwd_sources":
+    "DivvyDiary's forward yield, 2.46% on the USD class and 2.33% on the EUR class (one site)"})
+FUND_PAYOUT["ATRASEQ"].update({"fwd": None, "fwd_sources": "no forward rate found"})
 for _f, _r in FUND_PAYOUT.items():
     if not _r["freq"]:
-        _r.update({"prior": 0.0, "prior_assumed": False, "prior_sources": ""})
+        _r.update({"prior": 0.0, "prior_assumed": False, "prior_sources": "", "fwd": 0.0, "fwd_sources": ""})
 # The income payers still held out (First Metro Securities' list: Global Multi-Asset Income monthly, the
 # other two quarterly); each must be on the held-out list, and joins C's set only once admitted.
 C_HELD_OUT_INCOME = ["Global Bond Income", "Global Multi-Asset Income", "US Multi-Asset Income"]
@@ -6839,7 +6853,15 @@ def port_income(w):
             "monthly_1m": _hu0(mo / 12), "quarterly_1m": _hu0(qu / 4), "no_payout_w": none_w, "funds": rows,
             "prior_pct": None if pg is None else rnd(pg / 100, 2), "prior_per_1m": None if pg is None else _hu0(pg * 100),
             "change_pp": None if pg is None else rnd(rnd(g / 100, 2) - rnd(pg / 100, 2), 2), "prior_missing": miss,
-            "prior_assumed_w": sum(x for fid, x in zip(UNIV_IDS, wp) if x and FUND_PAYOUT[fid].get("prior_assumed"))}
+            "prior_assumed_w": sum(x for fid, x in zip(UNIV_IDS, wp) if x and FUND_PAYOUT[fid].get("prior_assumed")),
+            **_fwd_income(wp, g)}
+def _fwd_income(wp, g):
+    """v130: the same weights at each payer's latest annualised rate - the next 12 months if the rates hold - and the
+    change from the last 12 months."""
+    miss = [fid for fid, x in zip(UNIV_IDS, wp) if x and FUND_PAYOUT[fid]["fwd"] is None]
+    fg = None if miss else sum(x * FUND_PAYOUT[fid]["fwd"] for fid, x in zip(UNIV_IDS, wp) if x)
+    return {"fwd_pct": None if fg is None else rnd(fg / 100, 2), "fwd_per_1m": None if fg is None else _hu0(fg * 100),
+            "fwd_change_pp": None if fg is None else rnd(rnd(fg / 100, 2) - rnd(g / 100, 2), 2), "fwd_missing": miss}
 
 # The universe's macro frontier and the best pure ratio, for the Portfolios chart and
 # the "why not simply maximise return" note - the same set B is chosen from. The
@@ -9232,6 +9254,7 @@ def payload():
         # v126: what each of the eleven funds pays, for the income each portfolio shows
         "fund_payout": FUND_PAYOUT, "payout_ttm_date": PAYOUT_TTM_DATE,
         "payout_prior_label": PAYOUT_PRIOR_LABEL,                       # v129 (v127's fund_1y retired)
+        "payout_fwd_basis": PAYOUT_FWD_BASIS,                           # v130
         "sources": [{"org": o, "what": w, "url": u} for o, w, u in SOURCES],
     }
 
@@ -11176,6 +11199,20 @@ def report():
             and _in["change_pp"] == rnd(_in["ttm_pct"] - _in["prior_pct"], 2)) \
             and _in["prior_assumed_w"] == sum(x for f, x in zip(UNIV_IDS, _w) if x and _fp[f].get("prior_assumed"))
     checks.append(("each portfolio's payout a year earlier re-derives from its funds' prior-year rates, with the change and the assumed share", _pr))
+    # v130: the next 12 months at the latest rates: every payer has a forward rate with sources (or None, said), a
+    # non-payer zero; each portfolio's forecast, its pesos and the change from the last 12 months re-derive
+    _fw = all("fwd" in _fp[f] and (_fp[f]["fwd"] is None or 0 <= _fp[f]["fwd"] < 25) for f in UNIV_IDS) \
+        and all(_fp[f]["fwd_sources"] for f in _payers) and all(_fp[f]["fwd"] == 0 for f in UNIV_IDS if f not in _payers) \
+        and p["payout_fwd_basis"] == PAYOUT_FWD_BASIS
+    for _k in ("portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"):
+        _in = p[_k]["income"]; _w = p[_k]["weights"]
+        _ms = [f for f, x in zip(UNIV_IDS, _w) if x and _fp[f]["fwd"] is None]
+        _fg = None if _ms else sum(x * _fp[f]["fwd"] for f, x in zip(UNIV_IDS, _w) if x)
+        _fw = _fw and _in["fwd_missing"] == _ms and (
+            _fg is None and _in["fwd_pct"] is None or
+            _in["fwd_pct"] == rnd(_fg / 100, 2) and _in["fwd_per_1m"] == _hu0(_fg * 100)
+            and _in["fwd_change_pp"] == rnd(_in["fwd_pct"] - _in["ttm_pct"], 2))
+    checks.append(("each portfolio's next-12-month payout at the latest rates re-derives from its funds, with the change from the last 12 months", _fw))
     # Each count's best is the rule run within that count alone: the rows cover every C mix once, each
     # row's best is one of its own mixes, and C is the best of the rows, at its own count.
     _bc = _pc["by_count"]; _bcf = [r for r in _bc if r["n_feasible"]]

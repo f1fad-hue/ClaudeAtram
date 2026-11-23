@@ -413,6 +413,19 @@ for lab_, Q in (("A", PAA), ("B", PBB), ("C", PCC), ("D", PDD)):
              sum(x for f, x in zip(IDS, Q["weights"]) if x and FPAY[f].get("prior_assumed")))
     got_ = (I_["prior_missing"], I_["prior_pct"], I_["prior_per_1m"], I_["change_pp"], I_["prior_assumed_w"])
     if got_ != want_ or any(k.startswith("ret_1y") for k in I_): _pr_bad.append((lab_, got_, want_))
+# v130 (owner 2026-11-23: "dividend payout 12 ttm vs dividend payout 1yr forecast"; "Make it vs"): each portfolio's
+# next 12 months at its funds' latest annualised rates, its pesos and the change from the last 12 months
+_fw_bad = []
+for lab_, Q in (("A", PAA), ("B", PBB), ("C", PCC), ("D", PDD)):
+    I_ = Q["income"]; miss_ = [f for f, x in zip(IDS, Q["weights"]) if x and FPAY[f]["fwd"] is None]
+    fg_ = None if miss_ else sum(x * FPAY[f]["fwd"] for f, x in zip(IDS, Q["weights"]) if x)
+    want_ = (miss_, None if fg_ is None else _h2(fg_ / 100), None if fg_ is None else _h0(fg_ * 100),
+             None if fg_ is None else _h2(_h2(fg_ / 100) - I_["ttm_pct"]))
+    got_ = (I_["fwd_missing"], I_["fwd_pct"], I_["fwd_per_1m"], I_["fwd_change_pp"])
+    if got_ != want_: _fw_bad.append((lab_, got_, want_))
+ck("each portfolio's next 12 months at the latest rates re-derives from its funds, with the change from the last 12 months",
+   all("fwd" in FPAY[f] and (FPAY[f]["fwd"] == 0 if not FPAY[f]["freq"] else FPAY[f]["fwd_sources"]) for f in IDS)
+   and D["payout_fwd_basis"] and not _fw_bad, f"{_fw_bad[:2]}")
 ck("each portfolio's payout a year earlier re-derives from its funds' prior-year rates, with the change and the assumed share",
    all("prior" in FPAY[f] and (FPAY[f]["prior"] == 0 if not FPAY[f]["freq"] else FPAY[f]["prior_sources"]) for f in IDS)
    and "fund_1y" not in D and not _pr_bad, f"{_pr_bad[:2]}")

@@ -2,6 +2,34 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v130: payout, last 12 months vs next 12 months, as a versus table
+
+At the owner's instruction: "Update dividend payout 12 ttm vs dividend payout 1yr forecast in all 4 portfolios", then
+"Make it vs".
+
+| On ₱1,000,000 | Last 12 months | vs | Next 12 months (forecast) | Change |
+|---|---|---|---|---|
+| A | 5.49% · ₱54,900 | vs | 5.84% · ₱58,400 | +0.35pp · +₱3,500 |
+| B | 5.49% · ₱54,900 | vs | 5.84% · ₱58,400 | +0.35pp · +₱3,500 |
+| C | 9.51% · ₱95,100 | vs | 10.16% · ₱101,600 | +0.65pp · +₱6,500 |
+| D | 6.90% · ₱69,000 | vs | 7.40% · ₱74,000 | +0.50pp · +₱5,000 |
+
+**The forecast** is each payer's latest payout rate, annualised - what the next 12 months pay if the rates hold: Nasdaq
+Equity Income 12.4% (J.P. Morgan's 12.37% for September; DivvyDiary 12.88% after November's payout), against 11.4% over the
+last 12 months; Asian Multi-Asset Income 6.0% (its target's set rate); Global Dividend 2.4% (DivvyDiary); Asia Equity
+Opportunity none found. The rise is all Nasdaq Equity Income: its monthly payouts have been running above its 12-month
+average. Not guaranteed: a covered-call fund's income moves with volatility, and a set-rate fund can cut its rate.
+
+**What changed:** engine `fwd`, `fwd_sources` on each payout record, `fwd_pct`, `fwd_per_1m`, `fwd_change_pp`,
+`fwd_missing` in each portfolio's income, `payout_fwd_basis`; one check added (272). Page: the headline table's two payout
+rows now give the forecast and the change (2025 moved into the card's folded detail); the income card opens with the versus
+table, its fund-by-fund tables (2025, last 12 months, next 12 months) folded under "Fund by fund, and 2025". Audit (309) and
+validator (27) checks added; mutants two added (97). Docs: README, register, review command.
+
+**Checks:** engine 272/272; audit 309/309; validator 27/27; mutants 97/97 caught.
+
+Not personal financial advice.
+
 ## 2026-11-23 — v129: the payout over the last 12 months against the year before; v127's 1-year return retired
 
 At the owner's instruction: "Update dividend payout 12 ttm vs dividend payout 1yr past in all 4 portfolios not the past 1yr

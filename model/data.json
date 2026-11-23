@@ -3537,7 +3537,11 @@
    "prior_per_1m": 51750,
    "change_pp": 0.31,
    "prior_missing": [],
-   "prior_assumed_w": 25
+   "prior_assumed_w": 25,
+   "fwd_pct": 5.84,
+   "fwd_per_1m": 58400,
+   "fwd_change_pp": 0.35,
+   "fwd_missing": []
   },
   "macro": {
    "weights": [
@@ -6117,7 +6121,11 @@
    "prior_per_1m": 51750,
    "change_pp": 0.31,
    "prior_missing": [],
-   "prior_assumed_w": 25
+   "prior_assumed_w": 25,
+   "fwd_pct": 5.84,
+   "fwd_per_1m": 58400,
+   "fwd_change_pp": 0.35,
+   "fwd_missing": []
   },
   "column": "net_macro",
   "band_n": 1,
@@ -7076,7 +7084,11 @@
    "prior_per_1m": 89250,
    "change_pp": 0.58,
    "prior_missing": [],
-   "prior_assumed_w": 35
+   "prior_assumed_w": 35,
+   "fwd_pct": 10.16,
+   "fwd_per_1m": 101600,
+   "fwd_change_pp": 0.65,
+   "fwd_missing": []
   },
   "macro": {
    "weights": [
@@ -7161,7 +7173,9 @@
     "ttm_sources": "",
     "prior": 0.0,
     "prior_assumed": false,
-    "prior_sources": ""
+    "prior_sources": "",
+    "fwd": 0.0,
+    "fwd_sources": ""
    },
    "ATRQIAP": {
     "freq": "monthly",
@@ -7171,7 +7185,9 @@
     "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)",
     "prior": 10.5,
     "prior_assumed": false,
-    "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025"
+    "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025",
+    "fwd": 12.4,
+    "fwd_sources": "J.P. Morgan's distribution notice, latest monthly payout annualised 12.37% (10 Sep 2026); DivvyDiary, 12.88% after the 12 Nov payout of USD 0.2751 a unit (higher; one site)"
    },
    "ATRASEQ": {
     "freq": "quarterly",
@@ -7181,7 +7197,9 @@
     "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)",
     "prior": null,
     "prior_assumed": false,
-    "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)"
+    "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)",
+    "fwd": null,
+    "fwd_sources": "no forward rate found"
    },
    "ATRGLDV": {
     "freq": "quarterly",
@@ -7191,7 +7209,9 @@
     "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%",
     "prior": 2.4,
     "prior_assumed": false,
-    "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts"
+    "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts",
+    "fwd": 2.4,
+    "fwd_sources": "DivvyDiary's forward yield, 2.46% on the USD class and 2.33% on the EUR class (one site)"
    },
    "ATRAMIP": {
     "freq": "quarterly",
@@ -7201,7 +7221,9 @@
     "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)",
     "prior": 6.0,
     "prior_assumed": true,
-    "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)"
+    "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)",
+    "fwd": 6.0,
+    "fwd_sources": "the target's set payout rate, 6% a year, paid monthly (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders' Asian income range pays 6.0% a year at 31 Aug 2026); not guaranteed and may be paid from capital"
    }
   },
   "held_out_income": [
@@ -7399,7 +7421,11 @@
    "prior_per_1m": 64500,
    "change_pp": 0.45,
    "prior_missing": [],
-   "prior_assumed_w": 20
+   "prior_assumed_w": 20,
+   "fwd_pct": 7.4,
+   "fwd_per_1m": 74000,
+   "fwd_change_pp": 0.5,
+   "fwd_missing": []
   },
   "macro": {
    "weights": [
@@ -7607,7 +7633,9 @@
    "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)",
    "prior": 10.5,
    "prior_assumed": false,
-   "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025"
+   "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025",
+   "fwd": 12.4,
+   "fwd_sources": "J.P. Morgan's distribution notice, latest monthly payout annualised 12.37% (10 Sep 2026); DivvyDiary, 12.88% after the 12 Nov payout of USD 0.2751 a unit (higher; one site)"
   },
   "ATRASEQ": {
    "freq": "quarterly",
@@ -7617,7 +7645,9 @@
    "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)",
    "prior": null,
    "prior_assumed": false,
-   "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)"
+   "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)",
+   "fwd": null,
+   "fwd_sources": "no forward rate found"
   },
   "ATRGLDV": {
    "freq": "quarterly",
@@ -7627,7 +7657,9 @@
    "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%",
    "prior": 2.4,
    "prior_assumed": false,
-   "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts"
+   "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts",
+   "fwd": 2.4,
+   "fwd_sources": "DivvyDiary's forward yield, 2.46% on the USD class and 2.33% on the EUR class (one site)"
   },
   "ATRAMIP": {
    "freq": "quarterly",
@@ -7637,7 +7669,9 @@
    "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)",
    "prior": 6.0,
    "prior_assumed": true,
-   "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)"
+   "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)",
+   "fwd": 6.0,
+   "fwd_sources": "the target's set payout rate, 6% a year, paid monthly (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders' Asian income range pays 6.0% a year at 31 Aug 2026); not guaranteed and may be paid from capital"
   },
   "ATRPHMM": {
    "freq": null,
@@ -7647,7 +7681,9 @@
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "ATRGTEC": {
    "freq": null,
@@ -7657,7 +7693,9 @@
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "ATRGHCP": {
    "freq": null,
@@ -7667,7 +7705,9 @@
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GINF": {
    "freq": null,
@@ -7677,7 +7717,9 @@
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GEO": {
    "freq": null,
@@ -7687,7 +7729,9 @@
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GCT": {
    "freq": null,
@@ -7697,7 +7741,9 @@
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GALL": {
    "freq": null,
@@ -7707,11 +7753,14 @@
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   }
  },
  "payout_ttm_date": "2026-11-23",
  "payout_prior_label": "2025",
+ "payout_fwd_basis": "the latest payout rate, annualised",
  "sources": [
   {
    "org": "Dow Jones, via Morningstar",

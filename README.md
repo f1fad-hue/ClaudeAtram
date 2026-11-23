@@ -76,8 +76,9 @@ Global Allocation.
 | Return per unit of drawdown | **0.291** | 0.286 | 0.283 | 0.289 |
 | Payout yield, trailing 12 months (est.) | 5.49% | 5.49% | 9.51% | 6.90% |
 | Payout a year on ₱1,000,000 (est.; net of ATRAM's trust fee) | ₱54,900 (₱45,900) | ₱54,900 (₱45,900) | ₱95,100 (₱80,100) | ₱69,000 (₱58,500) |
-| Payout yield a year earlier, 2025 (est.) | 5.18% | 5.18% | 8.93% | 6.45% |
-| Change in payout yield | +0.31pp | +0.31pp | +0.58pp | +0.45pp |
+| Payout yield, next 12 months (forecast at the latest rates) | 5.84% | 5.84% | 10.16% | 7.40% |
+| Payout, next vs last 12 months | +0.35pp (₱58,400) | +0.35pp (₱58,400) | +0.65pp (₱101,600) | +0.50pp (₱74,000) |
+| Payout yield, 2025, for reference (est.) | 5.18% | 5.18% | 8.93% | 6.45% |
 
 Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C and D
 on the 1/3/5/10-year. **Portfolio C (v125, owner, 23 Nov 2026)** is the dividend-income portfolio -
@@ -94,6 +95,9 @@ pays it net of its trust fee. A payout is part of the return, not added to it.
 from each target: Nasdaq Equity Income ~10.5% in 2025 (Parqet 10.45%; justETF's 9.63% disputed) against ~11.4% now;
 Asian Multi-Asset Income's 2025 rate was not found and is ASSUMED at its target's set 6% a year, which every portfolio
 holds (20-35%). v127's 1-year return rows were retired: the owner asked for last year's payout, not last year's return.
+**The next-12-month rows (v130)** are a forecast at each payer's latest payout rate, annualised: Nasdaq Equity Income ~12.4%
+(J.P. Morgan's 12.37% for September; DivvyDiary 12.88% after November's payout), Asian Multi-Asset Income its target's set
+6% a year. They hold only if the rates do; a covered-call fund's income moves with volatility.
 From 17 Nov (v111) to v124 C was the owner's three funds, Nasdaq Equity Income-led with Peso Money Market and
 Global Technology (70 / 25 / 5 at 6.94% / −24.8% on 23 Nov); an earlier C, Nasdaq Equity Income pinned at
 50%, was retired on 12 Nov 2026 (v101). **A and B are the same mix since v107**: the rule picks on B's view

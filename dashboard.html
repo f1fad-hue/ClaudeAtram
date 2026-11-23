@@ -523,9 +523,12 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     </div>
     <!-- v126 (owner, 2026-11-23): each portfolio's income over the trailing 12 months -->
     <div class="card">
-      <h3 style="margin-top:0">Income paid: the last 12 months against the year before</h3>
+      <h3 style="margin-top:0">Payout: last 12 months vs next 12 months</h3>
+      <div class="tw"><table class="dt" id="payvs"></table></div>
+      <details class="more"><summary>Fund by fund, and 2025</summary>
       <div class="tw"><table class="dt" id="inctab"></table></div>
       <div class="tw" style="margin-top:10px"><table class="dt" id="prtab"></table></div>
+      </details>
       <p class="note" id="incnote">—</p>
     </div>
     <div class="card" id="deltacard"></div>
@@ -4403,7 +4406,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "prior_per_1m": 51750,
    "change_pp": 0.31,
    "prior_missing": [],
-   "prior_assumed_w": 25
+   "prior_assumed_w": 25,
+   "fwd_pct": 5.84,
+   "fwd_per_1m": 58400,
+   "fwd_change_pp": 0.35,
+   "fwd_missing": []
   },
   "macro": {
    "weights": [
@@ -6983,7 +6990,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "prior_per_1m": 51750,
    "change_pp": 0.31,
    "prior_missing": [],
-   "prior_assumed_w": 25
+   "prior_assumed_w": 25,
+   "fwd_pct": 5.84,
+   "fwd_per_1m": 58400,
+   "fwd_change_pp": 0.35,
+   "fwd_missing": []
   },
   "column": "net_macro",
   "band_n": 1,
@@ -7942,7 +7953,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "prior_per_1m": 89250,
    "change_pp": 0.58,
    "prior_missing": [],
-   "prior_assumed_w": 35
+   "prior_assumed_w": 35,
+   "fwd_pct": 10.16,
+   "fwd_per_1m": 101600,
+   "fwd_change_pp": 0.65,
+   "fwd_missing": []
   },
   "macro": {
    "weights": [
@@ -8027,7 +8042,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "ttm_sources": "",
     "prior": 0.0,
     "prior_assumed": false,
-    "prior_sources": ""
+    "prior_sources": "",
+    "fwd": 0.0,
+    "fwd_sources": ""
    },
    "ATRQIAP": {
     "freq": "monthly",
@@ -8037,7 +8054,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)",
     "prior": 10.5,
     "prior_assumed": false,
-    "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025"
+    "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025",
+    "fwd": 12.4,
+    "fwd_sources": "J.P. Morgan's distribution notice, latest monthly payout annualised 12.37% (10 Sep 2026); DivvyDiary, 12.88% after the 12 Nov payout of USD 0.2751 a unit (higher; one site)"
    },
    "ATRASEQ": {
     "freq": "quarterly",
@@ -8047,7 +8066,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)",
     "prior": null,
     "prior_assumed": false,
-    "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)"
+    "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)",
+    "fwd": null,
+    "fwd_sources": "no forward rate found"
    },
    "ATRGLDV": {
     "freq": "quarterly",
@@ -8057,7 +8078,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%",
     "prior": 2.4,
     "prior_assumed": false,
-    "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts"
+    "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts",
+    "fwd": 2.4,
+    "fwd_sources": "DivvyDiary's forward yield, 2.46% on the USD class and 2.33% on the EUR class (one site)"
    },
    "ATRAMIP": {
     "freq": "quarterly",
@@ -8067,7 +8090,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)",
     "prior": 6.0,
     "prior_assumed": true,
-    "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)"
+    "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)",
+    "fwd": 6.0,
+    "fwd_sources": "the target's set payout rate, 6% a year, paid monthly (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders' Asian income range pays 6.0% a year at 31 Aug 2026); not guaranteed and may be paid from capital"
    }
   },
   "held_out_income": [
@@ -8265,7 +8290,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "prior_per_1m": 64500,
    "change_pp": 0.45,
    "prior_missing": [],
-   "prior_assumed_w": 20
+   "prior_assumed_w": 20,
+   "fwd_pct": 7.4,
+   "fwd_per_1m": 74000,
+   "fwd_change_pp": 0.5,
+   "fwd_missing": []
   },
   "macro": {
    "weights": [
@@ -8473,7 +8502,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "the target ETF's trailing 12 months: Parqet 11.39%, ETF Atlas 11.49% (11 Nov 2026); ATRAM's launch report: 9-11% a year historically; monthly payouts this year ran 8.88-16.12% annualised (J.P. Morgan's distribution notice)",
    "prior": 10.5,
    "prior_assumed": false,
-   "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025"
+   "prior_sources": "the target ETF's 2025 distributions: Parqet, EUR 2.35 a unit, a 10.45% yield; justETF, EUR 2.37, 9.63% on its own price basis (disputed); DivvyDiary, USD 2.66 paid in 2025",
+   "fwd": 12.4,
+   "fwd_sources": "J.P. Morgan's distribution notice, latest monthly payout annualised 12.37% (10 Sep 2026); DivvyDiary, 12.88% after the 12 Nov payout of USD 0.2751 a unit (higher; one site)"
   },
   "ATRASEQ": {
    "freq": "quarterly",
@@ -8483,7 +8514,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "the target's (mth) USD class: Investing.com, trailing 12 months 2.71% (one source)",
    "prior": null,
    "prior_assumed": false,
-   "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)"
+   "prior_sources": "no clean 2025 yield found (DBS lists 0.41 a unit for 2025 and for 2024, unlabelled)",
+   "fwd": null,
+   "fwd_sources": "no forward rate found"
   },
   "ATRGLDV": {
    "freq": "quarterly",
@@ -8493,7 +8526,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.30% (30 Sep 2026); Hargreaves Lansdown 2.30% (May 2026); Investing.com's trailing 12 months, 2.23%",
    "prior": 2.4,
    "prior_assumed": false,
-   "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts"
+   "prior_sources": "the target's A-QINCOME class: Fidelity's factsheet, historic yield 2.37% (31 Dec 2025); POEMS, 12-month yield 2.34% on its 2025 payouts",
+   "fwd": 2.4,
+   "fwd_sources": "DivvyDiary's forward yield, 2.46% on the USD class and 2.33% on the EUR class (one site)"
   },
   "ATRAMIP": {
    "freq": "quarterly",
@@ -8503,7 +8538,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "the target's A Dis USD class: Investing.com, trailing 12 months 5.95%; HSBC's copy of Schroders' factsheet, a historical payout of 6% a year (31 Jul 2026)",
    "prior": 6.0,
    "prior_assumed": true,
-   "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)"
+   "prior_sources": "ASSUMED: no 2025 payout record found; the target pays at a set annualised rate, 6% a year on the record dates found (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders, 30 Jun 2026)",
+   "fwd": 6.0,
+   "fwd_sources": "the target's set payout rate, 6% a year, paid monthly (HSBC's copy of Schroders' factsheet, 31 Jul 2026; Schroders' Asian income range pays 6.0% a year at 31 Aug 2026); not guaranteed and may be paid from capital"
   },
   "ATRPHMM": {
    "freq": null,
@@ -8513,7 +8550,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "ATRGTEC": {
    "freq": null,
@@ -8523,7 +8562,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "ATRGHCP": {
    "freq": null,
@@ -8533,7 +8574,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GINF": {
    "freq": null,
@@ -8543,7 +8586,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GEO": {
    "freq": null,
@@ -8553,7 +8598,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GCT": {
    "freq": null,
@@ -8563,7 +8610,9 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   },
   "M_GALL": {
    "freq": null,
@@ -8573,11 +8622,14 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
    "ttm_sources": "",
    "prior": 0.0,
    "prior_assumed": false,
-   "prior_sources": ""
+   "prior_sources": "",
+   "fwd": 0.0,
+   "fwd_sources": ""
   }
  },
  "payout_ttm_date": "2026-11-23",
  "payout_prior_label": "2025",
+ "payout_fwd_basis": "the latest payout rate, annualised",
  "sources": [
   {
    "org": "Dow Jones, via Morningstar",
@@ -14957,11 +15009,11 @@ function donut(host, w, title, cagr, dd) {
   hrow(`All on the ${HYN} view`, PS.map(q => q.ten.cagr), pc, hi);
   hrow("Payout yield, trailing 12 months (est.)", PS.map(q => q.income.ttm_pct), pc, null);
   hrow("Payout a year on &#8369;1M (est.)", PS.map(q => q.income.per_1m), v => "&#8369;" + v.toLocaleString("en-US"), null);
-  /* v129 (owner, 2026-11-23: "dividend payout 12 ttm vs dividend payout 1yr past ... not the past 1yr return"): the
-     payout a year earlier beside this year's (v127's 1-year return rows retired) */
+  /* v130 (owner, 2026-11-23: "dividend payout 12 ttm vs dividend payout 1yr forecast"; "Make it vs"): the next 12
+     months at the latest rates against the last 12; 2025 (v129) stays in the income card's fund-by-fund detail */
   const PY = D.payout_prior_label, sgn = v => (v > 0 ? "+" : v < 0 ? "\u2212" : "") + Math.abs(v).toFixed(2) + "pp";
-  hrow(`Payout yield, ${PY} (est.)`, PS.map(q => q.income.prior_pct), v => v == null ? "&ndash;" : pc(v), null);
-  hrow("Change in payout yield", PS.map(q => q.income.change_pp), v => v == null ? "&ndash;" : sgn(v), null);
+  hrow("Payout yield, next 12 months (forecast)", PS.map(q => q.income.fwd_pct), v => v == null ? "&ndash;" : pc(v), null);
+  hrow("Payout, next vs last 12 months", PS.map(q => q.income.fwd_change_pp), v => v == null ? "&ndash;" : sgn(v), null);
   ht.appendChild(hb);
 
   /* INCOME, TRAILING 12 MONTHS (owner, 2026-11-23, v126: "Add each portfolio their annual dividend pay out ttm").
@@ -14972,6 +15024,16 @@ function donut(host, w, title, cagr, dd) {
   const FP = D.fund_payout, INC = PS.map(q => q.income), peso = v => "&#8369;" + v.toLocaleString("en-US");
   const nmF = id => PB.shorts[PB.ids.indexOf(id)];
   const payIds = PB.ids.filter(id => FP[id].freq && INC.some(x => x.funds.some(r => r.id === id)));
+  /* THE VERSUS (v130): each portfolio's last 12 months against its next 12 at the latest rates */
+  const vt = $("#payvs"), cell = (pct, amt) => pct == null ? "&ndash;" : `${pc(pct)}<br><span style="font-size:12px;color:var(--ink-2)">${peso(amt)}</span>`;
+  vt.appendChild(el("thead", null, `<tr><th>&#8369;1M</th><th>Last 12m</th><th>vs</th><th>Next 12m</th><th>Change</th></tr>`));
+  const vb = el("tbody");
+  INC.forEach((x, k) => vb.appendChild(el("tr", null, `<td><strong>${PVL[k]}</strong></td>` +
+    `<td class="num">${cell(x.ttm_pct, x.per_1m)}</td><td style="color:var(--ink-2)">vs</td>` +
+    `<td class="num" style="font-weight:700">${cell(x.fwd_pct, x.fwd_per_1m)}</td>` +
+    `<td class="num">${x.fwd_change_pp == null ? "&ndash;" : sgn(x.fwd_change_pp) + "<br>" + `<span style="font-size:12px;color:var(--ink-2)">${
+      (x.fwd_per_1m - x.per_1m >= 0 ? "+" : "\u2212") + peso(Math.abs(x.fwd_per_1m - x.per_1m))}</span>`}</td>`)));
+  vt.appendChild(vb);
   const it = $("#inctab");
   it.appendChild(el("thead", null, `<tr><th>On &#8369;1,000,000</th>` + PVL.map(x => `<th>${x}</th>`).join("") + `</tr>`));
   const ib = el("tbody");
@@ -14985,20 +15047,19 @@ function donut(host, w, title, cagr, dd) {
   irow("Paid each month", x => x.monthly_1m ? peso(x.monthly_1m) : "&ndash;");
   irow("Paid each quarter", x => x.quarterly_1m ? peso(x.quarterly_1m) : "&ndash;");
   irow("Held in funds that pay nothing", x => x.no_payout_w + "%");
-  irow(`A year, at ${PY}'s rates`, x => x.prior_pct == null ? "&ndash;" : `${peso(x.prior_per_1m)}<br>${x.prior_pct.toFixed(2)}%`, true);
-  irow(`Change from ${PY}`, x => x.change_pp == null ? "&ndash;" : `${x.per_1m - x.prior_per_1m >= 0 ? "+" : "\u2212"}${peso(Math.abs(x.per_1m - x.prior_per_1m))}<br>${sgn(x.change_pp)}`);
+  irow(`A year, at ${PY}'s rates`, x => x.prior_pct == null ? "&ndash;" : `${peso(x.prior_per_1m)}<br>${x.prior_pct.toFixed(2)}%`);
+  irow(`Last 12 months vs ${PY}`, x => x.change_pp == null ? "&ndash;" : `${x.per_1m - x.prior_per_1m >= 0 ? "+" : "\u2212"}${peso(Math.abs(x.per_1m - x.prior_per_1m))}<br>${sgn(x.change_pp)}`);
   irow(`Held in funds whose ${PY} rate is assumed`, x => x.prior_assumed_w ? x.prior_assumed_w + "%" : "&ndash;");
   it.appendChild(ib);
   /* each paying fund any portfolio holds: its yield over the last 12 months and in the year before (v129) */
   const prt = $("#prtab");
-  prt.appendChild(el("thead", null, `<tr><th>Fund</th><th>Last 12m</th><th>${PY}</th><th>Change</th></tr>`));
+  prt.appendChild(el("thead", null, `<tr><th>Fund</th><th>${PY}</th><th>Last 12m</th><th>Next 12m</th></tr>`));
   const prb = el("tbody");
   payIds.forEach(id => {
-    const f = FP[id], ch = f.prior == null ? null : +(f.ttm - f.prior).toFixed(1);
+    const f = FP[id], y1 = v => v == null ? "&ndash;" : "~" + v.toFixed(1) + "%";
     prb.appendChild(el("tr", null, `<td>${nmF(id)}${f.prior_assumed ? "*" : ""}<br><span style="font-size:12px;color:var(--ink-2)">held by ${
       PVL.filter((_, k) => PS[k].weights[PB.ids.indexOf(id)]).join(", ")}</span></td>` +
-      `<td class="num">~${f.ttm.toFixed(1)}%</td><td class="num">${f.prior == null ? "&ndash;" : "~" + f.prior.toFixed(1) + "%"}</td>` +
-      `<td class="num">${ch == null ? "&ndash;" : (ch > 0 ? "+" : ch < 0 ? "\u2212" : "") + Math.abs(ch).toFixed(1) + "pp"}</td>`));
+      `<td class="num">${y1(f.prior)}</td><td class="num">${y1(f.ttm)}</td><td class="num" style="font-weight:700">${y1(f.fwd)}</td>`));
   });
   prt.appendChild(prb);
   const fqI = D.funds.concat(PB.funds).find(f => f.id === "ATRQIAP");
@@ -15019,6 +15080,9 @@ function donut(host, w, title, cagr, dd) {
      is already inside each forecast above. ${nmF("ATRQIAP")} pays out about ${FP.ATRQIAP.ttm.toFixed(1)}% against a forecast
      return of ${pc(fqI.net_macro)}, much of it from the options it sells, so its unit price is expected to drift down: read
      its income with its growth, not on top of it. ` +
+    `The next 12 months are a forecast at ${D.payout_fwd_basis}: what they pay if each rate holds, which none
+     guarantees (a covered-call fund's income moves with volatility; a set-rate fund can cut its rate). ` +
+    payIds.map(id => `${nmF(id)} next: ${FP[id].fwd_sources}`).join("; ") + `. ` +
     `The year before is ${PY}, the nearest full year the sources give, read the same way from each target fund; the last
      12 months overlap it by one month (December ${PY}). ` + payIds.map(id => `${nmF(id)} in ${PY}: ${FP[id].prior_sources}`).join("; ") +
     `.` + (payIds.some(id => FP[id].prior_assumed) ? ` *Assumed, not found: ${and3(payIds.filter(id => FP[id].prior_assumed).map(nmF))}'s

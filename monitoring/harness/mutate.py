@@ -42,6 +42,8 @@ def m_incnet(d): i = d["portfolio_a"]["income"]; i["net_pct"] = round(i["net_pct
 def m_incnopay(d): d["fund_payout"]["ATRGTEC"]["ttm"] = 1.0                                  # a fund on no income list given a yield (v126)
 def m_prior(d): i = d["portfolio_c"]["income"]; i["prior_pct"] = round(i["prior_pct"] + 0.01, 2)   # a portfolio's payout a year earlier off its funds (v129)
 def m_priorfund(d): d["fund_payout"]["ATRAMIP"]["prior"] = 5.5                                # a fund's prior-year rate changed under the portfolios (v129)
+def m_fwd(d): i = d["portfolio_d"]["income"]; i["fwd_per_1m"] += 100                            # a portfolio's next-12-month payout off its funds (v130)
+def m_fwdfund(d): d["fund_payout"]["ATRQIAP"]["fwd"] = 12.9                                   # a fund's forward rate changed under the portfolios (v130)
 def m_orphan(d): d["macro"]["fed_50bp_odds_dec_99nov"] = 4.3                             # a new input nothing reads, its value quoted elsewhere (v116)
 def m_day20(d): d["macro"]["spx_20nov"] = round(d["macro"]["spx_20nov"] + 10, 2)                # a day-keyed close off the latest, the week off it (v118)
 def m_cold(d): d["macro"]["gbi_w_c_low"] = 0                                                   # the old C's held-out inputs back (v111)
