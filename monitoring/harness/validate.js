@@ -66,6 +66,12 @@ const file = process.argv[2], live = process.argv.includes("--live");
           + " " + (((document.getElementById("dvgeo") || {}).parentElement || {}).textContent || ""),
         drvh: [...document.querySelectorAll("h3")].map(h => h.textContent).filter(t => /Macro drivers|Market valuation/.test(t)),
         // v122: every section on every tab, after each tab has been opened: its text, and any element in it left empty
+        // v128 (owner, 23 Nov: "make the page/tabs concise"): the words each paragraph shows before its folded part
+        shown: [...document.querySelectorAll(".panel p, .panel li, .panel div.note")]
+          .filter(e => !e.closest("table, details:not([open]), .src, .cat") && !e.querySelector("p"))
+          .map(e => { const c = e.cloneNode(true); c.querySelectorAll("details:not([open])").forEach(d => d.remove());
+                      return [(c.textContent.match(/\S+/g) || []).length, (e.id ? "#" + e.id : e.tagName) + " " + c.textContent.trim().slice(0, 50)]; }),
+        folds: document.querySelectorAll(".panel details.more").length,
         secs: [...document.querySelectorAll(".panel section")].map(s => ({
           tab: s.closest(".panel").id, eb: ((s.querySelector(".eyebrow") || {}).textContent || "").trim().slice(0, 40),
           n: s.textContent.trim().length,
@@ -113,6 +119,10 @@ const file = process.argv[2], live = process.argv.includes("--live");
            return k >= 0 && cpRows[k].includes(cpy[id].freq ? cpy[id].freq.replace(/^./, c => c.toUpperCase()) : "No payout")
              && cpRows[k].endsWith(w ? w + "%" : "\u2013") && cpSub[k].includes(cpy[id].sources); }),
       info.clede.slice(0, 200));
+    // v128 (owner, 23 Nov): concise - no paragraph shows more than 90 words before its "More"
+    const longest = info.shown.reduce((a, x) => x[0] > a[0] ? x : a, [0, ""]);
+    ck("every paragraph on every tab shows 90 words or fewer, the rest folded under More",
+      longest[0] <= 90 && info.folds > 20, `longest ${longest[0]} words: ${longest[1]}; ${info.folds} folds`);
     // v126 (owner, 23 Nov): each portfolio's income over the trailing 12 months, in the headline table and its own card
     const INCp = ["portfolio_a", "portfolio_b", "portfolio_c", "portfolio_d"].map(k => D[k].income);
     const pz = v => "\u20b1" + v.toLocaleString("en-US");

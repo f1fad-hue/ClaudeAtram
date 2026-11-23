@@ -13723,15 +13723,15 @@ $("#corrnote").textContent = D.corr_note;
   $("#ddhead").textContent = `${f2(G.value)} of 5: ${B.action}` +
     (!hold && rec === base ? `, not yet` : ``);
   $("#ddlede").innerHTML =
-    `The drawdown budget is <b class="num">${cap.toFixed(0)}%</b>: this gauge's band step from the owner's
-     ${base.toFixed(0)}% base, since ${dlong(BU.band_date)}. The gauge reads the macro drivers, the market trend and
-     market valuation over ${and3(V.map(yl))} on 1&ndash;5, 3 neutral, with years 6&ndash;10 beside them as the anchor
-     (the 1-year view from ${dlong(G.rule_date)}, valuation as its own part from ${dlong(G.parts_date)}, the six-month view
-     from ${dlong(G.split_date)}; volatility left the reading on 3 November 2026 and stays as the guard on a raise):
-     <b class="num">${f2(G.value)}</b>, ${B.action.toLowerCase()}` +
+    `Budget in force for A, B, C and D: <b class="num">${cap.toFixed(0)}%</b>. The gauge &mdash; macro drivers, market trend
+     and market valuation over ${and3(V.map(yl))}, on 1&ndash;5 with 3 neutral &mdash; reads <b class="num">${f2(G.value)}</b>:
+     ${B.action.toLowerCase()}` +
     (hold ? `.` : rec === base ? `, but ${blocked.length > 1 ? "guards" : "a guard"} below
        ${blocked.length > 1 ? "hold" : "holds"} the budget at ${cap.toFixed(0)}% for now.` : `.`) +
-    ` Budget in force for A, B, C and D: <b class="num">${cap.toFixed(0)}%</b>.`;
+    ` <details class="more"><summary>How</summary>The budget is this gauge's band step from the owner's
+     ${base.toFixed(0)}% base, since ${dlong(BU.band_date)}, with years 6&ndash;10 beside the reading as the anchor (the 1-year
+     view from ${dlong(G.rule_date)}, valuation as its own part from ${dlong(G.parts_date)}, the six-month view from
+     ${dlong(G.split_date)}; volatility left the reading on 3 November 2026 and stays as the guard on a raise).</details>`;
   /* the bar: the bands across 1-5, the reading marked (v105: eleven bands, 20-30%, shaded by
      their distance from the base - deeper red down, deeper green up) */
   const W = 420, H = 74, x0 = 14, x1 = W - 14, X = v => x0 + (x1 - x0) * (v - 1) / 4;
@@ -14650,14 +14650,10 @@ function donut(host, w, title, cagr, dd) {
   $("#chead").textContent = and3(held.map(([, j]) => SH[j]));
   const dB = +(M.cagr - Bq.cagr).toFixed(2);
   $("#clede").innerHTML =
-    `The owner's dividend-income portfolio: only funds that pay income to their unitholders &mdash; ${freqS} &mdash;
-     with ${SH[iMM]} allowed as a cash buffer, ${wn(P.min_funds)} to ${wn(P.max_funds)} of them, each at 5% or more,
-     no main fund and no single-fund cap. Chosen on the four analyses &mdash; regional rankings, macro sentiment,
-     market trend and market valuation &mdash; read at 1, 3, 5 and 10 years, the 1/3/5/10-year view B uses, by the
-     one rule: the highest net CAGR after all fees inside the ${num(cap.toFixed(0) + "%")} drawdown budget the band
-     sets. The best number is ${num(wn(P.n_funds))}: C holds ${num(mixS(P.weights))}, ${num(pc(M.cagr))} a year at
-     ${num(pc1(M.maxdd))}, ${dB === 0 ? "level with" : num(Math.abs(dB).toFixed(2) + "pp") + (dB > 0 ? " above" : " below")}
-     B's ${num(pc(Bq.cagr))} / ${num(pc1(Bq.maxdd))} on the same view.`;
+    `Only funds that pay income &mdash; ${freqS} &mdash; with ${SH[iMM]} allowed as a cash buffer: ${wn(P.min_funds)} to
+     ${wn(P.max_funds)} of them, each at least 5%, no main fund and no cap, by the same growth rule on B's view inside the
+     ${num(cap.toFixed(0) + "%")} budget. C holds ${num(mixS(P.weights))}: ${num(pc(M.cagr))} a year at ${num(pc1(M.maxdd))},
+     ${dB === 0 ? "level with" : num(Math.abs(dB).toFixed(2) + "pp") + (dB > 0 ? " above" : " below")} B's ${num(pc(Bq.cagr))}.`;
   /* what each fund pays, C's holdings first; two lines a row, so it fits a phone */
   const top = cs => `border-bottom:0;padding-bottom:2px;${cs}`;
   const sub = t => `<td colspan="3" style="padding-top:0;font-weight:400;color:var(--ink-2);font-size:12px">${t}</td>`;
@@ -14669,7 +14665,9 @@ function donut(host, w, title, cagr, dd) {
     pb.appendChild(el("tr", null,
       `<td style="${top(wt)}">${SH[ix(id)]}</td><td style="${top(wt)}">${r.freq ? cap1(r.freq) + " &middot; ~" + r.ttm.toFixed(1) + "%" : "No payout"}</td>` +
       `<td class="num" style="${top(wt)}">${w ? w + "%" : "&ndash;"}</td>`));
-    pb.appendChild(el("tr", null, sub(r.freq ? `${cap1(r.basis)}. Sources: ${r.sources}. Yield over the trailing 12 months, estimated from ${r.ttm_sources}.`
+    /* v128, concise: what it pays from on show, the sources folded */
+    pb.appendChild(el("tr", null, sub(r.freq ? `${cap1(r.basis)}. <details class="more"><summary>Sources</summary>That it pays: ${r.sources}.
+                                               Its yield over the trailing 12 months, estimated from ${r.ttm_sources}.</details>`
                                               : `${cap1(r.basis)}; ${r.sources}.`)));
   });
   pt.appendChild(pb);
@@ -14745,14 +14743,10 @@ function donut(host, w, title, cagr, dd) {
   $("#dhead").textContent = `${SH[iq]} with ${andL(partners.map(([, j]) => SH[j]))}`;
   const dB = +(M.cagr - Bq.cagr).toFixed(2);
   $("#dlede").innerHTML =
-    `The owner's Nasdaq-led portfolio: ${SH[iq]} as the largest holding, with as many of the other ten funds as the
-     rule finds best &mdash; ${wn(P.min_funds)} to ${wn(P.max_funds)} funds in all &mdash; chosen on the four analyses
-     &mdash; regional rankings, macro sentiment, market trend and market valuation &mdash; read at 1, 3, 5 and
-     10 years, the 1/3/5/10-year view B uses, by the one rule: the highest net CAGR after all fees inside the
-     ${num(cap.toFixed(0) + "%")} drawdown budget the band sets, with no single-fund cap and no cash floor.
-     The best number is ${num(wn(P.n_funds))}: D holds ${num(mixS(P.weights))},
-     ${num(pc(M.cagr))} a year at ${num(pc1(M.maxdd))}, ${dB === 0 ? "level with" : num(Math.abs(dB).toFixed(2) + "pp") +
-     (dB > 0 ? " above" : " below")} B's ${num(pc(Bq.cagr))} / ${num(pc1(Bq.maxdd))} on the same view.`;
+    `${SH[iq]} as the largest holding of ${wn(P.min_funds)} to ${wn(P.max_funds)} funds, no single-fund cap or cash floor, by
+     the same growth rule on B's view inside the ${num(cap.toFixed(0) + "%")} budget, which finds ${num(wn(P.n_funds))} funds
+     best. D holds ${num(mixS(P.weights))}: ${num(pc(M.cagr))} a year at ${num(pc1(M.maxdd))},
+     ${dB === 0 ? "level with" : num(Math.abs(dB).toFixed(2) + "pp") + (dB > 0 ? " above" : " below")} B's ${num(pc(Bq.cagr))}.`;
   donut($("#donutD"), P.weights, "Portfolio D", M.cagr, M.maxdd);
   $("#donutDlr").innerHTML = `On the ${HYN} view: <b class="num">${pc(T.cagr)}</b> / <b class="num">${pc1(T.maxdd)}</b>`;
   /* the best mix at each number of funds, the rule run within that count alone */
@@ -14830,25 +14824,23 @@ function donut(host, w, title, cagr, dd) {
     `<td><span class="swatch" style="background:${FC[i]}"></span>${s}</td>` +
     PV.map(q => `<td>${q.weights[i] ? q.weights[i] + "%" : "&ndash;"}</td>`).join(""))); });
   vw.appendChild(vwb);
+  /* CONCISE (v128): each portfolio's rule and result in a line, the method under "How" */
   $("#pblede").innerHTML =
-    `One rule for all four, maximum growth: the highest ${HYN} net CAGR after fees inside the drawdown
-     budget (a shallower drawdown breaks only exact ties), over the ${NUW} funds: at most ${L6.max_funds} funds,
-     ${L6.max_w}% in any one, at least ${L6.min_cash}% cash. <strong>A</strong> reads the four analyses
-     (regional ranking, macro sentiment, market trend, market valuation) at ${HYL} alone:
-     <b class="num">${pc(PA.ten.cagr)}</b> at <b class="num">${pc1(PA.ten.maxdd)}</b> there` +
-    `. <strong>B</strong> reads them at ${HZS.join(", ").replace(/, (?=[^,]*$)/, " and ")}, weighted by the
-     years each covers (${HZS.map((h, i) => `${HZY[i]} ${(D.hz_split[h]*100).toFixed(0)}%`).join(" / ")}
-     of the ten; year 1 researched on its own for each, the table below):
-     <b class="num">${pc(Bm.cagr)}</b> at
-     <b class="num">${pc1(Bm.maxdd)}</b>, ${PB.band_n === 1 ? "the one mix" : wn(PB.band_n) + " mixes"} at that CAGR.
-     <strong>C</strong>, at the owner's choice, is the dividend-income portfolio: ${wn(PCq.min_funds)} to ${wn(PCq.max_funds)}
-     of ${and3(PCq.funds.map(id => SH[PB.ids.indexOf(id)]))} &mdash; the funds that pay income and the money market &mdash;
-     each at least 5%, with no main fund and no single-fund cap, by the same rule on B's view, which finds
-     ${wn(PCq.n_funds)} funds best: <b class="num">${pc(Cm.cagr)}</b> at <b class="num">${pc1(Cm.maxdd)}</b>.
-     <strong>D</strong>, at the owner's choice, is ${SH[PB.ids.indexOf(PDq.fund)]} as the
-     largest holding of ${wn(PDq.min_funds)} to ${wn(PDq.max_funds)} funds, with no single-fund cap and no cash floor, by the same
-     rule on B's view, which finds ${wn(PDq.n_funds)} funds best: <b class="num">${pc(Dm.cagr)}</b> at
-     <b class="num">${pc1(Dm.maxdd)}</b>. All four are re-chosen at every update.`;
+    `One rule for all four: the highest net growth after fees inside the ${pc(-PB.dd_cap).replace(".00", "")} drawdown budget.
+     <strong>A</strong> (${HYL} view): <b class="num">${pc(PA.ten.cagr)}</b> at <b class="num">${pc1(PA.ten.maxdd)}</b>.
+     <strong>B</strong> (1/3/5/10-year view): <b class="num">${pc(Bm.cagr)}</b> at <b class="num">${pc1(Bm.maxdd)}</b>.
+     <strong>C</strong> (dividend income, ${wn(PCq.n_funds)} funds): <b class="num">${pc(Cm.cagr)}</b> at <b class="num">${pc1(Cm.maxdd)}</b>.
+     <strong>D</strong> (${SH[PB.ids.indexOf(PDq.fund)]}-led, ${wn(PDq.n_funds)} funds): <b class="num">${pc(Dm.cagr)}</b> at
+     <b class="num">${pc1(Dm.maxdd)}</b>. All four are re-chosen at every update.
+     <details class="more"><summary>How</summary>A and B search the ${NUW} funds with at most ${L6.max_funds} funds,
+     ${L6.max_w}% in any one and at least ${L6.min_cash}% cash; a shallower drawdown breaks only exact ties. A reads the four
+     analyses (regional ranking, macro sentiment, market trend, market valuation) at ${HYL} alone; B, C and D read them at
+     ${HZS.join(", ").replace(/, (?=[^,]*$)/, " and ")}, weighted by the years each covers
+     (${HZS.map((h, i) => `${HZY[i]} ${(D.hz_split[h]*100).toFixed(0)}%`).join(" / ")} of the ten), year 1 researched on its own.
+     B is ${PB.band_n === 1 ? "the one mix" : wn(PB.band_n) + " mixes"} at its CAGR. C, at the owner's choice, holds ${wn(PCq.min_funds)}
+     to ${wn(PCq.max_funds)} of ${and3(PCq.funds.map(id => SH[PB.ids.indexOf(id)]))}, each at least 5%, no main fund and no cap.
+     D, at the owner's choice, holds ${SH[PB.ids.indexOf(PDq.fund)]} as the largest of ${wn(PDq.min_funds)} to ${wn(PDq.max_funds)}
+     funds, no cap and no cash floor.</details>`;
   /* THE 22-FUND LIST, SEARCHED (2026-10-22): every fund whose fees are confirmed is in
      the search; the rest are held out, each with what is missing. */
   const M_ = D.macro, HO = D.universe.held_out;
@@ -14864,6 +14856,7 @@ function donut(host, w, title, cagr, dd) {
   $("#listnote").innerHTML =
     `<strong>Searched over the ATRAM list of ${D.universe.n_list}</strong> (the two peso bond funds removed on
      21 October): the ${NUW} whose fees are confirmed; ${wn(HO.length)} are held out until theirs are.
+     <details class="more"><summary>What two would do if admitted, and the ${wn(HO.length)} held out</summary>
      US Equity Opportunity at its listed ${M_.useq_trust_listed.toFixed(2)}% would take
      ${duo(M_.useq_w_a_listed, M_.useq_w_b_listed, M_.useq_w_d_listed)};
      at ${M_.useq_trust_peer.toFixed(2)}%, where ATRAM moved its sister feeders on 14 September,
@@ -14872,7 +14865,6 @@ function donut(host, w, title, cagr, dd) {
      ${duo(D.macro.gbi_w_a_low, D.macro.gbi_w_b_low, D.macro.gbi_w_d_low)} if its target
      charges the ${D.macro.gbi_target_low.toFixed(2)}% institutional rate; ${duo(D.macro.gbi_w_a_high, D.macro.gbi_w_b_high, D.macro.gbi_w_d_high)}
      at the ${D.macro.gbi_target_high.toFixed(2)}% retail rate.
-     <details class="more"><summary>The ${wn(HO.length)} held out, and what each is missing</summary>
      <ul class="plain">` + HO.map(x => `<li><b>${x.short}</b> &mdash; ${x.why}</li>`).join("") + `</ul></details>`;
   /* Each donut shows its own horizon; the line under it gives the other view. */
   $("#donutAlr").innerHTML = `On the 1/3/5/10-year view: <b class="num">${pc(A.cagr)}</b> /
@@ -15010,8 +15002,9 @@ function donut(host, w, title, cagr, dd) {
   const nopay = PB.ids.filter(id => !FP[id].freq && id !== "ATRPHMM");
   const hiI = INC.reduce((a, x, k) => x.per_1m > INC[a].per_1m ? k : a, 0);
   $("#incnote").innerHTML =
-    `Estimated as of ${new Date(D.payout_ttm_date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}.
-     No ATRAM fund's own payout rate was found, so each paying fund is read at its target fund's trailing-12-month
+    `Estimates, not ATRAM's published rates, and a payout is part of the return, not on top of it. Estimated as of
+     ${new Date(D.payout_ttm_date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}:
+     no ATRAM fund's own payout rate was found, so each paying fund is read at its target fund's trailing-12-month
      distribution yield, which each says it aims to pass on; the second total assumes ATRAM pays that rate net of its own
      trust fee instead, and neither is published. Paid in pesos, so the peso's moves change them too, and none is
      guaranteed. ${PVL[hiI]} pays the most${PVL[hiI] === "C" ? ", as the portfolio built to hold only the funds that pay" : ""}. ` +
@@ -15338,6 +15331,39 @@ function donut(host, w, title, cagr, dd) {
     ph.appendChild(el("div", { class: "cat" },
       `<div class="catwhen">Postponed</div>
        <div><b>${x.what}</b><div class="note">${x.why}</div></div>`));
+  });
+})();
+
+/* ---------------- concise (v128) ---------------- */
+/* (owner, 2026-11-23: "Do house clean up and make the page/tabs concise.") Once everything has rendered, any
+   explanatory paragraph or list item over 60 words keeps its opening sentence on show and folds the rest under
+   "More". Nothing is deleted, and the folded text stays inside its own element, so every check that reads it still
+   reads all of it. Ledes, tables and text already folded are left as they are. */
+(function () {
+  const wc = t => (t.match(/\S+/g) || []).length;
+  document.querySelectorAll(".panel p, .panel li, .panel div.note").forEach(e => {
+    if (e.classList.contains("lede") || e.closest("table, details, .cat, .src") || e.querySelector("p, ul, ol, table, details, div")
+        || wc(e.textContent) <= 60) return;
+    /* the first sentence end after at least 12 words, in any text node inside the element (spans included) */
+    let seen = 0, cut = null, n;
+    const tw = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+    while (!cut && (n = tw.nextNode())) {
+      const re = /[.!?](?=\s+[A-Z0-9(\u20b1"'\u201c]|\s+$)/g; let m;
+      while ((m = re.exec(n.nodeValue))) {
+        if (seen + wc(n.nodeValue.slice(0, m.index + 1)) >= 12) { cut = [n, m.index + 1]; break; }
+      }
+      if (!cut) seen += wc(n.nodeValue);
+    }
+    if (!cut) return;
+    const r = document.createRange(); r.setStart(cut[0], cut[1]); r.setEndAfter(e.lastChild);
+    if (wc(r.toString()) < 20) return;
+    const frag = r.extractContents();
+    /* an element split by the cut is cloned into the folded part: its id stays with the shown part only */
+    frag.querySelectorAll("[id]").forEach(x => { if (document.getElementById(x.id)) x.removeAttribute("id"); });
+    const d = document.createElement("details"); d.className = "more";
+    d.innerHTML = "<summary>More</summary>";
+    const sp = document.createElement("span"); sp.appendChild(frag); d.appendChild(sp);
+    e.appendChild(d);
   });
 })();
 

@@ -215,6 +215,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+191. CONCISE IS A RULE THE PAGE ENFORCES, NOT A ONE-OFF EDIT. v128 found the Portfolios tab showing 3,450 words and
+   the Budget tab 1,945, most of it method and sourcing a reader needs only on asking. Deleting it would lose the record,
+   so the page folds instead: after rendering, any paragraph over 60 words keeps its opening sentence and folds the rest
+   under "More", inside the same element (so every check that reads it still reads all of it, and an element split by
+   the fold keeps its id on the shown part only). The ledes were rewritten to lead with each result. The page check fails
+   any paragraph showing more than 90 words, so the next note added cannot quietly undo it - and a note's first sentence
+   has to carry its point, because that is the sentence a reader sees.
 190. A PAST RETURN AND A PAYOUT MUST BE ON THE SAME FOOTING BEFORE THEY ARE COMPARED. v127 sets each portfolio's
    trailing-12-month payout beside its 1-year return. The 1-year figures come from a table of unit prices, which fall by
    every payout, so for a paying fund the payout is not inside them; the page adds the two and says it is approximate

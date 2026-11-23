@@ -2,6 +2,32 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v128: house clean-up; every tab made concise
+
+At the owner's instruction: "Do house clean up and make the page/tabs concise."
+
+**Concise.** Visible words per tab (phone width, everything folded closed), before → after:
+Portfolios 3,450 → 2,180; Budget 1,945 → 983; Report 1,924 → 1,364; Macro 1,697 → 1,474; Funds 2,548 → 2,483 (its
+tables and fund slides). Nothing was deleted:
+- A fold runs once the page has rendered: any paragraph or list item over 60 words keeps its opening sentence and folds
+  the rest under "More", inside the same element; an element split by the fold keeps its id on the shown part only.
+  45 folds today.
+- The Portfolios lede now gives each portfolio's rule and result in a line (A, B, C, D), the method under "How"; C's and
+  D's ledes lead with what they hold and return; the Budget lede leads with the budget in force and the reading, its
+  history under "How".
+- The held-out funds' what-ifs moved under the list's toggle; C's payout table shows what each fund pays from, its
+  sources under "Sources"; the income note opens with its takeaway.
+
+**House clean-up.**
+- Code: no unused engine function or constant, page helper, harness name or orphan style found (scanned).
+- Files: 144 stale scratch files removed (one-off edit scripts, old data snapshots, old page copies, old logs and
+  screenshots), 12 MB to 784 KB; the reusable page-check scripts and the latest run logs kept. Caches stay git-ignored.
+
+**Checks:** engine 271/271; audit 308/308; validator 26/26 (one added: no paragraph shows more than 90 words before its
+"More"); mutants 95/95 from v127 (neither the payload nor the audit changed).
+
+Not personal financial advice.
+
 ## 2026-11-23 — v127: each portfolio's payout beside its 1-year return
 
 At the owner's instruction: "Update payout 12 ttm vs 1yr in all 4 portfolios". Asked what "1yr" means, the owner chose

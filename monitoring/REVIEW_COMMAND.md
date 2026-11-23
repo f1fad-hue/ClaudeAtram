@@ -18,7 +18,8 @@ cut-off, near-tie picks and the calendar's US clock have their own rules; every 
 the step that covers it (the map after the command), and the page check confirms every section renders. Updated
 2026-11-23 (v125): Portfolio C is the dividend-income portfolio; the weekly fund check re-confirms each income fund's
 payout schedule. Updated 2026-11-23 (v126): every portfolio shows its trailing-12-month payout, estimated
-from the target funds' yields. Updated 2026-11-23 (v127): beside it, each portfolio's 1-year return. The runbook
+from the target funds' yields. Updated 2026-11-23 (v127): beside it, each portfolio's 1-year return. Updated 2026-11-23 (v128): every tab
+leads with figures and takeaways; long notes fold under "More". The runbook
 (`README.md`) says how; this file says what.
 
 ```text
@@ -198,6 +199,10 @@ Evidence rules (apply to everything below)
   each other.
 • House cleanup: retire inputs nothing reads, remove dead code and temp files, and make
   any hand-typed figure or date read its input.
+• Keep it concise (v128): each section leads with its figures and a one-line takeaway; the
+  rest folds under "More" (the page does this to any paragraph over 60 words, and the page
+  check fails one that shows more than 90). Write a new note so its first sentence is the
+  point.
 • Commit and push, then publish to the same dashboard link and check the live copy.
   Update the changelog, the claims register (with a row for each target fund), the README
   and the runbook.
