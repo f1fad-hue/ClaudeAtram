@@ -215,6 +215,13 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+188. A PORTFOLIO DEFINED BY WHAT ITS FUNDS DO MUST CARRY THE EVIDENCE THAT THEY DO IT. v125 made C the dividend-income
+   portfolio: its set is the funds that pay income to their unitholders, and that is a fact about each fund, not a
+   setting. So the set is not a typed list alone - each fund carries a payout record (frequency, what it pays from, its
+   sources; "pays" on two), the engine and the audit both hold the set to those records, the page prints them beside
+   C, and the weekly fund check re-confirms them. A fund that stops paying, or an admitted fund that starts, changes C's
+   set - and that is the owner's call. The income itself is not added to the forecast: a payout leaves the unit price
+   lower by what it pays, so each fund's net CAGR already counts it.
 187. A RECORD OF A RUN MUST BE CHECKED AGAINST THE RUN. The engine carries the held-out what-if's results as typed
    figures, and its check asked only that they sit inside the limits and carry a recent run date. v119 changed Asian
    Multi-Asset Income's forecast; the script's output moved (US Equity Opportunity's B at the peer fee 0 -> 10%, D at

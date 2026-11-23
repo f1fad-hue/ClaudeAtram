@@ -9,7 +9,8 @@ Imports the engine, builds the held-out fund with build_fund() and the factor mo
 re-binds the search's globals to the eleven funds plus that one, and re-runs the rule
 for A (the 10-year view), B (the 1/3/5/10-year view) and D (B's view, Nasdaq Equity Income the
 largest of two to five funds; v96, re-set v99). The 50%-pinned C left with its retirement in
-v101; the C of v111 holds only its three named funds, so no held-out fund can enter it. The
+v101; the C of v125, the income portfolio, holds only its five named funds (the four income payers and
+the money market), so no held-out fund can enter it until it is admitted. The
 trust fee of Global Bond Income is read from the engine (gbi_trust_listed; 0.90 typed here
 until v113, when ATRAM's own page was found at 1.00). For the disputed fee it rebuilds the admitted fund in place and
 re-runs the same three."""

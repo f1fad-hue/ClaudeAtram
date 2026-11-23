@@ -3401,7 +3401,7 @@
   "baseline_k": 1.7125,
   "a_k": 1.66579,
   "b_k": 1.66579,
-  "c_k": 1.66,
+  "c_k": 1.65,
   "d_k": 1.65,
   "note": "1.65 is the calibration anchor, not the coefficient every sleeve uses. Each fund carries a declared adjustment for the shape of its own left tail; the portfolio coefficient is the weighted average across the equity sleeves. The whole quantity is then scaled by sqrt(horizon / calibration window), because expected maximum drawdown grows with the square root of the horizon - the -20% and -33% anchors are rolling FIVE-year medians and cannot simply be relabelled for a longer mandate."
  },
@@ -4190,25 +4190,25 @@
     },
     "c": {
      "weights": [
-      40,
+      20,
       55,
       0,
-      5,
       0,
       0,
       0,
       0,
       0,
       0,
+      25,
       0
      ],
-     "cagr": 6.44,
-     "maxdd": -19.4,
-     "vol": 10.2,
-     "ret_per_dd": 0.332,
-     "n_feasible": 2,
-     "best": 6.44,
-     "hormuz_dd": -35.7
+     "cagr": 6.59,
+     "maxdd": -20.0,
+     "vol": 10.56,
+     "ret_per_dd": 0.33,
+     "n_feasible": 4243,
+     "best": 6.59,
+     "hormuz_dd": -37.0
     },
     "d": {
      "weights": [
@@ -4280,25 +4280,25 @@
     },
     "c": {
      "weights": [
-      40,
+      10,
       50,
       0,
-      10,
+      0,
+      5,
       0,
       0,
       0,
       0,
-      0,
-      0,
+      35,
       0
      ],
-     "cagr": 6.52,
-     "maxdd": -20.4,
-     "vol": 10.55,
-     "ret_per_dd": 0.32,
-     "n_feasible": 3,
-     "best": 6.52,
-     "hormuz_dd": -37.4
+     "cagr": 6.69,
+     "maxdd": -21.0,
+     "vol": 11.02,
+     "ret_per_dd": 0.319,
+     "n_feasible": 4894,
+     "best": 6.69,
+     "hormuz_dd": -38.8
     },
     "d": {
      "weights": [
@@ -4370,25 +4370,25 @@
     },
     "c": {
      "weights": [
-      35,
-      60,
+      10,
+      55,
+      0,
       0,
       5,
       0,
       0,
       0,
       0,
-      0,
-      0,
+      30,
       0
      ],
-     "cagr": 6.61,
-     "maxdd": -21.2,
-     "vol": 11.02,
-     "ret_per_dd": 0.312,
-     "n_feasible": 5,
-     "best": 6.61,
-     "hormuz_dd": -38.8
+     "cagr": 6.78,
+     "maxdd": -21.9,
+     "vol": 11.45,
+     "ret_per_dd": 0.31,
+     "n_feasible": 5569,
+     "best": 6.78,
+     "hormuz_dd": -40.4
     },
     "d": {
      "weights": [
@@ -4460,25 +4460,25 @@
     },
     "c": {
      "weights": [
-      35,
+      5,
       55,
       0,
-      10,
+      0,
+      5,
       0,
       0,
       0,
       0,
-      0,
-      0,
+      35,
       0
      ],
-     "cagr": 6.68,
-     "maxdd": -22.2,
-     "vol": 11.37,
-     "ret_per_dd": 0.301,
-     "n_feasible": 6,
-     "best": 6.68,
-     "hormuz_dd": -40.5
+     "cagr": 6.86,
+     "maxdd": -22.7,
+     "vol": 11.81,
+     "ret_per_dd": 0.302,
+     "n_feasible": 6236,
+     "best": 6.86,
+     "hormuz_dd": -41.8
     },
     "d": {
      "weights": [
@@ -4550,25 +4550,25 @@
     },
     "c": {
      "weights": [
-      30,
-      60,
+      0,
+      55,
+      0,
       0,
       10,
       0,
       0,
       0,
       0,
-      0,
-      0,
+      35,
       0
      ],
-     "cagr": 6.85,
+     "cagr": 6.97,
      "maxdd": -24.0,
-     "vol": 12.19,
-     "ret_per_dd": 0.285,
-     "n_feasible": 9,
-     "best": 6.85,
-     "hormuz_dd": -43.6
+     "vol": 12.38,
+     "ret_per_dd": 0.29,
+     "n_feasible": 6908,
+     "best": 6.97,
+     "hormuz_dd": -44.0
     },
     "d": {
      "weights": [
@@ -4640,25 +4640,25 @@
     },
     "c": {
      "weights": [
-      25,
-      70,
       0,
-      5,
+      65,
       0,
       0,
       0,
       0,
       0,
       0,
+      0,
+      35,
       0
      ],
-     "cagr": 6.94,
-     "maxdd": -24.8,
-     "vol": 12.67,
-     "ret_per_dd": 0.28,
-     "n_feasible": 12,
-     "best": 6.94,
-     "hormuz_dd": -45.1
+     "cagr": 7.07,
+     "maxdd": -25.0,
+     "vol": 12.85,
+     "ret_per_dd": 0.283,
+     "n_feasible": 7565,
+     "best": 7.07,
+     "hormuz_dd": -45.8
     },
     "d": {
      "weights": [
@@ -4730,25 +4730,25 @@
     },
     "c": {
      "weights": [
-      25,
+      0,
       65,
-      0,
-      10,
-      0,
+      5,
       0,
       0,
       0,
       0,
       0,
+      0,
+      30,
       0
      ],
-     "cagr": 7.01,
+     "cagr": 7.14,
      "maxdd": -25.8,
-     "vol": 13.01,
-     "ret_per_dd": 0.272,
-     "n_feasible": 14,
-     "best": 7.01,
-     "hormuz_dd": -46.7
+     "vol": 13.22,
+     "ret_per_dd": 0.277,
+     "n_feasible": 8176,
+     "best": 7.14,
+     "hormuz_dd": -47.3
     },
     "d": {
      "weights": [
@@ -4820,9 +4820,8 @@
     },
     "c": {
      "weights": [
-      20,
-      75,
       0,
+      70,
       5,
       0,
       0,
@@ -4830,15 +4829,16 @@
       0,
       0,
       0,
+      25,
       0
      ],
-     "cagr": 7.1,
-     "maxdd": -26.6,
-     "vol": 13.49,
-     "ret_per_dd": 0.267,
-     "n_feasible": 17,
-     "best": 7.1,
-     "hormuz_dd": -48.2
+     "cagr": 7.23,
+     "maxdd": -26.9,
+     "vol": 13.68,
+     "ret_per_dd": 0.269,
+     "n_feasible": 8732,
+     "best": 7.23,
+     "hormuz_dd": -49.0
     },
     "d": {
      "weights": [
@@ -4910,25 +4910,25 @@
     },
     "c": {
      "weights": [
+      0,
+      75,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
       20,
-      70,
-      0,
-      10,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
       0
      ],
-     "cagr": 7.18,
-     "maxdd": -27.6,
-     "vol": 13.83,
-     "ret_per_dd": 0.26,
-     "n_feasible": 20,
-     "best": 7.18,
-     "hormuz_dd": -49.8
+     "cagr": 7.31,
+     "maxdd": -27.9,
+     "vol": 14.17,
+     "ret_per_dd": 0.262,
+     "n_feasible": 9235,
+     "best": 7.31,
+     "hormuz_dd": -50.9
     },
     "d": {
      "weights": [
@@ -5000,25 +5000,25 @@
     },
     "c": {
      "weights": [
+      0,
+      75,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
       15,
-      80,
-      0,
-      5,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
       0
      ],
-     "cagr": 7.26,
-     "maxdd": -28.5,
-     "vol": 14.32,
+     "cagr": 7.38,
+     "maxdd": -28.9,
+     "vol": 14.57,
      "ret_per_dd": 0.255,
-     "n_feasible": 24,
-     "best": 7.26,
-     "hormuz_dd": -51.4
+     "n_feasible": 9664,
+     "best": 7.38,
+     "hormuz_dd": -52.5
     },
     "d": {
      "weights": [
@@ -5090,25 +5090,25 @@
     },
     "c": {
      "weights": [
-      15,
-      75,
+      0,
+      85,
+      0,
+      0,
+      5,
+      0,
+      0,
+      0,
       0,
       10,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
       0
      ],
-     "cagr": 7.34,
-     "maxdd": -29.4,
-     "vol": 14.65,
-     "ret_per_dd": 0.25,
-     "n_feasible": 26,
-     "best": 7.34,
-     "hormuz_dd": -53.0
+     "cagr": 7.45,
+     "maxdd": -29.9,
+     "vol": 15.05,
+     "ret_per_dd": 0.249,
+     "n_feasible": 9993,
+     "best": 7.45,
+     "hormuz_dd": -53.9
     },
     "d": {
      "weights": [
@@ -5703,9 +5703,8 @@
     },
     "c": {
      "weights": [
-      25,
-      70,
       0,
+      60,
       5,
       0,
       0,
@@ -5713,9 +5712,10 @@
       0,
       0,
       0,
+      35,
       0
      ],
-     "cagr": 6.87,
+     "cagr": 6.98,
      "maxdd": -24.9
     },
     "d": {
@@ -5760,20 +5760,20 @@
     },
     "c": {
      "weights": [
-      25,
-      70,
       0,
-      5,
+      65,
       0,
       0,
       0,
       0,
       0,
       0,
+      0,
+      35,
       0
      ],
-     "cagr": 6.97,
-     "maxdd": -24.8
+     "cagr": 7.16,
+     "maxdd": -24.9
     },
     "d": {
      "weights": [
@@ -5817,11 +5817,11 @@
     },
     "c": {
      "weights": [
+      15,
+      60,
+      0,
+      0,
       25,
-      70,
-      0,
-      5,
-      0,
       0,
       0,
       0,
@@ -5829,7 +5829,7 @@
       0,
       0
      ],
-     "cagr": 6.94,
+     "cagr": 6.92,
      "maxdd": -24.8
     },
     "d": {
@@ -5874,20 +5874,20 @@
     },
     "c": {
      "weights": [
-      25,
-      70,
       0,
-      5,
+      65,
       0,
       0,
       0,
       0,
       0,
       0,
+      0,
+      35,
       0
      ],
-     "cagr": 6.94,
-     "maxdd": -24.8
+     "cagr": 7.07,
+     "maxdd": -25.0
     },
     "d": {
      "weights": [
@@ -5932,20 +5932,20 @@
     },
     "c": {
      "weights": [
-      25,
-      70,
       0,
-      5,
+      65,
       0,
       0,
       0,
       0,
       0,
       0,
+      0,
+      35,
       0
      ],
-     "cagr": 6.97,
-     "maxdd": -24.8
+     "cagr": 7.1,
+     "maxdd": -25.0
     },
     "d": {
      "weights": [
@@ -5989,20 +5989,20 @@
     },
     "c": {
      "weights": [
-      25,
-      70,
       0,
-      5,
+      65,
       0,
       0,
       0,
       0,
       0,
       0,
+      0,
+      35,
       0
      ],
-     "cagr": 6.93,
-     "maxdd": -24.8
+     "cagr": 7.07,
+     "maxdd": -25.0
     },
     "d": {
      "weights": [
@@ -6957,16 +6957,16 @@
  },
  "portfolio_c": {
   "weights": [
-   25,
-   70,
    0,
-   5,
+   65,
    0,
    0,
    0,
    0,
    0,
    0,
+   0,
+   35,
    0
   ],
   "ids": [
@@ -6984,274 +6984,238 @@
   ],
   "macro": {
    "weights": [
-    25.0,
-    70.0,
     0.0,
-    5.0,
+    65.0,
     0.0,
     0.0,
     0.0,
     0.0,
     0.0,
     0.0,
+    0.0,
+    35.0,
     0.0
    ],
-   "cagr": 6.94,
-   "vol": 12.67,
-   "maxdd": -24.8,
-   "ret_per_dd": 0.28,
-   "sharpe_like": -0.001,
-   "terminal_1m": 1956148,
-   "worst_1m_from_open": 752000
+   "cagr": 7.07,
+   "vol": 12.85,
+   "maxdd": -25.0,
+   "ret_per_dd": 0.283,
+   "sharpe_like": 0.009,
+   "terminal_1m": 1980059,
+   "worst_1m_from_open": 750000
   },
   "base": {
    "weights": [
-    25.0,
-    70.0,
     0.0,
-    5.0,
+    65.0,
     0.0,
     0.0,
     0.0,
     0.0,
     0.0,
     0.0,
+    0.0,
+    35.0,
     0.0
    ],
-   "cagr": 6.79,
-   "vol": 12.67,
-   "maxdd": -24.9,
-   "ret_per_dd": 0.273,
-   "sharpe_like": -0.013,
-   "terminal_1m": 1928883,
-   "worst_1m_from_open": 751000
+   "cagr": 6.92,
+   "vol": 12.85,
+   "maxdd": -25.1,
+   "ret_per_dd": 0.276,
+   "sharpe_like": -0.003,
+   "terminal_1m": 1952493,
+   "worst_1m_from_open": 749000
   },
   "ten": {
    "weights": [
-    25.0,
-    70.0,
     0.0,
-    5.0,
+    65.0,
     0.0,
     0.0,
     0.0,
     0.0,
     0.0,
     0.0,
+    0.0,
+    35.0,
     0.0
    ],
-   "cagr": 7.01,
-   "vol": 12.67,
-   "maxdd": -24.8,
-   "ret_per_dd": 0.283,
-   "sharpe_like": 0.004,
-   "terminal_1m": 1968991,
-   "worst_1m_from_open": 752000
+   "cagr": 7.19,
+   "vol": 12.85,
+   "maxdd": -24.9,
+   "ret_per_dd": 0.289,
+   "sharpe_like": 0.018,
+   "terminal_1m": 2002363,
+   "worst_1m_from_open": 751000
   },
   "column": "net_macro",
-  "fund": "ATRQIAP",
   "funds": [
    "ATRPHMM",
    "ATRQIAP",
-   "ATRGTEC"
+   "ATRASEQ",
+   "ATRGLDV",
+   "ATRAMIP"
   ],
-  "rule_date": "2026-11-17",
-  "by_q": [
-   {
-    "q": 40,
-    "n_feasible": 0,
-    "n_total": 3,
-    "shallowest": -25.4
+  "payout": {
+   "ATRQIAP": {
+    "freq": "monthly",
+    "basis": "income from the target fund's option premiums and dividends, not guaranteed",
+    "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); the target's own class distributes (justETF)"
    },
+   "ATRASEQ": {
+    "freq": "quarterly",
+    "basis": "dividends from Asia Pacific ex-Japan equities, through JPMorgan Asia Equity Dividend",
+    "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 (Etiqa); the 2021 KIIDS said monthly"
+   },
+   "ATRGLDV": {
+    "freq": "quarterly",
+    "basis": "dividends from global equities, through Fidelity Global Dividend",
+    "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, then monthly"
+   },
+   "ATRAMIP": {
+    "freq": "quarterly",
+    "basis": "bond interest and equity and REIT dividends, through Schroder Asian Asset Income",
+    "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)"
+   },
+   "ATRPHMM": {
+    "freq": null,
+    "basis": "no payout: interest accrues in the unit price",
+    "sources": "allowed as the cash buffer at the owner's choice of 23 Nov"
+   }
+  },
+  "held_out_income": [
+   "Global Bond Income",
+   "Global Multi-Asset Income",
+   "US Multi-Asset Income"
+  ],
+  "rule_date": "2026-11-23",
+  "n_funds": 2,
+  "min_funds": 2,
+  "max_funds": 5,
+  "by_count": [
    {
-    "q": 45,
-    "n_feasible": 2,
-    "n_total": 6,
-    "shallowest": -21.4,
+    "n": 2,
+    "n_feasible": 93,
+    "n_total": 190,
+    "shallowest": -0.0,
     "weights": [
+     0,
+     65,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
      35,
-     45,
-     0,
-     20,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
      0
     ],
-    "cagr": 6.84,
-    "maxdd": -24.3
-   },
-   {
-    "q": 50,
-    "n_feasible": 3,
-    "n_total": 9,
-    "shallowest": -17.6,
-    "weights": [
-     35,
-     50,
-     0,
-     15,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "cagr": 6.76,
-    "maxdd": -23.2
-   },
-   {
-    "q": 55,
-    "n_feasible": 3,
-    "n_total": 8,
-    "shallowest": -19.4,
-    "weights": [
-     30,
-     55,
-     0,
-     15,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
-    "cagr": 6.93,
+    "cagr": 7.07,
     "maxdd": -25.0
    },
    {
-    "q": 60,
-    "n_feasible": 2,
-    "n_total": 7,
-    "shallowest": -21.2,
+    "n": 3,
+    "n_feasible": 1005,
+    "n_total": 1710,
+    "shallowest": -0.0,
     "weights": [
-     30,
+     0,
      60,
-     0,
-     10,
-     0,
+     5,
      0,
      0,
      0,
      0,
      0,
+     0,
+     35,
      0
     ],
-    "cagr": 6.85,
-    "maxdd": -24.0
+    "cagr": 7.05,
+    "maxdd": -24.9
    },
    {
-    "q": 65,
-    "n_feasible": 1,
-    "n_total": 6,
-    "shallowest": -23.0,
+    "n": 4,
+    "n_feasible": 3327,
+    "n_total": 4845,
+    "shallowest": -0.9,
     "weights": [
-     30,
+     5,
      65,
      0,
+     0,
      5,
      0,
      0,
      0,
      0,
-     0,
-     0,
-     0
-    ],
-    "cagr": 6.77,
-    "maxdd": -23.0
-   },
-   {
-    "q": 70,
-    "n_feasible": 1,
-    "n_total": 5,
-    "shallowest": -24.8,
-    "weights": [
      25,
-     70,
+     0
+    ],
+    "cagr": 7.03,
+    "maxdd": -24.7
+   },
+   {
+    "n": 5,
+    "n_feasible": 3140,
+    "n_total": 3876,
+    "shallowest": -2.7,
+    "weights": [
+     10,
+     65,
+     5,
      0,
      5,
      0,
      0,
      0,
      0,
-     0,
-     0,
+     15,
      0
     ],
-    "cagr": 6.94,
-    "maxdd": -24.8
-   },
-   {
-    "q": 75,
-    "n_feasible": 0,
-    "n_total": 4,
-    "shallowest": -26.6
-   },
-   {
-    "q": 80,
-    "n_feasible": 0,
-    "n_total": 3,
-    "shallowest": -28.5
-   },
-   {
-    "q": 85,
-    "n_feasible": 0,
-    "n_total": 2,
-    "shallowest": -30.3
-   },
-   {
-    "q": 90,
-    "n_feasible": 0,
-    "n_total": 1,
-    "shallowest": -32.1
+    "cagr": 7.02,
+    "maxdd": -24.9
    }
   ],
   "band_n": 1,
-  "n_feasible": 12,
-  "n_total": 54,
+  "n_feasible": 7565,
+  "n_total": 10621,
   "scenarios": [
    {
     "name": "Hormuz escalation",
     "desc": "Already partly running since the late-August tanker strikes. This row models the tail: full Strait closure and Brent to $130+ from $93. Global CPI re-accelerates, the Fed is forced to hike, and multiples compress hardest at the long end.",
-    "cagr": 3.54,
-    "vol": 20.27,
-    "maxdd": -45.1
+    "cagr": 3.1,
+    "vol": 20.57,
+    "maxdd": -45.8
    },
    {
     "name": "Hawkish repricing",
     "desc": "A second hike on top of the one the dot plot already has (median 4.1% for end-2026) - 4 of 18 participants see it. The Fed hikes into a 4.1% unemployment rate; duration-heavy growth de-rates.",
-    "cagr": 5.14,
-    "vol": 16.47,
-    "maxdd": -35.0
+    "cagr": 4.92,
+    "vol": 16.71,
+    "maxdd": -35.5
    },
    {
     "name": "AI capex digestion",
     "desc": "Partly running since 5 Nov: the Nasdaq fell 5.52% into correction on 5 Nov, and the KOSPI 5.28% on 5 Nov and 6.02% on 6 Nov, on fears for the AI build-out, before any earnings cut. This row models the cut: the semis order book rolls over and the 52.5% Asia EPS estimate is cut. Hits the AI supply chain and mega-cap tech together.",
-    "cagr": 4.09,
-    "vol": 18.37,
-    "maxdd": -40.2
+    "cagr": 3.92,
+    "vol": 18.64,
+    "maxdd": -40.7
    },
    {
     "name": "Disinflation restart",
     "desc": "Oil mean-reverts to $65, headline CPI falls to 2%, Fed cuts. The bull case: multiples expand, vol collapses.",
-    "cagr": 8.69,
-    "vol": 10.14,
-    "maxdd": -17.7
+    "cagr": 9.4,
+    "vol": 10.28,
+    "maxdd": -17.3
    },
    {
     "name": "Grind-on base case",
     "desc": "Vol settles back to the 19-20 the futures curve priced on 19 Nov, earnings hold, no policy accident. The modelled path.",
-    "cagr": 6.94,
-    "vol": 12.67,
-    "maxdd": -24.8
+    "cagr": 7.07,
+    "vol": 12.85,
+    "maxdd": -25.0
    }
   ],
   "dd_cap": 25.0,
@@ -12231,6 +12195,31 @@
    "org": "ETFdb",
    "what": "AI Stocks: Down But Not Out? - Nasdaq-100 blended forward P/E 18.75",
    "url": "https://etfdb.com/etf-strategist-channel/are-ai-stocks-down-but-not-out/"
+  },
+  {
+   "org": "First Metro Securities",
+   "what": "Income-Paying Funds - ATRAM Asian Multi-Asset Income, Asia Equity Opportunity, Global Dividend, Global Bond Income and US Multi-Asset Income quarterly; Global Multi-Asset Income monthly",
+   "url": "https://help.firstmetrosec.com.ph/hc/en-us/articles/26994012816281-Income-Paying-Funds"
+  },
+  {
+   "org": "Daily Tribune",
+   "what": "ATRAM launches Nasdaq income feeder fund - monthly income from a covered-call strategy, 28 Apr 2026",
+   "url": "https://tribune.net.ph/2026/04/28/atram-launches-nasdaq-income-feeder-fund"
+  },
+  {
+   "org": "The Philippine Business and News",
+   "what": "ATRAM unveils Asian Multi-Asset Income Feeder Fund - aims to pay dividend income every quarter, 12 Sep 2022",
+   "url": "https://thephilbiznews.com/2022/09/12/atram-unveils-asian-multi-asset-income-feeder-fund/"
+  },
+  {
+   "org": "Etiqa Philippines",
+   "what": "Fund price and statistics - ATRAM unit income distribution notice for Asia Equity Opportunity, 22 Oct 2026",
+   "url": "https://etiqa.com.ph/fund-price-and-statistics"
+  },
+  {
+   "org": "DragonFi",
+   "what": "ATRAM Global Multi-asset Income Feeder Fund - aims to distribute income monthly, as its target fund",
+   "url": "https://help.dragonfi.ph/hc/en-us/articles/60112340334873-ATRAM-Global-Multi-asset-Income-Feeder-Fund"
   }
  ]
 }

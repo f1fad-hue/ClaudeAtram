@@ -15,15 +15,17 @@ three funds, so the command covers A, B, C and D. Updated 2026-11-17 (v112): the
 and 7-12, years 2-3 and 4-5 (10/10/40/40), with the 10-year view as its unweighted anchor. Updated 2026-11-22 (v122): the
 drivers and the regional rankings are scored on 1-5 (v119-v120), so the geopolitics guard's floor is 1.44; news after the
 cut-off, near-tie picks and the calendar's US clock have their own rules; every section on the five tabs is named, with
-the step that covers it (the map after the command), and the page check confirms every section renders. The runbook
+the step that covers it (the map after the command), and the page check confirms every section renders. Updated
+2026-11-23 (v125): Portfolio C is the dividend-income portfolio; the weekly fund check re-confirms each income fund's
+payout schedule. The runbook
 (`README.md`) says how; this file says what.
 
 ```text
 ATRAM review: bring the dashboard up to today, check every number on every tab, fix
 what's wrong, clean up, and publish it to https://claude.ai/artifact/6z2thyg2HaHjFtcbjKhnUY
 (code: f1fad-hue/ClaudeAtram, branch claude/android-portfolio-macro-dashboard-awmpce).
-The portfolios are A, B, C and D (C, from 17 Nov 2026, is my three funds with Nasdaq Equity Income
-as the main). I hold Nasdaq Equity Income.
+The portfolios are A, B, C and D (C, from 23 Nov 2026, is my dividend-income portfolio: two to five
+of the ATRAM funds that pay income, with Peso Money Market as a cash buffer). I hold Nasdaq Equity Income.
 
 Before you start
 • Read the runbook (monitoring/README.md) and the newest changelog entry, and carry
@@ -90,12 +92,17 @@ Evidence rules (apply to everything below)
   ◦ Compare each feeder's 1-year peso return with its target's; a gap well beyond the
     fee stack means a fee or a target is wrong. If either return can't be found, record
     the test as not run.
+  ◦ Portfolio C's income funds (v125): re-confirm that each still pays income and how
+    often (ATRAM's distribution notices, a broker's income-paying list), two sources for
+    "pays"; a fund that stops paying leaves C's set, and an admitted fund that starts paying
+    joins it - both are the owner's call, so ask.
 • Check the long-run return assumptions each forecast starts from (the J.P. Morgan
   edition in use), that each matches its target's asset class and region, and that the
   peso translation stays inside its PPP bracket. Check the Side by side and Fee
   transparency tables against the slides.
 • For each held-out fund, say what still blocks it, including any target fund not yet
-  named. Re-run the held-out what-if for A, B and D and record its weights (C holds only its three).
+  named. Re-run the held-out what-if for A, B and D and record its weights (C holds only its five named funds;
+  a held-out income fund joins it only once admitted).
 
 3. The four analyses at 1, 3, 5 and 10 years (Macro, Funds and Portfolios tabs)
 • Every score is on 1-5, 3 neutral (the drivers from v119, the regions from v120); moves are
@@ -217,7 +224,7 @@ Five tabs, thirty sections. A review that skips a row has not covered the page.
 | Funds | Look-through (regions and sectors underneath) | 2 |
 | Funds | Stock level (top holdings, dated, 60-day limit) | 2 |
 | Portfolios | A vs B vs C vs D, and the four analyses year by year | 3, 5 |
-| Portfolios | Portfolio C (each Nasdaq weight's best) | 5 |
+| Portfolios | Portfolio C (what each fund pays and its sources; each count's best) | 4, 5 |
 | Portfolios | Portfolio D (each count's best, the number of funds) | 5 |
 | Portfolios | Headline forecast, lenses, who wins where | 5 |
 | Portfolios | Feasible set (the frontier, the best pure ratio, the extremes) | 5 |

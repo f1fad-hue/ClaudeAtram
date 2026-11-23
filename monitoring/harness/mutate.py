@@ -29,14 +29,14 @@ def m_swap(d):                                                                  
     w = d["portfolio_a"]["weights"]; i = next(k for k in range(1, len(w)) if w[k] >= 10); j = next(k for k in range(1, len(w)) if not w[k])
     w[i] -= 5; w[j] += 5
 def m_feas(d): d["portfolio_b"]["n_feasible"] += 1
-def m_cfour(d):                                                                                # C holding a fourth fund (v111)
-    w = d["portfolio_c"]["weights"]; i = w.index(min(x for x in w if x)); j = next(k for k in range(len(w)) if not w[k])
-    w[i] -= 5; w[j] += 5
-def m_cpick(d):                                                                                # C moved off the rule's pick to a feasible row, its headline matched (v111)
-    c = d["portfolio_c"]; q = c["weights"][c["ids"].index("ATRQIAP")]
-    r = next(r for r in c["by_q"] if r["n_feasible"] and r["q"] != q)
-    c["weights"] = list(r["weights"]); c["macro"]["cagr"], c["macro"]["maxdd"] = r["cagr"], r["maxdd"]
-def m_cq(d): r = d["portfolio_c"]["by_q"][0]; r["shallowest"] = round(r["shallowest"] + 0.1, 1)   # a Nasdaq weight's shallowest mix off its re-run (v111)
+def m_cnonpay(d):                                                                              # C holding a fund that pays nothing, Global Technology (v125)
+    c = d["portfolio_c"]; w = c["weights"]; i = w.index(min(x for x in w if x)); w[i] -= 5; w[c["ids"].index("ATRGTEC")] += 5
+def m_cpick(d):                                                                                # C moved off the rule's pick to another count's best, its headline matched (v125)
+    c = d["portfolio_c"]
+    r = next(r for r in c["by_count"] if r["n_feasible"] and r["n"] != c["n_funds"])
+    c["weights"] = list(r["weights"]); c["n_funds"] = r["n"]; c["macro"]["cagr"], c["macro"]["maxdd"] = r["cagr"], r["maxdd"]
+def m_ccount(d): r = d["portfolio_c"]["by_count"][-1]; r["shallowest"] = round(r["shallowest"] + 0.1, 1)   # a count's shallowest mix off its re-run (v125)
+def m_cpay(d): d["portfolio_c"]["payout"]["ATRGLDV"]["freq"] = None                            # an income fund's payout record lost (v125)
 def m_orphan(d): d["macro"]["fed_50bp_odds_dec_99nov"] = 4.3                             # a new input nothing reads, its value quoted elsewhere (v116)
 def m_day20(d): d["macro"]["spx_20nov"] = round(d["macro"]["spx_20nov"] + 10, 2)                # a day-keyed close off the latest, the week off it (v118)
 def m_cold(d): d["macro"]["gbi_w_c_low"] = 0                                                   # the old C's held-out inputs back (v111)

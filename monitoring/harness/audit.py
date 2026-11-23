@@ -44,11 +44,13 @@ ck("the data date is a weekday", AS_OF.weekday() < 5, f"{AS_OF:%A}")
 for k in ("optimized",):
     ck(f"retired key '{k}' is absent", k not in D)
 PAA, PBB, PCC, PDD = D["portfolio_a"], D["portfolio_b"], D["portfolio_c"], D["portfolio_d"]
-# PORTFOLIO C (owner, 2026-11-17, v111): the key is back, carrying the owner's three-fund portfolio; the
-# 50%-pinned C retired on 12 Nov (v101) left held-out inputs, which stay gone. C is re-picked below.
-ck("Portfolio C is the owner's three funds, in every what-if and budget step; the old C's held-out inputs stay gone",
-   PCC["funds"] == ["ATRPHMM", "ATRQIAP", "ATRGTEC"] and PCC["fund"] == "ATRQIAP" and PCC["column"] == "net_macro"
-   and all("c" in v for v in D["universe"]["what_if"].values())
+# PORTFOLIO C (owner, 2026-11-23, v125): the dividend-income portfolio - the four income funds and the money
+# market (the owner's three funds v111-v124); the 50%-pinned C retired on 12 Nov (v101) left held-out inputs,
+# which stay gone. C is re-picked below, every what-if and budget step held to its set.
+ck("Portfolio C is the income funds and the money market, in every what-if and budget step; the old C's held-out inputs stay gone",
+   PCC["funds"] == ["ATRPHMM", "ATRQIAP", "ATRASEQ", "ATRGLDV", "ATRAMIP"] and "fund" not in PCC and PCC["column"] == "net_macro"
+   and all("c" in v and all(x == 0 for j, x in enumerate(v["c"]["weights"]) if PCC["ids"][j] not in PCC["funds"])
+           and 2 <= sum(1 for x in v["c"]["weights"] if x) <= 5 for v in D["universe"]["what_if"].values())
    and all("c" in a_ for a_ in D["dd_gauge"]["alt"].values())
    and not any(re.fullmatch(r"[a-z]+_(w|cagr)_c_[a-z]+", k) for k in D["macro"]))
 ck("the 21 Oct review record stays retired (no review, match flag or outside list on A; no pa_review_*)",
@@ -306,15 +308,23 @@ ck("D: each count's best (two to five funds) re-derives, and D's count is the be
    _bc_ok and max(PDD["by_count"], key=lambda b_: (b_["cagr"], -abs(b_["maxdd"]), -b_["n"]))["n"] == nD,
    f"counts off: {_bc_bad}")
 
-# PORTFOLIO C (v111, owner 2026-11-17): exactly Peso Money Market, Nasdaq Equity Income and Global
-# Technology, each at least 5%, Nasdaq strictly the largest, no single-fund cap; the one rule on the
-# 1/3/5/10-year view. Re-picked here from its own generator - a plain triple loop over the 5% grid - and
-# its table by Nasdaq weight re-derived row by row.
+# PORTFOLIO C, THE DIVIDEND-INCOME PORTFOLIO (v125, owner 2026-11-23): two to five of the four income-paying
+# funds and Peso Money Market, each at least 5%, no main fund and no single-fund cap; the one rule on the
+# 1/3/5/10-year view. Re-picked here from its own generator - the fund set first, then the 5% splits - and
+# its table by number of funds re-derived row by row. Its eligible set is checked against the funds' own
+# payout records: every fund it may hold pays income, the money market apart, and no other fund is in it.
 wC = [int(x) for x in PCC["weights"]]
-_iC = [IDS.index(f) for f in PCC["funds"]]; _iMM, _iGT = IDS.index("ATRPHMM"), IDS.index("ATRGTEC")
-ck("C: 11 weights on the 5% grid summing to 100, only its three funds, each at least 5%, Nasdaq strictly the largest",
-   len(wC) == NU and sum(wC) == 100 and all(x % 5 == 0 for x in wC) and all(wC[i] >= 5 for i in _iC)
-   and all(x == 0 for i, x in enumerate(wC) if i not in _iC) and all(wC[i] < wC[PIN] for i in _iC if i != PIN), f"{wC}")
+nC = sum(1 for x in wC if x)
+_iC = [IDS.index(f) for f in PCC["funds"]]
+_payC = PCC["payout"]
+ck("C: its set is the four income-paying funds and the money market, each with a payout record and its sources",
+   sorted(PCC["funds"]) == sorted(["ATRPHMM", "ATRQIAP", "ATRASEQ", "ATRGLDV", "ATRAMIP"])
+   and all(_payC[f]["freq"] in ("monthly", "quarterly") and _payC[f]["sources"] for f in PCC["funds"] if f != "ATRPHMM")
+   and _payC["ATRPHMM"]["freq"] is None and set(_payC) == set(PCC["funds"])
+   and all(h in {x["short"] for x in D["universe"]["held_out"]} for h in PCC["held_out_income"]), f"{PCC['funds']}")
+ck("C: 11 weights on the 5% grid summing to 100, two to five of its funds, each at least 5%, nothing else",
+   len(wC) == NU and sum(wC) == 100 and all(x % 5 == 0 for x in wC) and all(x == 0 for i, x in enumerate(wC) if i not in _iC)
+   and 2 <= nC <= 5 and nC == PCC["n_funds"] and (PCC["min_funds"], PCC["max_funds"]) == (2, 5) and "fund" not in PCC, f"{wC}")
 for view, key in (("macro", "net_macro"), ("base", "net_base"), ("ten", "net_10y")):
     rd, vd, dd_, _, _ = figures(wC, key); S = PCC[view]
     ck(f"C {view}: CAGR / vol / drawdown re-derive ({rd} / {vd} / {dd_})",
@@ -328,36 +338,36 @@ _gC = [r_ for r_ in PCC["scenarios"] if r_["name"].startswith("Grind")]
 ck("C: its grind-on stress row is its own-horizon headline", len(_gC) == 1
    and (_gC[0]["cagr"], _gC[0]["vol"], _gC[0]["maxdd"]) == (PCC["macro"]["cagr"], PCC["macro"]["vol"], PCC["macro"]["maxdd"]))
 ck("C: its drawdown coefficient is its own mix", abs(D["dd_model"]["c_k"] - round(pk(wC), 5)) < 1e-6)
-_fC, _nC, _byq = [], 0, {}
-for q in range(5, 101, 5):
-    for mm in range(5, q, 5):
-        gt = 100 - q - mm
-        if not 5 <= gt < q: continue
-        w = [0] * NU; w[PIN], w[_iMM], w[_iGT] = q, mm, gt
-        _nC += 1; _byq.setdefault(q, []).append(w)
-        rd, vd, dd_, r, v = figures(w, "net_macro")
-        ddr = max((pk(w) * v - MU * r) * SC, 0.0)
-        if ddr > CAP + 1e-9 or abs(dd_) > CAP + 1e-9: continue
-        _fC.append((rd, abs(dd_), ddr, w, q))
+_fC, _nC, _nCn, _shC = [], 0, {}, {}
+for k in range(2, 6):
+    for sup in itertools.combinations(sorted(_iC), k):
+        for sp in _splits(100, k, 5, 100):
+            w = [0] * NU
+            for i_, x in zip(sup, sp): w[i_] = x
+            _nC += 1; _nCn[k] = _nCn.get(k, 0) + 1
+            rd, vd, dd_, r, v = figures(w, "net_macro")
+            _shC[k] = max(_shC.get(k, -1e9), dd_)
+            ddr = max((pk(w) * v - MU * r) * SC, 0.0)
+            if ddr > CAP + 1e-9 or abs(dd_) > CAP + 1e-9: continue
+            _fC.append((rd, abs(dd_), ddr, w, k))
 _winC, _bC = _pickD(_fC)
 ck(f"C is the rule's pick on the 1/3/5/10-year view, re-run over all {_nC} of its mixes ({len(_fC)} feasible, {len(_bC)} at the best CAGR)",
    _winC[3] == wC and len(_fC) == PCC["n_feasible"] and len(_bC) == PCC["band_n"] and _nC == PCC["n_total"],
    f"{_winC[3]} ({len(_fC)}, {len(_bC)}, {_nC}) vs {wC} ({PCC['n_feasible']}, {PCC['band_n']}, {PCC['n_total']})")
-_bq_bad = []
-for b_ in PCC["by_q"]:
-    q = b_["q"]; rows_ = [x for x in _fC if x[4] == q]
-    shal = max(figures(w, "net_macro")[2] for w in _byq.get(q, [[0] * NU]))
-    ok_ = b_["n_total"] == len(_byq.get(q, [])) and b_["n_feasible"] == len(rows_) and b_["shallowest"] == shal
+_bcC = {b_["n"]: b_ for b_ in PCC["by_count"]}
+_cc_ok, _cc_bad = sorted(_bcC) == [2, 3, 4, 5], []
+for n_ in range(2, 6):
+    rows_ = [x for x in _fC if x[4] == n_]; b_ = _bcC.get(n_, {})
+    ok_ = b_.get("n_total") == _nCn.get(n_) and b_.get("n_feasible") == len(rows_) and b_.get("shallowest") == _shC.get(n_)
     if rows_:
         (r_, d_, _, w_, _), _ = _pickD(rows_)
         ok_ = ok_ and b_.get("weights") == w_ and b_.get("cagr") == r_ and abs(b_.get("maxdd", 0)) == d_
     else:
-        ok_ = ok_ and "weights" not in b_ and abs(shal) > CAP + 1e-9
-    if not ok_: _bq_bad.append(q)
-ck("C: each Nasdaq weight's best re-derives, every weight is listed once, and C's weight is the best of them",
-   not _bq_bad and sorted(b_["q"] for b_ in PCC["by_q"]) == sorted(_byq)
-   and max((b_ for b_ in PCC["by_q"] if b_["n_feasible"]), key=lambda b_: (b_["cagr"], -abs(b_["maxdd"])))["q"] == wC[PIN],
-   f"weights off: {_bq_bad}")
+        ok_ = ok_ and "weights" not in b_ and abs(_shC.get(n_, 0)) > CAP + 1e-9
+    if not ok_: _cc_ok = False; _cc_bad.append(n_)
+ck("C: each count's best (two to five funds) re-derives, and C's count is the best of them",
+   _cc_ok and max((b_ for b_ in PCC["by_count"] if b_["n_feasible"]), key=lambda b_: (b_["cagr"], -abs(b_["maxdd"]), -b_["n"]))["n"] == nC,
+   f"counts off: {_cc_bad}")
 
 # ---------------------------------------------------------------------------
 sec("D. THE MACRO GAUGE, THE DRIVER PATHS AND THE REGIONS")

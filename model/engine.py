@@ -6674,42 +6674,65 @@ for _seq, (_idx, _u) in enumerate(d_mixes()):
     for _k, _m in zip(_WI_KEYS, _ms[2:]):
         _PK[("d", _k)].add(_m + (_seq, _idx, _u))
 
-# PORTFOLIO C (owner, 2026-11-17, v111: "Add portfolio C with atram nasdaq equity as the main with atram
-# global tech and atram peso money market based on 1, 3, 5, 10yrs macroeconomics sentiments, regional
-# rankings, market trends and market valuations"; "That is a 3 funds portfolio"). The key `portfolio_c`,
-# retired with the 50%-pinned C on 12 Nov (v101), is REUSED for this new portfolio, and the guards that
-# held it gone are rewritten rather than dropped (runbook 151). C's set: exactly Peso Money Market,
-# Nasdaq Equity Income and Global Technology, every one held at 5% or more, Nasdaq Equity Income
-# strictly the largest (the main fund), on the 5% grid. No 35% single-fund cap - three funds with Nasdaq
-# the largest cannot keep it - and its cash is the money market it must hold. Otherwise the one rule, on
-# B's 1/3/5/10-year view: the highest net CAGR inside the band's budget, as computed and as shown, a
-# shallower drawdown deciding exact ties; at the live budget, at every step and on every what-if.
-C_FUNDS = ("ATRPHMM", "ATRQIAP", "ATRGTEC")
-C_RULE_DATE = "2026-11-17"
+# PORTFOLIO C RE-SET (owner, 2026-11-23, v125: "Update portfolio C to be a dividend income paying portfolio
+# from the 22 atram lists"; then, asked: the four income payers plus the money market, no main fund,
+# the same growth rule, two to all of them, the rule picks). C is now an INCOME portfolio: only funds
+# that pay income to their unitholders, with Peso Money Market as its cash buffer. Of the eleven funds
+# the search admits, four pay: Nasdaq Equity Income monthly, Asia Equity Opportunity, Global Dividend
+# and Asian Multi-Asset Income quarterly (C_PAYOUT, below, with its sources). The income funds still
+# held out - Global Bond Income, Global Multi-Asset Income, US Multi-Asset Income - stay out until their
+# fees are confirmed, the owner's standard of 21 Oct, which this request did not change. C's set: any two
+# to five of those five funds, each at 5% or more, on the 5% grid; no fund has to be the largest, the
+# money market is allowed but not required, and there is no single-fund cap (as the C of v111 and D).
+# Otherwise the one rule, on B's 1/3/5/10-year view: the highest net CAGR inside the band's budget, as
+# computed and as shown, a shallower drawdown deciding exact ties and then fewer funds (the enumeration
+# order, as D); at the live budget, at every step and on every what-if. Each count's own best is
+# published beside it. The rule ranks growth after all fees, not payout yield: what a fund distributes
+# is part of its return, not added to it. (The C of v111-v124 - Money Market, Nasdaq Equity Income the
+# largest, Global Technology - is history in the changelog; Global Technology pays nothing.)
+C_FUNDS = ("ATRPHMM", "ATRQIAP", "ATRASEQ", "ATRGLDV", "ATRAMIP")
+C_MIN_FUNDS, C_MAX_FUNDS = 2, len(C_FUNDS)
+C_RULE_DATE = "2026-11-23"
+# WHAT EACH OF C'S FUNDS PAYS (v125). "Pays" needs two sources; the frequency is what the newest one says.
+C_PAYOUT = {
+    "ATRQIAP": {"freq": "monthly", "basis": "income from the target fund's option premiums and dividends, not guaranteed",
+                "sources": "BusinessWorld and the Daily Tribune at its April 2026 launch (both may rest on one ATRAM release); "
+                           "the target's own class distributes (justETF)"},
+    "ATRASEQ": {"freq": "quarterly", "basis": "dividends from Asia Pacific ex-Japan equities, through JPMorgan Asia Equity Dividend",
+                "sources": "First Metro Securities' list of income-paying funds; a unit income distribution notice of 22 Oct 2026 "
+                           "(Etiqa); the 2021 KIIDS said monthly"},
+    "ATRGLDV": {"freq": "quarterly", "basis": "dividends from global equities, through Fidelity Global Dividend",
+                "sources": "First Metro Securities' list of income-paying funds; the 2021 KIIDS (Seedbox) records payouts, "
+                           "then monthly"},
+    "ATRAMIP": {"freq": "quarterly", "basis": "bond interest and equity and REIT dividends, through Schroder Asian Asset Income",
+                "sources": "First Metro Securities' list of income-paying funds; the launch report of September 2022 (PhilBizNews)"},
+    "ATRPHMM": {"freq": None, "basis": "no payout: interest accrues in the unit price",
+                "sources": "allowed as the cash buffer at the owner's choice of 23 Nov"},
+}
+# The income payers still held out (First Metro Securities' list: Global Multi-Asset Income monthly, the
+# other two quarterly); each must be on the held-out list, and joins C's set only once admitted.
+C_HELD_OUT_INCOME = ["Global Bond Income", "Global Multi-Asset Income", "US Multi-Asset Income"]
 def c_mixes():
-    """Every C mix as (indices ascending, units of 5%): the three funds, each at least one unit,
-    Nasdaq Equity Income strictly the largest."""
-    idx = tuple(sorted(UNIV_IDS.index(f) for f in C_FUNDS)); qa = idx.index(_IQ)
-    for comp in _comps(20, len(idx), 1, 20):
-        if all(x < comp[qa] for a, x in enumerate(comp) if a != qa):
-            yield idx, comp
+    """Every C mix as (indices ascending, units of 5%): two to five of C's funds, each at least one unit -
+    no main fund, no cap, cash not required. Fewer funds first, as D."""
+    cidx = sorted(UNIV_IDS.index(f) for f in C_FUNDS)
+    for k in range(C_MIN_FUNDS, C_MAX_FUNDS + 1):
+        for idx in combinations(cidx, k):
+            for comp in _comps(20, k, 1, 20):
+                yield idx, comp
 _PK["c"] = _Pick()
 _PK.update({("c", k): _Pick() for k in _WI_KEYS})
+_PK.update({("cn", n): _Pick() for n in range(C_MIN_FUNDS, C_MAX_FUNDS + 1)})   # each count's own best
 _PKX.update({("c", c): _Pick(c) for c in DDG_STEPS})
-# Each Nasdaq weight's best, for the table the page prints beside C (the rule run at that weight
-# alone), with each weight's count and its shallowest drawdown, so a weight with nothing inside
-# the budget can say by how much it misses.
-C_BY_Q_N, C_BY_Q_SHALLOW = {}, {}
+UNIV_N_C_BY, C_BY_N_SHALLOW = {n: 0 for n in range(C_MIN_FUNDS, C_MAX_FUNDS + 1)}, {}
 UNIV_N_C = 0
 for _seq, (_idx, _u) in enumerate(c_mixes()):
     _ms = _measure(_idx, _u, _COLS_U)
-    UNIV_N_C += 1
+    UNIV_N_C += 1; UNIV_N_C_BY[len(_idx)] += 1
     _cm = _ms[1] + (_seq, _idx, _u)
     _PK["c"].add(_cm)
-    _q = _u[_idx.index(_IQ)]
-    _PK.setdefault(("cq", _q), _Pick()).add(_cm)
-    C_BY_Q_N[_q] = C_BY_Q_N.get(_q, 0) + 1
-    C_BY_Q_SHALLOW[_q] = max(C_BY_Q_SHALLOW.get(_q, -1e9), _cm[1])
+    _PK[("cn", len(_idx))].add(_cm)
+    C_BY_N_SHALLOW[len(_idx)] = max(C_BY_N_SHALLOW.get(len(_idx), -1e9), _cm[1])
     for _c in DDG_STEPS:
         _PKX[("c", _c)].add(_cm)
     for _k, _m in zip(_WI_KEYS, _ms[2:]):
@@ -6725,15 +6748,17 @@ for _n in range(D_MIN_FUNDS, D_MAX_FUNDS + 1):
     _w, _b, _win = _PK[("dn", _n)].result()
     D_BY_COUNT.append({"n": _n, "weights": [round(x * 100) for x in _w], "cagr": _win[0], "maxdd": _win[1],
                        "n_feasible": _PK[("dn", _n)].n, "n_total": UNIV_N_D_BY[_n]})
-PC_W, PC_BAND, _ = _PK["c"].result()        # Portfolio C, Nasdaq-led over three named funds (v111)
-C_BY_Q = []
-for _q in sorted(C_BY_Q_N):
-    _pq = _PK[("cq", _q)]
-    _row = {"q": _q * 5, "n_feasible": _pq.n, "n_total": C_BY_Q_N[_q], "shallowest": C_BY_Q_SHALLOW[_q]}
-    if _pq.n:
-        _w, _b, _win = _pq.result()
+PC_W, PC_BAND, _ = _PK["c"].result()        # Portfolio C, the income portfolio (v125)
+PC_N = sum(1 for x in PC_W if x)
+# Each count's best, for the table the page prints beside C: the rule run within that count alone.
+C_BY_COUNT = []
+for _n in range(C_MIN_FUNDS, C_MAX_FUNDS + 1):
+    _pn = _PK[("cn", _n)]
+    _row = {"n": _n, "n_feasible": _pn.n, "n_total": UNIV_N_C_BY[_n], "shallowest": C_BY_N_SHALLOW[_n]}
+    if _pn.n:
+        _w, _b, _win = _pn.result()
         _row.update({"weights": [round(x * 100) for x in _w], "cagr": _win[0], "maxdd": _win[1]})
-    C_BY_Q.append(_row)
+    C_BY_COUNT.append(_row)
 PA_BAND_N, PB_BAND_N, PC_BAND_N, PD_BAND_N = len(PA_BAND), len(PB_BAND), len(PC_BAND), len(PD_BAND)
 UNIV_N_FEAS = {x: _PK[x].n for x in "abcd"}
 PA, PA_BASE = summarise(PA_W, "net_macro", UNIV), summarise(PA_W, "net_base", UNIV)
@@ -8858,6 +8883,18 @@ SOURCES = [
      'https://dollarliquidity.com/en/valuation/nasdaq-100-forward-pe'),
     ('ETFdb', 'AI Stocks: Down But Not Out? - Nasdaq-100 blended forward P/E 18.75',
      'https://etfdb.com/etf-strategist-channel/are-ai-stocks-down-but-not-out/'),
+    # v125: Portfolio C, the income portfolio - what each fund pays (C_PAYOUT)
+    ('First Metro Securities', 'Income-Paying Funds - ATRAM Asian Multi-Asset Income, Asia Equity Opportunity, Global Dividend, '
+     'Global Bond Income and US Multi-Asset Income quarterly; Global Multi-Asset Income monthly',
+     'https://help.firstmetrosec.com.ph/hc/en-us/articles/26994012816281-Income-Paying-Funds'),
+    ('Daily Tribune', 'ATRAM launches Nasdaq income feeder fund - monthly income from a covered-call strategy, 28 Apr 2026',
+     'https://tribune.net.ph/2026/04/28/atram-launches-nasdaq-income-feeder-fund'),
+    ('The Philippine Business and News', 'ATRAM unveils Asian Multi-Asset Income Feeder Fund - aims to pay dividend income every quarter, 12 Sep 2022',
+     'https://thephilbiznews.com/2022/09/12/atram-unveils-asian-multi-asset-income-feeder-fund/'),
+    ('Etiqa Philippines', 'Fund price and statistics - ATRAM unit income distribution notice for Asia Equity Opportunity, 22 Oct 2026',
+     'https://etiqa.com.ph/fund-price-and-statistics'),
+    ('DragonFi', 'ATRAM Global Multi-asset Income Feeder Fund - aims to distribute income monthly, as its target fund',
+     'https://help.dragonfi.ph/hc/en-us/articles/60112340334873-ATRAM-Global-Multi-asset-Income-Feeder-Fund'),
 ]
 
 # ----------------------------------------------------------------------------
@@ -9078,11 +9115,13 @@ def payload():
                         "in_budget": abs(PB["maxdd"]) <= DD_CAP + 1e-9
                                      and abs(port_dd(PB_W, "net_macro", UNIV)) <= DD_CAP + 1e-9,
                         "review": {k[10:]: MACRO[k] for k in MACRO if k.startswith("pd_review_")}},
-        # PORTFOLIO C (v111, owner 2026-11-17): Peso Money Market, Nasdaq Equity Income (strictly the
-        # largest) and Global Technology, all three held, no cap, by the one rule on the 1/3/5/10-year view.
+        # PORTFOLIO C (re-set v125, owner 2026-11-23): the income portfolio - two to five of the four
+        # income-paying funds and Peso Money Market, no main fund, no cap, by the one rule on the
+        # 1/3/5/10-year view; each fund's payout record beside it.
         "portfolio_c": {"weights": [round(x * 100) for x in PC_W], "ids": UNIV_IDS,
                         "macro": PC, "base": PC_BASE, "ten": PC_10, "column": "net_macro",
-                        "fund": "ATRQIAP", "funds": list(C_FUNDS), "rule_date": C_RULE_DATE, "by_q": C_BY_Q,
+                        "funds": list(C_FUNDS), "payout": C_PAYOUT, "held_out_income": C_HELD_OUT_INCOME, "rule_date": C_RULE_DATE,
+                        "n_funds": PC_N, "min_funds": C_MIN_FUNDS, "max_funds": C_MAX_FUNDS, "by_count": C_BY_COUNT,
                         "band_n": PC_BAND_N, "n_feasible": UNIV_N_FEAS["c"], "n_total": UNIV_N_C,
                         "scenarios": run_scenarios(PC_W, "net_macro", UNIV),
                         "dd_cap": round(DD_CAP, 2),
@@ -9164,7 +9203,7 @@ def report():
       f"rule: best CAGR in budget, then lowest DD within {p['universe']['tie_pp']:.2f}pp; "
       f"{p['universe']['n_total']} mixes under the limits")
     for lab, key, rule in (("PORTFOLIO A", "portfolio_a", "the 10-year view"), ("PORTFOLIO B", "portfolio_b", "the 1/3/5/10-year view"),
-                           ("PORTFOLIO C", "portfolio_c", "the 1/3/5/10-year view, Nasdaq Equity Income the largest of Money Market, Nasdaq Income and Global Tech"),
+                           ("PORTFOLIO C", "portfolio_c", "the 1/3/5/10-year view, two to five of the income-paying funds and the money market"),
                            ("PORTFOLIO D", "portfolio_d", "the 1/3/5/10-year view, Nasdaq Equity Income the largest of two to five funds")):
         pq = p[key]
         A(f"    {lab} weights {pq['weights']}   (the rule on {rule}; {pq['n_feasible']} feasible, {pq['band_n']} in band)")
@@ -10970,38 +11009,47 @@ def report():
     _dmu = sum(w / 100 * f["net_macro"] for w, f in zip(_dw, p["funds"] + p["portfolio_b"]["funds"]))
     checks.append((f"Portfolio D's CAGR re-derives from its funds ({_dmu:.2f} vs {_pd['macro']['cagr']})",
                    abs(_dmu - _pd["macro"]["cagr"]) < 0.005))
-    # PORTFOLIO C, NEW (owner, 2026-11-17, v111). The 50%-pinned C retired on 12 Nov (v101) is gone and its
-    # held-out inputs stay gone; the drawdown coefficient is the new C's own mix, like A's, B's and D's. The
-    # key now carries the owner's three-fund portfolio, which must be exactly that: Peso Money Market, Nasdaq
-    # Equity Income and Global Technology, every one held at 5% or more, Nasdaq strictly the largest, the
-    # rule's pick over every such mix on the 1/3/5/10-year view, inside the budget on both routes - and so in
-    # every what-if and step.
+    # PORTFOLIO C, THE INCOME PORTFOLIO (owner, 2026-11-23, v125; the C of v111-v124 and the 50%-pinned C
+    # before it are history). It must be two to five of C's five funds - the four that pay income and the
+    # money market - each at 5% or more, nothing else; no main fund and no cap; the rule's pick over every
+    # such mix on the 1/3/5/10-year view, inside the budget on both routes - and so in every what-if and
+    # step. Every fund it may hold carries a payout record, and only the money market pays nothing.
     _ip = UNIV_IDS.index("ATRQIAP")
     _wiv = p["universe"]["what_if"].values()
     _pc = p["portfolio_c"]; _cw = _pc["weights"]
     _cin = [UNIV_IDS.index(f) for f in C_FUNDS]
     _cok = lambda w: (len(w) == _nu and sum(w) == 100 and all(x % 5 == 0 for x in w)
-                      and all(w[i] >= 5 for i in _cin) and all(x == 0 for i, x in enumerate(w) if i not in _cin)
-                      and all(w[i] < w[_ip] for i in _cin if i != _ip))
-    checks.append(("Portfolio C is the owner's three funds - Money Market, Nasdaq Equity Income the largest, Global Technology - the rule's pick inside the budget on both routes",
-                   _cok(_cw) and _pc["funds"] == list(C_FUNDS) and _pc["fund"] == "ATRQIAP" and _pc["column"] == "net_macro"
+                      and all(x == 0 for i, x in enumerate(w) if i not in _cin)
+                      and C_MIN_FUNDS <= sum(1 for x in w if x) <= C_MAX_FUNDS)
+    checks.append(("Portfolio C is two to five of the income funds and the money market, the rule's pick inside the budget on both routes",
+                   _cok(_cw) and _pc["funds"] == list(C_FUNDS) and "fund" not in _pc and _pc["column"] == "net_macro"
+                   and (_pc["min_funds"], _pc["max_funds"]) == (C_MIN_FUNDS, C_MAX_FUNDS) == (2, len(C_FUNDS))
+                   and _pc["n_funds"] == sum(1 for x in _cw if x)
                    and _PK["c"].best == _pc["macro"]["cagr"] and _rule_ok("c", _cw)
                    and _pc["n_feasible"] == _PK["c"].n and _pc["n_total"] == UNIV_N_C == len(list(c_mixes()))
                    and _pc["in_budget"] and abs(port_dd(PC_W, "net_macro", UNIV)) <= DD_CAP + 1e-9
                    and all(_cok(v["c"]["weights"]) for v in _wiv) and all(_cok(_alt[c]["c"]["weights"]) for c in _alt)
                    and p["dd_model"]["c_k"] == round(port_k(PC_W, UNIV), 5)
                    and not any(re.fullmatch(r"[a-z]+_w_c_[a-z]+", k) for k in MACRO)))
-    # Each Nasdaq weight's best is the rule run at that weight alone: the rows cover every C mix once,
-    # each row's best is one of its own mixes, and C is the best of the rows, at its own weight.
-    _bq = _pc["by_q"]; _bqf = [r for r in _bq if r["n_feasible"]]
-    checks.append(("Portfolio C's table by Nasdaq weight covers every C mix once and C is its best row",
-                   sum(r["n_total"] for r in _bq) == _pc["n_total"] and sum(r["n_feasible"] for r in _bq) == _pc["n_feasible"]
-                   and [r["q"] for r in _bq] == sorted({w["q"] for w in _bq}) and all(r["q"] % 5 == 0 for r in _bq)
-                   and all(_cok(r["weights"]) and r["weights"][_ip] == r["q"] and abs(r["maxdd"]) <= DD_CAP + 1e-9
-                           and r["shallowest"] >= r["maxdd"] for r in _bqf)
-                   and all(abs(r["shallowest"]) > DD_CAP + 1e-9 for r in _bq if not r["n_feasible"])
-                   and max(r["cagr"] for r in _bqf) == _pc["macro"]["cagr"]
-                   and next(r for r in _bq if r["q"] == _cw[_ip])["weights"] == _cw))
+    _pay = _pc["payout"]
+    checks.append(("each of C's funds carries a payout record - the four income funds monthly or quarterly with sources, the money market none",
+                   set(_pay) == set(C_FUNDS) and all(_pay[f]["sources"] and _pay[f]["basis"] for f in C_FUNDS)
+                   and [f for f in C_FUNDS if _pay[f]["freq"] is None] == ["ATRPHMM"]
+                   and all(_pay[f]["freq"] in ("monthly", "quarterly") for f in C_FUNDS if f != "ATRPHMM")
+                   and all(f in UNIV_IDS for f in C_FUNDS)
+                   and _pc["held_out_income"] == C_HELD_OUT_INCOME
+                   and set(C_HELD_OUT_INCOME) <= {h[0] for h in MACRO["list22_held_out"]}))
+    # Each count's best is the rule run within that count alone: the rows cover every C mix once, each
+    # row's best is one of its own mixes, and C is the best of the rows, at its own count.
+    _bc = _pc["by_count"]; _bcf = [r for r in _bc if r["n_feasible"]]
+    checks.append(("Portfolio C's table by number of funds covers every C mix once and C is its best row",
+                   sum(r["n_total"] for r in _bc) == _pc["n_total"] and sum(r["n_feasible"] for r in _bc) == _pc["n_feasible"]
+                   and [r["n"] for r in _bc] == list(range(C_MIN_FUNDS, C_MAX_FUNDS + 1))
+                   and all(_cok(r["weights"]) and sum(1 for x in r["weights"] if x) == r["n"] and abs(r["maxdd"]) <= DD_CAP + 1e-9
+                           and r["shallowest"] >= r["maxdd"] for r in _bcf)
+                   and all(abs(r["shallowest"]) > DD_CAP + 1e-9 for r in _bc if not r["n_feasible"])
+                   and max(r["cagr"] for r in _bcf) == _pc["macro"]["cagr"]
+                   and next(r for r in _bc if r["n"] == _pc["n_funds"])["weights"] == _cw))
     _cmu = sum(w / 100 * f["net_macro"] for w, f in zip(_cw, p["funds"] + p["portfolio_b"]["funds"]))
     checks.append((f"Portfolio C's CAGR re-derives from its funds ({_cmu:.2f} vs {_pc['macro']['cagr']})",
                    abs(_cmu - _pc["macro"]["cagr"]) < 0.005))

@@ -2,6 +2,59 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-23 — v125: Portfolio C re-set as the dividend-income portfolio
+
+At the owner's instruction: "Update portfolio C to be a dividend income paying portfolio from the 22 atram lists".
+Asked before building, the owner chose: the four income payers plus Peso Money Market as a cash buffer; no main fund;
+the same growth rule; two to all of the funds, the rule choosing the count.
+
+**Which funds pay income (two sources for "pays"):**
+- Nasdaq Equity Income, monthly (BusinessWorld; the Daily Tribune - launch reports of 28-29 Apr 2026 that may rest on one
+  ATRAM release; its target's share class distributes, justETF).
+- Asia Equity Opportunity, quarterly (First Metro Securities' list of income-paying funds; an ATRAM unit income distribution
+  notice of 22 Oct 2026, via Etiqa; its 2021 KIIDS said monthly).
+- Global Dividend, quarterly (First Metro Securities; its 2021 KIIDS records payouts, then monthly). The frequency rests on
+  one current source.
+- Asian Multi-Asset Income, quarterly (First Metro Securities; PhilBizNews' launch report, Sep 2022).
+- Paying but held out, fees not confirmed: Global Bond Income, Global Multi-Asset Income (monthly; DragonFi), US Multi-Asset
+  Income. The owner's admission standard of 21 Oct is unchanged, so they stay out of every portfolio.
+- Paying nothing: Peso Money Market (the cash buffer, allowed), Global Technology, Global Health Care, Global Infra Equity,
+  Global Equity Opportunity, Global Consumer Trends, Global Allocation.
+
+**The rule:** two to five of those five funds, each at least 5%, on the 5% grid; no main fund, no single-fund cap, cash
+allowed but not required. The highest net CAGR on B's 1/3/5/10-year view inside the band's budget, a shallower drawdown
+deciding exact ties and then fewer funds. Payouts count inside each fund's net CAGR, as if reinvested, not on top of it.
+
+**The pick:** **65% Nasdaq Equity Income, 35% Asian Multi-Asset Income, 7.07% / −25.0%** on the 1/3/5/10-year view
+(7.19% / −24.9% on the 10-year), 0.06pp a year below B. 10,621 mixes, 7,565 inside the budget, one at the best CAGR.
+- Each count's best: two 7.07%; three 7.05% (adding 5% Asia Equity Opportunity); four 7.03%; five 7.02%.
+- It holds no cash: the two funds fit inside the budget without it.
+- It sits at the budget's edge (−25.0%), and 65% in one fund is past the 35% cap A and B keep.
+- Was (v111-v124): 70% Nasdaq Equity Income, 25% Peso Money Market, 5% Global Technology, 6.94% / −24.8%.
+- A, B and D did not move: C's search is its own.
+
+**What changed:**
+- Engine: `C_FUNDS` (five funds), `C_PAYOUT` (each fund's payout record and sources), `C_HELD_OUT_INCOME`, `c_mixes()`
+  (two to five funds, no main fund), `C_BY_COUNT` (each count's best) in place of the table by Nasdaq weight; the payload's
+  `portfolio_c` carries `payout`, `held_out_income`, `n_funds`, `min_funds`, `max_funds` and `by_count`, and no `fund` or
+  `by_q`. Two engine checks rewritten, one added (the payout records): 268.
+- Page: C's section shows what each fund pays and its sources, then the best mix at each number of funds; the Portfolios
+  lede, the Report's C card, the cash sentence, the one-sentence verdict, the frontier and the lenses describe the income C.
+- Audit: C re-picked from its own set-then-split generator, each count's best re-derived, the set held to the payout records
+  and every what-if held to the set. Validator: C's section states its mix, marks its count, and prints each fund's payout
+  and sources. Mutants: three C mutants replaced by four (a non-paying fund in C, C moved to another count's best, a
+  count's shallowest mix off, a payout record lost): 90.
+- Sources: First Metro Securities, the Daily Tribune, PhilBizNews, Etiqa and DragonFi added; BusinessWorld's launch report and
+  the 2021 Global Dividend KIIDS were already on the list.
+- Docs: README, the register (a new C row; the three-fund row kept as history), the review command (the weekly fund check
+  re-confirms each income fund's payout), runbook lesson 188.
+
+**Checks:** engine 268/268; audit 305/305; validator 23/23; mutants 90/90 caught.
+
+**Due:** re-confirm Global Dividend's quarterly frequency from a second current source; the rest of v124's due list stands.
+
+Not personal financial advice.
+
 ## 2026-11-23 — v124: Monday's Asian sessions rolled, the weekly fund check, and a stale what-if record fixed; no score, budget or pick moved
 
 At the owner's instruction: "Run the ATRAM review in monitoring/REVIEW_COMMAND.md".

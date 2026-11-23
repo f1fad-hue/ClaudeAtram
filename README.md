@@ -68,19 +68,23 @@ Asia Equity / Global Technology / Global Dividend / Global Health Care / Global 
 Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
 Global Allocation.
 
-| | A · 10-year view | B · 1/3/5/10-year view | C · three funds | D · Nasdaq Income-led |
+| | A · 10-year view | B · 1/3/5/10-year view | C · dividend income | D · Nasdaq Income-led |
 |---|---|---|---|---|
-| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** | 25 / 70 / 0 / 5 / 0 / 0 / 0 / 0 / 0 / 0 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 15 / 0 / 0 / 20 / 0 |
-| 10y net CAGR after all fees | **7.24%** | 7.13% | 6.94% | 7.19% |
-| Expected max drawdown (10y) | −24.9% | −24.9% | −24.8% | −24.9% |
-| Return per unit of drawdown | **0.291** | 0.286 | 0.280 | 0.289 |
+| Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** | 0 / 65 / 0 / 0 / 0 / 0 / 0 / 0 / 0 / 35 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 15 / 0 / 0 / 20 / 0 |
+| 10y net CAGR after all fees | **7.24%** | 7.13% | 7.07% | 7.19% |
+| Expected max drawdown (10y) | −24.9% | −24.9% | −25.0% | −24.9% |
+| Return per unit of drawdown | **0.291** | 0.286 | 0.283 | 0.289 |
 
 Each column is on its own horizon (owner, 28 Oct 2026, v80): A on the 10-year forecasts, B, C and D
-on the 1/3/5/10-year. **Portfolio C (v111, owner, 17 Nov 2026)** is the owner's three funds -
-Peso Money Market, Nasdaq Equity Income as the main (strictly the largest) and Global Technology,
-each at least 5%, no single-fund cap - chosen by B's rule on B's view: 70 / 25 / 5 (Nasdaq / cash /
-Tech) at 6.94% / −24.8%, 0.20pp a year below B (65 / 25 / 10 at 7.01% / −25.0% until v116). An earlier C, Nasdaq Equity Income pinned at 50%, was
-retired on 12 Nov 2026 (v101) at the owner's request. **A and B are the same mix since v107**: the rule picks on B's view
+on the 1/3/5/10-year. **Portfolio C (v125, owner, 23 Nov 2026)** is the dividend-income portfolio -
+two to five of the four ATRAM funds that pay income to their unitholders (Nasdaq Equity Income monthly;
+Asia Equity Opportunity, Global Dividend and Asian Multi-Asset Income quarterly) and Peso Money Market as
+an allowed cash buffer, each at least 5%, no main fund and no single-fund cap - chosen by B's rule on B's
+view: 65% Nasdaq Equity Income and 35% Asian Multi-Asset Income at 7.07% / −25.0%, 0.06pp a year below B;
+the rule finds two funds best (three return 7.05%). Payouts count inside each fund's net CAGR, not on top.
+From 17 Nov (v111) to v124 C was the owner's three funds, Nasdaq Equity Income-led with Peso Money Market and
+Global Technology (70 / 25 / 5 at 6.94% / −24.8% on 23 Nov); an earlier C, Nasdaq Equity Income pinned at
+50%, was retired on 12 Nov 2026 (v101). **A and B are the same mix since v107**: the rule picks on B's view
 what it picks on A's, 7.13% / −24.9% on the 1/3/5/10-year view and 7.24% / −24.9% on the 10-year
 (v117: 25% Global Infra Equity and 25% Asian Multi-Asset Income, from 30% and 20%, as the re-quoted VIX curve's
 higher long-run volatility, 19.96 from 19.42, deepens every fund's expected drawdown and the budget binds tighter).

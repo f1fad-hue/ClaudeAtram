@@ -46,7 +46,8 @@ const file = process.argv[2], live = process.argv.includes("--live");
         lede: (document.getElementById("pblede") || {}).textContent || "",
         dlede: (document.getElementById("dlede") || {}).textContent || "",
         clede: (document.getElementById("clede") || {}).textContent || "",
-        cq: [...document.querySelectorAll("#cq tbody tr")].map(r => r.textContent.trim()),
+        ccount: [...document.querySelectorAll("#ccount tbody tr")].map(r => r.textContent.trim()),
+        cpay: [...document.querySelectorAll("#cpay tbody tr")].map(r => r.textContent.trim()),
         ddh: [...document.querySelectorAll("#ddtab thead th")].map(c => c.textContent.trim()),
         ddnote: (document.querySelector("#ddbarnote") || {}).textContent || "",
         ddw: [...document.querySelectorAll("#ddtab tbody tr")].map(r => [...r.cells].map(c => c.textContent.trim()))
@@ -79,7 +80,7 @@ const file = process.argv[2], live = process.argv.includes("--live");
     ck("no empty figure", info.emptyNum.length === 0, `${info.emptyNum.slice(0, 6)}`);
     ck("no duplicate element ids", info.dup.length === 0, `${info.dup.slice(0, 5)}`);
     ck("every external reference is https", info.http.length === 0, `${info.http.slice(0, 3)}`);
-    // v111 (owner, 17 Nov): C is back as the owner's three funds, Nasdaq Equity Income the main
+    // v125 (owner, 23 Nov): C is the dividend-income portfolio - two to five of the income funds and the money market
     ck("four donuts drawn, A, B, C and D", info.donuts.length === 4 && info.donuts.every(Boolean), `${info.donuts}`);
     const W = { A: D.portfolio_a.weights, B: D.portfolio_b.weights, C: D.portfolio_c.weights, D: D.portfolio_d.weights };
     const shown = info.vs.map(r => [r[0], r.slice(1).map(c => c === "–" ? 0 : parseInt(c))]);
@@ -93,12 +94,18 @@ const file = process.argv[2], live = process.argv.includes("--live");
       info.donutD && dmix.every(x => info.dlede.includes(x)) && info.dlede.includes(pc(D.portfolio_d.macro.cagr))
       && info.dlede.includes("\u2212" + Math.abs(D.portfolio_d.macro.maxdd).toFixed(1) + "%"), info.dlede.slice(0, 200));
     const cmix = D.portfolio_c.weights.map((w, j) => [w, j]).filter(x => x[0]).map(([w, j]) => `${w}% ${D.portfolio_b.shorts[j]}`);
-    const cq = D.portfolio_c.by_q;
-    ck("Portfolio C's section states its three funds' mix, 1/3/5/10-year CAGR and drawdown, and a row per Nasdaq weight, C's marked",
-      cmix.length === 3 && cmix.every(x => info.clede.includes(x)) && info.clede.includes(pc(D.portfolio_c.macro.cagr))
-      && info.clede.includes("−" + Math.abs(D.portfolio_c.macro.maxdd).toFixed(1) + "%")
-      && info.cq.length === 2 * cq.length && info.cq.filter(t => t.includes("← C")).length === 1
-      && info.cq.find(t => t.includes("← C")).startsWith(D.portfolio_c.weights[D.portfolio_b.ids.indexOf("ATRQIAP")] + "%"),
+    const cbc = D.portfolio_c.by_count, cpy = D.portfolio_c.payout, cf = D.portfolio_c.funds;
+    const cpRows = info.cpay.filter((_, i) => i % 2 === 0), cpSub = info.cpay.filter((_, i) => i % 2 === 1);
+    ck("Portfolio C's section states its mix, 1/3/5/10-year CAGR and drawdown, a row per fund count with C's marked, and what each of its funds pays",
+      cmix.length === D.portfolio_c.n_funds && cmix.every(x => info.clede.includes(x)) && info.clede.includes(pc(D.portfolio_c.macro.cagr))
+      && info.clede.includes("\u2212" + Math.abs(D.portfolio_c.macro.maxdd).toFixed(1) + "%")
+      && info.ccount.length === 2 * cbc.length && info.ccount.filter(t => t.includes("\u2190 C")).length === 1
+      && info.ccount.findIndex(t => t.includes("\u2190 C")) === 2 * cbc.findIndex(b => b.n === D.portfolio_c.n_funds)
+      && info.cpay.length === 2 * cf.length
+      && cf.every(id => { const k = cpRows.findIndex(t => t.startsWith(D.portfolio_b.shorts[D.portfolio_b.ids.indexOf(id)]));
+           const w = D.portfolio_c.weights[D.portfolio_b.ids.indexOf(id)];
+           return k >= 0 && cpRows[k].includes(cpy[id].freq ? cpy[id].freq.replace(/^./, c => c.toUpperCase()) : "No payout")
+             && cpRows[k].endsWith(w ? w + "%" : "\u2013") && cpSub[k].includes(cpy[id].sources); }),
       info.clede.slice(0, 200));
     // v112 (owner, 17 Nov): the gauge reads months 1-6 and 7-12, years 2-3 and 4-5 at 10/10/40/40, the 10-year anchor beside them
     const G = D.dd_gauge;
