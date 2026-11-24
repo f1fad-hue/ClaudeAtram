@@ -2,6 +2,70 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-24 — v132: full review to 24 Nov; the review command rewritten for the code, every tab and the payouts
+
+At the owner's instruction: debug, code-review and sanity-check; hunt errors and fix them; clean up and keep the tabs
+concise; re-verify the data and math, the 22 funds and their targets, every portfolio, the drawdown budget at 6 months,
+1, 3, 5 and 10 years, the four analyses, the mixes and the payouts; and "Update this command prompt to cover everything in
+programming, pages and tabs". Cut-off Tuesday 24 Nov, 07:45 UTC.
+
+| Market | v131 | v132 | Note |
+|---|---|---|---|
+| S&P 500 / Nasdaq / Dow | 6,910.39 / 22,617.73 / 48,147.33 (20 Nov) | 7,237.17 / 24,089.56 / 49,595.31 (23 Nov) | +4.73% / +6.51% / +3.01%: Nvidia reinstated Jensen Huang; the S&P left correction (7.4% below its record, from 11.6%) |
+| VIX | 35.89 | 26.62 | −25.83%; the first close back under 5 Nov's 28.18; the volatility score held at 1.0 (a second close under it moves it) |
+| Brent | 92.57 | 89.37 | Its lowest close since August; Libya's Sharara line reopening |
+| WTI | 83.98 (Dec) | 80.17 (Jan) | Across the roll; the January contract's 20 Nov settle, 83.41, is implied by its move |
+| Nikkei | 56,436.65 (20 Nov) | 58,644.63 (24 Nov) | Tokyo shut on 23 Nov for Labor Thanksgiving Day; Advantest +12.5% |
+| KOSPI | 4,708.54 (23 Nov) | 5,006.03 (24 Nov) | +6.32%; three other figures recorded as disputes |
+| USD/PHP | 63.81 (20 Nov) | 63.845 (23 Nov) | 23 Nov's close confirmed by two sources (no longer withheld) |
+| PSEi | 5,353.07 (23 Nov) | held | 24 Nov not out at the cut-off |
+| Treasuries / FedWatch | 4.92% (20 Nov) / ~100% for December (19 Nov) | held | The 23 Nov curve was not published; Williams ruled out a half-point |
+
+**What moved in the portfolios: nothing.** The gauge stays at 2.26 and the budget reading at 2.93, so the budget holds at 25%.
+No driver score moved: each 6-month and 1-year reading was re-read and re-dated 24 Nov, and one relief session is not a new
+path. A, B, C and D keep their weights and figures, and every payout is unchanged. The payouts were re-computed by hand, for
+example C: 0.65 × 11.4 + 0.05 × 6.0 = 7.71% for the last 12 months and 8.36% for the next 12. C's stock share, 67.5%, is
+inside its 68% cap.
+
+**Errors found and fixed:**
+1. The geopolitics note quoted a crude price as "that day"; undated quotes must equal the current Brent. Now "on 16 Nov".
+2. The geopolitics summary quoted Brent's 89.37, which the full note did not carry. The 23 Nov sentence was added.
+3. WTI rolled from December to January. December's last settle (83.98) is not January's prior, so the prior is now implied
+   by the move (83.41), which closes v124's due item.
+4. After the roll, the Nikkei's chain check (prior close + move = new close) failed until its prior was set to 20 Nov's
+   56,436.65, Tokyo's last session before the 23 Nov holiday.
+5. The peso's 63.845 printed as 63.84 or 63.85. It now prints to three decimals.
+6. The volatility note said "OVERTAKEN" while the flag had cleared. The wording now follows the flag ("no longer overtaken").
+7. The Dow's 20 Nov move was an input nothing read. It is now quoted in the US note.
+8. The 6-month volatility note said "the S&P in correction" after the S&P left it. The phrase now follows the S&P's distance
+   from its record.
+9. The 1-year valuation note said "After the week's fall the S&P is near 17.4x", but the 17.4x already includes Monday's
+   rebound. It now says the S&P is 4.7% below FactSet's price; the US note's "before the week's fall" now names 13-20 Nov.
+10. The README said every portfolio holds 20-35% Asian Multi-Asset Income. C holds 5%, D 20%, A and B 25%.
+11. The review command still described the retired three-fund C. Its section map also pointed C's payout rows at the budget
+    step.
+12. The driver reading dates and the held-out run date lagged the data date. Both were re-dated, and the held-out script was
+    re-run: its 29 recorded figures match.
+
+**The review command (monitoring/REVIEW_COMMAND.md), rewritten:**
+- a step for the dividend payouts: the payers and their schedules, the rates for the last 12 months, 2025 and the next 12,
+  a hand recomputation, and the "inside the CAGR, never on top" rule;
+- C's current rule: two to five of the income funds and the money market, no main fund and no cap, at most 110 less the
+  age in stocks;
+- a step for the code: each file and command, and a code-review checklist covering inputs read by name, date-keyed notes,
+  rolling series, shared rules, half-up rounding, conditional wording, the page's ids and fold, and privacy;
+- the 6-month span named in the budget step;
+- the ask-before list extended to C's set, the age rule and the payout basis;
+- the report-back extended to C's stock share and the payouts;
+- the map of all thirty sections on five tabs, re-pointed to the renumbered steps.
+
+**Funds:** no ATRAM or target-manager notice found on 24 Nov. The weekly full check was done on 23 Nov (v124) and is not
+due.
+
+**Checks:** engine 273/273; audit 311/311; validator 28/28; mutants running at this commit (recorded in the next).
+
+Not personal financial advice.
+
 ## 2026-11-23 — v131: Portfolio C capped in stocks by the owner's age (110 less it)
 
 At the owner's instruction: "Update also portfolio C with my current age born Dec 30, 1983". Asked how the age should shape

@@ -43,30 +43,13 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 23 Nov 2026 (reviewed 23 Nov, 10:53 UTC): Seoul and Manila at their 23 Nov closes
-(the KOSPI 4,708.54, -3.31%, its lowest close since 13 Jan; the PSEi 5,353.07, +0.87%, after Friday's 5,306.98, its
-lowest since April 2020) and the 23 Nov T-bill auction (91-day 6.584%, a 14th straight weekly rise); Tokyo shut for
-Labor Thanksgiving Day; New York, oil, the VIX and Treasuries at 20 Nov, after the week's AI sell-off (the S&P 500
-6,910.39, -3.70% on the day and -8.6% on the week, into correction; the Nasdaq 22,617.73, -5.28%; the KOSPI 4,869.96,
--5.21%; the Nikkei 56,436.65, -5.06%); the peso held at 20 Nov's 63.81 (23 Nov's 63.845 in one report); the Gulf's
-21 Nov events are in the geopolitics note, in no price yet; the VIX at 35.89, its highest close
-in this record; the Treasury curve at 20 Nov (the 10-year 4.92%, the 2-year 4.63%, the 30-year 5.31%, on the par
-curve); the peso at 63.81; Brent's January ($92.57) and WTI's December ($83.98, its last trading day) at 20 Nov,
-confirmed in a second source in v118; the VIX futures curve
-re-quoted to Cboe's 19 Nov settlements (December 24.54, January 23.99, in backwardation); FedWatch at 19 Nov (a
-December hike 100% priced, a half-point at up to 10%); the 16 Nov T-bill auction; FactSet's forward P/E at 18.3 on
-12 Nov (its 13 Nov edition; the 20 Nov edition was not found), the S&P 9.0% lower since; PortWatch's Hormuz count at
-15 Nov, the latest it has published (2 transits, refreshed in v121 from 8 Nov's 3). Brent's y/y, +45.76%, is quoted against its 19 Nov 2025 settle ($63.51), one
-day off the anniversary (re-anchored in v117 from 14 Nov 2025; this sentence lagged until v118).
-Target funds were checked in full on 16 Nov, the first review of the week, through search results only, and
-searched again for notices on 17 Nov and 21 Nov (ATRAM's pages list undated plan-rule and cut-off notices whose text
-could not be read; no fee or target change found); the 1-year test could not be refreshed (uitf.com.ph is blocked and
-not indexed), so its 5 Nov figures stand.
-Weights in the
-universe's order: Money Market / Nasdaq Equity Income /
-Asia Equity / Global Technology / Global Dividend / Global Health Care / Global Infra
-Equity / Global Equity Opportunity / Global Consumer Trends / Asian Multi-Asset Income /
-Global Allocation.
+market assumptions. Market data as of 24 Nov 2026 (reviewed 24 Nov, 07:45 UTC): Seoul and Tokyo at their 24 Nov closes (the KOSPI
+5,006.03, +6.32%, back above 5,000; the Nikkei 58,644.63, +3.91%, its first session since the holiday); New York, the VIX,
+oil and the peso at 23 Nov, when Nvidia's board reinstated Jensen Huang (the S&P 500 7,237.17, +4.73%, out of correction;
+the Nasdaq 24,089.56, +6.51%, its best day since April 2025; the VIX 26.62, -25.83%; Brent $89.37, -3.46%, its lowest close
+since August; WTI's January contract $80.17; the peso 63.845); Manila at 23 Nov (the PSEi 5,353.07, +0.87%; 24 Nov's
+close not yet reported) and the 23 Nov T-bill auction (91-day 6.584%); Treasuries at 20 Nov (the official 23 Nov curve
+not yet published). Not personal financial advice.
 
 | | A · 10-year view | B · 1/3/5/10-year view | C · dividend income | D · Nasdaq Income-led |
 |---|---|---|---|---|
@@ -96,7 +79,7 @@ pays it net of its trust fee. A payout is part of the return, not added to it.
 **The year-before rows (v129)** set each portfolio's payout over the last 12 months against 2025's, read the same way
 from each target: Nasdaq Equity Income ~10.5% in 2025 (Parqet 10.45%; justETF's 9.63% disputed) against ~11.4% now;
 Asian Multi-Asset Income's 2025 rate was not found and is ASSUMED at its target's set 6% a year, which every portfolio
-holds (20-35%). v127's 1-year return rows were retired: the owner asked for last year's payout, not last year's return.
+holds (A and B 25%, D 20%, C 5%). v127's 1-year return rows were retired: the owner asked for last year's payout, not last year's return.
 **The next-12-month rows (v130)** are a forecast at each payer's latest payout rate, annualised: Nasdaq Equity Income ~12.4%
 (J.P. Morgan's 12.37% for September; DivvyDiary 12.88% after November's payout), Asian Multi-Asset Income its target's set
 6% a year. They hold only if the rates do; a covered-call fund's income moves with volatility.

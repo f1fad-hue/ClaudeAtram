@@ -215,6 +215,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+194. A WORD THAT DESCRIBES A LEVEL IS A FIGURE, AND GOES STALE LIKE ONE. v132's roll took the S&P out of correction
+   (11.6% → 7.4% below its record), and every check passed while a note still said "the S&P in correction" and another
+   priced the rebound "after the week's fall". The checks trace numbers, not words. So after every roll, scan the payload
+   for level words ("in correction", "record", "overtaken", "lowest since") and relative dates ("Friday", "the week's",
+   "today"), and bind each level word to the input that decides it, as the overtaken flag already is.
 193. A RULE THAT DEPENDS ON A DATE MUST READ THE DATE, NOT A TYPED RESULT. v131 caps C's stocks at 110 less the owner's
    age. Typing "68" would have been right until 30 Dec and wrong after it, with every check still passing. The engine
    stores the birth date and takes the age on the review date; the audit re-derives the age from the birth date in the
