@@ -33,7 +33,7 @@ AS_OF = "2026-11-24"        # newest completed session carried (v132): Tuesday 2
                             # Seoul, Tokyo and Manila, the VIX's, the peso's and the Treasury curve's; from v118
                             # the oil settles too (Brent's January, WTI's December on its last trading day). The
                             # VIX futures board, VIX3M and FedWatch's read are 19 Nov's; the 16 Nov T-bill auction
-REVIEW_DATE = "2026-11-24"  # when this review was worked through (v132: Tuesday 24 Nov, 07:45 UTC, after Tokyo's and Seoul's closes)
+REVIEW_DATE = "2026-11-24"  # when this review was worked through (v133: Tuesday 24 Nov, 08:30 UTC; v132 at 07:45, after Tokyo's and Seoul's closes)
 
 # ----------------------------------------------------------------------------
 # INVESTMENT HORIZON
@@ -459,6 +459,9 @@ MACRO = {
     "ust_30y": 5.31, "ust_30y_date": "2026-11-20",
     "ust_30y_disputed_20nov": [5.31, 5.316, 5.33, 5.36],
     "ust_10y_disputed_20nov": [4.92, 4.932, 4.942, 4.99],
+    # v133: 23 Nov - the official curve not yet readable; market closes disagree: DealPlexus 4.92, Investing.com 4.927,
+    # Reuters 4.94 (+2.4bp; the 2-year +7.4bp to 4.69). 20 Nov held.
+    "ust_10y_disputed_23nov": [4.92, 4.927, 4.94],
     "ust_30y_disputed_5nov": [5.25, 5.31],
     "ust_30y_high": 5.733, "ust_30y_high_date": "2026-10-07",  # highest since 2002
     "ust_curve_basis": "Treasury par curve closes (from 20 Oct; mid-session readings before)",
@@ -597,6 +600,8 @@ MACRO = {
     "fed_50bp_odds_dec_19nov": [4.3, 9.3, 10.0],
     "fed_hike_odds_dec": 100,    # a hike by the 9 Dec meeting (FedWatch), after the FOMC minutes
     "fed_hike_odds_dec_date": "2026-11-19",
+    # v133: 23 Nov reads disagree - Gate (CME FedWatch) 91.4% a quarter-point, 8.6% a hold; CNBC "roughly 98%". 19 Nov held.
+    "fed_hike_odds_dec_disputed_23nov": [91.4, 98.0],
     "fed_hike_odds_dec_prev": 100, "fed_hike_odds_dec_prev_date": "2026-11-16",
     # The 22 Oct evening reads (TheStreet 76%, Reuters about 80%) were recorded as a range
     # in v65 and are superseded by the 23 Oct tool read.
@@ -4498,7 +4503,9 @@ DRIVERS = [
      "almost all members judging further hikes likely appropriate, some having argued for one in October, and a couple "
      "open to more than a quarter-point in December if inflation disappoints (CNBC; FXStreet); Waller was reported on "
      "19 Nov to be making the case for a half-point (Seoul Economic Daily; BigGo Finance), and the reads after the "
-     f"minutes put a half-point at {min(MACRO['fed_50bp_odds_dec_19nov'])}% to {max(MACRO['fed_50bp_odds_dec_19nov']):.0f}%. Reads of "
+     f"minutes put a half-point at {min(MACRO['fed_50bp_odds_dec_19nov'])}% to {max(MACRO['fed_50bp_odds_dec_19nov']):.0f}%. For 23 Nov, "
+     f"reads of a December hike at {min(MACRO['fed_hike_odds_dec_disputed_23nov'])}% (Gate, citing FedWatch) and roughly "
+     f"{max(MACRO['fed_hike_odds_dec_disputed_23nov']):.0f}% (CNBC) disagree, so 19 Nov's is held. Reads of "
      f"{min(MACRO['fed_hike_odds_dec_disputed_6nov_post'])}% to {max(MACRO['fed_hike_odds_dec_disputed_6nov_post'])}% "
      "had followed the 6 Nov payrolls. On 10 Nov Governor Waller said in London that he leans to a quarter-point hike in "
      f"December and that a half-point should be considered if October's core CPI rose {MACRO['fed_waller_core_trigger']}% "
@@ -4526,7 +4533,9 @@ DRIVERS = [
      f"CappNotes). Market quotes for 20 Nov put the 10-year at {min(MACRO['ust_10y_disputed_20nov'][1:]):.3f}-"
      f"{max(MACRO['ust_10y_disputed_20nov']):.2f}% and the 30-year at {sorted(MACRO['ust_30y_disputed_20nov'])[1]:.3f}-"
      f"{max(MACRO['ust_30y_disputed_20nov']):.2f}% (CNBC; Investing.com; StreetStats; Trading Economics) and are not "
-     "carried. "
+     "carried. For 23 Nov the official curve was not yet readable and market closes for the 10-year disagree, "
+     f"{min(MACRO['ust_10y_disputed_23nov']):.2f}% to {max(MACRO['ust_10y_disputed_23nov']):.2f}% (DealPlexus; Investing.com; "
+     "Reuters), so 20 Nov's close is held. "
      f"The 10-year's {_dday('ust_10y_peak_date')} intraday high of "
      f"{MACRO['ust_10y_peak']}%, above the {_dday('ust_10y_peak_prev_date')} peak of {MACRO['ust_10y_peak_prev']}%, was the highest since "
      f"{MACRO['ust_10y_peak_since']}. "
@@ -4780,7 +4789,10 @@ DRIVERS = [
      "eased in November and are well below pre-war (Bloomberg; AP, citing Kpler). On 23 Nov the IRGC said three tankers "
      "sailing under US escort hit mines in the Strait and caught fire, a claim the AP could not confirm, while Iranian media "
      "said 14 tankers loaded at Kharg would test the blockade and Iran's foreign ministry called the reports speculation "
-     f"(the Jerusalem Post; the Business Standard; DataPortuaria). Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, down "
+     "(the Jerusalem Post; the Business Standard; DataPortuaria). UKMTO's attack counts for October and November are the "
+     "highest since the war began (the Jerusalem Post; ABC News), and after the close, on 24 Nov, the US Treasury widened "
+     "sanctions on Iran's exchange houses and shadow banking network (CNBC; Gulf News). "
+     f"Brent settled at ${MACRO['brent']:.2f} on {_dday('brent_date')}, down "
      f"${abs(MACRO['brent_reported_pts'][MACRO['brent_date']]):.2f}, its lowest close since August, as Libya's Sharara line "
      "reopened (Newsquawk; the Nation). On 20 Nov it had settled at "
      f"${dict(MACRO['brent_history'])['2026-11-20']:.2f}, up ${MACRO['brent_reported_pts']['2026-11-20']:.2f} as "
@@ -4962,7 +4974,7 @@ DRIVER_Y1 = {
         f"in 2027 (LSEG I/B/E/S, via Reuters; FactSet) and Asia ex-Japan about {MACRO['asia_eps_2027']}%: as "
         "strong as now - 3.67."),
     "Valuation support": (4.0,
-        f"After November's fall, {abs(MACRO['spx_since_fwd_pe_pct'])}% from FactSet's price, the S&P is near {MACRO['spx_fwd_pe_implied']}x on the earnings of its "
+        f"After November's fall, still {abs(MACRO['spx_since_fwd_pe_pct'])}% below FactSet's price, the S&P is near {MACRO['spx_fwd_pe_implied']}x on the earnings of its "
         f"{_dday('spx_fwd_pe_date')} reading ({MACRO['spx_fwd_pe']}x), below its averages, and Asia on {MACRO['asia_fwd_pe']}x; "
         f"a year is too short for the {MACRO['cape']} cyclically adjusted multiple to bite, but the discount narrows "
         "as prices recover: 4.0, from 3.89 on 17 Nov, the year ahead starting from a lower price."),
@@ -9071,6 +9083,25 @@ SOURCES = [
      'https://dollarliquidity.com/en/valuation/nasdaq-100-forward-pe'),
     ('ETFdb', 'AI Stocks: Down But Not Out? - Nasdaq-100 blended forward P/E 18.75',
      'https://etfdb.com/etf-strategist-channel/are-ai-stocks-down-but-not-out/'),
+    # v133: 23 Nov Treasuries and FedWatch (disputed, held); the Gulf after the close
+    ('Reuters (via TradingView)', 'Shorter-dated Treasury yields rise as Nvidia brings back CEO Huang - 23 Nov 2026: 10-year +2.4bp to 4.94%, 2-year +7.4bp to 4.69% (ust_10y_disputed_23nov)',
+     'https://www.tradingview.com/news/reuters.com,2026:newsml_L6N4740ZN:0-shorter-dated-treasury-yields-rise-as-nvidia-brings-back-ceo-huang/'),
+    ('Investing.com', 'United States 10-Year Bond Yield Historical Data - 23 Nov 2026 close 4.927 (ust_10y_disputed_23nov)',
+     'https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield-historical-data'),
+    ('DealPlexus', 'US 10-Year Treasury Yield - 4.92% on 23 Nov 2026 (ust_10y_disputed_23nov)',
+     'https://www.dealplexus.com/markets/us-10-year-treasury-yield'),
+    ('CNBC', '2-year Treasury yield jumps as stocks rebound, investors await New York Fed President Williams speech - 23 Nov 2026: roughly 98% for a December quarter-point (fed_hike_odds_dec_disputed_23nov)',
+     'https://www.cnbc.com/2026/11/23/treasury-yields-bonds-fed.html'),
+    ('Gate', 'Fed December Rate Hike Probability Hits 91.4% According to CME FedWatch - 23 Nov 2026 (fed_hike_odds_dec_disputed_23nov)',
+     'https://www.gate.com/news/detail/fed-december-rate-hike-probability-hits-914-according-to-cme-fedwatch-25797317'),
+    ('The Jerusalem Post', 'Iranian attacks on ships near Strait of Hormuz hit highest level since war began - Nov 2026',
+     'https://www.jpost.com/middle-east/iran-news/article-915773'),
+    ('ABC News', 'Iran live updates: Iranian attacks spike over past week, Trump says - 23-24 Nov 2026',
+     'https://abcnews.com/International/live-updates/iran-live-updates-tehran-strait-hormuz-safe-demands/?id=138369648'),
+    ('CNBC', 'Iran says three tankers hit mines in Hormuz despite U.S. escort, as Treasury widens sanctions - 24 Nov 2026',
+     'https://cnbc.com/2026/11/24/iran-trump-hormuz-crude-.html'),
+    ('Gulf News', 'Middle East conflict: Iran warns Hormuz ships, rules out US talks until 7 conditions met; fresh sanctions target Iran\'s shadow banking network - 24 Nov 2026',
+     'https://gulfnews.com/world/mena/middle-east-conflict-us-investigates-iran-over-cyberattacks-on-50-ships-as-fresh-sanctions-target-irans-shadow-banking-network-1.500758688'),
     # v132: Monday 23 Nov in New York, the VIX and oil; Tuesday 24 Nov in Seoul and Tokyo; the peso's 23 Nov; Nvidia; the Gulf
     ('The Motley Fool', 'Stock Market Today, Nov. 23: Markets Rebound From Correction on AI Relief Rally - S&P 500 +4.73% to 7,237.17',
      'https://www.fool.com/coverage/stock-market-today/2026/11/23/stock-market-today-nov-23-markets-rebound-from-correction-on-ai-relief-rally/'),

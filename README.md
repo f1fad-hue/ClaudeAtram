@@ -43,7 +43,7 @@ Each fund is measured against its own target, not a house benchmark.
 ## Result
 
 Ten-year horizon, net of every fee layer, on J.P. Morgan's 2027 long-term capital
-market assumptions. Market data as of 24 Nov 2026 (reviewed 24 Nov, 07:45 UTC): Seoul and Tokyo at their 24 Nov closes (the KOSPI
+market assumptions. Market data as of 24 Nov 2026 (reviewed 24 Nov, 08:30 UTC): Seoul and Tokyo at their 24 Nov closes (the KOSPI
 5,006.03, +6.32%, back above 5,000; the Nikkei 58,644.63, +3.91%, its first session since the holiday); New York, the VIX,
 oil and the peso at 23 Nov, when Nvidia's board reinstated Jensen Huang (the S&P 500 7,237.17, +4.73%, out of correction;
 the Nasdaq 24,089.56, +6.51%, its best day since April 2025; the VIX 26.62, -25.83%; Brent $89.37, -3.46%, its lowest close

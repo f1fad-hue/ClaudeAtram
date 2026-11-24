@@ -2,6 +2,48 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-24 — v133: the review run from REVIEW_COMMAND.md at 08:30 UTC - two disputes held, the Gulf after the close
+
+The owner's instruction: "Run the ATRAM review in monitoring/REVIEW_COMMAND.md", 45 minutes after v132's 07:45 UTC
+cut-off. Cut-off: Tuesday 24 Nov, 08:30 UTC. The data date stays 24 Nov. There is no market holiday, and New York's
+24 Nov session had not opened.
+
+**Sources.** This container reaches only package registries, so every primary site was refused by the proxy (403):
+- the exchanges: Cboe, CME, ICE, PSE, KRX, JPX;
+- the agencies: the US Treasury, the Fed, BLS, FRED, IMF PortWatch, the Bureau of the Treasury, PSA, BSP;
+- uitf.com.ph, atram.com.ph, J.P. Morgan, Fidelity, Schroders.
+
+All were read through search (lesson 155).
+
+| Item | Status | Why |
+|---|---|---|
+| PSEi, USD/PHP 24 Nov | Held at 23 Nov (5,353.07; 63.845) | Manila's 24 Nov close was not reported by the cut-off |
+| US Treasuries 23 Nov | Held at 20 Nov (4.92%) | The official curve was not readable. Market closes disagree: DealPlexus 4.92%, Investing.com 4.927, Reuters 4.94% (+2.4bp; the 2-year +7.4bp to 4.69%). Recorded as `ust_10y_disputed_23nov` |
+| FedWatch, December | Held at 19 Nov (100%) | 23 Nov reads disagree: Gate 91.4% for a quarter-point and 8.6% for a hold, against CNBC's "roughly 98%". Recorded as `fed_hike_odds_dec_disputed_23nov`. A third figure, 93.2%, could not be traced to a source and is not used |
+| Gulf | Added to the note | UKMTO's attack counts for October and November are the highest since the war began (the Jerusalem Post; ABC News). After the close, on 24 Nov, the US Treasury widened sanctions on Iran's exchange houses and shadow banking network (CNBC; Gulf News). The geopolitics score holds at 1.22: attacks are up but Brent keeps falling, so the evidence is not decisive |
+| Releases | None since v132 | Next: US October PCE and Q3 GDP (second estimate) on 25 Nov |
+| ATRAM notices | None found (v132's search, 24 Nov) | The weekly full check was done 23 Nov |
+
+**Nothing moved.** The gauge is 2.26 and the budget reading 2.93, so the budget holds at 25%. A, B, C and D keep their
+weights, figures and payouts. C holds 67.5% in stocks against its 68% cap.
+
+**Wording fixed:** the 1-year valuation note read "4.7% from FactSet's price". It now reads "still 4.7% below FactSet's
+price".
+
+**Checks:** engine 273/273; audit 311/311; validator 28/28; mutants re-running after the engine change at this commit (recorded in the next).
+
+**Due before the next review:**
+- Manila's and the peso's 24 Nov closes; New York, oil and the VIX for 24 Nov.
+- The official 23 Nov Treasury curve, to settle `ust_10y_disputed_23nov`.
+- A FedWatch re-quote, to settle `fed_hike_odds_dec_disputed_23nov`.
+- US October PCE and Q3 GDP on 25 Nov; the Bank of Korea on 26 Nov; US Thanksgiving on 26 Nov.
+- OPEC+ on 29 Nov; the three funds' holdings by 29 Nov.
+- January Brent's expiry and the month-end band review on 30 Nov.
+- Asian Multi-Asset Income's 2025 payout record, to replace the assumed 6%.
+- The D stickiness rule, still awaiting the owner.
+
+Not personal financial advice.
+
 ## 2026-11-24 — v132: full review to 24 Nov; the review command rewritten for the code, every tab and the payouts
 
 At the owner's instruction: debug, code-review and sanity-check; hunt errors and fix them; clean up and keep the tabs
@@ -62,7 +104,7 @@ inside its 68% cap.
 **Funds:** no ATRAM or target-manager notice found on 24 Nov. The weekly full check was done on 23 Nov (v124) and is not
 due.
 
-**Checks:** engine 273/273; audit 311/311; validator 28/28; mutants running at this commit (recorded in the next).
+**Checks:** engine 273/273; audit 311/311; validator 28/28; mutants 99/99 caught.
 
 Not personal financial advice.
 
