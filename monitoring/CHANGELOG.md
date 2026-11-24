@@ -30,7 +30,7 @@ weights, figures and payouts. C holds 67.5% in stocks against its 68% cap.
 **Wording fixed:** the 1-year valuation note read "4.7% from FactSet's price". It now reads "still 4.7% below FactSet's
 price".
 
-**Checks:** engine 273/273; audit 311/311; validator 28/28; mutants re-running after the engine change at this commit (recorded in the next).
+**Checks:** engine 273/273; audit 311/311; validator 28/28; mutants 99/99 caught (re-run after the engine change).
 
 **Due before the next review:**
 - Manila's and the peso's 24 Nov closes; New York, oil and the VIX for 24 Nov.
