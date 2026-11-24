@@ -54,7 +54,7 @@ not yet published). Not personal financial advice.
 | | A · 10-year view | B · 1/3/5/10-year view | C · dividend income | D · Nasdaq Income-led |
 |---|---|---|---|---|
 | Allocation (eleven funds, in the order above) | 5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0 | **5 / 35 / 0 / 10 / 0 / 0 / 25 / 0 / 0 / 25 / 0** | 30 / 65 / 0 / 0 / 0 / 0 / 0 / 0 / 0 / 5 / 0 | 0 / 50 / 0 / 0 / 0 / 15 / 15 / 0 / 0 / 20 / 0 |
-| 10y net CAGR after all fees | **7.24%** | 7.13% | 6.61% | 7.19% |
+| 10y net total-return CAGR after all fees | **7.24%** | 7.13% | 6.61% | 7.19% |
 | Expected max drawdown (10y) | −24.9% | −24.9% | **−20.9%** | −24.9% |
 | Return per unit of drawdown | 0.291 | 0.286 | **0.316** | 0.289 |
 | Payout yield, trailing 12 months (est.) | 5.49% | 5.49% | 7.71% | 6.90% |
@@ -71,7 +71,7 @@ an allowed cash buffer, each at least 5%, no main fund and no single-fund cap - 
 view - and, from v131 (owner, 23 Nov 2026), at most 110 less the owner's age in stocks (68% at 42, 67% from 30 Dec,
 recomputed on each birthday): 65% Nasdaq Equity Income, 30% Peso Money Market and 5% Asian Multi-Asset Income, 67.5% in
 stocks, at 6.61% / −20.9%, 0.52pp a year below B (65% / 35% Nasdaq / Asian Multi-Asset at 7.07% / −25.0% before the cap).
-The cap, not the drawdown budget, now binds: C's mix is the same at every budget step from 21% to 30%. Payouts count inside each fund's net CAGR, not on top.
+The cap, not the drawdown budget, now binds: C's mix is the same at every budget step from 21% to 30%. Payouts count inside each fund's net total-return CAGR, not on top.
 **The payout rows (v126, owner, 23 Nov 2026)** are estimates: no ATRAM fund's own payout rate was found, so each
 paying fund is read at its target fund's trailing-12-month distribution yield (Nasdaq Equity Income ~11.4% monthly; Asian
 Multi-Asset Income ~6.0%, Asia Equity Opportunity ~2.7% and Global Dividend ~2.3% quarterly), and the bracket assumes ATRAM
@@ -115,7 +115,7 @@ it sets each fund's volatility and so its expected drawdown, and the VIX guards 
 budget. The Volatility tab was removed; its drawdown model is on the Portfolios tab.
 **One rule chooses all three**, over the eleven funds within the review's
 limits (at most 5 funds, 35% in any one, at least 5% peso cash; 322,725 mixes): **maximum
-growth** - the highest 10-year net CAGR after all fund fees whose drawdown is inside the
+growth** - the highest 10-year net total-return CAGR after all fund fees whose drawdown is inside the
 budget, as computed and as shown; a shallower drawdown decides only between mixes that print
 the same CAGR (since v77; until v76, the lowest drawdown within 0.05pp of the best). The
 budget is **the Budget tab's band**, from the owner's **−25% base** (27 Oct 2026, v75), for A,

@@ -365,7 +365,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <h2>How each driver lands on this portfolio</h2>
     <div class="card">
       <div class="tw"><table class="dt" id="corrtab"></table></div>
-      <p class="note">Each cell is the effect on that fund's 10-year net CAGR, in
+      <p class="note">Each cell is the effect on that fund's 10-year net total-return CAGR, in
         percentage points; the total is the macro tilt in every portfolio's forecast.</p>
     </div>
     <div class="card">
@@ -382,7 +382,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <p class="eyebrow">Fund slides &middot; swipe</p>
     <h2 id="fundsh">—</h2>
     <p class="lede">Each fund against <strong>its own stated target</strong>: return
-      build-up, full fee stack, net 10-year CAGR and expected drawdown.
+      build-up, full fee stack, net 10-year total-return CAGR and expected drawdown.
       <span id="fundsheld">—</span></p>
   </section>
   <div class="rail" id="rail"></div>
@@ -551,7 +551,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <h2>The picks against <span id="ntotal3">—</span> portfolios</h2>
     <p>Every 5%-step mix of the <span class="nuw">—</span> funds within the review's limits &mdash; at most
       <span id="sixlim">—</span> &mdash; <b class="num" id="ntotal">—</b>
-      portfolios; the line is the best 10-year net CAGR at each drawdown on the 1/3/5/10-year view, and
+      portfolios; the line is the best 10-year net total-return CAGR at each drawdown on the 1/3/5/10-year view, and
       <b class="num" id="nfeas">—</b> fit the budget.
       <span id="frontread">—</span></p>
     <div class="card">
@@ -565,7 +565,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       <summary>Why not simply maximise return?</summary>
       <p id="extremes">Because the answer is degenerate.</p>
       <p style="margin-bottom:0">So the budget holds the drawdown and the rule maximises growth
-        inside it: the highest net CAGR after fees whose expected drawdown is inside the budget
+        inside it: the highest net total-return CAGR after fees whose expected drawdown is inside the budget
         as computed and as shown (<span class="num" id="ntotal2">—</span> mixes enumerated); a
         shallower drawdown decides only between mixes that print the same CAGR. A applies it to
         the 10-year view alone, B to the 1/3/5/10-year view.</p>
@@ -577,7 +577,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <h2>What breaks it</h2>
     <div class="card">
       <div class="tw"><table class="dt" id="stab"></table></div>
-      <p class="note">A on its 10-year view, B, C and D on the 1/3/5/10-year view. CAGR above, drawdown below.</p>
+      <p class="note">A on its 10-year view, B, C and D on the 1/3/5/10-year view. Net total-return CAGR above, drawdown below.</p>
     </div>
     <details class="card how">
       <summary>What each scenario assumes</summary>
@@ -591,7 +591,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
       <h3>&#8369;1,000,000 over ten years</h3>
       <div class="tw"><table class="dt" id="pesotab"></table></div>
       <p class="note">Each on its own horizon (A 10-year; B, C and D 1/3/5/10-year). Value compounds the
-        net CAGR for ten years; the worst case applies the expected drawdown to the
+        net total-return CAGR for ten years; the worst case applies the expected drawdown to the
         <em>opening</em> &#8369;1,000,000.</p>
     </div>
   </section>
@@ -824,9 +824,11 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     <div class="card">
       <h3>What this model is, and is not</h3>
       <ul class="plain">
-        <li><b>Forecasts, not facts.</b> The 10-year CAGRs are modelled expectations
+        <li><b>Forecasts, not facts.</b> The 10-year net total-return CAGRs are modelled expectations
           from published capital-market assumptions and current valuations, not
-          guarantees.</li>
+          guarantees. Net total-return CAGR: the yearly growth forecast in pesos after ATRAM's trust fee
+          and the target fund's charge, with every payout reinvested, so a payout is inside it, never on
+          top; a paying fund's unit price grows by less, by about what it pays out. Before tax.</li>
         <li><span id="feeest">—</span></li>
         <li><b>Drawdown is expected, not worst-case.</b> Plan to experience it; the
           stress table shows the tail.</li>
@@ -3392,7 +3394,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "date": "2026-11-24",
     "first": "2026-11-16",
     "status": "disputed",
-    "text": "TRUST FEE DISPUTED, found at this review: ATRAM's fund page now shows 1.50% a year, beside a July 2026 KIIDS and a Declaration of Trust dated 16 Jul, against the 1.18% carried from the earlier KIIDS; uitf.com.ph's listing still has 1.20%. It is one source, so the figure carried is kept; at 1.50% its net CAGR falls 0.32pp, and none of A, B or D holds it, so none can change. Target: JPMorgan Asia Equity Dividend Fund, a Hong Kong unit trust (J.P. Morgan's factsheet, 30 Sep). Its 1.5% management fee is published; the 1.55% charge carried is an estimate, and Investing.com lists 1.82% for an HKD class (undated, one source). Only a top five was found, past the 60-day limit. The feeder returned 18.23% in pesos in the year to 5 Nov (uitf.com.ph); no dated target figure was found, so the gap test was not run. No events found."
+    "text": "TRUST FEE DISPUTED, found at this review: ATRAM's fund page now shows 1.50% a year, beside a July 2026 KIIDS and a Declaration of Trust dated 16 Jul, against the 1.18% carried from the earlier KIIDS; uitf.com.ph's listing still has 1.20%. It is one source, so the figure carried is kept; at 1.50% its net total-return CAGR falls 0.32pp, and none of A, B or D holds it, so none can change. Target: JPMorgan Asia Equity Dividend Fund, a Hong Kong unit trust (J.P. Morgan's factsheet, 30 Sep). Its 1.5% management fee is published; the 1.55% charge carried is an estimate, and Investing.com lists 1.82% for an HKD class (undated, one source). Only a top five was found, past the 60-day limit. The feeder returned 18.23% in pesos in the year to 5 Nov (uitf.com.ph); no dated target figure was found, so the gap test was not run. No events found."
    },
    "net_noval": 7.19,
    "net_neutral": 7.36,
@@ -3468,7 +3470,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
     "date": "2026-11-24",
     "first": "2026-11-16",
     "status": "partly confirmed",
-    "text": "Target: Fidelity Funds - Global Technology Fund (MSCI ACWI Information Technology). Holdings at 30 Sep 2026 are Fidelity's own. The 1.04% charge is re-found for its Y-Acc-USD class (Citywire) and its W-Acc-GBP class (Hargreaves Lansdown); the class the feeder holds is not published. 1-YEAR TEST RUN: the feeder returned 19.89% in pesos in the year to 5 Nov (uitf.com.ph) and the target's Y-Acc-USD class 13.37% in dollars to 3 Nov (Endowus); with the dollar's 6.79% gain on the peso, as Global Dividend's two unit classes imply it, that is 21.07% in pesos, a gap of 1.18 points - about the trust fee, 1.15% until 14 Sep and 1.50% since. FOUND AT THIS REVIEW: a 22 Oct notice from Fidelity International lists this fund's share classes among those affected by proposed amendments to Articles 23 and 27 of Fidelity Funds' Articles of Incorporation and a new Article 24; the 1 Oct meeting lacked a quorum and a reconvened meeting is being prepared (Endowus' copy of the notice, one source). It changes the umbrella's articles, not this fund's fees or mandate as reported, so its net CAGR does not move; no other events found."
+    "text": "Target: Fidelity Funds - Global Technology Fund (MSCI ACWI Information Technology). Holdings at 30 Sep 2026 are Fidelity's own. The 1.04% charge is re-found for its Y-Acc-USD class (Citywire) and its W-Acc-GBP class (Hargreaves Lansdown); the class the feeder holds is not published. 1-YEAR TEST RUN: the feeder returned 19.89% in pesos in the year to 5 Nov (uitf.com.ph) and the target's Y-Acc-USD class 13.37% in dollars to 3 Nov (Endowus); with the dollar's 6.79% gain on the peso, as Global Dividend's two unit classes imply it, that is 21.07% in pesos, a gap of 1.18 points - about the trust fee, 1.15% until 14 Sep and 1.50% since. FOUND AT THIS REVIEW: a 22 Oct notice from Fidelity International lists this fund's share classes among those affected by proposed amendments to Articles 23 and 27 of Fidelity Funds' Articles of Incorporation and a new Article 24; the 1 Oct meeting lacked a quorum and a reconvened meeting is being prepared (Endowus' copy of the notice, one source). It changes the umbrella's articles, not this fund's fees or mandate as reported, so its net total-return CAGR does not move; no other events found."
    },
    "net_noval": 9.15,
    "net_neutral": 9.47,
@@ -7273,7 +7275,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "date": "2026-11-24",
      "first": "2026-11-16",
      "status": "disputed",
-     "text": "Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the 0.80% charge on ATRAM's fact sheet matches no HSBC class found - IC 1.00% (estimated), BC GBP 1.10%, ZD 0.15% - and the class held is not published. At 1.00% its net CAGR on the 1/3/5/10-year view is 7.06%; A would hold 10% (7.20% on its 10-year view), B 25% (7.08%) and D 15% (7.16%). At 1.10% it nets 6.96%, and A holds 0%, B 0% and D 15% (7.14%). The newest full holdings list found is a year old. The feeder returned 19.35% in pesos in the year to 5 Nov (uitf.com.ph); the one target figure found is undated, so the gap test was not run. No events found."
+     "text": "Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the 0.80% charge on ATRAM's fact sheet matches no HSBC class found - IC 1.00% (estimated), BC GBP 1.10%, ZD 0.15% - and the class held is not published. At 1.00% its net total-return CAGR on the 1/3/5/10-year view is 7.06%; A would hold 10% (7.20% on its 10-year view), B 25% (7.08%) and D 15% (7.16%). At 1.10% it nets 6.96%, and A holds 0%, B 0% and D 15% (7.14%). The newest full holdings list found is a year old. The feeder returned 19.35% in pesos in the year to 5 Nov (uitf.com.ph); the one target figure found is undated, so the gap test was not run. No events found."
     },
     "net_noval": 7.17,
     "net_neutral": 7.34,
@@ -7433,7 +7435,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "date": "2026-11-24",
      "first": "2026-11-16",
      "status": "mandate change",
-     "text": "Target: Invesco Global Consumer Trends Fund. MANDATE CHANGE, missed at the 4 Nov check: from 28 Sep it may hold up to 10% of its assets in China A-shares through Stock Connect, and Invesco says how it is managed and its risk profile are unchanged (its 28 Aug notice, Manulife's copy; its key facts, Hang Seng's copy). The fees are not touched and it stays a global consumer fund, so its base return, tilt and net CAGR do not move. The 0.97% charge is from the feeder's later KIID; Invesco's Z class shows 1.14% ongoing costs (31 Aug) and its A USD class 1.87%, and the class held is not published. The 31 Aug top 10, now in two sources, is past the 60-day limit. The 1-year test was not run: the feeder lost 16.87% in pesos in the year to 5 Nov (uitf.com.ph), and the target's figures found are a month older and disagree. No other events found."
+     "text": "Target: Invesco Global Consumer Trends Fund. MANDATE CHANGE, missed at the 4 Nov check: from 28 Sep it may hold up to 10% of its assets in China A-shares through Stock Connect, and Invesco says how it is managed and its risk profile are unchanged (its 28 Aug notice, Manulife's copy; its key facts, Hang Seng's copy). The fees are not touched and it stays a global consumer fund, so its base return, tilt and net total-return CAGR do not move. The 0.97% charge is from the feeder's later KIID; Invesco's Z class shows 1.14% ongoing costs (31 Aug) and its A USD class 1.87%, and the class held is not published. The 31 Aug top 10, now in two sources, is past the 60-day limit. The 1-year test was not run: the feeder lost 16.87% in pesos in the year to 5 Nov (uitf.com.ph), and the target's figures found are a month older and disagree. No other events found."
     },
     "net_noval": 7.05,
     "net_neutral": 7.3,
@@ -7509,7 +7511,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "date": "2026-11-24",
      "first": "2026-11-16",
      "status": "manager change",
-     "text": "Target: Schroder Asian Asset Income Fund, a Hong Kong unit trust. MANAGER CHANGE: a 14 Oct 2026 notice appoints Schroder Investment Management Limited as an additional sub-manager; the structure, risk profile and fees are unchanged (the notice, as copied by Taishin and HSBC), so its net CAGR does not move. The 1.54% charge is an estimate; the A class's management fee is 1.25% (HSBC's factsheet, 31 Aug). No top 10 found. The feeder returned 14.53% in pesos in the year to 5 Nov (uitf.com.ph); the target's figures found are for August and disagree, so the gap test was not run."
+     "text": "Target: Schroder Asian Asset Income Fund, a Hong Kong unit trust. MANAGER CHANGE: a 14 Oct 2026 notice appoints Schroder Investment Management Limited as an additional sub-manager; the structure, risk profile and fees are unchanged (the notice, as copied by Taishin and HSBC), so its net total-return CAGR does not move. The 1.54% charge is an estimate; the A class's management fee is 1.25% (HSBC's factsheet, 31 Aug). No top 10 found. The feeder returned 14.53% in pesos in the year to 5 Nov (uitf.com.ph); the target's figures found are for August and disagree, so the gap test was not run."
     },
     "net_noval": 5.91,
     "net_neutral": 6.04,
@@ -7589,7 +7591,7 @@ details.tgt>summary{font-size:12px;font-weight:600;color:var(--ink-2)}
      "date": "2026-11-24",
      "first": "2026-11-16",
      "status": "disputed",
-     "text": "TRUST FEE CORRECTED at this review: 1.50% on ATRAM's fund page, DragonFi and uitf.com.ph's A PHP class, against the 1.20% carried from an older fact sheet; its net CAGR falls 0.30pp, and none of A, B or D holds it, so none changes. Target: BlackRock Global Funds - Global Allocation Fund. SHARE-CLASS MISMATCH: this record names the A2 USD class, which BlackRock lists at 1.77% (30 Oct 2026; 1.78% in August), against the 1.13% on ATRAM's fact sheet carried here - the class or the charge is wrong. At 1.77% its net falls 0.64pp more. BlackRock's September prospectus liquidates two other Global Funds sub-funds and merges a third; this one continues (its UK and Singapore prospectuses). The feeder returned 13.55% in pesos in the year to 4 Nov (ATRAM's page); the target's figure on BlackRock's page is unlabelled, so the gap test was not run. No events found."
+     "text": "TRUST FEE CORRECTED at this review: 1.50% on ATRAM's fund page, DragonFi and uitf.com.ph's A PHP class, against the 1.20% carried from an older fact sheet; its net total-return CAGR falls 0.30pp, and none of A, B or D holds it, so none changes. Target: BlackRock Global Funds - Global Allocation Fund. SHARE-CLASS MISMATCH: this record names the A2 USD class, which BlackRock lists at 1.77% (30 Oct 2026; 1.78% in August), against the 1.13% on ATRAM's fact sheet carried here - the class or the charge is wrong. At 1.77% its net falls 0.64pp more. BlackRock's September prospectus liquidates two other Global Funds sub-funds and merges a third; this one continues (its UK and Singapore prospectuses). The feeder returned 13.55% in pesos in the year to 4 Nov (ATRAM's page); the target's figure on BlackRock's page is unlabelled, so the gap test was not run. No events found."
     },
     "net_noval": 5.99,
     "net_neutral": 6.1,
@@ -13851,7 +13853,7 @@ $("#corrnote").textContent = D.corr_note;
        ${num(pc(D.portfolio_d.macro.cagr))} / ${num(pc1(D.portfolio_d.macro.maxdd))}.`
     : `On the 1/3/5/10-year view, moving from A to B ` +
     (Math.abs(edge) <= tie + 1e-9 ? `keeps` : edge >= 0 ? `raises` : `lowers`)
-    + ` forecast ${HYN} net CAGR` + (Math.abs(edge) <= tie + 1e-9 ? ` level` : ``)
+    + ` forecast ${HYN} net total-return CAGR` + (Math.abs(edge) <= tie + 1e-9 ? ` level` : ``)
     + ` (${num(pc(A.cagr))} to ${num(pc(B.cagr))}) while cutting expected maximum drawdown
      from ${num(pc1(A.maxdd))} to ${num(pc1(B.maxdd))}, and return per unit of drawdown moves
      ${num(A.ret_per_dd.toFixed(3) + " &rarr; " + B.ret_per_dd.toFixed(3))},
@@ -14164,7 +14166,7 @@ $("#corrnote").textContent = D.corr_note;
   const goUp = up.length > 0, nx = goUp ? up[0] : dn[dn.length - 1], top = caps[caps.length - 1];
   const dC = x => Math.abs(AL[nx][x].cagr - AL[c0][x].cagr), dD = x => Math.abs(Math.abs(AL[nx][x].maxdd) - Math.abs(AL[c0][x].maxdd));
   $("#ddstepnote").innerHTML =
-    `${HYN[0].toUpperCase() + HYN.slice(1)} net CAGR after fees (above) and expected maximum drawdown (below), A on
+    `${HYN[0].toUpperCase() + HYN.slice(1)} net total-return CAGR after fees (above) and expected maximum drawdown (below), A on
      its ${HYN} view, B, C and D on the 1/3/5/10-year, each mix chosen by the one rule inside that budget. A step ${goUp ? "up" : "down"} to ${nx}% ${goUp ? "adds" : "gives up"} ${and3(ABCD.map(x =>
        `${x.toUpperCase()} ${f2(dC(x))}pp`))} a year for ${and3(ABCD.map(x =>
        `${dD(x).toFixed(1)}pp`))} ${goUp ? "more" : "less"} drawdown. The band runs from ${caps[0]}% to ${top}%
@@ -14696,9 +14698,9 @@ const noteFor = f => {
     }
     build.push(["Feeder / trust fee", -f.fee_feeder, "neg"]);
     if (f.fee_target) build.push(["Target-fund charge", -f.fee_target, "neg"]);
-    build.push([`Net ${HYL} CAGR — strategic`, f.net_base, "final"]);
+    build.push([`Net ${HYL} total-return CAGR — strategic`, f.net_base, "final"]);
     build.push(["Macro tilt", f.tilt_total, f.tilt_total >= 0 ? "pos" : "neg"]);
-    build.push([`Net ${HYL} CAGR — macro-adjusted`, f.net_macro, "final"]);
+    build.push([`Net ${HYL} total-return CAGR — macro-adjusted`, f.net_macro, "final"]);
 
     const j = PB_.ids.indexOf(f.id), wA = D.portfolio_a.weights[j], wB = PB_.weights[j],
           wC = D.portfolio_c.weights[j], wD = D.portfolio_d.weights[j];
@@ -14711,7 +14713,7 @@ const noteFor = f => {
        </div>
        <div class="sb">
          <div class="duo">
-           <div><span class="k">Net ${HYL} CAGR</span><span class="v" style="color:${HEX[i]}">${pc(f.net_macro)}</span></div>
+           <div><span class="k">Net ${HYL} total-return CAGR</span><span class="v" style="color:${HEX[i]}">${pc(f.net_macro)}</span></div>
            <div><span class="k">Exp. max drawdown</span><span class="v" style="color:var(--bad)">${pc1(f.dd_macro)}</span></div>
          </div>
          <div class="build">${build.map(([l,v,k]) =>
@@ -14752,7 +14754,7 @@ const noteFor = f => {
 
   const t = $("#ftab");
   t.appendChild(el("thead", null,
-    `<tr><th>Fund</th><th>Fees</th><th>Net CAGR</th><th>Max DD</th><th>Vol σ</th></tr>`));
+    `<tr><th>Fund</th><th>Fees</th><th>Net total-return CAGR</th><th>Max DD</th><th>Vol σ</th></tr>`));
   const tb = el("tbody");
   FALL.forEach((f,i) => tb.appendChild(el("tr", null,
     `<td><span class="swatch" style="background:${FC[i]}"></span>${f.short}</td>
@@ -14856,14 +14858,16 @@ function donut(host, w, title, cagr, dd) {
     t.textContent = p + "%"; s.appendChild(t);
     acc += p;
   });
-  const a = sel("text", { x:c, y:c-3, "text-anchor":"middle", fill:"#131A26",
+  const a = sel("text", { x:c, y:c-8, "text-anchor":"middle", fill:"#131A26",
     "font-family":"IBM Plex Mono, monospace", "font-size":"21", "font-weight":"600",
     "letter-spacing":"-0.8" });
   a.textContent = cagr.toFixed(2) + "%"; s.appendChild(a);
-  const b = sel("text", { x:c, y:c+11, "text-anchor":"middle", fill:"#7C8798",
-    "font-family":"IBM Plex Mono, monospace", "font-size":"9", "letter-spacing":"0.6" });
-  b.textContent = HYL + " CAGR"; s.appendChild(b);
-  const d = sel("text", { x:c, y:c+27, "text-anchor":"middle", fill:"#B02A37",
+  [["net total-return", 6], [HYL + " CAGR", 16]].forEach(([tx, dy]) => {
+    const b = sel("text", { x:c, y:c+dy, "text-anchor":"middle", fill:"#7C8798",
+      "font-family":"IBM Plex Mono, monospace", "font-size":"8" });
+    b.textContent = tx; s.appendChild(b);
+  });
+  const d = sel("text", { x:c, y:c+31, "text-anchor":"middle", fill:"#B02A37",
     "font-family":"IBM Plex Mono, monospace", "font-size":"12", "font-weight":"600" });
   d.textContent = pc1(dd); s.appendChild(d);
   host.appendChild(s);
@@ -14917,11 +14921,11 @@ function donut(host, w, title, cagr, dd) {
   pt.appendChild(pb);
   $("#cpaynote").innerHTML =
     `A payout comes out of the fund, whose unit price falls by what it pays, so the forecasts and the rule count each
-     fund's income inside its net CAGR, as if reinvested, not on top of it; no payout is guaranteed. ${and3(P.held_out_income)}
+     fund's income inside its net total-return CAGR, as if reinvested, not on top of it; no payout is guaranteed. ${and3(P.held_out_income)}
      also pay income but stay out of every portfolio until their fees are confirmed.`;
   /* the best mix at each number of funds, the rule run within that count alone */
   const BC = P.by_count, bc = Object.fromEntries(BC.map(b => [b.n, b])), ct = $("#ccount");
-  ct.appendChild(el("thead", null, `<tr><th>Funds</th><th>Net CAGR</th><th>Drawdown</th></tr>`));
+  ct.appendChild(el("thead", null, `<tr><th>Funds</th><th>Net total-return CAGR</th><th>Drawdown</th></tr>`));
   const cb = el("tbody");
   BC.forEach(b => {
     const isC = b.n === P.n_funds, wt = isC ? "font-weight:700;" : "";
@@ -14999,7 +15003,7 @@ function donut(host, w, title, cagr, dd) {
   const ct = $("#dcount");
   /* TWO LINES PER COUNT (v99): the mix wraps on its own full-width line, so the table fits a phone
      without scrolling sideways; the figures stay in their columns above it. */
-  ct.appendChild(el("thead", null, `<tr><th>Funds</th><th>Net CAGR</th><th>Drawdown</th></tr>`));
+  ct.appendChild(el("thead", null, `<tr><th>Funds</th><th>Net total-return CAGR</th><th>Drawdown</th></tr>`));
   const cb = el("tbody");
   BC.forEach(b => {
     const isD = b.n === P.n_funds, wt = isD ? "font-weight:700;" : "";
@@ -15188,7 +15192,7 @@ function donut(host, w, title, cagr, dd) {
     hb.appendChild(el("tr", null, `<td>${lab}</td>` + vals.map(v =>
       `<td${v === b ? ' class="pos" style="font-weight:700"' : ''}>${fm(v)}</td>`).join(""))); };
   hb.appendChild(el("tr", null, `<td>Horizon</td><td>${HYN}</td>` + "<td>1/3/5/10</td>".repeat(PS.length - 1)));
-  hrow(`${HYL} net CAGR`, PM.map(m => m.cagr), pc, hi);
+  hrow(`${HYL} net total-return CAGR`, PM.map(m => m.cagr), pc, hi);
   hrow("Expected max drawdown", PM.map(m => m.maxdd), pc1, shallow);
   hrow("Volatility σ", PM.map(m => m.vol), pc, lo);
   hrow("Return per drawdown", PM.map(m => m.ret_per_dd), v => v.toFixed(3), hi);
@@ -15282,7 +15286,7 @@ function donut(host, w, title, cagr, dd) {
      since v80 it read PM, A's own (10-year) headline, so A's row repeated its 10-year view. */
   const t2 = $("#ptab2");
   t2.appendChild(el("thead", null,
-    `<tr><th>Portfolio &amp; lens</th><th>CAGR</th><th>σ</th><th>Max DD</th><th>Ret/DD</th></tr>`));
+    `<tr><th>Portfolio &amp; lens</th><th>Net total-return CAGR</th><th>σ</th><th>Max DD</th><th>Ret/DD</th></tr>`));
   const tb2 = el("tbody");
   PS.forEach((q, k) => [["strategic", q.base], [`${HYN} view`, q.ten], ["1/3/5/10-year view", q.macro]].forEach(([ln, m]) =>
     tb2.appendChild(el("tr", null,
@@ -15296,7 +15300,7 @@ function donut(host, w, title, cagr, dd) {
   const at = (vals, f) => { const b = f(vals); return vals.map((v, i) => v === b ? i : -1).filter(i => i >= 0); };
   const hz = PS.map(q => sc("Hormuz")(q).cagr);
   const wins = [
-    [`Highest ${HYN} net CAGR`, at(PM.map(m => m.cagr), hi), PM.map(m => pc(m.cagr))],
+    [`Highest ${HYN} net total-return CAGR`, at(PM.map(m => m.cagr), hi), PM.map(m => pc(m.cagr))],
     ["Shallowest expected drawdown", at(PM.map(m => m.maxdd), shallow), PM.map(m => pc1(m.maxdd))],
     ["Best return per unit of drawdown", at(PM.map(m => m.ret_per_dd), hi), PM.map(m => m.ret_per_dd.toFixed(3))],
     ["Best return if Hormuz closes", at(hz, hi), hz.map(pc)],
@@ -15307,7 +15311,7 @@ function donut(host, w, title, cagr, dd) {
     /* a tie prints its value once: "A, B and D, all −24.9%" (v82); four from v111 */
     wins.map(([lab, ix, tx]) => `<li>${lab}: ${and3(ix.map(nm))}, ` + (new Set(ix.map(i => tx[i])).size === 1
       ? (ix.length > 2 ? "all " : ix.length > 1 ? "both " : "") + tx[ix[0]] : and3(ix.map(i => tx[i]))) + `</li>`).join("") +
-    `</ul><div class="tw"><table class="dt" id="pvs"><thead><tr><th>Versus</th><th>CAGR</th>
+    `</ul><div class="tw"><table class="dt" id="pvs"><thead><tr><th>Versus</th><th>Net total-return CAGR</th>
      <th>Drawdown</th><th>Ret/DD</th></tr></thead><tbody>` +
     pairs.map(([i, j]) => {
       const g = PM[i].cagr - PM[j].cagr, d = Math.abs(PM[j].maxdd) - Math.abs(PM[i].maxdd),
@@ -15385,7 +15389,7 @@ function donut(host, w, title, cagr, dd) {
     const hit = sel("circle",{cx:X(-p.dd),cy:Y(p.cagr),r:12,fill:"transparent",style:"cursor:pointer"});
     const go = () => { const r = host.getBoundingClientRect();
       tp.show(X(-p.dd)/W*r.width, Y(p.cagr)/H*r.height,
-        `CAGR ${p.cagr.toFixed(2)}%  DD ${pc1(p.dd)}\n${p.weights.map((w,i)=>w ? D.portfolio_b.shorts[i].padEnd(20)+String(w).padStart(3)+"%" : "").filter(Boolean).join("\n")}`); };
+        `Net total-return CAGR ${p.cagr.toFixed(2)}%  DD ${pc1(p.dd)}\n${p.weights.map((w,i)=>w ? D.portfolio_b.shorts[i].padEnd(20)+String(w).padStart(3)+"%" : "").filter(Boolean).join("\n")}`); };
     hit.addEventListener("pointerenter",go); hit.addEventListener("pointerdown",go);
     hit.addEventListener("pointerleave",()=>tp.hide());
     s.appendChild(hit);

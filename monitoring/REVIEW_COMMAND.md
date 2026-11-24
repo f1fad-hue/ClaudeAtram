@@ -9,6 +9,7 @@ in programming, pages and tabs"). It now covers:
 - the code: each file, the commands that check it, and a code-review checklist (step 9);
 - the dividend payouts (step 3);
 - C's current rules: the income funds, no main fund, and at most 110 less the owner's age in stocks;
+- (v134) every CAGR named as what it is: the net total-return CAGR (after both fee layers, payouts reinvested, in pesos);
 - all five tabs and their thirty sections, each mapped to its step.
 
 Earlier changes (v101-v131: C retired, restored, then re-set as the income portfolio; the 1-5 scales;
@@ -109,7 +110,7 @@ Evidence rules (apply to everything below)
   ◦ Compare each feeder's 1-year peso return with its target's. A gap well beyond the fee
     stack means a fee or a target is wrong. If either return can't be found, record the
     test as not run.
-• Each fund's net 10-year CAGR and drawdown must follow from its inputs:
+• Each fund's net 10-year total-return CAGR and drawdown must follow from its inputs:
   ◦ the long-run return assumption (the J.P. Morgan edition in use), matched to the target's
     asset class and region;
   ◦ the fee stack (ATRAM's trust fee plus the target's charge);
@@ -148,7 +149,7 @@ Evidence rules (apply to everything below)
   ◦ the monthly and quarterly payments;
   ◦ the share held in funds that pay nothing, and the share resting on an assumed rate;
   ◦ the versus table (next 12 months against the last 12) and the 2025 row.
-• A payout is inside each fund's net CAGR, never added to it. Say so wherever a payout is
+• A payout is inside each fund's net total-return CAGR, never added to it. Say so wherever a payout is
   shown.
 • Re-date the payout record only when its rates are re-read.
 
@@ -168,7 +169,7 @@ Evidence rules (apply to everything below)
 • Keep each score unless the evidence moves it, measured against the last published scores.
   When one moves, give the evidence and its effect on:
   ◦ the headline gauge;
-  ◦ each fund's and each portfolio's net 10-year CAGR and drawdown.
+  ◦ each fund's and each portfolio's net 10-year total-return CAGR and drawdown.
   Say so when it moves only the gauge.
 • Roll the trend window when a quarter closes and its returns are published.
 • Check that each of these still follows from its inputs:
@@ -206,7 +207,7 @@ Evidence rules (apply to everything below)
   budget is every portfolio's budget.
 
 6. Portfolios A, B, C and D (Portfolios tab)
-• Re-run the selection under the current rules: the highest net CAGR after all fees inside
+• Re-run the selection under the current rules: the highest net total-return CAGR after all fees inside
   the drawdown budget. A shallower drawdown breaks only exact ties.
   ◦ A and B: at most 5 funds, at most 35% in any one, at least 5% in the peso money market,
     5% steps. A is chosen on the 10-year view; B on the 1/3/5/10-year view, weighted
@@ -327,13 +328,13 @@ Evidence rules (apply to everything below)
   ◦ what changed for A, B, C and D;
   ◦ the budget in force;
   ◦ what moved for Nasdaq Equity Income, the fund I hold.
-• A table of A, B, C and D: weights, net CAGR and drawdown, what changed and why. Add C's
+• A table of A, B, C and D: weights, net total-return CAGR and drawdown, what changed and why. Add C's
   and D's number of funds, C's stock share against its age cap, and the drawdown band's
   reading and guards.
 • Each portfolio's payout: the last 12 months against the next 12, with the share resting
   on an assumed rate.
 • Any target-fund change found (switch, share class, charge, merger, closure) and its effect
-  on the fund's net CAGR.
+  on the fund's net total-return CAGR.
 • Then list:
   ◦ blocked sources;
   ◦ what was held, and why;

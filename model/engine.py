@@ -6047,7 +6047,7 @@ TARGET_CHECKS = {
         f"beside a July 2026 KIIDS and a Declaration of Trust dated {_dday('aseq_dot_date')}, against the "
         f"{_FB['ATRASEQ']['fee_feeder']:.2f}% carried from the earlier KIIDS; uitf.com.ph's listing still has "
         f"{MACRO['aseq_trust_listing']:.2f}%. It is one source, so the figure carried is kept; at "
-        f"{MACRO['aseq_trust_page']:.2f}% its net CAGR falls "
+        f"{MACRO['aseq_trust_page']:.2f}% its net total-return CAGR falls "
         f"{MACRO['aseq_trust_page'] - _FB['ATRASEQ']['fee_feeder']:.2f}pp, and none of A, B or D holds it, so none "
         "can change. Target: JPMorgan Asia Equity Dividend Fund, a Hong Kong unit trust (J.P. Morgan's factsheet, 30 Sep). "
         f"Its {MACRO['aseq_mgmt_fee']}% management fee is published; the {_ft('ATRASEQ')} charge carried is an "
@@ -6068,7 +6068,7 @@ TARGET_CHECKS = {
         "International lists this fund's share classes among those affected by proposed amendments to Articles 23 and 27 "
         "of Fidelity Funds' Articles of Incorporation and a new Article 24; the 1 Oct meeting lacked a quorum and a "
         "reconvened meeting is being prepared (Endowus' copy of the notice, one source). It changes the umbrella's "
-        "articles, not this fund's fees or mandate as reported, so its net CAGR does not move; no other events found."),
+        "articles, not this fund's fees or mandate as reported, so its net total-return CAGR does not move; no other events found."),
     "ATRGLDV": ("partly confirmed",
         f"Target: Fidelity Funds - Global Dividend Fund. Holdings at {_lt('ATRGLDV')} match Fidelity's factsheet. "
         f"The {_ft('ATRGLDV')} charge is its Y-Acc-USD figure (Fidelity; Investing.com); the class the feeder holds is "
@@ -6086,7 +6086,7 @@ TARGET_CHECKS = {
         f"Target: HSBC GIF Global Infrastructure Equity (since March 2025). DISPUTED: the {_ft('M_GINF')} charge on "
         f"ATRAM's fact sheet matches no HSBC class found - IC {MACRO['ginf_target_ic']:.2f}% (estimated), BC GBP "
         f"{MACRO['ginf_target_bc']:.2f}%, ZD {MACRO['ginf_target_zd']:.2f}% - and the class held is not published. "
-        f"At {_GA('ginf_target_alt', 0):.2f}% its net CAGR on the 1/3/5/10-year view is {_GA('ginf_net_alt', 0):.2f}%; "
+        f"At {_GA('ginf_target_alt', 0):.2f}% its net total-return CAGR on the 1/3/5/10-year view is {_GA('ginf_net_alt', 0):.2f}%; "
         f"A would hold {_GA('ginf_w_a_alt', 0)}% ({_GA('ginf_cagr_a_alt', 0):.2f}% on its 10-year view), B "
         f"{_GA('ginf_w_b_alt', 0)}% ({_GA('ginf_cagr_b_alt', 0):.2f}%) and D {_GA('ginf_w_d_alt', 0)}% "
         f"({_GA('ginf_cagr_d_alt', 0):.2f}%). "
@@ -6111,7 +6111,7 @@ TARGET_CHECKS = {
         "through Stock Connect, and Invesco says how it is managed and its risk profile are unchanged (its "
         f"{_dday('gct_notice_date')} notice, Manulife's copy; its key facts, Hang Seng's copy). The fees are not touched "
         "and it stays a global consumer "
-        "fund, so its base return, tilt and net CAGR do not move. "
+        "fund, so its base return, tilt and net total-return CAGR do not move. "
         f"The {_ft('M_GCT')} charge is from the feeder's later KIID; "
         f"Invesco's Z class shows {MACRO['gct_target_z']}% ongoing costs (31 Aug) and its A USD class "
         f"{MACRO['gct_target_a_usd']}%, and the class held is not published. The 31 Aug top 10, now in two sources, is "
@@ -6121,7 +6121,7 @@ TARGET_CHECKS = {
     "ATRAMIP": ("manager change",
         "Target: Schroder Asian Asset Income Fund, a Hong Kong unit trust. MANAGER CHANGE: a 14 Oct 2026 notice "
         "appoints Schroder Investment Management Limited as an additional sub-manager; the structure, risk profile "
-        "and fees are unchanged (the notice, as copied by Taishin and HSBC), so its net CAGR does not move. The "
+        "and fees are unchanged (the notice, as copied by Taishin and HSBC), so its net total-return CAGR does not move. The "
         f"{_ft('ATRAMIP')} charge is an estimate; the A class's management fee is {MACRO['amip_target_mgmt']}% "
         "(HSBC's factsheet, 31 Aug). No top 10 found. The feeder returned "
         f"{MACRO['feeder_1y']['ATRAMIP']}% in pesos in the year to {_dday('feeder_1y_date')} (uitf.com.ph); the target's "
@@ -6129,7 +6129,7 @@ TARGET_CHECKS = {
     "M_GALL": ("disputed",
         f"TRUST FEE CORRECTED at this review: {_FB['M_GALL']['fee_feeder']:.2f}% on ATRAM's fund page, DragonFi and "
         f"uitf.com.ph's A PHP class, against the {_FB['M_GALL']['fee_feeder_prev']:.2f}% carried from an older fact "
-        f"sheet; its net CAGR falls {_FB['M_GALL']['fee_feeder'] - _FB['M_GALL']['fee_feeder_prev']:.2f}pp, and none of "
+        f"sheet; its net total-return CAGR falls {_FB['M_GALL']['fee_feeder'] - _FB['M_GALL']['fee_feeder_prev']:.2f}pp, and none of "
         "A, B or D holds it, so none changes. "
         "Target: BlackRock Global Funds - Global Allocation Fund. SHARE-CLASS MISMATCH: this record names the A2 "
         f"USD class, which BlackRock lists at {MACRO['gall_a2_ocf']}% (30 Oct 2026; {MACRO['gall_a2_ocf_aug']}% in "

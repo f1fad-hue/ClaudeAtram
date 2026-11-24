@@ -2,6 +2,35 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-24 — v134: every CAGR labelled "net total-return CAGR"
+
+At the owner's instruction: "Update all portfolio to net total-return cagr". It follows the question "Is our net CAGR the
+same as net total-return CAGR?", to which the answer was yes. Each forecast is built from total-return capital-market
+assumptions (dividends and coupons included), after ATRAM's trust fee and the target fund's charge, with every payout
+reinvested, in pesos. **Only the labels change; no figure moves.**
+
+**Relabelled:**
+- **Portfolios tab:**
+  - the headline table's row;
+  - the donuts, now a two-line label inside the ring (checked at phone width);
+  - the lens and versus tables;
+  - "who wins where";
+  - C's and D's fund-count tables;
+  - the feasible-set and stress notes;
+  - the chart's tooltip.
+- **Budget tab:** the steps note.
+- **Funds tab:** the Side by side header, the slides' build-up rows and the correlated-sentiment note, so a fund's figure and
+  a portfolio's read the same.
+- **Fund notices:** six engine sentences.
+- **Report tab:** "Method & limits", which now defines the term: after both fee layers, payouts reinvested and inside it,
+  never on top; a paying fund's unit price grows by about its payout less; before tax.
+- **Docs:** the README and the review command.
+
+**Checks:** engine 273/273; audit 310/310 (the one check fewer than v133 is the last-review-scores check, which runs only
+when a driver's note differs from the last commit); validator 28/28; mutants 99/99 caught.
+
+Not personal financial advice.
+
 ## 2026-11-24 — v133: the review run from REVIEW_COMMAND.md at 08:30 UTC - two disputes held, the Gulf after the close
 
 The owner's instruction: "Run the ATRAM review in monitoring/REVIEW_COMMAND.md", 45 minutes after v132's 07:45 UTC
