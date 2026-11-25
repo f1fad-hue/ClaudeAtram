@@ -215,6 +215,11 @@ truth; the artifact is a rendering of it.
    roll window, because past that the front contract has settled), and an
    INDEPENDENT reading that the model never sees - VIX3M measured the error at
    -4.97% and gave its sign, which disclosure alone never did.
+195. A KEY NAMED FOR ITS ROLE MUST NOT BE QUOTED BESIDE A FIXED DATE. `usdphp_prev` means "the close before the
+   latest". v132's roll moved it to 20 Nov's 63.81 while its sentence still read "firmed to ... on 19 Nov", and the page
+   printed the wrong close for three versions with every check passing: the figure existed and so did the date. Give a
+   fixed date its own key (`usdphp_19nov`); quote a role key only beside its role's date (`_dday('usdphp_prev_date')`).
+   The engine now fails on any `*_prev` quoted beside a typed date.
 194. A WORD THAT DESCRIBES A LEVEL IS A FIGURE, AND GOES STALE LIKE ONE. v132's roll took the S&P out of correction
    (11.6% → 7.4% below its record), and every check passed while a note still said "the S&P in correction" and another
    priced the rebound "after the week's fall". The checks trace numbers, not words. So after every roll, scan the payload

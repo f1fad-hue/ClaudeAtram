@@ -836,8 +836,10 @@ for lab, t in TXT:
     for sent in re.split(r"(?<=[.;])\s+", t):
         if not re.search(r"\b\d{1,2} " + MON + r"|\bthe \d{1,2}(?:st|nd|rd|th)\b", sent): continue
         for k, dk in _CLOSES.items():
-            forms = {f"{M[k]:.2f}", f"{M[k]:,.2f}"}
-            if any(re.search(r"(?<![\d.,])" + re.escape(f_) + r"(?![\d])", sent) for f_ in forms):
+            # v135: a three-decimal close (the peso's 63.675) is matched as printed, not at two decimals (63.67 is
+            # 17 Nov's own close), and a close is a level, so a figure followed by "%" (FedWatch's 91.4%) is not one.
+            forms = {f"{M[k]:.2f}", f"{M[k]:,.2f}"} if round(M[k], 2) == M[k] else {f"{M[k]}", f"{M[k]:,}"}
+            if any(re.search(r"(?<![\d.,])" + re.escape(f_) + r"(?![\d%])", sent) for f_ in forms):
                 # v118: a close its own dated series also carries on another day (Brent $92.57 on 9 Nov and
                 # 20 Nov) is in its place beside that day too - re-read from the series, not the engine.
                 _days = {d(M[dk]).day} | ({d(x_).day for x_, y_ in M[_SERIES_OF[k]] if y_ == M[k]} if k in _SERIES_OF else set())

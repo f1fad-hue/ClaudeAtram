@@ -2,6 +2,77 @@
 
 Newest first. Every error found gets recorded before it gets fixed.
 
+## 2026-11-25 — v135: the review run from REVIEW_COMMAND.md - to 24-25 Nov; volatility raised to 1.22; FedWatch re-quoted; a published peso error fixed
+
+The owner's instruction: "Run the ATRAM review in monitoring/REVIEW_COMMAND.md". Cut-off: Wednesday 25 Nov, 18:45 UTC.
+New York's 25 Nov session was still open, and 26 Nov is Thanksgiving, so New York, oil and the VIX are carried at 24 Nov;
+Asia, Manila and the peso at 25 Nov. **Sources:** this container reaches only package registries; every primary site was
+refused by the proxy (403) and read through search (lesson 155). **Funds:** no ATRAM or target-manager notice found. The
+weekly full check was done on 23 Nov and is next due on 30 Nov.
+
+| Market | v134 | v135 | Note |
+|---|---|---|---|
+| S&P 500 / Nasdaq / Dow | 7,237.17 / 24,089.56 / 49,595.31 (23 Nov) | 7,201.09 / 23,733.54 / 50,018.70 (24 Nov) | −0.50% / −1.48% / +0.85%: chips gave back part of 23 Nov's surge; the S&P 7.9% under its record |
+| VIX | 26.62 | 26.36 | A second close running under 5 Nov's 28.18, so **volatility RAISED 1.0 → 1.22**, the step the 23 Nov note set |
+| Brent | $89.37 | $91.40 | +$2.03 after touching $88.10, its weakest since 27 Aug, as attacks around Hormuz rose; y/y +43.91% on the named 19 Nov 2025 base |
+| WTI (January) | $80.17 | $82.05 | +$1.88, the same contract |
+| Nikkei | 58,644.63 (24 Nov) | 57,011.62 (25 Nov) | −2.78% |
+| KOSPI | 5,006.03 (24 Nov) | 4,697.51 (25 Nov) | −6.16%, its lowest close since 13 Jan; Samsung −9.87%, SK Hynix −11.05% |
+| PSEi | 5,353.07 (23 Nov) | 5,456.14 (24 Nov), 5,493.41 (25 Nov) | +1.93%, then +0.68%: a third straight gain |
+| USD/PHP | 63.845 (23 Nov) | 63.775 (24 Nov), 63.675 (25 Nov) | Stronger on lower oil and bets on a BSP hike |
+| FedWatch, December | 100% (19 Nov) | **97.8% (25 Nov), 2.2% for a hold** | Re-quoted at its five-day limit (MarketSpeaker; PANews); 96.4% and 99.8% are other prints |
+| Treasuries | 4.92% (20 Nov) | Held | 23 Nov and 24 Nov reads disagree, 4.84% to 4.94%; the official curve was not readable |
+
+**Releases:**
+- **24 Nov, during the session:** the Conference Board's confidence index jumped to 103.3 from 91.9, its highest since
+  January 2025.
+- **25 Nov, after the 24 Nov close:**
+  - October PCE 3.8% and core 3.3%, the most since November 2023, as expected;
+  - Q3 GDP revised up to 4.3% from 3.4%, against 3.5% expected;
+  - initial claims 189k against 200k expected.
+
+  These are in no carried price yet. The calendar lists them until a US session on or after 25 Nov is carried (27 Nov).
+
+**Gulf:** on 25 Nov the IRGC said two more tankers hit mines, and Iran's army a third. Iranian media said US drones were
+shot down. None of it is independently confirmed. The geopolitics score holds at 1.22.
+
+**What moved:**
+- the volatility score, 1.0 → 1.22, which moves only the headline gauge: 2.26 → 2.28;
+- the budget reading stays 2.93, so the budget holds at 25%;
+- A, B, C and D keep their weights, figures and payouts, and C holds 67.5% in stocks against its 68% cap;
+- the held-out re-run (25 Nov) matches all 29 recorded figures.
+
+**Errors found and fixed:**
+1. **Published since v132:** the Philippine note said the peso "firmed to 63.810 on 19 Nov". It printed `usdphp_prev`,
+   which after v132's roll held 20 Nov's 63.81, beside the typed date 19 Nov; 19 Nov's close was 63.665. The figure now
+   has its own key, `usdphp_19nov`, and the sentence carries 20, 23 and 24 Nov. A new engine check fails on any role key
+   quoted beside a typed date (lesson 195).
+2. The engine's and the audit's own-date close checks matched the peso's 63.675 at two decimals (63.67, 17 Nov's own
+   close) and Brent's 91.40 inside FedWatch's "91.4%". Both now match a three-decimal close as printed and skip a figure
+   followed by "%".
+3. The monetary note's "it is fully priced" and "no read since October's CPI puts any weight on a hold" became false at
+   97.8%, with a 2.2% hold. Both now quote the reading and its date.
+4. The volatility summary still said "as the S&P fell into correction". It now describes the second close under 28.18.
+5. The US note's "The consumer is the weak point" contradicted the Conference Board's jump. It now reads "split" and names
+   both readings.
+6. The geopolitics summary's "mined on 23 and 25 Nov" left "23" undated. It now writes both dates out.
+7. "Monday's surge" became "23 Nov's surge" (lesson 194).
+8. The calendar's 25 Nov entry still previewed September's figures. It now states the releases and that no carried price
+   has them yet.
+
+**Checks:** engine 274/274 (one added); audit 311/311; validator 28/28; held-out 29 compared, none differ; mutants 99/99 caught.
+
+**Due before the next review:**
+- New York's 25 Nov close. US Thanksgiving is 26 Nov (New York shut), and 27 Nov is a half day.
+- The Bank of Korea decision on 26 Nov.
+- The official 23 and 24 Nov Treasury curve.
+- OPEC+ and the three funds' holdings on 29 Nov.
+- On 30 Nov: January Brent's expiry, the month-end band review and the weekly full fund check.
+- Asian Multi-Asset Income's 2025 payout record.
+- The D stickiness rule, still awaiting the owner.
+
+Not personal financial advice.
+
 ## 2026-11-24 — v134: every CAGR labelled "net total-return CAGR"
 
 At the owner's instruction: "Update all portfolio to net total-return cagr". It follows the question "Is our net CAGR the
